@@ -15,28 +15,12 @@ export class Index {
         title: 'Product List'
       },
       {
-        route: 'inventory-level',
+        route: ['inventory-level'],
         name: 'inventory-level',
         moduleId: './inventory-level',
         nav: true,
         title: 'Inventory Level'
       },
-      /*
-      {
-        route: 'new-customer-order',
-        name: 'new-customer-order',
-        moduleId: './new-customer-order',
-        nav: true,
-        title: 'New Customer Order'
-      },
-      {
-        route: 'new-purchase-order',
-        name: 'new-purchase-order',
-        moduleId: './new-purchase-order',
-        nav: true,
-        title: 'New Purchase Order'
-      }
-      */
     ]);
     
     this.router = router;

@@ -7,7 +7,7 @@ export class App {
     config.title = '2wheels Adventures Inc';
     config.map([
       {
-        route: ['', 'dashboard'],
+        route: ['dashboard'],
         name: 'dashboard',
         moduleId: './dashboard/index',
         nav: true,
@@ -15,7 +15,7 @@ export class App {
         title: 'Dashboard'
       },
       {
-        route: 'products',
+        route: ['products'],
         name: 'products',
         moduleId: './products/index',
         nav: true,
@@ -23,12 +23,16 @@ export class App {
         title: 'Products'
       },
       {
-        route: 'users',
+        route: ['users'],
         name: 'users',
         moduleId: './users',
         nav: true,
         main: true,
         title: 'Users'
+      },
+      {
+        route: [""],
+        redirect: "dashboard"
       }
     ]);
     

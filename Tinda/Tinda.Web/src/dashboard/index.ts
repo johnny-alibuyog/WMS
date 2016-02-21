@@ -15,14 +15,14 @@ export class Index {
         title: 'Pending List'
       },
       {
-        route: 'new-customer-order',
+        route: ['new-customer-order'],
         name: 'new-customer-order',
         moduleId: './new-customer-order',
         nav: true,
         title: 'New Customer Order'
       },
       {
-        route: 'new-purchase-order',
+        route: ['new-purchase-order'],
         name: 'new-purchase-order',
         moduleId: './new-purchase-order',
         nav: true,
