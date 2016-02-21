@@ -5,14 +5,21 @@ export class Index {
   router: Router;
 
   configureRouter(config: RouterConfiguration, router: Router) {
-    config.title = "Dashboard";
+    config.title = "Products";
     config.map([
       {
-        route: ['', 'inventory-levels'],
-        name: 'inventory-levels',
-        moduleId: './inventory-levels',
+        route: ['', 'product-list'],
+        name: 'product-list',
+        moduleId: './product-list',
         nav: true,
-        title: 'Inventory Levels'
+        title: 'Product List'
+      },
+      {
+        route: 'inventory-level',
+        name: 'inventory-level',
+        moduleId: './inventory-level',
+        nav: true,
+        title: 'Inventory Level'
       },
       /*
       {

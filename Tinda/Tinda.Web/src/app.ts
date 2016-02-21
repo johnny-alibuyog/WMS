@@ -29,14 +29,6 @@ export class App {
         nav: true,
         main: true,
         title: 'Users'
-      },
-      {
-        route: 'child-router',
-        name: 'child-router',
-        moduleId: './child-router',
-        nav: true,
-        main: true,
-        title: 'Child Router'
       }
     ]);
     
