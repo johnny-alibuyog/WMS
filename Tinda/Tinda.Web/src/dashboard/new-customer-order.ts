@@ -4,7 +4,7 @@ import 'fetch';
 
 @autoinject
 export class NewCustomerOrder {
-    heading = 'Github Users';
+    heading = 'Users';
     users = [];
 
     constructor(private http: HttpClient) {
