@@ -1,0 +1,32 @@
+<template>
+  <section class="au-animate">
+    <div class="row">
+      <div class="au-stagger">
+        <table class="table table-striped table-condensed table-hover">
+          <thead>
+            <tr>
+              <th>Action</th>
+              <th>Product Code</th>
+              <th>Product Name</th>
+              <th>Category</th>
+              <th>Supplier</th>
+              <th class="text-right">Standard Cost</th>
+              <th class="text-right">List Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr repeat.for="item of productInventories">
+              <td><a href="javascript:undefined">Edit</a></td>
+              <td>${item.productCode}</td>
+              <td>${item.productName}</td>
+              <td>${item.category}</td>
+              <td>${item.supplier}</td>
+              <td class="text-right">${item.standardCost}</td>
+              <td class="text-right">${item.listPrice}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</template>

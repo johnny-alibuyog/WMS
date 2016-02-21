@@ -1,19 +1,20 @@
 import {Router, RouterConfiguration} from 'aurelia-router'
 
 export class Index {
-  heading: string = "Dashboard";
+  heading: string = "Products";
   router: Router;
 
   configureRouter(config: RouterConfiguration, router: Router) {
     config.title = "Dashboard";
     config.map([
       {
-        route: ['', 'pending-list'],
-        name: 'pending-list',
-        moduleId: './pending-list',
+        route: ['', 'inventory-levels'],
+        name: 'inventory-levels',
+        moduleId: './inventory-levels',
         nav: true,
-        title: 'Pending List'
+        title: 'Inventory Levels'
       },
+      /*
       {
         route: 'new-customer-order',
         name: 'new-customer-order',
@@ -28,6 +29,7 @@ export class Index {
         nav: true,
         title: 'New Purchase Order'
       }
+      */
     ]);
     
     this.router = router;

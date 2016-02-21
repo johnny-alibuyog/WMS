@@ -1,4 +1,4 @@
-export class Please {
+export class PendingList {
   activeOrders = [];
   inventoryToReorder = [];
 
