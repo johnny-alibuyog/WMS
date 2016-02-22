@@ -15,7 +15,11 @@
           </thead>
           <tbody>
             <tr repeat.for="item of inventoryLevels">
-              <td><a href="javascript:undefined">Reorder</a></td>
+              <td>
+                <a href="javascript:undefined">
+                  <i class="fa fa-shopping-basket"></i>
+                </a>
+              </td>
               <td>${item.productName}</td>
               <td class="text-right">${item.available}</td>
               <td class="text-right">${item.currentLevel}</td>
