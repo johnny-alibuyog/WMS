@@ -4,7 +4,7 @@
 
       <div class="row">
         <!-- create new -->
-        <button type="button" class="btn btn-default">
+        <button type="button" class="btn btn-default" click.delegate="create()">
           <i class="fa fa-plus"></i> Create New Product
         </button>
 
@@ -25,8 +25,8 @@
           <thead>
             <tr>
               <th>Action</th>
-              <th>Product Code</th>
-              <th>Product Name</th>
+              <th>Code</th>
+              <th>Name</th>
               <th>Category</th>
               <th>Supplier</th>
               <th class="text-right">Standard Cost</th>
@@ -36,15 +36,15 @@
           <tbody>
             <tr repeat.for="item of productInventories">
               <td>
-                <a href="javascript:undefined" class="text-info" click.delegate="create()">
+                <a href="javascript:undefined" class="text-info" click.delegate="edit(item)">
                   <i class="fa fa-pencil"></i>
                 </a>
-                <a href="javascript:undefined" class="text-danger">
+                <a href="javascript:undefined" class="text-danger" click.delegate="delete(item)">
                   <i class="fa fa-times"></i>
                 </a>
               </td>
-              <td>${item.productCode}</td>
-              <td>${item.productName}</td>
+              <td>${item.code}</td>
+              <td>${item.name}</td>
               <td>${item.category}</td>
               <td>${item.supplier}</td>
               <td class="text-right">${item.standardCost}</td>

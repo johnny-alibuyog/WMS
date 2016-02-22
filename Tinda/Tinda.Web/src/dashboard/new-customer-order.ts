@@ -1,3 +1,3 @@
 export class NewCustomerOrder {
-    heading = 'New Purchase Order';
+    heading = 'New Customer Order';
 }
