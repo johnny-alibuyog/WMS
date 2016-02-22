@@ -18,7 +18,11 @@
             </thead>
             <tbody>
               <tr repeat.for="item of activeOrders">
-                <td><a href="javascript:undefined">Change Status</a></td>
+                <td>
+                  <a href="javascript:undefined">
+                    <i class="fa fa-truck"></i> <!-- Change Status -->
+                  </a>
+                </td>
                 <td>${item.orderDate}</td>
                 <td>${item.status}</td>
                 <td>${item.customerName}</td>
@@ -46,7 +50,12 @@
             </thead>
             <tbody>
               <tr repeat.for="item of inventoryToReorder">
-                <td><a href="javascript:undefined">Reorder</a></td>
+                <td>
+                  <a href="javascript:undefined">
+                    <i class="fa fa-shopping-basket"></i>
+                    <!-- Reorder -->
+                  </a>
+                </td>
                 <td>${item.productName}</td>
                 <td class="text-right">${item.available}</td>
                 <td class="text-right">${item.currentLevel}</td>
