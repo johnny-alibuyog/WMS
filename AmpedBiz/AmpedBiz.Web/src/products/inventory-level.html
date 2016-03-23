@@ -1,0 +1,34 @@
+<template>
+  <section class="au-animate">
+    <div class="col-md-8">
+      <div class="au-stagger">
+        <table class="table table-striped table-condensed table-hover">
+          <thead>
+            <tr>
+              <th>Action</th>
+              <th>Product Name</th>
+              <th>Available</th>
+              <th class="text-right">Current Level</th>
+              <th class="text-right">Target Level</th>
+              <th class="text-right">Below Target</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr repeat.for="item of inventoryLevels">
+              <td>
+                <a href="javascript:undefined">
+                  <i class="fa fa-shopping-basket"></i>
+                </a>
+              </td>
+              <td>${item.productName}</td>
+              <td class="text-right">${item.available}</td>
+              <td class="text-right">${item.currentLevel}</td>
+              <td class="text-right">${item.targetLevel}</td>
+              <td class="text-right">${item.belowTarget}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</template>
