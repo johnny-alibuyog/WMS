@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmpedBiz.Service
+namespace AmpedBiz.Service.Dto
 {
-    public class Class1
+    public class ProductType
     {
+        public string Id { get; set; }
+        public string Name { get; set; }
     }
 }

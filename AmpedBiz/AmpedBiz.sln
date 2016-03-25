@@ -11,27 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Domain", "AmpedBiz
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Service", "AmpedBiz.Service\AmpedBiz.Service.csproj", "{83FA9462-8A6F-417B-8575-5B1CA054DBCF}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "AmpedBiz.Web(2)", "AmpedBiz.Web\", "{4437C00F-F819-4351-84EF-128830FE457E}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_49498"
-		Debug.AspNetCompiler.PhysicalPath = "AmpedBiz.Web\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_49498\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_49498"
-		Release.AspNetCompiler.PhysicalPath = "AmpedBiz.Web\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_49498\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "49498"
-		SlnRelativePath = "AmpedBiz.Web\"
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Service.Host", "AmpedBiz.Service.Host\AmpedBiz.Service.Host.csproj", "{EEC4D7F9-9FD5-41D1-900F-565057FE61FE}"
 EndProject
 Global
@@ -56,10 +35,6 @@ Global
 		{83FA9462-8A6F-417B-8575-5B1CA054DBCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83FA9462-8A6F-417B-8575-5B1CA054DBCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83FA9462-8A6F-417B-8575-5B1CA054DBCF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4437C00F-F819-4351-84EF-128830FE457E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4437C00F-F819-4351-84EF-128830FE457E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4437C00F-F819-4351-84EF-128830FE457E}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{4437C00F-F819-4351-84EF-128830FE457E}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{EEC4D7F9-9FD5-41D1-900F-565057FE61FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EEC4D7F9-9FD5-41D1-900F-565057FE61FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEC4D7F9-9FD5-41D1-900F-565057FE61FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
