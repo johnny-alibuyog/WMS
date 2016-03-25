@@ -1,0 +1,259 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "v1",
+    "title": "AmpedBiz.Service.Host"
+  },
+  "host": "localhost:49242",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/product-types/{request.id}": {
+      "get": {
+        "tags": [
+          "ProductType"
+        ],
+        "operationId": "ProductType_Get",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/html",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "request.id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "request.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AmpedBiz.Service.ProductTypes.GetProductType.Response"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/product-types": {
+      "get": {
+        "tags": [
+          "ProductType"
+        ],
+        "operationId": "ProductType_Get",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/html",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "request.id",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AmpedBiz.Service.Dto.ProductType"
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "put": {
+        "tags": [
+          "ProductType"
+        ],
+        "operationId": "ProductType_Update",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "text/html",
+          "application/xml",
+          "text/xml",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/html",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AmpedBiz.Service.ProductTypes.UpdateProductType.Request"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AmpedBiz.Service.ProductTypes.UpdateProductType.Response"
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "ProductType"
+        ],
+        "operationId": "ProductType_Create",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "text/html",
+          "application/xml",
+          "text/xml",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "text/html",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AmpedBiz.Service.ProductTypes.CreateProductType.Request"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AmpedBiz.Service.ProductTypes.CreateProductType.Response"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "definitions": {
+    "AmpedBiz.Service.ProductTypes.GetProductType.Request": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "AmpedBiz.Service.ProductTypes.GetProductType.Response": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "AmpedBiz.Service.ProductTypes.GetProductTypes.Request": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "AmpedBiz.Service.Dto.ProductType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "AmpedBiz.Service.ProductTypes.CreateProductType.Request": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "AmpedBiz.Service.ProductTypes.CreateProductType.Response": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "AmpedBiz.Service.ProductTypes.UpdateProductType.Request": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "AmpedBiz.Service.ProductTypes.UpdateProductType.Response": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

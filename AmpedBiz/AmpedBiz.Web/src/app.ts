@@ -31,6 +31,14 @@ export class App {
         title: 'Users'
       },
       {
+        route: ['admin'],
+        name: 'admin',
+        moduleId: './admin/index',
+        nav: true,
+        main: true,
+        title: 'Admin'
+      },
+      {
         route: [""],
         redirect: "dashboard"
       }
