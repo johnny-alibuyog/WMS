@@ -1,31 +1,33 @@
 import {autoinject} from 'aurelia-framework';
 import {DialogController} from 'aurelia-dialog';
+import {ProductType} from './common/models/product-type';
+import {ProductTypeService} from '../services/product-type-service';
 
 @autoinject
 export class ProductCreate {
   private _controller: DialogController;
-  header: string = 'Create Type Product';
-  productType = {
-    id: '',
-    name: '',
-  };
+  private _service: ProductTypeService;
 
-  constructor(controller: DialogController) {
+  public header: string = 'Create Type Product';
+  public productType: ProductType;
+
+  constructor(controller: DialogController, service: ProductTypeService) {
     this._controller = controller;
+    this._service = service;
   }
 
-  activate(productType) {
+  activate(productType: ProductType) {
     if (productType) {
       this.header = "Edit Product";
-      this.productType = JSON.parse(JSON.stringify(productType)); //Object.create(product);
+      this._service.getProductType(productType.id, {
+        success: (data) => this.productType = <ProductType>data,
+        error: (error) => console.warn(error)
+      });
     }
     else {
       this.header = "Create Product";
-      this.productType = Object.create(this.productType);
+      this.productType = <ProductType>{};
     }
-
-    if (this.productType.id === '')
-      this.productType.id = this.guid();
   }
 
   cancel() {
