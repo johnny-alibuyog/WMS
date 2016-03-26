@@ -1,5 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using AmpedBiz.Core.Entities;
 using MediatR;
+using NHibernate;
+using NHibernate.Linq;
 
 namespace AmpedBiz.Service.ProductTypes
 {
@@ -12,20 +16,41 @@ namespace AmpedBiz.Service.ProductTypes
 
         public class Response : List<Dto.PaymentType>
         {
+            public Response() { }
+
+            public Response(List<Dto.PaymentType> items) : base(items) { }
         }
 
         public class Handler : IRequestHandler<Request, Response>
         {
+            private readonly ISessionFactory _sessionFactory;
+
+            public Handler(ISessionFactory sessionFactory)
+            {
+                _sessionFactory = sessionFactory;
+            }
+
             public Response Handle(Request message)
             {
-                return new Response()
+                var response = default(Response);
+
+                using (var session = _sessionFactory.OpenSession())
+                using (var transaction = session.BeginTransaction())
                 {
-                    new Dto.PaymentType() { Id = "1", Name = "Product 1" },
-                    new Dto.PaymentType() { Id = "2", Name = "Product 2" },
-                    new Dto.PaymentType() { Id = "3", Name = "Product 3" },
-                    new Dto.PaymentType() { Id = "4", Name = "Product 4" },
-                    new Dto.PaymentType() { Id = "5", Name = "Product 5" },
-                };
+                    var entites = session.Query<PaymentType>()
+                        .Select(x => new Dto.PaymentType()
+                        {
+                            Id = x.Id,
+                            Name = x.Name
+                        })
+                        .ToList();
+
+                    response = new Response(entites);
+
+                    transaction.Commit();
+                }
+
+                return response;
             }
         }
     }

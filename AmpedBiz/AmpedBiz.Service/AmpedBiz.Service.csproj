@@ -31,8 +31,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MediatR, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MediatR.2.0.2\lib\net45\MediatR.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -51,8 +59,22 @@
     <Compile Include="ProductTypes\UpdatePaymentType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\AmpedBiz.Common\AmpedBiz.Common.csproj">
+      <Project>{b7363f6d-0c87-4352-98cc-8798c968e7b5}</Project>
+      <Name>AmpedBiz.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AmpedBiz.Core\AmpedBiz.Core.csproj">
+      <Project>{884d49ea-500b-4ad5-995a-22e48558b1f9}</Project>
+      <Name>AmpedBiz.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AmpedBiz.Data\AmpedBiz.Data.csproj">
+      <Project>{8eb5c9f9-c188-4f56-9fd1-9aeae6a9a177}</Project>
+      <Name>AmpedBiz.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

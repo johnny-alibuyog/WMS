@@ -19,11 +19,11 @@ namespace AmpedBiz.Data.Conventions
 
         public void Apply(IClassInstance instance)
         {
-            //var schema = instance.EntityType.Namespace.Split('.').Last();
             var schema = instance.EntityType.ParseSchema();
             var tableName = _pluralizationService.Pluralize(instance.EntityType.Name);
 
-            instance.Schema("dbo");
+            //instance.Schema(schema);
+
             instance.Table(tableName);
         }
 

@@ -23,5 +23,21 @@ namespace AmpedBiz.Service.Host.App_Start
             // Set the dependency resolver to be Autofac.
             config.DependencyResolver = new AutofacWebApiDependencyResolver(builder.Build());
         }
+
+        //public static void Register(IAppBuilder app, HttpConfiguration config)
+        //{
+        //    var builder = new ContainerBuilder();
+
+        //    // Register your Web API controllers.
+        //    builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
+
+        //    // Register modules
+        //    builder.RegisterAssemblyModules(Assembly.GetExecutingAssembly());
+
+
+        //    var container = builder.Build();
+
+        //    app.UseAutofacMiddleware(container);
+        //}
     }
 }

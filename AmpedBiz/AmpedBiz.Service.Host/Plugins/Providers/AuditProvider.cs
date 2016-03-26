@@ -1,6 +1,6 @@
 ﻿using AmpedBiz.Data.Configurations;
 
-namespace AmpedBiz.Service.Host.Providers
+namespace AmpedBiz.Service.Host.Plugins.Providers
 {
     public class AuditProvider : IAuditProvider
     {

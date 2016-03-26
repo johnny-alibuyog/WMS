@@ -7,8 +7,6 @@ namespace AmpedBiz.Data.EntityDefinitions
     {
         public UserMapping()
         {
-            Schema("public");
-
             Id(x => x.Id)
                 .GeneratedBy.Assigned();
 

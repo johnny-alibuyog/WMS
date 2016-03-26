@@ -69,8 +69,7 @@ namespace AmpedBiz.Data
                 Directory.CreateDirectory(mappingsPath);
 
             _sessionFactory = Fluently.Configure()
-                .Database(PostgreSQLConfiguration.PostgreSQL82
-                    .DefaultSchema("public")
+                .Database(PostgreSQLConfiguration.Standard
                     .ConnectionString(x => x
                         .Host(host)
                         .Port(port)
@@ -80,6 +79,7 @@ namespace AmpedBiz.Data
                     )
                     //.ConnectionString(x => x.FromConnectionStringWithKey("BankingConnectionString"))
                     .QuerySubstitutions("true 1, false 0, yes y, no n")
+                    .DefaultSchema("public")
                     .AdoNetBatchSize(15)
                     .FormatSql()
                 )

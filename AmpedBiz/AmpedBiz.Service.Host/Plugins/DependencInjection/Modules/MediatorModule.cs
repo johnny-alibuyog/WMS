@@ -6,7 +6,7 @@ using Autofac;
 using Autofac.Features.Variance;
 using MediatR;
 
-namespace AmpedBiz.Service.Host.Bootstraps.DependencInjection.Modules
+namespace AmpedBiz.Service.Host.Plugins.DependencInjection.Modules
 {
     public class MediatorModule : Module
     {

@@ -1,4 +1,7 @@
-﻿using MediatR;
+﻿using AmpedBiz.Common.Exceptions;
+using AmpedBiz.Core.Entities;
+using MediatR;
+using NHibernate;
 
 namespace AmpedBiz.Service.ProductTypes
 {
@@ -9,19 +12,38 @@ namespace AmpedBiz.Service.ProductTypes
             public string Id { get; set; }
         }
 
-        public class Response : Dto.PaymentType
-        {
-        }
+        public class Response : Dto.PaymentType { }
 
         public class Handler : IRequestHandler<Request, Response>
         {
+            private readonly ISessionFactory _sessionFactory;
+
+            public Handler(ISessionFactory sessionFactory)
+            {
+                _sessionFactory = sessionFactory;
+            }
+
             public Response Handle(Request message)
             {
-                return new Response()
+                var response = default(Response);
+
+                using (var session = _sessionFactory.OpenSession())
+                using (var transaction = session.BeginTransaction())
                 {
-                    Id = message.Id,
-                    Name = $"Name {message.Id}"
-                };
+                    var entity = session.Get<PaymentType>(message.Id);
+                    if (entity == null)
+                        throw new BusinessException($"Payment Type with id {message.Id} does not exists.");
+
+                    response = new Response()
+                    {
+                        Id = entity.Id,
+                        Name = entity.Name
+                    };
+
+                    transaction.Commit();
+                }
+
+                return response;
             }
         }
     }

@@ -2,12 +2,12 @@
 using AmpedBiz.Data;
 using AmpedBiz.Data.Configurations;
 using AmpedBiz.Data.DataInitializer;
+using AmpedBiz.Service.Host.Plugins.Providers;
 using AmpedBiz.Service.Host.Properties;
-using AmpedBiz.Service.Host.Providers;
 using Autofac;
 using NHibernate.Validator.Engine;
 
-namespace AmpedBiz.Service.Host.Bootstraps.DependencInjection.Modules
+namespace AmpedBiz.Service.Host.Plugins.DependencInjection.Modules
 {
     public class PersistenceModule : Module
     {
