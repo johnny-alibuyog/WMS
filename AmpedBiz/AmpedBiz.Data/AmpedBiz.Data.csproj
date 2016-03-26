@@ -100,9 +100,12 @@
     <Compile Include="Conventions\_CustomJoinedSubclassConvention.cs" />
     <Compile Include="DataInitializer\IDataSeeder.cs" />
     <Compile Include="DataInitializer\PaymentTypeDataSeeder.cs" />
+    <Compile Include="DataInitializer\ProductCategoryDataSeeder.cs" />
     <Compile Include="DataInitializer\UserDataSeeder.cs" />
     <Compile Include="EntityDefinitions\PaymentTypeMapping.cs" />
     <Compile Include="EntityDefinitions\PaymentTypeValidation.cs" />
+    <Compile Include="EntityDefinitions\ProductCategoryMapping.cs" />
+    <Compile Include="EntityDefinitions\ProductCategoryVaildation.cs" />
     <Compile Include="EntityDefinitions\UserMapping.cs" />
     <Compile Include="EntityDefinitions\UserValidation.cs" />
     <Compile Include="ISessionProvider.cs" />

@@ -5,7 +5,7 @@ using MediatR;
 using NHibernate;
 using NHibernate.Linq;
 
-namespace AmpedBiz.Service.ProductTypes
+namespace AmpedBiz.Service.PaymentTypes
 {
     public class GetPaymentTypes
     {

@@ -1,18 +1,25 @@
-﻿using AmpedBiz.Common.Exceptions;
+﻿using System.Collections.Generic;
+using System.Linq;
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
+using NHibernate.Linq;
 
-namespace AmpedBiz.Service.ProductTypes
+namespace AmpedBiz.Service.ProductCategories
 {
-    public class GetPaymentType
+    public class GetProductCategories
     {
         public class Request : IRequest<Response>
         {
-            public string Id { get; set; }
+            public string[] Id { get; set; }
         }
 
-        public class Response : Dto.PaymentType { }
+        public class Response : List<Dto.ProductCategory>
+        {
+            public Response() { }
+
+            public Response(List<Dto.ProductCategory> items) : base(items) { }
+        }
 
         public class Handler : IRequestHandler<Request, Response>
         {
@@ -30,15 +37,15 @@ namespace AmpedBiz.Service.ProductTypes
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.Get<PaymentType>(message.Id);
-                    if (entity == null)
-                        throw new BusinessException($"Payment Type with id {message.Id} does not exists.");
+                    var entites = session.Query<ProductCategory>()
+                        .Select(x => new Dto.ProductCategory()
+                        {
+                            Id = x.Id,
+                            Name = x.Name
+                        })
+                        .ToList();
 
-                    response = new Response()
-                    {
-                        Id = entity.Id,
-                        Name = entity.Name
-                    };
+                    response = new Response(entites);
 
                     transaction.Commit();
                 }

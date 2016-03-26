@@ -53,10 +53,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dto\PaymentType.cs" />
-    <Compile Include="ProductTypes\CreatePaymentType.cs" />
-    <Compile Include="ProductTypes\GetPaymentType.cs" />
-    <Compile Include="ProductTypes\GetPaymentTypes.cs" />
-    <Compile Include="ProductTypes\UpdatePaymentType.cs" />
+    <Compile Include="Dto\ProductCategory.cs" />
+    <Compile Include="ProductCategories\CreateProductCategory.cs" />
+    <Compile Include="ProductCategories\GetProductCategory.cs" />
+    <Compile Include="ProductCategories\GetProductCategories.cs" />
+    <Compile Include="ProductCategories\UpdateProductCategory.cs" />
+    <Compile Include="PaymentTypes\CreatePaymentType.cs" />
+    <Compile Include="PaymentTypes\GetPaymentType.cs" />
+    <Compile Include="PaymentTypes\GetPaymentTypes.cs" />
+    <Compile Include="PaymentTypes\UpdatePaymentType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

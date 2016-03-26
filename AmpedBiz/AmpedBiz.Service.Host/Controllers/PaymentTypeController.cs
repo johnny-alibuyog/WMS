@@ -1,5 +1,5 @@
 ﻿using System.Web.Http;
-using AmpedBiz.Service.ProductTypes;
+using AmpedBiz.Service.PaymentTypes;
 using MediatR;
 
 namespace AmpedBiz.Service.Host.Controllers

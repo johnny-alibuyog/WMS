@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using AmpedBiz.Service.ProductTypes;
+using AmpedBiz.Service.PaymentTypes;
 using Autofac;
 using Autofac.Features.Variance;
 using MediatR;
