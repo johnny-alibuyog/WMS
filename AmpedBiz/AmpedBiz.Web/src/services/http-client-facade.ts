@@ -38,7 +38,16 @@ export class HttpClientFacade {
         method: param.method || "GET",
         body: param.data ? json(param.data) : null
       })
-      .then(response => response.json())
+      .then(response => {
+        if (response.status >= 200 && response.status < 300) {
+          return response.json();
+        } 
+        else {
+          var error = new Error(response.statusText);
+          error.message = response.statusText;
+          throw error;
+        }
+      })
       .then(data => {
         if (param.callback && param.callback.success) {
           param.callback.success(data);

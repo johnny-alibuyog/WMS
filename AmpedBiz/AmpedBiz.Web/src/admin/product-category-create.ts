@@ -1,33 +1,33 @@
 import {autoinject} from 'aurelia-framework';
 import {DialogController} from 'aurelia-dialog';
-import {PaymentType} from './common/models/payment-type';
-import {PaymentTypeService} from '../services/payment-type-service';
+import {ProductCategory} from './common/models/product-category';
+import {ProductCategoryService} from '../services/product-category-service';
 import {NotificationService} from '../common/controls/notification-service';
 
 @autoinject
-export class PaymentTypeCreate {
+export class ProductCategoryCreate {
   private _controller: DialogController;
-  private _service: PaymentTypeService;
+  private _service: ProductCategoryService;
 
   public header: string = 'Create Type Product';
   public isEdit: boolean = false;
   public canSave: boolean = true;
-  public paymentType: PaymentType;
+  public productCategory: ProductCategory;
   public notificaton: NotificationService;
 
-  constructor(notification: NotificationService, controller: DialogController, service: PaymentTypeService) {
+  constructor(notification: NotificationService, controller: DialogController, service: ProductCategoryService) {
     this.notificaton = notification;
     this._controller = controller;
     this._service = service;
   }
 
-  activate(paymentType: PaymentType) {
-    if (paymentType) {
+  activate(productCategory: ProductCategory) {
+    if (productCategory) {
       this.header = "Edit Product";
       this.isEdit = true;
-      this._service.getPaymentType(paymentType.id, {
+      this._service.getProductCategory(productCategory.id, {
         success: (data) => {
-          this.paymentType = <PaymentType>data;
+          this.productCategory = <ProductCategory>data;
         },
         error: (error) => {
           this.notificaton.warning(error);
@@ -37,7 +37,7 @@ export class PaymentTypeCreate {
     else {
       this.header = "Create Product";
       this.isEdit = false;
-      this.paymentType = <PaymentType>{};
+      this.productCategory = <ProductCategory>{};
     }
   }
 
@@ -49,10 +49,10 @@ export class PaymentTypeCreate {
 
     if (this.isEdit) {
 
-      this._service.updatePaymentType(this.paymentType, {
+      this._service.updateProductCategory(this.productCategory, {
         success: (data) => {
           this.notificaton.success("Product Type has been saved.")
-            .then((data) => this._controller.ok({ wasCancelled: true, output: <PaymentType>data }));
+            .then((data) => this._controller.ok({ wasCancelled: true, output: <ProductCategory>data }));
         },
         error: (error) => {
           this.notificaton.warning(error)
@@ -61,10 +61,10 @@ export class PaymentTypeCreate {
     }
     else {
 
-      this._service.createPaymentType(this.paymentType, {
+      this._service.createProductCategory(this.productCategory, {
         success: (data) => {
           this.notificaton.success("Product Type has been saved.")
-            .then((data) => this._controller.ok({ wasCancelled: true, output: <PaymentType>data }));
+            .then((data) => this._controller.ok({ wasCancelled: true, output: <ProductCategory>data }));
         },
         error: (error) => {
           this.notificaton.warning(error)

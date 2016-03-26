@@ -14,6 +14,13 @@ export class Index {
         nav: true,
         title: 'Payment Type List'
       },
+      {
+        route: ['product-category-list'],
+        name: 'product-category-list',
+        moduleId: './product-category-list',
+        nav: true,
+        title: 'Product Category List'
+      },
     ]);
     
     this.router = router;

@@ -5,7 +5,7 @@
       <div class="row">
         <!-- create new -->
         <button type="button" class="btn btn-default" click.delegate="create()">
-          <i class="fa fa-plus"></i> Create New Payment Type
+          <i class="fa fa-plus"></i> Create New Product Type
         </button>
 
         <!-- search -->
@@ -30,7 +30,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr repeat.for="item of paymentTypes" click.delegate="edit(item)">
+            <tr repeat.for="item of productCategorys" click.delegate="edit(item)">
               <td>
                 <a href="javascript:undefined" class="text-info" click.delegate="edit(item)">
                   <i class="fa fa-pencil"></i>
