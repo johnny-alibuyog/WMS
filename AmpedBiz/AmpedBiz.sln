@@ -13,6 +13,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Service.Host", "Am
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Core", "AmpedBiz.Core\AmpedBiz.Core.csproj", "{884D49EA-500B-4AD5-995A-22E48558B1F9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".scripts", ".scripts", "{8343114E-1A60-450B-BB0E-1F6D0507B35F}"
+	ProjectSection(SolutionItems) = preProject
+		create_db.cmd = create_db.cmd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql", "sql", "{D73BF1EE-C7B6-430B-AD2A-9F1F307D6242}"
+	ProjectSection(SolutionItems) = preProject
+		create_db.sql = create_db.sql
+		postgres_alter_superuser_password.sql = postgres_alter_superuser_password.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".readme", ".readme", "{E1AAC675-3692-4A6C-84EA-09F5FC33167D}"
+	ProjectSection(SolutionItems) = preProject
+		postgres_dev_login_credential_recovery.txt = postgres_dev_login_credential_recovery.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +58,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D73BF1EE-C7B6-430B-AD2A-9F1F307D6242} = {8343114E-1A60-450B-BB0E-1F6D0507B35F}
 	EndGlobalSection
 EndGlobal

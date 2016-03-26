@@ -1,4 +1,6 @@
-﻿using AmpedBiz.Data.Configurations;
+﻿using System;
+using System.IO;
+using AmpedBiz.Data.Configurations;
 using AmpedBiz.Data.Conventions;
 using AmpedBiz.Data.EntityDefinitions;
 using FluentNHibernate.Cfg;
@@ -56,22 +58,23 @@ namespace AmpedBiz.Data
             return CurrentSessionContext.Unbind(_sessionFactory);
         }
 
-        public SessionProvider(ValidatorEngine validator, IAuditProvider auditProvider, string serverName, string databaseName, string username, string password)
+        public SessionProvider(ValidatorEngine validator, IAuditProvider auditProvider, string host, int port, string database, string username, string password)
         {
             _validator = validator;
             _auditProvider = auditProvider;
 
-            //var schemaPath = Path.Combine(System.Environment.CurrentDirectory, "Mappings");
+            var mappingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Mappings");
 
-            //if (!Directory.Exists(schemaPath))
-            //    Directory.CreateDirectory(schemaPath);
+            if (!Directory.Exists(mappingsPath))
+                Directory.CreateDirectory(mappingsPath);
 
             _sessionFactory = Fluently.Configure()
-                .Database(MsSqlConfiguration.MsSql2008
-                    .DefaultSchema("dbo")
+                .Database(PostgreSQLConfiguration.PostgreSQL82
+                    .DefaultSchema("public")
                     .ConnectionString(x => x
-                        .Server(serverName)
-                        .Database(databaseName)
+                        .Host(host)
+                        .Port(port)
+                        .Database(database)
                         .Username(username)
                         .Password(password)
                     )
@@ -81,7 +84,7 @@ namespace AmpedBiz.Data
                     .FormatSql()
                 )
                 .Mappings(x => x
-                    .FluentMappings.AddFromAssemblyOf<UserDefenition>()
+                    .FluentMappings.AddFromAssemblyOf<UserMapping>()
                     .Conventions.AddFromAssemblyOf<_CustomJoinedSubclassConvention>()
                     .Conventions.Setup(o => o.Add(AutoImport.Never()))
                     //.ExportTo(schemaPath)

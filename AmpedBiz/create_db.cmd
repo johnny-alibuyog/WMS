@@ -1,0 +1,1 @@
+psql -U postgres postgres -f \sql\create_db.sql

@@ -6,7 +6,7 @@
 
         private bool IsTransient { get { return Equals(this.Id, default(TId)); } }
 
-        public virtual TId Id { get; protected set; }
+        public virtual TId Id { get; set; }
 
         public Entity() { }
 

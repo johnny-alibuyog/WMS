@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace AmpedBiz.Core.Entities
 {
@@ -19,8 +15,11 @@ namespace AmpedBiz.Core.Entities
         }
 
         public static readonly PaymentType Cash = new PaymentType("CS", "Cash");
+
         public static readonly PaymentType Check = new PaymentType("CK", "Check");
+
         public static readonly PaymentType CreditCard = new PaymentType("CC", "Credit Card");
+
         public static readonly IEnumerable<PaymentType> All = new List<PaymentType>()
         {
             PaymentType.Cash,

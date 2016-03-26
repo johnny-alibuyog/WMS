@@ -98,8 +98,13 @@
     <Compile Include="Conventions\CustomTableNameConvention.cs" />
     <Compile Include="Conventions\EnumConvention.cs" />
     <Compile Include="Conventions\_CustomJoinedSubclassConvention.cs" />
-    <Compile Include="EntityDefinitions\PaymentTypeDefinition.cs" />
-    <Compile Include="EntityDefinitions\UserDefenition.cs" />
+    <Compile Include="DataInitializer\IDataSeeder.cs" />
+    <Compile Include="DataInitializer\PaymentTypeDataSeeder.cs" />
+    <Compile Include="DataInitializer\UserDataSeeder.cs" />
+    <Compile Include="EntityDefinitions\PaymentTypeMapping.cs" />
+    <Compile Include="EntityDefinitions\PaymentTypeValidation.cs" />
+    <Compile Include="EntityDefinitions\UserMapping.cs" />
+    <Compile Include="EntityDefinitions\UserValidation.cs" />
     <Compile Include="ISessionProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SessionProvider.cs" />

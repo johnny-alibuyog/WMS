@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmpedBiz.Data.EntityDefinitions
+namespace AmpedBiz.Data.DataInitializer
 {
-    class UserDefenition
+    public interface IDataSeeder
     {
+        void Seed();
     }
 }

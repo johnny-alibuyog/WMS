@@ -10,6 +10,7 @@ namespace AmpedBiz.Service.Host
             GlobalConfiguration.Configure(WebApiConfig.Register);
             GlobalConfiguration.Configure(DependencyConfig.Register);
             //SwaggerConfig.Register();
+            GlobalConfiguration.Configure(DataSeederConfig.Register);
         }
     }
 }

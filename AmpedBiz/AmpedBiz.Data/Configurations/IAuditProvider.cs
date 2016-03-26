@@ -5,10 +5,12 @@ namespace AmpedBiz.Data.Configurations
 {
     public interface IAuditProvider
     {
-        Audit CreateNew();
-        Audit CreateUpdate();
-        Audit CurrentAudit { get; set; }
-        PropertyInfo PropertyInfo { get; set; }
+        object GetCurrentUserId();
+
+        //Audit CreateNew();
+        //Audit CreateUpdate();
+        //Audit CurrentAudit { get; set; }
+        //PropertyInfo PropertyInfo { get; set; }
 
         //public virtual Audit CreateNew()
         //{

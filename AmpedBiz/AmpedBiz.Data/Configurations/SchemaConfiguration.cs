@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
@@ -26,7 +27,7 @@ namespace AmpedBiz.Data.Configurations
         {
             //new SchemaExport(config).Create(true, true);
 
-            var schemaPath = Path.Combine(System.Environment.CurrentDirectory, "Schema");
+            var schemaPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Schema");
 
             if (!Directory.Exists(schemaPath))
                 Directory.CreateDirectory(schemaPath);

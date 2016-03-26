@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Reflection;
-using System.Threading;
+﻿using System;
 using AmpedBiz.Core;
 using AmpedBiz.Core.Entities;
 using NHibernate;
@@ -8,6 +6,49 @@ using NHibernate.Event;
 
 namespace AmpedBiz.Data.Configurations
 {
+    internal class AuditEnvetListener : IPostInsertEventListener, IPostUpdateEventListener, IPostDeleteEventListener
+    {
+        public void OnPostDelete(PostDeleteEvent @event)
+        {
+            // TODO: 
+        }
+
+        public void OnPostInsert(PostInsertEvent @event)
+        {
+            var auditProvider = SessionProvider.AuditProvider;
+            var session = @event.Session.GetSession(EntityMode.Poco);
+
+            var entity = @event.Entity as IAuditable;
+            if (entity == null)
+                return;
+
+            var userId = auditProvider.GetCurrentUserId();
+            if (userId == null)
+                return;
+
+            entity.CreatedBy = session.Load<User>(userId);
+            entity.CreatedOn = DateTimeOffset.UtcNow;
+        }
+
+        public void OnPostUpdate(PostUpdateEvent @event)
+        {
+            var auditProvider = SessionProvider.AuditProvider;
+            var session = @event.Session.GetSession(EntityMode.Poco);
+
+            var entity = @event.Entity as IAuditable;
+            if (entity == null)
+                return;
+
+            var currentUser = auditProvider.GetCurrentUserId();
+            if (currentUser == null)
+                return;
+
+            entity.ModifiedBy = session.Load<User>(currentUser);
+            entity.ModifiedOn = DateTimeOffset.UtcNow;
+        }
+    }
+    
+    /*
     internal class AuditEventListener : IPostInsertEventListener, IPostUpdateEventListener, IPostDeleteEventListener
     {
         private string ParseName(object entity)
@@ -121,6 +162,8 @@ namespace AmpedBiz.Data.Configurations
             session.Flush();
         }
     }
+    */
+
 
     /*
     internal class AuditEventListener : IPreInsertEventListener, IPreUpdateEventListener, IPreDeleteEventListener
