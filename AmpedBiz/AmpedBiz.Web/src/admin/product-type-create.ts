@@ -2,16 +2,19 @@ import {autoinject} from 'aurelia-framework';
 import {DialogController} from 'aurelia-dialog';
 import {ProductType} from './common/models/product-type';
 import {ProductTypeService} from '../services/product-type-service';
+import {NotificationService} from '../common/controls/notification-service';
 
 @autoinject
-export class ProductCreate {
+export class ProductTypeCreate {
   private _controller: DialogController;
   private _service: ProductTypeService;
 
   public header: string = 'Create Type Product';
   public productType: ProductType;
+  public notificaton: NotificationService;
 
-  constructor(controller: DialogController, service: ProductTypeService) {
+  constructor(notification: NotificationService, controller: DialogController, service: ProductTypeService) {
+    this.notificaton = notification;
     this._controller = controller;
     this._service = service;
   }
@@ -20,8 +23,12 @@ export class ProductCreate {
     if (productType) {
       this.header = "Edit Product";
       this._service.getProductType(productType.id, {
-        success: (data) => this.productType = <ProductType>data,
-        error: (error) => console.warn(error)
+        success: (data) => {
+          this.productType = <ProductType>data
+        },
+        error: (error) => {
+          this.notificaton.warning(error)
+        }
       });
     }
     else {
@@ -31,19 +38,18 @@ export class ProductCreate {
   }
 
   cancel() {
-    return this._controller.cancel({ wasCancelled: true, output: null });
+    this._controller.cancel({ wasCancelled: true, output: null });
   }
 
   save() {
-    // do some service side call
-    return this._controller.ok({ wasCancelled: true, output: this.productType });
+    this._service.createProductType(this.productType, {
+      success: (data) => {
+        this.notificaton.success("Product Type has been saved.")
+          .then((data) => this._controller.ok({ wasCancelled: true, output: <ProductType>data }));
+      },
+      error: (error) => {
+        this.notificaton.warning(error)
+      }
+    })
   }
-
-  private guid() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
-  }
-
 }
