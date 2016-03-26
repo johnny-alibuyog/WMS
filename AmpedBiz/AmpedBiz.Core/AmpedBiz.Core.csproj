@@ -54,6 +54,7 @@
     <Compile Include="Entities\Invoice.cs" />
     <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\Product.cs" />
+    <Compile Include="Entities\PaymentType.cs" />
     <Compile Include="Entities\PurchaceOrder.cs" />
     <Compile Include="Entities\PurchaceOrderItem.cs" />
     <Compile Include="Entities\Quantity.cs" />

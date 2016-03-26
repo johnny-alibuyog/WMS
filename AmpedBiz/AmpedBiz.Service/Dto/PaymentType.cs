@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AmpedBiz.Service.Dto
 {
-    public class ProductType
+    public class PaymentType
     {
         public string Id { get; set; }
         public string Name { get; set; }

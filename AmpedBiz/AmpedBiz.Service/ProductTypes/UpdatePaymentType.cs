@@ -2,16 +2,11 @@
 
 namespace AmpedBiz.Service.ProductTypes
 {
-    public class GetProductType
+    public class UpdatePaymentType
     {
-        public class Request : IRequest<Response>
-        {
-            public string Id { get; set; }
-        }
+        public class Request : Dto.PaymentType, IRequest<Response> { }
 
-        public class Response : Dto.ProductType
-        {
-        }
+        public class Response : Dto.PaymentType { }
 
         public class Handler : IRequestHandler<Request, Response>
         {

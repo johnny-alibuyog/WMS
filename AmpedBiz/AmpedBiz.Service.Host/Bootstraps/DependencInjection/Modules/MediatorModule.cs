@@ -14,7 +14,7 @@ namespace AmpedBiz.Service.Host.Bootstraps.DependencInjection.Modules
         {
             builder.RegisterSource(new ContravariantRegistrationSource());
             builder.RegisterAssemblyTypes(typeof(IMediator).Assembly).AsImplementedInterfaces();
-            builder.RegisterAssemblyTypes(typeof(GetProductType).Assembly).AsImplementedInterfaces();
+            builder.RegisterAssemblyTypes(typeof(GetPaymentType).Assembly).AsImplementedInterfaces();
             builder.RegisterInstance(Console.Out).As<TextWriter>();
             builder.Register<SingleInstanceFactory>(context =>
             {

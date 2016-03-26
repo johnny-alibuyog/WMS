@@ -123,7 +123,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Bootstraps\DependencInjection\Modules\MediatorModule.cs" />
-    <Compile Include="Controllers\ProductTypeController.cs" />
+    <Compile Include="Controllers\PaymentTypeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

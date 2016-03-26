@@ -3,14 +3,14 @@ using MediatR;
 
 namespace AmpedBiz.Service.ProductTypes
 {
-    public class GetProductTypes
+    public class GetPaymentTypes
     {
         public class Request : IRequest<Response>
         {
             public string[] Id { get; set; }
         }
 
-        public class Response : List<Dto.ProductType>
+        public class Response : List<Dto.PaymentType>
         {
         }
 
@@ -20,11 +20,11 @@ namespace AmpedBiz.Service.ProductTypes
             {
                 return new Response()
                 {
-                    new Dto.ProductType() { Id = "1", Name = "Product 1" },
-                    new Dto.ProductType() { Id = "2", Name = "Product 2" },
-                    new Dto.ProductType() { Id = "3", Name = "Product 3" },
-                    new Dto.ProductType() { Id = "4", Name = "Product 4" },
-                    new Dto.ProductType() { Id = "5", Name = "Product 5" },
+                    new Dto.PaymentType() { Id = "1", Name = "Product 1" },
+                    new Dto.PaymentType() { Id = "2", Name = "Product 2" },
+                    new Dto.PaymentType() { Id = "3", Name = "Product 3" },
+                    new Dto.PaymentType() { Id = "4", Name = "Product 4" },
+                    new Dto.PaymentType() { Id = "5", Name = "Product 5" },
                 };
             }
         }

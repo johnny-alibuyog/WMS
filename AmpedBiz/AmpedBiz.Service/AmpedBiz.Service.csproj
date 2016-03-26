@@ -44,11 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dto\ProductType.cs" />
-    <Compile Include="ProductTypes\CreateProductType.cs" />
-    <Compile Include="ProductTypes\GetProductType.cs" />
-    <Compile Include="ProductTypes\GetProductTypes.cs" />
-    <Compile Include="ProductTypes\UpdateProductType.cs" />
+    <Compile Include="Dto\PaymentType.cs" />
+    <Compile Include="ProductTypes\CreatePaymentType.cs" />
+    <Compile Include="ProductTypes\GetPaymentType.cs" />
+    <Compile Include="ProductTypes\GetPaymentTypes.cs" />
+    <Compile Include="ProductTypes\UpdatePaymentType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -98,6 +98,7 @@
     <Compile Include="Conventions\CustomTableNameConvention.cs" />
     <Compile Include="Conventions\EnumConvention.cs" />
     <Compile Include="Conventions\_CustomJoinedSubclassConvention.cs" />
+    <Compile Include="EntityDefinitions\PaymentTypeDefinition.cs" />
     <Compile Include="EntityDefinitions\UserDefenition.cs" />
     <Compile Include="ISessionProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
