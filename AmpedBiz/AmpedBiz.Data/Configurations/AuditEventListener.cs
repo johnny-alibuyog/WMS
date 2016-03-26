@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using AmpedBiz.Core;
 using AmpedBiz.Core.Entities;
 using NHibernate;
 using NHibernate.Event;
-using NHibernate.Persister.Entity;
 
 namespace AmpedBiz.Data.Configurations
 {

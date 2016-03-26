@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NHibernate.Caches.SysCache2;
 using NHibernate.Cfg;
-using NHibernate.Caches.SysCache2;
 
 namespace AmpedBiz.Data.Configurations
 {
