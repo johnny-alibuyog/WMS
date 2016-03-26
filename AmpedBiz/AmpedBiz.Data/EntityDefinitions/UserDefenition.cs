@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmpedBiz.Domain.Entities
+namespace AmpedBiz.Data.EntityDefinitions
 {
-    public class User
+    class UserDefenition
     {
     }
 }

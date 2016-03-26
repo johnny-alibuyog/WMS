@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Address.cs" />
+    <Compile Include="Entities\Audit.cs" />
+    <Compile Include="Entities\Audit2.cs" />
     <Compile Include="Entities\Currency.cs" />
     <Compile Include="Entities\Delivery.cs" />
     <Compile Include="Entities\DeliveryItem.cs" />
@@ -71,6 +73,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Entities\ClassDiagram1.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AmpedBiz.Common\AmpedBiz.Common.csproj">
+      <Project>{b7363f6d-0c87-4352-98cc-8798c968e7b5}</Project>
+      <Name>AmpedBiz.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

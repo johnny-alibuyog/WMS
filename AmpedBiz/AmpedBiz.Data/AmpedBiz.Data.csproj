@@ -31,8 +31,33 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentNHibernate, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentNHibernate.2.0.3.0\lib\net40\FluentNHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHibernate.Caches.SysCache2, Version=4.0.0.4000, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHibernate.Caches.SysCache2.4.0.0.4000\lib\net40\NHibernate.Caches.SysCache2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHibernate.Validator, Version=1.3.2.4000, Culture=neutral, PublicKeyToken=70154e18752585bd, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHibernate.Validator.1.3.2.4000\lib\Net35\NHibernate.Validator.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHibernate.Validator.Specific, Version=1.3.2.4000, Culture=neutral, PublicKeyToken=70154e18752585bd, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHibernate.Validator.1.3.2.4000\lib\Net35\NHibernate.Validator.Specific.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity.Design" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,7 +65,62 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configurations\AuditEventListener.cs">
+      <DependentUpon>EventListenerConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configurations\CacheConfiguration.cs" />
+    <Compile Include="Configurations\ConventionMessageInterpolator.cs">
+      <DependentUpon>ValidatorConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configurations\EventListenerConfiguration.cs" />
+    <Compile Include="Configurations\IAuditProvider.cs">
+      <DependentUpon>AuditEventListener.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configurations\IndexForeignKeyConfiguration.cs" />
+    <Compile Include="Configurations\SchemaConfiguration.cs" />
+    <Compile Include="Configurations\SessionContextConfiguration.cs" />
+    <Compile Include="Configurations\ValidationEventListener.cs">
+      <DependentUpon>EventListenerConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configurations\ValidatorConfiguration.cs" />
+    <Compile Include="Configurations\ValidatorSharedEngineProvider.cs">
+      <DependentUpon>ValidatorConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Conventions\BinaryColumnLengthConvention.cs" />
+    <Compile Include="Conventions\ColumnNullabilityConvention.cs" />
+    <Compile Include="Conventions\CustomCollectionAccessConvention.cs" />
+    <Compile Include="Conventions\CustomComponentConvention.cs" />
+    <Compile Include="Conventions\CustomForeignKeyConstraintConvention.cs" />
+    <Compile Include="Conventions\CustomForeignKeyConvention.cs" />
+    <Compile Include="Conventions\CustomHasManyConvention.cs" />
+    <Compile Include="Conventions\CustomPrimaryKeyConvention.cs" />
+    <Compile Include="Conventions\CustomPropertyAccessConvention.cs" />
+    <Compile Include="Conventions\CustomTableNameConvention.cs" />
+    <Compile Include="Conventions\EnumConvention.cs" />
+    <Compile Include="Conventions\_CustomJoinedSubclassConvention.cs" />
+    <Compile Include="EntityDefinitions\UserDefenition.cs" />
+    <Compile Include="ISessionProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SessionProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AmpedBiz.Common\AmpedBiz.Common.csproj">
+      <Project>{b7363f6d-0c87-4352-98cc-8798c968e7b5}</Project>
+      <Name>AmpedBiz.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AmpedBiz.Domain\AmpedBiz.Domain.csproj">
+      <Project>{884d49ea-500b-4ad5-995a-22e48558b1f9}</Project>
+      <Name>AmpedBiz.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\CustomValidatorMessages.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
