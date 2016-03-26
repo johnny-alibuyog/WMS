@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AmpedBiz.Domain
+namespace AmpedBiz.Core
 {
     public interface IAuditable 
     {

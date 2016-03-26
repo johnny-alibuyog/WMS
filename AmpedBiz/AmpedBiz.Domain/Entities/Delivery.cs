@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace AmpedBiz.Domain.Entities
+namespace AmpedBiz.Core.Entities
 {
     public class Delivery : Entity<Delivery, Guid>
     {

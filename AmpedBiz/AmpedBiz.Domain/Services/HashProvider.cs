@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace AmpedBiz.Domain.Services
+namespace AmpedBiz.Core.Services
 {
     public class HashProvider
     {

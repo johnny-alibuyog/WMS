@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AmpedBiz.Data.EntityDefinitions;
-using AmpedBiz.Domain;
+using AmpedBiz.Core;
 using NHibernate.Cfg;
 using NHibernate.Validator.Cfg;
 using NHibernate.Validator.Cfg.Loquacious;

@@ -1,4 +1,4 @@
-﻿namespace AmpedBiz.Domain
+﻿namespace AmpedBiz.Core
 {
     public abstract class Entity<TEntity, TId> where TEntity : Entity<TEntity, TId>
     {

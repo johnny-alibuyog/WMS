@@ -7,8 +7,8 @@
     <ProjectGuid>{884D49EA-500B-4AD5-995A-22E48558B1F9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AmpedBiz.Domain</RootNamespace>
-    <AssemblyName>AmpedBiz.Domain</AssemblyName>
+    <RootNamespace>AmpedBiz.Core</RootNamespace>
+    <AssemblyName>AmpedBiz.Core</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

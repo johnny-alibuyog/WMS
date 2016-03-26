@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace AmpedBiz.Domain
+namespace AmpedBiz.Core
 {
     public abstract class ValueObject<T> : IEquatable<T> where T : ValueObject<T>
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AmpedBiz.Domain.Entities
+namespace AmpedBiz.Core.Entities
 {
     public class InvoiceItem : Entity<InvoiceItem, Guid>
     {

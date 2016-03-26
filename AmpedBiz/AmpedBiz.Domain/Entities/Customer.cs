@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AmpedBiz.Domain.Entities
+namespace AmpedBiz.Core.Entities
 {
     public class Customer : Entity<Customer, Guid>
     {

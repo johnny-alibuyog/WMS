@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Common", "AmpedBiz
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Data", "AmpedBiz.Data\AmpedBiz.Data.csproj", "{8EB5C9F9-C188-4F56-9FD1-9AEAE6A9A177}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Domain", "AmpedBiz.Domain\AmpedBiz.Domain.csproj", "{884D49EA-500B-4AD5-995A-22E48558B1F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Core", "AmpedBiz.Domain\AmpedBiz.Core.csproj", "{884D49EA-500B-4AD5-995A-22E48558B1F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Service", "AmpedBiz.Service\AmpedBiz.Service.csproj", "{83FA9462-8A6F-417B-8575-5B1CA054DBCF}"
 EndProject

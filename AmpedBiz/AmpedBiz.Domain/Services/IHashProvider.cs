@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmpedBiz.Domain.Services
+namespace AmpedBiz.Core.Services
 {
     public interface IHashProvider
     {

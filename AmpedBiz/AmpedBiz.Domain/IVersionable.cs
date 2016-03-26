@@ -1,4 +1,4 @@
-﻿namespace AmpedBiz.Domain
+﻿namespace AmpedBiz.Core
 {
     public interface IVersionable
     {

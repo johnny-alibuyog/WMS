@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmpedBiz.Domain.Entities
+namespace AmpedBiz.Core.Entities
 {
     public class Product : Entity<Product, Guid>
     {

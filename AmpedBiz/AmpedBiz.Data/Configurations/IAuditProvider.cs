@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
-using AmpedBiz.Domain.Entities;
+using AmpedBiz.Core.Entities;
 
 namespace AmpedBiz.Data.Configurations
 {
