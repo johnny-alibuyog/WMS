@@ -8,11 +8,11 @@ export class Index {
     config.title = "Admin";
     config.map([
       {
-        route: ['', 'product-type-list'],
-        name: 'product-type-list',
-        moduleId: './product-type-list',
+        route: ['', 'payment-type-list'],
+        name: 'payment-type-list',
+        moduleId: './payment-type-list',
         nav: true,
-        title: 'Product Type List'
+        title: 'Payment Type List'
       },
     ]);
     

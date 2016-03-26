@@ -1,20 +1,20 @@
 import {autoinject} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
-import {ProductTypeCreate} from './product-type-create';
-import {ProductType} from './common/models/product-type';
-import {ProductTypeService} from '../services/product-type-service';
+import {PaymentTypeCreate} from './payment-type-create';
+import {PaymentType} from './common/models/payment-type';
+import {PaymentTypeService} from '../services/payment-type-service';
 import {NotificationService} from '../common/controls/notification-service';
 
 @autoinject
-export class ProductTypeList {
+export class PaymentTypeList {
   private _notification: NotificationService;
-  private _service: ProductTypeService;
+  private _service: PaymentTypeService;
   private _dialog: DialogService;
   
-  public productTypes: ProductType[];
+  public paymentTypes: PaymentType[];
   public filterText: string = '';
 
-  constructor(dialog: DialogService, service: ProductTypeService, notification: NotificationService) {
+  constructor(dialog: DialogService, service: PaymentTypeService, notification: NotificationService) {
     this._dialog = dialog;
     this._service = service;
     this._notification = notification;
@@ -30,10 +30,10 @@ export class ProductTypeList {
   }
   
   filter() {
-    this._service.getProductTypes(this.filterText, {
+    this._service.getPaymentTypes(this.filterText, {
       success: (data) => {
-        this.productTypes = <ProductType[]>data
-        if (!this.productTypes || this.productTypes.length == 0){
+        this.paymentTypes = <PaymentType[]>data
+        if (!this.paymentTypes || this.paymentTypes.length == 0){
           this._notification.error("Error encountered during search!");
         }
       },
@@ -45,7 +45,7 @@ export class ProductTypeList {
 
   create() {
     this._dialog
-      .open({ viewModel: ProductTypeCreate, model: null })
+      .open({ viewModel: PaymentTypeCreate, model: null })
       .then(response => {
         if (!response.wasCancelled) {
           this.refreshList();
@@ -53,9 +53,9 @@ export class ProductTypeList {
       });
   }
 
-  edit(item: ProductType) {
+  edit(item: PaymentType) {
     this._dialog
-      .open({ viewModel: ProductTypeCreate, model: item })
+      .open({ viewModel: PaymentTypeCreate, model: item })
       .then(response => {
         if (!response.wasCancelled) {
           this.refreshList();

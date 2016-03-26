@@ -1,30 +1,30 @@
 import {autoinject} from 'aurelia-framework';
 import {DialogController} from 'aurelia-dialog';
-import {ProductType} from './common/models/product-type';
-import {ProductTypeService} from '../services/product-type-service';
+import {PaymentType} from './common/models/payment-type';
+import {PaymentTypeService} from '../services/payment-type-service';
 import {NotificationService} from '../common/controls/notification-service';
 
 @autoinject
-export class ProductTypeCreate {
+export class PaymentTypeCreate {
   private _controller: DialogController;
-  private _service: ProductTypeService;
+  private _service: PaymentTypeService;
 
   public header: string = 'Create Type Product';
-  public productType: ProductType;
+  public paymentType: PaymentType;
   public notificaton: NotificationService;
 
-  constructor(notification: NotificationService, controller: DialogController, service: ProductTypeService) {
+  constructor(notification: NotificationService, controller: DialogController, service: PaymentTypeService) {
     this.notificaton = notification;
     this._controller = controller;
     this._service = service;
   }
 
-  activate(productType: ProductType) {
-    if (productType) {
+  activate(paymentType: PaymentType) {
+    if (paymentType) {
       this.header = "Edit Product";
-      this._service.getProductType(productType.id, {
+      this._service.getPaymentType(paymentType.id, {
         success: (data) => {
-          this.productType = <ProductType>data
+          this.paymentType = <PaymentType>data
         },
         error: (error) => {
           this.notificaton.warning(error)
@@ -33,7 +33,7 @@ export class ProductTypeCreate {
     }
     else {
       this.header = "Create Product";
-      this.productType = <ProductType>{};
+      this.paymentType = <PaymentType>{};
     }
   }
 
@@ -42,10 +42,10 @@ export class ProductTypeCreate {
   }
 
   save() {
-    this._service.createProductType(this.productType, {
+    this._service.createPaymentType(this.paymentType, {
       success: (data) => {
         this.notificaton.success("Product Type has been saved.")
-          .then((data) => this._controller.ok({ wasCancelled: true, output: <ProductType>data }));
+          .then((data) => this._controller.ok({ wasCancelled: true, output: <PaymentType>data }));
       },
       error: (error) => {
         this.notificaton.warning(error)
