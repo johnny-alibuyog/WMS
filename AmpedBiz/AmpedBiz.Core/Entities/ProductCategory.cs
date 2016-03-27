@@ -8,6 +8,8 @@ namespace AmpedBiz.Core.Entities
 {
     public class ProductCategory : Entity<ProductCategory, string>
     {
+        public virtual int TenantId { get; set; }
+
         public virtual string Name { get; set; }
 
         public ProductCategory() { }
