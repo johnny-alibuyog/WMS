@@ -4,7 +4,7 @@ export class App {
   router: Router;
 
   configureRouter(config: RouterConfiguration, router: Router) {
-    config.title = '2wheels Adventures Inc';
+    config.title = 'Nicon Sales';
     config.map([
       {
         route: ['dashboard'],
@@ -21,6 +21,30 @@ export class App {
         nav: true,
         main: true,
         title: 'Products'
+      },
+      {
+        route: ['orders'],
+        name: 'orders',
+        moduleId: './orders/index',
+        nav: true,
+        main: true,
+        title: 'Orders'
+      },
+      {
+        route: ['purchases'],
+        name: 'purchases',
+        moduleId: './Purchases/index',
+        nav: true,
+        main: true,
+        title: 'Purchases'
+      },
+      {
+        route: ['report_center'],
+        name: 'report_center',
+        moduleId: './report_center/index',
+        nav: true,
+        main: true,
+        title: 'Report Center'
       },
       /*{
         route: ['users'],

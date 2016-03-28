@@ -21,6 +21,20 @@ export class Index {
         nav: true,
         title: 'Inventory Level'
       },
+      {
+        route: ['product-order-history'],
+        name: 'product-order-history',
+        moduleId: './product-order-history',
+        nav: true,
+        title: 'Order History'
+      },
+      {
+        route: ['product-purchase-history'],
+        name: 'product-purchase-history',
+        moduleId: './product-purchase-history',
+        nav: true,
+        title: 'Purchase History'
+      },
     ]);
     
     this.router = router;
