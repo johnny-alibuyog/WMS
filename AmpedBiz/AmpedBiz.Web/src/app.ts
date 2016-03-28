@@ -22,14 +22,14 @@ export class App {
         main: true,
         title: 'Products'
       },
-      {
+      /*{
         route: ['users'],
         name: 'users',
         moduleId: './users',
         nav: true,
         main: true,
         title: 'Users'
-      },
+      },*/
       {
         route: ['admin'],
         name: 'admin',
