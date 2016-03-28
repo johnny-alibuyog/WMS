@@ -11,10 +11,10 @@ namespace AmpedBiz.Data.Configurations
         public static void Configure(this Configuration config)
         {
             /// WARNING: Do not use in production
-            RecreateDatabase(config);                
+            //RecreateDatabase(config);                
 
             /// NOTE: Applies in production
-            //UpdateDatabase(config);
+            UpdateDatabase(config);
         }
 
         /// <summary>
