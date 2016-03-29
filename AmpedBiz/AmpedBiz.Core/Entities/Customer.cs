@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Customer : Entity<Customer, Guid>
+    public class Customer : Entity<Customer, string>
     {
         public virtual string Name { get; set; }
 
