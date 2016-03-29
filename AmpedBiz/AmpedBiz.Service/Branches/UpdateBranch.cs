@@ -31,7 +31,7 @@ namespace AmpedBiz.Service.Branches
                 {
                     var entity = session.Get<Entity.Branch>(message.Id);
                     if (entity == null)
-                        throw new BusinessException($"Payment Type with id {message.Id} does not exists.");
+                        throw new BusinessException($"Branch with id {message.Id} does not exists.");
 
                     Mapper.Map<Dto.Branch, Entity.Branch>(message, entity);
 

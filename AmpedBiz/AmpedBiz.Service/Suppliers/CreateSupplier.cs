@@ -1,20 +1,19 @@
-﻿using AmpedBiz.Common.Exceptions;
+﻿using System.Linq;
+using AmpedBiz.Common.Exceptions;
 using ExpressMapper;
 using MediatR;
 using NHibernate;
+using NHibernate.Linq;
 using Dto = AmpedBiz.Service.Dto;
 using Entity = AmpedBiz.Core.Entities;
 
-namespace AmpedBiz.Service.Branches
+namespace AmpedBiz.Service.Suppliers
 {
-    public class GetBranch
+    public class CreateSupplier
     {
-        public class Request : IRequest<Response>
-        {
-            public string Id { get; set; }
-        }
+        public class Request : Dto.Supplier, IRequest<Response> { }
 
-        public class Response : Dto.Branch { }
+        public class Response : Dto.Supplier { }
 
         public class Handler : IRequestHandler<Request, Response>
         {
@@ -32,11 +31,15 @@ namespace AmpedBiz.Service.Branches
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.Get<Entity.Branch>(message.Id);
-                    if (entity == null)
-                        throw new BusinessException($"Branch with id {message.Id} does not exists.");
+                    var exists = session.Query<Entity.Supplier>().Any(x => x.Id == message.Id);
+                    if (exists)
+                        throw new BusinessException($"Supplier with id {message.Id} already exists.");
 
-                    Mapper.Map<Entity.Branch, Dto.Branch>(entity, response);
+                    var entity = Mapper.Map<Dto.Supplier, Entity.Supplier>(message);
+
+                    session.Save(entity);
+
+                    Mapper.Map<Entity.Supplier, Dto.Supplier>(entity, response);
 
                     transaction.Commit();
                 }

@@ -112,12 +112,16 @@
     <Compile Include="EntityDefinitions\AddressValidation.cs" />
     <Compile Include="EntityDefinitions\BranchMapping.cs" />
     <Compile Include="EntityDefinitions\BranchValidation.cs" />
+    <Compile Include="EntityDefinitions\ContactValidation.cs" />
     <Compile Include="EntityDefinitions\CustomerMapping.cs" />
     <Compile Include="EntityDefinitions\CustomerValidation.cs" />
+    <Compile Include="EntityDefinitions\ContactMapping.cs" />
     <Compile Include="EntityDefinitions\PaymentTypeMapping.cs" />
     <Compile Include="EntityDefinitions\PaymentTypeValidation.cs" />
     <Compile Include="EntityDefinitions\ProductCategoryMapping.cs" />
     <Compile Include="EntityDefinitions\ProductCategoryVaildation.cs" />
+    <Compile Include="EntityDefinitions\SupplierMapping.cs" />
+    <Compile Include="EntityDefinitions\SupplierValidation.cs" />
     <Compile Include="EntityDefinitions\UserMapping.cs" />
     <Compile Include="EntityDefinitions\UserValidation.cs" />
     <Compile Include="ISessionProvider.cs" />

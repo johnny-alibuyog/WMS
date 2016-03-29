@@ -62,10 +62,12 @@
     <Compile Include="Branches\UpdateBranch.cs" />
     <Compile Include="Dto\Address.cs" />
     <Compile Include="Dto\Branch.cs" />
+    <Compile Include="Dto\Contact.cs" />
     <Compile Include="Dto\Mappers\IMappingInitializer.cs" />
     <Compile Include="Dto\Mappers\MappingInitializer.cs" />
     <Compile Include="Dto\PaymentType.cs" />
     <Compile Include="Dto\ProductCategory.cs" />
+    <Compile Include="Dto\Supplier.cs" />
     <Compile Include="ProductCategories\CreateProductCategory.cs" />
     <Compile Include="ProductCategories\GetProductCategory.cs" />
     <Compile Include="ProductCategories\GetProductCategories.cs" />
@@ -75,6 +77,10 @@
     <Compile Include="PaymentTypes\GetPaymentTypes.cs" />
     <Compile Include="PaymentTypes\UpdatePaymentType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Suppliers\CreateSupplier.cs" />
+    <Compile Include="Suppliers\GetSupplier.cs" />
+    <Compile Include="Suppliers\GetSuppliers.cs" />
+    <Compile Include="Suppliers\UpdateSupplier.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AmpedBiz.Common\AmpedBiz.Common.csproj">

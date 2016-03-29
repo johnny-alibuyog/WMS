@@ -33,7 +33,7 @@ namespace AmpedBiz.Service.Branches
                 {
                     var exists = session.Query<Entity.Branch>().Any(x => x.Id == message.Id);
                     if (exists)
-                        throw new BusinessException($"Payment Type with id {message.Id} already exists.");
+                        throw new BusinessException($"Branch with id {message.Id} already exists.");
 
                     var entity = Mapper.Map<Dto.Branch, Entity.Branch>(message);
 

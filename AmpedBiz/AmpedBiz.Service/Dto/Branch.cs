@@ -1,6 +1,4 @@
-﻿using entity = AmpedBiz.Core.Entities;
-
-namespace AmpedBiz.Service.Dto
+﻿namespace AmpedBiz.Service.Dto
 {
     public class Branch
     {
