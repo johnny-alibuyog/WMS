@@ -16,7 +16,7 @@ export class ProductCategoryService {
     return this.httpClient.send({url: url, callback: callback}); 
   }
   
-  getProductCategorys(params: any, callback: Callback){
+  getProductCategories(params: any, callback: Callback){
     var url = this.resouce;
     return this.httpClient.send({url: url, callback: callback}); 
   }

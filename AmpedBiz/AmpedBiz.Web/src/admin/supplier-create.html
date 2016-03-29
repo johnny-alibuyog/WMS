@@ -1,0 +1,37 @@
+<template>
+  <ai-dialog>
+    <ai-dialog-body>
+      <div class="cl-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3>${header}</h3>
+          </div>
+          <div class="panel-body">
+            <form class="form-horizontal" role="form">
+              <div class="form-group">
+                <label class="control-label col-sm-4">Code:</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" placeholder="Enter Code" value.bind="supplier.id" disabled.bind="isEdit" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-4">Name:</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" placeholder="Enter Name" value.bind="supplier.name" />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </ai-dialog-body>
+
+    <ai-dialog-footer>
+      <button type="button" class="btn btn-success" click.trigger="save()" disabled.bind="!canSave">
+        <i class="fa fa-check-circle"></i> Save
+      </button>
+      <button type="button" class="btn btn-danger" click.trigger="cancel()">
+        <i class="fa fa-times-circle"></i> Cancel</button>
+    </ai-dialog-footer>
+  </ai-dialog>
+</template>
