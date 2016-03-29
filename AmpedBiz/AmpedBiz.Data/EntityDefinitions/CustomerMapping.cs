@@ -9,9 +9,12 @@ namespace AmpedBiz.Data.EntityDefinitions
         {
             Id(x => x.Id).GeneratedBy.Assigned();
 
-            Map(x => x.Address2);
+            Map(x => x.Name);
 
-            Component(x => x.Address);
+            Component(x => x.OfficeAddress, AddressMapping.Map("Office_"));
+
+            Component(x => x.BillingAddress, AddressMapping.Map("Billing_"));
+
             Component(x => x.Contact);
         }
     }

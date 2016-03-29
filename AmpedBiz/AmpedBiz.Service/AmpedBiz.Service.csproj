@@ -60,8 +60,13 @@
     <Compile Include="Branches\GetBranch.cs" />
     <Compile Include="Branches\GetBranches.cs" />
     <Compile Include="Branches\UpdateBranch.cs" />
+    <Compile Include="Customers\CreateCustomer.cs" />
+    <Compile Include="Customers\GetCustomer.cs" />
+    <Compile Include="Customers\GetCustomers.cs" />
+    <Compile Include="Customers\UpdateCustomer.cs" />
     <Compile Include="Dto\Address.cs" />
     <Compile Include="Dto\Branch.cs" />
+    <Compile Include="Dto\Customer.cs" />
     <Compile Include="Dto\Contact.cs" />
     <Compile Include="Dto\Mappers\IMappingInitializer.cs" />
     <Compile Include="Dto\Mappers\MappingInitializer.cs" />
@@ -100,6 +105,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

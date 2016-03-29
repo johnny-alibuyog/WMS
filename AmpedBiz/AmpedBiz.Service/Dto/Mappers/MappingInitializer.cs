@@ -14,6 +14,7 @@ namespace AmpedBiz.Service.Dto.Mappers
             Mapper.Register<Dto.ProductCategory, Entity.ProductCategory>();
             Mapper.Register<Dto.PaymentType, Entity.PaymentType>();
             Mapper.Register<Dto.Branch, Entity.Branch>();
+            Mapper.Register<Dto.Customer, Entity.Customer>();
         }
     }
 }
