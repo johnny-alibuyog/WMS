@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AmpedBiz.Core.Entities
 {
@@ -14,6 +10,6 @@ namespace AmpedBiz.Core.Entities
 
         public virtual string MiddleName { get; set; }
 
-        public virtual Nullable<DateTimeOffset> BirthDate { get; set; }
+        public virtual Nullable<DateTime> BirthDate { get; set; }
     }
 }

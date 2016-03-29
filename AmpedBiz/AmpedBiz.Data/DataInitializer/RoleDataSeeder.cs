@@ -6,11 +6,11 @@ using NHibernate.Linq;
 
 namespace AmpedBiz.Data.DataInitializer
 {
-    class ProductCategoryDataSeeder : IDataSeeder
+    public class RoleDataSeeder : IDataSeeder
     {
         private readonly ISessionFactory _sessionFactory;
 
-        public ProductCategoryDataSeeder(ISessionFactory sessionFactory)
+        public RoleDataSeeder(ISessionFactory sessionFactory)
         {
             _sessionFactory = sessionFactory;
         }
@@ -25,9 +25,9 @@ namespace AmpedBiz.Data.DataInitializer
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var paymentTypes = session.Query<ProductCategory>().ToList();
+                var paymentTypes = session.Query<Role>().ToList();
 
-                foreach (var item in ProductCategory.All)
+                foreach (var item in Role.All)
                 {
                     if (!paymentTypes.Contains(item))
                         session.Save(item);

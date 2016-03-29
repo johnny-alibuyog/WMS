@@ -8,6 +8,7 @@ namespace AmpedBiz.Data.DataInitializer
 {
     public interface IDataSeeder
     {
+        int ExecutionOrder { get; }
         void Seed();
     }
 }

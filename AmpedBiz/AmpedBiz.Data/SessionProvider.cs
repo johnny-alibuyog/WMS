@@ -69,7 +69,7 @@ namespace AmpedBiz.Data
                 Directory.CreateDirectory(mappingsPath);
 
             _sessionFactory = Fluently.Configure()
-                .Database(PostgreSQLConfiguration.Standard
+                .Database(PostgreSQLConfiguration.PostgreSQL82
                     .ConnectionString(x => x
                         .Host(host)
                         .Port(port)
@@ -82,6 +82,7 @@ namespace AmpedBiz.Data
                     .DefaultSchema("public")
                     .AdoNetBatchSize(15)
                     .FormatSql()
+                    .ShowSql()
                 )
                 .Mappings(x => x
                     .FluentMappings.AddFromAssemblyOf<UserMapping>()

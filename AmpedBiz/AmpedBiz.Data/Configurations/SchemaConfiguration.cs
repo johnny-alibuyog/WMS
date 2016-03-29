@@ -11,10 +11,10 @@ namespace AmpedBiz.Data.Configurations
         public static void Configure(this Configuration config)
         {
             /// WARNING: Do not use in production
-            //RecreateDatabase(config);                
+            RecreateDatabase(config);
 
             /// NOTE: Applies in production
-            UpdateDatabase(config);
+            //UpdateDatabase(config);
         }
 
         /// <summary>
@@ -35,6 +35,7 @@ namespace AmpedBiz.Data.Configurations
             new SchemaExport(config)
                 .SetOutputFile(Path.Combine(schemaPath, "schema.sql"))
                 .Create(x => Debug.WriteLine(x), true);
+            //.Create(true, true);
         }
 
         //private static void Print(string value)
@@ -51,9 +52,9 @@ namespace AmpedBiz.Data.Configurations
         /// <param name="config">Nhibernate configuration</param>
         private static void UpdateDatabase(Configuration config)
         {
-            //new SchemaUpdate(config).Execute(true, true);
+            new SchemaUpdate(config).Execute(true, true);
 
-            new SchemaUpdate(config).Execute(x => Debug.WriteLine(x), true);
+            //new SchemaUpdate(config).Execute(x => Debug.WriteLine(x), true);
         }
     }
 }

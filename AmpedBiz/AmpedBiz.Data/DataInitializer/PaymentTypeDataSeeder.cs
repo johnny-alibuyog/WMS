@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AmpedBiz.Core.Entities;
 using NHibernate;
 using NHibernate.Linq;
@@ -12,6 +13,11 @@ namespace AmpedBiz.Data.DataInitializer
         public PaymentTypeDataSeeder(ISessionFactory sessionFactory)
         {
             _sessionFactory = sessionFactory;
+        }
+
+        public int ExecutionOrder
+        {
+            get { return 2; }
         }
 
         public void Seed()

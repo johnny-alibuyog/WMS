@@ -13,6 +13,19 @@ namespace AmpedBiz.Data.EntityDefinitions
             Map(x => x.Username);
 
             Map(x => x.Password);
+
+            Component(x => x.Person);
+
+            Component(x => x.Address);
+
+            References(x => x.Branch);
+
+            HasMany(x => x.UserRoles)
+                //.Cascade.AllDeleteOrphan()
+                .Not.KeyNullable()
+                .Not.KeyUpdate()
+                .Inverse()
+                .AsBag();
         }
     }
 }

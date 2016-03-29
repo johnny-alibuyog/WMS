@@ -18,6 +18,18 @@ namespace AmpedBiz.Data.EntityDefinitions
             Define(x => x.Password)
                 .NotNullableAndNotEmpty()
                 .And.MaxLength(50);
+
+            Define(x => x.Person)
+                .IsValid();
+
+            Define(x => x.Address)
+                .IsValid();
+
+            Define(x => x.Branch)
+                .IsValid();
+
+            Define(x => x.UserRoles)
+                .HasValidElements();
         }
     }
 }
