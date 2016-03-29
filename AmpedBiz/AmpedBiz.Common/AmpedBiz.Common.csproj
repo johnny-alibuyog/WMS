@@ -48,6 +48,7 @@
     <Compile Include="Extentions\DateTimeExtention.cs" />
     <Compile Include="Extentions\EnumerableExtention.cs" />
     <Compile Include="Extentions\NumberExtention.cs" />
+    <Compile Include="Extentions\ReflectionExtention.cs" />
     <Compile Include="Extentions\StringExtention.cs" />
     <Compile Include="Extentions\StringFormatter.cs" />
     <Compile Include="Extentions\TypeExtentions.cs" />

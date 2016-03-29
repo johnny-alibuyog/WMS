@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ExpressMapper, Version=1.8.0.0, Culture=neutral, PublicKeyToken=ac363faa09311ba0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Expressmapper.1.8.0\lib\net46\ExpressMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
       <Private>True</Private>
@@ -52,6 +56,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Branches\CreateBranch.cs" />
+    <Compile Include="Branches\GetBranch.cs" />
+    <Compile Include="Branches\GetBranches.cs" />
+    <Compile Include="Branches\UpdateBranch.cs" />
+    <Compile Include="Dto\Address.cs" />
+    <Compile Include="Dto\Branch.cs" />
+    <Compile Include="Dto\Mappers\IMappingInitializer.cs" />
+    <Compile Include="Dto\Mappers\MappingInitializer.cs" />
     <Compile Include="Dto\PaymentType.cs" />
     <Compile Include="Dto\ProductCategory.cs" />
     <Compile Include="ProductCategories\CreateProductCategory.cs" />

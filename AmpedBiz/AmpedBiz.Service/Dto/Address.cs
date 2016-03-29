@@ -1,6 +1,6 @@
-﻿namespace AmpedBiz.Core.Entities
+﻿namespace AmpedBiz.Service.Dto
 {
-    public class Address : ValueObject<Address>
+    public class Address
     {
         public virtual string Street { get; set; }
 

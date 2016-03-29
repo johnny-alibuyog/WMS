@@ -141,8 +141,10 @@
   <ItemGroup>
     <Compile Include="App_Start\DataSeederConfig.cs" />
     <Compile Include="App_Start\DependencyConfig.cs" />
+    <Compile Include="App_Start\MappingConfig.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Controllers\ProductCategoryController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

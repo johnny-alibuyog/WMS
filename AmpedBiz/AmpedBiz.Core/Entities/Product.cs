@@ -3,19 +3,9 @@ using System.Collections.Generic;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Product : Entity<Product, Guid>
+    public class Product : Entity<Product, string>
     {
-        public virtual string Code
-        {
-            get;
-            set;
-        }
-
-        public virtual string Name
-        {
-            get;
-            set;
-        }
+        public virtual string Name { get; set; }
 
         public virtual string Description
         {

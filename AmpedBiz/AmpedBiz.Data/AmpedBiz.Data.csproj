@@ -102,6 +102,10 @@
     <Compile Include="DataInitializer\PaymentTypeDataSeeder.cs" />
     <Compile Include="DataInitializer\ProductCategoryDataSeeder.cs" />
     <Compile Include="DataInitializer\UserDataSeeder.cs" />
+    <Compile Include="EntityDefinitions\AddressMapping.cs" />
+    <Compile Include="EntityDefinitions\AddressValidation.cs" />
+    <Compile Include="EntityDefinitions\BranchMapping.cs" />
+    <Compile Include="EntityDefinitions\BranchValidation.cs" />
     <Compile Include="EntityDefinitions\PaymentTypeMapping.cs" />
     <Compile Include="EntityDefinitions\PaymentTypeValidation.cs" />
     <Compile Include="EntityDefinitions\ProductCategoryMapping.cs" />
