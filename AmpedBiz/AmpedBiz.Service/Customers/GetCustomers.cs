@@ -42,11 +42,12 @@ namespace AmpedBiz.Service.Customers
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entities = session.Query<Customer>()
-                        .Select(x => Mapper.Map<Customer, Dto.Customer>(x, new Dto.Customer()))
+                    var entites = session.Query<Customer>()
                         .ToList();
 
-                    response = new Response(entities);
+                    var result = Mapper.Map<List<Customer>, List<Dto.Customer>>(entites);
+
+                    response = new Response(result);
 
                     transaction.Commit();
                 }
