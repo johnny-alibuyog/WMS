@@ -112,6 +112,8 @@
     <Compile Include="EntityDefinitions\AddressValidation.cs" />
     <Compile Include="EntityDefinitions\BranchMapping.cs" />
     <Compile Include="EntityDefinitions\BranchValidation.cs" />
+    <Compile Include="EntityDefinitions\CustomerMapping.cs" />
+    <Compile Include="EntityDefinitions\CustomerValidation.cs" />
     <Compile Include="EntityDefinitions\PaymentTypeMapping.cs" />
     <Compile Include="EntityDefinitions\PaymentTypeValidation.cs" />
     <Compile Include="EntityDefinitions\ProductCategoryMapping.cs" />
