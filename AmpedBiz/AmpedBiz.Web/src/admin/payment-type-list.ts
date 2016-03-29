@@ -34,7 +34,7 @@ export class PaymentTypeList {
       success: (data) => {
         this.paymentTypes = <PaymentType[]>data
         if (!this.paymentTypes || this.paymentTypes.length == 0){
-          this._notification.error("Error encountered during search!");
+          this._notification.warning("No items found!");
         }
       },
       error: (error) => {

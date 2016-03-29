@@ -5,7 +5,7 @@
       <div class="row">
         <!-- create new -->
         <button type="button" class="btn btn-default" click.delegate="create()">
-          <i class="fa fa-plus"></i> Create New Product Category
+          <i class="fa fa-plus"></i> Create Branch
         </button>
 
         <!-- search -->
@@ -27,10 +27,11 @@
               <th class="col-md-1">Action</th>
               <th class="col-md-1">Code</th>
               <th class="col-md-10">Name</th>
+              <th class="col-md-10">Description</th>
             </tr>
           </thead>
           <tbody>
-            <tr repeat.for="item of productCategories" click.delegate="edit(item)">
+            <tr repeat.for="item of branches" click.delegate="edit(item)">
               <td>
                 <a href="javascript:undefined" class="text-info" click.delegate="edit(item)">
                   <i class="fa fa-pencil"></i>
@@ -41,6 +42,7 @@
               </td>
               <td>${item.id}</td>
               <td>${item.name}</td>
+              <td>${item.description}</td>
             </tr>
           </tbody>
         </table>

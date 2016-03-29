@@ -1,20 +1,20 @@
 import {autoinject} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
-import {ProductCategoryCreate} from './product-category-create';
-import {ProductCategory} from './common/models/product-category';
-import {ProductCategoryService} from '../services/product-category-service';
+import {BranchCreate} from './branch-create';
+import {Branch} from './common/models/branch';
+import {BranchService} from '../services/branch-service';
 import {NotificationService} from '../common/controls/notification-service';
 
 @autoinject
-export class ProductCategoryList {
+export class BranchList {
   private _notification: NotificationService;
-  private _service: ProductCategoryService;
+  private _service: BranchService;
   private _dialog: DialogService;
   
-  public productCategories: ProductCategory[];
+  public branches: Branch[];
   public filterText: string = '';
 
-  constructor(dialog: DialogService, service: ProductCategoryService, notification: NotificationService) {
+  constructor(dialog: DialogService, service: BranchService, notification: NotificationService) {
     this._dialog = dialog;
     this._service = service;
     this._notification = notification;
@@ -30,10 +30,10 @@ export class ProductCategoryList {
   }
   
   filter() {
-    this._service.getProductCategorys(this.filterText, {
+    this._service.getBranches(this.filterText, {
       success: (data) => {
-        this.productCategories = <ProductCategory[]>data
-        if (!this.productCategories || this.productCategories.length == 0){
+        this.branches = <Branch[]>data
+        if (!this.branches || this.branches.length == 0){
           this._notification.warning("No items found!");
         }
       },
@@ -45,7 +45,7 @@ export class ProductCategoryList {
 
   create() {
     this._dialog
-      .open({ viewModel: ProductCategoryCreate, model: null })
+      .open({ viewModel: BranchCreate, model: null })
       .then(response => {
         if (!response.wasCancelled) {
           this.refreshList();
@@ -53,9 +53,9 @@ export class ProductCategoryList {
       });
   }
 
-  edit(item: ProductCategory) {
+  edit(item: Branch) {
     this._dialog
-      .open({ viewModel: ProductCategoryCreate, model: item })
+      .open({ viewModel: BranchCreate, model: item })
       .then(response => {
         if (!response.wasCancelled) {
           this.refreshList();
