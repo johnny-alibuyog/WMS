@@ -45,7 +45,7 @@ export class BranchList {
 
   create() {
     this._dialog
-      .open({ viewModel: UserCreate, model: null })
+      .open({ viewModel: UserCreate, model: null})
       .then(response => {
         if (!response.wasCancelled) {
           this.refreshList();
