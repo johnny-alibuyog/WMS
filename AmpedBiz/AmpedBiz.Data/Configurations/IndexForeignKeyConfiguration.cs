@@ -21,7 +21,7 @@ namespace AmpedBiz.Data.Configurations
                     index.AddColumns(foreignKey.ColumnIterator);
                     index.Name = foreignKey.Name.Replace("FK_", "IDX_");
                     index.Table = table;
-                    table.AddIndex(index);
+                    //table.AddIndex(index);
                 }
             }
         }

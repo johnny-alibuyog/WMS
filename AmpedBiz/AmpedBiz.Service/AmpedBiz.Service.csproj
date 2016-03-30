@@ -71,8 +71,12 @@
     <Compile Include="Dto\Mappers\IMappingInitializer.cs" />
     <Compile Include="Dto\Mappers\MappingInitializer.cs" />
     <Compile Include="Dto\PaymentType.cs" />
+    <Compile Include="Dto\Person.cs" />
     <Compile Include="Dto\ProductCategory.cs" />
+    <Compile Include="Dto\Role.cs" />
     <Compile Include="Dto\Supplier.cs" />
+    <Compile Include="Dto\User.cs" />
+    <Compile Include="Dto\UserRole.cs" />
     <Compile Include="ProductCategories\CreateProductCategory.cs" />
     <Compile Include="ProductCategories\GetProductCategory.cs" />
     <Compile Include="ProductCategories\GetProductCategories.cs" />
@@ -86,6 +90,11 @@
     <Compile Include="Suppliers\GetSupplier.cs" />
     <Compile Include="Suppliers\GetSuppliers.cs" />
     <Compile Include="Suppliers\UpdateSupplier.cs" />
+    <Compile Include="Users\CreateUser.cs" />
+    <Compile Include="Users\GetInitialUser.cs" />
+    <Compile Include="Users\GetUser.cs" />
+    <Compile Include="Users\GetUsers.cs" />
+    <Compile Include="Users\UpdateUser.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AmpedBiz.Common\AmpedBiz.Common.csproj">
