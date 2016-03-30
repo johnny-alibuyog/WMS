@@ -29,13 +29,6 @@ export class Index {
         title: 'Payment Types'
       },
       {
-        route: ['product-list'],
-        name: 'product-list',
-        moduleId: './product-list',
-        nav: true,
-        title: 'Products'
-      },
-      {
         route: ['product-category-list'],
         name: 'product-category-list',
         moduleId: './product-category-list',
@@ -43,11 +36,11 @@ export class Index {
         title: 'Product Categories'
       },
       {
-        route: ['role-list'],
-        name: 'role-list',
-        moduleId: './role-list',
+        route: ['product-list'],
+        name: 'product-list',
+        moduleId: './product-list',
         nav: true,
-        title: 'Roles'
+        title: 'Products'
       },
       {
         route: ['supplier-list'],
