@@ -57,9 +57,9 @@ export class Index {
         title: 'Suppliers'
       },
       {
-        route: ['users-list'],
-        name: 'users-list',
-        moduleId: './users-list',
+        route: ['user-list'],
+        name: 'user-list',
+        moduleId: './user-list',
         nav: true,
         title: 'Users'
       },

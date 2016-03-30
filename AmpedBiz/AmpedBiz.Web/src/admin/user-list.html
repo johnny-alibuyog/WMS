@@ -1,0 +1,56 @@
+<template>
+  <require from="common/controls/address-display.html"></require>
+  <require from="common/controls/contact-display.html"></require>
+  <require from="common/controls/person-display.html"></require>
+  
+  <section class="au-animate">
+    <div class="container col-md-8">
+
+      <div class="row">
+        <!-- create new -->
+        <button type="button" class="btn btn-default" click.delegate="create()">
+          <i class="fa fa-plus"></i> Create Customer
+        </button>
+
+        <!-- search -->
+        <div class="input-group custom-search-form col-md-4 pull-right">
+          <input type="text" class="form-control" placeholder="Search..." value.bind="filterText" change.delegate="filter()" />
+          <span class="input-group-btn"  click.delegate="filter()">
+            <button class="btn btn-default" type="button">
+              <i class="fa fa-search"></i>
+            </button>
+          </span>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- content -->
+        <table class="table table-striped table-condensed table-hover">
+          <thead>
+            <tr>
+              <th class="col-md-1">Action</th>
+              <th class="col-md-1">Code</th>
+              <th class="col-md-5">Name</th>
+              <th class="col-md-5">Address</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr repeat.for="item of users" click.delegate="edit(item)">
+              <td>
+                <a href="javascript:undefined" class="text-info" click.delegate="edit(item)">
+                  <i class="fa fa-pencil"></i>
+                </a>
+                <a href="javascript:undefined" class="text-danger" click.delegate="delete(item)">
+                  <i class="fa fa-times"></i>
+                </a>
+              </td>
+              <td>${item.id}</td>
+              <td><person-display person.bind="item.person" /></td>
+              <td><address-display address.bind="item.address" /></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</template>
