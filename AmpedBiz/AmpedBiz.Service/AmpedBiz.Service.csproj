@@ -94,6 +94,7 @@
     <Compile Include="Users\GetInitialUser.cs" />
     <Compile Include="Users\GetUser.cs" />
     <Compile Include="Users\GetUsers.cs" />
+    <Compile Include="Users\Login.cs" />
     <Compile Include="Users\UpdateUser.cs" />
   </ItemGroup>
   <ItemGroup>

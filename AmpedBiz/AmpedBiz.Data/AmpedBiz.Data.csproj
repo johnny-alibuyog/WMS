@@ -118,6 +118,8 @@
     <Compile Include="EntityDefinitions\CustomerMapping.cs" />
     <Compile Include="EntityDefinitions\CustomerValidation.cs" />
     <Compile Include="EntityDefinitions\ContactMapping.cs" />
+    <Compile Include="EntityDefinitions\ProductMapping.cs" />
+    <Compile Include="EntityDefinitions\ProductValidation.cs" />
     <Compile Include="EntityDefinitions\RoleMapping.cs" />
     <Compile Include="EntityDefinitions\PaymentTypeMapping.cs" />
     <Compile Include="EntityDefinitions\RoleValidation.cs" />

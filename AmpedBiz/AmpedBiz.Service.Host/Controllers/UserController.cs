@@ -35,6 +35,13 @@ namespace AmpedBiz.Service.Host.Controllers
             return _mediator.Send(request ?? new GetInitialUser.Request());
         }
 
+        [HttpGet()]
+        [Route("login")]
+        public Login.Response Login([FromUri]Login.Request request)
+        {
+            return _mediator.Send(request ?? new Login.Request());
+        }
+
         [HttpPost()]
         [Route("")]
         public CreateUser.Response Create([FromBody]CreateUser.Request request)
