@@ -32,8 +32,8 @@ export class HttpClientFacade {
     });
   }
 
-  send(param: SendParameters) {
-    this.httpClient
+  send(param: SendParameters) : Promise<any> {
+    return this.httpClient
       .fetch('/' + param.url, {
         method: param.method || "GET",
         body: param.data ? json(param.data) : null
@@ -47,7 +47,8 @@ export class HttpClientFacade {
           error.message = response.statusText;
           throw error;
         }
-      })
+      });
+      /*
       .then(data => {
         if (param.callback && param.callback.success) {
           param.callback.success(data);
@@ -58,6 +59,7 @@ export class HttpClientFacade {
           param.callback.error(error);
         }
       });
+      */
   }
 }
 
@@ -65,10 +67,12 @@ export interface SendParameters {
   data?: any;
   method?: string;
   url: string;
-  callback: Callback;
+  //callback: Callback;
 }
 
+/*
 export interface Callback {
   success: (data: any) => void;
   error: (error: any) => void;
 }
+*/

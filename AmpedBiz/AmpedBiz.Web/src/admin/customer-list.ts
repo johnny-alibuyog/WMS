@@ -10,7 +10,7 @@ export class BranchList {
   private _notification: NotificationService;
   private _service: CustomerService;
   private _dialog: DialogService;
-  
+
   public customers: Customer[];
   public filterText: string = '';
 
@@ -28,19 +28,18 @@ export class BranchList {
     this.filterText = '';
     this.filter();
   }
-  
+
   filter() {
-    this._service.getCustomers(this.filterText, {
-      success: (data) => {
+    this._service.getCustomers(this.filterText)
+      .then(data => {
         this.customers = <Customer[]>data
-        if (!this.customers || this.customers.length == 0){
+        if (!this.customers || this.customers.length == 0) {
           this._notification.warning("No items found!");
         }
-      },
-      error: (error) => {
+      })
+      .catch(error => {
         this._notification.error("Error encountered during search!");
-      }
-    });
+      });
   }
 
   create() {

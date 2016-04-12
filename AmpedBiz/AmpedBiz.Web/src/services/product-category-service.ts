@@ -1,6 +1,6 @@
 import {autoinject} from 'aurelia-framework';
 import {ProductCategory} from './common/models/product-category'
-import {HttpClientFacade, Callback} from './http-client-facade';
+import {HttpClientFacade} from './http-client-facade';
 
 @autoinject
 export class ProductCategoryService {
@@ -11,23 +11,23 @@ export class ProductCategoryService {
     this.httpClient = httpClient;
   } 
   
-  getProductCategory(id: string, callback: Callback){
+  getProductCategory(id: string) : Promise<any> {
     var url = this.resouce + '/' + id;
-    return this.httpClient.send({url: url, callback: callback}); 
+    return this.httpClient.send({url: url}); 
   }
   
-  getProductCategories(params: any, callback: Callback){
+  getProductCategories(params: any) : Promise<any> {
     var url = this.resouce;
-    return this.httpClient.send({url: url, callback: callback}); 
+    return this.httpClient.send({url: url}); 
   }
   
-  createProductCategory(productCategory: ProductCategory, callback: Callback){
+  createProductCategory(productCategory: ProductCategory) : Promise<any> {
     var url = this.resouce;
-    return this.httpClient.send({url: url, method: 'POST', data: productCategory, callback: callback}); 
+    return this.httpClient.send({url: url, method: 'POST', data: productCategory}); 
   }
 
-  updateProductCategory(productCategory: ProductCategory, callback: Callback){
+  updateProductCategory(productCategory: ProductCategory) : Promise<any> {
     var url = this.resouce;
-    return this.httpClient.send({url: url, method: 'PUT', data: productCategory, callback: callback}); 
+    return this.httpClient.send({url: url, method: 'PUT', data: productCategory}); 
   }
 }

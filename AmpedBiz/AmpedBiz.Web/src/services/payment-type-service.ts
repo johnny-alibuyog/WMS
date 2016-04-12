@@ -1,6 +1,6 @@
 import {autoinject} from 'aurelia-framework';
 import {PaymentType} from './common/models/payment-type'
-import {HttpClientFacade, Callback} from './http-client-facade';
+import {HttpClientFacade} from './http-client-facade';
 
 @autoinject
 export class PaymentTypeService {
@@ -11,23 +11,23 @@ export class PaymentTypeService {
     this.httpClient = httpClient;
   } 
   
-  getPaymentType(id: string, callback: Callback){
+  getPaymentType(id: string) : Promise<any> {
     var url = this.resouce + '/' + id;
-    return this.httpClient.send({url: url, callback: callback}); 
+    return this.httpClient.send({url: url}); 
   }
   
-  getPaymentTypes(params: any, callback: Callback){
+  getPaymentTypes(params: any) : Promise<any> {
     var url = this.resouce;
-    return this.httpClient.send({url: url, callback: callback}); 
+    return this.httpClient.send({url: url}); 
   }
   
-  createPaymentType(paymentType: PaymentType, callback: Callback){
+  createPaymentType(paymentType: PaymentType) : Promise<any> {
     var url = this.resouce;
-    return this.httpClient.send({url: url, method: 'POST', data: paymentType, callback: callback}); 
+    return this.httpClient.send({url: url, method: 'POST', data: paymentType}); 
   }
 
-  updatePaymentType(paymentType: PaymentType, callback: Callback){
+  updatePaymentType(paymentType: PaymentType) : Promise<any> {
     var url = this.resouce;
-    return this.httpClient.send({url: url, method: 'PUT', data: paymentType, callback: callback}); 
+    return this.httpClient.send({url: url, method: 'PUT', data: paymentType}); 
   }
 }

@@ -10,7 +10,7 @@ export class ProductCategoryList {
   private _notification: NotificationService;
   private _service: ProductCategoryService;
   private _dialog: DialogService;
-  
+
   public productCategories: ProductCategory[];
   public filterText: string = '';
 
@@ -28,19 +28,18 @@ export class ProductCategoryList {
     this.filterText = '';
     this.filter();
   }
-  
+
   filter() {
-    this._service.getProductCategories(this.filterText, {
-      success: (data) => {
+    this._service.getProductCategories(this.filterText)
+      .then(data => {
         this.productCategories = <ProductCategory[]>data
-        if (!this.productCategories || this.productCategories.length == 0){
+        if (!this.productCategories || this.productCategories.length == 0) {
           this._notification.warning("No items found!");
         }
-      },
-      error: (error) => {
+      })
+      .catch(error => {
         this._notification.error("Error encountered during search!");
-      }
-    });
+      });
   }
 
   create() {

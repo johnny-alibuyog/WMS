@@ -10,7 +10,7 @@ export class SupplierList {
   private _notification: NotificationService;
   private _service: SupplierService;
   private _dialog: DialogService;
-  
+
   public suppliers: Supplier[];
   public filterText: string = '';
 
@@ -28,19 +28,18 @@ export class SupplierList {
     this.filterText = '';
     this.filter();
   }
-  
+
   filter() {
-    this._service.getSuppliers(this.filterText, {
-      success: (data) => {
+    this._service.getSuppliers(this.filterText)
+      .then(data => {
         this.suppliers = <Supplier[]>data
-        if (!this.suppliers || this.suppliers.length == 0){
+        if (!this.suppliers || this.suppliers.length == 0) {
           this._notification.warning("No items found!");
         }
-      },
-      error: (error) => {
+      })
+      .catch(error => {
         this._notification.error("Error encountered during search!");
-      }
-    });
+      });
   }
 
   create() {

@@ -46,14 +46,6 @@ export class App {
         main: true,
         title: 'Report Center'
       },
-      /*{
-        route: ['users'],
-        name: 'users',
-        moduleId: './users',
-        nav: true,
-        main: true,
-        title: 'Users'
-      },*/
       {
         route: ['admin'],
         name: 'admin',

@@ -10,7 +10,7 @@ export class BranchList {
   private _notification: NotificationService;
   private _service: BranchService;
   private _dialog: DialogService;
-  
+
   public branches: Branch[];
   public filterText: string = '';
 
@@ -28,19 +28,18 @@ export class BranchList {
     this.filterText = '';
     this.filter();
   }
-  
+
   filter() {
-    this._service.getBranches(this.filterText, {
-      success: (data) => {
+    this._service.getBranches(this.filterText)
+      .then(data => {
         this.branches = <Branch[]>data
-        if (!this.branches || this.branches.length == 0){
+        if (!this.branches || this.branches.length == 0) {
           this._notification.warning("No items found!");
         }
-      },
-      error: (error) => {
+      })
+      .catch(error => {
         this._notification.error("Error encountered during search!");
-      }
-    });
+      });
   }
 
   create() {

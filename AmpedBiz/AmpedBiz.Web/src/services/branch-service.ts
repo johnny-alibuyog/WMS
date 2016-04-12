@@ -1,6 +1,6 @@
 import {autoinject} from 'aurelia-framework';
 import {Branch} from './common/models/branch'
-import {HttpClientFacade, Callback} from './http-client-facade';
+import {HttpClientFacade} from './http-client-facade';
 
 @autoinject
 export class BranchService {
@@ -11,23 +11,23 @@ export class BranchService {
     this.httpClient = httpClient;
   } 
   
-  getBranch(id: string, callback: Callback){
+  getBranch(id: string) : Promise<any> {
     var url = this.resouce + '/' + id;
-    return this.httpClient.send({url: url, callback: callback}); 
+    return this.httpClient.send({url: url}); 
   }
   
-  getBranches(params: any, callback: Callback){
+  getBranches(params: any) : Promise<any> {
     var url = this.resouce;
-    return this.httpClient.send({url: url, callback: callback}); 
+    return this.httpClient.send({url: url}); 
   }
   
-  createBranch(branch: Branch, callback: Callback){
+  createBranch(branch: Branch) : Promise<any> {
     var url = this.resouce;
-    return this.httpClient.send({url: url, method: 'POST', data: branch, callback: callback}); 
+    return this.httpClient.send({url: url, method: 'POST', data: branch}); 
   }
 
-  updateBranch(branch: Branch, callback: Callback){
+  updateBranch(branch: Branch) : Promise<any> {
     var url = this.resouce;
-    return this.httpClient.send({url: url, method: 'PUT', data: branch, callback: callback}); 
+    return this.httpClient.send({url: url, method: 'PUT', data: branch}); 
   }
 }

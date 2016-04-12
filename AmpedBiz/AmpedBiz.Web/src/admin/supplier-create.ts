@@ -25,14 +25,9 @@ export class SupplierCreate {
     if (supplier) {
       this.header = "Edit Supplier";
       this.isEdit = true;
-      this._service.getSupplier(supplier.id, {
-        success: (data) => {
-          this.supplier = <Supplier>data;
-        },
-        error: (error) => {
-          this.notificaton.warning(error);
-        }
-      });
+      this._service.getSupplier(supplier.id)
+        .then(data => this.supplier = <Supplier>data)
+        .catch(error => this.notificaton.warning(error));
     }
     else {
       this.header = "Create Supplier";
@@ -49,28 +44,25 @@ export class SupplierCreate {
 
     if (this.isEdit) {
 
-      this._service.updateSupplier(this.supplier, {
-        success: (data) => {
+      this._service.updateSupplier(this.supplier)
+        .then(data => {
           this.notificaton.success("Supplier has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <Supplier>data }));
-        },
-        error: (error) => {
+        })
+        .catch(error => {
           this.notificaton.warning(error)
-        }
-      })
+        });
     }
     else {
 
-      this._service.createSupplier(this.supplier, {
-        success: (data) => {
+      this._service.createSupplier(this.supplier)
+        .then(data => {
           this.notificaton.success("Supplier has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <Supplier>data }));
-        },
-        error: (error) => {
+        })
+        .catch(error => {
           this.notificaton.warning(error)
-        }
-      })
-
+        });
     }
   }
 }

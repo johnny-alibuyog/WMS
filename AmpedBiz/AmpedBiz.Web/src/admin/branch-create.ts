@@ -6,6 +6,7 @@ import {NotificationService} from '../common/controls/notification-service';
 
 @autoinject
 export class BranchCreate {
+  public _notificaton: NotificationService;
   private _controller: DialogController;
   private _service: BranchService;
 
@@ -13,10 +14,9 @@ export class BranchCreate {
   public isEdit: boolean = false;
   public canSave: boolean = true;
   public branch: Branch;
-  public notificaton: NotificationService;
 
   constructor(notification: NotificationService, controller: DialogController, service: BranchService) {
-    this.notificaton = notification;
+    this._notificaton = notification;
     this._controller = controller;
     this._service = service;
   }
@@ -25,14 +25,9 @@ export class BranchCreate {
     if (branch) {
       this.header = "Edit Branch";
       this.isEdit = true;
-      this._service.getBranch(branch.id, {
-        success: (data) => {
-          this.branch = <Branch>data;
-        },
-        error: (error) => {
-          this.notificaton.warning(error);
-        }
-      });
+      this._service.getBranch(branch.id)
+        .then(data => this.branch = <Branch>data)
+        .catch(error => this._notificaton.warning(error));
     }
     else {
       this.header = "Create Branch";
@@ -48,28 +43,25 @@ export class BranchCreate {
   save() {
     if (this.isEdit) {
 
-      this._service.updateBranch(this.branch, {
-        success: (data) => {
-          this.notificaton.success("Branch  has been saved.")
+      this._service.updateBranch(this.branch)
+        .then(data => {
+          this._notificaton.success("Branch  has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <Branch>data }));
-        },
-        error: (error) => {
-          this.notificaton.warning(error)
-        }
-      })
+        })
+        .catch(error => {
+          this._notificaton.warning(error)
+        });
     }
     else {
 
-      this._service.createBranch(this.branch, {
-        success: (data) => {
-          this.notificaton.success("Branch has been saved.")
+      this._service.createBranch(this.branch)
+        .then(data => {
+          this._notificaton.success("Branch has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <Branch>data }));
-        },
-        error: (error) => {
-          this.notificaton.warning(error)
-        }
-      })
-
+        })
+        .catch(error => {
+          this._notificaton.warning(error)
+        });
     }
   }
 }

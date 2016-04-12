@@ -10,7 +10,7 @@ export class PaymentTypeList {
   private _notification: NotificationService;
   private _service: PaymentTypeService;
   private _dialog: DialogService;
-  
+
   public paymentTypes: PaymentType[];
   public filterText: string = '';
 
@@ -28,19 +28,18 @@ export class PaymentTypeList {
     this.filterText = '';
     this.filter();
   }
-  
+
   filter() {
-    this._service.getPaymentTypes(this.filterText, {
-      success: (data) => {
+    this._service.getPaymentTypes(this.filterText)
+      .then(data => {
         this.paymentTypes = <PaymentType[]>data
-        if (!this.paymentTypes || this.paymentTypes.length == 0){
+        if (!this.paymentTypes || this.paymentTypes.length == 0) {
           this._notification.warning("No items found!");
         }
-      },
-      error: (error) => {
+      })
+      .catch(error => {
         this._notification.error("Error encountered during search!");
-      }
-    });
+      });
   }
 
   create() {

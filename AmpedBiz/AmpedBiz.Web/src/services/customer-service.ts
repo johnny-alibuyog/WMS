@@ -1,6 +1,6 @@
 import {autoinject} from 'aurelia-framework';
 import {Customer} from './common/models/customer'
-import {HttpClientFacade, Callback} from './http-client-facade';
+import {HttpClientFacade} from './http-client-facade';
 
 @autoinject
 export class CustomerService {
@@ -11,23 +11,23 @@ export class CustomerService {
     this.httpClient = httpClient;
   } 
   
-  getCustomer(id: string, callback: Callback){
+  getCustomer(id: string) : Promise<any> {
     var url = this.resouce + '/' + id;
-    return this.httpClient.send({url: url, callback: callback}); 
+    return this.httpClient.send({url: url}); 
   }
   
-  getCustomers(params: any, callback: Callback){
+  getCustomers(params: any) : Promise<any> {
     var url = this.resouce;
-    return this.httpClient.send({url: url, callback: callback}); 
+    return this.httpClient.send({url: url}); 
   }
   
-  createCustomer(customer: Customer, callback: Callback){
+  createCustomer(customer: Customer) : Promise<any> {
     var url = this.resouce;
-    return this.httpClient.send({url: url, method: 'POST', data: customer, callback: callback}); 
+    return this.httpClient.send({url: url, method: 'POST', data: customer}); 
   }
 
-  updateCustomer(customer: Customer, callback: Callback){
+  updateCustomer(customer: Customer) : Promise<any> {
     var url = this.resouce;
-    return this.httpClient.send({url: url, method: 'PUT', data: customer, callback: callback}); 
+    return this.httpClient.send({url: url, method: 'PUT', data: customer}); 
   }
 }

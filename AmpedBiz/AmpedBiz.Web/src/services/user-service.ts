@@ -1,6 +1,6 @@
 import {autoinject} from 'aurelia-framework';
 import {User} from './common/models/user'
-import {HttpClientFacade, Callback} from './http-client-facade';
+import {HttpClientFacade} from './http-client-facade';
 
 @autoinject
 export class UserService {
@@ -11,28 +11,28 @@ export class UserService {
     this.httpClient = httpClient;
   } 
   
-  getUser(id: string, callback: Callback){
+  getUser(id: string) : Promise<any> {
     var url = this.resouce + '/' + id;
-    return this.httpClient.send({url: url, callback: callback}); 
+    return this.httpClient.send({url: url}); 
   }
   
-  getInitialUser(id: string, callback: Callback){
+  getInitialUser(id: string) : Promise<any> {
     var url = this.resouce + '/initial';
-    return this.httpClient.send({url: url, callback: callback}); 
+    return this.httpClient.send({url: url}); 
   }
   
-  getUsers(params: any, callback: Callback){
+  getUsers(params: any) : Promise<any> {
     var url = this.resouce;
-    return this.httpClient.send({url: url, callback: callback}); 
+    return this.httpClient.send({url: url}); 
   }
   
-  createUser(user: User, callback: Callback){
+  createUser(user: User) : Promise<any> {
     var url = this.resouce;
-    return this.httpClient.send({url: url, method: 'POST', data: user, callback: callback}); 
+    return this.httpClient.send({url: url, method: 'POST', data: user}); 
   }
 
-  updateUser(user: User, callback: Callback){
+  updateUser(user: User) : Promise<any> {
     var url = this.resouce;
-    return this.httpClient.send({url: url, method: 'PUT', data: user, callback: callback}); 
+    return this.httpClient.send({url: url, method: 'PUT', data: user}); 
   }
 }

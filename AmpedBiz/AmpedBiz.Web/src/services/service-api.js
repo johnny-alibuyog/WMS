@@ -28,7 +28,7 @@ var ServiceApi = (function() {
      * @param {string} request.id - 
      * 
      */
-    ServiceApi.prototype.ProductType_Get = function(parameters) {
+    ServiceApi.prototype.ProductType_Get1 = function(parameters) {
         if (parameters === undefined) {
             parameters = {};
         }

@@ -25,14 +25,9 @@ export class CustomerCreate {
     if (customer) {
       this.header = "Edit Customer";
       this.isEdit = true;
-      this._service.getCustomer(customer.id, {
-        success: (data) => {
-          this.customer = <Customer>data;
-        },
-        error: (error) => {
-          this.notificaton.warning(error);
-        }
-      });
+      this._service.getCustomer(customer.id)
+        .then(data => this.customer = <Customer>data)
+        .catch(error => this.notificaton.warning(error));
     }
     else {
       this.header = "Create Customer";
@@ -48,28 +43,25 @@ export class CustomerCreate {
   save() {
     if (this.isEdit) {
 
-      this._service.updateCustomer(this.customer, {
-        success: (data) => {
-          this.notificaton.success("Customer  has been saved.")
+      this._service.updateCustomer(this.customer)
+        .then(data => {
+          this.notificaton.success("Customer has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <Customer>data }));
-        },
-        error: (error) => {
+        })
+        .catch(error => {
           this.notificaton.warning(error)
-        }
-      })
+        });
     }
     else {
 
-      this._service.createCustomer(this.customer, {
-        success: (data) => {
+      this._service.createCustomer(this.customer)
+        .then(data => {
           this.notificaton.success("Customer has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <Customer>data }));
-        },
-        error: (error) => {
+        })
+        .catch(error => {
           this.notificaton.warning(error)
-        }
-      })
-
+        });
     }
   }
 }

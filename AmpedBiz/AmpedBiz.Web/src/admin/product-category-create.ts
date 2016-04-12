@@ -25,14 +25,9 @@ export class ProductCategoryCreate {
     if (productCategory) {
       this.header = "Edit Product Category";
       this.isEdit = true;
-      this._service.getProductCategory(productCategory.id, {
-        success: (data) => {
-          this.productCategory = <ProductCategory>data;
-        },
-        error: (error) => {
-          this.notificaton.warning(error);
-        }
-      });
+      this._service.getProductCategory(productCategory.id)
+        .then(data => this.productCategory = <ProductCategory>data)
+        .catch(error => this.notificaton.warning(error));
     }
     else {
       this.header = "Create Product Category";
@@ -49,28 +44,25 @@ export class ProductCategoryCreate {
 
     if (this.isEdit) {
 
-      this._service.updateProductCategory(this.productCategory, {
-        success: (data) => {
+      this._service.updateProductCategory(this.productCategory)
+        .then(data => {
           this.notificaton.success("Product Category has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <ProductCategory>data }));
-        },
-        error: (error) => {
+        })
+        .catch(error => {
           this.notificaton.warning(error)
-        }
-      })
+        });
     }
     else {
 
-      this._service.createProductCategory(this.productCategory, {
-        success: (data) => {
+      this._service.createProductCategory(this.productCategory)
+        .then(data => {
           this.notificaton.success("Product Category has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <ProductCategory>data }));
-        },
-        error: (error) => {
+        })
+        .catch(error => {
           this.notificaton.warning(error)
-        }
-      })
-
+        });
     }
   }
 }

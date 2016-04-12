@@ -10,7 +10,7 @@ export class BranchList {
   private _notification: NotificationService;
   private _service: UserService;
   private _dialog: DialogService;
-  
+
   public users: User[];
   public filterText: string = '';
 
@@ -28,24 +28,23 @@ export class BranchList {
     this.filterText = '';
     this.filter();
   }
-  
+
   filter() {
-    this._service.getUsers(this.filterText, {
-      success: (data) => {
+    this._service.getUsers(this.filterText)
+      .then(data => {
         this.users = <User[]>data
-        if (!this.users || this.users.length == 0){
+        if (!this.users || this.users.length == 0) {
           this._notification.warning("No items found!");
         }
-      },
-      error: (error) => {
+      })
+      .catch(error => {
         this._notification.error("Error encountered during search!");
-      }
-    });
+      });
   }
 
   create() {
     this._dialog
-      .open({ viewModel: UserCreate, model: null})
+      .open({ viewModel: UserCreate, model: null })
       .then(response => {
         if (!response.wasCancelled) {
           this.refreshList();

@@ -25,14 +25,9 @@ export class PaymentTypeCreate {
     if (paymentType) {
       this.header = "Edit Product";
       this.isEdit = true;
-      this._service.getPaymentType(paymentType.id, {
-        success: (data) => {
-          this.paymentType = <PaymentType>data;
-        },
-        error: (error) => {
-          this.notificaton.warning(error);
-        }
-      });
+      this._service.getPaymentType(paymentType.id)
+        .then(data => this.paymentType = <PaymentType>data)
+        .catch(error => this.notificaton.warning(error));
     }
     else {
       this.header = "Create Product";
@@ -49,28 +44,25 @@ export class PaymentTypeCreate {
 
     if (this.isEdit) {
 
-      this._service.updatePaymentType(this.paymentType, {
-        success: (data) => {
+      this._service.updatePaymentType(this.paymentType)
+        .then(data => {
           this.notificaton.success("Product Type has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <PaymentType>data }));
-        },
-        error: (error) => {
+        })
+        .catch(error => {
           this.notificaton.warning(error)
-        }
-      })
+        });
     }
     else {
 
-      this._service.createPaymentType(this.paymentType, {
-        success: (data) => {
+      this._service.createPaymentType(this.paymentType)
+        .then(data => {
           this.notificaton.success("Product Type has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <PaymentType>data }));
-        },
-        error: (error) => {
+        })
+        .catch(error => {
           this.notificaton.warning(error)
-        }
-      })
-
+        });
     }
   }
 }

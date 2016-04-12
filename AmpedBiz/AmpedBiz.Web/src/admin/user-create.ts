@@ -27,38 +27,23 @@ export class UserCreate {
   }
 
   activate(user: User) {
-    this._branchService.getBranches(null, {
-        success: (data) => {
-          this.branches = <Branch[]>data;
-        },
-        error: (error) => {
-          this.notificaton.warning(error);
-        }
-      });
-    
+    this._branchService.getBranches(null)
+      .then(data => this.branches = <Branch[]>data)
+      .catch(error => this.notificaton.warning(error));
+
     if (user) {
       this.header = "Edit User";
       this.isEdit = true;
-      this._service.getUser(user.id, {
-        success: (data) => {
-          this.user = <User>data;
-        },
-        error: (error) => {
-          this.notificaton.warning(error);
-        }
-      });
+      this._service.getUser(user.id)
+        .then(data => this.user = <User>data)
+        .catch(error => this.notificaton.warning(error));
     }
     else {
       this.header = "Create User";
       this.isEdit = false;
-      this._service.getInitialUser(null, {
-        success: (data) => {
-          this.user = <User>data;
-        },
-        error: (error) => {
-          this.notificaton.warning(error);
-        }
-      });
+      this._service.getInitialUser(null)
+        .then(data => this.user = <User>data)
+        .catch(error => this.notificaton.warning(error));
     }
   }
 
@@ -69,28 +54,25 @@ export class UserCreate {
   save() {
     if (this.isEdit) {
 
-      this._service.updateUser(this.user, {
-        success: (data) => {
+      this._service.updateUser(this.user)
+        .then(data => {
           this.notificaton.success("User  has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <User>data }));
-        },
-        error: (error) => {
+        })
+        .catch(error => {
           this.notificaton.warning(error)
-        }
-      })
+        });
     }
     else {
 
-      this._service.createUser(this.user, {
-        success: (data) => {
+      this._service.createUser(this.user)
+        .then(data => {
           this.notificaton.success("User has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <User>data }));
-        },
-        error: (error) => {
+        })
+        .catch(error => {
           this.notificaton.warning(error)
-        }
-      })
-
+        });
     }
   }
 }
