@@ -31,7 +31,7 @@ namespace AmpedBiz.Data.DataInitializer
                 data.Add(new User()
                 {
                     Id = $"user{i}",
-                    Username = $"Username {i}",
+                    Username = $"Username{i}",
                     Password = $"Password{i}",
                     Person = new Person()
                     {

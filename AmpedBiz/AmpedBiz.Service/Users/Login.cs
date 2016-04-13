@@ -37,6 +37,8 @@ namespace AmpedBiz.Service.Users
                         )
                         .FirstOrDefault();
 
+                    var users = session.Query<Entity.User>().ToList();
+
                     if (user == null)
                         throw new BusinessException("Invalid username or password!");
 
