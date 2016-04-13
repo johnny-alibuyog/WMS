@@ -1,5 +1,6 @@
 import 'bootstrap';
 import {Aurelia} from 'aurelia-framework';
+import {AuthService} from './services/auth-service';
 
 export function configure(aurelia: Aurelia) {
   aurelia.use
@@ -18,5 +19,10 @@ export function configure(aurelia: Aurelia) {
   //Anyone wanting to use HTMLImports to load views, will need to install the following plugin.
   //aurelia.use.plugin('aurelia-html-import-template-loader')
 
-  aurelia.start().then(() => aurelia.setRoot());
+  aurelia.start().then(() => {
+    var auth = aurelia.container.get(AuthService);
+    let root = auth.isAuthenticated() ? 'app' : 'users/login';
+    aurelia.setRoot(root);
+    aurelia.setRoot();
+  });
 }

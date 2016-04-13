@@ -6,9 +6,9 @@ import {NotificationService} from '../common/controls/notification-service';
 
 @autoinject
 export class BranchCreate {
-  public _notificaton: NotificationService;
-  private _controller: DialogController;
   private _service: BranchService;
+  private _controller: DialogController;
+  private _notificaton: NotificationService;
 
   public header: string = 'Create Type Product';
   public isEdit: boolean = false;
@@ -16,9 +16,9 @@ export class BranchCreate {
   public branch: Branch;
 
   constructor(notification: NotificationService, controller: DialogController, service: BranchService) {
-    this._notificaton = notification;
-    this._controller = controller;
     this._service = service;
+    this._controller = controller;
+    this._notificaton = notification;
   }
 
   activate(branch: Branch) {

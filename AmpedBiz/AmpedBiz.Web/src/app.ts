@@ -1,7 +1,15 @@
+import {autoinject} from 'aurelia-framework';
+import {AuthService} from './services/auth-service';
 import {Router, RouterConfiguration} from 'aurelia-router'
 
+@autoinject
 export class App {
-  router: Router;
+  public auth: AuthService;
+  public router: Router;
+
+  constructor(auth: AuthService) {
+    this.auth = auth;
+  }
 
   configureRouter(config: RouterConfiguration, router: Router) {
     config.title = 'Nicon Sales';
@@ -59,7 +67,7 @@ export class App {
         redirect: "dashboard"
       }
     ]);
-    
+
     this.router = router;
   }
 }

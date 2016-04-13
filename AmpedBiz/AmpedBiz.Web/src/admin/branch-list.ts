@@ -7,9 +7,9 @@ import {NotificationService} from '../common/controls/notification-service';
 
 @autoinject
 export class BranchList {
-  private _notification: NotificationService;
-  private _service: BranchService;
   private _dialog: DialogService;
+  private _service: BranchService;
+  private _notification: NotificationService;
 
   public branches: Branch[];
   public filterText: string = '';
