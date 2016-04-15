@@ -27,7 +27,7 @@ namespace AmpedBiz.Core.Entities
             return this.Amount.ToString("0.00");
         }
 
-        public string ToStringWithSymbol()
+        public virtual string ToStringWithSymbol()
         {
             return this.Amount.ToString(this.Currency.Symbol + "0.00");
         }

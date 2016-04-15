@@ -13,7 +13,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual ProductCategory Category { get; set; }
 
-        public virtual IEnumerable<Attachment> Attachments { get; set; }
+        //public virtual IEnumerable<Attachment> Attachments { get; set; }
 
         public virtual string Image { get; set; }
 

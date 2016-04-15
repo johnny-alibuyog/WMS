@@ -4,9 +4,9 @@ namespace AmpedBiz.Core.Entities
 {
     public class Currency : Entity<Currency, string>
     {
-        public string Symbol { get; set; }
+        public virtual string Symbol { get; set; }
 
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         public Currency() { }
 

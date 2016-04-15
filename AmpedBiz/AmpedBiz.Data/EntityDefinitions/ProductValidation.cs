@@ -1,12 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AmpedBiz.Core.Entities;
+using NHibernate.Validator.Cfg.Loquacious;
 
 namespace AmpedBiz.Data.EntityDefinitions
 {
-    class ProductValidation
+    public class ProductValidation : ValidationDef<Product>
     {
+        public ProductValidation()
+        {
+            Define(x => x.Id)
+                .NotNullableAndNotEmpty();
+
+            Define(x => x.Name)
+                .NotNullableAndNotEmpty()
+                .And.MaxLength(255);
+        }
     }
 }
