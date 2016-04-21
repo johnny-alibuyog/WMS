@@ -48,7 +48,7 @@ System.config({
       "util": "npm:util@0.10.3"
     },
     "github:twbs/bootstrap@3.3.6": {
-      "jquery": "github:components/jquery@2.2.1"
+      "jquery": "npm:jquery@2.2.3"
     },
     "npm:assert@1.3.0": {
       "util": "npm:util@0.10.3"
@@ -197,10 +197,10 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "systemjs-json": "github:systemjs/plugin-json@0.1.0"
+      "systemjs-json": "github:systemjs/plugin-json@0.1.1"
     },
     "npm:font-awesome@4.6.1": {
-      "css": "github:systemjs/plugin-css@0.1.20"
+      "css": "github:systemjs/plugin-css@0.1.21"
     },
     "npm:i18next@2.5.1": {
       "process": "github:jspm/nodelibs-process@0.1.2"
