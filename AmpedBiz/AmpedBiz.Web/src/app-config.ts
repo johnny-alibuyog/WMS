@@ -6,7 +6,21 @@ var appConfig = {
 
 export default appConfig;
 */
+import {PageConfig} from './common/controls/pager';
 
 export let appConfig = {
-  serviceApiBase: 'http://localhost:49242',
+  api: {
+    baseUrl: 'http://localhost:49242',
+  },
+  page: <PageConfig>{
+    maxSize: 5,
+    itemsPerPage: 10,
+    boundaryLinks: true,
+    directionLinks: true,
+    firstText: '<<',
+    previousText: '<',
+    nextText: '>',
+    lastText: '>>',
+    rotate: false
+  }
 }

@@ -1,4 +1,6 @@
 <template>
+  <require from="common/controls/pager"></require>
+  
   <section class="au-animate">
     <div class="container col-md-8">
       <div class="row">
@@ -63,6 +65,8 @@
               </tr>
             </tbody>
           </table>
+          
+          <pager current-page.bind="6" total-items.bind="109" change.trigger="selectPage($event.detail.pageNumber)"/>
         </div>
       </div>
     </div>

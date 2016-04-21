@@ -29,6 +29,13 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpPost()]
+        [Route("page")]
+        public GetBranches.Response Page([FromBody]GetBranches.Request request)
+        {
+            return _mediator.Send(request ?? new GetBranches.Request());
+        }
+
+        [HttpPost()]
         [Route("")]
         public CreateBranch.Response Create([FromBody]CreateBranch.Request request)
         {

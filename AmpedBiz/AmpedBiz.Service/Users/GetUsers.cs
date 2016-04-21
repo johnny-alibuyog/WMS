@@ -13,7 +13,7 @@ namespace AmpedBiz.Service.Users
     {
         public class Request : IRequest<Response>
         {
-            public string Id { get; set; }
+            public string[] Ids { get; set; }
         }
 
         public class Response : List<Dto.User>

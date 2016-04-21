@@ -11,7 +11,7 @@ export class HttpClientFacade {
     this.httpClient = httpClient;
     this.httpClient.configure(config => {
       config
-        .withBaseUrl(appConfig.serviceApiBase)
+        .withBaseUrl(appConfig.api.baseUrl)
         .withDefaults({
           credentials: 'same-origin',
           headers: {

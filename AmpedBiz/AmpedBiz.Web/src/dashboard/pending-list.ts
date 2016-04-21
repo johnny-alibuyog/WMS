@@ -24,4 +24,8 @@ export class PendingList {
       { 'productName': 'Coca Cola', 'available': 120, 'currentLevel': 120, 'targetLevel': 200, 'belowTarget': 80 },
     ];
   }
+  
+  selectPage(pageNumber: any) {
+    console.log(pageNumber);
+  }
 }
