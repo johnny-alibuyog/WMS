@@ -25,7 +25,7 @@ export class PaymentTypeCreate {
     if (paymentType) {
       this.header = "Edit Product";
       this.isEdit = true;
-      this._service.getPaymentType(paymentType.id)
+      this._service.get(paymentType.id)
         .then(data => this.paymentType = <PaymentType>data)
         .catch(error => this.notificaton.warning(error));
     }
@@ -44,7 +44,7 @@ export class PaymentTypeCreate {
 
     if (this.isEdit) {
 
-      this._service.updatePaymentType(this.paymentType)
+      this._service.update(this.paymentType)
         .then(data => {
           this.notificaton.success("Product Type has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <PaymentType>data }));
@@ -55,7 +55,7 @@ export class PaymentTypeCreate {
     }
     else {
 
-      this._service.createPaymentType(this.paymentType)
+      this._service.create(this.paymentType)
         .then(data => {
           this.notificaton.success("Product Type has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <PaymentType>data }));

@@ -25,7 +25,7 @@ export class BranchCreate {
     if (branch) {
       this.header = "Edit Branch";
       this.isEdit = true;
-      this._service.getBranch(branch.id)
+      this._service.get(branch.id)
         .then(data => this.branch = <Branch>data)
         .catch(error => this._notificaton.warning(error));
     }
@@ -43,7 +43,7 @@ export class BranchCreate {
   save() {
     if (this.isEdit) {
 
-      this._service.updateBranch(this.branch)
+      this._service.update(this.branch)
         .then(data => {
           this._notificaton.success("Branch  has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <Branch>data }));
@@ -54,7 +54,7 @@ export class BranchCreate {
     }
     else {
 
-      this._service.createBranch(this.branch)
+      this._service.create(this.branch)
         .then(data => {
           this._notificaton.success("Branch has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <Branch>data }));

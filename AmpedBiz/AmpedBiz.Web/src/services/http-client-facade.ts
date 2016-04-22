@@ -48,18 +48,22 @@ export class HttpClientFacade {
           throw error;
         }
       });
-      /*
-      .then(data => {
-        if (param.callback && param.callback.success) {
-          param.callback.success(data);
-        }
-      })
-      .catch(error => {
-        if (param.callback && param.callback.error) {
-          param.callback.error(error);
-        }
-      });
-      */
+  }
+  
+  get(url: string) : Promise<any> {
+    return this.send({ url: url, method: "GET" });
+  }
+  
+  post(url: string, data: any) : Promise<any> {
+    return this.send({ url: url, method: "POST", data: data });
+  }
+  
+  put(url: string, data: any) : Promise<any> {
+    return this.send({ url: url, method: "PUT", data: data });
+  }
+  
+  delete(url: string, data: any) : Promise<any> {
+    return this.send({ url: url, method: "DELETE", data: data });
   }
 }
 

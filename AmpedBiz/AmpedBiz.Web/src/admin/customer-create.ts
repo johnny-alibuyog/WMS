@@ -25,7 +25,7 @@ export class CustomerCreate {
     if (customer) {
       this.header = "Edit Customer";
       this.isEdit = true;
-      this._service.getCustomer(customer.id)
+      this._service.get(customer.id)
         .then(data => this.customer = <Customer>data)
         .catch(error => this.notificaton.warning(error));
     }
@@ -43,7 +43,7 @@ export class CustomerCreate {
   save() {
     if (this.isEdit) {
 
-      this._service.updateCustomer(this.customer)
+      this._service.update(this.customer)
         .then(data => {
           this.notificaton.success("Customer has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <Customer>data }));
@@ -54,7 +54,7 @@ export class CustomerCreate {
     }
     else {
 
-      this._service.createCustomer(this.customer)
+      this._service.create(this.customer)
         .then(data => {
           this.notificaton.success("Customer has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <Customer>data }));

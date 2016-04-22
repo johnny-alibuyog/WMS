@@ -29,10 +29,10 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpPost()]
-        [Route("page")]
-        public GetBranches.Response Page([FromBody]GetBranches.Request request)
+        [Route("pages")]
+        public GetBranchePages.Response Page([FromBody]GetBranchePages.Request request)
         {
-            return _mediator.Send(request ?? new GetBranches.Request());
+            return _mediator.Send(request ?? new GetBranchePages.Request());
         }
 
         [HttpPost()]

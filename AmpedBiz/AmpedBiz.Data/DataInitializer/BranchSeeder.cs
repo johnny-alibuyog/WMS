@@ -9,13 +9,18 @@ using NHibernate.Linq;
 
 namespace AmpedBiz.Data.DataInitializer
 {
-    public class BranchDataSeeder : IDataSeeder
+    public class BranchSeeder : ISeeder
     {
         private readonly ISessionFactory _sessionFactory;
 
-        public BranchDataSeeder(ISessionFactory sessionFactory)
+        public BranchSeeder(ISessionFactory sessionFactory)
         {
             _sessionFactory = sessionFactory;
+        }
+
+        public bool DummyData
+        {
+            get { return true; }
         }
 
         public int ExecutionOrder
@@ -27,7 +32,7 @@ namespace AmpedBiz.Data.DataInitializer
         {
             var data = new List<Branch>();
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 153; i++)
             {
                 data.Add(new Branch()
                 {
@@ -50,6 +55,8 @@ namespace AmpedBiz.Data.DataInitializer
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
+                //session.SetBatchSize(100);
+
                 var users = session.Query<Branch>().ToList();
                 if (users.Count == 0)
                 {

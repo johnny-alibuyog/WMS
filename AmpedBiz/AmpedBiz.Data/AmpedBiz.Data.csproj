@@ -60,6 +60,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity.Design" />
     <Reference Include="System.Xml.Linq" />
@@ -67,6 +68,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Westwind.Utilities.Configuration, Version=2.25.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Westwind.Utilities.Configuration.2.25\lib\net40\Westwind.Utilities.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configurations\AuditEventListener.cs">
@@ -104,13 +109,13 @@
     <Compile Include="Conventions\_CustomJoinedSubclassConvention.cs" />
     <Compile Include="CustomTypes\JsonType.cs" />
     <Compile Include="CustomTypes\XmlType.cs" />
-    <Compile Include="DataInitializer\BranchDataSeeder.cs" />
-    <Compile Include="DataInitializer\CurrencyDataSeeder.cs" />
-    <Compile Include="DataInitializer\IDataSeeder.cs" />
-    <Compile Include="DataInitializer\PaymentTypeDataSeeder.cs" />
-    <Compile Include="DataInitializer\ProductCategoryDataSeeder.cs" />
-    <Compile Include="DataInitializer\RoleDataSeeder.cs" />
-    <Compile Include="DataInitializer\UserDataSeeder.cs" />
+    <Compile Include="DataInitializer\BranchSeeder.cs" />
+    <Compile Include="DataInitializer\CustomerSeeder.cs" />
+    <Compile Include="DataInitializer\ISeeder.cs" />
+    <Compile Include="DataInitializer\PaymentTypeSeeder.cs" />
+    <Compile Include="DataInitializer\ProductCategorySeeder.cs" />
+    <Compile Include="DataInitializer\RoleSeeder.cs" />
+    <Compile Include="DataInitializer\UserSeeder.cs" />
     <Compile Include="EntityDefinitions\AddressMapping.cs" />
     <Compile Include="EntityDefinitions\AddressValidation.cs" />
     <Compile Include="EntityDefinitions\BranchMapping.cs" />

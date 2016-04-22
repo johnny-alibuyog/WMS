@@ -58,12 +58,13 @@
   <ItemGroup>
     <Compile Include="Branches\CreateBranch.cs" />
     <Compile Include="Branches\GetBranch.cs" />
-    <Compile Include="Branches\GetBranchePage.cs" />
+    <Compile Include="Branches\GetBranchePages.cs" />
     <Compile Include="Branches\GetBranches.cs" />
     <Compile Include="Branches\UpdateBranch.cs" />
     <Compile Include="Common\PageRequest.cs" />
     <Compile Include="Common\PageResponse.cs" />
     <Compile Include="Customers\CreateCustomer.cs" />
+    <Compile Include="Customers\GetCustomerPages.cs" />
     <Compile Include="Customers\GetCustomer.cs" />
     <Compile Include="Customers\GetCustomers.cs" />
     <Compile Include="Customers\UpdateCustomer.cs" />

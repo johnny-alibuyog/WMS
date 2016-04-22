@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace AmpedBiz.Data.DataInitializer
 {
-    public interface IDataSeeder
+    public interface ISeeder
     {
         int ExecutionOrder { get; }
+        bool DummyData { get; }
         void Seed();
     }
 }

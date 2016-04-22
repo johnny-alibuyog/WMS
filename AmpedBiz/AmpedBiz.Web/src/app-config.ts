@@ -21,6 +21,6 @@ export let appConfig = {
     previousText: '<',
     nextText: '>',
     lastText: '>>',
-    rotate: false
+    rotate: true
   }
 }

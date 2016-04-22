@@ -4,6 +4,7 @@ import {BranchCreate} from './branch-create';
 import {Branch} from './common/models/branch';
 import {BranchService} from '../services/branch-service';
 import {NotificationService} from '../common/controls/notification-service';
+import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 
 @autoinject
 export class BranchList {
@@ -11,29 +12,61 @@ export class BranchList {
   private _service: BranchService;
   private _notification: NotificationService;
 
-  public branches: Branch[];
-  public filterText: string = '';
+  public filter: Filter;
+  public sorter: Sorter;
+  public pager: Pager<Branch>;
 
-  constructor(dialog: DialogService, service: BranchService, notification: NotificationService) {
+  constructor(dialog: DialogService, service: BranchService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<Branch>) {
     this._dialog = dialog;
     this._service = service;
     this._notification = notification;
+
+    this.filter = filter;
+    this.sorter = sorter;
+    this.pager = pager;
+
+    this.filter["name"] = '';
   }
 
   activate() {
-    this.refreshList();
+    this.getList();
   }
 
-  refreshList() {
-    this.filterText = '';
-    this.filter();
+  doFilter() : void {
+    this.getList();
   }
 
-  filter() {
-    this._service.getBranches(this.filterText)
+  doSort(field: string) {
+    if (this.sorter[field] == SortDirection.Descending)
+      this.sorter[field] = SortDirection.Ascending
+    else
+      this.sorter[field] = SortDirection.Descending;
+
+    this.getList();
+  }
+
+  doPage(pageNumber: number) {
+    if (this.pager.offset === pageNumber)
+      return;
+
+    this.pager.offset = pageNumber;
+    
+    this.getList();
+  }
+
+  getList() {
+    this._service
+      .getPages({
+        filter: this.filter,
+        sorter: this.sorter,
+        pager: <PagerRequest>this.pager
+      })
       .then(data => {
-        this.branches = <Branch[]>data
-        if (!this.branches || this.branches.length == 0) {
+        var response = <PagerResponse<Branch>>data;
+        this.pager.count = response.count;
+        this.pager.items = response.items;
+
+        if (this.pager.count === 0) {
           this._notification.warning("No items found!");
         }
       })
@@ -47,7 +80,7 @@ export class BranchList {
       .open({ viewModel: BranchCreate, model: null })
       .then(response => {
         if (!response.wasCancelled) {
-          this.refreshList();
+          this.getList();
         }
       });
   }
@@ -57,7 +90,7 @@ export class BranchList {
       .open({ viewModel: BranchCreate, model: item })
       .then(response => {
         if (!response.wasCancelled) {
-          this.refreshList();
+          this.getList();
         }
       });
   }

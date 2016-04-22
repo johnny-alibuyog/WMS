@@ -6,18 +6,23 @@ using NHibernate.Linq;
 
 namespace AmpedBiz.Data.DataInitializer
 {
-    public class PaymentTypeDataSeeder : IDataSeeder
+    class ProductCategorySeeder : ISeeder
     {
         private readonly ISessionFactory _sessionFactory;
 
-        public PaymentTypeDataSeeder(ISessionFactory sessionFactory)
+        public ProductCategorySeeder(ISessionFactory sessionFactory)
         {
             _sessionFactory = sessionFactory;
         }
 
+        public bool DummyData
+        {
+            get { return false; }
+        }
+
         public int ExecutionOrder
         {
-            get { return 2; }
+            get { return 3; }
         }
 
         public void Seed()
@@ -25,9 +30,9 @@ namespace AmpedBiz.Data.DataInitializer
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var paymentTypes = session.Query<PaymentType>().ToList();
+                var paymentTypes = session.Query<ProductCategory>().ToList();
 
-                foreach(var item in PaymentType.All)
+                foreach (var item in ProductCategory.All)
                 {
                     if (!paymentTypes.Contains(item))
                         session.Save(item);

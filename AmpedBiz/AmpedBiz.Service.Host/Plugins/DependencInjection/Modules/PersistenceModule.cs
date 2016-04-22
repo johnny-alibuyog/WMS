@@ -1,4 +1,5 @@
 ﻿using System;
+using AmpedBiz.Common.Configurations;
 using AmpedBiz.Data;
 using AmpedBiz.Data.Configurations;
 using AmpedBiz.Data.DataInitializer;
@@ -20,17 +21,7 @@ namespace AmpedBiz.Service.Host.Plugins.DependencInjection.Modules
                 .AsSelf()
                 .SingleInstance();
 
-            builder.Register<SessionProvider>(context =>
-                    new SessionProvider(
-                        validator: context.Resolve<ValidatorEngine>(),
-                        auditProvider: context.Resolve<IAuditProvider>(),
-                        host: Settings.Default.Host,
-                        port: Settings.Default.Port,
-                        database: Settings.Default.Database,
-                        username: Settings.Default.Username,
-                        password: Settings.Default.Password
-                    )
-                )
+            builder.RegisterType<SessionProvider>()
                 .As<ISessionProvider>()
                 .SingleInstance();
 
@@ -38,7 +29,7 @@ namespace AmpedBiz.Service.Host.Plugins.DependencInjection.Modules
                 .SingleInstance();
 
             builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
-                .Where(type => type.IsAssignableTo<IDataSeeder>())
+                .Where(type => type.IsAssignableTo<ISeeder>())
                 .AsImplementedInterfaces()
                 .AsSelf();
         }

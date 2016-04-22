@@ -30,7 +30,7 @@ export class PaymentTypeList {
   }
 
   filter() {
-    this._service.getPaymentTypes(this.filterText)
+    this._service.getLists(this.filterText)
       .then(data => {
         this.paymentTypes = <PaymentType[]>data
         if (!this.paymentTypes || this.paymentTypes.length == 0) {

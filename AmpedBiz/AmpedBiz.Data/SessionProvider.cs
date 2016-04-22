@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using AmpedBiz.Common.Configurations;
 using AmpedBiz.Data.Configurations;
 using AmpedBiz.Data.Conventions;
 using AmpedBiz.Data.EntityDefinitions;
@@ -58,24 +59,19 @@ namespace AmpedBiz.Data
             return CurrentSessionContext.Unbind(_sessionFactory);
         }
 
-        public SessionProvider(ValidatorEngine validator, IAuditProvider auditProvider, string host, int port, string database, string username, string password)
+        public SessionProvider(ValidatorEngine validator, IAuditProvider auditProvider)
         {
             _validator = validator;
             _auditProvider = auditProvider;
 
-            var mappingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Mappings");
-
-            if (!Directory.Exists(mappingsPath))
-                Directory.CreateDirectory(mappingsPath);
-
             _sessionFactory = Fluently.Configure()
                 .Database(PostgreSQLConfiguration.PostgreSQL82
                     .ConnectionString(x => x
-                        .Host(host)
-                        .Port(port)
-                        .Database(database)
-                        .Username(username)
-                        .Password(password)
+                        .Host(DbConfig.Instance.Host)
+                        .Port(DbConfig.Instance.Port)
+                        .Database(DbConfig.Instance.Name)
+                        .Username(DbConfig.Instance.Username)
+                        .Password(DbConfig.Instance.Password)
                     )
                     //.ConnectionString(x => x.FromConnectionStringWithKey("BankingConnectionString"))
                     .QuerySubstitutions("true 1, false 0, yes y, no n")
@@ -88,7 +84,7 @@ namespace AmpedBiz.Data
                     .FluentMappings.AddFromAssemblyOf<UserMapping>()
                     .Conventions.AddFromAssemblyOf<_CustomJoinedSubclassConvention>()
                     .Conventions.Setup(o => o.Add(AutoImport.Never()))
-                    //.ExportTo(schemaPath)
+                    .ExportTo(DbConfig.Instance.GetWorkingPath("Mappings"))
                 )
                 .ProxyFactoryFactory<DefaultProxyFactoryFactory>()
                 .ExposeConfiguration(EventListenerConfiguration.Configure)
@@ -97,6 +93,7 @@ namespace AmpedBiz.Data
                 .ExposeConfiguration(IndexForeignKeyConfiguration.Configure)
                 .ExposeConfiguration(SchemaConfiguration.Configure)
                 .ExposeConfiguration(SessionContextConfiguration.Configure)
+                //.ExposeConfiguration(x => x.SetProperty("adonet.batch_size", "15"))
                 .BuildSessionFactory();
         }
     }

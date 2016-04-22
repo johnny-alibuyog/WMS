@@ -8,13 +8,18 @@ using NHibernate.Linq;
 
 namespace AmpedBiz.Data.DataInitializer
 {
-    public class UserDataSeeder : IDataSeeder
+    public class UserSeeder : ISeeder
     {
         private readonly ISessionFactory _sessionFactory;
 
-        public UserDataSeeder(ISessionFactory sessionFactory)
+        public UserSeeder(ISessionFactory sessionFactory)
         {
             _sessionFactory = sessionFactory;
+        }
+
+        public bool DummyData
+        {
+            get { return true; }
         }
 
         public int ExecutionOrder

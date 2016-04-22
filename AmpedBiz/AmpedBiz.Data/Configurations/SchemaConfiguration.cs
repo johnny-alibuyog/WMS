@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using AmpedBiz.Common.Configurations;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 
@@ -27,13 +28,8 @@ namespace AmpedBiz.Data.Configurations
         {
             //new SchemaExport(config).Create(true, true);
 
-            var schemaPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Schema");
-
-            if (!Directory.Exists(schemaPath))
-                Directory.CreateDirectory(schemaPath);
-
             new SchemaExport(config)
-                .SetOutputFile(Path.Combine(schemaPath, "schema.sql"))
+                .SetOutputFile(Path.Combine(DbConfig.Instance.GetWorkingPath("Schemas"), "schema.sql"))
                 .Create(x => Debug.WriteLine(x), true);
             //.Create(true, true);
         }
@@ -52,9 +48,9 @@ namespace AmpedBiz.Data.Configurations
         /// <param name="config">Nhibernate configuration</param>
         private static void UpdateDatabase(Configuration config)
         {
-            new SchemaUpdate(config).Execute(true, true);
+            //new SchemaUpdate(config).Execute(true, true);
 
-            //new SchemaUpdate(config).Execute(x => Debug.WriteLine(x), true);
+            new SchemaUpdate(config).Execute(x => Debug.WriteLine(x), true);
         }
     }
 }

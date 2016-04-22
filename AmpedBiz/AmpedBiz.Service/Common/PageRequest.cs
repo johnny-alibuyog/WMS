@@ -15,6 +15,17 @@ namespace AmpedBiz.Service.Common
         public virtual Sorter Sorter { get; set; }
 
         public virtual Pager Pager { get; set; }
+
+        public PageRequest()
+        {
+            this.Filter = new Filter();
+            this.Sorter = new Sorter();
+            this.Pager = new Pager()
+            {
+                Offset = 1,
+                Size = 10
+            };
+        }
     }
 
     public enum SortDirection
