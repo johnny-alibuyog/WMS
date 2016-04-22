@@ -1,4 +1,5 @@
 <template>
+
   <section class="au-animate">
     <div class="container col-md-8">
 
@@ -29,12 +30,14 @@
               <th>Name</th>
               <th>Category</th>
               <th>Supplier</th>
-              <th class="text-right">Standard Cost</th>
-              <th class="text-right">List Price</th>
+              <th class="text-right">Base Price</th>
+              <th class="text-right">Wholesale Price</th>
+              <th class="text-right">Retail Price</th>
+              <th>Discontinued</th>
             </tr>
           </thead>
           <tbody>
-            <tr repeat.for="item of productInventories">
+            <tr repeat.for="item of products">
               <td>
                 <a href="javascript:undefined" class="text-info" click.delegate="edit(item)">
                   <i class="fa fa-pencil"></i>
@@ -43,12 +46,14 @@
                   <i class="fa fa-times"></i>
                 </a>
               </td>
-              <td>${item.code}</td>
+              <td>${item.id}</td>
               <td>${item.name}</td>
-              <td>${item.category}</td>
-              <td>${item.supplier}</td>
-              <td class="text-right">${item.standardCost}</td>
-              <td class="text-right">${item.listPrice}</td>
+              <td>${item.categoryId}</td>
+              <td>${item.supplierId}</td>
+              <td class="text-right">${item.basePriceCurrencyId} ${item.basePriceAmount}</td>
+              <td class="text-right">${item.basePriceCurrencyId} ${item.wholeSalePriceAmount}</td>
+              <td class="text-right">${item.basePriceCurrencyId} ${item.retailPriceAmount}</td>
+              <td>${item.discontinued}</td>
             </tr>
           </tbody>
         </table>

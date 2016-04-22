@@ -105,6 +105,7 @@
     <Compile Include="CustomTypes\JsonType.cs" />
     <Compile Include="CustomTypes\XmlType.cs" />
     <Compile Include="DataInitializer\BranchDataSeeder.cs" />
+    <Compile Include="DataInitializer\CurrencyDataSeeder.cs" />
     <Compile Include="DataInitializer\IDataSeeder.cs" />
     <Compile Include="DataInitializer\PaymentTypeDataSeeder.cs" />
     <Compile Include="DataInitializer\ProductCategoryDataSeeder.cs" />

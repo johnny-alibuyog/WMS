@@ -1,23 +1,26 @@
-﻿using System;
-using System.Linq;
-using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Entities;
 using NHibernate;
 using NHibernate.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace AmpedBiz.Data.DataInitializer
 {
-    public class RoleDataSeeder : IDataSeeder
+    public class CurrencyDataSeeder : IDataSeeder
     {
         private readonly ISessionFactory _sessionFactory;
 
-        public RoleDataSeeder(ISessionFactory sessionFactory)
+        public CurrencyDataSeeder(ISessionFactory sessionFactory)
         {
             _sessionFactory = sessionFactory;
         }
 
         public int ExecutionOrder
         {
-            get { return 4; }
+            get { return 1; }
         }
 
         public void Seed()
@@ -25,12 +28,13 @@ namespace AmpedBiz.Data.DataInitializer
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var paymentTypes = session.Query<Role>().ToList();
-
-                foreach (var item in Role.All)
+                var users = session.Query<Currency>().ToList();
+                if (users.Count == 0)
                 {
-                    if (!paymentTypes.Contains(item))
+                    foreach (var item in Currency.All)
+                    {
                         session.Save(item);
+                    }
                 }
 
                 transaction.Commit();

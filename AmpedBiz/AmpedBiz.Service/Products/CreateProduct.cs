@@ -40,6 +40,32 @@ namespace AmpedBiz.Service.Products
 
                     var entity = Mapper.Map<Dto.Product, Product>(message);
 
+                    entity.BasePrice = new Money()
+                    {
+                        Amount = message.BasePriceAmount,
+                        Currency = session.Load<Currency>(message.BasePriceCurrencyId)
+                    };
+                    entity.RetailPrice = new Money()
+                    {
+                        Amount = message.RetailPriceAmount,
+                        Currency = session.Load<Currency>(message.RetailPriceCurrencyId)
+                    };
+                    entity.WholeSalePrice = new Money()
+                    {
+                        Amount = message.WholeSalePriceAmount,
+                        Currency = session.Load<Currency>(message.WholeSalePriceCurrencyId)
+                    };
+
+                    entity.Supplier = new Supplier()
+                    {
+                        Id = message.SupplierId
+                    };
+
+                    entity.Category = new ProductCategory()
+                    {
+                        Id = message.CategoryId
+                    };
+
                     session.Save(entity);
 
                     Mapper.Map<Product, Dto.Product>(entity, response);

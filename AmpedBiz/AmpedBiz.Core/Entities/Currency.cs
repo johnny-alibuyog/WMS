@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AmpedBiz.Core.Entities
 {
@@ -18,5 +19,6 @@ namespace AmpedBiz.Core.Entities
         }
 
         public static readonly Currency PHP = new Currency("PHP", "₱", "Philipine Peso");
+        public static readonly IEnumerable<Currency> All = new Currency[] { Currency.PHP };
     }
 }
