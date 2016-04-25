@@ -1,6 +1,6 @@
 ﻿namespace AmpedBiz.Service.Dto.Mappers
 {
-    public interface IMappingInitializer
+    public interface IMapper
     {
         void Initialze();
     }

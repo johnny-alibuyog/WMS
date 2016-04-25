@@ -7,15 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmpedBiz.Data.DataInitializer
+namespace AmpedBiz.Data.Seeders
 {
-    public class CurrencyDataSeeder : IDataSeeder
+    public class CurrencyDataSeeder : ISeeder
     {
         private readonly ISessionFactory _sessionFactory;
 
         public CurrencyDataSeeder(ISessionFactory sessionFactory)
         {
             _sessionFactory = sessionFactory;
+        }
+
+        public bool DummyData
+        {
+            get { return false; }
         }
 
         public int ExecutionOrder

@@ -53,6 +53,33 @@ section {
   margin: 0 !important;
 }
 
+.fa-sort {
+  color: gray;
+}
+
+/*
+.sortable { 
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAQAAADYWf5HAAAAkElEQVQoz7X QMQ5AQBCF4dWQSJxC5wwax1Cq1e7BAdxD5SL+Tq/QCM1oNiJidwox0355mXnG/DrEtIQ6azioNZQxI0ykPhTQIwhCR+BmBYtlK7kLJYwWCcJA9M4qdrZrd8pPjZWPtOqdRQy320YSV17OatFC4euts6z39GYMKRPCTKY9UnPQ6P+GtMRfGtPnBCiqhAeJPmkqAAAAAElFTkSuQmCC'); 
+    cursor: pointer; 
+    font-weight: bold; 
+    background-repeat: no-repeat; 
+    background-position: right; 
+    padding-left: .5cm; 
+    border-right: 1px solid #dad9c7; 
+    margin-left: -1px;
+} 
+
+.sortable-asc { 
+  background-image: url(../images/sortable_asc.gif); 
+  background-color: #3399FF; 
+} 
+
+.sortable-desc { 
+    background-image: url(../images/sortable_desc.gif); 
+    background-color: #3399FF; 
+} 
+*/
+
 .navbar-nav li.loader {
   margin: 12px 24px 0 6px;
 }

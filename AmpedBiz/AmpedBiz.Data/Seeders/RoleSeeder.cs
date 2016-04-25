@@ -4,13 +4,13 @@ using AmpedBiz.Core.Entities;
 using NHibernate;
 using NHibernate.Linq;
 
-namespace AmpedBiz.Data.DataInitializer
+namespace AmpedBiz.Data.Seeders
 {
-    class ProductCategorySeeder : ISeeder
+    public class RoleSeeder : ISeeder
     {
         private readonly ISessionFactory _sessionFactory;
 
-        public ProductCategorySeeder(ISessionFactory sessionFactory)
+        public RoleSeeder(ISessionFactory sessionFactory)
         {
             _sessionFactory = sessionFactory;
         }
@@ -22,7 +22,7 @@ namespace AmpedBiz.Data.DataInitializer
 
         public int ExecutionOrder
         {
-            get { return 3; }
+            get { return 4; }
         }
 
         public void Seed()
@@ -30,9 +30,9 @@ namespace AmpedBiz.Data.DataInitializer
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var paymentTypes = session.Query<ProductCategory>().ToList();
+                var paymentTypes = session.Query<Role>().ToList();
 
-                foreach (var item in ProductCategory.All)
+                foreach (var item in Role.All)
                 {
                     if (!paymentTypes.Contains(item))
                         session.Save(item);

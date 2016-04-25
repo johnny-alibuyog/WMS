@@ -22,35 +22,20 @@ export class CustomerList {
     this._notification = notification;
 
     this.filter = filter;
-    this.sorter = sorter;
-    this.pager = pager;
-
+    this.filter.onFilter = () => this.getList();
     this.filter["name"] = '';
+
+    this.sorter = sorter;
+    this.sorter.onSort = () => this.getList();
+    this.sorter["code"] = SortDirection.Ascending;
+    this.sorter["name"] = SortDirection.None;
+    this.sorter["descirption"] = SortDirection.None;
+
+    this.pager = pager;
+    this.pager.onPage = () => this.getList();
   }
 
   activate() {
-    this.getList();
-  }
-
-  doFilter() : void {
-    this.getList();
-  }
-
-  doSort(field: string) {
-    if (this.sorter[field] == SortDirection.Descending)
-      this.sorter[field] = SortDirection.Ascending
-    else
-      this.sorter[field] = SortDirection.Descending;
-
-    this.getList();
-  }
-
-  doPage(pageNumber: number) {
-    if (this.pager.offset === pageNumber)
-      return;
-
-    this.pager.offset = pageNumber;
-    
     this.getList();
   }
 

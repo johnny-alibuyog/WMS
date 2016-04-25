@@ -29,6 +29,13 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpPost()]
+        [Route("pages")]
+        public GetProductCategoryPages.Response Page([FromBody]GetProductCategoryPages.Request request)
+        {
+            return _mediator.Send(request ?? new GetProductCategoryPages.Request());
+        }
+
+        [HttpPost()]
         [Route("")]
         public CreateProductCategory.Response Create([FromBody]CreateProductCategory.Request request)
         {

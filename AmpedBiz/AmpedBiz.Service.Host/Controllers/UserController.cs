@@ -28,6 +28,13 @@ namespace AmpedBiz.Service.Host.Controllers
             return _mediator.Send(request ?? new GetUsers.Request());
         }
 
+        [HttpPost()]
+        [Route("pages")]
+        public GetUserPages.Response Page([FromBody]GetUserPages.Request request)
+        {
+            return _mediator.Send(request ?? new GetUserPages.Request());
+        }
+
         [HttpGet()]
         [Route("initial")]
         public GetInitialUser.Response Get([FromUri]GetInitialUser.Request request)

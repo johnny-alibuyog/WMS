@@ -30,8 +30,9 @@ namespace AmpedBiz.Service.Common
 
     public enum SortDirection
     {
-        Ascending,
-        Descending
+        None = 0,
+        Ascending = 1,
+        Descending = 2
     }
 
     public class Filter : Dictionary<string, object>

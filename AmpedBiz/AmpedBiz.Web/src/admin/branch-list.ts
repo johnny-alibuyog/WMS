@@ -1,7 +1,7 @@
 import {autoinject} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
 import {BranchCreate} from './branch-create';
-import {Branch} from './common/models/branch';
+import {Branch, BranchPageItem} from './common/models/branch';
 import {BranchService} from '../services/branch-service';
 import {NotificationService} from '../common/controls/notification-service';
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
@@ -22,39 +22,24 @@ export class BranchList {
     this._notification = notification;
 
     this.filter = filter;
-    this.sorter = sorter;
-    this.pager = pager;
-
+    this.filter.onFilter = () => this.getList();
     this.filter["name"] = '';
+
+    this.sorter = sorter;
+    this.sorter.onSort = () => this.getList();
+    this.sorter["code"] = SortDirection.Ascending;
+    this.sorter["name"] = SortDirection.None;
+    this.sorter["descirption"] = SortDirection.None;
+
+    this.pager = pager;
+    this.pager.onPage = () => this.getList();
   }
 
   activate() {
     this.getList();
   }
 
-  doFilter() : void {
-    this.getList();
-  }
-
-  doSort(field: string) {
-    if (this.sorter[field] == SortDirection.Descending)
-      this.sorter[field] = SortDirection.Ascending
-    else
-      this.sorter[field] = SortDirection.Descending;
-
-    this.getList();
-  }
-
-  doPage(pageNumber: number) {
-    if (this.pager.offset === pageNumber)
-      return;
-
-    this.pager.offset = pageNumber;
-    
-    this.getList();
-  }
-
-  getList() {
+  getList(): void {
     this._service
       .getPages({
         filter: this.filter,
@@ -62,7 +47,7 @@ export class BranchList {
         pager: <PagerRequest>this.pager
       })
       .then(data => {
-        var response = <PagerResponse<Branch>>data;
+        var response = <PagerResponse<BranchPageItem>>data;
         this.pager.count = response.count;
         this.pager.items = response.items;
 

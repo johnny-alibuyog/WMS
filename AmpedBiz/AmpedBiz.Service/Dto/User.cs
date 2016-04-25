@@ -21,7 +21,16 @@ namespace AmpedBiz.Service.Dto
         public virtual string BranchId { get; set; }
 
         public virtual List<Role> Roles { get; set; }
+    }
 
+    public class UserPageItem
+    {
+        public virtual string Id { get; set; }
 
+        public virtual string Username { get; set; }
+
+        public virtual Person Person { get; set; }
+
+        public virtual string BranchName { get; set; }
     }
 }

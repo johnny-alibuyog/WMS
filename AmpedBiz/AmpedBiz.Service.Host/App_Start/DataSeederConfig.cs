@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Web.Http;
 using AmpedBiz.Common.Configurations;
-using AmpedBiz.Data.DataInitializer;
+using AmpedBiz.Data.Seeders;
 using Common.Logging;
 
 namespace AmpedBiz.Service.Host.App_Start

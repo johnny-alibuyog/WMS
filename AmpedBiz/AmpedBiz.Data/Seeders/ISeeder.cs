@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmpedBiz.Data.DataInitializer
+namespace AmpedBiz.Data.Seeders
 {
     public interface ISeeder
     {

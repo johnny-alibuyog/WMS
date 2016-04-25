@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AmpedBiz.Core.Entities;
 using NHibernate;
 using NHibernate.Linq;
 
-namespace AmpedBiz.Data.DataInitializer
+namespace AmpedBiz.Data.Seeders
 {
-    public class BranchSeeder : ISeeder
+    public class UserSeeder : ISeeder
     {
         private readonly ISessionFactory _sessionFactory;
 
-        public BranchSeeder(ISessionFactory sessionFactory)
+        public UserSeeder(ISessionFactory sessionFactory)
         {
             _sessionFactory = sessionFactory;
         }
@@ -25,20 +24,27 @@ namespace AmpedBiz.Data.DataInitializer
 
         public int ExecutionOrder
         {
-            get { return 10; }
+            get { return 20; }
         }
 
         public void Seed()
         {
-            var data = new List<Branch>();
+            var data = new List<User>();
 
-            for (int i = 0; i < 153; i++)
+            for (int i = 0; i < 8; i++)
             {
-                data.Add(new Branch()
+                data.Add(new User()
                 {
-                    Id = $"branch{i}",
-                    Name = $"Branch {i}",
-                    Description = $"Description {i}",
+                    Id = $"user{i}",
+                    Username = $"Username{i}",
+                    Password = $"Password{i}",
+                    Person = new Person()
+                    {
+                        FirstName = $"FirstName {i}",
+                        MiddleName = $"MiddleName {i}",
+                        LastName = $"LastName {i}",
+                        BirthDate = DateTime.UtcNow
+                    },
                     Address = new Address()
                     {
                         Street = $"Street {i}",
@@ -48,20 +54,29 @@ namespace AmpedBiz.Data.DataInitializer
                         Region = $"Region {i}",
                         Country = $"Country {i}",
                         ZipCode = $"Zip Code {i}"
-                    }
+                    },
                 });
             }
 
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                //session.SetBatchSize(100);
-
-                var users = session.Query<Branch>().ToList();
+                var users = session.Query<User>().ToList();
+                var roles = session.Query<Role>().ToList();
+                var branch = session.Query<Branch>().FirstOrDefault();
                 if (users.Count == 0)
                 {
                     foreach (var item in data)
                     {
+                        item.Branch = branch;
+                        item.UserRoles = roles
+                            .Select(x => new UserRole()
+                            {
+                                Role = x,
+                                User = item
+                            })
+                            .ToList();
+
                         session.Save(item);
                     }
                 }

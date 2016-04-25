@@ -29,6 +29,13 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpPost()]
+        [Route("pages")]
+        public GetPaymentTypePages.Response Page([FromBody]GetPaymentTypePages.Request request)
+        {
+            return _mediator.Send(request ?? new GetPaymentTypePages.Request());
+        }
+
+        [HttpPost()]
         [Route("")]
         public CreatePaymentType.Response Create([FromBody]CreatePaymentType.Request request)
         {

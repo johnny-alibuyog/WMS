@@ -6,4 +6,11 @@
 
         public string Name { get; set; }
     }
+
+    public class ProductCategoryPageItem
+    {
+        public string Id { get; set; }
+
+        public string Name { get; set; }
+    }
 }

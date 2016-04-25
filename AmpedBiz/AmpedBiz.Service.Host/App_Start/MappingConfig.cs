@@ -7,7 +7,7 @@ namespace AmpedBiz.Service.Host.App_Start
     {
         public static void Register(HttpConfiguration config)
         {
-            var mappingInitializer = config.DependencyResolver.GetService(typeof(IMappingInitializer)) as IMappingInitializer;
+            var mappingInitializer = config.DependencyResolver.GetService(typeof(IMapper)) as IMapper;
             mappingInitializer.Initialze();
         }
     }

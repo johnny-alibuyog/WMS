@@ -15,7 +15,7 @@ namespace AmpedBiz.Service.Customers
     {
         public class Request : PageRequest, IRequest<Response> { }
 
-        public class Response : PageResponse<Dto.Customer> { }
+        public class Response : PageResponse<Dto.CustomerPageItem> { }
 
         public class Handler : IRequestHandler<Request, Response>
         {
@@ -62,8 +62,15 @@ namespace AmpedBiz.Service.Customers
                             : query.OrderByDescending(x => x.Name);
                     });
 
-
                     var itemsFuture = query
+                        .Select(x => new Dto.CustomerPageItem()
+                        {
+                            Id = x.Id,
+                            Name = x.Name,
+                            Contact = Mapper.Map<Entity.Contact, Dto.Contact>(x.Contact),
+                            OfficeAddress = Mapper.Map<Entity.Address, Dto.Address>(x.OfficeAddress),
+                            BillingAddress = Mapper.Map<Entity.Address, Dto.Address>(x.BillingAddress),
+                        })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)
                         .ToFuture();
@@ -74,7 +81,7 @@ namespace AmpedBiz.Service.Customers
                     response = new Response()
                     {
                         Count = countFuture.Value,
-                        Items = Mapper.Map<List<Entity.Customer>, List<Dto.Customer>>(itemsFuture.ToList())
+                        Items = itemsFuture.ToList()
                     };
                 }
 

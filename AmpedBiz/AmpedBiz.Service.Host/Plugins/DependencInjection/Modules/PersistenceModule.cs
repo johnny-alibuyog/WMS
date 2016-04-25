@@ -2,7 +2,7 @@
 using AmpedBiz.Common.Configurations;
 using AmpedBiz.Data;
 using AmpedBiz.Data.Configurations;
-using AmpedBiz.Data.DataInitializer;
+using AmpedBiz.Data.Seeders;
 using AmpedBiz.Service.Host.Plugins.Providers;
 using AmpedBiz.Service.Host.Properties;
 using Autofac;

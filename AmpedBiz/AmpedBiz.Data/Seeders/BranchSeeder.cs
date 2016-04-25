@@ -7,13 +7,13 @@ using AmpedBiz.Core.Entities;
 using NHibernate;
 using NHibernate.Linq;
 
-namespace AmpedBiz.Data.DataInitializer
+namespace AmpedBiz.Data.Seeders
 {
-    public class CustomerSeeder : ISeeder
+    public class BranchSeeder : ISeeder
     {
         private readonly ISessionFactory _sessionFactory;
 
-        public CustomerSeeder(ISessionFactory sessionFactory)
+        public BranchSeeder(ISessionFactory sessionFactory)
         {
             _sessionFactory = sessionFactory;
         }
@@ -30,34 +30,16 @@ namespace AmpedBiz.Data.DataInitializer
 
         public void Seed()
         {
-            var data = new List<Customer>();
+            var data = new List<Branch>();
 
             for (int i = 0; i < 153; i++)
             {
-                data.Add(new Customer()
+                data.Add(new Branch()
                 {
-                    Id = $"customer{i}",
-                    Name = $"Customer {i}",
-                    Tenant = new Tenant(),
-                    Contact = new Contact()
-                    {
-                        Email = $"customer{i}@domain.com",
-                        Landline = $"{i}{i}{i}-{i}{i}{i}{i}",
-                        Fax = $"{i}{i}{i}-{i}{i}{i}{i}",
-                        Mobile = $"{i}{i}{i}{i}-{i}{i}{i}-{i}{i}{i}{i}",
-                        Web = $"customer{i}.com",
-                    },
-                    OfficeAddress = new Address()
-                    {
-                        Street = $"Street {i}",
-                        Barangay = $"Barangay {i}",
-                        City = $"City {i}",
-                        Province = $"Province {i}",
-                        Region = $"Region {i}",
-                        Country = $"Country {i}",
-                        ZipCode = $"Zip Code {i}"
-                    },
-                    BillingAddress = new Address()
+                    Id = $"branch{i}",
+                    Name = $"Branch {i}",
+                    Description = $"Description {i}",
+                    Address = new Address()
                     {
                         Street = $"Street {i}",
                         Barangay = $"Barangay {i}",
@@ -75,7 +57,7 @@ namespace AmpedBiz.Data.DataInitializer
             {
                 //session.SetBatchSize(100);
 
-                var users = session.Query<Customer>().ToList();
+                var users = session.Query<Branch>().ToList();
                 if (users.Count == 0)
                 {
                     foreach (var item in data)
