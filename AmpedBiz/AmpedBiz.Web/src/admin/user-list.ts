@@ -30,7 +30,7 @@ export class BranchList {
   }
 
   filter() {
-    this._service.getUsers(this.filterText)
+    this._service.getLists(this.filterText)
       .then(data => {
         this.users = <User[]>data
         if (!this.users || this.users.length == 0) {

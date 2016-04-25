@@ -16,7 +16,7 @@ export class BranchList {
   public sorter: Sorter;
   public pager: Pager<Branch>;
 
-  constructor(dialog: DialogService, service: BranchService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<Branch>) {
+  constructor(dialog: DialogService, service: BranchService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<BranchPageItem>) {
     this._dialog = dialog;
     this._service = service;
     this._notification = notification;

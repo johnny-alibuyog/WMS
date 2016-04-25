@@ -30,7 +30,7 @@ export class ProductCategoryList {
   }
 
   filter() {
-    this._service.getProductCategories(this.filterText)
+    this._service.getLists(this.filterText)
       .then(data => {
         this.productCategories = <ProductCategory[]>data
         if (!this.productCategories || this.productCategories.length == 0) {

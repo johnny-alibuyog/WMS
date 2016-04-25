@@ -71,12 +71,4 @@ export interface SendParameters {
   data?: any;
   method?: string;
   url: string;
-  //callback: Callback;
 }
-
-/*
-export interface Callback {
-  success: (data: any) => void;
-  error: (error: any) => void;
-}
-*/

@@ -8,3 +8,10 @@ export interface Customer {
   billingAddress: Address;
   officeAddress: Address;
 }
+
+export interface CustomerPageItem {
+  id: string;
+  name: string;
+  description: string;
+  address: Address;
+}

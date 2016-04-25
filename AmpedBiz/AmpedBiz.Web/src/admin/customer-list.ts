@@ -1,7 +1,7 @@
 import {autoinject} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
 import {CustomerCreate} from './customer-create';
-import {Customer} from './common/models/customer';
+import {Customer, CustomerPageItem} from './common/models/customer';
 import {CustomerService} from '../services/customer-service';
 import {NotificationService} from '../common/controls/notification-service';
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
@@ -16,7 +16,7 @@ export class CustomerList {
   public sorter: Sorter;
   public pager: Pager<Customer>;
 
-  constructor(dialog: DialogService, service: CustomerService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<Customer>) {
+  constructor(dialog: DialogService, service: CustomerService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<CustomerPageItem>) {
     this._dialog = dialog;
     this._service = service;
     this._notification = notification;
@@ -47,7 +47,7 @@ export class CustomerList {
         pager: <PagerRequest>this.pager
       })
       .then(data => {
-        var response = <PagerResponse<Customer>>data;
+        var response = <PagerResponse<CustomerPageItem>>data;
         this.pager.count = response.count;
         this.pager.items = response.items;
 

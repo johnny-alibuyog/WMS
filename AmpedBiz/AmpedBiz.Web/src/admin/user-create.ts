@@ -34,7 +34,7 @@ export class UserCreate {
     if (user) {
       this.header = "Edit User";
       this.isEdit = true;
-      this._service.getUser(user.id)
+      this._service.get(user.id)
         .then(data => this.user = <User>data)
         .catch(error => this.notificaton.warning(error));
     }
@@ -54,7 +54,7 @@ export class UserCreate {
   save() {
     if (this.isEdit) {
 
-      this._service.updateUser(this.user)
+      this._service.update(this.user)
         .then(data => {
           this.notificaton.success("User  has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <User>data }));
@@ -65,7 +65,7 @@ export class UserCreate {
     }
     else {
 
-      this._service.createUser(this.user)
+      this._service.create(this.user)
         .then(data => {
           this.notificaton.success("User has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <User>data }));

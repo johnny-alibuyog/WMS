@@ -25,7 +25,7 @@ export class ProductCategoryCreate {
     if (productCategory) {
       this.header = "Edit Product Category";
       this.isEdit = true;
-      this._service.getProductCategory(productCategory.id)
+      this._service.get(productCategory.id)
         .then(data => this.productCategory = <ProductCategory>data)
         .catch(error => this.notificaton.warning(error));
     }
@@ -44,7 +44,7 @@ export class ProductCategoryCreate {
 
     if (this.isEdit) {
 
-      this._service.updateProductCategory(this.productCategory)
+      this._service.update(this.productCategory)
         .then(data => {
           this.notificaton.success("Product Category has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <ProductCategory>data }));
@@ -55,7 +55,7 @@ export class ProductCategoryCreate {
     }
     else {
 
-      this._service.createProductCategory(this.productCategory)
+      this._service.create(this.productCategory)
         .then(data => {
           this.notificaton.success("Product Category has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <ProductCategory>data }));

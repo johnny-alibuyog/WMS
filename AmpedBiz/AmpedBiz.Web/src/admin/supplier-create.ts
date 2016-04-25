@@ -25,7 +25,7 @@ export class SupplierCreate {
     if (supplier) {
       this.header = "Edit Supplier";
       this.isEdit = true;
-      this._service.getSupplier(supplier.id)
+      this._service.get(supplier.id)
         .then(data => this.supplier = <Supplier>data)
         .catch(error => this.notificaton.warning(error));
     }
@@ -44,7 +44,7 @@ export class SupplierCreate {
 
     if (this.isEdit) {
 
-      this._service.updateSupplier(this.supplier)
+      this._service.update(this.supplier)
         .then(data => {
           this.notificaton.success("Supplier has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <Supplier>data }));
@@ -55,7 +55,7 @@ export class SupplierCreate {
     }
     else {
 
-      this._service.createSupplier(this.supplier)
+      this._service.create(this.supplier)
         .then(data => {
           this.notificaton.success("Supplier has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <Supplier>data }));

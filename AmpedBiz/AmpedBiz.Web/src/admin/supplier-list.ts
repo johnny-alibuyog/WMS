@@ -30,7 +30,7 @@ export class SupplierList {
   }
 
   filter() {
-    this._service.getSuppliers(this.filterText)
+    this._service.getLists(this.filterText)
       .then(data => {
         this.suppliers = <Supplier[]>data
         if (!this.suppliers || this.suppliers.length == 0) {
