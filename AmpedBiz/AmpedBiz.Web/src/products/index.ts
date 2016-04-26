@@ -35,6 +35,13 @@ export class Index {
         nav: true,
         title: 'Purchase History'
       },
+      {
+        route: ['product-discontinued'],
+        name: 'product-discontinued',
+        moduleId: './product-discontinued',
+        nav: true,
+        title: 'Discontinued Products'
+      },
     ]);
     
     this.router = router;
