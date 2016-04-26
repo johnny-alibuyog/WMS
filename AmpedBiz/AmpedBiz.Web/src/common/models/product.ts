@@ -8,7 +8,7 @@ export interface Product {
   basePriceAmount?: number;
   retailPriceAmount?: number;
   wholeSalePriceAmount?: number;
-  discontinued?: number;
+  discontinued?: boolean;
 }
 
 export interface ProductPageItem {
@@ -21,5 +21,5 @@ export interface ProductPageItem {
   basePrice?: string;
   retailPrice?: string;
   wholeSalePrice?: string;
-  discontinued?: number;
+  discontinued?: boolean;
 }

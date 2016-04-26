@@ -1,6 +1,8 @@
+import {transient} from 'aurelia-framework';
 import {Dictionary} from '../custom_types/dictionary';
 import {appConfig} from '../../app-config';
 
+@transient()
 export class Filter implements Dictionary<any> {
   [key: string]: any;
 
@@ -14,6 +16,7 @@ export class Filter implements Dictionary<any> {
   }
 }
 
+@transient()
 export class Sorter implements Dictionary<any> {
   [key: string]: any;
 
@@ -73,6 +76,7 @@ export class Sorter implements Dictionary<any> {
   }
 }
 
+@transient()
 export class Pager<T> implements PagerRequest, PagerResponse<T> {
   public offset: number;
   public size: number;

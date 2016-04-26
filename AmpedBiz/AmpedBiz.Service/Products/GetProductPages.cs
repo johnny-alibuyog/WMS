@@ -50,6 +50,11 @@ namespace AmpedBiz.Service.Products
                         query = query.Where(x => x.Description.StartsWith(value));
                     });
 
+                    message.Filter.Compose<bool>("discontinued", value =>
+                    {
+                        query = query.Where(x => x.Discontinued == value);
+                    });
+
                     // compose sort
                     message.Sorter.Compose("code", direction =>
                     {

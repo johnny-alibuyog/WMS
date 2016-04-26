@@ -29,6 +29,9 @@ namespace AmpedBiz.Service.Products
 
             public Response Handle(Request message)
             {
+                if (string.IsNullOrEmpty(message.Image))
+                    message.Image = string.Empty;
+
                 var response = new Response();
 
                 using (var session = _sessionFactory.OpenSession())
