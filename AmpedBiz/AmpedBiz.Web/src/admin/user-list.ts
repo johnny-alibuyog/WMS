@@ -1,39 +1,56 @@
 import {autoinject} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
 import {UserCreate} from './user-create';
-import {User} from './common/models/user';
-import {UserService} from '../services/user-service';
+import {User, UserPageItem} from './common/models/user';
+import {ServiceApi} from '../services/service-api';
 import {NotificationService} from '../common/controls/notification-service';
+import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 
 @autoinject
 export class BranchList {
-  private _notification: NotificationService;
-  private _service: UserService;
+  private _api: ServiceApi;
   private _dialog: DialogService;
+  private _notification: NotificationService;
 
-  public users: User[];
-  public filterText: string = '';
+  public filter: Filter;
+  public sorter: Sorter;
+  public pager: Pager<UserPageItem>;
 
-  constructor(dialog: DialogService, service: UserService, notification: NotificationService) {
+  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<UserPageItem>) {
+    this._api = api;
     this._dialog = dialog;
-    this._service = service;
     this._notification = notification;
+
+    this.filter = filter;
+    this.filter["name"] = '';
+    this.filter.onFilter = () => this.getList();
+
+    this.sorter = sorter;
+    this.sorter["code"] = SortDirection.None;
+    this.sorter["name"] = SortDirection.Ascending;
+    this.sorter.onSort = () => this.getList();
+
+    this.pager = pager;
+    this.pager.onPage = () => this.getList();
   }
 
   activate() {
-    this.refreshList();
+    this.getList();
   }
 
-  refreshList() {
-    this.filterText = '';
-    this.filter();
-  }
-
-  filter() {
-    this._service.getLists(this.filterText)
+  getList() {
+    this._api.users
+      .getPages({
+        filter: this.filter,
+        sorter: this.sorter,
+        pager: <PagerRequest>this.pager
+      })
       .then(data => {
-        this.users = <User[]>data
-        if (!this.users || this.users.length == 0) {
+        var response = <PagerResponse<UserPageItem>>data;
+        this.pager.count = response.count;
+        this.pager.items = response.items;
+
+        if (this.pager.count === 0) {
           this._notification.warning("No items found!");
         }
       })
@@ -47,7 +64,7 @@ export class BranchList {
       .open({ viewModel: UserCreate, model: null })
       .then(response => {
         if (!response.wasCancelled) {
-          this.refreshList();
+          this.getList();
         }
       });
   }
@@ -57,7 +74,7 @@ export class BranchList {
       .open({ viewModel: UserCreate, model: item })
       .then(response => {
         if (!response.wasCancelled) {
-          this.refreshList();
+          this.getList();
         }
       });
   }

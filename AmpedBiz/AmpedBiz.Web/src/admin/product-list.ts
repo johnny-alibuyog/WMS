@@ -27,7 +27,7 @@ export class ProductList {
 
     this.sorter = sorter;
     this.sorter["code"] = SortDirection.None;
-    this.sorter["name"] = SortDirection.None;
+    this.sorter["name"] = SortDirection.Ascending;
     this.sorter["descirption"] = SortDirection.None;
     this.sorter.onSort = () => this.getList();
 

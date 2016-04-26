@@ -69,11 +69,16 @@ namespace AmpedBiz.Service.Users
                             : query.OrderByDescending(x => x.Username);
                     });
 
-                    message.Sorter.Compose("firstName", direction =>
+                    message.Sorter.Compose("name", direction =>
                     {
                         query = direction == SortDirection.Ascending
                             ? query.OrderBy(x => x.Person.FirstName)
-                            : query.OrderByDescending(x => x.Person.FirstName);
+                                .ThenBy(x => x.Person.MiddleName)
+                                .ThenBy(x => x.Person.LastName)
+
+                            : query.OrderByDescending(x => x.Person.FirstName)
+                                .ThenByDescending(x => x.Person.MiddleName)
+                                .ThenByDescending(x => x.Person.LastName);
                     });
 
                     message.Sorter.Compose("middleName", direction =>
@@ -102,8 +107,9 @@ namespace AmpedBiz.Service.Users
                         {
                             Id = x.Id,
                             Username = x.Username,
+                            BranchName = x.Branch.Name,
                             Person = Mapper.Map<Entity.Person, Dto.Person>(x.Person),
-                            BranchName = x.Branch.Name
+                            Address = Mapper.Map<Entity.Address, Dto.Address>(x.Address),
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)

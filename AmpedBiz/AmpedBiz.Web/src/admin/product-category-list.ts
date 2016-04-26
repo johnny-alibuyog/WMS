@@ -26,8 +26,8 @@ export class ProductCategoryList {
     this.filter.onFilter = () => this.getList();
 
     this.sorter = sorter;
-    this.sorter["code"] = SortDirection.Ascending;
-    this.sorter["name"] = SortDirection.None;
+    this.sorter["code"] = SortDirection.None;
+    this.sorter["name"] = SortDirection.Ascending;
     this.sorter.onSort = () => this.getList();
 
     this.pager = pager;

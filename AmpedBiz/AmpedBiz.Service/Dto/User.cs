@@ -29,8 +29,10 @@ namespace AmpedBiz.Service.Dto
 
         public virtual string Username { get; set; }
 
+        public virtual string BranchName { get; set; }
+
         public virtual Person Person { get; set; }
 
-        public virtual string BranchName { get; set; }
+        public virtual Address Address { get; set; }
     }
 }

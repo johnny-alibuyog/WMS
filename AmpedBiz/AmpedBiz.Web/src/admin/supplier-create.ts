@@ -1,33 +1,33 @@
 import {autoinject} from 'aurelia-framework';
 import {DialogController} from 'aurelia-dialog';
 import {Supplier} from './common/models/supplier';
-import {SupplierService} from '../services/supplier-service';
+import {ServiceApi} from '../services/service-api';
 import {NotificationService} from '../common/controls/notification-service';
 
 @autoinject
 export class SupplierCreate {
+  private _api: ServiceApi;
   private _controller: DialogController;
-  private _service: SupplierService;
+  private _notificaton: NotificationService;
 
-  public header: string = 'Create Supplier';
+  public header: string = 'Create Product Category';
   public isEdit: boolean = false;
   public canSave: boolean = true;
   public supplier: Supplier;
-  public notificaton: NotificationService;
 
-  constructor(notification: NotificationService, controller: DialogController, service: SupplierService) {
-    this.notificaton = notification;
+  constructor(api: ServiceApi, controller: DialogController, notification: NotificationService) {
+    this._api = api;
     this._controller = controller;
-    this._service = service;
+    this._notificaton = notification;
   }
 
   activate(supplier: Supplier) {
     if (supplier) {
       this.header = "Edit Supplier";
       this.isEdit = true;
-      this._service.get(supplier.id)
+      this._api.suppliers.get(supplier.id)
         .then(data => this.supplier = <Supplier>data)
-        .catch(error => this.notificaton.warning(error));
+        .catch(error => this._notificaton.warning(error));
     }
     else {
       this.header = "Create Supplier";
@@ -44,24 +44,24 @@ export class SupplierCreate {
 
     if (this.isEdit) {
 
-      this._service.update(this.supplier)
+      this._api.suppliers.update(this.supplier)
         .then(data => {
-          this.notificaton.success("Supplier has been saved.")
+          this._notificaton.success("Supplier has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <Supplier>data }));
         })
         .catch(error => {
-          this.notificaton.warning(error)
+          this._notificaton.warning(error)
         });
     }
     else {
 
-      this._service.create(this.supplier)
+      this._api.suppliers.create(this.supplier)
         .then(data => {
-          this.notificaton.success("Supplier has been saved.")
+          this._notificaton.success("Supplier has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <Supplier>data }));
         })
         .catch(error => {
-          this.notificaton.warning(error)
+          this._notificaton.warning(error)
         });
     }
   }

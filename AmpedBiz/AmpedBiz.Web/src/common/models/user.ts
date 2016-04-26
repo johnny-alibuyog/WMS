@@ -15,9 +15,6 @@ export interface User {
 export interface UserPageItem {
   id?: string;
   username?: string;
-  password?: string;
-  branchId?: string;
+  branchName?: string;
   person?: Person;
-  address?: Address;
-  roles?: Role[]; 
 }

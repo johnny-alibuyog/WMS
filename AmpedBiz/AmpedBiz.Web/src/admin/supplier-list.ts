@@ -27,8 +27,7 @@ export class SupplierList {
 
     this.sorter = sorter;
     this.sorter["code"] = SortDirection.None;
-    this.sorter["name"] = SortDirection.None;
-    this.sorter["descirption"] = SortDirection.None;
+    this.sorter["name"] = SortDirection.Ascending;
     this.sorter.onSort = () => this.getList();
 
     this.pager = pager;
@@ -40,7 +39,7 @@ export class SupplierList {
   }
 
    getList(): void {
-    this._api.products
+    this._api.suppliers
       .getPages({
         filter: this.filter,
         sorter: this.sorter,

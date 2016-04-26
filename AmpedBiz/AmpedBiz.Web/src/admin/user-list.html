@@ -2,6 +2,7 @@
   <require from="common/controls/address-display.html"></require>
   <require from="common/controls/contact-display.html"></require>
   <require from="common/controls/person-display.html"></require>
+  <require from="common/controls/pager"></require>
   
   <section class="au-animate">
     <div class="container col-md-8">
@@ -29,13 +30,20 @@
           <thead>
             <tr>
               <th class="col-md-1">Action</th>
-              <th class="col-md-1">Code</th>
-              <th class="col-md-5">Name</th>
-              <th class="col-md-5">Address</th>
+              <th class="col-md-2" click.delegate="sorter.doSort('username')">
+                <i class="fa fa-fw fa-${sorter.class(sorter['username'])}"></i>Username
+              </th>
+              <th class="col-md-5" click.delegate="sorter.doSort('name')">
+                <i class="fa fa-fw fa-${sorter.class(sorter['name'])}"></i>Name
+              </th>
+              <th class="col-md-4" click.delegate="sorter.doSort('branchName')">
+                <i class="fa fa-fw fa-${sorter.class(sorter['branchName'])}"></i>Branch
+              </th>
+              <!--<th class="col-md-4">Address</th>-->
             </tr>
           </thead>
           <tbody>
-            <tr repeat.for="item of users" click.delegate="edit(item)">
+            <tr repeat.for="item of pager.items" click.delegate="edit(item)">
               <td>
                 <a href="javascript:undefined" class="text-info" click.delegate="edit(item)">
                   <i class="fa fa-pencil"></i>
@@ -44,12 +52,15 @@
                   <i class="fa fa-times"></i>
                 </a>
               </td>
-              <td>${item.id}</td>
+              <td>${item.username}</td>
               <td><person-display person.bind="item.person" /></td>
-              <td><address-display address.bind="item.address" /></td>
+              <td>${item.branchName}</td>
+              <!--<td><address-display address.bind="item.address" /></td>-->
             </tr>
           </tbody>
         </table>
+
+        <pager current-page.bind="pager.offset" total-items.bind="pager.count" change.delegate="pager.doPage($event)" />
       </div>
     </div>
   </section>
