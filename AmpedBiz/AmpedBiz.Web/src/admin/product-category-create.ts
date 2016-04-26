@@ -1,33 +1,33 @@
 import {autoinject} from 'aurelia-framework';
 import {DialogController} from 'aurelia-dialog';
 import {ProductCategory} from './common/models/product-category';
-import {ProductCategoryService} from '../services/product-category-service';
+import {ServiceApi} from '../services/service-api';
 import {NotificationService} from '../common/controls/notification-service';
 
 @autoinject
 export class ProductCategoryCreate {
+  private _api: ServiceApi;
   private _controller: DialogController;
-  private _service: ProductCategoryService;
+  private _notificaton: NotificationService;
 
   public header: string = 'Create Product Category';
   public isEdit: boolean = false;
   public canSave: boolean = true;
   public productCategory: ProductCategory;
-  public notificaton: NotificationService;
 
-  constructor(notification: NotificationService, controller: DialogController, service: ProductCategoryService) {
-    this.notificaton = notification;
+  constructor(api: ServiceApi, controller: DialogController, notification: NotificationService) {
+    this._api = api;
     this._controller = controller;
-    this._service = service;
+    this._notificaton = notification;
   }
 
   activate(productCategory: ProductCategory) {
     if (productCategory) {
       this.header = "Edit Product Category";
       this.isEdit = true;
-      this._service.get(productCategory.id)
+      this._api.productCategories.get(productCategory.id)
         .then(data => this.productCategory = <ProductCategory>data)
-        .catch(error => this.notificaton.warning(error));
+        .catch(error => this._notificaton.warning(error));
     }
     else {
       this.header = "Create Product Category";
@@ -44,24 +44,24 @@ export class ProductCategoryCreate {
 
     if (this.isEdit) {
 
-      this._service.update(this.productCategory)
+      this._api.productCategories.update(this.productCategory)
         .then(data => {
-          this.notificaton.success("Product Category has been saved.")
+          this._notificaton.success("Product Category has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <ProductCategory>data }));
         })
         .catch(error => {
-          this.notificaton.warning(error)
+          this._notificaton.warning(error)
         });
     }
     else {
 
-      this._service.create(this.productCategory)
+      this._api.productCategories.create(this.productCategory)
         .then(data => {
-          this.notificaton.success("Product Category has been saved.")
+          this._notificaton.success("Product Category has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <ProductCategory>data }));
         })
         .catch(error => {
-          this.notificaton.warning(error)
+          this._notificaton.warning(error)
         });
     }
   }

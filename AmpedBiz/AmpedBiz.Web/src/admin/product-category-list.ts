@@ -1,39 +1,56 @@
 import {autoinject} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
 import {ProductCategoryCreate} from './product-category-create';
-import {ProductCategory} from './common/models/product-category';
-import {ProductCategoryService} from '../services/product-category-service';
+import {ProductCategory, ProductCategoryPageItem} from './common/models/product-category';
+import {ServiceApi} from '../services/service-api';
 import {NotificationService} from '../common/controls/notification-service';
+import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 
 @autoinject
 export class ProductCategoryList {
-  private _notification: NotificationService;
-  private _service: ProductCategoryService;
+  private _api: ServiceApi;
   private _dialog: DialogService;
+  private _notification: NotificationService;
 
-  public productCategories: ProductCategory[];
-  public filterText: string = '';
+  public filter: Filter;
+  public sorter: Sorter;
+  public pager: Pager<ProductCategoryPageItem>;
 
-  constructor(dialog: DialogService, service: ProductCategoryService, notification: NotificationService) {
+  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<ProductCategoryPageItem>) {
+    this._api = api;
     this._dialog = dialog;
-    this._service = service;
     this._notification = notification;
+
+    this.filter = filter;
+    this.filter["name"] = '';
+    this.filter.onFilter = () => this.getList();
+
+    this.sorter = sorter;
+    this.sorter["code"] = SortDirection.Ascending;
+    this.sorter["name"] = SortDirection.None;
+    this.sorter.onSort = () => this.getList();
+
+    this.pager = pager;
+    this.pager.onPage = () => this.getList();
   }
 
   activate() {
-    this.refreshList();
+    this.getList();
   }
 
-  refreshList() {
-    this.filterText = '';
-    this.filter();
-  }
-
-  filter() {
-    this._service.getLists(this.filterText)
+  getList() {
+    this._api.productCategories
+      .getPages({
+        filter: this.filter,
+        sorter: this.sorter,
+        pager: <PagerRequest>this.pager
+      })
       .then(data => {
-        this.productCategories = <ProductCategory[]>data
-        if (!this.productCategories || this.productCategories.length == 0) {
+        var response = <PagerResponse<ProductCategoryPageItem>>data;
+        this.pager.count = response.count;
+        this.pager.items = response.items;
+
+        if (this.pager.count === 0) {
           this._notification.warning("No items found!");
         }
       })
@@ -44,20 +61,26 @@ export class ProductCategoryList {
 
   create() {
     this._dialog
-      .open({ viewModel: ProductCategoryCreate, model: null })
+      .open({ 
+        viewModel: ProductCategoryCreate, 
+        model: null 
+      })
       .then(response => {
         if (!response.wasCancelled) {
-          this.refreshList();
+          this.getList();
         }
       });
   }
 
-  edit(item: ProductCategory) {
+  edit(item: ProductCategoryPageItem) {
     this._dialog
-      .open({ viewModel: ProductCategoryCreate, model: item })
+      .open({ 
+        viewModel: ProductCategoryCreate, 
+        model: <ProductCategory>{ id: item.id }  
+      })
       .then(response => {
         if (!response.wasCancelled) {
-          this.refreshList();
+          this.getList();
         }
       });
   }

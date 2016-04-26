@@ -34,6 +34,8 @@ System.config({
     "core-js": "npm:core-js@1.2.6",
     "fetch": "github:github/fetch@0.11.0",
     "font-awesome": "npm:font-awesome@4.6.1",
+    "moment": "npm:moment@2.13.0",
+    "numeral": "npm:numeral@1.5.3",
     "text": "github:systemjs/plugin-text@0.0.3",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
@@ -210,6 +212,9 @@ System.config({
     },
     "npm:intl@1.1.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:numeral@1.5.3": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2"
     },
     "npm:path-browserify@0.0.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"

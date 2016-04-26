@@ -9,7 +9,7 @@ export class PaymentTypeCreate {
   private _controller: DialogController;
   private _service: PaymentTypeService;
 
-  public header: string = 'Create Type Product';
+  public header: string = 'Create Payment Type';
   public isEdit: boolean = false;
   public canSave: boolean = true;
   public paymentType: PaymentType;
@@ -23,14 +23,14 @@ export class PaymentTypeCreate {
 
   activate(paymentType: PaymentType) {
     if (paymentType) {
-      this.header = "Edit Product";
+      this.header = "Edit Payment Type";
       this.isEdit = true;
       this._service.get(paymentType.id)
         .then(data => this.paymentType = <PaymentType>data)
         .catch(error => this.notificaton.warning(error));
     }
     else {
-      this.header = "Create Product";
+      this.header = "Create Payment Type";
       this.isEdit = false;
       this.paymentType = <PaymentType>{};
     }
@@ -46,7 +46,7 @@ export class PaymentTypeCreate {
 
       this._service.update(this.paymentType)
         .then(data => {
-          this.notificaton.success("Product Type has been saved.")
+          this.notificaton.success("Payment Type has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <PaymentType>data }));
         })
         .catch(error => {
@@ -57,7 +57,7 @@ export class PaymentTypeCreate {
 
       this._service.create(this.paymentType)
         .then(data => {
-          this.notificaton.success("Product Type has been saved.")
+          this.notificaton.success("Payment Type has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <PaymentType>data }));
         })
         .catch(error => {

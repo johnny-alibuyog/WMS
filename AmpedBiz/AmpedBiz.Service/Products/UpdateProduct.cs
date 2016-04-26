@@ -28,11 +28,18 @@ namespace AmpedBiz.Service.Products
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
+                    var currency = session.Load<Currency>(Currency.PHP.Id); // this should be taken from the tenant
                     var entity = session.Get<Product>(message.Id);
                     if (entity == null)
                         throw new BusinessException($"Product with id {message.Id} does not exists.");
 
                     Mapper.Map<Dto.Product, Product>(message, entity);
+
+                    entity.BasePrice = new Money(message.BasePriceAmount, currency);
+                    entity.RetailPrice = new Money(message.RetailPriceAmount, currency);
+                    entity.WholesalePrice = new Money(message.RetailPriceAmount, currency);
+                    entity.Supplier = session.Load<Supplier>(message.SupplierId);
+                    entity.Category = session.Load<ProductCategory>(message.CategoryId);
 
                     transaction.Commit();
                 }

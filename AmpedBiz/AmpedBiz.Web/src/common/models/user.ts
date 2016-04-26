@@ -11,3 +11,13 @@ export interface User {
   address?: Address;
   roles?: Role[]; 
 }
+
+export interface UserPageItem {
+  id?: string;
+  username?: string;
+  password?: string;
+  branchId?: string;
+  person?: Person;
+  address?: Address;
+  roles?: Role[]; 
+}

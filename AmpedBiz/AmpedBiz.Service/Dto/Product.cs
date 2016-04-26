@@ -16,15 +16,9 @@
 
         public decimal BasePriceAmount { get; set; }
 
-        public string BasePriceCurrencyId { get; set; }
-
         public decimal RetailPriceAmount { get; set; }
 
-        public string RetailPriceCurrencyId { get; set; }
-
-        public decimal WholeSalePriceAmount { get; set; }
-
-        public string WholeSalePriceCurrencyId { get; set; }
+        public decimal WholesalePriceAmount { get; set; }
 
         public bool Discontinued { get; set; }
     }
@@ -47,7 +41,7 @@
 
         public string RetailPrice { get; set; }
 
-        public string WholeSalePrice { get; set; }
+        public string WholesalePrice { get; set; }
 
         public bool Discontinued { get; set; }
     }

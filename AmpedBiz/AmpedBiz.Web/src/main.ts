@@ -12,6 +12,7 @@ export function configure(aurelia: Aurelia) {
       config.settings.centerHorizontalOnly = false;
       config.settings.startingZIndex = 5;
     });
+
   //.plugin('aurelia-computed', config => {
   //  config.enableLogging = true;
   //})

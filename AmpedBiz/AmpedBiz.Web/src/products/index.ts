@@ -10,7 +10,7 @@ export class Index {
       {
         route: ['', 'product-list'],
         name: 'product-list',
-        moduleId: './product-list',
+        moduleId: '.././admin/product-list',
         nav: true,
         title: 'Product List'
       },

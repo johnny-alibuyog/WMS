@@ -1,39 +1,57 @@
 import {autoinject} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
 import {SupplierCreate} from './supplier-create';
-import {Supplier} from './common/models/supplier';
-import {SupplierService} from '../services/supplier-service';
+import {Supplier, SupplierPageItem} from './common/models/supplier';
+import {ServiceApi} from '../services/service-api';
 import {NotificationService} from '../common/controls/notification-service';
+import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 
 @autoinject
 export class SupplierList {
-  private _notification: NotificationService;
-  private _service: SupplierService;
+  private _api: ServiceApi;
   private _dialog: DialogService;
+  private _notification: NotificationService;
 
-  public suppliers: Supplier[];
-  public filterText: string = '';
+  public filter: Filter;
+  public sorter: Sorter;
+  public pager: Pager<SupplierPageItem>;
 
-  constructor(dialog: DialogService, service: SupplierService, notification: NotificationService) {
+  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<SupplierPageItem>) {
+    this._api = api;
     this._dialog = dialog;
-    this._service = service;
     this._notification = notification;
+
+    this.filter = filter;
+    this.filter["name"] = '';
+    this.filter.onFilter = () => this.getList();
+
+    this.sorter = sorter;
+    this.sorter["code"] = SortDirection.None;
+    this.sorter["name"] = SortDirection.None;
+    this.sorter["descirption"] = SortDirection.None;
+    this.sorter.onSort = () => this.getList();
+
+    this.pager = pager;
+    this.pager.onPage = () => this.getList();
   }
 
   activate() {
-    this.refreshList();
+    this.getList();
   }
 
-  refreshList() {
-    this.filterText = '';
-    this.filter();
-  }
-
-  filter() {
-    this._service.getLists(this.filterText)
+   getList(): void {
+    this._api.products
+      .getPages({
+        filter: this.filter,
+        sorter: this.sorter,
+        pager: <PagerRequest>this.pager
+      })
       .then(data => {
-        this.suppliers = <Supplier[]>data
-        if (!this.suppliers || this.suppliers.length == 0) {
+        var response = <PagerResponse<SupplierPageItem>>data;
+        this.pager.count = response.count;
+        this.pager.items = response.items;
+
+        if (this.pager.count === 0) {
           this._notification.warning("No items found!");
         }
       })
@@ -42,22 +60,28 @@ export class SupplierList {
       });
   }
 
-  create() {
+create() {
     this._dialog
-      .open({ viewModel: SupplierCreate, model: null })
+      .open({ 
+        viewModel: SupplierCreate, 
+        model: null 
+      })
       .then(response => {
         if (!response.wasCancelled) {
-          this.refreshList();
+          this.getList();
         }
       });
   }
 
-  edit(item: Supplier) {
+  edit(item: SupplierPageItem) {
     this._dialog
-      .open({ viewModel: SupplierCreate, model: item })
+      .open({ 
+        viewModel: SupplierCreate, 
+        model: <Supplier>{ id: item.id }  
+      })
       .then(response => {
         if (!response.wasCancelled) {
-          this.refreshList();
+          this.getList();
         }
       });
   }

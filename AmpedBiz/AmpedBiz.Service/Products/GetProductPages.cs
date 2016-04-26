@@ -103,8 +103,8 @@ namespace AmpedBiz.Service.Products
                     message.Sorter.Compose("wholeSalePrice", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.WholeSalePrice.Amount)
-                            : query.OrderByDescending(x => x.WholeSalePrice.Amount);
+                            ? query.OrderBy(x => x.WholesalePrice.Amount)
+                            : query.OrderByDescending(x => x.WholesalePrice.Amount);
                     });
 
                     var itemsFuture = query
@@ -118,7 +118,7 @@ namespace AmpedBiz.Service.Products
                             Image = x.Image,
                             BasePrice = x.BasePrice.ToStringWithSymbol(),
                             RetailPrice = x.RetailPrice.ToStringWithSymbol(),
-                            WholeSalePrice = x.WholeSalePrice.ToStringWithSymbol(),
+                            WholesalePrice = x.WholesalePrice.ToStringWithSymbol(),
                             Discontinued = x.Discontinued
                         })
                         .Skip(message.Pager.SkipCount)

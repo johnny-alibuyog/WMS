@@ -2,34 +2,34 @@ import {autoinject} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
 import {CustomerCreate} from './customer-create';
 import {Customer, CustomerPageItem} from './common/models/customer';
-import {CustomerService} from '../services/customer-service';
+import {ServiceApi} from '../services/service-api';
 import {NotificationService} from '../common/controls/notification-service';
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 
 @autoinject
 export class CustomerList {
-  private _notification: NotificationService;
-  private _service: CustomerService;
+  private _api: ServiceApi;
   private _dialog: DialogService;
+  private _notification: NotificationService;
 
   public filter: Filter;
   public sorter: Sorter;
-  public pager: Pager<Customer>;
+  public pager: Pager<CustomerPageItem>;
 
-  constructor(dialog: DialogService, service: CustomerService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<CustomerPageItem>) {
+  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<CustomerPageItem>) {
+    this._api = api;
     this._dialog = dialog;
-    this._service = service;
     this._notification = notification;
 
     this.filter = filter;
-    this.filter.onFilter = () => this.getList();
     this.filter["name"] = '';
+    this.filter.onFilter = () => this.getList();
 
     this.sorter = sorter;
-    this.sorter.onSort = () => this.getList();
-    this.sorter["code"] = SortDirection.Ascending;
-    this.sorter["name"] = SortDirection.None;
+    this.sorter["code"] = SortDirection.None;
+    this.sorter["name"] = SortDirection.Ascending;
     this.sorter["descirption"] = SortDirection.None;
+    this.sorter.onSort = () => this.getList();
 
     this.pager = pager;
     this.pager.onPage = () => this.getList();
@@ -40,7 +40,7 @@ export class CustomerList {
   }
 
   getList() {
-    this._service
+    this._api.customers
       .getPages({
         filter: this.filter,
         sorter: this.sorter,
@@ -62,7 +62,10 @@ export class CustomerList {
 
   create() {
     this._dialog
-      .open({ viewModel: CustomerCreate, model: null })
+      .open({
+        viewModel: CustomerCreate,
+        model: null
+      })
       .then(response => {
         if (!response.wasCancelled) {
           this.getList();
@@ -70,9 +73,12 @@ export class CustomerList {
       });
   }
 
-  edit(item: Customer) {
+  edit(item: CustomerPageItem) {
     this._dialog
-      .open({ viewModel: CustomerCreate, model: item })
+      .open({
+        viewModel: CustomerCreate,
+        model: <Customer>{ id: item.id }
+      })
       .then(response => {
         if (!response.wasCancelled) {
           this.getList();

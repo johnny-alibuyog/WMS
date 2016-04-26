@@ -1,39 +1,56 @@
 import {autoinject} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
 import {PaymentTypeCreate} from './payment-type-create';
-import {PaymentType} from './common/models/payment-type';
-import {PaymentTypeService} from '../services/payment-type-service';
+import {PaymentType, PaymentTypePageItem} from './common/models/payment-type';
+import {ServiceApi} from '../services/service-api';
 import {NotificationService} from '../common/controls/notification-service';
+import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 
 @autoinject
 export class PaymentTypeList {
-  private _notification: NotificationService;
-  private _service: PaymentTypeService;
+  private _api: ServiceApi;
   private _dialog: DialogService;
+  private _notification: NotificationService;
 
-  public paymentTypes: PaymentType[];
-  public filterText: string = '';
+  public filter: Filter;
+  public sorter: Sorter;
+  public pager: Pager<PaymentTypePageItem>;
 
-  constructor(dialog: DialogService, service: PaymentTypeService, notification: NotificationService) {
+  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<PaymentTypePageItem>) {
+    this._api = api;
     this._dialog = dialog;
-    this._service = service;
     this._notification = notification;
+
+    this.filter = filter;
+    this.filter["name"] = '';
+    this.filter.onFilter = () => this.getList();
+
+    this.sorter = sorter;
+    this.sorter["code"] = SortDirection.Ascending;
+    this.sorter["name"] = SortDirection.None;
+    this.sorter.onSort = () => this.getList();
+
+    this.pager = pager;
+    this.pager.onPage = () => this.getList();
   }
 
   activate() {
-    this.refreshList();
+    this.getList();
   }
 
-  refreshList() {
-    this.filterText = '';
-    this.filter();
-  }
-
-  filter() {
-    this._service.getLists(this.filterText)
+  getList() {
+    this._api.paymentTypes
+      .getPages({
+        filter: this.filter,
+        sorter: this.sorter,
+        pager: <PagerRequest>this.pager
+      })
       .then(data => {
-        this.paymentTypes = <PaymentType[]>data
-        if (!this.paymentTypes || this.paymentTypes.length == 0) {
+        var response = <PagerResponse<PaymentTypePageItem>>data;
+        this.pager.count = response.count;
+        this.pager.items = response.items;
+
+        if (this.pager.count === 0) {
           this._notification.warning("No items found!");
         }
       })
@@ -44,20 +61,26 @@ export class PaymentTypeList {
 
   create() {
     this._dialog
-      .open({ viewModel: PaymentTypeCreate, model: null })
+      .open({
+        viewModel: PaymentTypeCreate,
+        model: null
+      })
       .then(response => {
         if (!response.wasCancelled) {
-          this.refreshList();
+          this.getList();
         }
       });
   }
 
-  edit(item: PaymentType) {
+  edit(item: PaymentTypePageItem) {
     this._dialog
-      .open({ viewModel: PaymentTypeCreate, model: item })
+      .open({
+        viewModel: PaymentTypeCreate,
+        model: <PaymentType>{ id: item.id }
+      })
       .then(response => {
         if (!response.wasCancelled) {
-          this.refreshList();
+          this.getList();
         }
       });
   }

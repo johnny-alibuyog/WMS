@@ -106,7 +106,7 @@ namespace AmpedBiz.Data.Seeders
                         item.Discontinued = RotateDiscontinued();
                         item.BasePrice = prices.BasePrice;
                         item.RetailPrice = prices.RetailPrice;
-                        item.WholeSalePrice = prices.WholeSalePrice;
+                        item.WholesalePrice = prices.WholeSalePrice;
 ;
                         session.Save(item);
                     }

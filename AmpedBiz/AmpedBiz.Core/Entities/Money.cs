@@ -29,7 +29,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual string ToStringWithSymbol()
         {
-            return this.Amount.ToString(this.Currency.Symbol + " 0.00");
+            return this.Amount.ToString(this.Currency.Symbol + " #,##0.00");
         }
     }
 }

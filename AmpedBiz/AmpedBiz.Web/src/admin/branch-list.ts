@@ -2,34 +2,34 @@ import {autoinject} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
 import {BranchCreate} from './branch-create';
 import {Branch, BranchPageItem} from './common/models/branch';
-import {BranchService} from '../services/branch-service';
+import {ServiceApi} from '../services/service-api';
 import {NotificationService} from '../common/controls/notification-service';
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 
 @autoinject
 export class BranchList {
+  private _api: ServiceApi;
   private _dialog: DialogService;
-  private _service: BranchService;
   private _notification: NotificationService;
 
   public filter: Filter;
   public sorter: Sorter;
   public pager: Pager<Branch>;
 
-  constructor(dialog: DialogService, service: BranchService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<BranchPageItem>) {
+  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<BranchPageItem>) {
+    this._api = api;
     this._dialog = dialog;
-    this._service = service;
     this._notification = notification;
 
     this.filter = filter;
-    this.filter.onFilter = () => this.getList();
     this.filter["name"] = '';
+    this.filter.onFilter = () => this.getList();
 
     this.sorter = sorter;
-    this.sorter.onSort = () => this.getList();
-    this.sorter["code"] = SortDirection.Ascending;
-    this.sorter["name"] = SortDirection.None;
+    this.sorter["code"] = SortDirection.None;
+    this.sorter["name"] = SortDirection.Ascending;
     this.sorter["descirption"] = SortDirection.None;
+    this.sorter.onSort = () => this.getList();
 
     this.pager = pager;
     this.pager.onPage = () => this.getList();
@@ -40,7 +40,7 @@ export class BranchList {
   }
 
   getList(): void {
-    this._service
+    this._api.branches
       .getPages({
         filter: this.filter,
         sorter: this.sorter,
@@ -62,7 +62,10 @@ export class BranchList {
 
   create() {
     this._dialog
-      .open({ viewModel: BranchCreate, model: null })
+      .open({ 
+        viewModel: BranchCreate, 
+        model: null 
+      })
       .then(response => {
         if (!response.wasCancelled) {
           this.getList();
@@ -70,9 +73,12 @@ export class BranchList {
       });
   }
 
-  edit(item: Branch) {
+  edit(item: BranchPageItem) {
     this._dialog
-      .open({ viewModel: BranchCreate, model: item })
+      .open({ 
+        viewModel: BranchCreate, 
+        model: <Branch>{ id: item.id }  
+      })
       .then(response => {
         if (!response.wasCancelled) {
           this.getList();

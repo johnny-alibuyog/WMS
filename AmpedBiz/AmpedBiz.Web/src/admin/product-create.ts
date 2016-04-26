@@ -1,36 +1,54 @@
 import {autoinject} from 'aurelia-framework';
 import {DialogController} from 'aurelia-dialog';
+import {Product} from './common/models/product';
+import {Supplier} from './common/models/supplier';
+import {ProductCategory} from './common/models/product-category';
+import {ServiceApi} from '../services/service-api';
+import {NotificationService} from '../common/controls/notification-service';
 
 @autoinject
 export class ProductCreate {
+  private _api: ServiceApi;
   private _controller: DialogController;
-  header: string = 'Create Product';
-  product = {
-    id: '',
-    code: '',
-    name: '',
-    category: '',
-    supplier: '',
-    standardCost: '₱0.00',
-    listPrice: '₱0.00'
-  };
+  private _notificaton: NotificationService;
 
-  constructor(controller: DialogController) {
+  public header: string = 'Create Product';
+  public isEdit: boolean = false;
+  public canSave: boolean = true;
+  public product: Product;
+  public suppliers: Supplier[];
+  public categories: ProductCategory[];
+
+  constructor(api: ServiceApi, controller: DialogController, notification: NotificationService) {
+    this._api = api;
     this._controller = controller;
+    this._notificaton = notification;
   }
 
-  activate(product) {
+  activate(product: Product) {
+    
+    Promise.all([
+      this._api.suppliers.getLists(null)
+        .then(data => this.suppliers = <Supplier[]>data)
+        .catch(error => this._notificaton.warning(error)),
+        
+      this._api.productCategories.getLists(null)
+        .then(data => this.categories = <ProductCategory[]>data)
+        .catch(error => this._notificaton.warning(error)),
+    ]);
+    
     if (product) {
       this.header = "Edit Product";
-      this.product = JSON.parse(JSON.stringify(product)); //Object.create(product);
+      this.isEdit = true;
+      this._api.products.get(product.id)
+        .then(data => this.product = <Product>data)
+        .catch(error => this._notificaton.warning(error));
     }
     else {
       this.header = "Create Product";
-      this.product = Object.create(this.product);
+      this.isEdit = false;
+      this.product = <Product>{};
     }
-
-    if (this.product.id === '')
-      this.product.id = this.guid();
   }
 
   cancel() {
@@ -38,15 +56,27 @@ export class ProductCreate {
   }
 
   save() {
-    // do some service side call
-    return this._controller.ok({ wasCancelled: true, output: this.product });
-  }
+    if (this.isEdit) {
 
-  private guid() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
-  }
+      this._api.products.update(this.product)
+        .then(data => {
+          this._notificaton.success("Product has been saved.")
+            .then((data) => this._controller.ok({ wasCancelled: true, output: <Product>data }));
+        })
+        .catch(error => {
+          this._notificaton.warning(error)
+        });
+    }
+    else {
 
+      this._api.products.create(this.product)
+        .then(data => {
+          this._notificaton.success("Product has been saved.")
+            .then((data) => this._controller.ok({ wasCancelled: true, output: <Product>data }));
+        })
+        .catch(error => {
+          this._notificaton.warning(error)
+        });
+    }
+  }
 }

@@ -1,4 +1,6 @@
 <template>
+  <require from="common/controls/pager"></require>
+
   <section class="au-animate">
     <div class="container col-md-8">
 
@@ -9,14 +11,16 @@
         </button>
 
         <!-- search -->
-        <div class="input-group custom-search-form col-md-4 pull-right">
-          <input type="text" class="form-control" placeholder="Search..." value.bind="filterText" change.delegate="filter()" />
-          <span class="input-group-btn"  click.delegate="filter()">
-            <button class="btn btn-default" type="button">
-              <i class="fa fa-search"></i>
-            </button>
-          </span>
-        </div>
+        <form class="form-horizontal col-md-4 pull-right" role="form" submit.delegate="filter.doFilter()">
+          <div class="input-group custom-search-form ">
+              <input type="text" class="form-control" placeholder="Search by name..." value.bind="filter['name']" />
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="submit">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+          </div>
+        </form>
       </div>
 
       <div class="row">
@@ -25,12 +29,16 @@
           <thead>
             <tr>
               <th class="col-md-1">Action</th>
-              <th class="col-md-1">Code</th>
-              <th class="col-md-10">Name</th>
+              <th class="col-md-1" click.delegate="sorter.doSort('code')">
+                <i class="fa fa-fw fa-${sorter.class(sorter['code'])}"></i>Code
+              </th>
+              <th class="col-md-10" click.delegate="sorter.doSort('name')">
+                <i class="fa fa-fw fa-${sorter.class(sorter['name'])}"></i>Name
+              </th>
             </tr>
           </thead>
           <tbody>
-            <tr repeat.for="item of productCategories" click.delegate="edit(item)">
+            <tr repeat.for="item of pager.items" click.delegate="edit(item)">
               <td>
                 <a href="javascript:undefined" class="text-info" click.delegate="edit(item)">
                   <i class="fa fa-pencil"></i>
@@ -44,6 +52,8 @@
             </tr>
           </tbody>
         </table>
+        
+        <pager current-page.bind="pager.offset" total-items.bind="pager.count" change.delegate="pager.doPage($event)" />
       </div>
     </div>
   </section>
