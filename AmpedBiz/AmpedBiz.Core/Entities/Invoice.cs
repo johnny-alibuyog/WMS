@@ -6,15 +6,18 @@ namespace AmpedBiz.Core.Entities
 {
     public class Invoice : Entity<Invoice, Guid>
     {
-        public virtual Money Price { get; set; }
+        public virtual Order Order { get; set; }
 
-        public virtual DateTimeOffset Date { get; set; }
+        public virtual DateTimeOffset? InvoiceDate { get; set; }
 
-        public virtual IEnumerable<InvoiceItem> Items { get; protected set; }
+        public virtual DateTimeOffset? DueDate { get; set; }
 
-        public Invoice()
-        {
-            this.Items = new Collection<InvoiceItem>();
-        }
+        public virtual Money Tax { get; set; }
+
+        public virtual Money Shipping { get; set; }
+
+        public virtual Money SubTotal { get; set; }
+
+        public virtual Money AmountDue { get; set; }
     }
 }

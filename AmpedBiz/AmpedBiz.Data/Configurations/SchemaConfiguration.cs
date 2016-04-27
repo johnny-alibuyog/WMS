@@ -11,41 +11,24 @@ namespace AmpedBiz.Data.Configurations
     {
         public static void Configure(this Configuration config)
         {
-            /// WARNING: Do not use in production
-            //RecreateDatabase(config);
-
-            /// NOTE: Applies in production
-            UpdateDatabase(config);
+            if (DbConfig.Instance.RecreateDb)
+                RecreateDatabase(config);   /// WARNING: Do not use in production
+            else
+                UpdateDatabase(config);     /// NOTE: Applies in production
         }
 
-        /// <summary>
-        /// WARNING: this line will recreate all your 
-        ///     database object removing all the data,
-        ///     not to be used in production
-        /// </summary>
-        /// <param name="config">Nhibernate configuration</param>
         private static void RecreateDatabase(Configuration config)
         {
             //new SchemaExport(config).Create(true, true);
 
+            var schemaPath = Path.Combine(DbConfig.Instance.GetWorkingPath("Schemas"), "schema.sql");
+
             new SchemaExport(config)
-                .SetOutputFile(Path.Combine(DbConfig.Instance.GetWorkingPath("Schemas"), "schema.sql"))
+                .SetOutputFile(schemaPath)
                 .Create(x => Debug.WriteLine(x), true);
-            //.Create(true, true);
+                //.Create(true, true);
         }
 
-        //private static void Print(string value)
-        //{
-        //    Console.WriteLine(value);
-        //}
-
-        /// <summary>
-        /// NOTE: this line will update your database
-        ///     schema based on the changes you made
-        ///     on your Entities(business models) if
-        ///     there is any    
-        /// </summary>
-        /// <param name="config">Nhibernate configuration</param>
         private static void UpdateDatabase(Configuration config)
         {
             //new SchemaUpdate(config).Execute(true, true);

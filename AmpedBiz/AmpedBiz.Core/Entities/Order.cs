@@ -1,164 +1,94 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Entities
 {
+    public enum OrderStatus
+    {
+        New,
+        Invoiced,
+        Shipped,
+        Completed,
+        Cancelled
+    }
+
     public class Order : Entity<Order, Guid>
     {
+        public virtual Tenant Tenant { get; set; }
+
+        public virtual DateTimeOffset? OrderDate { get; private set; }
+
+        public virtual DateTimeOffset? ShippedDate { get; private set; }
+
+        public virtual DateTimeOffset? PaymentDate { get; private set; }
+
+        public virtual DateTimeOffset? ClosedDate { get; private set; }
+
+        public virtual PaymentType PaymentType { get; private set; }
+
+        public virtual Shipper Shipper { get; private set; }
+
+        public virtual double? TaxRate { get; private set; }
+
+        public virtual Money Tax { get; private set; }
+
+        public virtual Money ShippingFee { get; private set; }
+
+        public virtual Money SubTotal { get; private set; }
+
+        public virtual Money Total { get; private set; }
+
+        public virtual OrderStatus Status { get; private set; }
+
+        public virtual bool IsActive { get; private set; }
+
+        public virtual Employee Employee { get; private set; }
+
+        public virtual Customer Customer { get; private set; }
+
+        public virtual IEnumerable<Invoice> Invoices { get; private set; }
+
+        public virtual IEnumerable<OrderDetail> OrderDetails { get; private set; }
+
         public Order()
         {
-            this.Invoices = new HashSet<Invoice>();
+            this.Invoices = new Collection<Invoice>();
             this.OrderDetails = new HashSet<OrderDetail>();
         }
 
-        public virtual Tenant Tenant
+        public virtual void New()
         {
-            get;
-            set;
+            this.Status = OrderStatus.New;
         }
 
-        public virtual DateTimeOffset? OrderDate
+        public virtual void Invoice(Employee employee, Invoice invoice)
         {
-            get;
-            set;
+            invoice.Order = this;
+            ((Collection<Invoice>)this.Invoices).Add(invoice);
+            this.Status = OrderStatus.Invoiced;
         }
 
-        public virtual DateTimeOffset? ShippedDate
+        public virtual void Ship(DateTimeOffset shipDate)
         {
-            get;
-            set;
+            this.Status = OrderStatus.Shipped;
+
         }
 
-        public virtual Shipper Shipper
+        public virtual void Completed()
         {
-            get;
-            set;
+            this.Status = OrderStatus.Completed;
         }
 
-        public virtual Money ShippingFee
+        public virtual void Cancelled()
         {
-            get;
-            set;
+            this.Status = OrderStatus.Cancelled;
         }
 
-        public virtual Money Tax
+        public virtual void AddOrderDetail(OrderDetail orderDetail)
         {
-            get;
-            set;
-        }
-
-        public virtual PaymentType PaymentType
-        {
-            get;
-            set;
-        }
-
-        public virtual DateTimeOffset? PaymentDate
-        {
-            get;
-            set;
-        }
-
-        public virtual double? TaxRate
-        {
-            get;
-            set;
-        }
-
-        public virtual double? OrderMonth
-        {
-            get;
-            set;
-        }
-
-        public virtual double? OrderYear
-        {
-            get;
-            set;
-        }
-
-        public virtual Money OrderSubTotal
-        {
-            get;
-            set;
-        }
-
-        public virtual Money OrderTotal
-        {
-            get;
-            set;
-        }
-
-        public virtual DateTimeOffset? ClosedDate
-        {
-            get;
-            set;
-        }
-
-        public virtual double? OrderQuarter
-        {
-            get;
-            set;
-        }
-
-        public virtual OrderStatus Status
-        {
-            get;
-            set;
-        }
-
-        public virtual bool IsNew
-        {
-            get;
-            set;
-        }
-
-        public virtual bool IsCompleted
-        {
-            get;
-            set;
-        }
-
-        public virtual bool IsShipped
-        {
-            get;
-            set;
-        }
-
-        public virtual bool IsInvoiced
-        {
-            get;
-            set;
-        }
-
-        public virtual bool IsActive
-        {
-            get;
-            set;
-        }
-
-        public virtual IEnumerable<Invoice> Invoices
-        {
-            get;
-            set;
-        }
-
-        public virtual IEnumerable<OrderDetail> OrderDetails
-        {
-            get;
-            set;
-        }
-
-        public virtual Employee Employee
-        {
-            get;
-            set;
-        }
-
-        public virtual Customer Customer
-        {
-            get;
-            set;
+            orderDetail.Order = this;
+            ((Collection<OrderDetail>)this.OrderDetails).Add(orderDetail);
         }
     }
 }

@@ -20,6 +20,8 @@ namespace AmpedBiz.Core.Entities
 
         public static readonly PaymentType CreditCard = new PaymentType("CC", "Credit Card");
 
-        public static readonly IEnumerable<PaymentType> All = new List<PaymentType>() { PaymentType.Cash, PaymentType.Check, PaymentType.CreditCard };
+        public static readonly PaymentType Mixed = new PaymentType("MX", "Mixed");
+
+        public static readonly IEnumerable<PaymentType> All = new List<PaymentType>() { Cash, Check, CreditCard, Mixed };
     }
 }

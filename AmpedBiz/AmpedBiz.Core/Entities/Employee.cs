@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Entities
 {
     public class Employee : Entity<Employee, Guid>
     {
-        public Employee()
-        {
-            this.Orders = new HashSet<Order>();
-            this.PurchaseOrders = new HashSet<PurchaseOrder>();
-        }
-
         public virtual User User { get; set; }
 
         public virtual Tenant Tenant { get; set; }
@@ -28,5 +23,11 @@ namespace AmpedBiz.Core.Entities
         public virtual IEnumerable<Order> Orders { get; set; }
 
         public virtual IEnumerable<PurchaseOrder> PurchaseOrders { get; set; }
+
+        public Employee()
+        {
+            this.Orders = new Collection<Order>();
+            this.PurchaseOrders = new Collection<PurchaseOrder>();
+        }
     }
 }
