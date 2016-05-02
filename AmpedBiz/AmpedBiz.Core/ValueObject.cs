@@ -82,7 +82,7 @@ namespace AmpedBiz.Core
 
         public static bool operator ==(ValueObject<T> x, ValueObject<T> y)
         {
-            return x.Equals(y);
+            return Equals(x, y);
         }
 
         public static bool operator !=(ValueObject<T> x, ValueObject<T> y)

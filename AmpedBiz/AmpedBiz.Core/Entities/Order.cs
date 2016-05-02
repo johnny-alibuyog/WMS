@@ -15,51 +15,72 @@ namespace AmpedBiz.Core.Entities
 
     public class Order : Entity<Order, Guid>
     {
-        public virtual Tenant Tenant { get; set; }
+        public virtual Branch Branch { get; set; }
 
-        public virtual DateTimeOffset? OrderDate { get; private set; }
+        public virtual DateTime? OrderDate { get; protected set; }
 
-        public virtual DateTimeOffset? ShippedDate { get; private set; }
+        public virtual DateTime? ShippedDate { get; protected set; }
 
-        public virtual DateTimeOffset? PaymentDate { get; private set; }
+        public virtual DateTime? PaymentDate { get; protected set; }
 
-        public virtual DateTimeOffset? ClosedDate { get; private set; }
+        public virtual DateTime? CompletedDate { get; protected set; }
 
-        public virtual PaymentType PaymentType { get; private set; }
+        public virtual DateTime? CancelDate { get; protected set; }
 
-        public virtual Shipper Shipper { get; private set; }
+        public virtual string CancelReason { get; protected set; }
 
-        public virtual double? TaxRate { get; private set; }
+        public virtual PaymentType PaymentType { get; protected set; }
 
-        public virtual Money Tax { get; private set; }
+        public virtual Shipper Shipper { get; protected set; }
 
-        public virtual Money ShippingFee { get; private set; }
+        public virtual double? TaxRate { get; protected set; }
 
-        public virtual Money SubTotal { get; private set; }
+        public virtual Money Tax { get; protected set; }
 
-        public virtual Money Total { get; private set; }
+        public virtual Money ShippingFee { get; protected set; }
 
-        public virtual OrderStatus Status { get; private set; }
+        public virtual Money SubTotal { get; protected set; }
 
-        public virtual bool IsActive { get; private set; }
+        public virtual Money Total { get; protected set; }
 
-        public virtual Employee Employee { get; private set; }
+        public virtual OrderStatus Status { get; protected set; }
 
-        public virtual Customer Customer { get; private set; }
+        public virtual bool IsActive { get; protected set; }
 
-        public virtual IEnumerable<Invoice> Invoices { get; private set; }
+        public virtual Employee Employee { get; protected set; }
 
-        public virtual IEnumerable<OrderDetail> OrderDetails { get; private set; }
+        public virtual Customer Customer { get; protected set; }
+
+        public virtual IEnumerable<Invoice> Invoices { get; protected set; }
+
+        public virtual IEnumerable<OrderDetail> OrderDetails { get; protected set; }
 
         public Order()
         {
             this.Invoices = new Collection<Invoice>();
-            this.OrderDetails = new HashSet<OrderDetail>();
+            this.OrderDetails = new Collection<OrderDetail>();
         }
 
-        public virtual void New()
+        public Order(DateTime date, PaymentType paymentType, Shipper shipper, double? taxRate, Money tax, Money shippingFee, Employee employee, Customer customer, Branch branch) : this()
+        {
+            New(date, paymentType, shipper, taxRate, tax, shippingFee, employee, customer, branch);
+        }
+
+        public virtual void New(DateTime date, PaymentType paymentType, Shipper shipper, double? taxRate, Money tax, Money shippingFee, Employee employee, Customer customer, Branch branch)
         {
             this.Status = OrderStatus.New;
+            this.IsActive = true;
+            this.OrderDate = date;
+            this.PaymentType = paymentType;
+            this.Shipper = shipper;
+            this.TaxRate = taxRate;
+            this.Tax = tax;
+            this.ShippingFee = shippingFee;
+            this.Employee = employee;
+            this.Customer = customer;
+            this.Branch = branch;
+
+            this.Total = this.Tax + this.ShippingFee;
         }
 
         public virtual void Invoice(Employee employee, Invoice invoice)
@@ -67,28 +88,39 @@ namespace AmpedBiz.Core.Entities
             invoice.Order = this;
             ((Collection<Invoice>)this.Invoices).Add(invoice);
             this.Status = OrderStatus.Invoiced;
+            this.IsActive = true;
         }
 
-        public virtual void Ship(DateTimeOffset shipDate)
+        public virtual void Ship(DateTime date, Shipper shipper)
         {
             this.Status = OrderStatus.Shipped;
-
+            this.IsActive = true;
+            this.Shipper = shipper;
+            this.ShippedDate = date;
         }
 
-        public virtual void Completed()
+        public virtual void Completed(DateTime date)
         {
             this.Status = OrderStatus.Completed;
+            this.IsActive = false;
+            this.CompletedDate = date;
         }
 
-        public virtual void Cancelled()
+        public virtual void Cancelled(DateTime date, string reason)
         {
             this.Status = OrderStatus.Cancelled;
+            this.IsActive = false;
+            this.CancelDate = date;
+            this.CancelReason = reason;
         }
 
         public virtual void AddOrderDetail(OrderDetail orderDetail)
         {
             orderDetail.Order = this;
             ((Collection<OrderDetail>)this.OrderDetails).Add(orderDetail);
+
+            this.SubTotal += orderDetail.ExtendedPrice;
+            this.Total += orderDetail.ExtendedPrice;
         }
     }
 }

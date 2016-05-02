@@ -8,9 +8,9 @@ namespace AmpedBiz.Core.Entities
     {
         public virtual Order Order { get; set; }
 
-        public virtual DateTimeOffset? InvoiceDate { get; set; }
+        public virtual DateTime? InvoiceDate { get; set; }
 
-        public virtual DateTimeOffset? DueDate { get; set; }
+        public virtual DateTime? DueDate { get; set; }
 
         public virtual Money Tax { get; set; }
 

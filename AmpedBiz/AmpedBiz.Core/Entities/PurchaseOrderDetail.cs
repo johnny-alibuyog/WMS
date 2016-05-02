@@ -20,7 +20,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Money ExtendedPrice { get; set; }
 
-        public virtual DateTimeOffset? DateReceived { get; private set; }
+        public virtual DateTime? DateReceived { get; private set; }
 
         public virtual PurchaseOrderDetailStatus Status { get; set; }
 

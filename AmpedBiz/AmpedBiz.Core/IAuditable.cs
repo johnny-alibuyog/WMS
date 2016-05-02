@@ -5,8 +5,8 @@ namespace AmpedBiz.Core
 {
     public interface IAuditable 
     {
-        DateTimeOffset CreatedOn { get; set; }
-        DateTimeOffset ModifiedOn { get; set; }
+        DateTime CreatedOn { get; set; }
+        DateTime ModifiedOn { get; set; }
         User CreatedBy { get; set; }
         User ModifiedBy { get; set; }
     }

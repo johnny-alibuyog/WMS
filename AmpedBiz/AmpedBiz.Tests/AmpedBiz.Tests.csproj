@@ -69,6 +69,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IntegrationTests\OrderTest.cs" />
     <Compile Include="IntegrationTests\ProductTests.cs" />
     <Compile Include="NUnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

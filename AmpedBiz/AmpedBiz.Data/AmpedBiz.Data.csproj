@@ -96,7 +96,6 @@
       <DependentUpon>ValidatorConfiguration.cs</DependentUpon>
     </Compile>
     <Compile Include="Conventions\BinaryColumnLengthConvention.cs" />
-    <Compile Include="Conventions\ColumnNullabilityConvention.cs" />
     <Compile Include="Conventions\CustomCollectionAccessConvention.cs" />
     <Compile Include="Conventions\CustomComponentConvention.cs" />
     <Compile Include="Conventions\CustomForeignKeyConstraintConvention.cs" />
@@ -109,6 +108,13 @@
     <Compile Include="Conventions\_CustomJoinedSubclassConvention.cs" />
     <Compile Include="CustomTypes\JsonType.cs" />
     <Compile Include="CustomTypes\XmlType.cs" />
+    <Compile Include="EntityDefinitions\InventoryMapping.cs" />
+    <Compile Include="EntityDefinitions\InventoryValidation.cs" />
+    <Compile Include="EntityDefinitions\OrderDetailMapping.cs" />
+    <Compile Include="EntityDefinitions\OrderDetailValidation.cs" />
+    <Compile Include="EntityDefinitions\OrderMapping.cs" />
+    <Compile Include="EntityDefinitions\OrderValidation.cs" />
+    <Compile Include="EntityDefinitions\TenantMapping.cs" />
     <Compile Include="Seeders\BranchSeeder.cs" />
     <Compile Include="Seeders\CurrencySeeder.cs" />
     <Compile Include="Seeders\CustomerSeeder.cs" />

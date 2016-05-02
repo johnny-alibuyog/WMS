@@ -6,7 +6,7 @@ namespace AmpedBiz.Core.Entities
 {
     public class Delivery : Entity<Delivery, Guid>
     {
-        public virtual DateTimeOffset Date { get; set; }
+        public virtual DateTime Date { get; set; }
 
         public virtual Customer Customer { get; set; }
 

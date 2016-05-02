@@ -27,7 +27,7 @@ namespace AmpedBiz.Data.Configurations
                 return;
 
             entity.CreatedBy = session.Load<User>(userId);
-            entity.CreatedOn = DateTimeOffset.UtcNow;
+            entity.CreatedOn = DateTime.Now;
         }
 
         public void OnPostUpdate(PostUpdateEvent @event)
@@ -44,7 +44,7 @@ namespace AmpedBiz.Data.Configurations
                 return;
 
             entity.ModifiedBy = session.Load<User>(currentUser);
-            entity.ModifiedOn = DateTimeOffset.UtcNow;
+            entity.ModifiedOn = DateTime.Now;
         }
     }
     

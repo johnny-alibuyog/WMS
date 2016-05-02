@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Inventory : Entity<Inventory, Guid>
+    public class Inventory : Entity<Inventory, String>
     {
         public virtual Tenant Tenant { get; set; }
 

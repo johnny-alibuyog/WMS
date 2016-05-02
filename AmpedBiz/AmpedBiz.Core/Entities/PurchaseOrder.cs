@@ -16,17 +16,17 @@ namespace AmpedBiz.Core.Entities
     {
         public virtual Tenant Tenant { get; set; }
 
-        public virtual DateTimeOffset? OrderDate { get; set; }
+        public virtual DateTime? OrderDate { get; set; }
 
-        public virtual DateTimeOffset? CreationDate { get; set; }
+        public virtual DateTime? CreationDate { get; set; }
 
-        public virtual DateTimeOffset? ExpectedDate { get; set; }
+        public virtual DateTime? ExpectedDate { get; set; }
 
-        public virtual DateTimeOffset? PaymentDate { get; set; }
+        public virtual DateTime? PaymentDate { get; set; }
 
-        public virtual DateTimeOffset? SubmittedDate { get; set; }
+        public virtual DateTime? SubmittedDate { get; set; }
 
-        public virtual DateTimeOffset? ClosedDate { get; set; }
+        public virtual DateTime? ClosedDate { get; set; }
 
         public virtual PaymentType PaymentType { get; set; }
 

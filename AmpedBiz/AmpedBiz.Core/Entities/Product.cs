@@ -25,6 +25,14 @@ namespace AmpedBiz.Core.Entities
 
         public virtual bool Discontinued { get; set; }
 
+        public virtual Inventory Inventory { get; set; }
+
+        public Product()
+        {
+            this.Inventory = new Inventory();
+            this.Inventory.Product = this;
+        }
+
         //public virtual UOM UnitOfMeasurement { get; set; }
 
         //public virtual Tenant Tenant { get; set; }

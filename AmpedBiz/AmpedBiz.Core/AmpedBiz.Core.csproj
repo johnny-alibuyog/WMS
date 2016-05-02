@@ -42,8 +42,6 @@
   <ItemGroup>
     <Compile Include="Entities\Address.cs" />
     <Compile Include="Entities\Attachment.cs" />
-    <Compile Include="Entities\Audit.cs" />
-    <Compile Include="Entities\Audit2.cs" />
     <Compile Include="Entities\Branch.cs" />
     <Compile Include="Entities\Contact.cs" />
     <Compile Include="Entities\Currency.cs" />

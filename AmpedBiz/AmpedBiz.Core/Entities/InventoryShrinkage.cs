@@ -6,7 +6,7 @@ namespace AmpedBiz.Core.Entities
     {
         public virtual Tenant Tenant { get; set; }
 
-        public virtual DateTimeOffset? Date { get; set; }
+        public virtual DateTime? Date { get; set; }
 
         public virtual decimal? Quantity { get; set; }
 

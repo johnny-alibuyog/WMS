@@ -35,5 +35,25 @@ namespace AmpedBiz.Core.Entities
         public virtual bool IsShipped { get; set; }
 
         public virtual bool IsBackOrdered { get; set; }
+
+        public virtual void Allocate()
+        {
+            this.Status = OrderDetailStatus.Allocated;
+        }
+
+        public virtual void Invoice()
+        {
+
+        }
+
+        public virtual void Ship()
+        {
+
+        }
+
+        public virtual void BackOrder()
+        {
+
+        }
     }
 }
