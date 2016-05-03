@@ -8,7 +8,7 @@ namespace AmpedBiz.Core.Entities
         Submitted
     }
 
-    public class PurchaseOrderDetail : Entity<PurchaseOrderDetail, Guid>
+    public class PurchaseOrderDetail : Entity<Guid, PurchaseOrderDetail>
     {
         public virtual PurchaseOrder PurchaseOrder { get; set; }
 
@@ -23,6 +23,20 @@ namespace AmpedBiz.Core.Entities
         public virtual DateTime? DateReceived { get; private set; }
 
         public virtual PurchaseOrderDetailStatus Status { get; set; }
+
+        public PurchaseOrderDetail() : this(default(Guid)) { }
+
+        public PurchaseOrderDetail(Guid id) : base(id) { }
+
+        public void Submit()
+        {
+            this.Status = PurchaseOrderDetailStatus.Submitted;
+        }
+
+        public void Post()
+        {
+            this.Status = PurchaseOrderDetailStatus.Posted;
+        }
 
         //public virtual bool PostedToInventory { get; private set; }
 

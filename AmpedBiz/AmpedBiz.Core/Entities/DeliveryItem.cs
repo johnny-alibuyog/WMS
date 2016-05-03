@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class DeliveryItem : Entity<DeliveryItem, Guid>
+    public class DeliveryItem : Entity<Guid, DeliveryItem>
     {
         public virtual Guid DeliveryId { get; set; }
 
@@ -15,8 +15,11 @@ namespace AmpedBiz.Core.Entities
         public virtual Product Product { get; set; }
 
         public virtual Quantity Quantity { get; set; }
-    }
 
+        public DeliveryItem() : this(default(Guid)) { }
+
+        public DeliveryItem(Guid id) : base(id) { }
+    }
 }
 
 

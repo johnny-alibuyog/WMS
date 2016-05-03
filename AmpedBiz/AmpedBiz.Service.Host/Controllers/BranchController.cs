@@ -1,5 +1,6 @@
 ﻿using System.Web.Http;
 using AmpedBiz.Service.Branches;
+using Common.Logging;
 using MediatR;
 
 namespace AmpedBiz.Service.Host.Controllers
@@ -7,11 +8,17 @@ namespace AmpedBiz.Service.Host.Controllers
     [RoutePrefix("branches")]
     public class BranchController : ApiController
     {
+        private readonly ILog _log;
         private readonly IMediator _mediator;
 
-        public BranchController(IMediator mediator)
+        public BranchController(ILog log, IMediator mediator)
         {
+            _log = log;
             _mediator = mediator;
+
+            _log.Warn("log me like you do, lo log me like you do.");
+            _log.Error("log me like you do, lo log me like you do.");
+            _log.Fatal("log me like you do, lo log me like you do.");
         }
 
         [HttpGet()]

@@ -36,9 +36,8 @@ namespace AmpedBiz.Data.Seeders
 
             for (int i = 0; i < 36; i++)
             {
-                data.Add(new Product()
+                data.Add(new Product($"product{i}")
                 {
-                    Id = $"product{i}",
                     Name = $"Product {i}",
                     Description = $"Description {i}",
                     Image = $"some_image_{i}.png"
@@ -50,8 +49,8 @@ namespace AmpedBiz.Data.Seeders
             {
                 //session.SetBatchSize(100);
 
-                var products = session.Query<Product>().ToList();
-                if (products.Count == 0)
+                var entity = session.Query<Product>().ToList();
+                if (entity.Count == 0)
                 {
                     var supplierIndex = 0;
                     var suppliers = session.Query<Supplier>().ToList();

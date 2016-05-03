@@ -33,9 +33,8 @@ namespace AmpedBiz.Data.Seeders
 
             for (int i = 0; i < 8; i++)
             {
-                data.Add(new User()
+                data.Add(new User($"user{i}")
                 {
-                    Id = $"user{i}",
                     Username = $"Username{i}",
                     Password = $"Password{i}",
                     Person = new Person()
@@ -61,10 +60,10 @@ namespace AmpedBiz.Data.Seeders
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var users = session.Query<User>().ToList();
+                var entities = session.Query<User>().ToList();
                 var roles = session.Query<Role>().ToList();
                 var branch = session.Query<Branch>().FirstOrDefault();
-                if (users.Count == 0)
+                if (entities.Count == 0)
                 {
                     foreach (var item in data)
                     {

@@ -35,7 +35,7 @@ namespace AmpedBiz.Service.Branches
                     if (exists)
                         throw new BusinessException($"Branch with id {message.Id} already exists.");
 
-                    var entity = Mapper.Map<Dto.Branch, Entity.Branch>(message);
+                    var entity = Mapper.Map<Dto.Branch, Entity.Branch>(message, new Entity.Branch(message.Id));
 
                     session.Save(entity);
 

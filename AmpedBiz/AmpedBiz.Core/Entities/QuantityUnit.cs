@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class QuantityUnit : Entity<QuantityUnit, Guid>
+    public class QuantityUnit : Entity<Guid, QuantityUnit>
     {
         public virtual string Name { get; set; }
+
+        public QuantityUnit() : this(default(Guid)) { }
+
+        public QuantityUnit(Guid id) : base(id) { }
     }
 }

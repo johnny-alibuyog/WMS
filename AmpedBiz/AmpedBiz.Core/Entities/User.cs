@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class User : Entity<User, string>
+    public class User : Entity<string, User>
     {
         public virtual string Username { get; set; }
 
@@ -21,7 +21,9 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<UserRole> UserRoles { get; set; }
 
-        public User()
+        public User() : this(default(string)) { }
+
+        public User(string id) : base(id)
         {
             this.UserRoles = new Collection<UserRole>();
         }

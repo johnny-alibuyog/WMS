@@ -13,7 +13,7 @@ namespace AmpedBiz.Core.Entities
         Cancelled
     }
 
-    public class Order : Entity<Order, Guid>
+    public class Order : Entity<Guid, Order>
     {
         public virtual Branch Branch { get; set; }
 
@@ -55,13 +55,15 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<OrderDetail> OrderDetails { get; protected set; }
 
-        public Order()
+        public Order() : this(default(Guid)) { }
+
+        public Order(Guid id) : base(id)
         {
             this.Invoices = new Collection<Invoice>();
             this.OrderDetails = new Collection<OrderDetail>();
         }
 
-        public Order(DateTime date, PaymentType paymentType, Shipper shipper, double? taxRate, Money tax, Money shippingFee, Employee employee, Customer customer, Branch branch) : this()
+        public Order(DateTime date, PaymentType paymentType, Shipper shipper, double? taxRate, Money tax, Money shippingFee, Employee employee, Customer customer, Branch branch) : this(default(Guid))
         {
             New(date, paymentType, shipper, taxRate, tax, shippingFee, employee, customer, branch);
         }

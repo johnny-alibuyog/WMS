@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Role : Entity<Role, string>
+    public class Role : Entity<string, Role>
     {
         public virtual string Name { get; set; }
 
-        public Role() { }
+        public Role() : this(default(string)) { }
 
-        public Role(string id, string name)
+        public Role(string id, string name = null) : base(id)
         {
-            this.Id = id;
             this.Name = name;
         }
 
@@ -22,6 +21,6 @@ namespace AmpedBiz.Core.Entities
 
         public static Role Encoder = new Role("E", "Encoder");
 
-        public static IEnumerable<Role> All = new Role[] { Role.Admin, Role.Encoder };
+        public static IEnumerable<Role> All = new Role[] { Admin, Encoder };
     }
 }

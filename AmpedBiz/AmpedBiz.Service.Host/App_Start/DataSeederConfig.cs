@@ -10,7 +10,7 @@ namespace AmpedBiz.Service.Host.App_Start
     {
         public static void Register(HttpConfiguration config)
         {
-            var log = LogManager.GetLogger(typeof(DataSeederConfig));
+            var log = LogManager.GetLogger<DataSeederConfig>();
             log.Error("log me like you do");
 
             var seeders = config.DependencyResolver

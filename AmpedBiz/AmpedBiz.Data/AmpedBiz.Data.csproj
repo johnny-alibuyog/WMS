@@ -104,6 +104,7 @@
     <Compile Include="Conventions\CustomPrimaryKeyConvention.cs" />
     <Compile Include="Conventions\CustomPropertyAccessConvention.cs" />
     <Compile Include="Conventions\CustomTableNameConvention.cs" />
+    <Compile Include="Conventions\DateTimeOffsetConvention.cs" />
     <Compile Include="Conventions\EnumConvention.cs" />
     <Compile Include="Conventions\_CustomJoinedSubclassConvention.cs" />
     <Compile Include="CustomTypes\JsonType.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Seeders\CurrencySeeder.cs" />
     <Compile Include="Seeders\CustomerSeeder.cs" />
     <Compile Include="Seeders\ISeeder.cs" />
+    <Compile Include="Seeders\OrderSeeder.cs" />
     <Compile Include="Seeders\PaymentTypeSeeder.cs" />
     <Compile Include="Seeders\ProductCategorySeeder.cs" />
     <Compile Include="Seeders\ProductSeeder.cs" />

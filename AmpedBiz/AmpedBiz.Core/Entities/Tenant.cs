@@ -2,7 +2,7 @@
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Tenant : Entity<Tenant, Guid>
+    public class Tenant : Entity<Guid, Tenant>
     {
         public virtual string Name { get; set; }
 
@@ -10,8 +10,8 @@ namespace AmpedBiz.Core.Entities
 
         public virtual string Description { get; set; }
 
-        public Tenant()
-        {
-        }
+        public Tenant() : this(default(Guid)) { }
+
+        public Tenant(Guid id) : base(id) { }
     }
 }

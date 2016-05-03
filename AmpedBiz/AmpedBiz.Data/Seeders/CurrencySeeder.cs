@@ -33,8 +33,8 @@ namespace AmpedBiz.Data.Seeders
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var users = session.Query<Currency>().ToList();
-                if (users.Count == 0)
+                var entity = session.Query<Currency>().ToList();
+                if (entity.Count == 0)
                 {
                     foreach (var item in Currency.All)
                     {

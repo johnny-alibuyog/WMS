@@ -3,22 +3,21 @@ using System.Collections.Generic;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Currency : Entity<Currency, string>
+    public class Currency : Entity<string, Currency>
     {
         public virtual string Symbol { get; set; }
 
         public virtual string Name { get; set; }
 
-        public Currency() { }
+        public Currency() : this(default(string)) { }
 
-        public Currency(string id, string symbol, string name)
+        public Currency(string id, string symbol = null, string name = null) : base(id)
         {
-            this.Id = id;
             this.Symbol = symbol;
             this.Name = name;
         }
 
         public static readonly Currency PHP = new Currency("PHP", "₱", "Philipine Peso");
-        public static readonly IEnumerable<Currency> All = new Currency[] { Currency.PHP };
+        public static readonly IEnumerable<Currency> All = new Currency[] { PHP };
     }
 }

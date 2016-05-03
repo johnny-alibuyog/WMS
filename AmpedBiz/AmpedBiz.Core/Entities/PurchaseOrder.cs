@@ -12,7 +12,7 @@ namespace AmpedBiz.Core.Entities
         Cancelled
     }
 
-    public class PurchaseOrder : Entity<PurchaseOrder, Guid>
+    public class PurchaseOrder : Entity<Guid, PurchaseOrder>
     {
         public virtual Tenant Tenant { get; set; }
 
@@ -52,7 +52,9 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
 
-        public PurchaseOrder()
+        public PurchaseOrder() : this(default(Guid)) { }
+
+        public PurchaseOrder(Guid id) : base(id)
         {
             this.PurchaseOrderDetails = new Collection<PurchaseOrderDetail>();
         }

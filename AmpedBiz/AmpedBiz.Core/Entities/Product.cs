@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Product : Entity<Product, string>
+    public class Product : Entity<string, Product>
     {
         public virtual string Name { get; set; }
 
@@ -12,8 +12,6 @@ namespace AmpedBiz.Core.Entities
         public virtual Supplier Supplier { get; set; }
 
         public virtual ProductCategory Category { get; set; }
-
-        //public virtual IEnumerable<Attachment> Attachments { get; set; }
 
         public virtual string Image { get; set; }
 
@@ -27,7 +25,11 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Inventory Inventory { get; set; }
 
-        public Product()
+        //public virtual IEnumerable<Attachment> Attachments { get; set; }
+
+        public Product() : this(default(string)) { }
+
+        public Product(string id) : base(id)
         {
             this.Inventory = new Inventory();
             this.Inventory.Product = this;

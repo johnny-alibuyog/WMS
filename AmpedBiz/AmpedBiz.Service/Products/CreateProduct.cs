@@ -42,7 +42,7 @@ namespace AmpedBiz.Service.Products
                         throw new BusinessException($"Product with id {message.Id} already exists.");
 
                     var currency = session.Load<Currency>(Currency.PHP.Id); // this should be taken from the tenant
-                    var entity = Mapper.Map<Dto.Product, Product>(message);
+                    var entity = Mapper.Map<Dto.Product, Product>(message, new Product(message.Id));
                     entity.BasePrice = new Money(message.BasePriceAmount, currency);
                     entity.RetailPrice = new Money(message.RetailPriceAmount, currency);
                     entity.WholesalePrice = new Money(message.RetailPriceAmount, currency);

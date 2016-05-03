@@ -1,28 +1,29 @@
-﻿namespace AmpedBiz.Core.Entities
+﻿using System.Collections.Generic;
+
+namespace AmpedBiz.Core.Entities
 {
-    public class UOM : Entity<UOM, string>
+    public class UOM : Entity<string, UOM>
     {
         public string Symbol { get; set; }
 
         public string Name { get; set; }
 
-        public UOM()
-        {
-        }
+        public UOM() : this(default(string)) { }
 
-        public UOM(string id, string symbol, string name)
+        public UOM(string id, string symbol = null, string name = null) : base(id)
         {
-            this.Id = id;
             this.Symbol = symbol;
             this.Name = name;
         }
 
-        public static readonly UOM KILOGRAM = new UOM("K", "KG", "Kilogram");
+        public static readonly UOM Kilogram = new UOM("K", "KG", "Kilogram");
 
-        public static readonly UOM PIECE = new UOM("P", "PIECE", "Piece");
+        public static readonly UOM Piece = new UOM("P", "PIECE", "Piece");
 
-        public static readonly UOM CASE = new UOM("C", "CASE", "Case");
+        public static readonly UOM Case = new UOM("C", "CASE", "Case");
 
-        public static readonly UOM DOZEN = new UOM("D", "DOZEN", "Dozen");
+        public static readonly UOM Dozen = new UOM("D", "DOZEN", "Dozen");
+
+        public static IEnumerable<UOM> All = new UOM[] { Kilogram, Piece, Case, Dozen };
     }
 }

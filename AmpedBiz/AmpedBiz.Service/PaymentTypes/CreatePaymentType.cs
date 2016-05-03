@@ -35,11 +35,7 @@ namespace AmpedBiz.Service.PaymentTypes
                     if (exists)
                         throw new BusinessException($"Payment Type with id {message.Id} already exists.");
 
-                    session.Save(new PaymentType()
-                    {
-                        Id = message.Id,
-                        Name = message.Name
-                    });
+                    session.Save(new PaymentType(message.Id, message.Name));
 
                     transaction.Commit();
                 }

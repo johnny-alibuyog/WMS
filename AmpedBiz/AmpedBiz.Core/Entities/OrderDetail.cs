@@ -10,7 +10,7 @@ namespace AmpedBiz.Core.Entities
         BackOrdered
     }
 
-    public class OrderDetail : Entity<OrderDetail, Guid>
+    public class OrderDetail : Entity<Guid, OrderDetail>
     {
         public virtual Product Product { get; set; }
 
@@ -35,6 +35,10 @@ namespace AmpedBiz.Core.Entities
         public virtual bool IsShipped { get; set; }
 
         public virtual bool IsBackOrdered { get; set; }
+
+        public OrderDetail() : this(default(Guid)) { }
+
+        public OrderDetail(Guid id) : base(id) { }
 
         public virtual void Allocate()
         {

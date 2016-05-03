@@ -34,9 +34,8 @@ namespace AmpedBiz.Data.Seeders
 
             for (int i = 0; i < 153; i++)
             {
-                data.Add(new Branch()
+                data.Add(new Branch($"branch{i}")
                 {
-                    Id = $"branch{i}",
                     Name = $"Branch {i}",
                     Description = $"Description {i}",
                     Address = new Address()
@@ -57,8 +56,8 @@ namespace AmpedBiz.Data.Seeders
             {
                 //session.SetBatchSize(100);
 
-                var users = session.Query<Branch>().ToList();
-                if (users.Count == 0)
+                var entity = session.Query<Branch>().ToList();
+                if (entity.Count == 0)
                 {
                     foreach (var item in data)
                     {

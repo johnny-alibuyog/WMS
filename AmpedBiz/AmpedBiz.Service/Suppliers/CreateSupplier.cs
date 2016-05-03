@@ -35,7 +35,7 @@ namespace AmpedBiz.Service.Suppliers
                     if (exists)
                         throw new BusinessException($"Supplier with id {message.Id} already exists.");
 
-                    var entity = Mapper.Map<Dto.Supplier, Entity.Supplier>(message);
+                    var entity = Mapper.Map<Dto.Supplier, Entity.Supplier>(message, new Entity.Supplier(message.Id));
 
                     session.Save(entity);
 

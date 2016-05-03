@@ -2,7 +2,7 @@
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Attachment : Entity<Attachment, Guid>
+    public class Attachment : Entity<Guid, Attachment>
     {
         public virtual string Name { get; set; }
 
@@ -11,5 +11,9 @@ namespace AmpedBiz.Core.Entities
         public virtual string Description { get; set; }
 
         public virtual Product Product { get; set; }
+
+        public Attachment() : this(default(Guid)) { }
+
+        public Attachment(Guid id) : base(id) { }
     }
 }

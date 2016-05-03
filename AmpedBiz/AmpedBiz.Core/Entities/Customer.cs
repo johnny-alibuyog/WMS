@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Customer : Entity<Customer, string>
+    public class Customer : Entity<string, Customer>
     {
         public virtual string Name { get; set; }
 
@@ -19,10 +20,12 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<Location> Locations { get; set; }
 
-        public Customer()
+        public Customer() : this(default(string)) { }
+
+        public Customer(string id) : base(id)
         {
-            this.Orders = new HashSet<Order>();
-            this.Locations = new HashSet<Location>();
+            this.Orders = new Collection<Order>();
+            this.Locations = new Collection<Location>();
         }
     }
 }

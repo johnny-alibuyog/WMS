@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Employee : Entity<Employee, Guid>
+    public class Employee : Entity<Guid, Employee>
     {
         public virtual User User { get; set; }
 
@@ -24,7 +24,9 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<PurchaseOrder> PurchaseOrders { get; set; }
 
-        public Employee()
+        public Employee() : this(default(Guid)) { }
+
+        public Employee(Guid id) : base(id)
         {
             this.Orders = new Collection<Order>();
             this.PurchaseOrders = new Collection<PurchaseOrder>();

@@ -34,9 +34,8 @@ namespace AmpedBiz.Data.Seeders
 
             for (int i = 0; i < 36; i++)
             {
-                data.Add(new Supplier()
+                data.Add(new Supplier($"supplier{i}")
                 {
-                    Id = $"supplier{i}",
                     Name = $"Supplier {i}",
                     Address = new Address()
                     {
@@ -64,9 +63,8 @@ namespace AmpedBiz.Data.Seeders
             {
                 //session.SetBatchSize(100);
 
-                var suppliers = session.Query<Supplier>().ToList();
-
-                if (suppliers.Count == 0)
+                var entities = session.Query<Supplier>().ToList();
+                if (entities.Count == 0)
                 {
                     foreach (var item in data)
                     {

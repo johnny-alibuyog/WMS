@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Invoice : Entity<Invoice, Guid>
+    public class Invoice : Entity<Guid, Invoice>
     {
         public virtual Order Order { get; set; }
 
@@ -19,5 +19,9 @@ namespace AmpedBiz.Core.Entities
         public virtual Money SubTotal { get; set; }
 
         public virtual Money AmountDue { get; set; }
+
+        public Invoice() : this(default(Guid)) { }
+
+        public Invoice(Guid id) : base(id) { }
     }
 }

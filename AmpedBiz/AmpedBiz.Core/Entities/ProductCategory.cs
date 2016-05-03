@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class ProductCategory : Entity<ProductCategory, string>
+    public class ProductCategory : Entity<string, ProductCategory>
     {
         public virtual int TenantId { get; set; }
 
         public virtual string Name { get; set; }
 
-        public ProductCategory() { }
+        public ProductCategory() : this(default(string)) { }
 
-        public ProductCategory(string id, string name)
+        public ProductCategory(string id, string name = null) : base(id)
         {
             this.Id = id;
             this.Name = name;

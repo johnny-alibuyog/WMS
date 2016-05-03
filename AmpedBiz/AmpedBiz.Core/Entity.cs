@@ -1,14 +1,12 @@
 ﻿namespace AmpedBiz.Core
 {
-    public abstract class Entity<TEntity, TId> where TEntity : Entity<TEntity, TId>
+    public abstract class Entity<TId, TEntity> where TEntity : Entity<TId, TEntity>
     {
         private int? _oldHashCode;
 
         private bool IsTransient { get { return Equals(this.Id, default(TId)); } }
 
-        public virtual TId Id { get; set; }
-
-        public Entity() { }
+        public virtual TId Id { get; protected set; }
 
         public Entity(TId id)
         {
@@ -48,12 +46,12 @@
             return Id.GetHashCode();
         }
 
-        public static bool operator ==(Entity<TEntity, TId> x, Entity<TEntity, TId> y)
+        public static bool operator ==(Entity<TId, TEntity> x, Entity<TId, TEntity> y)
         {
             return Equals(x, y);
         }
 
-        public static bool operator !=(Entity<TEntity, TId> x, Entity<TEntity, TId> y)
+        public static bool operator !=(Entity<TId, TEntity> x, Entity<TId, TEntity> y)
         {
             return !(x == y);
         }

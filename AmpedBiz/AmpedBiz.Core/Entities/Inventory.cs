@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Inventory : Entity<Inventory, String>
+    public class Inventory : Entity<string, Inventory>
     {
         public virtual Tenant Tenant { get; set; }
 
@@ -40,7 +40,9 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<InventoryShrinkage> Shrinkages { get; set; }
 
-        public Inventory()
+        public Inventory() : this(default(string)) { }
+
+        public Inventory(string id) : base(id)
         {
             this.Shrinkages = new Collection<InventoryShrinkage>();
         }

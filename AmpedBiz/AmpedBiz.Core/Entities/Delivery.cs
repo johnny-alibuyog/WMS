@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Delivery : Entity<Delivery, Guid>
+    public class Delivery : Entity<Guid, Delivery>
     {
         public virtual DateTime Date { get; set; }
 
@@ -14,7 +14,9 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<DeliveryItem> Items { get; protected set; }
 
-        public Delivery()
+        public Delivery() : this(default(Guid)) { }
+
+        public Delivery(Guid id) : base(id)
         {
             this.Items = new Collection<DeliveryItem>();
         }

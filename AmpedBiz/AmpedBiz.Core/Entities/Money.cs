@@ -12,9 +12,9 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Currency Currency { get; set; }
 
-        public Money() { }
+        public Money() : this(0M) { }
 
-        public Money(decimal amount) :this(amount, Currency.PHP)  { }
+        public Money(decimal amount) : this(amount, Currency.PHP) { }
 
         public Money(decimal amount, Currency currency)
         {

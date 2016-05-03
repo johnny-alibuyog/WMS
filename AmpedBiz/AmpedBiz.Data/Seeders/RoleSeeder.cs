@@ -30,11 +30,11 @@ namespace AmpedBiz.Data.Seeders
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var paymentTypes = session.Query<Role>().ToList();
+                var entities = session.Query<Role>().ToList();
 
                 foreach (var item in Role.All)
                 {
-                    if (!paymentTypes.Contains(item))
+                    if (!entities.Contains(item))
                         session.Save(item);
                 }
 

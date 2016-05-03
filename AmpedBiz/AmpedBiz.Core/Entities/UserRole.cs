@@ -2,10 +2,14 @@
 
 namespace AmpedBiz.Core.Entities
 {
-    public class UserRole : Entity<UserRole, Guid>
+    public class UserRole : Entity<Guid, UserRole>
     {
         public virtual User User { get; set; }
 
         public virtual Role Role { get; set; }
+
+        public UserRole() : this(default(Guid)) { }
+
+        public UserRole(Guid id) : base(id){ }
     }
 }

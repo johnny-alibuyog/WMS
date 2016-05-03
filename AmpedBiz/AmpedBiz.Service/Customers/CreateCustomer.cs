@@ -34,7 +34,7 @@ namespace AmpedBiz.Service.Customers
                     if (exists)
                         throw new BusinessException($"Customer with id {message.Id} already exists.");
 
-                    var entity = Mapper.Map<Dto.Customer, Customer>(message);
+                    var entity = Mapper.Map<Dto.Customer, Customer>(message, new Customer(message.Id));
 
                     session.Save(entity);
 

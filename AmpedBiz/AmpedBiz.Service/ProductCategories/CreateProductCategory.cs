@@ -31,11 +31,7 @@ namespace AmpedBiz.Service.ProductCategories
                     if (exists)
                         throw new BusinessException($"Product Category with id {message.Id} already exists.");
 
-                    session.Save(new ProductCategory()
-                    {
-                        Id = message.Id,
-                        Name = message.Name
-                    });
+                    session.Save(new ProductCategory(message.Id, message.Name));
 
                     transaction.Commit();
                 }

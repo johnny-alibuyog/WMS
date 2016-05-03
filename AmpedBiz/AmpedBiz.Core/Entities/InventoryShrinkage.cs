@@ -2,7 +2,7 @@
 
 namespace AmpedBiz.Core.Entities
 {
-    public class InventoryShrinkage : Entity<InventoryShrinkage, Guid>
+    public class InventoryShrinkage : Entity<Guid, InventoryShrinkage>
     {
         public virtual Tenant Tenant { get; set; }
 
@@ -13,5 +13,9 @@ namespace AmpedBiz.Core.Entities
         public virtual string Reason { get; set; }
 
         public virtual Product Product { get; set; }
+
+        public InventoryShrinkage() : this(default(Guid)) { }
+
+        public InventoryShrinkage(Guid id) : base(id) { }
     }
 }
