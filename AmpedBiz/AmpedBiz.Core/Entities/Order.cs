@@ -33,7 +33,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Shipper Shipper { get; protected set; }
 
-        public virtual double? TaxRate { get; protected set; }
+        public virtual decimal? TaxRate { get; protected set; }
 
         public virtual Money Tax { get; protected set; }
 
@@ -63,12 +63,12 @@ namespace AmpedBiz.Core.Entities
             this.OrderDetails = new Collection<OrderDetail>();
         }
 
-        public Order(DateTime date, PaymentType paymentType, Shipper shipper, double? taxRate, Money tax, Money shippingFee, Employee employee, Customer customer, Branch branch) : this(default(Guid))
+        public Order(DateTime date, PaymentType paymentType, Shipper shipper, decimal? taxRate, Money tax, Money shippingFee, Employee employee, Customer customer, Branch branch) : this()
         {
             New(date, paymentType, shipper, taxRate, tax, shippingFee, employee, customer, branch);
         }
 
-        public virtual void New(DateTime date, PaymentType paymentType, Shipper shipper, double? taxRate, Money tax, Money shippingFee, Employee employee, Customer customer, Branch branch)
+        public virtual void New(DateTime date, PaymentType paymentType, Shipper shipper, decimal? taxRate, Money tax, Money shippingFee, Employee employee, Customer customer, Branch branch)
         {
             this.Status = OrderStatus.New;
             this.IsActive = true;

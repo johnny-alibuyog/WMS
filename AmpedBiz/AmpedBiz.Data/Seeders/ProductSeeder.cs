@@ -52,6 +52,21 @@ namespace AmpedBiz.Data.Seeders
                 var entity = session.Query<Product>().ToList();
                 if (entity.Count == 0)
                 {
+                    var unitOfMeasureIndex = 0;
+                    var unitOfMeasures = session.Query<UnitOfMeasure>().ToList();
+
+                    Func<UnitOfMeasure> RotateUnitOfMeasure = () =>
+                    {
+                        var result = unitOfMeasures[unitOfMeasureIndex];
+
+                        if (unitOfMeasureIndex < unitOfMeasures.Count - 1)
+                            unitOfMeasureIndex++;
+                        else
+                            unitOfMeasureIndex = 0;
+
+                        return result;
+                    };
+
                     var supplierIndex = 0;
                     var suppliers = session.Query<Supplier>().ToList();
 
@@ -98,8 +113,11 @@ namespace AmpedBiz.Data.Seeders
                         dynamic prices = new ExpandoObject();
                         prices.BasePrice = new Money(random.NextDecimal(1.00M, 20000.00M));
                         prices.RetailPrice = new Money(random.NextDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.BasePrice.Amount + 5000M));
-                        prices.WholeSalePrice = new Money(random.NextDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.RetailPrice.Amount)); 
+                        prices.WholeSalePrice = new Money(random.NextDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.RetailPrice.Amount));
 
+                        item.Inventory.UnitOfMeasure = UnitOfMeasureClass.Quantity.Units.RandomElement();
+                        item.Inventory.UnitOfMeasureBase = RotateUnitOfMeasure();
+                        item.Inventory.ConvertionFactor = random.Next(1, 24);
                         item.Category = RotateCategory();
                         item.Supplier = RotateSupplier();
                         item.Discontinued = RotateDiscontinued();

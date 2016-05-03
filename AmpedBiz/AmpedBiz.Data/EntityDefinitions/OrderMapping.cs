@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Entities;
 using FluentNHibernate.Mapping;
 
 namespace AmpedBiz.Data.EntityDefinitions
@@ -31,7 +26,7 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             References(x => x.PaymentType);
 
-            //References(x => x.Shipper);
+            References(x => x.Shipper);
 
             Map(x => x.TaxRate);
 
@@ -58,12 +53,12 @@ namespace AmpedBiz.Data.EntityDefinitions
             //    .Inverse()
             //    .AsBag();
 
-            //HasMany(x => x.OrderDetails)
-            //    .Cascade.AllDeleteOrphan()
-            //    .Not.KeyNullable()
-            //    .Not.KeyUpdate()
-            //    .Inverse()
-            //    .AsBag();
+            HasMany(x => x.OrderDetails)
+                .Cascade.AllDeleteOrphan()
+                .Not.KeyNullable()
+                .Not.KeyUpdate()
+                .Inverse()
+                .AsBag();
         }
     }
 }

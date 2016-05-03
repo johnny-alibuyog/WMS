@@ -50,6 +50,7 @@
     <Compile Include="Entities\Employee.cs" />
     <Compile Include="Entities\EmployeeType.cs" />
     <Compile Include="Entities\InventoryShrinkage.cs" />
+    <Compile Include="Entities\Measure.cs" />
     <Compile Include="Entities\Money.cs" />
     <Compile Include="Entities\Order.cs" />
     <Compile Include="Entities\OrderDetail.cs" />
@@ -62,15 +63,14 @@
     <Compile Include="Entities\PaymentType.cs" />
     <Compile Include="Entities\PurchaseOrder.cs" />
     <Compile Include="Entities\PurchaseOrderDetail.cs" />
-    <Compile Include="Entities\Quantity.cs" />
-    <Compile Include="Entities\QuantityUnit.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\Inventory.cs" />
     <Compile Include="Entities\Setting.cs" />
     <Compile Include="Entities\Shipper.cs" />
     <Compile Include="Entities\Supplier.cs" />
     <Compile Include="Entities\Tenant.cs" />
-    <Compile Include="Entities\UOM.cs" />
+    <Compile Include="Entities\UnitOfMeasure.cs" />
+    <Compile Include="Entities\UnitOfMeasureClass.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UserRole.cs" />
     <Compile Include="Entity.cs" />

@@ -15,33 +15,39 @@ namespace AmpedBiz.Data.EntityDefinitions
             Id(x => x.Id)
                 .GeneratedBy.Foreign("Product");
 
-            Map(x => x.ReorderLevel);
+            References(x => x.UnitOfMeasure);
 
-            Map(x => x.TargetLevel);
+            References(x => x.UnitOfMeasureBase);
 
-            Map(x => x.MinimumReorderQuantity);
+            Map(x => x.ConvertionFactor);
 
-            Map(x => x.Received);
+            Component(x => x.ReorderLevel, MeasureMapping.Map("ReorderLevel_", nameof(Inventory)));
 
-            Map(x => x.OnOrder);
+            Component(x => x.TargetLevel, MeasureMapping.Map("TargetLevel_", nameof(Inventory)));
 
-            Map(x => x.Shipped);
+            Component(x => x.MinimumReorderQuantity, MeasureMapping.Map("MinimumReorderQuantity_", nameof(Inventory)));
 
-            Map(x => x.Allocated);
+            Component(x => x.Received, MeasureMapping.Map("Received_", nameof(Inventory)));
 
-            Map(x => x.BackOrdered);
+            Component(x => x.OnOrder, MeasureMapping.Map("OnOrder_", nameof(Inventory)));
 
-            Map(x => x.InitialLevel);
+            Component(x => x.Shipped, MeasureMapping.Map("Shipped_", nameof(Inventory)));
 
-            Map(x => x.OnHand);
+            Component(x => x.Allocated, MeasureMapping.Map("Allocated_", nameof(Inventory)));
 
-            Map(x => x.Available);
+            Component(x => x.BackOrdered, MeasureMapping.Map("BackOrdered_", nameof(Inventory)));
 
-            Map(x => x.CurrentLevel);
+            Component(x => x.InitialLevel, MeasureMapping.Map("InitialLevel_", nameof(Inventory)));
 
-            Map(x => x.BelowTargetLevel);
+            Component(x => x.OnHand, MeasureMapping.Map("OnHand_", nameof(Inventory)));
 
-            Map(x => x.ReorderQuantity);
+            Component(x => x.Available, MeasureMapping.Map("Available_", nameof(Inventory)));
+
+            Component(x => x.CurrentLevel, MeasureMapping.Map("CurrentLevel_", nameof(Inventory)));
+
+            Component(x => x.BelowTargetLevel, MeasureMapping.Map("BelowTargetLevel_", nameof(Inventory)));
+
+            Component(x => x.ReorderQuantity, MeasureMapping.Map("ReorderQuantity_", nameof(Inventory)));
 
             HasOne(x => x.Product).Constrained();
 

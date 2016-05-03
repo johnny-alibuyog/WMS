@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Entities;
 using NHibernate.Validator.Cfg.Loquacious;
 
 namespace AmpedBiz.Data.EntityDefinitions
@@ -49,9 +44,9 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.IsActive);
 
-            Define(x => x.Employee)
-                .NotNullable()
-                .And.IsValid();
+            //Define(x => x.Employee)
+            //    .NotNullable()
+            //    .And.IsValid();
 
             Define(x => x.Customer)
                 .NotNullable()
@@ -60,9 +55,9 @@ namespace AmpedBiz.Data.EntityDefinitions
             Define(x => x.Invoices)
                 .HasValidElements();
 
-            Define(x => x.OrderDetails)
-                .NotNullableAndNotEmpty()
-                .And.HasValidElements();
+            //Define(x => x.OrderDetails)
+            //    .NotNullableAndNotEmpty()
+            //    .And.HasValidElements();
         }
     }
 }

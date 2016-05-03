@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Shipper : Entity<Guid, Shipper>
+    public class Shipper : Entity<string, Shipper>
     {
         public virtual string Name { get; set; }
 
@@ -16,9 +16,9 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<Order> Orders { get; set; }
 
-        public Shipper() : this(default(Guid)) { }
+        public Shipper() : this(default(string)) { }
 
-        public Shipper(Guid id) : base(id)
+        public Shipper(string id) : base(id)
         {
             this.Orders = new Collection<Order>();
         }
