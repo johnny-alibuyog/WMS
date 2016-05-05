@@ -10,13 +10,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Tenant Tenant { get; set; }
 
-        public virtual Person Person { get; set; }
-
-        public virtual Address Address { get; set; }
-
         public virtual Contact Contact { get; set; }
-
-        public virtual Branch Branch { get; set; }
 
         public virtual EmployeeType EmployeeType { get; set; }
 

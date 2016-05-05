@@ -20,7 +20,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Money ExtendedPrice { get; set; }
 
-        public virtual DateTime? DateReceived { get; private set; }
+        public virtual DateTime? DateReceived { get; protected set; }
 
         public virtual PurchaseOrderDetailStatus Status { get; set; }
 
@@ -28,12 +28,12 @@ namespace AmpedBiz.Core.Entities
 
         public PurchaseOrderDetail(Guid id) : base(id) { }
 
-        public void Submit()
+        public virtual void Submit()
         {
             this.Status = PurchaseOrderDetailStatus.Submitted;
         }
 
-        public void Post()
+        public virtual void Post()
         {
             this.Status = PurchaseOrderDetailStatus.Posted;
         }
