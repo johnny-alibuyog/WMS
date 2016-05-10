@@ -23,6 +23,19 @@ body {
   margin-top: 50px;
 }
 
+.search-form {
+  display: block;
+  clear: none;
+  float: right;
+}
+
+.search-form .input {
+  display: block;
+  clear: none;
+  float: left;
+  margin: 0 10px 0 0;
+}
+
 .page-host {
   position: absolute;
   left: 0;

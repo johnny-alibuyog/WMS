@@ -27,7 +27,7 @@ export class UserCreate {
   }
 
   activate(user: User) {
-    this._branchService.getLists(null)
+    this._branchService.getList()
       .then(data => this.branches = <Branch[]>data)
       .catch(error => this.notificaton.warning(error));
 

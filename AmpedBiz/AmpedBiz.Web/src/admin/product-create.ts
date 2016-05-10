@@ -10,7 +10,7 @@ import {NotificationService} from '../common/controls/notification-service';
 export class ProductCreate {
   private _api: ServiceApi;
   private _controller: DialogController;
-  private _notificaton: NotificationService;
+  private _notification: NotificationService;
 
   public header: string = 'Create Product';
   public isEdit: boolean = false;
@@ -22,19 +22,19 @@ export class ProductCreate {
   constructor(api: ServiceApi, controller: DialogController, notification: NotificationService) {
     this._api = api;
     this._controller = controller;
-    this._notificaton = notification;
+    this._notification = notification;
   }
 
   activate(product: Product) {
     
     Promise.all([
-      this._api.suppliers.getLists(null)
+      this._api.suppliers.getList()
         .then(data => this.suppliers = <Supplier[]>data)
-        .catch(error => this._notificaton.warning(error)),
+        .catch(error => this._notification.warning(error)),
         
-      this._api.productCategories.getLists(null)
+      this._api.productCategories.getList()
         .then(data => this.categories = <ProductCategory[]>data)
-        .catch(error => this._notificaton.warning(error)),
+        .catch(error => this._notification.warning(error)),
     ]);
     
     if (product) {
@@ -42,7 +42,7 @@ export class ProductCreate {
       this.isEdit = true;
       this._api.products.get(product.id)
         .then(data => this.product = <Product>data)
-        .catch(error => this._notificaton.warning(error));
+        .catch(error => this._notification.warning(error));
     }
     else {
       this.header = "Create Product";
@@ -60,22 +60,22 @@ export class ProductCreate {
 
       this._api.products.update(this.product)
         .then(data => {
-          this._notificaton.success("Product has been saved.")
+          this._notification.success("Product has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <Product>data }));
         })
         .catch(error => {
-          this._notificaton.warning(error)
+          this._notification.warning(error)
         });
     }
     else {
 
       this._api.products.create(this.product)
         .then(data => {
-          this._notificaton.success("Product has been saved.")
+          this._notification.success("Product has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <Product>data }));
         })
         .catch(error => {
-          this._notificaton.warning(error)
+          this._notification.warning(error)
         });
     }
   }

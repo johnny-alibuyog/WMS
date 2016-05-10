@@ -17,13 +17,13 @@ export class ServiceBase<TEntity> {
     return this._httpClient.get(url);
   }
 
-  getLists(params: any): Promise<any> {
+  getList(): Promise<any> {
     var url = this._resouce;
     return this._httpClient.get(url);
   }
 
-  getPages(page: PageRequest): Promise<any> {
-    var url = this._resouce + '/pages';
+  getPage(page: PageRequest): Promise<any> {
+    var url = this._resouce + '/page';
     return this._httpClient.post(url, page);
   }
 

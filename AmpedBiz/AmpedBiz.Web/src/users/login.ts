@@ -9,7 +9,7 @@ import {Pager} from '../common/controls/pager';
 export class Login {
   private _auth: AuthService;
   //private _validation: ValidationGroup;
-  private _notificaton: NotificationService;
+  private _notification: NotificationService;
 
   public user: User;
   
@@ -24,16 +24,16 @@ export class Login {
   login() {
     if (this.user.username && this.user.password) {
       this._auth.login(this.user)
-        .catch(error => this._notificaton.warning(error));
+        .catch(error => this._notification.warning(error));
     }
     else {
-      this._notificaton.warning('Please enter a username and password.')
+      this._notification.warning('Please enter a username and password.')
     }
   }
 
   logout() {
     this._auth.logout()
-      .catch(error => this._notificaton.warning(error));
+      .catch(error => this._notification.warning(error));
   }
 
   activate() {

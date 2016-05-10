@@ -8,7 +8,7 @@ import {NotificationService} from '../common/controls/notification-service';
 export class BranchCreate {
   private _api: ServiceApi;
   private _controller: DialogController;
-  private _notificaton: NotificationService;
+  private _notification: NotificationService;
 
   public header: string = 'Create Branch';
   public isEdit: boolean = false;
@@ -18,7 +18,7 @@ export class BranchCreate {
   constructor(api: ServiceApi, controller: DialogController, notification: NotificationService) {
     this._api = api;
     this._controller = controller;
-    this._notificaton = notification;
+    this._notification = notification;
   }
 
   activate(branch: Branch) {
@@ -27,7 +27,7 @@ export class BranchCreate {
       this.isEdit = true;
       this._api.branches.get(branch.id)
         .then(data => this.branch = <Branch>data)
-        .catch(error => this._notificaton.warning(error));
+        .catch(error => this._notification.warning(error));
     }
     else {
       this.header = "Create Branch";
@@ -45,22 +45,22 @@ export class BranchCreate {
 
       this._api.branches.update(this.branch)
         .then(data => {
-          this._notificaton.success("Branch  has been saved.")
+          this._notification.success("Branch  has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <Branch>data }));
         })
         .catch(error => {
-          this._notificaton.warning(error)
+          this._notification.warning(error)
         });
     }
     else {
 
       this._api.branches.create(this.branch)
         .then(data => {
-          this._notificaton.success("Branch has been saved.")
+          this._notification.success("Branch has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <Branch>data }));
         })
         .catch(error => {
-          this._notificaton.warning(error)
+          this._notification.warning(error)
         });
     }
   }

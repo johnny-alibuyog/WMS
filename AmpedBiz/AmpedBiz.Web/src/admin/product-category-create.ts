@@ -8,7 +8,7 @@ import {NotificationService} from '../common/controls/notification-service';
 export class ProductCategoryCreate {
   private _api: ServiceApi;
   private _controller: DialogController;
-  private _notificaton: NotificationService;
+  private _notification: NotificationService;
 
   public header: string = 'Create Product Category';
   public isEdit: boolean = false;
@@ -18,7 +18,7 @@ export class ProductCategoryCreate {
   constructor(api: ServiceApi, controller: DialogController, notification: NotificationService) {
     this._api = api;
     this._controller = controller;
-    this._notificaton = notification;
+    this._notification = notification;
   }
 
   activate(productCategory: ProductCategory) {
@@ -27,7 +27,7 @@ export class ProductCategoryCreate {
       this.isEdit = true;
       this._api.productCategories.get(productCategory.id)
         .then(data => this.productCategory = <ProductCategory>data)
-        .catch(error => this._notificaton.warning(error));
+        .catch(error => this._notification.warning(error));
     }
     else {
       this.header = "Create Product Category";
@@ -46,22 +46,22 @@ export class ProductCategoryCreate {
 
       this._api.productCategories.update(this.productCategory)
         .then(data => {
-          this._notificaton.success("Product Category has been saved.")
+          this._notification.success("Product Category has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <ProductCategory>data }));
         })
         .catch(error => {
-          this._notificaton.warning(error)
+          this._notification.warning(error)
         });
     }
     else {
 
       this._api.productCategories.create(this.productCategory)
         .then(data => {
-          this._notificaton.success("Product Category has been saved.")
+          this._notification.success("Product Category has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <ProductCategory>data }));
         })
         .catch(error => {
-          this._notificaton.warning(error)
+          this._notification.warning(error)
         });
     }
   }

@@ -8,7 +8,7 @@ export class AuthService {
   private _resouce: string = 'users';
   private _app: Aurelia;
   private _httpClient: HttpClientFacade;
-  private _notificaton: NotificationService;
+  private _notification: NotificationService;
 
   public get user(): User {
     return <User>localStorage["token:auth-user"];
@@ -21,11 +21,11 @@ export class AuthService {
   constructor(app: Aurelia, httpClient: HttpClientFacade, notification: NotificationService) {
     this._app = app;
     this._httpClient = httpClient;
-    this._notificaton = notification;
+    this._notification = notification;
   }
 
   isAuthenticated(): boolean {
-    return this.user != null;
+    return this.user != "null";
   }
 
   login(user: User): Promise<any> {
@@ -36,7 +36,7 @@ export class AuthService {
         this._app.setRoot('app')
       })
       .catch(error => {
-        this._notificaton.warning(error)
+        this._notification.warning(error)
       });
   }
 

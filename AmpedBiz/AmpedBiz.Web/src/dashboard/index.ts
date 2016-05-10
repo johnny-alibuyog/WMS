@@ -8,9 +8,9 @@ export class Index {
     config.title = "Dashboard";
     config.map([
       {
-        route: ['', 'pending-list'],
-        name: 'pending-list',
-        moduleId: './pending-list',
+        route: ['', 'pending-page'],
+        name: 'pending-page',
+        moduleId: './pending-page',
         nav: true,
         title: 'Pending List'
       },

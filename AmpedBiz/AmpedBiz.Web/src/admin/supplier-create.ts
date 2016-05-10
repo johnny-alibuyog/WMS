@@ -8,7 +8,7 @@ import {NotificationService} from '../common/controls/notification-service';
 export class SupplierCreate {
   private _api: ServiceApi;
   private _controller: DialogController;
-  private _notificaton: NotificationService;
+  private _notification: NotificationService;
 
   public header: string = 'Create Product Category';
   public isEdit: boolean = false;
@@ -18,7 +18,7 @@ export class SupplierCreate {
   constructor(api: ServiceApi, controller: DialogController, notification: NotificationService) {
     this._api = api;
     this._controller = controller;
-    this._notificaton = notification;
+    this._notification = notification;
   }
 
   activate(supplier: Supplier) {
@@ -27,7 +27,7 @@ export class SupplierCreate {
       this.isEdit = true;
       this._api.suppliers.get(supplier.id)
         .then(data => this.supplier = <Supplier>data)
-        .catch(error => this._notificaton.warning(error));
+        .catch(error => this._notification.warning(error));
     }
     else {
       this.header = "Create Supplier";
@@ -46,22 +46,22 @@ export class SupplierCreate {
 
       this._api.suppliers.update(this.supplier)
         .then(data => {
-          this._notificaton.success("Supplier has been saved.")
+          this._notification.success("Supplier has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <Supplier>data }));
         })
         .catch(error => {
-          this._notificaton.warning(error)
+          this._notification.warning(error)
         });
     }
     else {
 
       this._api.suppliers.create(this.supplier)
         .then(data => {
-          this._notificaton.success("Supplier has been saved.")
+          this._notification.success("Supplier has been saved.")
             .then((data) => this._controller.ok({ wasCancelled: true, output: <Supplier>data }));
         })
         .catch(error => {
-          this._notificaton.warning(error)
+          this._notification.warning(error)
         });
     }
   }
