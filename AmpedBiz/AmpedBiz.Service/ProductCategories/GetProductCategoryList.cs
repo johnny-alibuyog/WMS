@@ -1,26 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ExpressMapper;
+using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
-using Dto = AmpedBiz.Service.Dto;
-using Entity = AmpedBiz.Core.Entities;
 
-namespace AmpedBiz.Service.Suppliers
+namespace AmpedBiz.Service.ProductCategories
 {
-    public class GetSuppliers
+    public class GetProductCategoryList
     {
         public class Request : IRequest<Response>
         {
             public string[] Id { get; set; }
         }
 
-        public class Response : List<Dto.Supplier>
+        public class Response : List<Dto.ProductCategory>
         {
             public Response() { }
 
-            public Response(List<Dto.Supplier> items) : base(items) { }
+            public Response(List<Dto.ProductCategory> items) : base(items) { }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -39,12 +37,15 @@ namespace AmpedBiz.Service.Suppliers
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entites = session.Query<Entity.Supplier>()
+                    var entites = session.Query<ProductCategory>()
+                        .Select(x => new Dto.ProductCategory()
+                        {
+                            Id = x.Id,
+                            Name = x.Name
+                        })
                         .ToList();
 
-                    var result = Mapper.Map<List<Entity.Supplier>, List<Dto.Supplier>>(entites);
-
-                    response = new Response(result);
+                    response = new Response(entites);
 
                     transaction.Commit();
                 }

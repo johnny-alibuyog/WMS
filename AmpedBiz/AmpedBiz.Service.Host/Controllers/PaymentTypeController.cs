@@ -23,16 +23,16 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("")]
-        public GetPaymentTypes.Response Get([FromUri]GetPaymentTypes.Request request)
+        public GetPaymentTypeList.Response Get([FromUri]GetPaymentTypeList.Request request)
         {
-            return _mediator.Send(request ?? new GetPaymentTypes.Request());
+            return _mediator.Send(request ?? new GetPaymentTypeList.Request());
         }
 
         [HttpPost()]
-        [Route("pages")]
-        public GetPaymentTypePages.Response Page([FromBody]GetPaymentTypePages.Request request)
+        [Route("page")]
+        public GetPaymentTypePage.Response Page([FromBody]GetPaymentTypePage.Request request)
         {
-            return _mediator.Send(request ?? new GetPaymentTypePages.Request());
+            return _mediator.Send(request ?? new GetPaymentTypePage.Request());
         }
 
         [HttpPost()]

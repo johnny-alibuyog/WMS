@@ -9,7 +9,7 @@ using Entity = AmpedBiz.Core.Entities;
 
 namespace AmpedBiz.Service.Branches
 {
-    public class GetBranches
+    public class GetBrancheList
     {
         public class Request : IRequest<Response>
         {

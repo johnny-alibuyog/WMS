@@ -23,16 +23,16 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("")]
-        public GetProductCategories.Response Get([FromUri]GetProductCategories.Request request)
+        public GetProductCategoryList.Response Get([FromUri]GetProductCategoryList.Request request)
         {
-            return _mediator.Send(request ?? new GetProductCategories.Request());
+            return _mediator.Send(request ?? new GetProductCategoryList.Request());
         }
 
         [HttpPost()]
-        [Route("pages")]
-        public GetProductCategoryPages.Response Page([FromBody]GetProductCategoryPages.Request request)
+        [Route("page")]
+        public GetProductCategoryPage.Response Page([FromBody]GetProductCategoryPage.Request request)
         {
-            return _mediator.Send(request ?? new GetProductCategoryPages.Request());
+            return _mediator.Send(request ?? new GetProductCategoryPage.Request());
         }
 
         [HttpPost()]

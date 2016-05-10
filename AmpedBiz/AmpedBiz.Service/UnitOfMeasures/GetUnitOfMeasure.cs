@@ -1,30 +1,20 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Common.Exceptions;
 using ExpressMapper;
 using MediatR;
 using NHibernate;
-using NHibernate.Linq;
-using System.Collections.Generic;
-using System.Linq;
+using Dto = AmpedBiz.Service.Dto;
+using Entity = AmpedBiz.Core.Entities;
 
-namespace AmpedBiz.Service.Products
+namespace AmpedBiz.Service.UnitOfMeasures
 {
-    public class GetProducts
+    public class GetUnitOfMeasure
     {
         public class Request : IRequest<Response>
         {
-            public string[] Id { get; set; }
+            public string Id { get; set; }
         }
 
-        public class Response : List<Dto.Product>
-        {
-            public Response()
-            {
-            }
-
-            public Response(List<Dto.Product> items) : base(items)
-            {
-            }
-        }
+        public class Response : Dto.UnitOfMeasure { }
 
         public class Handler : IRequestHandler<Request, Response>
         {
@@ -37,17 +27,16 @@ namespace AmpedBiz.Service.Products
 
             public Response Handle(Request message)
             {
-                var response = default(Response);
+                var response = new Response();
 
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entites = session.Query<Product>()
-                        .ToList();
+                    var entity = session.Get<Entity.UnitOfMeasure>(message.Id);
+                    if (entity == null)
+                        throw new BusinessException($"Unit of Measure with id {message.Id} does not exists.");
 
-                    var result = Mapper.Map<List<Product>, List<Dto.Product>>(entites);
-
-                    response = new Response(result);
+                    Mapper.Map<Entity.UnitOfMeasure, Dto.UnitOfMeasure>(entity, response);
 
                     transaction.Commit();
                 }

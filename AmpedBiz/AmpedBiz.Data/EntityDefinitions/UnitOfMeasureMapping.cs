@@ -15,6 +15,8 @@ namespace AmpedBiz.Data.EntityDefinitions
             Map(x => x.IsBaseUnit);
 
             Map(x => x.ConvertionFactor);
+
+            References(x => x.UnitOfMeasureClass);
         }
     }
 }

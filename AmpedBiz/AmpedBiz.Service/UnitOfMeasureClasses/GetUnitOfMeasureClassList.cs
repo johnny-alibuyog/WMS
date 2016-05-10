@@ -1,24 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AmpedBiz.Core.Entities;
+using ExpressMapper;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
+using Dto = AmpedBiz.Service.Dto;
+using Entity = AmpedBiz.Core.Entities;
 
-namespace AmpedBiz.Service.PaymentTypes
+namespace AmpedBiz.Service.UnitOfMeasureClasses
 {
-    public class GetPaymentTypes
+    public class GetUnitOfMeasureClassList
     {
         public class Request : IRequest<Response>
         {
             public string[] Id { get; set; }
         }
 
-        public class Response : List<Dto.PaymentType>
+        public class Response : List<Dto.UnitOfMeasureClass>
         {
             public Response() { }
 
-            public Response(List<Dto.PaymentType> items) : base(items) { }
+            public Response(List<Dto.UnitOfMeasureClass> items) : base(items) { }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -37,15 +39,14 @@ namespace AmpedBiz.Service.PaymentTypes
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entites = session.Query<PaymentType>()
-                        .Select(x => new Dto.PaymentType()
-                        {
-                            Id = x.Id,
-                            Name = x.Name
-                        })
+                    var entites = session
+                        .Query<Entity.UnitOfMeasureClass>()
+                        .Fetch(x => x.Units)
                         .ToList();
 
-                    response = new Response(entites);
+                    var result = Mapper.Map<List<Entity.UnitOfMeasureClass>, List<Dto.UnitOfMeasureClass>>(entites);
+
+                    response = new Response(result);
 
                     transaction.Commit();
                 }

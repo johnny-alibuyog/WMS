@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AmpedBiz.Common.Extentions;
 using AmpedBiz.Service.Common;
 using ExpressMapper;
 using MediatR;
@@ -9,13 +8,13 @@ using NHibernate.Linq;
 using Dto = AmpedBiz.Service.Dto;
 using Entity = AmpedBiz.Core.Entities;
 
-namespace AmpedBiz.Service.Customers
+namespace AmpedBiz.Service.Suppliers
 {
-    public class GetCustomerPages
+    public class GetSupplierPage
     {
         public class Request : PageRequest, IRequest<Response> { }
 
-        public class Response : PageResponse<Dto.CustomerPageItem> { }
+        public class Response : PageResponse<Dto.SupplierPageItem> { }
 
         public class Handler : IRequestHandler<Request, Response>
         {
@@ -33,7 +32,7 @@ namespace AmpedBiz.Service.Customers
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var query = session.Query<Entity.Customer>();
+                    var query = session.Query<Entity.Supplier>();
 
                     // compose filters
                     message.Filter.Compose<string>("code", value =>
@@ -54,7 +53,6 @@ namespace AmpedBiz.Service.Customers
                             : query.OrderByDescending(x => x.Id);
                     });
 
-                    // compose sort
                     message.Sorter.Compose("name", direction =>
                     {
                         query = direction == SortDirection.Ascending
@@ -63,15 +61,12 @@ namespace AmpedBiz.Service.Customers
                     });
 
                     var itemsFuture = query
-                        .Select(x => new Dto.CustomerPageItem()
+                        .Select(x => new Dto.SupplierPageItem()
                         {
                             Id = x.Id,
                             Name = x.Name,
-                            CreditLimit = x.CreditLimit.ToStringWithSymbol(),
-                            PricingSchemeName = x.PricingScheme.Name,
-                            Contact = Mapper.Map<Entity.Contact, Dto.Contact>(x.Contact),
-                            OfficeAddress = Mapper.Map<Entity.Address, Dto.Address>(x.OfficeAddress),
-                            BillingAddress = Mapper.Map<Entity.Address, Dto.Address>(x.BillingAddress),
+                            Address = Mapper.Map<Entity.Address, Dto.Address>(x.Address),
+                            Contact = Mapper.Map<Entity.Contact, Dto.Contact>(x.Contact)
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)

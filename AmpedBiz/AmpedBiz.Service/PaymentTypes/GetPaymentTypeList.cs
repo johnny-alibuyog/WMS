@@ -5,20 +5,20 @@ using MediatR;
 using NHibernate;
 using NHibernate.Linq;
 
-namespace AmpedBiz.Service.ProductCategories
+namespace AmpedBiz.Service.PaymentTypes
 {
-    public class GetProductCategories
+    public class GetPaymentTypeList
     {
         public class Request : IRequest<Response>
         {
             public string[] Id { get; set; }
         }
 
-        public class Response : List<Dto.ProductCategory>
+        public class Response : List<Dto.PaymentType>
         {
             public Response() { }
 
-            public Response(List<Dto.ProductCategory> items) : base(items) { }
+            public Response(List<Dto.PaymentType> items) : base(items) { }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -37,8 +37,8 @@ namespace AmpedBiz.Service.ProductCategories
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entites = session.Query<ProductCategory>()
-                        .Select(x => new Dto.ProductCategory()
+                    var entites = session.Query<PaymentType>()
+                        .Select(x => new Dto.PaymentType()
                         {
                             Id = x.Id,
                             Name = x.Name

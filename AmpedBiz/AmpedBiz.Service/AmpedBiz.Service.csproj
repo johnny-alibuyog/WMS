@@ -58,15 +58,15 @@
   <ItemGroup>
     <Compile Include="Branches\CreateBranch.cs" />
     <Compile Include="Branches\GetBranch.cs" />
-    <Compile Include="Branches\GetBranchePages.cs" />
-    <Compile Include="Branches\GetBranches.cs" />
+    <Compile Include="Branches\GetBranchePage.cs" />
+    <Compile Include="Branches\GetBrancheList.cs" />
     <Compile Include="Branches\UpdateBranch.cs" />
     <Compile Include="Common\PageRequest.cs" />
     <Compile Include="Common\PageResponse.cs" />
     <Compile Include="Customers\CreateCustomer.cs" />
-    <Compile Include="Customers\GetCustomerPages.cs" />
+    <Compile Include="Customers\GetCustomerPage.cs" />
     <Compile Include="Customers\GetCustomer.cs" />
-    <Compile Include="Customers\GetCustomers.cs" />
+    <Compile Include="Customers\GetCustomerList.cs" />
     <Compile Include="Customers\UpdateCustomer.cs" />
     <Compile Include="Dto\Address.cs" />
     <Compile Include="Dto\Branch.cs" />
@@ -75,6 +75,7 @@
     <Compile Include="Dto\Contact.cs" />
     <Compile Include="Dto\Mappers\IMapper.cs" />
     <Compile Include="Dto\Mappers\Mapper.cs" />
+    <Compile Include="Dto\Measure.cs" />
     <Compile Include="Dto\Money.cs" />
     <Compile Include="Dto\PaymentType.cs" />
     <Compile Include="Dto\Person.cs" />
@@ -82,34 +83,46 @@
     <Compile Include="Dto\ProductCategory.cs" />
     <Compile Include="Dto\Role.cs" />
     <Compile Include="Dto\Supplier.cs" />
+    <Compile Include="Dto\UnitOfMeasure.cs" />
+    <Compile Include="Dto\UnitOfMeasureClass.cs" />
     <Compile Include="Dto\User.cs" />
     <Compile Include="Dto\UserRole.cs" />
-    <Compile Include="PaymentTypes\GetPaymentTypePages.cs" />
+    <Compile Include="PaymentTypes\GetPaymentTypePage.cs" />
     <Compile Include="ProductCategories\CreateProductCategory.cs" />
     <Compile Include="ProductCategories\GetProductCategory.cs" />
-    <Compile Include="ProductCategories\GetProductCategories.cs" />
-    <Compile Include="ProductCategories\GetProductCategoryPages.cs" />
+    <Compile Include="ProductCategories\GetProductCategoryList.cs" />
+    <Compile Include="ProductCategories\GetProductCategoryPage.cs" />
     <Compile Include="ProductCategories\UpdateProductCategory.cs" />
     <Compile Include="PaymentTypes\CreatePaymentType.cs" />
     <Compile Include="PaymentTypes\GetPaymentType.cs" />
-    <Compile Include="PaymentTypes\GetPaymentTypes.cs" />
+    <Compile Include="PaymentTypes\GetPaymentTypeList.cs" />
     <Compile Include="PaymentTypes\UpdatePaymentType.cs" />
     <Compile Include="Products\CreateProduct.cs" />
     <Compile Include="Products\GetProduct.cs" />
-    <Compile Include="Products\GetProducts.cs" />
-    <Compile Include="Products\GetProductPages.cs" />
+    <Compile Include="Products\GetProductList.cs" />
+    <Compile Include="Products\GetProductPage.cs" />
     <Compile Include="Products\UpdateProduct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Suppliers\CreateSupplier.cs" />
     <Compile Include="Suppliers\GetSupplier.cs" />
-    <Compile Include="Suppliers\GetSupplierPages.cs" />
-    <Compile Include="Suppliers\GetSuppliers.cs" />
+    <Compile Include="Suppliers\GetSupplierPage.cs" />
+    <Compile Include="Suppliers\GetSupplierList.cs" />
     <Compile Include="Suppliers\UpdateSupplier.cs" />
+    <Compile Include="UnitOfMeasureClasses\CreateUnitOfMeasureClass.cs" />
+    <Compile Include="UnitOfMeasureClasses\GetUnitOfMeasureClass.cs" />
+    <Compile Include="UnitOfMeasureClasses\GetUnitOfMeasureClassPage.cs" />
+    <Compile Include="UnitOfMeasureClasses\GetUnitOfMeasureClassList.cs" />
+    <Compile Include="UnitOfMeasureClasses\UpdateUnitOfMeasureClass.cs" />
+    <Compile Include="UnitOfMeasures\CreateUnitOfMeasure.cs" />
+    <Compile Include="UnitOfMeasures\GetUnitOfMeasure.cs" />
+    <Compile Include="UnitOfMeasures\GetUnitOfMeasureList.cs" />
+    <Compile Include="UnitOfMeasures\GetUnitOfMeasurePage.cs" />
+    <Compile Include="UnitOfMeasures\UpdateUnitOfMeasure.cs" />
     <Compile Include="Users\CreateUser.cs" />
     <Compile Include="Users\GetInitialUser.cs" />
     <Compile Include="Users\GetUser.cs" />
-    <Compile Include="Users\GetUserPages.cs" />
-    <Compile Include="Users\GetUsers.cs" />
+    <Compile Include="Users\GetUserPage.cs" />
+    <Compile Include="Users\GetUserList.cs" />
     <Compile Include="Users\Login.cs" />
     <Compile Include="Users\UpdateUser.cs" />
   </ItemGroup>
@@ -131,7 +144,9 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Measures\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

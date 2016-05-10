@@ -8,13 +8,13 @@ using NHibernate.Linq;
 using Dto = AmpedBiz.Service.Dto;
 using Entity = AmpedBiz.Core.Entities;
 
-namespace AmpedBiz.Service.PaymentTypes
+namespace AmpedBiz.Service.UnitOfMeasureClasses
 {
-    public class GetPaymentTypePages
+    public class GetUnitOfMeasureClassPage
     {
         public class Request : PageRequest, IRequest<Response> { }
 
-        public class Response : PageResponse<Dto.PaymentTypePageItem> { }
+        public class Response : PageResponse<Dto.UnitOfMeasureClassPageItem> { }
 
         public class Handler : IRequestHandler<Request, Response>
         {
@@ -32,7 +32,7 @@ namespace AmpedBiz.Service.PaymentTypes
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var query = session.Query<Entity.PaymentType>();
+                    var query = session.Query<Entity.UnitOfMeasureClass>();
 
                     // compose filters
                     message.Filter.Compose<string>("code", value =>
@@ -53,7 +53,6 @@ namespace AmpedBiz.Service.PaymentTypes
                             : query.OrderByDescending(x => x.Id);
                     });
 
-                    // compose sort
                     message.Sorter.Compose("name", direction =>
                     {
                         query = direction == SortDirection.Ascending
@@ -61,12 +60,11 @@ namespace AmpedBiz.Service.PaymentTypes
                             : query.OrderByDescending(x => x.Name);
                     });
 
-
                     var itemsFuture = query
-                        .Select(x => new Dto.PaymentTypePageItem()
+                        .Select(x => new Dto.UnitOfMeasureClassPageItem()
                         {
                             Id = x.Id,
-                            Name = x.Name
+                            Name = x.Name,
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)

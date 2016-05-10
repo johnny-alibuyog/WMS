@@ -7,33 +7,44 @@ using System.Threading.Tasks;
 
 namespace AmpedBiz.Core.Entities
 {
+    // Reference: https://docs.oracle.com/cd/A60725_05/html/comnls/us/inv/uomov.htm#c_uomov
+
     public class UnitOfMeasureClass : Entity<string, UnitOfMeasureClass>
     {
         public virtual string Name { get; set; }
 
-        public virtual IEnumerable<UnitOfMeasure> Units { get; set; }
+        public virtual IEnumerable<UnitOfMeasure> Units { get; protected set; }
 
         public UnitOfMeasureClass() : this(default(string)) { }
 
         public UnitOfMeasureClass(string id, string name = null) : base(id)
         {
             this.Name = name;
+            this.Units = new Collection<UnitOfMeasure>();
+        }
+
+        public virtual UnitOfMeasureClass WithUnits(IEnumerable<UnitOfMeasure> items)
+        {
+            foreach (var item in items)
+            {
+                item.UnitOfMeasureClass = this;
+                ((Collection<UnitOfMeasure>)this.Units).Add(item);
+            }
+
+            return this;
         }
 
         public static UnitOfMeasureClass Quantity = new UnitOfMeasureClass("qty", "Quantity")
-        {
-            Units = new Collection<UnitOfMeasure>()
+            .WithUnits(new Collection<UnitOfMeasure>()
             {
                 new UnitOfMeasure("ea", "each", true, 1M),
                 new UnitOfMeasure("dz", "dozen", false, 12M),
                 new UnitOfMeasure("cs", "case", false),
                 new UnitOfMeasure("sk", "sock", false),
-            }
-        };
+            });
 
         public static UnitOfMeasureClass Weight = new UnitOfMeasureClass("wt", "Weight")
-        {
-            Units = new Collection<UnitOfMeasure>()
+            .WithUnits(new Collection<UnitOfMeasure>()
             {
                 new UnitOfMeasure("mg", "milligram", false, (1M/1000000M)),
                 new UnitOfMeasure("cg", "centigram", false, (1M/100000M)),
@@ -43,12 +54,10 @@ namespace AmpedBiz.Core.Entities
                 new UnitOfMeasure("hg", "hectogram", false, (1M/10M)),
                 new UnitOfMeasure("kl", "kilogram", true, 1M),
                 new UnitOfMeasure("t", "metric ton", false, (1000M)),
-            }
-        };
+            });
 
         public static UnitOfMeasureClass Volume = new UnitOfMeasureClass("vol", "Volume")
-        {
-            Units = new Collection<UnitOfMeasure>()
+            .WithUnits(new Collection<UnitOfMeasure>()
             {
                 new UnitOfMeasure("ml", "milliliter", false, (1M/1000M)),
                 new UnitOfMeasure("cl", "centiliter", false, (1M/100M)),
@@ -56,12 +65,10 @@ namespace AmpedBiz.Core.Entities
                 new UnitOfMeasure("l", "liter", true, (1M)),
                 new UnitOfMeasure("dal", "dekaliter", false, (10M)),
                 new UnitOfMeasure("hl", "hectoliter", false, (100M)),
-            }
-        };
+            });
 
         public static UnitOfMeasureClass Length = new UnitOfMeasureClass("l", "Length")
-        {
-            Units = new Collection<UnitOfMeasure>()
+            .WithUnits(new Collection<UnitOfMeasure>()
             {
                 new UnitOfMeasure("mm", "millimeter", false, (1M/1000M)),
                 new UnitOfMeasure("cm", "centimeter", false, (1M/100M)),
@@ -69,8 +76,7 @@ namespace AmpedBiz.Core.Entities
                 new UnitOfMeasure("m", "meter", true, (1M)),
                 new UnitOfMeasure("dam", "dekameter", false, (10M)),
                 new UnitOfMeasure("hm", "hectometer", false, (100M)),
-            }
-        };
+            });
 
         public static readonly IEnumerable<UnitOfMeasureClass> All = new Collection<UnitOfMeasureClass>() { Quantity, Weight, Volume, Length };
     }

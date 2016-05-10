@@ -8,13 +8,13 @@ using NHibernate.Linq;
 using Dto = AmpedBiz.Service.Dto;
 using Entity = AmpedBiz.Core.Entities;
 
-namespace AmpedBiz.Service.ProductCategories
+namespace AmpedBiz.Service.UnitOfMeasures
 {
-    public class GetProductCategoryPages
+    public class GetUnitOfMeasurePage
     {
         public class Request : PageRequest, IRequest<Response> { }
 
-        public class Response : PageResponse<Dto.ProductCategoryPageItem> { }
+        public class Response : PageResponse<Dto.UnitOfMeasurePageItem> { }
 
         public class Handler : IRequestHandler<Request, Response>
         {
@@ -32,7 +32,7 @@ namespace AmpedBiz.Service.ProductCategories
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var query = session.Query<Entity.ProductCategory>();
+                    var query = session.Query<Entity.UnitOfMeasure>();
 
                     // compose filters
                     message.Filter.Compose<string>("code", value =>
@@ -45,6 +45,11 @@ namespace AmpedBiz.Service.ProductCategories
                         query = query.Where(x => x.Name.StartsWith(value));
                     });
 
+                    message.Filter.Compose<string>("unitOfMeasureClassId", value =>
+                    {
+                        query = query.Where(x => x.UnitOfMeasureClass.Id == value);
+                    });
+
                     // compose sort
                     message.Sorter.Compose("code", direction =>
                     {
@@ -53,7 +58,6 @@ namespace AmpedBiz.Service.ProductCategories
                             : query.OrderByDescending(x => x.Id);
                     });
 
-                    // compose sort
                     message.Sorter.Compose("name", direction =>
                     {
                         query = direction == SortDirection.Ascending
@@ -61,12 +65,35 @@ namespace AmpedBiz.Service.ProductCategories
                             : query.OrderByDescending(x => x.Name);
                     });
 
+                    message.Sorter.Compose("isBaseUnit", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.IsBaseUnit)
+                            : query.OrderByDescending(x => x.IsBaseUnit);
+                    });
+
+                    message.Sorter.Compose("convertionFactor", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.ConvertionFactor)
+                            : query.OrderByDescending(x => x.ConvertionFactor);
+                    });
+
+                    message.Sorter.Compose("unitOfMeasureClassName", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.UnitOfMeasureClass.Name)
+                            : query.OrderByDescending(x => x.UnitOfMeasureClass.Name);
+                    });
 
                     var itemsFuture = query
-                        .Select(x => new Dto.ProductCategoryPageItem()
+                        .Select(x => new Dto.UnitOfMeasurePageItem()
                         {
                             Id = x.Id,
-                            Name = x.Name
+                            Name = x.Name,
+                            IsBaseUnit = x.IsBaseUnit,
+                            ConvertionFactor = x.ConvertionFactor,
+                            UnitOfMeasureClassName = x.UnitOfMeasureClass.Name
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)

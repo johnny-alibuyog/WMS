@@ -6,8 +6,8 @@ namespace AmpedBiz.Core.Services
 {
     public class HashProvider
     {
-        private readonly HashAlgorithm _hashAlgorithm;
         private readonly int _salthLength;
+        private readonly HashAlgorithm _hashAlgorithm;
 
         public HashProvider() : this((HashAlgorithm)new SHA256Managed(), 4) { }
 

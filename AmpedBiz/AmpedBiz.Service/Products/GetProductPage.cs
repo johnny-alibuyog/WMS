@@ -10,7 +10,7 @@ using Entity = AmpedBiz.Core.Entities;
 
 namespace AmpedBiz.Service.Products
 {
-    public class GetProductPages
+    public class GetProductPage
     {
         public class Request : PageRequest, IRequest<Response> { }
 

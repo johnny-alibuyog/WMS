@@ -23,16 +23,16 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("")]
-        public GetUsers.Response Get([FromUri]GetUsers.Request request)
+        public GetUserList.Response Get([FromUri]GetUserList.Request request)
         {
-            return _mediator.Send(request ?? new GetUsers.Request());
+            return _mediator.Send(request ?? new GetUserList.Request());
         }
 
         [HttpPost()]
-        [Route("pages")]
-        public GetUserPages.Response Page([FromBody]GetUserPages.Request request)
+        [Route("page")]
+        public GetUserPage.Response Page([FromBody]GetUserPage.Request request)
         {
-            return _mediator.Send(request ?? new GetUserPages.Request());
+            return _mediator.Send(request ?? new GetUserPage.Request());
         }
 
         [HttpGet()]

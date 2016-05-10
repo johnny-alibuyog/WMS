@@ -46,6 +46,9 @@ namespace AmpedBiz.Service.Common
             if (value.IsNullOrDefault())
                 return;
 
+            if (value is string && string.IsNullOrWhiteSpace(value as string))
+                return;
+
             action((TValue)value);
         }
     }

@@ -30,16 +30,16 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("")]
-        public GetBranches.Response Get([FromUri]GetBranches.Request request)
+        public GetBrancheList.Response Get([FromUri]GetBrancheList.Request request)
         {
-            return _mediator.Send(request ?? new GetBranches.Request());
+            return _mediator.Send(request ?? new GetBrancheList.Request());
         }
 
         [HttpPost()]
-        [Route("pages")]
-        public GetBranchePages.Response Page([FromBody]GetBranchePages.Request request)
+        [Route("page")]
+        public GetBranchePage.Response Page([FromBody]GetBranchePage.Request request)
         {
-            return _mediator.Send(request ?? new GetBranchePages.Request());
+            return _mediator.Send(request ?? new GetBranchePage.Request());
         }
 
         [HttpPost()]

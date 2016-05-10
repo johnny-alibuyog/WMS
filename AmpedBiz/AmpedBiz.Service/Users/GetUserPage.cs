@@ -11,7 +11,7 @@ using Entity = AmpedBiz.Core.Entities;
 
 namespace AmpedBiz.Service.Users
 {
-    public class GetUserPages
+    public class GetUserPage
     {
         public class Request : PageRequest, IRequest<Response> { }
 

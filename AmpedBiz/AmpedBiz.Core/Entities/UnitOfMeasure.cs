@@ -2,8 +2,6 @@
 
 namespace AmpedBiz.Core.Entities
 {
-    // Reference: https://docs.oracle.com/cd/A60725_05/html/comnls/us/inv/uomov.htm#c_uomov
-
     public class UnitOfMeasure : Entity<string, UnitOfMeasure>
     {
         public virtual string Name { get; set; }
@@ -11,6 +9,8 @@ namespace AmpedBiz.Core.Entities
         public virtual bool IsBaseUnit { get; set; }
 
         public virtual decimal? ConvertionFactor { get; set; }
+
+        public virtual UnitOfMeasureClass UnitOfMeasureClass { get; set; }
 
         public UnitOfMeasure() : this(default(string)) { }
 

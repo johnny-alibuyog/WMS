@@ -9,7 +9,7 @@ using Entity = AmpedBiz.Core.Entities;
 
 namespace AmpedBiz.Service.Users
 {
-    public class GetUsers
+    public class GetUserList
     {
         public class Request : IRequest<Response>
         {
