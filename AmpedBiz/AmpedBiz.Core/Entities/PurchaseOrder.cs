@@ -6,8 +6,9 @@ namespace AmpedBiz.Core.Entities
 {
     public enum PurchaseOrderStatus
     {
-        New,
-        Submitted,
+        New, //active
+        ForApproval,
+        ForCompletion,
         Completed,
         Cancelled
     }
@@ -46,7 +47,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Employee SubmittedBy { get; set; }
 
-        public virtual Employee ClosedBy { get; set; }
+        public virtual Employee CompletedBy { get; set; }
 
         public virtual Supplier Supplier { get; set; }
 
@@ -58,5 +59,6 @@ namespace AmpedBiz.Core.Entities
         {
             this.PurchaseOrderDetails = new Collection<PurchaseOrderDetail>();
         }
+
     }
 }

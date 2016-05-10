@@ -3,20 +3,17 @@ using NHibernate.Validator.Cfg.Loquacious;
 
 namespace AmpedBiz.Data.EntityDefinitions
 {
-    public class CustomerValidation : ValidationDef<Customer>
+    public class PricingSchemeValidation : ValidationDef<PricingScheme>
     {
-        public CustomerValidation()
+        public PricingSchemeValidation()
         {
             Define(x => x.Id)
-                .NotNullableAndNotEmpty();
+                .NotNullableAndNotEmpty()
+                .And.MaxLength(30);
 
             Define(x => x.Name)
                 .NotNullableAndNotEmpty()
-                .And.MaxLength(255);
-
-            Define(x => x.CreditLimit);
-
-            Define(x => x.PricingScheme);
+                .And.MaxLength(150);
         }
     }
 }

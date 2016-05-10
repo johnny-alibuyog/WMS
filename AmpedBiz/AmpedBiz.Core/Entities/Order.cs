@@ -6,9 +6,12 @@ namespace AmpedBiz.Core.Entities
 {
     public enum OrderStatus
     {
-        New,
+        New, //active
+        OnStaging,
+        OnRoute,
+        ForInvoicing,
         Invoiced,
-        Shipped,
+        IncompletePayment,
         Completed,
         Cancelled
     }
@@ -93,13 +96,13 @@ namespace AmpedBiz.Core.Entities
             this.IsActive = true;
         }
 
-        public virtual void Ship(DateTime date, Shipper shipper)
-        {
-            this.Status = OrderStatus.Shipped;
-            this.IsActive = true;
-            this.Shipper = shipper;
-            this.ShippedDate = date;
-        }
+        //public virtual void Ship(DateTime date, Shipper shipper)
+        //{
+        //    this.Status = OrderStatus.Shipped;
+        //    this.IsActive = true;
+        //    this.Shipper = shipper;
+        //    this.ShippedDate = date;
+        //}
 
         public virtual void Completed(DateTime date)
         {

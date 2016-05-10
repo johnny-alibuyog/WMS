@@ -121,6 +121,8 @@
     <Compile Include="EntityDefinitions\OrderDetailValidation.cs" />
     <Compile Include="EntityDefinitions\OrderMapping.cs" />
     <Compile Include="EntityDefinitions\OrderValidation.cs" />
+    <Compile Include="EntityDefinitions\PricingSchemeMapping.cs" />
+    <Compile Include="EntityDefinitions\PricingShemeValidation.cs" />
     <Compile Include="EntityDefinitions\PurchaseOrderDetailMapping.cs" />
     <Compile Include="EntityDefinitions\PurchaseOrderDetailValidation.cs" />
     <Compile Include="EntityDefinitions\PurchaseOrderMapping.cs" />
@@ -140,6 +142,7 @@
     <Compile Include="Seeders\ISeeder.cs" />
     <Compile Include="Seeders\OrderSeeder.cs" />
     <Compile Include="Seeders\PaymentTypeSeeder.cs" />
+    <Compile Include="Seeders\PricingSchemeSeeder.cs" />
     <Compile Include="Seeders\ProductCategorySeeder.cs" />
     <Compile Include="Seeders\ProductSeeder.cs" />
     <Compile Include="Seeders\RoleSeeder.cs" />

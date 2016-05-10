@@ -37,6 +37,8 @@ namespace AmpedBiz.Data.Seeders
                 data.Add(new Customer($"customer{i}")
                 {
                     Name = $"Customer {i}",
+                    CreditLimit = new Money(100000.00M, Currency.PHP),
+                    PricingScheme = PricingScheme.WholeSale,
                     Tenant = new Tenant(),
                     Contact = new Contact()
                     {

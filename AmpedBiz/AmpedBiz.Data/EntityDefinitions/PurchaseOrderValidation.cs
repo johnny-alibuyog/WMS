@@ -14,7 +14,7 @@ namespace AmpedBiz.Data.EntityDefinitions
         {
             Define(x => x.Id);
 
-            Define(x => x.ClosedBy);
+            Define(x => x.CompletedBy);
 
             Define(x => x.ClosedDate);
 

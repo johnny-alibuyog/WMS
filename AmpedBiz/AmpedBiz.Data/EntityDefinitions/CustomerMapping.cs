@@ -11,6 +11,10 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Map(x => x.Name);
 
+            References(x => x.PricingScheme);
+
+            Component(x => x.CreditLimit, MoneyMapping.Map("", nameof(CustomerMapping)));
+
             Component(x => x.OfficeAddress, AddressMapping.Map("Office_"));
 
             Component(x => x.BillingAddress, AddressMapping.Map("Billing_"));

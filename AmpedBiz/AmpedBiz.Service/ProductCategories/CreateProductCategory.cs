@@ -39,7 +39,7 @@ namespace AmpedBiz.Service.ProductCategories
                 return new Response()
                 {
                     Id = message.Id,
-                    Name = message.Id
+                    Name = message.Name
                 };
             }
         }

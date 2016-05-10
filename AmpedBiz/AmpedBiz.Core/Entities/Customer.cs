@@ -8,6 +8,10 @@ namespace AmpedBiz.Core.Entities
     {
         public virtual string Name { get; set; }
 
+        public virtual Money CreditLimit { get; set; }
+
+        public virtual PricingScheme PricingScheme { get; set; }
+
         public virtual Tenant Tenant { get; set; }
 
         public virtual Contact Contact { get; set; }

@@ -10,7 +10,7 @@ namespace AmpedBiz.Data.EntityDefinitions
             Id(x => x.Id)
                 .GeneratedBy.GuidComb();
 
-            References(x => x.ClosedBy);
+            References(x => x.CompletedBy);
 
             Map(x => x.ClosedDate);
 
