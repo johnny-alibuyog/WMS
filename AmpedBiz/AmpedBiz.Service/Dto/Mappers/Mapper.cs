@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using ExpressMapper;
 using Dto = AmpedBiz.Service.Dto;
 using Entity = AmpedBiz.Core.Entities;
@@ -47,7 +48,15 @@ namespace AmpedBiz.Service.Dto.Mappers
             ExpressMapper.Mapper.Register<Dto.UnitOfMeasureClass, Entity.UnitOfMeasureClass>()
                 .After((source, desitnation) =>
                 {
-                    var units = ExpressMapper.Mapper.Map<List<Dto.UnitOfMeasure>, IEnumerable<Entity.UnitOfMeasure>>(source.Units);
+                    var units = new Collection<Entity.UnitOfMeasure>();
+                    source.Units.ForEach(sourceUnit =>
+                    {
+                        units.Add(ExpressMapper.Mapper.Map<Dto.UnitOfMeasure, Entity.UnitOfMeasure>(
+                            src: sourceUnit, 
+                            dest: new Entity.UnitOfMeasure(sourceUnit.Id)
+                        ));
+                    });
+
                     desitnation.WithUnits(units);
                 });
         }

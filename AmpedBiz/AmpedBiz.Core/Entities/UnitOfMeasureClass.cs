@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AmpedBiz.Common.Extentions;
 
 namespace AmpedBiz.Core.Entities
 {
@@ -25,10 +26,30 @@ namespace AmpedBiz.Core.Entities
 
         public virtual UnitOfMeasureClass WithUnits(IEnumerable<UnitOfMeasure> items)
         {
-            foreach (var item in items)
+            var itemsToInsert = items.Except(this.Units).ToList();
+            var itemsToUpdate = this.Units.Where(x => items.Contains(x)).ToList();
+            var itemsToRemove = this.Units.Except(items).ToList();
+
+            // insert
+            foreach (var item in itemsToInsert)
             {
                 item.UnitOfMeasureClass = this;
-                ((Collection<UnitOfMeasure>)this.Units).Add(item);
+                this.Units.Add(item);
+            }
+
+            // update
+            foreach (var item in itemsToUpdate)
+            {
+                var value = items.Single(x => x == item);
+                value.UnitOfMeasureClass = this;
+                item.SerializeWith(value);
+            }
+
+            // delete
+            foreach (var item in itemsToRemove)
+            {
+                item.UnitOfMeasureClass = null;
+                Units.Remove(item);
             }
 
             return this;

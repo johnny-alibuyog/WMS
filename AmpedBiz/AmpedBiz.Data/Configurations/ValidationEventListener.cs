@@ -1,10 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AmpedBiz.Common.Exceptions;
 using NHibernate.Event;
 
 namespace AmpedBiz.Data.Configurations
 {
-    internal class ValidationEventListener : IPreInsertEventListener, IPreUpdateEventListener
+    internal class ValidationEventListener : IPreInsertEventListener, IPreUpdateEventListener, IPreCollectionRemoveEventListener, IPreCollectionUpdateEventListener, IPreCollectionRecreateEventListener
     {
         private void PerformValidation(object entity)
         {
@@ -36,6 +37,21 @@ namespace AmpedBiz.Data.Configurations
         {
             PerformValidation(@event.Entity);
             return false;
+        }
+
+        public void OnPreRemoveCollection(PreCollectionRemoveEvent @event)
+        {
+            PerformValidation(@event.AffectedOwnerOrNull);
+        }
+
+        public void OnPreUpdateCollection(PreCollectionUpdateEvent @event)
+        {
+            PerformValidation(@event.AffectedOwnerOrNull);
+        }
+
+        public void OnPreRecreateCollection(PreCollectionRecreateEvent @event)
+        {
+            PerformValidation(@event.AffectedOwnerOrNull);
         }
     }
 

@@ -1,4 +1,6 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AmpedBiz.Core.Entities;
 using NHibernate.Validator.Cfg.Loquacious;
 
 namespace AmpedBiz.Data.EntityDefinitions
@@ -14,7 +16,20 @@ namespace AmpedBiz.Data.EntityDefinitions
                 .And.MaxLength(255);
 
             Define(x => x.Units)
-                .HasValidElements();
+                .NotNullableAndNotEmpty()
+                .And.HasValidElements();
+
+            ValidateInstance.By((instance, context) =>
+            {
+                var baseUnitCount = instance.Units.Where(x => x.IsBaseUnit).Count();
+                if (baseUnitCount != 1)
+                {
+                    context.AddInvalid<UnitOfMeasureClass, IEnumerable<UnitOfMeasure>>("One unit should be base.", x => x.Units);
+                    return false;
+                }
+
+                return true;
+            });
         }
     }
 }

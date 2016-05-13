@@ -1,4 +1,4 @@
-﻿create schema dbo;
+﻿--create schema dbo;
 
 create database ampedbizdb
    with owner postgres 

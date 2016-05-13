@@ -8,8 +8,8 @@ export function configure(aurelia: Aurelia) {
     .developmentLogging()
     .plugin('aurelia-dialog', config => {
       config.useDefaults();
-      config.settings.lock = true;
-      config.settings.centerHorizontalOnly = false;
+      config.settings.lock = false;
+      config.settings.centerVerticalOnly = true;
       config.settings.startingZIndex = 5;
     });
 

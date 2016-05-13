@@ -50,8 +50,8 @@ namespace AmpedBiz.Core
 
             foreach (var field in fields)
             {
-                object value1 = field.GetValue(other);
-                object value2 = field.GetValue(this);
+                var value1 = field.GetValue(other);
+                var value2 = field.GetValue(this);
 
                 if (value1 == null)
                 {

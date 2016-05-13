@@ -133,13 +133,14 @@ namespace AmpedBiz.Data.Seeders
                         for (int j = 0; j < random.NextDecimal(1M, 25M); j++)
                         {
                             var product = RotateProduct();
-                            var orderDetail = new OrderDetail(Guid.NewGuid());
+                            var orderDetail = new OrderDetail();
                             orderDetail.Allocate(
                                 product: product,
                                 quantity: new Measure(random.NextDecimal(1M, 100M), product.Inventory.UnitOfMeasure),
                                 discount: new Money(random.NextDecimal(100M, 500M)),
                                 unitPrice: new Money(random.NextDecimal(1000M, 100000M))
                             );
+                            order.AddOrderDetail(orderDetail);
                         }
 
                         session.Save(order, order.Id);

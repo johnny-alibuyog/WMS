@@ -1,4 +1,6 @@
-﻿namespace AmpedBiz.Core
+﻿using System.Reflection;
+
+namespace AmpedBiz.Core
 {
     public abstract class Entity<TId, TEntity> where TEntity : Entity<TId, TEntity>
     {
@@ -11,6 +13,17 @@
         public Entity(TId id)
         {
             this.Id = id;
+        }
+
+        public virtual void SerializeWith(TEntity other)
+        {
+            var fields = this.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+
+            foreach (var field in fields)
+            {
+                var value = field.GetValue(other);
+                field.SetValue(this, value);
+            }
         }
 
         #region Equality Comparer
