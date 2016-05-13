@@ -125,7 +125,7 @@ namespace AmpedBiz.Data.Seeders
                             taxRate: random.NextDecimal(0.01M, 0.30M),
                             tax: new Money(random.NextDecimal(10M, 10000M)),
                             shippingFee: new Money(random.NextDecimal(10M, 10000M)),
-                            employee: new Employee(Guid.NewGuid()),
+                            employee: new Employee(Guid.NewGuid().ToString()),
                             customer: RotateCustomer(),
                             branch: RotateBranch()
                         );

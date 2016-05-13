@@ -15,9 +15,11 @@ namespace AmpedBiz.Service.Dto.Mappers
             ExpressMapper.Mapper.Register<Dto.Address, Entity.Address>();
             ExpressMapper.Mapper.Register<Dto.ProductCategory, Entity.ProductCategory>();
             ExpressMapper.Mapper.Register<Dto.PaymentType, Entity.PaymentType>();
+            ExpressMapper.Mapper.Register<Dto.EmployeeType, Entity.EmployeeType>();
             ExpressMapper.Mapper.Register<Dto.Branch, Entity.Branch>();
             ExpressMapper.Mapper.Register<Dto.Customer, Entity.Customer>();
             ExpressMapper.Mapper.Register<Dto.Supplier, Entity.Supplier>();
+            ExpressMapper.Mapper.Register<Dto.Employee, Entity.Employee>();
 
             ExpressMapper.Mapper.Register<Entity.Product, Dto.Product>()
                 .Member(x => x.SupplierId, x => x.Supplier.Id)
