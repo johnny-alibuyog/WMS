@@ -8,7 +8,7 @@ namespace AmpedBiz.Service.Dto
 
         public string Name { get; set; }
 
-        public decimal CreditLimit { get; set; }
+        public decimal CreditLimitAmount { get; set; }
 
         public string PricingSchemeId { get; set; }
 
@@ -25,7 +25,7 @@ namespace AmpedBiz.Service.Dto
 
         public string Name { get; set; }
 
-        public string CreditLimit { get; set; }
+        public string CreditLimitAmount { get; set; }
 
         public string PricingSchemeName { get; set; }
 

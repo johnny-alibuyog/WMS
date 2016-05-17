@@ -37,6 +37,10 @@ namespace AmpedBiz.Service.Customers
 
                     Mapper.Map<Customer, Dto.Customer>(entity, response);
 
+                    //todo: cannot map
+                    response.PricingSchemeId = entity.PricingScheme.Id;
+                    response.CreditLimitAmount = entity.CreditLimit.Amount;
+
                     transaction.Commit();
                 }
 

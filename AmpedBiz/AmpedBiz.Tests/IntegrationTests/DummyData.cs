@@ -72,7 +72,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                 FirstName = "FirstName_" + this.GenerateRandomString(10),
                 LastName = "LastName_" + this.GenerateRandomString(10),
                 MiddleName = "MiddleNam_" + this.GenerateRandomString(10),
-                BirthDate = new DateTime(this.rnd.Next(1930, 1995), this.rnd.Next(1, 12), this.rnd.Next(1, 31))
+                BirthDate = new DateTime(this.rnd.Next(1930, 1995), this.rnd.Next(1, 12), this.rnd.Next(1, 28))
             };
         }
 
@@ -82,7 +82,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             {
                 Id = "Id_" + this.GenerateRandomString(25),
                 Password = "Password_" + this.GenerateRandomString(15),
-                Username = "Username_" + this.GenerateRandomString(10),
+                Username = "Username_" + this.GenerateRandomString(15),
                 Address = this.GenerateAddress(),
                 BranchId = this.GenerateBranch().Id,
                 Person = this.GeneratePerson(),
@@ -92,6 +92,49 @@ namespace AmpedBiz.Tests.IntegrationTests
                     Name = t.Name,
                     Assigned = true
                 }).ToList()
+            };
+        }
+
+        public Service.Dto.Customer GenerateCustomer()
+        {
+            return new Service.Dto.Customer()
+            {
+                BillingAddress = this.GenerateAddress(),
+                Contact = this.GenerateContact(),
+                CreditLimitAmount = 1000.00M,
+                Id = this.GenerateUniqueString("Id_"),
+                Name = this.GenerateUniqueString("Name_"),
+                OfficeAddress = this.GenerateAddress(),
+                //PricingSchemeId = 
+            };
+        }
+
+        public Service.Dto.Supplier GenerateSupplier()
+        {
+            return new Service.Dto.Supplier()
+            {
+                Id = "Id_" + this.GenerateRandomString(15),
+                Address = this.GenerateAddress(),
+                Contact = this.GenerateContact(),
+                Name = "Name_" + this.GenerateRandomString(25)
+            };
+        }
+
+        public Service.Dto.Product GenerateProduct()
+        {
+            var basePrice = (decimal)rnd.Next(10, 100) / 100;
+            return new Service.Dto.Product()
+            {
+                BasePriceAmount = basePrice,
+                WholesalePriceAmount = basePrice + 1,
+                RetailPriceAmount = basePrice + 2,
+                CategoryId = "",
+                Description = "Description_" + this.GenerateRandomString(25),
+                Discontinued = false,
+                Id = "Id_" + this.GenerateRandomString(15),
+                Image = "",
+                Name = "Name_" + this.GenerateRandomString(10),
+                SupplierId = ""
             };
         }
     }

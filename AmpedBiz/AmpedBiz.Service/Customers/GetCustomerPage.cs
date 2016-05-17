@@ -67,7 +67,7 @@ namespace AmpedBiz.Service.Customers
                         {
                             Id = x.Id,
                             Name = x.Name,
-                            CreditLimit = x.CreditLimit.ToStringWithSymbol(),
+                            CreditLimitAmount = x.CreditLimit.ToStringWithSymbol(),
                             PricingSchemeName = x.PricingScheme.Name,
                             Contact = Mapper.Map<Entity.Contact, Dto.Contact>(x.Contact),
                             OfficeAddress = Mapper.Map<Entity.Address, Dto.Address>(x.OfficeAddress),

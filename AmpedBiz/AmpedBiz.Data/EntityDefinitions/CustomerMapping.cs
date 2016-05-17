@@ -13,13 +13,14 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             References(x => x.PricingScheme);
 
-            Component(x => x.CreditLimit, MoneyMapping.Map("", nameof(CustomerMapping)));
+            Component(x => x.CreditLimit, MoneyMapping.Map("CreditLimit_", nameof(Customer)));
 
             Component(x => x.OfficeAddress, AddressMapping.Map("Office_"));
 
             Component(x => x.BillingAddress, AddressMapping.Map("Billing_"));
 
             Component(x => x.Contact);
+
         }
     }
 }

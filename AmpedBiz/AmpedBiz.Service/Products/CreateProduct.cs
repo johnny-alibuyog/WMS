@@ -52,6 +52,12 @@ namespace AmpedBiz.Service.Products
                     session.Save(entity);
 
                     Mapper.Map<Product, Dto.Product>(entity, response);
+                    //todo: cannot map amounts and id
+                    response.BasePriceAmount = entity.BasePrice.Amount;
+                    response.WholesalePriceAmount = entity.WholesalePrice.Amount;
+                    response.RetailPriceAmount = entity.RetailPrice.Amount;
+                    response.CategoryId = entity.Category.Id;
+                    response.SupplierId = entity.Supplier.Id;
 
                     transaction.Commit();
                 }

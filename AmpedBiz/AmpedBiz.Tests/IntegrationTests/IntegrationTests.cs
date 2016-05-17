@@ -14,6 +14,14 @@ using AmpedBiz.Service.Users;
 using NHibernate;
 using AmpedBiz.Data.Configurations;
 using AmpedBiz.Service.Branches;
+using AmpedBiz.Service.EmployeeTypes;
+using System.Diagnostics;
+using AmpedBiz.Service.Customers;
+using AmpedBiz.Data.Seeders;
+using System.Reflection;
+using NHibernate.Linq;
+using AmpedBiz.Service.Suppliers;
+using AmpedBiz.Service.Products;
 
 namespace AmpedBiz.Tests.IntegrationTests
 {
@@ -60,9 +68,18 @@ namespace AmpedBiz.Tests.IntegrationTests
     public class IntegrationTests
     {
         private readonly DummyData dummyData = new DummyData();
+        private readonly Random rnd = new Random();
+
         private ISessionFactory sessionFactory;
         private IAuditProvider auditProvider;
 
+        private List<Currency> currencies = new List<Currency>();
+        private List<EmployeeType> employeeTypes = new List<EmployeeType>();
+        private List<PaymentType> paymentTypes = new List<PaymentType>();
+        private List<PricingScheme> pricingSchemes = new List<PricingScheme>();
+        private List<ProductCategory> productCategories = new List<ProductCategory>();
+        private List<Role> roles = new List<Role>();
+        private List<UnitOfMeasureClass> unitOfMeasures = new List<UnitOfMeasureClass>();
         public IntegrationTests()
         {
         }
@@ -72,6 +89,8 @@ namespace AmpedBiz.Tests.IntegrationTests
         {
             this.auditProvider = new AuditProvider();
             this.sessionFactory = new SessionProvider(new ValidatorEngine(), this.auditProvider).SessionFactory;
+
+            this.SetupDefaultSeeders();
         }
 
         [TestFixtureTearDown]
@@ -79,6 +98,32 @@ namespace AmpedBiz.Tests.IntegrationTests
         {
             this.auditProvider = null;
             this.sessionFactory = null;
+        }
+
+        private void SetupDefaultSeeders()
+        {
+            var seeders = (from t in AppDomain.CurrentDomain.GetAssemblies()
+                                       .FirstOrDefault(a => a.FullName.Contains("AmpedBiz.Data")).GetTypes()
+                           where t.GetInterfaces().Contains(typeof(ISeeder))
+                           select Activator.CreateInstance(t, this.sessionFactory) as ISeeder)
+                                       .Where(h => !h.DummyData);
+
+            foreach (var seeder in seeders)
+            {
+                seeder.Seed();
+            }
+
+            //load data
+            using (var session = this.sessionFactory.OpenSession())
+            {
+                this.currencies = session.Query<Currency>().ToList();
+                this.employeeTypes = session.Query<EmployeeType>().ToList();
+                this.paymentTypes = session.Query<PaymentType>().ToList();
+                this.pricingSchemes = session.Query<PricingScheme>().ToList();
+                this.productCategories = session.Query<ProductCategory>().ToList();
+                this.roles = session.Query<Role>().ToList();
+                this.unitOfMeasures = session.Query<UnitOfMeasureClass>().ToList();
+            }
         }
 
         private Service.Dto.Branch PersistBranch(Service.Dto.Branch branch)
@@ -95,7 +140,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             return handler as Service.Dto.Branch;
         }
-           
+
         private Service.Dto.User PersistUser(Service.Dto.User user)
         {
             var request = new CreateUser.Request()
@@ -108,59 +153,194 @@ namespace AmpedBiz.Tests.IntegrationTests
                 Roles = user.Roles,
                 Username = user.Username
             };
-            
+
             var handler = new CreateUser.Handler(this.sessionFactory).Handle(request);
 
             return handler as Service.Dto.User;
         }
 
-        private Service.Dto.Employee PersistEmployee(Service.Dto.Employee employee)
+        private List<Service.Dto.Employee> CreateEmployees(int count = 1)
         {
+            var employees = new List<Service.Dto.Employee>();
+
             var branch = this.PersistBranch(this.dummyData.GenerateBranch());
-            var dummyUser = this.dummyData.GenerateUser();
-            dummyUser.BranchId = branch.Id;
+            var user = this.dummyData.GenerateUser();
+            user.BranchId = branch.Id;
 
-            var user = this.PersistUser(dummyUser);
+            this.PersistUser(user);
 
-            var request = new CreateEmployee.Request()
+            var empTypeIndex = -1;
+            for (var i = 0; i< count; i++)
             {
-                Id = employee.Id,
-                Contact = employee.Contact,
-                EmployeeTypeId = employee.EmployeeTypeId,
-                User = user
-            };
+                empTypeIndex++;
 
-            var handler = new CreateEmployee.Handler(this.sessionFactory).Handle(request);
+                var request = new CreateEmployee.Request()
+                {
+                    Id = dummyData.GenerateUniqueString("Id"),
+                    Contact = dummyData.GenerateContact(),
+                    EmployeeTypeId = this.employeeTypes[empTypeIndex].Id,
+                    User = user
+                };
 
-            return handler as Service.Dto.Employee;
+                var handler = new CreateEmployee.Handler(this.sessionFactory).Handle(request);
+
+                employees.Add(handler as Service.Dto.Employee);
+
+                if (empTypeIndex == this.employeeTypes.Count - 1)
+                    empTypeIndex = 0;
+            }
+
+            return employees;
         }
 
+        private List<Service.Dto.Customer> CreateCustomers(int count = 1)
+        {
+            var customers = new List<Service.Dto.Customer>();
+
+            for(var i = 0; i < count; i++)
+            {
+                var custData = this.dummyData.GenerateCustomer();
+                custData.PricingSchemeId = this.pricingSchemes[this.rnd.Next(0, this.pricingSchemes.Count - 1)].Id;
+
+                var request = new CreateCustomer.Request()
+                {
+                    Id = custData.Id,
+                    Contact = custData.Contact,
+                    BillingAddress = custData.BillingAddress,
+                    CreditLimitAmount = custData.CreditLimitAmount,
+                    Name = custData.Name,
+                    OfficeAddress = custData.OfficeAddress,
+                    PricingSchemeId = custData.PricingSchemeId
+                };
+
+                var handler = new CreateCustomer.Handler(this.sessionFactory).Handle(request);
+
+                customers.Add(handler as Service.Dto.Customer);
+            }
+
+            return customers;
+        }
+
+        private List<Service.Dto.Supplier> CreateSuppliers(int count = 1)
+        {
+            var suppliers = new List<Service.Dto.Supplier>();
+
+            for (var i = 0; i < count; i++)
+            {
+                var supplierData = this.dummyData.GenerateSupplier();
+
+                var request = new CreateSupplier.Request()
+                {
+                    Id = supplierData.Id,
+                    Address = supplierData.Address,
+                    Contact = supplierData.Contact,
+                    Name = supplierData.Name
+                };
+
+                var handler = new CreateSupplier.Handler(this.sessionFactory).Handle(request);
+
+                suppliers.Add(handler as Service.Dto.Supplier);
+            }
+
+            return suppliers;
+        }
+
+        private List<Service.Dto.Product> CreateProducts(int count = 1)
+        {
+            var products = new List<Service.Dto.Product>();
+            var suppliers = new List<Supplier>();
+
+            using (var session = this.sessionFactory.OpenSession())
+            {
+                suppliers = session.Query<Supplier>().ToList();
+            }
+
+            for (var i = 0; i < count; i++)
+            {
+                var productData = this.dummyData.GenerateProduct();
+                productData.SupplierId = suppliers[rnd.Next(0, suppliers.Count - 1)].Id;
+
+                var request = new CreateProduct.Request()
+                {
+                    Id = productData.Id,
+                    BasePriceAmount = productData.BasePriceAmount,
+                    CategoryId = this.productCategories[this.rnd.Next(0, this.productCategories.Count - 1)].Id,
+                    Description = productData.Description,
+                    Discontinued = productData.Discontinued,
+                    Image = productData.Image,
+                    Name = productData.Name,
+                    RetailPriceAmount = productData.RetailPriceAmount,
+                    SupplierId = productData.SupplierId,
+                    WholesalePriceAmount = productData.WholesalePriceAmount
+                };
+
+                var handler = new CreateProduct.Handler(this.sessionFactory).Handle(request);
+
+                products.Add(handler as Service.Dto.Product);
+            }
+
+            return products;
+        }
 
 
         [Test]
         public void CommonScenarioTests()
         {
-            //Create Employees
-            var employee = this.PersistEmployee(new Service.Dto.Employee()
-            {
-                Id = dummyData.GenerateUniqueString("Id"),
-                Contact = dummyData.GenerateContact(),
-                EmployeeTypeId = EmployeeType.Admin.Id
-            });
+            //-----Create Employees-----
+            var employees = this.CreateEmployees(5);
 
-            //Create Customers
+            CollectionAssert.IsNotEmpty(employees);
+            CollectionAssert.AllItemsAreNotNull(employees);
+
+            //-----Create Customers-----
+            var customers = this.CreateCustomers(10);
+
+            CollectionAssert.IsNotEmpty(customers);
+            CollectionAssert.AllItemsAreNotNull(customers);
+
             //Create Suppliers
+            var suppliers = this.CreateSuppliers(10);
+            CollectionAssert.IsNotEmpty(suppliers);
+            CollectionAssert.AllItemsAreNotNull(suppliers);
+
+
             //Create Product Categories
+            //provided by default seeder
+
             //Create Products
+            var products = this.CreateProducts(20);
+
+            CollectionAssert.IsNotEmpty(products);
+            CollectionAssert.AllItemsAreNotNull(products);
+
+            /*
+            Fill Inventory
+
+            -Select Products for Purchase Order (New, add to cart functionality)
+
+            -Create Purchase Order(s) - Assert Status, it should be Active orders
+            - Transition PO - Assert Status, it should be awaiting approval
+            - Approve Purchase Order - Assert Status, it should be awaiting completion
+            - Complete Purchases - Assert Status, it should be completed
+                */
+
+
+            /*
+            var getCustomer = new GetCustomer.Handler(this.sessionFactory).Handle(new GetCustomer.Request() { Id = customer.Id });
+            var getCustomerPage = new GetCustomerPage
+                .Handler(this.sessionFactory)
+                .Handle(new GetCustomerPage.Request()
+                {
+                    Filter = new Service.Common.Filter(),
+                    Pager = new Service.Common.Pager() { Size =10, Offset = 1 },
+                    Sorter = new Service.Common.Sorter()
+                });
+            */
+
+
+
 
         }
 
-        [Test]
-        public void Test1()
-        {
-            //var pc = new CreateProductCategory.Request() { Id = Guid.NewGuid().ToString().Substring(0, 30), Name = "Name_" + Guid.NewGuid().ToString() };
-            //var handler = new CreateProductCategory.Handler(new SessionProvider(new ValidatorEngine(), new AuditProvider()).SessionFactory);
-            //var result = handler.Handle(pc);
-        }
     }
 }
