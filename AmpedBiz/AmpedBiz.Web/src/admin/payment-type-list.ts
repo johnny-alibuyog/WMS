@@ -40,7 +40,7 @@ export class PaymentTypeList {
 
   getList() {
     this._api.paymentTypes
-      .getPages({
+      .getPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager

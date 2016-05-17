@@ -41,7 +41,7 @@ export class ProductList {
 
   getList(): void {
     this._api.products
-      .getPages({
+      .getPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager

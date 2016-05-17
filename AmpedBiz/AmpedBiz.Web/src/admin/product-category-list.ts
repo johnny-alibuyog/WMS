@@ -40,7 +40,7 @@ export class ProductCategoryList {
 
   getList() {
     this._api.productCategories
-      .getPages({
+      .getPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager

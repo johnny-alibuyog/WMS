@@ -40,7 +40,7 @@ export class BranchList {
 
   getList() {
     this._api.users
-      .getPages({
+      .getPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager

@@ -41,7 +41,7 @@ export class BranchList {
 
   getList(): void {
     this._api.branches
-      .getPages({
+      .getPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager

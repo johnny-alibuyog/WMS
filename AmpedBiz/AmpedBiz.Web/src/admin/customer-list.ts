@@ -41,7 +41,7 @@ export class CustomerList {
 
   getList() {
     this._api.customers
-      .getPages({
+      .getPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager

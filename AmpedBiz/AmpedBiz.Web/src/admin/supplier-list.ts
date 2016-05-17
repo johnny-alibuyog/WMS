@@ -40,7 +40,7 @@ export class SupplierList {
 
    getList(): void {
     this._api.suppliers
-      .getPages({
+      .getPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager
