@@ -6,7 +6,7 @@ namespace AmpedBiz.Core.Entities
 {
     public enum PurchaseOrderStatus
     {
-        New, //active
+        New = 1, //active
         ForApproval,
         ForCompletion,
         Completed,
@@ -35,7 +35,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Money ShippingFee { get; set; }
 
-        public virtual Money PaymentAmount { get; set; }
+        public virtual Money Payment { get; set; }
 
         public virtual Money SubTotal { get; set; }
 

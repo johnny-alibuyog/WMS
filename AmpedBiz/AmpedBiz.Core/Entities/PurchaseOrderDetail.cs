@@ -4,8 +4,8 @@ namespace AmpedBiz.Core.Entities
 {
     public enum PurchaseOrderDetailStatus
     {
-        Posted,
-        Submitted
+        Submitted = 1,
+        Posted
     }
 
     public class PurchaseOrderDetail : Entity<Guid, PurchaseOrderDetail>

@@ -26,7 +26,7 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.OrderDate);
 
-            Define(x => x.PaymentAmount).
+            Define(x => x.Payment).
                 IsValid();
 
             Define(x => x.PaymentDate);

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using ExpressMapper;
-using Dto = AmpedBiz.Service.Dto;
+﻿using System.Collections.ObjectModel;
 using Entity = AmpedBiz.Core.Entities;
-
 
 namespace AmpedBiz.Service.Dto.Mappers
 {
@@ -60,13 +54,43 @@ namespace AmpedBiz.Service.Dto.Mappers
                     source.Units.ForEach(sourceUnit =>
                     {
                         units.Add(ExpressMapper.Mapper.Map<Dto.UnitOfMeasure, Entity.UnitOfMeasure>(
-                            src: sourceUnit, 
+                            src: sourceUnit,
                             dest: new Entity.UnitOfMeasure(sourceUnit.Id)
                         ));
                     });
 
                     desitnation.WithUnits(units);
                 });
+
+            ExpressMapper.Mapper.Register<Entity.PurchaseOrder, Dto.PurchaseOrder>()
+                .Member(x => x.CompletedByEmployeeId, x => x.CompletedBy.Id)
+                .Member(x => x.CreatedByEmployeeId, x => x.CreatedBy.Id)
+                .Member(x => x.PaymentAmount, x => x.Payment.Amount)
+                .Member(x => x.PaymentTypeId, x => x.PaymentType.Id)
+                .Member(x => x.ShippingFeeAmount, x => x.ShippingFee.Amount)
+                .Member(x => x.SubmittedByEmployeeId, x => x.SubmittedBy.Id)
+                .Member(x => x.SubTotalAmount, x => x.Total.Amount)
+                .Member(x => x.SupplierId, x => x.Supplier.Id)
+                .Member(x => x.TaxAmount, x => x.Tax.Amount)
+                .Member(x => x.TotalAmount, x => x.Total.Amount);
+
+            ExpressMapper.Mapper.Register<Entity.PurchaseOrder, Dto.PurchaseOrderPageItem>()
+                .Member(x => x.ClosedDate, x => x.ClosedDate.Value == null ? string.Empty : x.ClosedDate.Value.ToShortDateString())
+                .Member(x => x.CompletedByEmployeeName, x => x.CompletedBy.User.FullName())
+                .Member(x => x.CreatedByEmployeeName, x => x.CreatedBy.User.FullName())
+                .Member(x => x.CreationDate, x => x.CreationDate.Value == null ? string.Empty : x.CreationDate.Value.ToShortDateString())
+                .Member(x => x.ExpectedDate, x => x.ExpectedDate.Value == null ? string.Empty : x.ExpectedDate.Value.ToShortDateString())
+                .Member(x => x.OrderDate, x => x.OrderDate.Value == null ? string.Empty : x.OrderDate.Value.ToShortDateString())
+                .Member(x => x.Payment, x => x.Payment.ToStringWithSymbol())
+                .Member(x => x.PaymentDate, x => x.PaymentDate.Value == null ? string.Empty : x.PaymentDate.Value.ToShortDateString())
+                .Member(x => x.PaymentTypeName, x => x.PaymentType.Name)
+                .Member(x => x.StatusName, x => x.Status.ToString())
+                .Member(x => x.SubmittedByEmployeeName, x => x.SubmittedBy.User.FullName())
+                .Member(x => x.SubmittedDate, x => x.SubmittedDate.Value == null ? string.Empty : x.SubmittedDate.Value.ToShortDateString())
+                .Member(x => x.SubTotal, x => x.SubTotal.ToStringWithSymbol())
+                .Member(x => x.SupplierName, x => x.Supplier.Name)
+                .Member(x => x.Tax, x => x.Tax.ToStringWithSymbol())
+                .Member(x => x.Total, x => x.Total.ToStringWithSymbol());
         }
     }
 }

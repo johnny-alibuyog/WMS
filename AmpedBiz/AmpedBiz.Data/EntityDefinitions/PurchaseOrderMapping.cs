@@ -22,7 +22,7 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Map(x => x.OrderDate);
 
-            Component(x => x.PaymentAmount, MoneyMapping.Map("PaymentAmount_", nameof(PurchaseOrder)));
+            Component(x => x.Payment, MoneyMapping.Map("PaymentAmount_", nameof(PurchaseOrder)));
 
             Map(x => x.PaymentDate);
 

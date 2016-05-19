@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace AmpedBiz.Core.Entities
@@ -53,6 +54,15 @@ namespace AmpedBiz.Core.Entities
                 item.Role = role;
                 ((ICollection<UserRole>)this.UserRoles).Add(item);
             }
+        }
+
+        public virtual string FullName()
+        {
+            return Regex.Replace(string.Format("{0} {1} {2}",
+                this.Person.FirstName,
+                this.Person.MiddleName,
+                this.Person.LastName),
+                @"\s+", " ");
         }
     }
 }
