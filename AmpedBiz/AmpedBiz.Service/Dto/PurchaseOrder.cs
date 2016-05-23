@@ -51,6 +51,8 @@ namespace AmpedBiz.Service.Dto
         public string CompletedByEmployeeId { get; set; }
 
         public string SupplierId { get; set; }
+
+        public IEnumerable<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
     }
 
     public class PurchaseOrderPageItem
@@ -89,5 +91,7 @@ namespace AmpedBiz.Service.Dto
         public string CompletedByEmployeeName { get; set; }
 
         public string SupplierName { get; set; }
+
+        public IEnumerable<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
     }
 }

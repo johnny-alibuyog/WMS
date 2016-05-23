@@ -1,5 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using Entity = AmpedBiz.Core.Entities;
+using System.Linq;
+using System.Collections.Generic;
+using ExpressMapper.Extensions;
 
 namespace AmpedBiz.Service.Dto.Mappers
 {
@@ -62,6 +65,18 @@ namespace AmpedBiz.Service.Dto.Mappers
                     desitnation.WithUnits(units);
                 });
 
+            ExpressMapper.Mapper.Register<Entity.PurchaseOrderDetail, Dto.PurchaseOrderDetail>()
+                .Member(x => x.ExtendedPriceAmount, x => x.ExtendedPrice.Amount)
+                .Member(x => x.ProductId, x => x.Product.Id)
+                .Member(x => x.UnitCostAmount, x => x.UnitCost.Amount)
+                .Member(x => x.PurchaseOrderId, x => x.PurchaseOrder.Id);
+
+            ExpressMapper.Mapper.Register<Entity.PurchaseOrderDetail, Dto.PurchaseOrderDetailPageItem>()
+                .Member(x => x.ExtendedPriceAmount, x => x.ExtendedPrice.ToStringWithSymbol())
+                .Member(x => x.ProductName, x => x.Product.Name)
+                .Member(x => x.UnitCostAmount, x => x.UnitCost.ToStringWithSymbol())
+                .Member(x => x.PurchaseOrderId, x => x.PurchaseOrder.Id.ToString());
+
             ExpressMapper.Mapper.Register<Entity.PurchaseOrder, Dto.PurchaseOrder>()
                 .Member(x => x.CompletedByEmployeeId, x => x.CompletedBy.Id)
                 .Member(x => x.CreatedByEmployeeId, x => x.CreatedBy.Id)
@@ -72,7 +87,17 @@ namespace AmpedBiz.Service.Dto.Mappers
                 .Member(x => x.SubTotalAmount, x => x.Total.Amount)
                 .Member(x => x.SupplierId, x => x.Supplier.Id)
                 .Member(x => x.TaxAmount, x => x.Tax.Amount)
-                .Member(x => x.TotalAmount, x => x.Total.Amount);
+                .Member(x => x.TotalAmount, x => x.Total.Amount)
+                .After((source, destination) =>
+                {
+                    var poDetails = new Collection<Dto.PurchaseOrderDetail>();
+                    destination.PurchaseOrderDetails = new List<Dto.PurchaseOrderDetail>();
+
+                    source.PurchaseOrderDetails.ToList().ForEach(details =>
+                    {
+                        poDetails.Add(ExpressMapper.Mapper.Map(src: details, dest: new PurchaseOrderDetail()));
+                    });
+                });
 
             ExpressMapper.Mapper.Register<Entity.PurchaseOrder, Dto.PurchaseOrderPageItem>()
                 .Member(x => x.ClosedDate, x => x.ClosedDate.Value == null ? string.Empty : x.ClosedDate.Value.ToShortDateString())

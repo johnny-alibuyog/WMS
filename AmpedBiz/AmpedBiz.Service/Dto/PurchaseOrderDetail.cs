@@ -25,10 +25,14 @@ namespace AmpedBiz.Service.Dto
         public DateTime? DateReceived { get; protected set; }
 
         public PurchaseOrderDetailStatus Status { get; set; }
+
+        public Guid PurchaseOrderId { get; set; }
     }
 
     public class PurchaseOrderDetailPageItem
     {
+        public string PurchaseOrderId { get; set; }
+
         public string Id { get; set; }
         public string ProductName { get; set; }
 
