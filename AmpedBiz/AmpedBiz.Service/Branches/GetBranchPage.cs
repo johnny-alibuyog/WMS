@@ -1,15 +1,13 @@
-﻿using System.Linq;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Core.Entities;
 using AmpedBiz.Service.Common;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
-using Dto = AmpedBiz.Service.Dto;
-using Entity = AmpedBiz.Core.Entities;
+using System.Linq;
 
 namespace AmpedBiz.Service.Branches
 {
-    public class GetBranchePage
+    public class GetBranchPage
     {
         public class Request : PageRequest, IRequest<Response> { }
 
@@ -26,12 +24,12 @@ namespace AmpedBiz.Service.Branches
 
             public Response Handle(Request message)
             {
-                var response = default(Response);
+                var response = new Response();
 
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var query = session.Query<Entity.Branch>();
+                    var query = session.Query<Branch>();
 
                     // compose filters
                     message.Filter.Compose<string>("name", value =>

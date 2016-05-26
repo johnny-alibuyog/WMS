@@ -1,5 +1,5 @@
-﻿using AmpedBiz.Core.Entities;
-using ExpressMapper;
+﻿using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
@@ -17,13 +17,9 @@ namespace AmpedBiz.Service.Products
 
         public class Response : List<Dto.Product>
         {
-            public Response()
-            {
-            }
+            public Response() { }
 
-            public Response(List<Dto.Product> items) : base(items)
-            {
-            }
+            public Response(List<Dto.Product> items) : base(items) { }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -37,17 +33,15 @@ namespace AmpedBiz.Service.Products
 
             public Response Handle(Request message)
             {
-                var response = default(Response);
+                var response = new Response();
 
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entites = session.Query<Product>()
-                        .ToList();
+                    var entites = session.Query<Product>().ToList();
+                    var dtos = entites.MapTo(default(List<Dto.Product>));
 
-                    var result = Mapper.Map<List<Product>, List<Dto.Product>>(entites);
-
-                    response = new Response(result);
+                    response = new Response(dtos);
 
                     transaction.Commit();
                 }

@@ -9,7 +9,7 @@ namespace AmpedBiz.Data.Seeders
     public interface ISeeder
     {
         int ExecutionOrder { get; }
-        bool DummyData { get; }
+        bool IsDummyData { get; }
         void Seed();
     }
 }

@@ -1,6 +1,6 @@
 ﻿using AmpedBiz.Common.Exceptions;
+using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using ExpressMapper;
 using MediatR;
 using NHibernate;
 
@@ -35,11 +35,7 @@ namespace AmpedBiz.Service.Customers
                     if (entity == null)
                         throw new BusinessException($"Customer with id {message.Id} does not exists.");
 
-                    Mapper.Map<Customer, Dto.Customer>(entity, response);
-
-                    //todo: cannot map
-                    response.PricingSchemeId = entity.PricingScheme.Id;
-                    response.CreditLimitAmount = entity.CreditLimit.Amount;
+                    entity.MapTo(response);
 
                     transaction.Commit();
                 }

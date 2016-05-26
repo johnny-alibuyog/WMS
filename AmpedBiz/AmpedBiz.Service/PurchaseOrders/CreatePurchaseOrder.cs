@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using AmpedBiz.Common.Exceptions;
+﻿using AmpedBiz.Common.Exceptions;
+using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using ExpressMapper;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
+using System.Linq;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
@@ -35,12 +35,17 @@ namespace AmpedBiz.Service.PurchaseOrders
                         throw new BusinessException($"PurchaseOrder with id {message.Id} already exists.");
 
                     var currency = session.Load<Currency>(Currency.PHP.Id); // this should be taken from the tenant
-                    var entity = Mapper.Map<Dto.PurchaseOrder, PurchaseOrder>(message, new PurchaseOrder(message.Id));
+                    var entity = message.MapTo(new PurchaseOrder(message.Id));
+                    entity.Tax = new Money(message.TaxAmount, currency);
+                    entity.ShippingFee = new Money(message.ShippingFeeAmount, currency);
+                    entity.Payment = new Money(message.PaymentAmount, currency);
+                    entity.SubTotal = new Money(message.SubTotalAmount, currency);
+                    entity.Total = new Money(message.TotalAmount, currency);
+
                     session.Save(entity);
-
-                    Mapper.Map<PurchaseOrder, Dto.PurchaseOrder>(entity, response);
-
                     transaction.Commit();
+
+                    entity.MapTo(response);
                 }
 
                 return response;

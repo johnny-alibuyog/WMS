@@ -22,6 +22,7 @@ using System.Reflection;
 using NHibernate.Linq;
 using AmpedBiz.Service.Suppliers;
 using AmpedBiz.Service.Products;
+using AmpedBiz.Service.Dto.Mappers;
 
 namespace AmpedBiz.Tests.IntegrationTests
 {
@@ -87,6 +88,8 @@ namespace AmpedBiz.Tests.IntegrationTests
         [TestFixtureSetUp]
         public void SetupTest()
         {
+            new Mapper().Initialze();
+
             this.auditProvider = new AuditProvider();
             this.sessionFactory = new SessionProvider(new ValidatorEngine(), this.auditProvider).SessionFactory;
 
@@ -106,7 +109,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                                        .FirstOrDefault(a => a.FullName.Contains("AmpedBiz.Data")).GetTypes()
                            where t.GetInterfaces().Contains(typeof(ISeeder))
                            select Activator.CreateInstance(t, this.sessionFactory) as ISeeder)
-                                       .Where(h => !h.DummyData);
+                                       .Where(h => !h.IsDummyData);
 
             foreach (var seeder in seeders)
             {

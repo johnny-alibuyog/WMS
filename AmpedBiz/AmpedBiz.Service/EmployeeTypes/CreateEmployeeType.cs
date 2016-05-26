@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AmpedBiz.Common.Exceptions;
+﻿using AmpedBiz.Common.Exceptions;
+using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
+using System.Linq;
 
 namespace AmpedBiz.Service.EmployeeTypes
 {
@@ -28,6 +25,8 @@ namespace AmpedBiz.Service.EmployeeTypes
 
             public Response Handle(Request message)
             {
+                var response = new Response();
+
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
@@ -35,16 +34,15 @@ namespace AmpedBiz.Service.EmployeeTypes
                     if (exists)
                         throw new BusinessException($"Employee Type with id {message.Id} already exists.");
 
-                    session.Save(new EmployeeType(message.Id, message.Name));
+                    var entity = message.MapTo(default(EmployeeType));
 
+                    session.Save(entity);
                     transaction.Commit();
+
+                    entity.MapTo(response);
                 }
 
-                return new Response()
-                {
-                    Id = message.Id,
-                    Name = message.Name
-                };
+                return response;
             }
         }
     }

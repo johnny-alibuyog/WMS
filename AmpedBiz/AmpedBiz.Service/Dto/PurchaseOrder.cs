@@ -18,6 +18,7 @@ namespace AmpedBiz.Service.Dto
     public class PurchaseOrder
     {
         public Guid Id { get; set; }
+
         public DateTime? OrderDate { get; set; }
 
         public DateTime? CreationDate { get; set; }

@@ -14,7 +14,7 @@ namespace AmpedBiz.Data.Seeders
             _sessionFactory = sessionFactory;
         }
 
-        public bool DummyData
+        public bool IsDummyData
         {
             get { return false; }
         }

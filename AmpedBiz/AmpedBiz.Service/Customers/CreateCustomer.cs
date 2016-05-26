@@ -1,6 +1,6 @@
 ﻿using AmpedBiz.Common.Exceptions;
+using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using ExpressMapper;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
@@ -34,20 +34,15 @@ namespace AmpedBiz.Service.Customers
                     if (exists)
                         throw new BusinessException($"Customer with id {message.Id} already exists.");
 
-                    var entity = Mapper.Map<Dto.Customer, Customer>(message, new Customer(message.Id));
+                    var entity = message.MapTo<Dto.Customer, Customer>(new Customer(message.Id));
                     var currency = session.Load<Currency>(Currency.PHP.Id);
                     entity.CreditLimit = new Money(message.CreditLimitAmount, currency);
                     entity.PricingScheme = session.Load<PricingScheme>(message.PricingSchemeId);
 
                     session.Save(entity);
-
-                    Mapper.Map<Customer, Dto.Customer>(entity, response);
-
-                    //todo: cannot map
-                    response.PricingSchemeId = entity.PricingScheme.Id;
-                    response.CreditLimitAmount = entity.CreditLimit.Amount;
-
                     transaction.Commit();
+
+                    entity.MapTo(response);
                 }
 
                 return response;

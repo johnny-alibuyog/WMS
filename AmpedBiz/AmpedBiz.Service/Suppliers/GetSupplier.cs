@@ -1,9 +1,8 @@
 ﻿using AmpedBiz.Common.Exceptions;
-using ExpressMapper;
+using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
-using Dto = AmpedBiz.Service.Dto;
-using Entity = AmpedBiz.Core.Entities;
 
 namespace AmpedBiz.Service.Suppliers
 {
@@ -32,11 +31,11 @@ namespace AmpedBiz.Service.Suppliers
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.Get<Entity.Supplier>(message.Id);
+                    var entity = session.Get<Supplier>(message.Id);
                     if (entity == null)
                         throw new BusinessException($"Supplier with id {message.Id} does not exists.");
 
-                    Mapper.Map<Entity.Supplier, Dto.Supplier>(entity, response);
+                    entity.MapTo(response);
 
                     transaction.Commit();
                 }

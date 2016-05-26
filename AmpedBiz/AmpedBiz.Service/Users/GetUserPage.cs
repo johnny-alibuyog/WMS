@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Entities;
 using AmpedBiz.Service.Common;
-using ExpressMapper;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
-using Dto = AmpedBiz.Service.Dto;
-using Entity = AmpedBiz.Core.Entities;
-
+using System.Linq;
 
 namespace AmpedBiz.Service.Users
 {
@@ -28,12 +25,12 @@ namespace AmpedBiz.Service.Users
 
             public Response Handle(Request message)
             {
-                var response = default(Response);
+                var response = new Response();
 
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var query = session.Query<Entity.User>();
+                    var query = session.Query<User>();
 
                     // compose filters
                     message.Filter.Compose<string>("username", value =>
@@ -108,8 +105,8 @@ namespace AmpedBiz.Service.Users
                             Id = x.Id,
                             Username = x.Username,
                             BranchName = x.Branch.Name,
-                            Person = Mapper.Map<Entity.Person, Dto.Person>(x.Person),
-                            Address = Mapper.Map<Entity.Address, Dto.Address>(x.Address),
+                            Person = x.Person.MapTo(default(Dto.Person)),
+                            Address = x.Address.MapTo(default(Dto.Address)),
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)

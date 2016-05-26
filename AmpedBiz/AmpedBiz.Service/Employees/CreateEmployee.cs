@@ -1,6 +1,6 @@
 ﻿using AmpedBiz.Common.Exceptions;
+using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using ExpressMapper;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
@@ -34,18 +34,14 @@ namespace AmpedBiz.Service.Employees
                     if (exists)
                         throw new BusinessException($"Employee with id {message.Id} already exists.");
 
-                    var entity = Mapper.Map<Dto.Employee, Employee>(message, new Employee(message.Id));
+                    var entity = message.MapTo(new Employee(message.Id));
                     entity.EmployeeType = session.Load<EmployeeType>(message.EmployeeTypeId);
                     entity.User = session.Load<User>(message.User.Id);
 
                     session.Save(entity);
-
-                    Mapper.Map<Employee, Dto.Employee>(entity, response);
-                    response.EmployeeTypeId = entity.EmployeeType.Id;
-                    response.User.BranchId = entity.User.Branch.Id;
-                    //todo: roles
-
                     transaction.Commit();
+
+                    entity.MapTo(response);;
                 }
 
                 return response;

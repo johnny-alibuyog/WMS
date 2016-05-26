@@ -1,6 +1,6 @@
 ﻿using AmpedBiz.Common.Exceptions;
+using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using ExpressMapper;
 using MediatR;
 using NHibernate;
 
@@ -33,8 +33,7 @@ namespace AmpedBiz.Service.Products
                     if (entity == null)
                         throw new BusinessException($"Product with id {message.Id} does not exists.");
 
-                    Mapper.Map<Dto.Product, Product>(message, entity);
-
+                    message.MapTo(entity);
                     entity.BasePrice = new Money(message.BasePriceAmount, currency);
                     entity.RetailPrice = new Money(message.RetailPriceAmount, currency);
                     entity.WholesalePrice = new Money(message.RetailPriceAmount, currency);

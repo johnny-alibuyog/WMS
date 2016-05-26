@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Common.Exceptions;
+using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
@@ -25,7 +26,7 @@ namespace AmpedBiz.Service.EmployeeTypes
 
             public Response Handle(Request message)
             {
-                var response = default(Response);
+                var response = new Response();
 
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
@@ -34,11 +35,7 @@ namespace AmpedBiz.Service.EmployeeTypes
                     if (entity == null)
                         throw new BusinessException($"Employee Type with id {message.Id} does not exists.");
 
-                    response = new Response()
-                    {
-                        Id = entity.Id,
-                        Name = entity.Name
-                    };
+                    entity.MapTo(response);
 
                     transaction.Commit();
                 }

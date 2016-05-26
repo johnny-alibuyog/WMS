@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ExpressMapper;
+﻿using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
-using Dto = AmpedBiz.Service.Dto;
-using Entity = AmpedBiz.Core.Entities;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AmpedBiz.Service.UnitOfMeasureClasses
 {
@@ -34,19 +33,15 @@ namespace AmpedBiz.Service.UnitOfMeasureClasses
 
             public Response Handle(Request message)
             {
-                var response = default(Response);
+                var response = new Response();
 
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entites = session
-                        .Query<Entity.UnitOfMeasureClass>()
-                        .Fetch(x => x.Units)
-                        .ToList();
+                    var entites = session.Query<UnitOfMeasureClass>().Fetch(x => x.Units).ToList();
+                    var dtos = entites.MapTo(default(List<Dto.UnitOfMeasureClass>));
 
-                    var result = Mapper.Map<List<Entity.UnitOfMeasureClass>, List<Dto.UnitOfMeasureClass>>(entites);
-
-                    response = new Response(result);
+                    response = new Response(dtos);
 
                     transaction.Commit();
                 }

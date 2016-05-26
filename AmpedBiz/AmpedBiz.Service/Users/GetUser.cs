@@ -1,12 +1,10 @@
-﻿using AmpedBiz.Common.Exceptions;
-using ExpressMapper;
-using System.Linq;
+﻿using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
-using Dto = AmpedBiz.Service.Dto;
-using Entity = AmpedBiz.Core.Entities;
 using NHibernate.Transform;
+using System.Linq;
 
 namespace AmpedBiz.Service.Users
 {
@@ -35,20 +33,20 @@ namespace AmpedBiz.Service.Users
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.QueryOver<Entity.User>()
+                    var entity = session.QueryOver<User>()
                         .Where(x => x.Id == message.Id)
                         .Left.JoinQueryOver(x => x.UserRoles)
                         .TransformUsing(Transformers.DistinctRootEntity)
                         .SingleOrDefault();
 
                     //var entity = query.Value;
-                    var roles = session.Query<Entity.Role>().ToList();
+                    var roles = session.Query<Role>().ToList();
 
                     response.Id = entity.Id;
                     response.Username = entity.Username;
                     response.Password = entity.Password;
-                    response.Person = Mapper.Map<Entity.Person, Dto.Person>(entity.Person);
-                    response.Address = Mapper.Map<Entity.Address, Dto.Address>(entity.Address);
+                    response.Person = entity.Person.MapTo(default(Dto.Person));
+                    response.Address = entity.Address.MapTo(default(Dto.Address));
                     response.BranchId = entity.Branch.Id;
                     response.Roles = roles
                         .Select(x => new Dto.Role()

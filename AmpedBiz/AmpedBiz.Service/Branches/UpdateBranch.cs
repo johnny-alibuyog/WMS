@@ -1,9 +1,8 @@
 ﻿using AmpedBiz.Common.Exceptions;
-using ExpressMapper;
+using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
-using Dto = AmpedBiz.Service.Dto;
-using Entity = AmpedBiz.Core.Entities;
 
 namespace AmpedBiz.Service.Branches
 {
@@ -29,13 +28,15 @@ namespace AmpedBiz.Service.Branches
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.Get<Entity.Branch>(message.Id);
+                    var entity = session.Get<Branch>(message.Id);
                     if (entity == null)
                         throw new BusinessException($"Branch with id {message.Id} does not exists.");
 
-                    Mapper.Map<Dto.Branch, Entity.Branch>(message, entity);
+                    message.MapTo(entity);
 
                     transaction.Commit();
+
+                    entity.MapTo(response);
                 }
 
                 return response;

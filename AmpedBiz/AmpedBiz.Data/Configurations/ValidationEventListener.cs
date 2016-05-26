@@ -5,7 +5,7 @@ using NHibernate.Event;
 
 namespace AmpedBiz.Data.Configurations
 {
-    internal class ValidationEventListener : IPreInsertEventListener, IPreUpdateEventListener, IPreCollectionRemoveEventListener, IPreCollectionUpdateEventListener, IPreCollectionRecreateEventListener
+    internal class ValidationEventListener : IPreInsertEventListener, IPreUpdateEventListener, IPreCollectionRecreateEventListener, IPreCollectionUpdateEventListener, IPreCollectionRemoveEventListener
     {
         private void PerformValidation(object entity)
         {

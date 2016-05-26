@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ExpressMapper, Version=1.8.1.0, Culture=neutral, PublicKeyToken=ac363faa09311ba0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Expressmapper.1.8.1\lib\net46\ExpressMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -53,6 +57,7 @@
     <Compile Include="Exceptions\InvalidField.cs" />
     <Compile Include="Extentions\DateTimeExtention.cs" />
     <Compile Include="Extentions\EnumerableExtention.cs" />
+    <Compile Include="Extentions\MappingExtention.cs" />
     <Compile Include="Extentions\NumberExtention.cs" />
     <Compile Include="Extentions\ReflectionExtention.cs" />
     <Compile Include="Extentions\StringExtention.cs" />

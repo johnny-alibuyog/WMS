@@ -1,10 +1,9 @@
-﻿using System.Linq;
-using AmpedBiz.Common.Exceptions;
-using ExpressMapper;
+﻿using AmpedBiz.Common.Exceptions;
+using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
-using Dto = AmpedBiz.Service.Dto;
-using Entity = AmpedBiz.Core.Entities;
+using System.Linq;
 
 namespace AmpedBiz.Service.Users
 {
@@ -30,18 +29,18 @@ namespace AmpedBiz.Service.Users
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.Get<Entity.User>(message.Id);
+                    var entity = session.Get<User>(message.Id);
                     if (entity == null)
                         throw new BusinessException($"User with id {message.Id} does not exists.");
 
                     entity.Username = message.Username;
                     entity.Password = message.Password;
-                    entity.Person = Mapper.Map<Dto.Person, Entity.Person>(message.Person);
-                    entity.Address = Mapper.Map<Dto.Address, Entity.Address>(message.Address);
-                    entity.Branch = session.Load<Entity.Branch>(message.BranchId);
+                    entity.Person = message.Person.MapTo(default(Person));
+                    entity.Address = message.Address.MapTo(default(Address));
+                    entity.Branch = session.Load<Branch>(message.BranchId);
                     entity.SetRoles(message.Roles
                         .Where(x => x.Assigned)
-                        .Select(x => session.Get<Entity.Role>(x.Id))
+                        .Select(x => session.Get<Role>(x.Id))
                         .ToList()
                     );
 

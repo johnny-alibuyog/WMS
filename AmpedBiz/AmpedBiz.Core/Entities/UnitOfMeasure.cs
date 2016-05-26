@@ -12,7 +12,9 @@ namespace AmpedBiz.Core.Entities
 
         public virtual UnitOfMeasureClass UnitOfMeasureClass { get; set; }
 
-        public UnitOfMeasure() : this(default(string)) { }
+        public UnitOfMeasure(string id) : base(id) { }
+
+        public UnitOfMeasure() : base(default(string)) { }
 
         public UnitOfMeasure(string id, string name = null, bool isBaseUnit = false, decimal? convertionFactor = null) : base(id)
         {

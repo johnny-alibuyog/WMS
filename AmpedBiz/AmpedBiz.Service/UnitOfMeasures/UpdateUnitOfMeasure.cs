@@ -1,9 +1,8 @@
 ﻿using AmpedBiz.Common.Exceptions;
-using ExpressMapper;
+using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
-using Dto = AmpedBiz.Service.Dto;
-using Entity = AmpedBiz.Core.Entities;
 
 namespace AmpedBiz.Service.UnitOfMeasures
 {
@@ -29,11 +28,11 @@ namespace AmpedBiz.Service.UnitOfMeasures
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.Get<Entity.UnitOfMeasure>(message.Id);
+                    var entity = session.Get<UnitOfMeasure>(message.Id);
                     if (entity == null)
                         throw new BusinessException($"Unit of Measure with id {message.Id} does not exists.");
 
-                    Mapper.Map<Dto.UnitOfMeasure, Entity.UnitOfMeasure>(message, entity);
+                    message.MapTo(entity);
 
                     transaction.Commit();
                 }

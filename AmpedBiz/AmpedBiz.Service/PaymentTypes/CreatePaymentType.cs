@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using AmpedBiz.Common.Exceptions;
+using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
@@ -28,6 +25,8 @@ namespace AmpedBiz.Service.PaymentTypes
 
             public Response Handle(Request message)
             {
+                var response = new Response();
+
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
@@ -35,16 +34,15 @@ namespace AmpedBiz.Service.PaymentTypes
                     if (exists)
                         throw new BusinessException($"Payment Type with id {message.Id} already exists.");
 
-                    session.Save(new PaymentType(message.Id, message.Name));
+                    var entity = message.MapTo(new PaymentType(message.Id));
 
+                    session.Save(entity);
                     transaction.Commit();
+
+                    entity.MapTo(response);
                 }
 
-                return new Response()
-                {
-                    Id = message.Id,
-                    Name = message.Id
-                };
+                return response;
             }
         }
     }

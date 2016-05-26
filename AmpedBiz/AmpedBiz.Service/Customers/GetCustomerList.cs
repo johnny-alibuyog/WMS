@@ -1,5 +1,5 @@
 ﻿using AmpedBiz.Core.Entities;
-using ExpressMapper;
+using AmpedBiz.Common.Extentions;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
@@ -33,17 +33,15 @@ namespace AmpedBiz.Service.Customers
 
             public Response Handle(Request message)
             {
-                var response = default(Response);
+                var response = new Response();
 
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entites = session.Query<Customer>()
-                        .ToList();
+                    var entites = session.Query<Customer>().ToList();
+                    var dtos = entites.MapTo(default(List<Dto.Customer>));
 
-                    var result = Mapper.Map<List<Customer>, List<Dto.Customer>>(entites);
-
-                    response = new Response(result);
+                    response = new Response(dtos);
 
                     transaction.Commit();
                 }

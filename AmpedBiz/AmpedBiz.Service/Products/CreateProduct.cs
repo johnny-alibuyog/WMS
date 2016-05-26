@@ -1,14 +1,10 @@
 ﻿using AmpedBiz.Common.Exceptions;
+using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using ExpressMapper;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AmpedBiz.Service.Products
 {
@@ -29,9 +25,6 @@ namespace AmpedBiz.Service.Products
 
             public Response Handle(Request message)
             {
-                if (string.IsNullOrEmpty(message.Image))
-                    message.Image = string.Empty;
-
                 var response = new Response();
 
                 using (var session = _sessionFactory.OpenSession())
@@ -42,7 +35,7 @@ namespace AmpedBiz.Service.Products
                         throw new BusinessException($"Product with id {message.Id} already exists.");
 
                     var currency = session.Load<Currency>(Currency.PHP.Id); // this should be taken from the tenant
-                    var entity = Mapper.Map<Dto.Product, Product>(message, new Product(message.Id));
+                    var entity = message.MapTo(new Product(message.Id));
                     entity.BasePrice = new Money(message.BasePriceAmount, currency);
                     entity.RetailPrice = new Money(message.RetailPriceAmount, currency);
                     entity.WholesalePrice = new Money(message.WholesalePriceAmount, currency);
@@ -50,16 +43,9 @@ namespace AmpedBiz.Service.Products
                     entity.Category = session.Load<ProductCategory>(message.CategoryId);
 
                     session.Save(entity);
-
-                    Mapper.Map<Product, Dto.Product>(entity, response);
-                    //todo: cannot map amounts and id
-                    response.BasePriceAmount = entity.BasePrice.Amount;
-                    response.WholesalePriceAmount = entity.WholesalePrice.Amount;
-                    response.RetailPriceAmount = entity.RetailPrice.Amount;
-                    response.CategoryId = entity.Category.Id;
-                    response.SupplierId = entity.Supplier.Id;
-
                     transaction.Commit();
+
+                    response = entity.MapTo(response);;
                 }
 
                 return response;

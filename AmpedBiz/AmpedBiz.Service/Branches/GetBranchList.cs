@@ -6,40 +6,39 @@ using NHibernate.Linq;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AmpedBiz.Service.PurchaseOrders
+namespace AmpedBiz.Service.Branches
 {
-    public class GetPurchaseOrderList
+    public class GetBranchList
     {
         public class Request : IRequest<Response>
         {
-            public string[] Id { get; set; }
+            public string[] Ids { get; set; }
+
+            public string Name { get; set; }
+
+            public string Description { get; set; }
         }
 
-        public class Response : List<Dto.PurchaseOrder>
+        public class Response : List<Dto.Branch>
         {
             public Response() { }
 
-            public Response(List<Dto.PurchaseOrder> items) : base(items) { }
+            public Response(List<Dto.Branch> items) : base(items) { }
         }
 
-        public class Handler : IRequestHandler<Request, Response>
+        public class Handler : RequestHandlerBase<Request, Response>
         {
-            private readonly ISessionFactory _sessionFactory;
+            public Handler(ISessionFactory sessionFactory) : base(sessionFactory) { }
 
-            public Handler(ISessionFactory sessionFactory)
-            {
-                _sessionFactory = sessionFactory;
-            }
-
-            public Response Handle(Request message)
+            public override Response Handle(Request message)
             {
                 var response = new Response();
 
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entites = session.Query<PurchaseOrder>().ToList();
-                    var dtos = entites.MapTo(default(List<Dto.PurchaseOrder>));
+                    var entities = session.Query<Branch>().ToList();
+                    var dtos = entities.MapTo(default(List<Dto.Branch>));
 
                     response = new Response(dtos);
 

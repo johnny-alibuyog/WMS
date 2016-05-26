@@ -15,7 +15,7 @@ namespace AmpedBiz.Service.Host.App_Start
 
             var seeders = config.DependencyResolver
                 .GetServices(typeof(ISeeder)).Cast<ISeeder>()
-                .Where(x => !DbConfig.Instance.UseDummyData ? !x.DummyData : true)
+                .Where(x => !DbConfig.Instance.UseDummyData ? !x.IsDummyData : true)
                 .OrderBy(x => x.ExecutionOrder);
 
             foreach (var seeder in seeders)

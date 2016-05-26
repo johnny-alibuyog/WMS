@@ -1,9 +1,8 @@
-﻿using System.Linq;
+﻿using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
-using Dto = AmpedBiz.Service.Dto;
-using Entity = AmpedBiz.Core.Entities;
+using System.Linq;
 
 namespace AmpedBiz.Service.Users
 {
@@ -29,7 +28,7 @@ namespace AmpedBiz.Service.Users
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var roles = session.Query<Entity.Role>();
+                    var roles = session.Query<Role>();
 
                     response.Roles = roles
                         .Select(x => new Dto.Role()

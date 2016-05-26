@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using AmpedBiz.Common.Extentions;
 
 namespace AmpedBiz.Core.Entities
 {
@@ -51,13 +52,22 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Supplier Supplier { get; set; }
 
-        public virtual IEnumerable<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
+        public virtual IEnumerable<PurchaseOrderDetail> PurchaseOrderDetails { get; protected set; }
 
         public PurchaseOrder() : this(default(Guid)) { }
 
         public PurchaseOrder(Guid id) : base(id)
         {
             this.PurchaseOrderDetails = new Collection<PurchaseOrderDetail>();
+        }
+
+        public virtual void AddPurchaseOrderDetail(PurchaseOrderDetail purchaseOrderDetail)
+        {
+            purchaseOrderDetail.PurchaseOrder = this;
+            this.PurchaseOrderDetails.Add(purchaseOrderDetail);
+
+            this.SubTotal += purchaseOrderDetail.ExtendedPrice;
+            this.Total += purchaseOrderDetail.ExtendedPrice;
         }
 
     }

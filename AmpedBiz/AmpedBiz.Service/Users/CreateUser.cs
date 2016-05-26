@@ -1,10 +1,8 @@
-﻿using System.Linq;
-using ExpressMapper;
+﻿using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
-using NHibernate.Linq;
-using Dto = AmpedBiz.Service.Dto;
-using Entity = AmpedBiz.Core.Entities;
+using System.Linq;
 
 namespace AmpedBiz.Service.Users
 {
@@ -30,23 +28,23 @@ namespace AmpedBiz.Service.Users
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = new Entity.User(message.Id);
+                    var entity = new User(message.Id);
                     entity.Username = message.Username;
                     entity.Password = message.Password;
-                    entity.Person = Mapper.Map<Dto.Person, Entity.Person>(message.Person);
-                    entity.Address = Mapper.Map<Dto.Address, Entity.Address>(message.Address);
-                    entity.Branch = session.Load<Entity.Branch>(message.BranchId);
+                    entity.Person = message.Person.MapTo(default(Person));
+                    entity.Address = message.Address.MapTo(default(Address));
+                    entity.Branch = session.Load<Branch>(message.BranchId);
                     entity.SetRoles(message.Roles
                         .Where(x => x.Assigned)
-                        .Select(x => session.Get<Entity.Role>(x.Id))
+                        .Select(x => session.Get<Role>(x.Id))
                         .ToList()
                     );
 
                     session.Save(entity);
-
-                    Mapper.Map<Dto.User, Dto.User>(message, response);
-
                     transaction.Commit();
+
+                    message.MapTo(response);
+
                 }
 
                 return response;

@@ -1,6 +1,6 @@
 ﻿using AmpedBiz.Common.Exceptions;
+using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using ExpressMapper;
 using MediatR;
 using NHibernate;
 
@@ -35,7 +35,7 @@ namespace AmpedBiz.Service.Employees
                     if (entity == null)
                         throw new BusinessException($"Employee with id {message.Id} does not exists.");
 
-                    Mapper.Map<Employee, Dto.Employee>(entity, response);
+                    entity.MapTo(response);
 
                     transaction.Commit();
                 }

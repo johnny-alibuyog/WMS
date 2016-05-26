@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using AmpedBiz.Common.Exceptions;
-using ExpressMapper;
+﻿using AmpedBiz.Common.Exceptions;
+using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
-using Entity = AmpedBiz.Core.Entities;
+using System.Linq;
 
 namespace AmpedBiz.Service.Users
 {
@@ -30,7 +30,7 @@ namespace AmpedBiz.Service.Users
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var user = session.Query<Entity.User>()
+                    var user = session.Query<User>()
                         .Where(x => 
                             x.Username == message.Username &&
                             x.Password == message.Password
@@ -40,7 +40,7 @@ namespace AmpedBiz.Service.Users
                     if (user == null)
                         throw new BusinessException("Invalid username or password!");
 
-                    Mapper.Map<Entity.User, Dto.User>(user, response);
+                    user.MapTo(response);
 
                     transaction.Commit();
                 }

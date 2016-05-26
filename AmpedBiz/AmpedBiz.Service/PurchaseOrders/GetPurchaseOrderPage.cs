@@ -1,9 +1,9 @@
-﻿using System.Linq;
+﻿using AmpedBiz.Core.Entities;
 using AmpedBiz.Service.Common;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
-using Entity = AmpedBiz.Core.Entities;
+using System.Linq;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
@@ -24,12 +24,12 @@ namespace AmpedBiz.Service.PurchaseOrders
 
             public Response Handle(Request message)
             {
-                var response = default(Response);
+                var response = new Response();
 
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var query = session.Query<Entity.PurchaseOrder>();
+                    var query = session.Query<PurchaseOrder>();
 
                     // compose filters
 
@@ -55,7 +55,6 @@ namespace AmpedBiz.Service.PurchaseOrders
                             StatusName = x.Status.ToString(),
                             SupplierName = x.Supplier.Name,
                             Total = x.Total.ToStringWithSymbol()
-                            
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)

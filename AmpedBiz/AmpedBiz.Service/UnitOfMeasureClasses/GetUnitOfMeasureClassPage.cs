@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using AmpedBiz.Core.Entities;
 using AmpedBiz.Service.Common;
-using ExpressMapper;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
-using Dto = AmpedBiz.Service.Dto;
-using Entity = AmpedBiz.Core.Entities;
+using System.Linq;
 
 namespace AmpedBiz.Service.UnitOfMeasureClasses
 {
@@ -27,12 +24,12 @@ namespace AmpedBiz.Service.UnitOfMeasureClasses
 
             public Response Handle(Request message)
             {
-                var response = default(Response);
+                var response = new Response();
 
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var query = session.Query<Entity.UnitOfMeasureClass>();
+                    var query = session.Query<UnitOfMeasureClass>();
 
                     // compose filters
                     message.Filter.Compose<string>("code", value =>

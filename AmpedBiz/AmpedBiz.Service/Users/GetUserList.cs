@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ExpressMapper;
+﻿using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
-using Dto = AmpedBiz.Service.Dto;
-using Entity = AmpedBiz.Core.Entities;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AmpedBiz.Service.Users
 {
@@ -39,7 +38,7 @@ namespace AmpedBiz.Service.Users
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entities = session.Query<Entity.User>().ToList();
+                    var entities = session.Query<User>().ToList();
 
                     var result = entities
                         .Select(x => new Dto.User()
@@ -47,8 +46,8 @@ namespace AmpedBiz.Service.Users
                             Id = x.Id,
                             Username = x.Username,
                             Password = x.Password,
-                            Person = Mapper.Map<Entity.Person, Dto.Person>(x.Person),
-                            Address = Mapper.Map<Entity.Address, Dto.Address>(x.Address),
+                            Person = x.Person.MapTo(default(Dto.Person)),
+                            Address = x.Address.MapTo(default(Dto.Address)),
                             BranchId = x.Branch.Id
                         })
                         .ToList();

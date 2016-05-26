@@ -1,6 +1,6 @@
 ﻿using AmpedBiz.Common.Exceptions;
+using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using ExpressMapper;
 using MediatR;
 using NHibernate;
 
@@ -33,7 +33,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                     if (entity == null)
                         throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
 
-                    Mapper.Map<Dto.PurchaseOrder, PurchaseOrder>(message, entity);
+                    message.MapTo(entity);
 
                     entity.CompletedBy = session.Load<Employee>(message.CompletedByEmployeeId);
                     entity.CreatedBy = session.Load<Employee>(message.CreatedByEmployeeId);
@@ -46,6 +46,8 @@ namespace AmpedBiz.Service.PurchaseOrders
                     entity.Total = new Money(message.TotalAmount, currency);
 
                     transaction.Commit();
+
+                    entity.MapTo(response);
                 }
 
                 return response;
