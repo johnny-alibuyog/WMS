@@ -22,16 +22,11 @@ namespace AmpedBiz.Service.UnitOfMeasures
             public Response(List<Dto.UnitOfMeasure> items) : base(items) { }
         }
 
-        public class Handler : IRequestHandler<Request, Response>
+        public class Handler : RequestHandlerBase<Request, Response>
         {
-            private readonly ISessionFactory _sessionFactory;
+            public Handler(ISessionFactory sessionFactory) : base(sessionFactory) { }
 
-            public Handler(ISessionFactory sessionFactory)
-            {
-                _sessionFactory = sessionFactory;
-            }
-
-            public Response Handle(Request message)
+            public override Response Handle(Request message)
             {
                 var response = new Response();
 
