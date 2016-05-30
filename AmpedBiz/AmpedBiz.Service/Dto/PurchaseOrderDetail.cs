@@ -22,7 +22,7 @@ namespace AmpedBiz.Service.Dto
 
         public decimal ExtendedPriceAmount { get; set; }
 
-        public DateTime? DateReceived { get; protected set; }
+        public DateTime? DateReceived { get; set; }
 
         public PurchaseOrderDetailStatus Status { get; set; }
 
@@ -42,7 +42,7 @@ namespace AmpedBiz.Service.Dto
 
         public string ExtendedPriceAmount { get; set; }
 
-        public string DateReceived { get; protected set; }
+        public string DateReceived { get; set; }
 
         public string StatusName { get; set; }
     }

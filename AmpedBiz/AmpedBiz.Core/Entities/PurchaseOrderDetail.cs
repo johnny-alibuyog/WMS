@@ -22,7 +22,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual DateTime? DateReceived { get; protected set; }
 
-        public virtual PurchaseOrderDetailStatus Status { get; set; }
+        public virtual PurchaseOrderDetailStatus Status { get; protected set; }
 
         public PurchaseOrderDetail() : this(default(Guid)) { }
 

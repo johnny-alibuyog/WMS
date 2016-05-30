@@ -10,6 +10,19 @@ namespace AmpedBiz.Tests.IntegrationTests
     internal class DummyData
     {
         private Random rnd = new Random();
+
+        public HashSet<int> GenerateUniqueNumbers(int min = 0, int max = 1, int count = 1)
+        {
+            var hashSet = new HashSet<int>();
+
+            while (hashSet.Count < count)
+            {
+                hashSet.Add(this.rnd.Next(min, max));
+            }
+
+            return hashSet;
+        }
+
         public string GenerateRandomString(int length)
         {
             const string allowedChars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456789";
@@ -137,5 +150,6 @@ namespace AmpedBiz.Tests.IntegrationTests
                 SupplierId = ""
             };
         }
+
     }
 }

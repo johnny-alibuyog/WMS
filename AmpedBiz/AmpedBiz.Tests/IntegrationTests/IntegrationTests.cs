@@ -81,6 +81,10 @@ namespace AmpedBiz.Tests.IntegrationTests
         private List<ProductCategory> productCategories = new List<ProductCategory>();
         private List<Role> roles = new List<Role>();
         private List<UnitOfMeasureClass> unitOfMeasures = new List<UnitOfMeasureClass>();
+
+        private Service.Common.Filter filter = new Service.Common.Filter();
+        private Service.Common.Pager pager = new Service.Common.Pager() { Offset = 1, Size = 1000 };
+        private Service.Common.Sorter sorter = new Service.Common.Sorter() {};
         public IntegrationTests()
         {
         }
@@ -129,7 +133,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             }
         }
 
-        private Service.Dto.Branch PersistBranch(Service.Dto.Branch branch)
+        private Service.Dto.Branch CreateBranch(Service.Dto.Branch branch)
         {
             var request = new CreateBranch.Request()
             {
@@ -144,7 +148,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             return handler as Service.Dto.Branch;
         }
 
-        private Service.Dto.User PersistUser(Service.Dto.User user)
+        private Service.Dto.User CreateUser(Service.Dto.User user)
         {
             var request = new CreateUser.Request()
             {
@@ -166,11 +170,11 @@ namespace AmpedBiz.Tests.IntegrationTests
         {
             var employees = new List<Service.Dto.Employee>();
 
-            var branch = this.PersistBranch(this.dummyData.GenerateBranch());
+            var branch = this.CreateBranch(this.dummyData.GenerateBranch());
             var user = this.dummyData.GenerateUser();
             user.BranchId = branch.Id;
 
-            this.PersistUser(user);
+            this.CreateUser(user);
 
             var empTypeIndex = -1;
             for (var i = 0; i< count; i++)
@@ -285,6 +289,59 @@ namespace AmpedBiz.Tests.IntegrationTests
             return products;
         }
 
+        private IEnumerable<Service.Dto.Product> SelectProducts(int[] indexes = null)
+        {
+            var request = new GetProductPage.Request() { Filter = this.filter, Pager = this.pager, Sorter = this.sorter };
+            var products = new GetProductPage.Handler(this.sessionFactory).Handle(request).Items.ToList();
+
+            if (indexes == null)
+                indexes = new int[] { 1,2,3,4,5 };
+
+            var count = indexes.Count();
+
+            for (var i = 0; i< count; i++)
+            {
+                var product = new GetProduct.Handler(this.sessionFactory).Handle(new GetProduct.Request()
+                {
+                    Id = products[indexes[i]].Id
+                });
+
+                yield return product;
+            }
+        }
+
+        private List<Service.Dto.PurchaseOrder> CreatePurchaseOrders(int cout = 1)
+        {
+            var pOrders = new List<Service.Dto.PurchaseOrder>();
+
+            var oDetails = new List<Service.Dto.PurchaseOrderDetail>();
+
+
+
+            return pOrders;
+        }
+
+        private List<Service.Dto.PurchaseOrderDetail> CreatePurchaseOrderDetails(int count = 1)
+        {
+            var poDetails = new List<Service.Dto.PurchaseOrderDetail>();
+
+            var randomProductIndexes = this.dummyData.GenerateUniqueNumbers(0, 20, count).ToArray();
+            var selectedProducts = this.SelectProducts(randomProductIndexes).ToList();
+            
+            for (var i = 0; i < count; i++)
+            {
+                var product = selectedProducts[i];
+
+                poDetails.Add(new Service.Dto.PurchaseOrderDetail
+                {
+                   Id = "Id_" + this.dummyData.GenerateRandomString(15),
+                   //ExtendedPriceAmount = product.
+                });
+            }
+
+
+            return poDetails;
+        }
 
         [Test]
         public void CommonScenarioTests()
@@ -327,6 +384,13 @@ namespace AmpedBiz.Tests.IntegrationTests
             - Complete Purchases - Assert Status, it should be completed
                 */
 
+            //Select Products for Purchase Order (New, add to cart functionality)
+            var randomProductIndexes = this.dummyData.GenerateUniqueNumbers(0, 20, 10).ToArray();
+            var selectedProducts = this.SelectProducts(randomProductIndexes);
+
+            //Create Purchase Order(s) - Assert Status, it should be Active orders
+            //var purchaseOrder = 
+
 
             /*
             var getCustomer = new GetCustomer.Handler(this.sessionFactory).Handle(new GetCustomer.Request() { Id = customer.Id });
@@ -345,5 +409,13 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         }
 
+        [Test]
+        public void Testing()
+        {
+            //var p = this.SelectProducts(1);
+
+            var hash = this.dummyData.GenerateUniqueNumbers(0, 20, 10);
+
+        }
     }
 }
