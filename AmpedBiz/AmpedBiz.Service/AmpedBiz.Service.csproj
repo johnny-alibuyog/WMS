@@ -74,11 +74,14 @@
     <Compile Include="Dto\Customer.cs" />
     <Compile Include="Dto\Contact.cs" />
     <Compile Include="Dto\Employee.cs" />
+    <Compile Include="Dto\Invoice.cs" />
     <Compile Include="Dto\Mappers\IMapper.cs" />
     <Compile Include="Dto\Mappers\Mapper.cs" />
     <Compile Include="Dto\Measure.cs" />
     <Compile Include="Dto\Money.cs" />
     <Compile Include="Dto\EmployeeType.cs" />
+    <Compile Include="Dto\Order.cs" />
+    <Compile Include="Dto\OrderDetail.cs" />
     <Compile Include="Dto\PaymentType.cs" />
     <Compile Include="Dto\Person.cs" />
     <Compile Include="Dto\Product.cs" />
@@ -101,6 +104,11 @@
     <Compile Include="EmployeeTypes\GetEmployeeTypeList.cs" />
     <Compile Include="EmployeeTypes\GetEmployeeTypePage.cs" />
     <Compile Include="EmployeeTypes\UpdateEmployeeType.cs" />
+    <Compile Include="Orders\CreateOrder.cs" />
+    <Compile Include="Orders\GetOrder.cs" />
+    <Compile Include="Orders\GetOrderList.cs" />
+    <Compile Include="Orders\GetOrderPage.cs" />
+    <Compile Include="Orders\UpdateOrder.cs" />
     <Compile Include="PaymentTypes\GetPaymentTypePage.cs" />
     <Compile Include="ProductCategories\CreateProductCategory.cs" />
     <Compile Include="ProductCategories\GetProductCategory.cs" />

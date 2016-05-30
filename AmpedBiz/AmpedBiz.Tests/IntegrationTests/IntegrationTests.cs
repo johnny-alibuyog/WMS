@@ -23,6 +23,7 @@ using NHibernate.Linq;
 using AmpedBiz.Service.Suppliers;
 using AmpedBiz.Service.Products;
 using AmpedBiz.Service.Dto.Mappers;
+using AmpedBiz.Service.PurchaseOrders;
 
 namespace AmpedBiz.Tests.IntegrationTests
 {
@@ -310,32 +311,58 @@ namespace AmpedBiz.Tests.IntegrationTests
             }
         }
 
-        private List<Service.Dto.PurchaseOrder> CreatePurchaseOrders(int cout = 1)
+        private List<Service.Dto.PurchaseOrder> CreatePurchaseOrders(int count = 1)
         {
             var pOrders = new List<Service.Dto.PurchaseOrder>();
 
-            var oDetails = new List<Service.Dto.PurchaseOrderDetail>();
+            var suppliers = new List<Supplier>();
+            var employees = new List<Employee>();
+
+            using (var session = this.sessionFactory.OpenSession())
+            {
+                suppliers = session.Query<Supplier>().ToList();
+                employees = session.Query<Employee>().ToList();
+            }
+
+            for (var i = 0; i < count; i++)
+            {
+                var request = new CreatePurchaseOrder.Request()
+                {
+                    Id = Guid.NewGuid(),
+                    Status = Service.Dto.PurchaseOrderStatus.New,
+                    CreatedByEmployeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id,
+                    SupplierId = suppliers[this.rnd.Next(0, suppliers.Count - 1)].Id,
+                    PaymentTypeId = this.paymentTypes[this.rnd.Next(0, this.paymentTypes.Count - 1)].Id
+                };
+                request.PurchaseOrderDetails = this.CreatePurchaseOrderDetails(request, this.rnd.Next(10, 20));
 
 
+                var handler = new CreatePurchaseOrder.Handler(this.sessionFactory).Handle(request);
+
+                pOrders.Add(handler as Service.Dto.PurchaseOrder);
+            }
 
             return pOrders;
         }
 
-        private List<Service.Dto.PurchaseOrderDetail> CreatePurchaseOrderDetails(int count = 1)
+        private List<Service.Dto.PurchaseOrderDetail> CreatePurchaseOrderDetails(Service.Dto.PurchaseOrder po, int count = 1)
         {
             var poDetails = new List<Service.Dto.PurchaseOrderDetail>();
 
             var randomProductIndexes = this.dummyData.GenerateUniqueNumbers(0, 20, count).ToArray();
             var selectedProducts = this.SelectProducts(randomProductIndexes).ToList();
-            
+
             for (var i = 0; i < count; i++)
             {
                 var product = selectedProducts[i];
 
                 poDetails.Add(new Service.Dto.PurchaseOrderDetail
                 {
-                   Id = "Id_" + this.dummyData.GenerateRandomString(15),
-                   //ExtendedPriceAmount = product.
+                   ExtendedPriceAmount = product.RetailPriceAmount + 1m,
+                   ProductId = product.Id,
+                   PurchaseOrderId = po.Id,
+                   Quantity = this.rnd.Next(1, 100),
+                   UnitCostAmount = product.BasePriceAmount + 1m
                 });
             }
 
@@ -385,8 +412,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                 */
 
             //Select Products for Purchase Order (New, add to cart functionality)
-            var randomProductIndexes = this.dummyData.GenerateUniqueNumbers(0, 20, 10).ToArray();
-            var selectedProducts = this.SelectProducts(randomProductIndexes);
+            var purchaseOrders = this.CreatePurchaseOrders(10);
 
             //Create Purchase Order(s) - Assert Status, it should be Active orders
             //var purchaseOrder = 
@@ -414,8 +440,9 @@ namespace AmpedBiz.Tests.IntegrationTests
         {
             //var p = this.SelectProducts(1);
 
-            var hash = this.dummyData.GenerateUniqueNumbers(0, 20, 10);
+            //var hash = this.dummyData.GenerateUniqueNumbers(0, 20, 10);
 
+           // var purchaseOrders = this.CreatePurchaseOrders(10);
         }
     }
 }

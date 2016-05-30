@@ -61,14 +61,32 @@ namespace AmpedBiz.Core.Entities
             this.PurchaseOrderDetails = new Collection<PurchaseOrderDetail>();
         }
 
-        public virtual void AddPurchaseOrderDetail(PurchaseOrderDetail purchaseOrderDetail)
+        public virtual void New(Money payment, PaymentType paymentType, Shipper shipper, Money tax, Money shippingFee, Employee employee, Supplier supplier)
         {
-            purchaseOrderDetail.PurchaseOrder = this;
-            this.PurchaseOrderDetails.Add(purchaseOrderDetail);
-
-            this.SubTotal += purchaseOrderDetail.ExtendedPrice;
-            this.Total += purchaseOrderDetail.ExtendedPrice;
+            this.Status = PurchaseOrderStatus.New;
+            this.OrderDate = DateTime.Now;
+            this.CreationDate = DateTime.Now;
+            this.PaymentType = paymentType;
+            this.Payment = payment;
+            this.Tax = tax;
+            this.ShippingFee = shippingFee;
+            this.CreatedBy = employee;
+            this.Supplier = supplier;
+            this.Total = this.Tax + this.ShippingFee + this.Payment;
         }
 
+        public virtual void Completed(DateTime date)
+        {
+            this.Status = PurchaseOrderStatus.Completed;
+        }
+
+        public virtual void AddPurchaseOrderDetail(PurchaseOrderDetail orderDetail)
+        {
+            orderDetail.PurchaseOrder = this;
+            this.PurchaseOrderDetails.Add(orderDetail);
+
+            this.SubTotal += orderDetail.ExtendedPrice;
+            this.Total += orderDetail.ExtendedPrice;
+        }
     }
 }

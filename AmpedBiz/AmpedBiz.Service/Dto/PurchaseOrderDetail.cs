@@ -13,7 +13,7 @@ namespace AmpedBiz.Service.Dto
     }
     public class PurchaseOrderDetail
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string ProductId { get; set; }
 
         public decimal Quantity { get; set; }
