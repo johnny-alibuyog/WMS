@@ -29,12 +29,12 @@ namespace AmpedBiz.Service.UnitOfMeasureClasses
                     // compose filters
                     message.Filter.Compose<string>("code", value =>
                     {
-                        query = query.Where(x => x.Id.StartsWith(value));
+                        query = query.Where(x => x.Id.ToLower().Contains(value.ToLower()));
                     });
 
                     message.Filter.Compose<string>("name", value =>
                     {
-                        query = query.Where(x => x.Name.StartsWith(value));
+                        query = query.Where(x => x.Name.ToLower().Contains(value.ToLower()));
                     });
 
                     // compose sort

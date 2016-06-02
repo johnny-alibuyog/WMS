@@ -30,15 +30,15 @@ namespace AmpedBiz.Service.Employees
                     // compose filters
                     message.Filter.Compose<string>("code", value =>
                     {
-                        query = query.Where(x => x.Id.StartsWith(value));
+                        query = query.Where(x => x.Id.ToLower().Contains(value.ToLower()));
                     });
 
                     message.Filter.Compose<string>("name", value =>
                     {
                         query = query.Where(x =>
-                            x.User.Person.FirstName.StartsWith(value) ||
-                            x.User.Person.MiddleName.StartsWith(value) ||
-                            x.User.Person.LastName.StartsWith(value));
+                            x.User.Person.FirstName.ToLower().Contains(value.ToLower()) ||
+                            x.User.Person.MiddleName.ToLower().Contains(value.ToLower()) ||
+                            x.User.Person.LastName.ToLower().Contains(value.ToLower()));
                     });
 
                     // compose sort

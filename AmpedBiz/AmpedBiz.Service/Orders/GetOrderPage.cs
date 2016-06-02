@@ -30,7 +30,7 @@ namespace AmpedBiz.Service.Orders
 
                     message.Filter.Compose<string>("status", value =>
                     {
-                        query = query.Where(x => x.Status.ToString().StartsWith(value));
+                        query = query.Where(x => x.Status.ToString().ToLower().Contains(value.ToLower()));
                     });
                     
                     // compose sort

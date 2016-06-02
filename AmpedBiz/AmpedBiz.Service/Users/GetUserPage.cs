@@ -30,22 +30,22 @@ namespace AmpedBiz.Service.Users
                     // compose filters
                     message.Filter.Compose<string>("username", value =>
                     {
-                        query = query.Where(x => x.Username.StartsWith(value));
+                        query = query.Where(x => x.Username.ToLower().Contains(value.ToLower()));
                     });
 
                     message.Filter.Compose<string>("firstName", value =>
                     {
-                        query = query.Where(x => x.Person.FirstName.StartsWith(value));
+                        query = query.Where(x => x.Person.FirstName.ToLower().Contains(value.ToLower()));
                     });
 
                     message.Filter.Compose<string>("middleName", value =>
                     {
-                        query = query.Where(x => x.Person.MiddleName.StartsWith(value));
+                        query = query.Where(x => x.Person.MiddleName.ToLower().Contains(value.ToLower()));
                     });
 
                     message.Filter.Compose<string>("lastName", value =>
                     {
-                        query = query.Where(x => x.Person.LastName.StartsWith(value));
+                        query = query.Where(x => x.Person.LastName.ToLower().Contains(value.ToLower()));
                     });
 
                     message.Filter.Compose<string>("branchId", value =>
