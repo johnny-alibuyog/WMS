@@ -23,7 +23,9 @@ namespace AmpedBiz.Core.Entities
 
         public virtual bool Discontinued { get; set; }
 
-        public virtual Inventory Inventory { get; set; }
+        public virtual GoodStockInventory GoodStockInventory { get; set; }
+
+        public virtual BadStockInventory BadStockInventory { get; set; }
 
         //public virtual IEnumerable<Attachment> Attachments { get; set; }
 
@@ -31,8 +33,11 @@ namespace AmpedBiz.Core.Entities
 
         public Product(string id) : base(id)
         {
-            this.Inventory = new Inventory();
-            this.Inventory.Product = this;
+            this.GoodStockInventory = new GoodStockInventory();
+            this.GoodStockInventory.Product = this;
+
+            this.BadStockInventory = new BadStockInventory();
+            this.BadStockInventory.Product = this;
         }
 
         //public virtual UOM UnitOfMeasurement { get; set; }

@@ -46,28 +46,28 @@ namespace AmpedBiz.Core.Entities
             this.UnitPrice = unitPrice;
             this.ExtendedPrice = unitPrice - discount;
 
-            this.Product.Inventory.Allocated += this.Quantity;
+            this.Product.GoodStockInventory.Allocated += this.Quantity;
         }
 
         public virtual void Invoice()
         {
             this.Status = OrderDetailStatus.Invoiced;
 
-            this.Product.Inventory.OnOrder += this.Quantity;
+            this.Product.GoodStockInventory.OnOrder += this.Quantity;
         }
 
         public virtual void Ship()
         {
             this.Status = OrderDetailStatus.Shipped;
 
-            this.Product.Inventory.Shipped += this.Quantity;
+            this.Product.GoodStockInventory.Shipped += this.Quantity;
         }
 
         public virtual void BackOrder()
         {
             this.Status = OrderDetailStatus.BackOrdered;
 
-            this.Product.Inventory.BackOrdered += this.Quantity;
+            this.Product.GoodStockInventory.BackOrdered += this.Quantity;
         }
     }
 }

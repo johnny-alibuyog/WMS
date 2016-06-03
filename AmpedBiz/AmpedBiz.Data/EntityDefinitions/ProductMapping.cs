@@ -27,7 +27,7 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Component(x => x.WholesalePrice, MoneyMapping.Map("WholeSalePrice_", nameof(Product)));
 
-            HasOne(x => x.Inventory).Cascade.All();
+            HasOne(x => x.GoodStockInventory).Cascade.All();
         }
     }
 }

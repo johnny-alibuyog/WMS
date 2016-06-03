@@ -8,9 +8,9 @@ using NHibernate.Validator.Cfg.Loquacious;
 
 namespace AmpedBiz.Data.EntityDefinitions
 {
-    public class InventoryValidation : ValidationDef<Inventory>
+    public class GoodStockInventoryValidation : ValidationDef<GoodStockInventory>
     {
-        public InventoryValidation()
+        public GoodStockInventoryValidation()
         {
             Define(x => x.Id);
 
@@ -47,6 +47,19 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.Shrinkages)
                 .HasValidElements();
+        }
+    }
+
+    public class BadStockInventoryValidation : ValidationDef<BadStockInventory>
+    {
+        public BadStockInventoryValidation()
+        {
+            Define(x => x.Id);
+
+            Define(x => x.OnHand);
+
+            Define(x => x.Product)
+                .IsValid();
         }
     }
 }
