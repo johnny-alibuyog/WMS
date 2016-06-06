@@ -12,7 +12,7 @@ namespace AmpedBiz.Service.Dto
         ForApproval,
         ForCompletion,
         Completed,
-        Cancelled
+        Rejected
     }
 
     public class PurchaseOrder
@@ -24,6 +24,10 @@ namespace AmpedBiz.Service.Dto
         public DateTime? CreationDate { get; set; }
 
         public DateTime? ExpectedDate { get; set; }
+
+        public DateTime? ApprovedDate { get; set; }
+
+        public DateTime? RejectedDate { get; set; }
 
         public DateTime? PaymentDate { get; set; }
 
@@ -49,9 +53,15 @@ namespace AmpedBiz.Service.Dto
 
         public string SubmittedByEmployeeId { get; set; }
 
+        public string ApprovedByEmployeeId { get; set; }
+
+        public string RejectedByEmployeeId { get; set; }
+
         public string CompletedByEmployeeId { get; set; }
 
         public string SupplierId { get; set; }
+
+        public string Reason { get; set; }
 
         public IEnumerable<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
     }

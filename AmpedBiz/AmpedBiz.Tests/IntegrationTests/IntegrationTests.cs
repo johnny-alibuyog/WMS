@@ -370,6 +370,29 @@ namespace AmpedBiz.Tests.IntegrationTests
             return poDetails;
         }
 
+        private Service.Dto.PurchaseOrder GetPurchaseOrder(Service.Dto.PurchaseOrderStatus status)
+        {
+            var request = new GetPurchaseOrderList.Request() { };
+            var pOrders = new GetPurchaseOrderList.Handler(this.sessionFactory).Handle(request);
+
+            return pOrders.Where(po => po.Status == Service.Dto.PurchaseOrderStatus.New).ToList()[this.rnd.Next(0, pOrders.Count - 1)];
+        }
+
+        private Service.Dto.PurchaseOrder SubmitPurchaseOrder(Service.Dto.PurchaseOrder pOrder)
+        {
+            var employees = new List<Employee>();
+
+            using (var session = this.sessionFactory.OpenSession())
+                employees = session.Query<Employee>().ToList();
+
+            var employeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id;
+
+            var request = new SubmitPurchaseOrder.Request() { Id = pOrder.Id, SubmittedByEmployeeId = employeeId };
+            var order = new SubmitPurchaseOrder.Handler(this.sessionFactory).Handle(request);
+
+            return order;
+        }
+
         [Test]
         public void CommonScenarioTests()
         {
@@ -415,8 +438,13 @@ namespace AmpedBiz.Tests.IntegrationTests
             var purchaseOrders = this.CreatePurchaseOrders(10);
 
             //Create Purchase Order(s) - Assert Status, it should be Active orders
-            //var purchaseOrder = 
+            Assert.IsTrue(purchaseOrders.Count(p => p.Status == Service.Dto.PurchaseOrderStatus.New) == 10);
 
+
+            //- Submit PO - Assert Status, it should be awaiting approval
+            var purchaseOrder = this.GetPurchaseOrder(Service.Dto.PurchaseOrderStatus.New);
+            var submittedPurchaseOrder = this.SubmitPurchaseOrder(purchaseOrder);
+            Assert.IsTrue(submittedPurchaseOrder.Status == Service.Dto.PurchaseOrderStatus.ForApproval);
 
             /*
             var getCustomer = new GetCustomer.Handler(this.sessionFactory).Handle(new GetCustomer.Request() { Id = customer.Id });

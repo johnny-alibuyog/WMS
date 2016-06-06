@@ -56,6 +56,8 @@ namespace AmpedBiz.Service.Dto.Mappers
             ExpressMapper.Mapper.Register<Entity.PurchaseOrder, GetPurchaseOrder.Response>()
                 .Member(x => x.CompletedByEmployeeId, x => x.CompletedBy.Id)
                 .Member(x => x.CreatedByEmployeeId, x => x.CreatedBy.Id)
+                .Member(x => x.ApprovedByEmployeeId, x => x.CreatedBy.Id)
+                .Member(x => x.RejectedByEmployeeId, x => x.CreatedBy.Id)
                 .Member(x => x.PaymentAmount, x => x.Payment.Amount)
                 .Member(x => x.PaymentTypeId, x => x.PaymentType.Id)    
                 .Member(x => x.ShippingFeeAmount, x => x.ShippingFee.Amount)

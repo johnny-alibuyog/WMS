@@ -11,7 +11,7 @@ namespace AmpedBiz.Core.Entities
         ForApproval,
         ForCompletion,
         Completed,
-        Cancelled
+        Rejected
     }
 
     public class PurchaseOrder : Entity<Guid, PurchaseOrder>
@@ -28,6 +28,10 @@ namespace AmpedBiz.Core.Entities
 
         public virtual DateTime? SubmittedDate { get; set; }
 
+        public virtual DateTime? ApprovedDate { get; set; }
+
+        public virtual DateTime? RejectedDate { get; set; }
+
         public virtual DateTime? ClosedDate { get; set; }
 
         public virtual PaymentType PaymentType { get; set; }
@@ -42,15 +46,21 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Money Total { get; set; }
 
-        public virtual PurchaseOrderStatus Status { get; set; }
+        public virtual PurchaseOrderStatus Status { get; protected set; }
 
         public virtual Employee CreatedBy { get; set; }
 
         public virtual Employee SubmittedBy { get; set; }
 
+        public virtual Employee ApprovedBy { get; set; }
+
+        public virtual Employee RejectedBy { get; set; }
+
         public virtual Employee CompletedBy { get; set; }
 
         public virtual Supplier Supplier { get; set; }
+
+        public virtual string Reason { get; set; }
 
         public virtual IEnumerable<PurchaseOrderDetail> PurchaseOrderDetails { get; protected set; }
 
@@ -75,9 +85,47 @@ namespace AmpedBiz.Core.Entities
             this.Total = this.Tax + this.ShippingFee + this.Payment;
         }
 
-        public virtual void Completed(DateTime date)
+        /// <summary>
+        /// For Approval
+        /// </summary>
+        public virtual void Submit(Employee employee)
+        {
+            this.Status = PurchaseOrderStatus.ForApproval;
+            this.SubmittedBy = employee;
+            this.SubmittedDate = DateTime.Now;
+        }
+
+        /// <summary>
+        /// Not approved
+        /// </summary>
+        public virtual void Reject(string reason, Employee employee)
+        {
+            this.Status = PurchaseOrderStatus.Rejected;
+            this.RejectedDate = DateTime.Now;
+            this.RejectedBy = employee;
+        }
+
+        /// <summary>
+        /// PO for completion
+        /// PO Details is Submited
+        /// </summary>
+        public virtual void Approve(Employee employee)
+        {
+            this.Status = PurchaseOrderStatus.ForCompletion;
+            this.ApprovedBy = employee;
+            this.ApprovedDate = DateTime.Now;            
+        }
+
+        /// <summary>
+        /// PO is completed
+        /// PO Details is Posted
+        /// </summary>
+        /// <param name="date"></param>
+        public virtual void Complete(Employee employee)
         {
             this.Status = PurchaseOrderStatus.Completed;
+            this.CompletedBy = employee;
+            this.ClosedDate = DateTime.Now;
         }
 
         public virtual void AddPurchaseOrderDetail(PurchaseOrderDetail orderDetail)

@@ -125,10 +125,14 @@
     <Compile Include="Products\GetProductPage.cs" />
     <Compile Include="Products\UpdateProduct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PurchaseOrders\ApprovePurchaseOrder.cs" />
+    <Compile Include="PurchaseOrders\CompletePurchaseOrder.cs" />
     <Compile Include="PurchaseOrders\CreatePurchaseOrder.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrder.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrderList.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrderPage.cs" />
+    <Compile Include="PurchaseOrders\RejectPurchaseOrder.cs" />
+    <Compile Include="PurchaseOrders\SubmitPurchaseOrder.cs" />
     <Compile Include="PurchaseOrders\UpdatePurchaseOrder.cs" />
     <Compile Include="RequestHandlerBase.cs" />
     <Compile Include="Suppliers\CreateSupplier.cs" />

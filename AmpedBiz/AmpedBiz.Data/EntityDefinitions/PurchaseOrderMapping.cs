@@ -10,14 +10,6 @@ namespace AmpedBiz.Data.EntityDefinitions
             Id(x => x.Id)
                 .GeneratedBy.GuidComb();
 
-            References(x => x.CompletedBy);
-
-            Map(x => x.ClosedDate);
-
-            References(x => x.CreatedBy);
-
-            Map(x => x.CreationDate);
-
             Map(x => x.ExpectedDate);
 
             Map(x => x.OrderDate);
@@ -38,10 +30,23 @@ namespace AmpedBiz.Data.EntityDefinitions
             Component(x => x.ShippingFee, MoneyMapping.Map("ShippingFee_", nameof(PurchaseOrder)));
 
             Map(x => x.Status);
-
-            References(x => x.SubmittedBy);
+            
+            Map(x => x.CreationDate);
+            References(x => x.CreatedBy);
 
             Map(x => x.SubmittedDate);
+            References(x => x.SubmittedBy);
+
+            Map(x => x.RejectedDate);
+            References(x => x.RejectedBy);
+
+            Map(x => x.ApprovedDate);
+            References(x => x.ApprovedBy);
+
+            Map(x => x.ClosedDate);
+            References(x => x.CompletedBy);
+
+            Map(x => x.Reason);
 
             Component(x => x.SubTotal, MoneyMapping.Map("SubTotal_", nameof(PurchaseOrder)));
 
