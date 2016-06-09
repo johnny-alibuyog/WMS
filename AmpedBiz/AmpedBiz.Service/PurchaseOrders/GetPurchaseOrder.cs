@@ -17,7 +17,9 @@ namespace AmpedBiz.Service.PurchaseOrders
 
         public class Handler : RequestHandlerBase<Request, Response>
         {
-            public Handler(ISessionFactory sessionFactory) : base(sessionFactory) { }
+            public Handler(ISessionFactory sessionFactory) : base(sessionFactory)
+            {
+            }
 
             public override Response Handle(Request message)
             {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Entities;
 using FluentNHibernate.Mapping;
 
 namespace AmpedBiz.Data.EntityDefinitions
@@ -83,6 +78,29 @@ namespace AmpedBiz.Data.EntityDefinitions
             //    .Not.KeyUpdate()
             //    .Inverse()
             //    .AsBag();
+        }
+    }
+
+    public class GoodStockInventoryReceivedMapping : ClassMap<GoodStockInventoryReceived>
+    {
+        public GoodStockInventoryReceivedMapping()
+        {
+            Id(x => x.Id)
+                .GeneratedBy
+                .GuidComb();
+
+            Map(x => x.ExpiryDate);
+            Map(x => x.ReceivedDate);
+        }
+    }
+
+    public class BadStockInventoryReceivedMapping : ClassMap<BadStockInventoryReceived>
+    {
+        public BadStockInventoryReceivedMapping()
+        {
+            Id(x => x.Id)
+                .GeneratedBy
+                .GuidComb();
         }
     }
 }

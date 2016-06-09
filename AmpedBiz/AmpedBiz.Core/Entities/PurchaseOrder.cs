@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
+using System.Linq;
 
 namespace AmpedBiz.Core.Entities
 {
@@ -111,9 +113,19 @@ namespace AmpedBiz.Core.Entities
         /// </summary>
         public virtual void Approve(Employee employee)
         {
+            if (this.Status != PurchaseOrderStatus.ForApproval)
+                throw new BusinessException("Purchase order is not ready to approve.");
+
             this.Status = PurchaseOrderStatus.ForCompletion;
             this.ApprovedBy = employee;
-            this.ApprovedDate = DateTime.Now;            
+            this.ApprovedDate = DateTime.Now;
+
+            this.PurchaseOrderDetails.Any(po =>
+            {
+                po.Submit();
+                return false;
+            });
+
         }
 
         /// <summary>
@@ -123,9 +135,18 @@ namespace AmpedBiz.Core.Entities
         /// <param name="date"></param>
         public virtual void Complete(Employee employee)
         {
+            if (this.Status != PurchaseOrderStatus.ForCompletion)
+                throw new BusinessException("Purchase order is not ready to complete.");
+
             this.Status = PurchaseOrderStatus.Completed;
             this.CompletedBy = employee;
             this.ClosedDate = DateTime.Now;
+
+            this.PurchaseOrderDetails.Any(po =>
+            {
+                po.Post();
+                return false;
+            });
         }
 
         public virtual void AddPurchaseOrderDetail(PurchaseOrderDetail orderDetail)

@@ -38,6 +38,7 @@ namespace AmpedBiz.Core.Entities
             this.DateReceived = DateTime.Now;
             this.Status = PurchaseOrderDetailStatus.Posted;
         }
+
         //public virtual bool PostedToInventory { get; private set; }
 
         //public virtual bool IsSubmitted { get; private set; }

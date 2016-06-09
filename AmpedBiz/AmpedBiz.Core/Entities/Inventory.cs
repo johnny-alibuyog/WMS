@@ -61,7 +61,7 @@ namespace AmpedBiz.Core.Entities
         /// <summary>
         /// This is the number of items that have been lost due to damage, spoilage, loss, and so on.
         /// </summary>
-        public virtual Measure Shirnkage { get; set; }
+        public virtual Measure Shrinkage { get; set; }
 
         /// <summary>
         /// The number of available items minus the number of items on backorder, plus the number of items currently on order.
@@ -90,5 +90,36 @@ namespace AmpedBiz.Core.Entities
     public class BadStockInventory : Inventory
     {
         public virtual Measure OnHand { get; set; }
+    }
+
+    public class GoodStockInventoryReceived : Entity<Guid, GoodStockInventoryReceived>
+    {
+        public GoodStockInventoryReceived() : this(default(Guid)) { }
+
+        public GoodStockInventoryReceived(Guid id) : base(id) { }
+
+        public virtual Product Product { get; set; }
+
+        public virtual PurchaseOrderDetail PurchaseOrderDetail { get; set; }
+
+        public virtual Measure Received { get; set; }
+
+        public virtual DateTime? ReceivedDate { get; set; }
+
+        public virtual DateTime? ExpiryDate { get; set; }
+    }
+
+    public class BadStockInventoryReceived : Entity<Guid, BadStockInventoryReceived>
+    {
+        public BadStockInventoryReceived() : this(default(Guid)) { }
+
+        public BadStockInventoryReceived(Guid id) : base(id) { }
+        public virtual Product Product { get; set; }
+
+        public virtual string Reason { get; set; }
+
+        public virtual Measure Received { get; set; }
+
+        public virtual DateTime? ReceivedDate { get; set; }
     }
 }

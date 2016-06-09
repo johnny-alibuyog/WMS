@@ -1,9 +1,9 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using System.Linq;
+using AmpedBiz.Core.Entities;
 using AmpedBiz.Service.Common;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
-using System.Linq;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
@@ -15,7 +15,9 @@ namespace AmpedBiz.Service.PurchaseOrders
 
         public class Handler : RequestHandlerBase<Request, Response>
         {
-            public Handler(ISessionFactory sessionFactory) : base(sessionFactory) { }
+            public Handler(ISessionFactory sessionFactory) : base(sessionFactory)
+            {
+            }
 
             public override Response Handle(Request message)
             {
@@ -32,7 +34,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                     {
                         query = query.Where(x => x.Status.ToString().ToLower().Contains(value.ToLower()));
                     });
-                    
+
                     // compose sort
                     message.Sorter.Compose("status", direction =>
                     {

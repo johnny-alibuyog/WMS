@@ -332,7 +332,9 @@ namespace AmpedBiz.Tests.IntegrationTests
                     Status = Service.Dto.PurchaseOrderStatus.New,
                     CreatedByEmployeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id,
                     SupplierId = suppliers[this.rnd.Next(0, suppliers.Count - 1)].Id,
-                    PaymentTypeId = this.paymentTypes[this.rnd.Next(0, this.paymentTypes.Count - 1)].Id
+                    PaymentTypeId = this.paymentTypes[this.rnd.Next(0, this.paymentTypes.Count - 1)].Id,
+                    ExpectedDate = DateTime.Now.AddDays(10),
+                    PaymentDate = DateTime.Now.AddDays(5)
                 };
                 request.PurchaseOrderDetails = this.CreatePurchaseOrderDetails(request, this.rnd.Next(10, 20));
 
@@ -370,12 +372,12 @@ namespace AmpedBiz.Tests.IntegrationTests
             return poDetails;
         }
 
-        private Service.Dto.PurchaseOrder GetPurchaseOrder(Service.Dto.PurchaseOrderStatus status)
+        private IEnumerable<Service.Dto.PurchaseOrder> GetPurchaseOrders(Service.Dto.PurchaseOrderStatus status, int count = 1)
         {
             var request = new GetPurchaseOrderList.Request() { };
             var pOrders = new GetPurchaseOrderList.Handler(this.sessionFactory).Handle(request);
 
-            return pOrders.Where(po => po.Status == Service.Dto.PurchaseOrderStatus.New).ToList()[this.rnd.Next(0, pOrders.Count - 1)];
+            return pOrders.Where(po => po.Status == Service.Dto.PurchaseOrderStatus.New).Take(count);
         }
 
         private Service.Dto.PurchaseOrder SubmitPurchaseOrder(Service.Dto.PurchaseOrder pOrder)
@@ -389,6 +391,51 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             var request = new SubmitPurchaseOrder.Request() { Id = pOrder.Id, SubmittedByEmployeeId = employeeId };
             var order = new SubmitPurchaseOrder.Handler(this.sessionFactory).Handle(request);
+
+            return order;
+        }
+
+        private Service.Dto.PurchaseOrder ApprovePurchaseOrder(Service.Dto.PurchaseOrder pOrder)
+        {
+            var employees = new List<Employee>();
+
+            using (var session = this.sessionFactory.OpenSession())
+                employees = session.Query<Employee>().ToList();
+
+            var employeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id;
+
+            var request = new ApprovePurchaseOrder.Request() { Id = pOrder.Id, ApprovedByEmployeeId = employeeId };
+            var order = new ApprovePurchaseOrder.Handler(this.sessionFactory).Handle(request);
+
+            return order;
+        }
+
+        private Service.Dto.PurchaseOrder RejectPurchaseOrder(Service.Dto.PurchaseOrder pOrder)
+        {
+            var employees = new List<Employee>();
+
+            using (var session = this.sessionFactory.OpenSession())
+                employees = session.Query<Employee>().ToList();
+
+            var employeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id;
+
+            var request = new RejectPurchaseOrder.Request() { Id = pOrder.Id, RejectedByEmployeeId = employeeId, Reason = "Products not needed" };
+            var order = new RejectPurchaseOrder.Handler(this.sessionFactory).Handle(request);
+
+            return order;
+        }
+
+        private Service.Dto.PurchaseOrder CompletePurchaseOrder(Service.Dto.PurchaseOrder pOrder)
+        {
+            var employees = new List<Employee>();
+
+            using (var session = this.sessionFactory.OpenSession())
+                employees = session.Query<Employee>().ToList();
+
+            var employeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id;
+
+            var request = new CompletePurchaseOrder.Request() { Id = pOrder.Id, CompletedByEmployeeId = employeeId };
+            var order = new CompletePurchaseOrder.Handler(this.sessionFactory).Handle(request);
 
             return order;
         }
@@ -440,11 +487,32 @@ namespace AmpedBiz.Tests.IntegrationTests
             //Create Purchase Order(s) - Assert Status, it should be Active orders
             Assert.IsTrue(purchaseOrders.Count(p => p.Status == Service.Dto.PurchaseOrderStatus.New) == 10);
 
+            //Get list of created purchaseorders
+            var purchaseOrderList = this.GetPurchaseOrders(Service.Dto.PurchaseOrderStatus.New, 2);
+
+            var purchaseOrder1 = purchaseOrderList.First();
+            var purchaseOrder2 = purchaseOrderList.Last();
 
             //- Submit PO - Assert Status, it should be awaiting approval
-            var purchaseOrder = this.GetPurchaseOrder(Service.Dto.PurchaseOrderStatus.New);
-            var submittedPurchaseOrder = this.SubmitPurchaseOrder(purchaseOrder);
-            Assert.IsTrue(submittedPurchaseOrder.Status == Service.Dto.PurchaseOrderStatus.ForApproval);
+            var submittedPurchaseOrder1 = this.SubmitPurchaseOrder(purchaseOrder1);
+            Assert.IsTrue(submittedPurchaseOrder1.Status == Service.Dto.PurchaseOrderStatus.ForApproval);
+
+            var submittedPurchaseOrder2 = this.SubmitPurchaseOrder(purchaseOrder2);
+            Assert.IsTrue(submittedPurchaseOrder2.Status == Service.Dto.PurchaseOrderStatus.ForApproval);
+
+            //- Submit PO - Assert Status, it should be for completion
+            var approvedPurchaseOrder = this.ApprovePurchaseOrder(purchaseOrder1);
+            Assert.IsTrue(approvedPurchaseOrder.Status == Service.Dto.PurchaseOrderStatus.ForCompletion);
+
+            //- Reject Submit PO - Assert Status, it should be rejected
+            var rejectedPurchaseOrder = this.RejectPurchaseOrder(purchaseOrder2);
+            Assert.IsTrue(rejectedPurchaseOrder.Status == Service.Dto.PurchaseOrderStatus.Rejected);
+
+            //- Complete Purchases - Assert Status, it should be completed
+            var completedPurchaseOrder = this.CompletePurchaseOrder(purchaseOrder1);
+            Assert.IsTrue(completedPurchaseOrder.Status == Service.Dto.PurchaseOrderStatus.Completed);
+
+            //todo: implement inventory checking
 
             /*
             var getCustomer = new GetCustomer.Handler(this.sessionFactory).Handle(new GetCustomer.Request() { Id = customer.Id });
@@ -457,9 +525,6 @@ namespace AmpedBiz.Tests.IntegrationTests
                     Sorter = new Service.Common.Sorter()
                 });
             */
-
-
-
 
         }
 

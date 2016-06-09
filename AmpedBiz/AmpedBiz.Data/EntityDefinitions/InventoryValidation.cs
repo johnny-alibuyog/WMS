@@ -42,6 +42,10 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.ReorderQuantity);
 
+            Define(x => x.UnitOfMeasure);
+
+            Define(x => x.UnitOfMeasureBase);
+
             Define(x => x.Product)
                 .IsValid();
 
@@ -60,6 +64,10 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.Product)
                 .IsValid();
+
+            Define(x => x.UnitOfMeasure);
+
+            Define(x => x.UnitOfMeasureBase);
         }
     }
 }

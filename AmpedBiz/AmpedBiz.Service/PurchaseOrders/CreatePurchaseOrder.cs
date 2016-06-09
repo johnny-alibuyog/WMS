@@ -1,11 +1,10 @@
-﻿using AmpedBiz.Common.Exceptions;
+﻿using System.Linq;
+using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
-using System.Linq;
-using System;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
@@ -17,7 +16,9 @@ namespace AmpedBiz.Service.PurchaseOrders
 
         public class Handler : RequestHandlerBase<Request, Response>
         {
-            public Handler(ISessionFactory sessionFactory) : base(sessionFactory) { }
+            public Handler(ISessionFactory sessionFactory) : base(sessionFactory)
+            {
+            }
 
             public override Response Handle(Request message)
             {
@@ -43,8 +44,8 @@ namespace AmpedBiz.Service.PurchaseOrders
                     var paymentType = session.Load<PaymentType>(message.PaymentTypeId);
 
                     entity.New(payment, paymentType, null, tax, shippingFee, createdBy, supplier);
-                    
-                    foreach(var poDetail in message.PurchaseOrderDetails)
+
+                    foreach (var poDetail in message.PurchaseOrderDetails)
                     {
                         var detail = new PurchaseOrderDetail(poDetail.Id);
                         var product = session.Load<Product>(poDetail.ProductId);
@@ -55,7 +56,6 @@ namespace AmpedBiz.Service.PurchaseOrders
 
                         entity.AddPurchaseOrderDetail(poDetail.MapTo(detail));
                     }
-                    
 
                     session.Save(entity);
                     transaction.Commit();
