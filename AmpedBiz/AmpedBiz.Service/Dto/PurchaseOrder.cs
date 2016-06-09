@@ -69,6 +69,7 @@ namespace AmpedBiz.Service.Dto
     public class PurchaseOrderPageItem
     {
         public Guid Id { get; set; }
+
         public string OrderDate { get; set; }
 
         public string CreationDate { get; set; }
@@ -78,6 +79,10 @@ namespace AmpedBiz.Service.Dto
         public string PaymentDate { get; set; }
 
         public string SubmittedDate { get; set; }
+
+        public string ApprovedDate { get; set; }
+
+        public string RejectedDate { get; set; }
 
         public string ClosedDate { get; set; }
 
@@ -99,9 +104,15 @@ namespace AmpedBiz.Service.Dto
 
         public string SubmittedByEmployeeName { get; set; }
 
+        public string ApprovedByEmployeeName { get; set; }
+
+        public string RejectedByEmployeeName { get; set; }
+
         public string CompletedByEmployeeName { get; set; }
 
         public string SupplierName { get; set; }
+
+        public string Reason { get; set; }
 
         public IEnumerable<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
     }
