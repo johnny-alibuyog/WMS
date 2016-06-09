@@ -17,10 +17,10 @@ export let appConfig = {
     itemsPerPage: 10,
     boundaryLinks: true,
     directionLinks: true,
-    firstText: '<<',
+    firstText: '|<',
     previousText: '<',
     nextText: '>',
-    lastText: '>>',
+    lastText: '>|',
     rotate: true
   }
 }
