@@ -31,7 +31,7 @@ export class Index {
       {
         route: ['product-purchase-history'],
         name: 'product-purchase-history',
-        moduleId: './product-purchase-history',
+        moduleId: '../purchases/po-history',
         nav: true,
         title: 'Purchase History'
       },

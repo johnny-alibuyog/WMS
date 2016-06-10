@@ -8,30 +8,51 @@ export class Index {
     config.title = "Orders";
     config.map([
       {
-        route: ['', 'need-invoicing'],
-        name: 'need-invoicing',
-        moduleId: './need-invoicing',
+        route: ['', 'active'],
+        name: 'active',
+        moduleId: './order-active',
         nav: true,
-        title: 'Need Invoicing'
+        title: 'Active Orders'
       },
       {
-        route: ['invoiced-orders'],
-        name: 'invoiced-orders',
-        moduleId: './invoiced-orders',
+        route: ['on-staging'],
+        name: 'on-staging',
+        moduleId: './order-on-staging',
         nav: true,
-        title: 'Invoiced Orders'
+        title: 'On Staging'
       },
       {
-        route: ['incomplete-payments'],
-        name: 'incomplete-payments',
-        moduleId: './incomplete-payments',
+        route: ['on-route'],
+        name: 'on-route',
+        moduleId: './order-on-route',
+        nav: true,
+        title: 'On Route'
+      },
+      {
+        route: ['for-invoicing'],
+        name: 'for-invoicing',
+        moduleId: './order-for-invoicing',
+        nav: true,
+        title: 'For Invoicing'
+      },
+      {
+        route: ['invoiced'],
+        name: 'invoiced',
+        moduleId: './order-invoiced',
+        nav: true,
+        title: 'Invoiced'
+      },
+      {
+        route: ['incomplete-payment'],
+        name: 'incomplete-payment',
+        moduleId: './order-incomplete-payment',
         nav: true,
         title: 'Incomplete Payments'
       },
       {
-        route: ['completed-orders'],
-        name: 'completed-orders',
-        moduleId: './completed-orders',
+        route: ['completed'],
+        name: 'completed',
+        moduleId: './order-completed',
         nav: true,
         title: 'Completed Orders'
       },
@@ -40,11 +61,18 @@ export class Index {
         route: ['subdivide-invoice'],
         name: 'subdivide-invoice',
         moduleId: './subdivide-invoice',
-        nav: true,
+        nav: false,
         title: 'Subdivide Invoice'
       },
     ]);
-    
+    /*
+    On-Staging
+    On-Route
+    For Invoicing
+    Invoiced
+    Incomplete Payments
+    Completed Orders
+     */
     this.router = router;
   }
 }
