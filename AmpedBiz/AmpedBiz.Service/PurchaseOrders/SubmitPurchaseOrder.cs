@@ -3,12 +3,17 @@ using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
+using System;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
     public class SubmitPurchaseOrder
     {
-        public class Request : Dto.PurchaseOrder, IRequest<Response> { }
+        public class Request : IRequest<Response>
+        {
+            public Guid Id { get; set; }
+            public string EmployeeId { get; set; }
+        }
 
         public class Response : Dto.PurchaseOrder { }
 
@@ -29,11 +34,9 @@ namespace AmpedBiz.Service.PurchaseOrders
                     if (entity == null)
                         throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
 
-                    var submittedBy = session.Load<Employee>(message.SubmittedByEmployeeId);
+                    var employee = session.Load<Employee>(message.EmployeeId);
 
-                    //message.MapTo(entity);
-
-                    entity.Submit(submittedBy);
+                    entity.CurrentState.Submit(employee, DateTime.Now);
 
                     session.Save(entity);
                     transaction.Commit();

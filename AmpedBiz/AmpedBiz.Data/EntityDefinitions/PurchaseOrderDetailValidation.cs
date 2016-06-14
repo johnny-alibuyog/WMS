@@ -9,25 +9,25 @@ namespace AmpedBiz.Data.EntityDefinitions
         {
             Define(x => x.Id);
 
+            Define(x => x.PurchaseOrder)
+                .NotNullable();
+
             Define(x => x.Product)
+                .NotNullable();
+
+            Define(x => x.Quantity);
+
+            Define(x => x.UnitPrice)
+                .NotNullable()
+                .And.IsValid();
+
+            Define(x => x.Total)
                 .NotNullable()
                 .And.IsValid();
 
             Define(x => x.DateReceived);
 
-            Define(x => x.ExtendedPrice)
-                .IsValid();
-
-            Define(x => x.PurchaseOrder)
-                .NotNullable()
-                .And.IsValid();
-
-            Define(x => x.Quantity);
-
             Define(x => x.Status);
-
-            Define(x => x.UnitCost)
-                .IsValid();
         }
     }
 }

@@ -8,15 +8,15 @@ export class OrderIncompletePayment {
 
   constructor(dialog: DialogService) {
     this.incompletePaymentOrders = [
-      { 
+      {
         'orderDate': 'June 10, 2016',
         'employee': 'John Doe',
         'customer': 'SM Market',
         'status': 'Incomplete Payments',
-        'paymentDate' : 'June 20, 2016',
+        'paymentDate': 'June 20, 2016',
         'taxes': '',
-        total : 700
-    },
+        total: 700
+      },
     ];
 
     this.dialog = dialog;

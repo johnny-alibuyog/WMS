@@ -17,20 +17,14 @@ namespace AmpedBiz.Service.PurchaseOrders
 
         public class Response : List<Dto.PurchaseOrder>
         {
-            public Response()
-            {
-            }
+            public Response() { }
 
-            public Response(List<Dto.PurchaseOrder> items) : base(items)
-            {
-            }
+            public Response(List<Dto.PurchaseOrder> items) : base(items) { }
         }
 
         public class Handler : RequestHandlerBase<Request, Response>
         {
-            public Handler(ISessionFactory sessionFactory) : base(sessionFactory)
-            {
-            }
+            public Handler(ISessionFactory sessionFactory) : base(sessionFactory) { }
 
             public override Response Handle(Request message)
             {

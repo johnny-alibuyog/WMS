@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Entities;
 using AmpedBiz.Service.Common;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
+using System.Linq;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
@@ -15,9 +15,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 
         public class Handler : RequestHandlerBase<Request, Response>
         {
-            public Handler(ISessionFactory sessionFactory) : base(sessionFactory)
-            {
-            }
+            public Handler(ISessionFactory sessionFactory) : base(sessionFactory) { }
 
             public override Response Handle(Request message)
             {
@@ -29,13 +27,30 @@ namespace AmpedBiz.Service.PurchaseOrders
                     var query = session.Query<PurchaseOrder>();
 
                     // compose filters
-
-                    message.Filter.Compose<string>("status", value =>
+                    message.Filter.Compose<PurchaseOrderStatus[]>("statuses", value =>
                     {
-                        query = query.Where(x => x.Status.ToString().ToLower().Contains(value.ToLower()));
+                        query = query.Where(x => value.Contains(x.Status));
+                    });
+
+                    // compose filters
+                    message.Filter.Compose<PurchaseOrderStatus>("status", value =>
+                    {
+                        query = query.Where(x => x.Status == value);
+                    });
+
+                    message.Filter.Compose<string>("supplier", value =>
+                    {
+                        query = query.Where(x => x.Supplier.Id == value);
                     });
 
                     // compose sort
+                    message.Sorter.Compose("supplier", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.Supplier.Name)
+                            : query.OrderByDescending(x => x.Supplier.Name);
+                    });
+
                     message.Sorter.Compose("status", direction =>
                     {
                         query = direction == SortDirection.Ascending
@@ -43,14 +58,85 @@ namespace AmpedBiz.Service.PurchaseOrders
                             : query.OrderByDescending(x => x.Status);
                     });
 
+                    message.Sorter.Compose("createdBy", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query
+                                .OrderBy(x => x.CreatedBy.User.Person.FirstName)
+                                .ThenBy(x => x.CreatedBy.User.Person.LastName)
+                            : query
+                                .OrderByDescending(x => x.CreatedBy.User.Person.LastName)
+                                .ThenByDescending(x => x.CreatedBy.User.Person.LastName);
+                    });
+
+                    message.Sorter.Compose("createdOn", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.CreatedOn)
+                            : query.OrderByDescending(x => x.CreatedOn);
+                    });
+
+                    message.Sorter.Compose("submittedBy", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query
+                                .OrderBy(x => x.SubmittedBy.User.Person.FirstName)
+                                .ThenBy(x => x.SubmittedBy.User.Person.LastName)
+                            : query
+                                .OrderByDescending(x => x.SubmittedBy.User.Person.LastName)
+                                .ThenByDescending(x => x.SubmittedBy.User.Person.LastName);
+                    });
+
+                    message.Sorter.Compose("submittedOn", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.SubmittedOn)
+                            : query.OrderByDescending(x => x.SubmittedOn);
+                    });
+
+                    message.Sorter.Compose("payedBy", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query
+                                .OrderBy(x => x.PayedBy.User.Person.FirstName)
+                                .ThenBy(x => x.PayedBy.User.Person.LastName)
+                            : query
+                                .OrderByDescending(x => x.PayedBy.User.Person.LastName)
+                                .ThenByDescending(x => x.PayedBy.User.Person.LastName);
+                    });
+
+                    message.Sorter.Compose("payedOn", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.PayedOn)
+                            : query.OrderByDescending(x => x.PayedOn);
+                    });
+
+                    message.Sorter.Compose("total", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.Total.Amount)
+                            : query.OrderByDescending(x => x.Total.Amount);
+                    });
+
                     var itemsFuture = query
                         .Select(x => new Dto.PurchaseOrderPageItem()
                         {
                             Id = x.Id,
-                            CreatedByEmployeeName = x.CreatedBy.User.FullName(),
-                            CreationDate = x.CreationDate.Value.ToShortDateString(),
-                            StatusName = x.Status.ToString(),
-                            SupplierName = x.Supplier.Name,
+                            Supplier = x.Supplier.Name,
+                            Status = x.Status.ToString(),
+                            CreatedBy = 
+                                x.CreatedBy.User.Person.FirstName + " " +
+                                x.CreatedBy.User.Person.LastName,
+                            CreatedOn = x.CreatedOn,
+                            SubmittedBy =
+                                x.SubmittedBy.User.Person.FirstName + " " + 
+                                x.SubmittedBy.User.Person.LastName,
+                            SubmittedOn = x.SubmittedOn,
+                            PayedBy = 
+                                x.PayedBy.User.Person.FirstName + " " +
+                                x.PayedBy.User.Person.LastName,
+                            PayedOn = x.PayedOn,
                             Total = x.Total.ToStringWithSymbol()
                         })
                         .Skip(message.Pager.SkipCount)

@@ -6,6 +6,12 @@ input[type=checkbox] {
   width:34px;  
 }
 
+.table-control {
+    min-width: 0;
+    width: 100%;
+    display: inline;
+}
+
 ai-dialog-overlay.active {
   /*background-color: black;*/
   opacity: .5;

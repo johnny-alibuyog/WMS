@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Entities;
 using NHibernate.Validator.Cfg.Loquacious;
 
 namespace AmpedBiz.Data.EntityDefinitions
@@ -14,44 +9,55 @@ namespace AmpedBiz.Data.EntityDefinitions
         {
             Define(x => x.Id);
 
-            Define(x => x.CompletedBy);
-
-            Define(x => x.ClosedDate);
-
-            Define(x => x.CreatedBy);
-
-            Define(x => x.CreationDate);
-
-            Define(x => x.ExpectedDate);
-
-            Define(x => x.OrderDate);
-
-            Define(x => x.Payment).
-                IsValid();
-
-            Define(x => x.PaymentDate);
-
             Define(x => x.PaymentType);
-
-            Define(x => x.ShippingFee)
-                .IsValid();
-
-            Define(x => x.Status);
-
-            Define(x => x.SubmittedBy);
-
-            Define(x => x.SubmittedDate);
-
-            Define(x => x.SubTotal)
-                .IsValid();
 
             Define(x => x.Supplier);
 
             Define(x => x.Tax)
                 .IsValid();
 
+            Define(x => x.ShippingFee)
+                .IsValid();
+
+            Define(x => x.Payment)
+                .IsValid();
+
+            Define(x => x.SubTotal)
+                .IsValid();
+
             Define(x => x.Total)
                 .IsValid();
+
+            Define(x => x.Status);
+
+            Define(x => x.CreatedBy);
+
+            Define(x => x.CreatedOn);
+
+            Define(x => x.SubmittedBy);
+
+            Define(x => x.SubmittedOn);
+
+            Define(x => x.ApprovedBy);
+
+            Define(x => x.ApprovedOn);
+
+            Define(x => x.PayedBy);
+
+            Define(x => x.PayedOn);
+
+            Define(x => x.CompletedBy);
+
+            Define(x => x.CompletedOn);
+
+            Define(x => x.CancelledBy);
+
+            Define(x => x.CancelledOn);
+
+            Define(x => x.CancellationReason);
+
+            Define(x => x.PurchaseOrderDetails)
+                .HasValidElements();
         }
     }
 }

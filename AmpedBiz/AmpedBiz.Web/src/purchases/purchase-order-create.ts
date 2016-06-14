@@ -2,7 +2,7 @@ import {autoinject} from 'aurelia-framework';
 import {DialogController} from 'aurelia-dialog';
 
 @autoinject
-export class POCreate {
+export class PurchaseOrderCreate {
   private _controller: DialogController;
   header: string = 'Create Purchase Order';
   purchaseOrder = {

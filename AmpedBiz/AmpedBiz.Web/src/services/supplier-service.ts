@@ -8,4 +8,6 @@ export class SupplierService extends ServiceBase<Supplier> {
   constructor(httpClient: HttpClientFacade) {
     super('suppliers', httpClient);
   } 
+
+  
 }

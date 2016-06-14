@@ -1,3 +1,13 @@
+export enum PurchaseOrderStatus {
+  new = 1,
+  submitted = 2,
+  approved = 3,
+  payed = 4,
+  received = 5,
+  completed = 6,
+  cancelled = 7
+}
+
 export interface PurchaseOrder {
   id?: string;
   orderDate?: Date;
@@ -26,26 +36,13 @@ export interface PurchaseOrder {
 
 export interface PurchaseOrderPageItem {
   id?: string;
-  orderDate?: string;
-  creationDate?: string;
-  expectedDate?: string;
-  approvedDate?: string;
-  rejectedDate?: string;
-  paymentDate?: string;
-  submittedDate?: string;
-  closedDate?: string;
-  paymentTypeName?: string;
-  tax?: string;
-  shippingFee?: string;
-  payment?: string;
-  subTotal?: string;
+  supplier?: string;
+  status?: PurchaseOrderStatus;
+  createdBy?: string;
+  createdOn?: Date;
+  submittedBy?: string;
+  submittedOn?: Date;
+  payedBy?: string;
+  payedOn?: Date;
   total?: string;
-  statusName?: string;
-  createdByEmployeeName?: string;
-  submittedByEmployeeName?: string;
-  approvedByEmployeeName?: string;
-  rejectedByEmployeeName?: string;
-  completedByEmployeeName?: string;
-  supplierName?: string;
-  reason?: string;
 }

@@ -10,8 +10,7 @@ namespace AmpedBiz.Data.EntityDefinitions
             Define(x => x.Value);
 
             Define(x => x.Unit)
-                .NotNullable()
-                .And.IsValid();
+                .IsValid();
         }
     }
 }

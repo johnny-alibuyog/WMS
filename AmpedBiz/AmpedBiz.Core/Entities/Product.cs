@@ -27,6 +27,11 @@ namespace AmpedBiz.Core.Entities
 
         public virtual BadStockInventory BadStockInventory { get; set; }
 
+        public virtual UnitOfMeasure UnitOfMeasure
+        {
+            get { return this.GoodStockInventory.UnitOfMeasure; }
+        }
+
         //public virtual IEnumerable<Attachment> Attachments { get; set; }
 
         public Product() : this(default(string)) { }

@@ -42,15 +42,16 @@ namespace AmpedBiz.Service.Dto.Mappers
                 });
 
             ExpressMapper.Mapper.Register<Entity.PurchaseOrderDetail, Dto.PurchaseOrderDetail>()
-                .Member(x => x.ExtendedPriceAmount, x => x.ExtendedPrice.Amount)
+                .Member(x => x.TotalAmount, x => x.Total.Amount)
                 .Member(x => x.ProductId, x => x.Product.Id)
-                .Member(x => x.UnitCostAmount, x => x.UnitCost.Amount)
+                .Member(x => x.UnitPriceAmount, x => x.UnitPrice.Amount)
                 .Member(x => x.PurchaseOrderId, x => x.PurchaseOrder.Id);
 
             ExpressMapper.Mapper.Register<Entity.PurchaseOrderDetail, Dto.PurchaseOrderDetailPageItem>()
-                .Member(x => x.ExtendedPriceAmount, x => x.ExtendedPrice.ToStringWithSymbol())
+                .Member(x => x.ExtendedPriceAmount, x => x.Total.ToStringWithSymbol())
                 .Member(x => x.ProductName, x => x.Product.Name)
-                .Member(x => x.UnitCostAmount, x => x.UnitCost.ToStringWithSymbol())
+                .Member(x => x.QuantityValue, x => x.Quantity.Value)
+                .Member(x => x.UnitCostAmount, x => x.UnitPrice.ToStringWithSymbol())
                 .Member(x => x.PurchaseOrderId, x => x.PurchaseOrder.Id.ToString());
 
             ExpressMapper.Mapper.Register<Entity.PurchaseOrder, GetPurchaseOrder.Response>()

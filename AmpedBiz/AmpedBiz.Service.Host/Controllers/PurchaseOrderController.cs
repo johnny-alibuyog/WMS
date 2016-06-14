@@ -9,7 +9,7 @@ using MediatR;
 
 namespace AmpedBiz.Service.Host.Controllers
 {
-    [RoutePrefix("purchaseorders")]
+    [RoutePrefix("purchase-orders")]
     public class PurchaseOrderController : ApiController
     {
         private readonly IMediator _mediator;
@@ -17,10 +17,6 @@ namespace AmpedBiz.Service.Host.Controllers
         public PurchaseOrderController(IMediator mediator)
         {
             _mediator = mediator;
-        }
-
-        public PurchaseOrderController()
-        {
         }
 
         [HttpGet()]
@@ -46,44 +42,93 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpPost()]
         [Route("")]
-        public CreatePurchaseOrder.Response Create([FromBody]CreatePurchaseOrder.Request request)
+        public CreatePurchaseOrder.Response Post([FromBody]CreatePurchaseOrder.Request request)
         {
             return _mediator.Send(request ?? new CreatePurchaseOrder.Request());
         }
 
         [HttpPut()]
         [Route("")]
-        public UpdatePurchaseOrder.Response Update([FromBody]UpdatePurchaseOrder.Request request)
+        public UpdatePurchaseOrder.Response Put([FromBody]UpdatePurchaseOrder.Request request)
         {
             return _mediator.Send(request ?? new UpdatePurchaseOrder.Request());
         }
 
+        [HttpGet()]
+        [Route("statuses")]
+        public GetPurchaseOrderStatusList.Response GetStatuses([FromBody]GetPurchaseOrderStatusList.Request request)
+        {
+            return _mediator.Send(request ?? new GetPurchaseOrderStatusList.Request());
+        }
+
+        [HttpGet()]
+        [Route("statuses/lookup")]
+        public GetPurchaseOrderStatusLookup.Response GetStatusLookup([FromBody]GetPurchaseOrderStatusLookup.Request request)
+        {
+            return _mediator.Send(request ?? new GetPurchaseOrderStatusLookup.Request());
+        }
+
         [HttpPost()]
-        [Route("submit")]
-        public SubmitPurchaseOrder.Response Submit([FromBody]SubmitPurchaseOrder.Request request)
+        [Route("active/page")]
+        public GetActivePurchaseOrdersPage.Response GetSubmittedPage([FromBody]GetActivePurchaseOrdersPage.Request request)
+        {
+            return _mediator.Send(request ?? new GetActivePurchaseOrdersPage.Request());
+        }
+
+        [HttpPost()]
+        [Route("{request.id}/submitted")]
+        public SubmitPurchaseOrder.Response PostSubmitted([FromUri]SubmitPurchaseOrder.Request request)
         {
             return _mediator.Send(request ?? new SubmitPurchaseOrder.Request());
         }
 
         [HttpPost()]
-        [Route("approve")]
-        public ApprovePurchaseOrder.Response Approve([FromBody]ApprovePurchaseOrder.Request request)
+        [Route("submitted/page")]
+        public GetSubmittedPurchaseOrdersPage.Response GetSubmittedPage([FromBody]GetSubmittedPurchaseOrdersPage.Request request)
+        {
+            return _mediator.Send(request ?? new GetSubmittedPurchaseOrdersPage.Request());
+        }
+
+        [HttpPost()]
+        [Route("{id}/approved")]
+        public ApprovePurchaseOrder.Response PostApproved([FromUri]Guid id, [FromBody]ApprovePurchaseOrder.Request request)
         {
             return _mediator.Send(request ?? new ApprovePurchaseOrder.Request());
         }
 
         [HttpPost()]
-        [Route("reject")]
-        public RejectPurchaseOrder.Response Reject([FromBody]RejectPurchaseOrder.Request request)
+        [Route("approved/page")]
+        public GetApprovedPurchaseOrdersPage.Response GetApprovedPage([FromUri]Guid id, [FromBody]GetApprovedPurchaseOrdersPage.Request request)
         {
-            return _mediator.Send(request ?? new RejectPurchaseOrder.Request());
+            return _mediator.Send(request ?? new GetApprovedPurchaseOrdersPage.Request());
         }
 
         [HttpPost()]
-        [Route("complete")]
-        public CompletePurchaseOrder.Response Complete([FromBody]CompletePurchaseOrder.Request request)
+        [Route("{id}/cancelled")]
+        public CancelPurchaseOrder.Response PostCancelled([FromUri]Guid id, [FromBody]CancelPurchaseOrder.Request request)
+        {
+            return _mediator.Send(request ?? new CancelPurchaseOrder.Request());
+        }
+
+        [HttpPost()]
+        [Route("cancelled/page")]
+        public GetCancelledPurchaseOrdersPage.Response GetCancelledPage([FromBody]GetCancelledPurchaseOrdersPage.Request request)
+        {
+            return _mediator.Send(request ?? new GetCancelledPurchaseOrdersPage.Request());
+        }
+
+        [HttpPost()]
+        [Route("{id}/completed")]
+        public CompletePurchaseOrder.Response PostCompleted([FromUri]Guid id, [FromBody]CompletePurchaseOrder.Request request)
         {
             return _mediator.Send(request ?? new CompletePurchaseOrder.Request());
+        }
+
+        [HttpPost()]
+        [Route("completed/page")]
+        public GetCompletedPurchaseOrdersPage.Response GetCompletedPage([FromBody]GetCompletedPurchaseOrdersPage.Request request)
+        {
+            return _mediator.Send(request ?? new GetCompletedPurchaseOrdersPage.Request());
         }
     }
 }

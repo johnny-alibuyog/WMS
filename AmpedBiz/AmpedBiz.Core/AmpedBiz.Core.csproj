@@ -81,6 +81,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\HashProvider.cs" />
     <Compile Include="Services\IHashProvider.cs" />
+    <Compile Include="Services\PurchaseOrderDetails\State.cs" />
+    <Compile Include="Services\PurchaseOrders\State.cs" />
     <Compile Include="ValueObject.cs" />
   </ItemGroup>
   <ItemGroup>

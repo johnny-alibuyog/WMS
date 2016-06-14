@@ -87,7 +87,7 @@ namespace AmpedBiz.Data.Seeders
                 {
                     var result = customers[customerIndex];
 
-                    if (customerIndex < shippers.Count - 1)
+                    if (customerIndex < customers.Count - 1)
                         customerIndex++;
                     else
                         customerIndex = 0;
@@ -102,7 +102,7 @@ namespace AmpedBiz.Data.Seeders
                 {
                     var result = branches[branchIndex];
 
-                    if (branchIndex < shippers.Count - 1)
+                    if (branchIndex < branches.Count - 1)
                         branchIndex++;
                     else
                         branchIndex = 0;

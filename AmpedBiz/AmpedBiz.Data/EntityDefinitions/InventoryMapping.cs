@@ -90,6 +90,7 @@ namespace AmpedBiz.Data.EntityDefinitions
                 .GuidComb();
 
             Map(x => x.ExpiryDate);
+
             Map(x => x.ReceivedDate);
         }
     }

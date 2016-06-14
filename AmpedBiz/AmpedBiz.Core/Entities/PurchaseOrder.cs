@@ -1,70 +1,74 @@
-﻿using System;
+﻿using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Services.PurchaseOrders;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
-using System.Linq;
 
 namespace AmpedBiz.Core.Entities
 {
     public enum PurchaseOrderStatus
     {
-        New = 1, //active
-        ForApproval,
-        ForCompletion,
-        Completed,
-        Rejected
+        New = 1,
+        Submitted = 2,
+        Approved = 3,
+        Payed = 4,
+        Received = 5,
+        Completed = 6,
+        Cancelled = 7
     }
 
     public class PurchaseOrder : Entity<Guid, PurchaseOrder>
     {
         public virtual Tenant Tenant { get; set; }
 
-        public virtual DateTime? OrderDate { get; set; }
-
-        public virtual DateTime? CreationDate { get; set; }
-
-        public virtual DateTime? ExpectedDate { get; set; }
-
-        public virtual DateTime? PaymentDate { get; set; }
-
-        public virtual DateTime? SubmittedDate { get; set; }
-
-        public virtual DateTime? ApprovedDate { get; set; }
-
-        public virtual DateTime? RejectedDate { get; set; }
-
-        public virtual DateTime? ClosedDate { get; set; }
-
         public virtual PaymentType PaymentType { get; set; }
 
-        public virtual Money Tax { get; set; }
+        public virtual Supplier Supplier { get; protected set; }
 
-        public virtual Money ShippingFee { get; set; }
+        public virtual Money Tax { get; protected set; }
 
-        public virtual Money Payment { get; set; }
+        public virtual Money ShippingFee { get; protected set; }
 
-        public virtual Money SubTotal { get; set; }
+        public virtual Money Payment { get; protected set; }
 
-        public virtual Money Total { get; set; }
+        public virtual Money SubTotal { get; protected set; }
+
+        public virtual Money Total { get; protected set; }
 
         public virtual PurchaseOrderStatus Status { get; protected set; }
 
-        public virtual Employee CreatedBy { get; set; }
+        public virtual Employee CreatedBy { get; protected set; }
 
-        public virtual Employee SubmittedBy { get; set; }
+        public virtual DateTime? CreatedOn { get; protected set; }
 
-        public virtual Employee ApprovedBy { get; set; }
+        public virtual Employee SubmittedBy { get; protected set; }
 
-        public virtual Employee RejectedBy { get; set; }
+        public virtual DateTime? SubmittedOn { get; protected set; }
 
-        public virtual Employee CompletedBy { get; set; }
+        public virtual Employee ApprovedBy { get; protected set; }
 
-        public virtual Supplier Supplier { get; set; }
+        public virtual DateTime? ApprovedOn { get; protected set; }
 
-        public virtual string Reason { get; set; }
+        public virtual Employee PayedBy { get; protected set; }
+
+        public virtual DateTime? PayedOn { get; protected set; }
+
+        public virtual Employee CompletedBy { get; protected set; }
+
+        public virtual DateTime? CompletedOn { get; protected set; }
+
+        public virtual Employee CancelledBy { get; protected set; }
+
+        public virtual DateTime? CancelledOn { get; protected set; }
+
+        public virtual string CancellationReason { get; protected set; }
 
         public virtual IEnumerable<PurchaseOrderDetail> PurchaseOrderDetails { get; protected set; }
+
+        public virtual State CurrentState
+        {
+            get { return State.GetState(this); }
+        }
 
         public PurchaseOrder() : this(default(Guid)) { }
 
@@ -73,80 +77,77 @@ namespace AmpedBiz.Core.Entities
             this.PurchaseOrderDetails = new Collection<PurchaseOrderDetail>();
         }
 
-        public virtual void New(Money payment, PaymentType paymentType, Shipper shipper, Money tax, Money shippingFee, Employee employee, Supplier supplier)
+        protected internal virtual void New(Employee createdBy, DateTime createdOn, PaymentType paymentType = null, Shipper shipper = null, Money shippingFee = null, Money tax = null, Supplier supplier = null)
         {
-            this.Status = PurchaseOrderStatus.New;
-            this.OrderDate = DateTime.Now;
-            this.CreationDate = DateTime.Now;
-            this.PaymentType = paymentType;
-            this.Payment = payment;
-            this.Tax = tax;
-            this.ShippingFee = shippingFee;
-            this.CreatedBy = employee;
-            this.Supplier = supplier;
+            this.CreatedBy = createdBy;
+            this.CreatedOn = createdOn;
+            this.PaymentType = paymentType ?? this.PaymentType;
+            this.Tax = tax ?? this.Tax;
+            this.ShippingFee = shippingFee ?? this.ShippingFee;
+            this.Supplier = supplier ?? this.Supplier;
             this.Total = this.Tax + this.ShippingFee + this.Payment;
+            this.Status = PurchaseOrderStatus.New;
         }
 
-        /// <summary>
-        /// For Approval
-        /// </summary>
-        public virtual void Submit(Employee employee)
+        protected internal virtual void Submit(Employee submittedBy, DateTime submittedOn)
         {
-            this.Status = PurchaseOrderStatus.ForApproval;
-            this.SubmittedBy = employee;
-            this.SubmittedDate = DateTime.Now;
+            this.SubmittedBy = submittedBy;
+            this.SubmittedOn = submittedOn;
+            this.Status = PurchaseOrderStatus.Submitted;
         }
 
-        /// <summary>
-        /// Not approved
-        /// </summary>
-        public virtual void Reject(string reason, Employee employee)
+        protected internal virtual void Approve(Employee approvedBy, DateTime approvedOn)
         {
-            this.Status = PurchaseOrderStatus.Rejected;
-            this.RejectedDate = DateTime.Now;
-            this.RejectedBy = employee;
+            this.ApprovedBy = approvedBy;
+            this.ApprovedOn = approvedOn;
+            this.Status = PurchaseOrderStatus.Approved;
         }
 
-        /// <summary>
-        /// PO for completion
-        /// PO Details is Submited
-        /// </summary>
-        public virtual void Approve(Employee employee)
+        protected internal virtual void Pay(Employee payedBy, DateTime payedOn, Money payment)
         {
-            if (this.Status != PurchaseOrderStatus.ForApproval)
-                throw new BusinessException("Purchase order is not ready to approve.");
-
-            this.Status = PurchaseOrderStatus.ForCompletion;
-            this.ApprovedBy = employee;
-            this.ApprovedDate = DateTime.Now;
-
-            this.PurchaseOrderDetails.Any(po =>
-            {
-                po.Submit();
-                return false;
-            });
-
+            this.PayedBy = payedBy;
+            this.PayedOn = payedOn;
+            this.Payment += payment;
+            this.Status = PurchaseOrderStatus.Payed;
         }
 
-        /// <summary>
-        /// PO is completed
-        /// PO Details is Posted
-        /// </summary>
-        /// <param name="date"></param>
-        public virtual void Complete(Employee employee)
+        protected internal virtual void Recieve(Employee recieveBy, DateTime recievedOn)
         {
-            if (this.Status != PurchaseOrderStatus.ForCompletion)
-                throw new BusinessException("Purchase order is not ready to complete.");
+            this.CancelledBy = recieveBy;
+            this.CancelledOn = recievedOn;
+            this.Status = PurchaseOrderStatus.Received;
 
+            // TODO: Inventory
+        }
+
+        protected internal virtual void Complete(Employee completedBy, DateTime completedOn)
+        {
+            this.CompletedBy = completedBy;
+            this.CompletedOn = completedOn;
             this.Status = PurchaseOrderStatus.Completed;
-            this.CompletedBy = employee;
-            this.ClosedDate = DateTime.Now;
+        }
 
-            this.PurchaseOrderDetails.Any(po =>
+        protected internal virtual void Cancel(Employee cancelledBy, DateTime cancelledOn, string cancellationReason)
+        {
+            this.CancelledBy = cancelledBy;
+            this.CancelledOn = cancelledOn;
+            this.CancellationReason = cancellationReason;
+            this.Status = PurchaseOrderStatus.Cancelled;
+
+            // TODO: Inventory adjustment if necessary
+        }
+
+        protected virtual void Compute()
+        {
+            var detailsTotal = default(Money);
+
+            foreach (var detail in this.PurchaseOrderDetails)
             {
-                po.Post();
-                return false;
-            });
+
+                detailsTotal += detail.Total;
+            }
+
+            this.Total = this.Tax + this.ShippingFee + this.Payment + detailsTotal;
         }
 
         public virtual void AddPurchaseOrderDetail(PurchaseOrderDetail orderDetail)
@@ -154,8 +155,8 @@ namespace AmpedBiz.Core.Entities
             orderDetail.PurchaseOrder = this;
             this.PurchaseOrderDetails.Add(orderDetail);
 
-            this.SubTotal += orderDetail.ExtendedPrice;
-            this.Total += orderDetail.ExtendedPrice;
+            this.SubTotal += orderDetail.Total;
+            this.Total += orderDetail.Total;
         }
     }
 }

@@ -8,34 +8,33 @@ export class Index {
     config.title = "Purchases";
     config.map([
       {
-        route: ['','active'],
-        name: 'active',
-        moduleId: './po-active-list',
+        route: ['','active-page'],
+        name: 'active-page',
+        moduleId: './active-page',
         nav: true,
         title: 'Active'
       },
       {
-        route: ['awaiting-approval'],
-        name: 'awaiting-approval',
-        moduleId: './po-awaiting-approval-list',
+        route: ['approved-page'],
+        name: 'approved-page',
+        moduleId: './approved-page',
         nav: true,
-        title: 'Awaiting Approval'
+        title: 'Approved'
       },
       {
-        route: ['awaiting-completion'],
-        name: 'awaiting-completion',
-        moduleId: './po-awaiting-completion-list',
+        route: ['completed-page'],
+        name: 'completed-page',
+        moduleId: './completed-page',
         nav: true,
-        title: 'Awaiting Completion'
+        title: 'Completed'
       },
       {
-        route: ['completed'],
-        name: 'completed',
-        moduleId: './po-completed-list',
+        route: ['purchase-order-page'],
+        name: 'purchase-order-page',
+        moduleId: './purchase-order-page',
         nav: true,
-        title: 'Completed Purchases'
+        title: 'Purchases'
       }
-      
     ]);
     
     this.router = router;

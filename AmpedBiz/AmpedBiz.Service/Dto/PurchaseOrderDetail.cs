@@ -11,22 +11,24 @@ namespace AmpedBiz.Service.Dto
         Submitted = 1,
         Posted
     }
+
     public class PurchaseOrderDetail
     {
         public Guid Id { get; set; }
+
+        public Guid PurchaseOrderId { get; set; }
+
         public string ProductId { get; set; }
 
-        public decimal Quantity { get; set; }
+        public decimal QuantityValue { get; set; }
 
-        public decimal UnitCostAmount { get; set; }
+        public decimal UnitPriceAmount { get; set; }
 
-        public decimal ExtendedPriceAmount { get; set; }
+        public decimal TotalAmount { get; set; }
 
         public DateTime? DateReceived { get; set; }
 
         public PurchaseOrderDetailStatus Status { get; set; }
-
-        public Guid PurchaseOrderId { get; set; }
     }
 
     public class PurchaseOrderDetailPageItem
@@ -34,9 +36,10 @@ namespace AmpedBiz.Service.Dto
         public string PurchaseOrderId { get; set; }
 
         public string Id { get; set; }
+
         public string ProductName { get; set; }
 
-        public string Quantity { get; set; }
+        public string QuantityValue { get; set; }
 
         public string UnitCostAmount { get; set; }
 

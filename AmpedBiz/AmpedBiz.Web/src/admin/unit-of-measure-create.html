@@ -2,49 +2,49 @@
   <!--<require from="./common/converters" />-->
 
   <ai-dialog>
+    
+    <ai-dialog-header>
+      <h3>${header}</h3>
+    </ai-dialog-header>
+
     <ai-dialog-body>
-      <div class="cl-lg-12">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3>${header}</h3>
-          </div>
-          <div class="panel-body">
-            <form class="form-horizontal" role="form">
-              <div class="form-group">
-                <label class="control-label col-sm-4">Code:</label>
-                <div class="col-sm-8">
-                  <input type="text" class="form-control" placeholder="Enter Code" value.bind="unitOfMeasure.id" disabled.bind="isEdit" />
-                </div>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <form class="form-horizontal" role="form">
+            <div class="form-group">
+              <label class="control-label col-sm-4">Code:</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" placeholder="Enter Code" value.bind="unitOfMeasure.id" disabled.bind="isEdit" />
               </div>
-              <div class="form-group">
-                <label class="control-label col-sm-4">Name:</label>
-                <div class="col-sm-8">
-                  <input type="text" class="form-control" placeholder="Enter Name" value.bind="unitOfMeasure.name" />
-                </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-4">Name:</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" placeholder="Enter Name" value.bind="unitOfMeasure.name" />
               </div>
-              <div class="form-group">
-                <label class="control-label col-sm-4">Base Unit:</label>
-                <div class="col-sm-8">
-                  <input type="checkbox" class="form-control" checked.bind="unitOfMeasure.isBaseUnit" />
-                </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-4">Base Unit:</label>
+              <div class="col-sm-8">
+                <input type="checkbox" class="form-control" checked.bind="unitOfMeasure.isBaseUnit" />
               </div>
-              <div class="form-group">
-                <label class="control-label col-sm-4">Convertion:</label>
-                <div class="col-sm-8">
-                  <input type="number" class="form-control" placeholder="Convertion Factor" value.bind="unitOfMeasure.convertionFactor" />
-                </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-4">Convertion:</label>
+              <div class="col-sm-8">
+                <input type="number" class="form-control" placeholder="Convertion Factor" value.bind="unitOfMeasure.convertionFactor" />
               </div>
-              <div class="form-group">
-                <label class="control-label col-sm-4">Name:</label>
-                <div class="col-sm-8">
-                  <select class="form-control" value.bind="unitOfMeasure.unitOfMeasureClassId">
-                    <option value="">Select Class</option>
-                    <option repeat.for="class of unitOfMeasureClasses" model.bind="class.id">${class.name}</option>
-                  </select>
-                </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-4">Name:</label>
+              <div class="col-sm-8">
+                <select class="form-control" value.bind="unitOfMeasure.unitOfMeasureClassId">
+                  <option value="">Select Class</option>
+                  <option repeat.for="class of unitOfMeasureClasses" model.bind="class.id">${class.name}</option>
+                </select>
               </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
     </ai-dialog-body>
@@ -56,5 +56,7 @@
       <button type="button" class="btn btn-danger" click.trigger="cancel()">
         <i class="fa fa-times-circle"></i> Cancel</button>
     </ai-dialog-footer>
+    
   </ai-dialog>
+  
 </template>

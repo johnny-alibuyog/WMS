@@ -5,6 +5,7 @@ import {CustomerService} from './customer-service';
 import {PaymentTypeService} from './payment-type-service';
 import {ProductCategoryService} from './product-category-service';
 import {ProductService} from './product-service';
+import {PurchaseOrderService} from './purchase-order-service';
 import {SupplierService} from './supplier-service';
 import {UserService} from './user-service';
 import {UnitOfMeasureService} from './unit-of-measure';
@@ -18,6 +19,7 @@ export class ServiceApi {
   private _paymentTypes: PaymentTypeService;
   private _productCategories: ProductCategoryService;
   private _products: ProductService;
+  private _purchaseOrders: PurchaseOrderService; 
   private _suppliers: SupplierService;
   private _users: UserService;
   private _unitOfMeasures: UnitOfMeasureService;
@@ -47,6 +49,10 @@ export class ServiceApi {
     return this._products;
   }
 
+  public get purchaseOrders(): PurchaseOrderService {
+    return this._purchaseOrders;
+  }
+
   public get suppliers(): SupplierService {
     return this._suppliers;
   }
@@ -64,8 +70,9 @@ export class ServiceApi {
   }
 
   constructor(auth: AuthService, branches: BranchService, customers: CustomerService, paymentTypes: PaymentTypeService,
-    products: ProductService, productCategories: ProductCategoryService, suppliers: SupplierService, users: UserService,
-    unitOfMeasures: UnitOfMeasureService, unitOfMeasureClasses: UnitOfMeasureClassService) {
+    products: ProductService, productCategories: ProductCategoryService, purchaseOrders: PurchaseOrderService, 
+    suppliers: SupplierService, users: UserService, unitOfMeasures: UnitOfMeasureService, 
+    unitOfMeasureClasses: UnitOfMeasureClassService) {
 
     this._auth = auth;
     this._branches = branches;
@@ -73,6 +80,7 @@ export class ServiceApi {
     this._paymentTypes = paymentTypes;
     this._productCategories = productCategories;
     this._products = products;
+    this._purchaseOrders = purchaseOrders;
     this._suppliers = suppliers;
     this._users = users;
     this._unitOfMeasures = unitOfMeasures;

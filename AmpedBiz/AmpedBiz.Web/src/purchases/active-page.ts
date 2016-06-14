@@ -1,53 +1,62 @@
 import {autoinject} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
-import {CustomerCreate} from './customer-create';
-import {Customer, CustomerPageItem} from './common/models/customer';
+import {PurchaseOrderCreate} from './purchase-order-create';
+import {PurchaseOrder, PurchaseOrderPageItem, PurchaseOrderStatus} from '../common/models/purchase-order';
+import {Supplier} from '../common/models/supplier';
 import {ServiceApi} from '../services/service-api';
+import {KeyValuePair} from '../common/custom_types/key-value-pair';
 import {NotificationService} from '../common/controls/notification-service';
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 
 @autoinject
-export class CustomerList {
+export class ActivePage {
   private _api: ServiceApi;
   private _dialog: DialogService;
   private _notification: NotificationService;
 
   public filter: Filter;
   public sorter: Sorter;
-  public pager: Pager<CustomerPageItem>;
+  public pager: Pager<PurchaseOrderPageItem>;
 
-  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<CustomerPageItem>) {
+  public suppliers: KeyValuePair<string, string>[];
+
+  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<PurchaseOrderPageItem>) {
     this._api = api;
     this._dialog = dialog;
     this._notification = notification;
 
     this.filter = filter;
-    this.filter["name"] = '';
-    this.filter.onFilter = () => this.getList();
+    this.filter["supplier"] = null;
+    this.filter.onFilter = () => this.getPage();
 
     this.sorter = sorter;
-    this.sorter["code"] = SortDirection.None;
-    this.sorter["name"] = SortDirection.Ascending;
-    this.sorter["descirption"] = SortDirection.None;
-    this.sorter.onSort = () => this.getList();
+    this.sorter["supplier"] = SortDirection.None;
+    this.sorter["createdBy"] = SortDirection.None;
+    this.sorter["createdOn"] = SortDirection.None;
+    this.sorter["submittedBy"] = SortDirection.None;
+    this.sorter["total"] = SortDirection.None;
+    this.sorter.onSort = () => this.getPage();
 
     this.pager = pager;
-    this.pager.onPage = () => this.getList();
+    this.pager.onPage = () => this.getPage();
+
+    this._api.suppliers.getLookup<string, string>()
+      .then(data => this.suppliers = data);
   }
 
   activate() {
-    this.getList();
+    this.getPage();
   }
 
-  getList() {
-    this._api.customers
-      .getPage({
+  getPage(): void {
+    this._api.purchaseOrders
+      .getActivePage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager
       })
       .then(data => {
-        var response = <PagerResponse<CustomerPageItem>>data;
+        var response = <PagerResponse<PurchaseOrderPageItem>>data;
         this.pager.count = response.count;
         this.pager.items = response.items;
 
@@ -63,30 +72,30 @@ export class CustomerList {
   create() {
     this._dialog
       .open({
-        viewModel: CustomerCreate,
+        viewModel: PurchaseOrderCreate,
         model: null
       })
       .then(response => {
         if (!response.wasCancelled) {
-          this.getList();
+          this.getPage();
         }
       });
   }
 
-  edit(item: CustomerPageItem) {
+  edit(item: PurchaseOrderPageItem) {
     this._dialog
       .open({
-        viewModel: CustomerCreate,
-        model: <Customer>{ id: item.id }
+        viewModel: PurchaseOrderCreate,
+        model: <PurchaseOrder>{ id: item.id }
       })
       .then(response => {
         if (!response.wasCancelled) {
-          this.getList();
+          this.getPage();
         }
       });
   }
 
-  delete(item: any) {
+  delete(item: PurchaseOrderPageItem) {
     /*
     var index = this.mockData.indexOf(item);
     if (index > -1) {

@@ -3,20 +3,24 @@ using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
+using System;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
-    public class RejectPurchaseOrder
+    public class CancelPurchaseOrder
     {
-        public class Request : Dto.PurchaseOrder, IRequest<Response> { }
+        public class Request : Dto.PurchaseOrder, IRequest<Response>
+        {
+            public string EmployeeId { get; set; }
+
+            public string CancellationReason { get; set; }
+        }
 
         public class Response : Dto.PurchaseOrder { }
 
         public class Handler : RequestHandlerBase<Request, Response>
         {
-            public Handler(ISessionFactory sessionFactory) : base(sessionFactory)
-            {
-            }
+            public Handler(ISessionFactory sessionFactory) : base(sessionFactory) { }
 
             public override Response Handle(Request message)
             {
@@ -29,11 +33,9 @@ namespace AmpedBiz.Service.PurchaseOrders
                     if (entity == null)
                         throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
 
-                    var rejectedBy = session.Load<Employee>(message.RejectedByEmployeeId);
+                    var employee = session.Load<Employee>(message.EmployeeId);
 
-                    //message.MapTo(entity);
-
-                    entity.Reject(message.Reason, rejectedBy);
+                    entity.CurrentState.Cancel(employee, DateTime.Now, message.Reason);
 
                     session.Save(entity);
                     transaction.Commit();

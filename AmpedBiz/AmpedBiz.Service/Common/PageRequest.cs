@@ -39,13 +39,17 @@ namespace AmpedBiz.Service.Common
                 return;
 
             var value = this[field];
+
             if (value.IsNullOrDefault())
                 return;
 
             if (value is string && string.IsNullOrWhiteSpace(value as string))
                 return;
 
-            action((TValue)value);
+            Func<object, TValue> ToType = (val) => typeof(TValue).IsEnum
+                ? EnumExtention.Parse<TValue>(val) : (TValue)val;
+
+            action(ToType(value));
         }
     }
 

@@ -8,11 +8,13 @@ namespace AmpedBiz.Service.Dto
 {
     public enum PurchaseOrderStatus
     {
-        New = 1, //active
-        ForApproval,
-        ForCompletion,
-        Completed,
-        Rejected
+        New = 1,
+        Submitted = 2,
+        Approved = 3,
+        Payed = 4,
+        Received = 5,
+        Completed = 6,
+        Cancelled = 7
     }
 
     public class PurchaseOrder
@@ -70,50 +72,22 @@ namespace AmpedBiz.Service.Dto
     {
         public Guid Id { get; set; }
 
-        public string OrderDate { get; set; }
+        public string Supplier { get; set; }
 
-        public string CreationDate { get; set; }
+        public string Status { get; set; }
 
-        public string ExpectedDate { get; set; }
+        public string CreatedBy { get; set; }
 
-        public string PaymentDate { get; set; }
+        public DateTime? CreatedOn { get; set; }
 
-        public string SubmittedDate { get; set; }
+        public string SubmittedBy { get; set; }
 
-        public string ApprovedDate { get; set; }
+        public DateTime? SubmittedOn { get; set; }
 
-        public string RejectedDate { get; set; }
+        public string PayedBy { get; set; }
 
-        public string ClosedDate { get; set; }
-
-        public string PaymentTypeName { get; set; }
-
-        public string Tax { get; set; }
-
-        public string ShippingFee { get; set; }
-
-        public string Payment { get; set; }
-
-        public string SubTotal { get; set; }
+        public DateTime? PayedOn { get; set; }
 
         public string Total { get; set; }
-
-        public string StatusName { get; set; }
-
-        public string CreatedByEmployeeName { get; set; }
-
-        public string SubmittedByEmployeeName { get; set; }
-
-        public string ApprovedByEmployeeName { get; set; }
-
-        public string RejectedByEmployeeName { get; set; }
-
-        public string CompletedByEmployeeName { get; set; }
-
-        public string SupplierName { get; set; }
-
-        public string Reason { get; set; }
-
-        public IEnumerable<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
     }
 }

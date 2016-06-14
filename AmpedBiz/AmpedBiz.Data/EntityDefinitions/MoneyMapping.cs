@@ -20,7 +20,7 @@ namespace AmpedBiz.Data.EntityDefinitions
                 mapping.Map(x => x.Amount, $"{prefix}Amount");
 
                 mapping.References(x => x.Currency, $"{prefix}CurrencyId")
-                .ForeignKey($"FK_{parent}_{prefix}Currency");
+                    .ForeignKey($"FK_{parent}_{prefix}Currency");
             };
         }
     }

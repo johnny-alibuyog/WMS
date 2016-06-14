@@ -10,8 +10,7 @@ namespace AmpedBiz.Data.EntityDefinitions
             Define(x => x.Amount);
 
             Define(x => x.Currency)
-                .NotNullable()
-                .And.IsValid();
+                .IsValid();
         }
     }
 }

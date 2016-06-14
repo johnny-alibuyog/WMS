@@ -34,7 +34,9 @@ export class UnitOfMeasureClassCreate {
     else {
       this.header = "Create Unit of Measure Class";
       this.isEdit = false;
-      this.unitOfMeasureClass = <UnitOfMeasureClass>{};
+      this.unitOfMeasureClass = <UnitOfMeasureClass>{
+        units: []
+      };
     }
   }
 

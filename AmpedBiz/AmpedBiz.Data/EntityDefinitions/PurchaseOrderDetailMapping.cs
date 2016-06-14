@@ -10,16 +10,19 @@ namespace AmpedBiz.Data.EntityDefinitions
             Id(x => x.Id)
                 .GeneratedBy.GuidComb();
 
-            References(x => x.Product);
             References(x => x.PurchaseOrder);
 
-            Map(x => x.Quantity);
-            Map(x => x.Status);
+            References(x => x.Product);
+
+            Component(x => x.Quantity, MeasureMapping.Map("Quantity_", nameof(GoodStockInventory)));
+
+            Component(x => x.UnitPrice, MoneyMapping.Map("UnitCost_", nameof(PurchaseOrderDetail)));
+
+            Component(x => x.Total, MoneyMapping.Map("ExtendedPrice_", nameof(PurchaseOrderDetail)));
+
             Map(x => x.DateReceived);
 
-            Component(x => x.ExtendedPrice, MoneyMapping.Map("ExtendedPrice_", nameof(PurchaseOrderDetail)));
-
-            Component(x => x.UnitCost, MoneyMapping.Map("UnitCost_", nameof(PurchaseOrderDetail)));
+            Map(x => x.Status);
         }
     }
 }

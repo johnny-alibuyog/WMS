@@ -14,9 +14,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 
         public class Handler : RequestHandlerBase<Request, Response>
         {
-            public Handler(ISessionFactory sessionFactory) : base(sessionFactory)
-            {
-            }
+            public Handler(ISessionFactory sessionFactory) : base(sessionFactory) { }
 
             public override Response Handle(Request message)
             {
@@ -30,17 +28,17 @@ namespace AmpedBiz.Service.PurchaseOrders
                     if (entity == null)
                         throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
 
-                    message.MapTo(entity);
+                    //entity.CompletedBy = session.Load<Employee>(message.CompletedByEmployeeId);
+                    //entity.CreatedBy = session.Load<Employee>(message.CreatedByEmployeeId);
+                    //entity.Payment = new Money(message.PaymentAmount, currency);
+                    //entity.PaymentType = session.Load<PaymentType>(message.PaymentTypeId);
+                    //entity.SubmittedBy = session.Load<Employee>(message.SubmittedByEmployeeId);
+                    //entity.SubTotal = new Money(message.SubTotalAmount, currency);
+                    //entity.Supplier = session.Load<Supplier>(message.SupplierId);
+                    //entity.Tax = new Money(message.TaxAmount, currency);
+                    //entity.Total = new Money(message.TotalAmount, currency);
 
-                    entity.CompletedBy = session.Load<Employee>(message.CompletedByEmployeeId);
-                    entity.CreatedBy = session.Load<Employee>(message.CreatedByEmployeeId);
-                    entity.Payment = new Money(message.PaymentAmount, currency);
-                    entity.PaymentType = session.Load<PaymentType>(message.PaymentTypeId);
-                    entity.SubmittedBy = session.Load<Employee>(message.SubmittedByEmployeeId);
-                    entity.SubTotal = new Money(message.SubTotalAmount, currency);
-                    entity.Supplier = session.Load<Supplier>(message.SupplierId);
-                    entity.Tax = new Money(message.TaxAmount, currency);
-                    entity.Total = new Money(message.TotalAmount, currency);
+                    message.MapTo(entity);
 
                     transaction.Commit();
 

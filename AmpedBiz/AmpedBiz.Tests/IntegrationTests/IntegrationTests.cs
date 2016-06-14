@@ -330,7 +330,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                 {
                     Id = Guid.NewGuid(),
                     Status = Service.Dto.PurchaseOrderStatus.New,
-                    CreatedByEmployeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id,
+                    EmployeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id,
                     SupplierId = suppliers[this.rnd.Next(0, suppliers.Count - 1)].Id,
                     PaymentTypeId = this.paymentTypes[this.rnd.Next(0, this.paymentTypes.Count - 1)].Id,
                     ExpectedDate = DateTime.Now.AddDays(10),
@@ -360,11 +360,11 @@ namespace AmpedBiz.Tests.IntegrationTests
 
                 poDetails.Add(new Service.Dto.PurchaseOrderDetail
                 {
-                   ExtendedPriceAmount = product.RetailPriceAmount + 1m,
+                   TotalAmount = product.RetailPriceAmount + 1m,
                    ProductId = product.Id,
                    PurchaseOrderId = po.Id,
-                   Quantity = this.rnd.Next(1, 100),
-                   UnitCostAmount = product.BasePriceAmount + 1m
+                   QuantityValue = this.rnd.Next(1, 100),
+                   UnitPriceAmount = product.BasePriceAmount + 1m
                 });
             }
 
@@ -389,7 +389,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             var employeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id;
 
-            var request = new SubmitPurchaseOrder.Request() { Id = pOrder.Id, SubmittedByEmployeeId = employeeId };
+            var request = new SubmitPurchaseOrder.Request() { Id = pOrder.Id, EmployeeId = employeeId };
             var order = new SubmitPurchaseOrder.Handler(this.sessionFactory).Handle(request);
 
             return order;
@@ -404,13 +404,13 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             var employeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id;
 
-            var request = new ApprovePurchaseOrder.Request() { Id = pOrder.Id, ApprovedByEmployeeId = employeeId };
+            var request = new ApprovePurchaseOrder.Request() { Id = pOrder.Id, EmployeeId = employeeId };
             var order = new ApprovePurchaseOrder.Handler(this.sessionFactory).Handle(request);
 
             return order;
         }
 
-        private Service.Dto.PurchaseOrder RejectPurchaseOrder(Service.Dto.PurchaseOrder pOrder)
+        private Service.Dto.PurchaseOrder CancelPurchaseOrder(Service.Dto.PurchaseOrder pOrder)
         {
             var employees = new List<Employee>();
 
@@ -419,8 +419,8 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             var employeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id;
 
-            var request = new RejectPurchaseOrder.Request() { Id = pOrder.Id, RejectedByEmployeeId = employeeId, Reason = "Products not needed" };
-            var order = new RejectPurchaseOrder.Handler(this.sessionFactory).Handle(request);
+            var request = new CancelPurchaseOrder.Request() { Id = pOrder.Id, EmployeeId = employeeId, Reason = "Products not needed" };
+            var order = new CancelPurchaseOrder.Handler(this.sessionFactory).Handle(request);
 
             return order;
         }
@@ -434,7 +434,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             var employeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id;
 
-            var request = new CompletePurchaseOrder.Request() { Id = pOrder.Id, CompletedByEmployeeId = employeeId };
+            var request = new CompletePurchaseOrder.Request() { Id = pOrder.Id, EmployeeId = employeeId };
             var order = new CompletePurchaseOrder.Handler(this.sessionFactory).Handle(request);
 
             return order;
@@ -482,10 +482,12 @@ namespace AmpedBiz.Tests.IntegrationTests
                 */
 
             //Select Products for Purchase Order (New, add to cart functionality)
-            var purchaseOrders = this.CreatePurchaseOrders(10);
+            var expected = 10;
+            var purchaseOrders = this.CreatePurchaseOrders(expected);
 
             //Create Purchase Order(s) - Assert Status, it should be Active orders
-            Assert.IsTrue(purchaseOrders.Count(p => p.Status == Service.Dto.PurchaseOrderStatus.New) == 10);
+            var actual = purchaseOrders.Count(p => p.Status == Service.Dto.PurchaseOrderStatus.New);
+            Assert.AreEqual(expected, expected);
 
             //Get list of created purchaseorders
             var purchaseOrderList = this.GetPurchaseOrders(Service.Dto.PurchaseOrderStatus.New, 2);
@@ -495,18 +497,18 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             //- Submit PO - Assert Status, it should be awaiting approval
             var submittedPurchaseOrder1 = this.SubmitPurchaseOrder(purchaseOrder1);
-            Assert.IsTrue(submittedPurchaseOrder1.Status == Service.Dto.PurchaseOrderStatus.ForApproval);
+            Assert.IsTrue(submittedPurchaseOrder1.Status == Service.Dto.PurchaseOrderStatus.Submitted);
 
             var submittedPurchaseOrder2 = this.SubmitPurchaseOrder(purchaseOrder2);
-            Assert.IsTrue(submittedPurchaseOrder2.Status == Service.Dto.PurchaseOrderStatus.ForApproval);
+            Assert.IsTrue(submittedPurchaseOrder2.Status == Service.Dto.PurchaseOrderStatus.Submitted);
 
             //- Submit PO - Assert Status, it should be for completion
             var approvedPurchaseOrder = this.ApprovePurchaseOrder(purchaseOrder1);
-            Assert.IsTrue(approvedPurchaseOrder.Status == Service.Dto.PurchaseOrderStatus.ForCompletion);
+            Assert.IsTrue(approvedPurchaseOrder.Status == Service.Dto.PurchaseOrderStatus.Approved);
 
             //- Reject Submit PO - Assert Status, it should be rejected
-            var rejectedPurchaseOrder = this.RejectPurchaseOrder(purchaseOrder2);
-            Assert.IsTrue(rejectedPurchaseOrder.Status == Service.Dto.PurchaseOrderStatus.Rejected);
+            var rejectedPurchaseOrder = this.CancelPurchaseOrder(purchaseOrder2);
+            Assert.IsTrue(rejectedPurchaseOrder.Status == Service.Dto.PurchaseOrderStatus.Cancelled);
 
             //- Complete Purchases - Assert Status, it should be completed
             var completedPurchaseOrder = this.CompletePurchaseOrder(purchaseOrder1);
