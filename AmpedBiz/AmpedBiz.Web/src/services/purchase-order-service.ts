@@ -23,6 +23,11 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
       .then(response => <KeyValuePair<PurchaseOrderStatus, string>[]>response);
   }
 
+  getNewPage(page: PageRequest): Promise<any> {
+    var url = this._resouce + '/new/page';
+    return this._httpClient.post(url, page);
+  }
+
   getActivePage(page: PageRequest): Promise<any> {
     var url = this._resouce + '/active/page';
     return this._httpClient.post(url, page);

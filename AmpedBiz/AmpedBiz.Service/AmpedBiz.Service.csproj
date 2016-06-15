@@ -132,6 +132,7 @@
     <Compile Include="PurchaseOrders\GetApprovedPurchaseOrdersPage.cs" />
     <Compile Include="PurchaseOrders\GetCancelledPurchaseOrdersPage.cs" />
     <Compile Include="PurchaseOrders\GetCompletedPurchaseOrdersPage.cs" />
+    <Compile Include="PurchaseOrders\GetNewPurchaseOrdersPage.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrder.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrderList.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrderPage.cs" />

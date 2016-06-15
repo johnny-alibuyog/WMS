@@ -42,14 +42,14 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpPost()]
         [Route("")]
-        public CreatePurchaseOrder.Response Post([FromBody]CreatePurchaseOrder.Request request)
+        public CreatePurchaseOrder.Response Create([FromBody]CreatePurchaseOrder.Request request)
         {
             return _mediator.Send(request ?? new CreatePurchaseOrder.Request());
         }
 
         [HttpPut()]
         [Route("")]
-        public UpdatePurchaseOrder.Response Put([FromBody]UpdatePurchaseOrder.Request request)
+        public UpdatePurchaseOrder.Response Update([FromBody]UpdatePurchaseOrder.Request request)
         {
             return _mediator.Send(request ?? new UpdatePurchaseOrder.Request());
         }
@@ -69,6 +69,13 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpPost()]
+        [Route("new/page")]
+        public GetNewPurchaseOrdersPage.Response GetNewPage([FromBody]GetNewPurchaseOrdersPage.Request request)
+        {
+            return _mediator.Send(request ?? new GetNewPurchaseOrdersPage.Request());
+        }
+
+        [HttpPost()]
         [Route("active/page")]
         public GetActivePurchaseOrdersPage.Response GetSubmittedPage([FromBody]GetActivePurchaseOrdersPage.Request request)
         {
@@ -77,7 +84,7 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpPost()]
         [Route("{request.id}/submitted")]
-        public SubmitPurchaseOrder.Response PostSubmitted([FromUri]SubmitPurchaseOrder.Request request)
+        public SubmitPurchaseOrder.Response CreateSubmitted([FromUri]SubmitPurchaseOrder.Request request)
         {
             return _mediator.Send(request ?? new SubmitPurchaseOrder.Request());
         }
@@ -91,21 +98,21 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpPost()]
         [Route("{id}/approved")]
-        public ApprovePurchaseOrder.Response PostApproved([FromUri]Guid id, [FromBody]ApprovePurchaseOrder.Request request)
+        public ApprovePurchaseOrder.Response CreateApproved([FromUri]Guid id, [FromBody]ApprovePurchaseOrder.Request request)
         {
             return _mediator.Send(request ?? new ApprovePurchaseOrder.Request());
         }
 
         [HttpPost()]
         [Route("approved/page")]
-        public GetApprovedPurchaseOrdersPage.Response GetApprovedPage([FromUri]Guid id, [FromBody]GetApprovedPurchaseOrdersPage.Request request)
+        public GetApprovedPurchaseOrdersPage.Response GetApprovedPage([FromBody]GetApprovedPurchaseOrdersPage.Request request)
         {
             return _mediator.Send(request ?? new GetApprovedPurchaseOrdersPage.Request());
         }
 
         [HttpPost()]
         [Route("{id}/cancelled")]
-        public CancelPurchaseOrder.Response PostCancelled([FromUri]Guid id, [FromBody]CancelPurchaseOrder.Request request)
+        public CancelPurchaseOrder.Response CreateCancelled([FromUri]Guid id, [FromBody]CancelPurchaseOrder.Request request)
         {
             return _mediator.Send(request ?? new CancelPurchaseOrder.Request());
         }
@@ -119,7 +126,7 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpPost()]
         [Route("{id}/completed")]
-        public CompletePurchaseOrder.Response PostCompleted([FromUri]Guid id, [FromBody]CompletePurchaseOrder.Request request)
+        public CompletePurchaseOrder.Response CreateCompleted([FromUri]Guid id, [FromBody]CompletePurchaseOrder.Request request)
         {
             return _mediator.Send(request ?? new CompletePurchaseOrder.Request());
         }

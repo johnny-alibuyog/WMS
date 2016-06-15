@@ -8,7 +8,14 @@ export class Index {
     config.title = "Purchases";
     config.map([
       {
-        route: ['','active-page'],
+        route: ['', 'new-page'],
+        name: 'new-page',
+        moduleId: './new-page',
+        nav: true,
+        title: 'New'
+      },
+      {
+        route: ['active-page'],
         name: 'active-page',
         moduleId: './active-page',
         nav: true,
