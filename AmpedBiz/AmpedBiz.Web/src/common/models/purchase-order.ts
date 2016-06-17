@@ -10,28 +10,34 @@ export enum PurchaseOrderStatus {
 
 export interface PurchaseOrder {
   id?: string;
-  orderDate?: Date;
-  creationDate?: Date;
-  expectedDate?: Date;
-  approvedDate?: Date;
-  rejectedDate?: Date;
-  paymentDate?: Date;
-  submittedDate?: Date;
-  closedDate?: Date;
-  paymentTypeId?: string;
-  taxAmount?: number;
-  shippingFeeAmount?: number;
-  paymentAmount?: number;
-  subTotalAmount?: number;
-  totalAmount?: number;
-  status?: number;
-  createdByEmployeeId?: string;
-  submittedByEmployeeId?: string;
-  approvedByEmployeeId?: string;
-  rejectedByEmployeeId?: string;
-  completedByEmployeeId?: string;
   supplierId?: string;
-  reason?: string;
+  status?: PurchaseOrderStatus;
+  createdBy?: string;
+  createdOn?: Date;
+  submittedBy?: string;
+  submittedOn?: Date;
+  closedBy?: string;
+  closedOn?: Date;
+  purchaseOrderDetails?: PurchaseOrderDetail[];
+  recievingDetails?: RecievingDetail[];
+  paymentDetail?: PaymentDetail[];
+}
+
+export interface PurchaseOrderDetail {
+  id?: string;
+  productId?: string;
+  available?: number;
+  quantity?: number;
+  unitPrice?: number;
+  totalPrice?: number;
+}
+
+export interface RecievingDetail {
+
+}
+
+export interface PaymentDetail {
+
 }
 
 export interface PurchaseOrderPageItem {

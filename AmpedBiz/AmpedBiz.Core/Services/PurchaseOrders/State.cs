@@ -120,6 +120,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
     {
         public SubmittedState(PurchaseOrder target) : base(target)
         {
+            this.AllowedTransitions.Add(PurchaseOrderStatus.New, "Reject");
             this.AllowedTransitions.Add(PurchaseOrderStatus.Approved, "Approve");
             this.AllowedTransitions.Add(PurchaseOrderStatus.Cancelled, "Cancel");
         }
@@ -132,7 +133,6 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             this.AllowedTransitions.Add(PurchaseOrderStatus.New, "Reject");
             this.AllowedTransitions.Add(PurchaseOrderStatus.Payed, "Pay");
             this.AllowedTransitions.Add(PurchaseOrderStatus.Received, "Recieve");
-            this.AllowedTransitions.Add(PurchaseOrderStatus.Completed, "Complete");
             this.AllowedTransitions.Add(PurchaseOrderStatus.Cancelled, "Cancel");
         }
     }
