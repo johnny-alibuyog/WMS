@@ -30,7 +30,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                     PurchaseOrderStatus.New,
                     PurchaseOrderStatus.Submitted,
                     PurchaseOrderStatus.Approved,
-                    PurchaseOrderStatus.Payed,
+                    PurchaseOrderStatus.Paid,
                     PurchaseOrderStatus.Received,
                 };
 

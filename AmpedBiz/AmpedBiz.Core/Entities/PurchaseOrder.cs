@@ -11,7 +11,7 @@ namespace AmpedBiz.Core.Entities
         New = 1,
         Submitted = 2,
         Approved = 3,
-        Payed = 4,
+        Paid = 4,
         Received = 5,
         Completed = 6,
         Cancelled = 7
@@ -108,7 +108,7 @@ namespace AmpedBiz.Core.Entities
             this.PayedBy = payedBy;
             this.PayedOn = payedOn;
             this.Payment += payment;
-            this.Status = PurchaseOrderStatus.Payed;
+            this.Status = PurchaseOrderStatus.Paid;
         }
 
         protected internal virtual void Recieve(Employee recieveBy, DateTime recievedOn)

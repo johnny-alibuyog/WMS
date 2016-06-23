@@ -11,7 +11,10 @@ namespace AmpedBiz.Service.Orders
 {
     public class CreateOrder
     {
-        public class Request : Dto.Order, IRequest<Response> { }
+        public class Request : Dto.Order, IRequest<Response>
+        {
+            public virtual string EmployeeId { get; set; }
+        }
 
         public class Response : Dto.Order { }
 
@@ -30,32 +33,28 @@ namespace AmpedBiz.Service.Orders
                     if (exists)
                         throw new BusinessException($"Order with id {message.Id} already exists.");
 
-                    var currency = session.Load<Currency>(Currency.PHP.Id); // this should be taken from the tenant
+                    var currency = session.Load<Currency>(Currency.PHP.Id);
                     var entity = message.MapTo(new Order(message.Id));
 
-                    //var tax = new Money(message.TaxAmount, currency);
-                    //var shippingFee = new Money(message.ShippingFeeAmount, currency);
-                    //var payment = new Money(message.PaymentAmount, currency);
-                    //var supTotal = new Money(message.SubTotalAmount, currency);
-                    //var total = new Money(message.TotalAmount, currency);
-                    //var createdBy = session.Load<Employee>(message.CreatedByEmployeeId);
-                    //var supplier = session.Load<Supplier>(message.SupplierId); ;
-                    //var paymentType = session.Load<PaymentType>(message.PaymentTypeId);
-
-                    //entity.New(payment, paymentType, null, tax, shippingFee, createdBy, supplier);
+                    entity.CurrentState.New(
+                        createdBy: session.Load<Employee>(message.EmployeeId),
+                        paymentType: session.Load<PaymentType>(message.PaymentTypeId),
+                        shipper: null,
+                        shippingFee: new Money(message.ShippingFeeAmount, currency),
+                        taxRate: message.TaxRate,
+                        customer: session.Load<Customer>(message.CustomerId),
+                        branch: session.Load<Branch>(message.BranchId)
+                    );
                     
-                    //foreach(var poDetail in message.OrderDetails)
-                    //{
-                    //    var detail = new OrderDetail(poDetail.Id);
-                    //    var product = session.Load<Product>(poDetail.ProductId);
+                    foreach (var item in message.OrderDetails)
+                    {
+                        var detail = new OrderDetail(item.Id);
+                        detail.CurrentState.Allocate();
 
-                    //    detail.Product = product;
-                    //    detail.UnitCost = new Money(poDetail.UnitCostAmount, currency);
-                    //    detail.ExtendedPrice = new Money(poDetail.ExtendedPriceAmount, currency);
+                        item.MapTo(detail);
 
-                    //    entity.AddOrderDetail(poDetail.MapTo(detail));
-                    //}
-                    
+                        entity.AddOrderDetail(detail);
+                    }
 
                     session.Save(entity);
                     transaction.Commit();

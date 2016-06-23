@@ -1,4 +1,5 @@
 ﻿using System;
+using AmpedBiz.Core.Services.OrderDetailDetails;
 
 namespace AmpedBiz.Core.Entities
 {
@@ -28,24 +29,30 @@ namespace AmpedBiz.Core.Entities
 
         public virtual bool InsufficientInventory { get; protected set; }
 
+        public virtual State CurrentState
+        {
+            get { return State.GetState(this); }
+        }
+
         public OrderDetail() : this(default(Guid)) { }
 
         public OrderDetail(Guid id) : base(id) { }
 
         public OrderDetail(Product product, Measure quantity, Money discount, Money unitPrice) : this()
         {
-            this.Allocate(product, quantity, discount, unitPrice);
-        }
-
-        public virtual void Allocate(Product product, Measure quantity, Money discount, Money unitPrice)
-        {
-            this.Status = OrderDetailStatus.Allocated;
             this.Product = product;
             this.Quantity = quantity;
-            this.Discount = discount;
+            this.Discount = discount ?? new Money(0.0M);
             this.UnitPrice = unitPrice;
-            this.ExtendedPrice = unitPrice - discount;
 
+            this.Allocate();
+        }
+
+        public virtual void Allocate()
+        {
+            this.Status = OrderDetailStatus.Allocated;
+
+            this.ExtendedPrice = new Money((this.UnitPrice.Amount - this.Discount.Amount) * this.Quantity.Value);
             this.Product.GoodStockInventory.Allocated += this.Quantity;
         }
 

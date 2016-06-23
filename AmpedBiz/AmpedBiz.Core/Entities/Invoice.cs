@@ -18,7 +18,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Money SubTotal { get; set; }
 
-        public virtual Money AmountDue { get; set; }
+        public virtual Money Due { get; set; }
 
         public Invoice() : this(default(Guid)) { }
 

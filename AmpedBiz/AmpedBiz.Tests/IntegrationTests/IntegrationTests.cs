@@ -425,6 +425,36 @@ namespace AmpedBiz.Tests.IntegrationTests
             return order;
         }
 
+        private Service.Dto.PurchaseOrder PayPurchaseOrder(Service.Dto.PurchaseOrder pOrder)
+        {
+            var employees = new List<Employee>();
+
+            using (var session = this.sessionFactory.OpenSession())
+                employees = session.Query<Employee>().ToList();
+
+            var employeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id;
+
+            var request = new PayPurchaseOrder.Request() { Id = pOrder.Id, EmployeeId = employeeId, TotalAmount = pOrder.TotalAmount };
+            var order = new PayPurchaseOrder.Handler(this.sessionFactory).Handle(request);
+
+            return order;
+        }
+
+        private Service.Dto.PurchaseOrder ReceivePurchaseOrder(Service.Dto.PurchaseOrder pOrder)
+        {
+            var employees = new List<Employee>();
+
+            using (var session = this.sessionFactory.OpenSession())
+                employees = session.Query<Employee>().ToList();
+
+            var employeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id;
+
+            var request = new ReceivePurchaseOrder.Request() { Id = pOrder.Id, EmployeeId = employeeId };
+            var order = new ReceivePurchaseOrder.Handler(this.sessionFactory).Handle(request);
+
+            return order;
+        }
+
         private Service.Dto.PurchaseOrder CompletePurchaseOrder(Service.Dto.PurchaseOrder pOrder)
         {
             var employees = new List<Employee>();
@@ -473,19 +503,23 @@ namespace AmpedBiz.Tests.IntegrationTests
             /*
             Fill Inventory
 
-            -Select Products for Purchase Order (New, add to cart functionality)
+            Purchase Order cycles
 
-            -Create Purchase Order(s) - Assert Status, it should be Active orders
-            - Transition PO - Assert Status, it should be awaiting approval
-            - Approve Purchase Order - Assert Status, it should be awaiting completion
-            - Complete Purchases - Assert Status, it should be completed
-                */
+            New = 1,
+            Submitted = 2,
+            Approved = 3,
+            Payed = 4,
+            Received = 5,
+            Completed = 6,
+            Cancelled = 7
+
+            */
 
             //Select Products for Purchase Order (New, add to cart functionality)
             var expected = 10;
             var purchaseOrders = this.CreatePurchaseOrders(expected);
 
-            //Create Purchase Order(s) - Assert Status, it should be Active orders
+            //Create Purchase Order(s) - Assert Status, it should be NEW orders
             var actual = purchaseOrders.Count(p => p.Status == Service.Dto.PurchaseOrderStatus.New);
             Assert.AreEqual(expected, expected);
 
@@ -495,20 +529,28 @@ namespace AmpedBiz.Tests.IntegrationTests
             var purchaseOrder1 = purchaseOrderList.First();
             var purchaseOrder2 = purchaseOrderList.Last();
 
-            //- Submit PO - Assert Status, it should be awaiting approval
+            //- Submit PO - Assert Status, it should be Submitted
             var submittedPurchaseOrder1 = this.SubmitPurchaseOrder(purchaseOrder1);
             Assert.IsTrue(submittedPurchaseOrder1.Status == Service.Dto.PurchaseOrderStatus.Submitted);
 
             var submittedPurchaseOrder2 = this.SubmitPurchaseOrder(purchaseOrder2);
             Assert.IsTrue(submittedPurchaseOrder2.Status == Service.Dto.PurchaseOrderStatus.Submitted);
 
-            //- Submit PO - Assert Status, it should be for completion
+            //- Approve PO - Assert Status, it should be APPROVED
             var approvedPurchaseOrder = this.ApprovePurchaseOrder(purchaseOrder1);
             Assert.IsTrue(approvedPurchaseOrder.Status == Service.Dto.PurchaseOrderStatus.Approved);
 
             //- Reject Submit PO - Assert Status, it should be rejected
             var rejectedPurchaseOrder = this.CancelPurchaseOrder(purchaseOrder2);
             Assert.IsTrue(rejectedPurchaseOrder.Status == Service.Dto.PurchaseOrderStatus.Cancelled);
+
+            //- Pay PO - Assert Status, it should be PAYED
+            var paidPurchaseOrder = this.PayPurchaseOrder(purchaseOrder1);
+            Assert.IsTrue(paidPurchaseOrder.Status == Service.Dto.PurchaseOrderStatus.Paid);
+
+            //- Receive PO - Assert Status, it should be RECEIVED
+            var receivePurchaseOrder = this.ReceivePurchaseOrder(purchaseOrder1);
+            Assert.IsTrue(receivePurchaseOrder.Status == Service.Dto.PurchaseOrderStatus.Received);
 
             //- Complete Purchases - Assert Status, it should be completed
             var completedPurchaseOrder = this.CompletePurchaseOrder(purchaseOrder1);

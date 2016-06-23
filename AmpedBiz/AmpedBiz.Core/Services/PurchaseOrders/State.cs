@@ -29,7 +29,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
                     return new SubmittedState(target);
                 case PurchaseOrderStatus.Approved:
                     return new ApprovedState(target);
-                case PurchaseOrderStatus.Payed:
+                case PurchaseOrderStatus.Paid:
                     return new PayedState(target);
                 case PurchaseOrderStatus.Received:
                     return new ReceivedState(target);
@@ -75,7 +75,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
 
         public virtual void Pay(Employee payedBy, DateTime payedOn, Money payment)
         {
-            if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Payed))
+            if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Paid))
                 throw new InvalidOperationException(string.Format("You cannot perform approval of purchase order on {0} stage.", this.Target.Status));
 
             this.Target.Pay(payedBy, payedOn, payment);
@@ -131,7 +131,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
         public ApprovedState(PurchaseOrder target) : base(target)
         {
             this.AllowedTransitions.Add(PurchaseOrderStatus.New, "Reject");
-            this.AllowedTransitions.Add(PurchaseOrderStatus.Payed, "Pay");
+            this.AllowedTransitions.Add(PurchaseOrderStatus.Paid, "Pay");
             this.AllowedTransitions.Add(PurchaseOrderStatus.Received, "Recieve");
             this.AllowedTransitions.Add(PurchaseOrderStatus.Cancelled, "Cancel");
         }
@@ -141,7 +141,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
     {
         public PayedState(PurchaseOrder target) : base(target)
         {
-            this.AllowedTransitions.Add(PurchaseOrderStatus.Payed, "Pay");
+            this.AllowedTransitions.Add(PurchaseOrderStatus.Paid, "Pay");
             this.AllowedTransitions.Add(PurchaseOrderStatus.Received, "Recieve");
             this.AllowedTransitions.Add(PurchaseOrderStatus.Completed, "Complete");
             this.AllowedTransitions.Add(PurchaseOrderStatus.Cancelled, "Cancel");

@@ -140,6 +140,8 @@
     <Compile Include="PurchaseOrders\GetPurchaseOrderStatusList.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrderStatusLookup.cs" />
     <Compile Include="PurchaseOrders\GetSubmittedPurchaseOrdersPage.cs" />
+    <Compile Include="PurchaseOrders\PayPurchaseOrder.cs" />
+    <Compile Include="PurchaseOrders\ReceivePurchaseOrder.cs" />
     <Compile Include="PurchaseOrders\SubmitPurchaseOrder.cs" />
     <Compile Include="PurchaseOrders\UpdatePurchaseOrder.cs" />
     <Compile Include="RequestHandlerBase.cs" />

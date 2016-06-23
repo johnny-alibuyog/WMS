@@ -11,7 +11,7 @@ namespace AmpedBiz.Service.Dto
         New = 1,
         Submitted = 2,
         Approved = 3,
-        Payed = 4,
+        Paid = 4,
         Received = 5,
         Completed = 6,
         Cancelled = 7
