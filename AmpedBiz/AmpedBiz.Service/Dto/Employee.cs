@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace AmpedBiz.Service.Dto
 {
-    public class Employee
+    public class Employee : User
     {
-        public string Id { get; set; }
-
-        public User User { get; set; }
-
         public Contact Contact { get; set; }
 
         public string EmployeeTypeId { get; set; }
@@ -20,7 +16,7 @@ namespace AmpedBiz.Service.Dto
 
     public class EmployeePageItem
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         public string EmployeeTypeName { get; set; }
 
@@ -29,7 +25,15 @@ namespace AmpedBiz.Service.Dto
         public string MiddleName { get; set; }
 
         public string LastName { get; set; }
-        public Contact Contact { get; set; }
 
+        public Contact Contact { get; set; }
     }
+
+    public class EmployeeIdentity
+    {
+        public string Id { get; set; }
+
+        public string Name { get; set; }
+    }
+
 }

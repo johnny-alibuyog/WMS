@@ -16,35 +16,35 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("{request.id}")]
-        public GetProductCategory.Response Get([FromUri]GetProductCategory.Request request)
+        public GetProductCategory.Response Process([FromUri]GetProductCategory.Request request)
         {
             return _mediator.Send(request ?? new GetProductCategory.Request());
         }
 
         [HttpGet()]
         [Route("")]
-        public GetProductCategoryList.Response Get([FromUri]GetProductCategoryList.Request request)
+        public GetProductCategoryList.Response Process([FromUri]GetProductCategoryList.Request request)
         {
             return _mediator.Send(request ?? new GetProductCategoryList.Request());
         }
 
         [HttpPost()]
         [Route("page")]
-        public GetProductCategoryPage.Response Page([FromBody]GetProductCategoryPage.Request request)
+        public GetProductCategoryPage.Response Process([FromBody]GetProductCategoryPage.Request request)
         {
             return _mediator.Send(request ?? new GetProductCategoryPage.Request());
         }
 
         [HttpPost()]
         [Route("")]
-        public CreateProductCategory.Response Create([FromBody]CreateProductCategory.Request request)
+        public CreateProductCategory.Response Process([FromBody]CreateProductCategory.Request request)
         {
             return _mediator.Send(request ?? new CreateProductCategory.Request());
         }
 
         [HttpPut()]
         [Route("")]
-        public UpdateProductCategory.Response Update([FromBody]UpdateProductCategory.Request request)
+        public UpdateProductCategory.Response Process([FromBody]UpdateProductCategory.Request request)
         {
             return _mediator.Send(request ?? new UpdateProductCategory.Request());
         }

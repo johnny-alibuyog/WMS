@@ -4,6 +4,7 @@ using AmpedBiz.Service.Common;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
+using System;
 using System.Linq;
 
 namespace AmpedBiz.Service.Employees
@@ -28,17 +29,17 @@ namespace AmpedBiz.Service.Employees
                     var query = session.Query<Employee>();
 
                     // compose filters
-                    message.Filter.Compose<string>("code", value =>
+                    message.Filter.Compose<Guid>("code", value =>
                     {
-                        query = query.Where(x => x.Id.ToLower().Contains(value.ToLower()));
+                        query = query.Where(x => x.Id == value);
                     });
 
                     message.Filter.Compose<string>("name", value =>
                     {
                         query = query.Where(x =>
-                            x.User.Person.FirstName.ToLower().Contains(value.ToLower()) ||
-                            x.User.Person.MiddleName.ToLower().Contains(value.ToLower()) ||
-                            x.User.Person.LastName.ToLower().Contains(value.ToLower()));
+                            x.Person.FirstName.ToLower().Contains(value.ToLower()) ||
+                            x.Person.MiddleName.ToLower().Contains(value.ToLower()) ||
+                            x.Person.LastName.ToLower().Contains(value.ToLower()));
                     });
 
                     // compose sort
@@ -53,22 +54,22 @@ namespace AmpedBiz.Service.Employees
                     message.Sorter.Compose("firstname", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.User.Person.FirstName)
-                            : query.OrderByDescending(x => x.User.Person.FirstName);
+                            ? query.OrderBy(x => x.Person.FirstName)
+                            : query.OrderByDescending(x => x.Person.FirstName);
                     });
 
                     message.Sorter.Compose("lastname", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.User.Person.LastName)
-                            : query.OrderByDescending(x => x.User.Person.LastName);
+                            ? query.OrderBy(x => x.Person.LastName)
+                            : query.OrderByDescending(x => x.Person.LastName);
                     });
 
                     message.Sorter.Compose("middlename", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.User.Person.MiddleName)
-                            : query.OrderByDescending(x => x.User.Person.MiddleName);
+                            ? query.OrderBy(x => x.Person.MiddleName)
+                            : query.OrderByDescending(x => x.Person.MiddleName);
                     });
 
                     var itemsFuture = query
@@ -76,9 +77,9 @@ namespace AmpedBiz.Service.Employees
                         {
                             Id = x.Id,
                             EmployeeTypeName = x.EmployeeType.Name,
-                            FirstName = x.User.Person.FirstName,
-                            LastName = x.User.Person.LastName,
-                            MiddleName = x.User.Person.MiddleName,
+                            FirstName = x.Person.FirstName,
+                            LastName = x.Person.LastName,
+                            MiddleName = x.Person.MiddleName,
                             Contact = x.Contact.MapTo(default(Dto.Contact))
                         })
                         .Skip(message.Pager.SkipCount)

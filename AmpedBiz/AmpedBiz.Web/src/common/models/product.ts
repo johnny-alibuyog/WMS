@@ -23,3 +23,15 @@ export interface ProductPageItem {
   wholeSalePrice?: string;
   discontinued?: boolean;
 }
+
+export interface ProductInventory {
+  id?: string;
+  name?: string;
+  unitOfMeasure?: string;
+  targetValue?: number;
+  availableValue?: number;
+  basePriceAmount?: number;
+  retailPriceAmount?: number;
+  wholeSalePriceAmount?: number;
+  discountAmount?: number;
+}

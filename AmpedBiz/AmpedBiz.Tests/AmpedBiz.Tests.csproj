@@ -116,7 +116,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <Content Include="database.config.json" />
+    <Content Include="database.config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

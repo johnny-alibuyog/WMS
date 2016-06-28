@@ -47,8 +47,6 @@
     <Compile Include="Entities\Currency.cs" />
     <Compile Include="Entities\Delivery.cs" />
     <Compile Include="Entities\DeliveryItem.cs" />
-    <Compile Include="Entities\Employee.cs" />
-    <Compile Include="Entities\EmployeeType.cs" />
     <Compile Include="Entities\InventoryShrinkage.cs" />
     <Compile Include="Entities\Measure.cs" />
     <Compile Include="Entities\Money.cs" />

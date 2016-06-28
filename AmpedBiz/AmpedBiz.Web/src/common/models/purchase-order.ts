@@ -1,3 +1,6 @@
+import {ProductInventory} from 'product';
+//import {autoinject, BindingEngine} from 'aurelia-framework';
+
 export enum PurchaseOrderStatus {
   new = 1,
   submitted = 2,
@@ -10,8 +13,10 @@ export enum PurchaseOrderStatus {
 
 export interface PurchaseOrder {
   id?: string;
+  userId?: string;
   supplierId?: string;
   status?: PurchaseOrderStatus;
+  expectedOn?: Date;
   createdBy?: string;
   createdOn?: Date;
   submittedBy?: string;
@@ -26,10 +31,8 @@ export interface PurchaseOrder {
 export interface PurchaseOrderDetail {
   id?: string;
   productId?: string;
-  available?: number;
-  quantity?: number;
-  unitPrice?: number;
-  totalPrice?: number;
+  quantityValue?: number;
+  unitPriceAmount?: number;
 }
 
 export interface RecievingDetail {
@@ -39,6 +42,53 @@ export interface RecievingDetail {
 export interface PaymentDetail {
 
 }
+
+/*
+@autoinject
+export class DetailsFactory {
+  private _bindingEngine: BindingEngine;
+
+  constructor(bindingEngine: BindingEngine) {
+    this._bindingEngine = bindingEngine;
+  }
+
+  create(type: string, instance?: any): any {
+
+    switch (type) {
+
+      case 'PurchaseOrderDetail':
+        var item = <PurchaseOrderDetail>{
+          available: 0,
+          quantity: 0,
+          price: 0,
+          discount: 0,
+        };
+
+        var computeTotal = () => item.quantity * (item.price - item.discount);
+
+        this._bindingEngine.propertyObserver(item, 'quantity')
+          .subscribe((newValue: any, oldValue: any) => item.totalPrice = computeTotal());
+
+        this._bindingEngine.propertyObserver(item, 'price')
+          .subscribe((newValue: any, oldValue: any) => item.totalPrice = computeTotal());
+
+        this._bindingEngine.propertyObserver(item, 'discount')
+          .subscribe((newValue: any, oldValue: any) => item.totalPrice = computeTotal());
+
+        return item;
+
+      case 'RecievingDetail':
+        return null;
+
+      case 'PaymentDetail':
+        return null;
+
+      default:
+        throw new Error('Type ${type} is not defined');
+    }
+  }
+}
+*/
 
 export interface PurchaseOrderPageItem {
   id?: string;

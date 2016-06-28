@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using AmpedBiz.Common.Extentions;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class User : Entity<string, User>
+    public class User : Entity<Guid, User>
     {
         public virtual string Username { get; set; }
 
@@ -19,29 +21,29 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<UserRole> UserRoles { get; set; }
 
-        public User() : this(default(string)) { }
+        public User() : this(default(Guid)) { }
 
-        public User(string id) : base(id)
+        public User(Guid id) : base(id)
         {
             this.UserRoles = new Collection<UserRole>();
         }
 
-        public virtual void SetRoles(IEnumerable<Role> values)
+        public virtual void SetRoles(IEnumerable<Role> items)
         {
             var existingRoles = this.UserRoles
                 .Select(x => x.Role)
                 .ToList();
 
-            var rolesToAdd = values.Except(existingRoles).ToList();
+            var rolesToAdd = items.Except(existingRoles).ToList();
 
-            var rolesToRemove = existingRoles.Except(values).ToList();
+            var rolesToRemove = existingRoles.Except(items).ToList();
 
             foreach (var role in rolesToRemove)
             {
                 var item = this.UserRoles.FirstOrDefault(x => x.Role == role);
                 item.User = null;
                 item.Role = null;
-                ((ICollection<UserRole>)this.UserRoles).Remove(item);
+                this.UserRoles.Remove(item);
             }
 
             foreach (var role in rolesToAdd)
@@ -49,7 +51,7 @@ namespace AmpedBiz.Core.Entities
                 var item = new UserRole();
                 item.User = this;
                 item.Role = role;
-                ((ICollection<UserRole>)this.UserRoles).Add(item);
+                this.UserRoles.Add(item);
             }
         }
 

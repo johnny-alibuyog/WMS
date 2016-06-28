@@ -24,7 +24,7 @@ namespace AmpedBiz.Data.Seeders
 
         public int ExecutionOrder
         {
-            get { return 20; }
+            get { return 11; }
         }
 
         public void Seed()
@@ -33,7 +33,7 @@ namespace AmpedBiz.Data.Seeders
 
             for (int i = 0; i < 8; i++)
             {
-                data.Add(new User($"user{i}")
+                data.Add(new User() //new User($"user{i}")
                 {
                     Username = $"Username{i}",
                     Password = $"Password{i}",

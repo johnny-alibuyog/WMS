@@ -21,6 +21,17 @@ namespace AmpedBiz.Common.Extentions
             ((ICollection<T>)items).Remove(value);
         }
 
+        public static bool IsNullOrEmpty<T>(this IEnumerable<T> items)
+        {
+            if (items == null)
+                return true;
+
+            if (items.Count() == 0)
+                return true;
+
+            return false;
+        }
+            
         public static T RandomElement<T>(this IEnumerable<T> enumerable)
         {
             return enumerable.RandomElementUsing(new Random());

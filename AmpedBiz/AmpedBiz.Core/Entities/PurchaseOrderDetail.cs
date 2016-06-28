@@ -27,7 +27,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual PurchaseOrderDetailStatus Status { get; protected set; }
 
-        public virtual State CurrentState
+        public virtual State State
         {
             get { return State.GetState(this); }
         }
@@ -36,7 +36,7 @@ namespace AmpedBiz.Core.Entities
 
         public PurchaseOrderDetail(Guid id) : base(id) { }
 
-        protected internal virtual void New(Product product, Money unitPrice, decimal quantity)
+        protected internal virtual PurchaseOrderDetail New(Product product, Money unitPrice, decimal quantity)
         {
             this.Product = product;
             this.Quantity = new Measure(quantity, product.UnitOfMeasure);
@@ -47,26 +47,33 @@ namespace AmpedBiz.Core.Entities
             );
 
             this.Status = PurchaseOrderDetailStatus.New;
+
+            return this;
         }
 
-        protected internal virtual void Submit()
+        protected internal virtual PurchaseOrderDetail Submit()
         {
             this.Status = PurchaseOrderDetailStatus.Submitted;
+
+            return this;
         }
 
-        protected internal virtual void Cancel()
+        protected internal virtual PurchaseOrderDetail Cancel()
         {
             this.Status = PurchaseOrderDetailStatus.Cancelled;
 
             //TODO: should deduct to inventory if necessary
+
+            return this;
         }
 
-        public virtual void Post()
+        protected internal virtual PurchaseOrderDetail Post()
         {
             this.DateReceived = DateTime.Now;
             this.Status = PurchaseOrderDetailStatus.Posted;
 
             //TODO: should add to inventory
+            return this;
         }
     }
 }

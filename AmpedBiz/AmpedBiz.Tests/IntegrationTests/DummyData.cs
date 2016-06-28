@@ -93,18 +93,20 @@ namespace AmpedBiz.Tests.IntegrationTests
         {
             return new Service.Dto.User()
             {
-                Id = "Id_" + this.GenerateRandomString(25),
+                //Id = "Id_" + this.GenerateRandomString(25),
                 Password = "Password_" + this.GenerateRandomString(15),
                 Username = "Username_" + this.GenerateRandomString(15),
                 Address = this.GenerateAddress(),
                 BranchId = this.GenerateBranch().Id,
                 Person = this.GeneratePerson(),
-                Roles = EmployeeType.All.Select(t => new Service.Dto.Role
-                {
-                    Id = t.Id,
-                    Name = t.Name,
-                    Assigned = true
-                }).ToList()
+                Roles = Role.All
+                    .Select(t => new Service.Dto.Role
+                    {
+                        Id = t.Id,
+                        Name = t.Name,
+                        Assigned = true
+                    })
+                    .ToList()
             };
         }
 

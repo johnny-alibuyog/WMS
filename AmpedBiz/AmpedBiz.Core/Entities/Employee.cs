@@ -4,10 +4,8 @@ using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Employee : Entity<string, Employee>
+    public class Employee : User
     {
-        public virtual User User { get; set; }
-
         public virtual Tenant Tenant { get; set; }
 
         public virtual Contact Contact { get; set; }
@@ -18,12 +16,17 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<PurchaseOrder> PurchaseOrders { get; set; }
 
-        public Employee() : this(default(string)) { }
+        public Employee() : this(default(Guid)) { }
 
-        public Employee(string id) : base(id)
+        public Employee(Guid id) : base(id)
         {
             this.Orders = new Collection<Order>();
             this.PurchaseOrders = new Collection<PurchaseOrder>();
+        }
+
+        public override string ToString()
+        {
+            return this.FullName();
         }
     }
 }

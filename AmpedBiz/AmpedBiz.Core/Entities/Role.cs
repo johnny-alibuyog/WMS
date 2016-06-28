@@ -17,10 +17,14 @@ namespace AmpedBiz.Core.Entities
             this.Name = name;
         }
 
-        public static Role Admin = new Role("A", "Admin");
+        public static readonly Role Admin = new Role("A", "Admin");
 
-        public static Role Encoder = new Role("E", "Encoder");
+        public static readonly Role Encoder = new Role("E", "Encoder");
 
-        public static IEnumerable<Role> All = new Role[] { Admin, Encoder };
+        public static readonly Role Sales = new Role("S", "Sales");
+
+        public static readonly Role Warehouse = new Role("W", "Warehouse");
+
+        public static IEnumerable<Role> All = new Role[] { Admin, Encoder, Sales, Warehouse };
     }
 }

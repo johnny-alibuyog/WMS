@@ -8,7 +8,7 @@ namespace AmpedBiz.Data.EntityDefinitions
         public UserMapping()
         {
             Id(x => x.Id)
-                .GeneratedBy.Assigned();
+                .GeneratedBy.GuidComb();
 
             Map(x => x.Username);
 
@@ -26,6 +26,8 @@ namespace AmpedBiz.Data.EntityDefinitions
                 .Not.KeyUpdate()
                 .Inverse()
                 .AsBag();
+
+            //UseUnionSubclassForInheritanceMapping();
         }
     }
 }

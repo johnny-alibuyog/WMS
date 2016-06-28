@@ -31,7 +31,6 @@ namespace AmpedBiz.Service.Employees
 
                     var entity = message.MapTo(new Employee(message.Id));
                     entity.EmployeeType = session.Load<EmployeeType>(message.EmployeeTypeId);
-                    entity.User = session.Load<User>(message.User.Id);
 
                     session.Save(entity);
                     transaction.Commit();

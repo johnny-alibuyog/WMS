@@ -16,9 +16,9 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Component(x => x.Quantity, MeasureMapping.Map("Quantity_", nameof(GoodStockInventory)));
 
-            Component(x => x.UnitPrice, MoneyMapping.Map("UnitCost_", nameof(PurchaseOrderDetail)));
+            Component(x => x.UnitPrice, MoneyMapping.Map("UnitPrice_", nameof(PurchaseOrderDetail)));
 
-            Component(x => x.Total, MoneyMapping.Map("ExtendedPrice_", nameof(PurchaseOrderDetail)));
+            Component(x => x.Total, MoneyMapping.Map("Total_", nameof(PurchaseOrderDetail)));
 
             Map(x => x.DateReceived);
 

@@ -10,7 +10,7 @@ export class OrderInvoiced {
     this.invoicedOrders = [
       { 
         'orderDate': 'June 10, 2016',
-        'employee': 'John Doe',
+        'user': 'John Doe',
         'customer': 'SM Market',
         'status': 'Invoiced',
         'paymentDate' : 'June 20, 2016',

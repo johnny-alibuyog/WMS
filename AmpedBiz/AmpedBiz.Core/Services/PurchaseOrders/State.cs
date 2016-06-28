@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 
 namespace AmpedBiz.Core.Services.PurchaseOrders
 {
-    public abstract class State
+    public class State
     {
         protected PurchaseOrder Target { get; private set; }
 
         public virtual IDictionary<PurchaseOrderStatus, string> AllowedTransitions { get; protected set; }
+
+        public State() { }
 
         public State(PurchaseOrder target)
         {
@@ -30,7 +32,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
                 case PurchaseOrderStatus.Approved:
                     return new ApprovedState(target);
                 case PurchaseOrderStatus.Paid:
-                    return new PayedState(target);
+                    return new PaidState(target);
                 case PurchaseOrderStatus.Received:
                     return new ReceivedState(target);
                 case PurchaseOrderStatus.Completed:
@@ -42,67 +44,70 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             }
         }
 
-        public virtual void New(Employee createdBy, DateTime createdOn, PaymentType paymentType = null, Shipper shipper = null, Money shippingFee = null, Money tax = null, Supplier supplier = null)
+        public virtual PurchaseOrder New(User createdBy, DateTime createdOn, DateTime? expectedOn = null, PaymentType paymentType = null, 
+            Shipper shipper = null, Money shippingFee = null, Money tax = null, Supplier supplier = null, IEnumerable<PurchaseOrderDetail> purchaseOrderDetails = null)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.New))
                 throw new InvalidOperationException(string.Format("You cannot perform creation of new purchase order on {0} stage.", this.Target.Status));
 
-            this.Target.New(
+            return this.Target.New(
                 createdBy: createdBy,
                 createdOn: createdOn,
+                expectedOn: expectedOn,
                 paymentType: paymentType,
                 tax: tax,
                 shippingFee: shippingFee,
-                supplier: supplier
+                supplier: supplier,
+                purchaseOrderDetails: purchaseOrderDetails
             );
         }
 
-        public virtual void Submit(Employee submittedBy, DateTime submittedOn)
+        public virtual PurchaseOrder Submit(User submittedBy, DateTime submittedOn)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Submitted))
                 throw new InvalidOperationException(string.Format("You cannot perform submission of purchase order on {0} stage.", this.Target.Status));
 
-            this.Target.Submit(submittedBy, submittedOn);
+            return this.Target.Submit(submittedBy, submittedOn);
         }
 
-        public virtual void Approve(Employee approvedBy, DateTime approvedOn)
+        public virtual PurchaseOrder Approve(User approvedBy, DateTime approvedOn)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Approved))
                 throw new InvalidOperationException(string.Format("You cannot perform approval of purchase order on {0} stage.", this.Target.Status));
 
-            this.Target.Approve(approvedBy, approvedOn);
+            return this.Target.Approve(approvedBy, approvedOn);
         }
 
-        public virtual void Pay(Employee payedBy, DateTime payedOn, Money payment)
+        public virtual PurchaseOrder Pay(User paidBy, DateTime paidOn, Money payment)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Paid))
                 throw new InvalidOperationException(string.Format("You cannot perform approval of purchase order on {0} stage.", this.Target.Status));
 
-            this.Target.Pay(payedBy, payedOn, payment);
+            return this.Target.Pay(paidBy, paidOn, payment);
         }
 
-        public virtual void Recieve(Employee recieveBy, DateTime recieveOn)
+        public virtual PurchaseOrder Recieve(User recieveBy, DateTime recieveOn)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Received))
                 throw new InvalidOperationException(string.Format("You cannot perform recieving of purchase order on {0} stage.", this.Target.Status));
 
-            this.Target.Recieve(recieveBy, recieveOn);
+            return this.Target.Recieve(recieveBy, recieveOn);
         }
 
-        public virtual void Complete(Employee completedBy, DateTime completedOn)
+        public virtual PurchaseOrder Complete(User completedBy, DateTime completedOn)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Completed))
                 throw new InvalidOperationException(string.Format("You cannot perform completion of purchase order on {0} stage.", this.Target.Status));
 
-            this.Target.Complete(completedBy, completedOn);
+            return this.Target.Complete(completedBy, completedOn);
         }
 
-        public virtual void Cancel(Employee cancelledBy, DateTime cancelledOn, string cancellationReason)
+        public virtual PurchaseOrder Cancel(User cancelledBy, DateTime cancelledOn, string cancellationReason)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Cancelled))
                 throw new InvalidOperationException(string.Format("You cannot perform cancellation of purchase order on {0} stage.", this.Target.Status));
 
-            this.Target.Cancel(cancelledBy, cancelledOn, cancellationReason);
+            return this.Target.Cancel(cancelledBy, cancelledOn, cancellationReason);
         }
     }
 
@@ -137,9 +142,9 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
         }
     }
 
-    public class PayedState : State
+    public class PaidState : State
     {
-        public PayedState(PurchaseOrder target) : base(target)
+        public PaidState(PurchaseOrder target) : base(target)
         {
             this.AllowedTransitions.Add(PurchaseOrderStatus.Paid, "Pay");
             this.AllowedTransitions.Add(PurchaseOrderStatus.Received, "Recieve");

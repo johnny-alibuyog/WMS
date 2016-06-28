@@ -10,7 +10,7 @@ export class OrderForInvoicing {
     this.forInvoicingOrders = [
       { 
         'orderDate': 'June 10, 2016',
-        'employee': 'John Doe',
+        'user': 'John Doe',
         'customer': 'SM Market',
         'status': 'For Invoicing',
         'paymentDate' : 'June 20, 2016',

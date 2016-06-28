@@ -10,7 +10,7 @@ export class OrderCompleted {
     this.completedOrders = [
       { 
         'orderDate': 'June 10, 2016',
-        'employee': 'John Doe',
+        'user': 'John Doe',
         'customer': 'SM Market',
         'status': 'Completed',
         'paymentDate' : 'June 20, 2016',

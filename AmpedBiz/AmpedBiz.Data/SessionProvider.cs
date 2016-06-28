@@ -73,7 +73,7 @@ namespace AmpedBiz.Data
                         .Username(DbConfig.Instance.Username)
                         .Password(DbConfig.Instance.Password)
                     )
-                    //.ConnectionString(x => x.FromConnectionStringWithKey("BankingConnectionString"))
+                    //.ConnectionString(x => x.FromConnectionStringWithKey("AmpedbizConnectionString"))
                     .QuerySubstitutions("true 1, false 0, yes y, no n")
                     .DefaultSchema("public")
                     .AdoNetBatchSize(15)
@@ -82,7 +82,8 @@ namespace AmpedBiz.Data
                 )
                 .Mappings(x => x
                     .FluentMappings.AddFromAssemblyOf<UserMapping>()
-                    .Conventions.AddFromAssemblyOf<_CustomJoinedSubclassConvention>()
+                    //.Conventions.AddFromAssemblyOf<_CustomJoinedSubclassConvention>()
+                    .Conventions.AddFromAssemblyOf<BinaryColumnLengthConvention>()
                     .Conventions.Setup(o => o.Add(AutoImport.Never()))
                     .ExportTo(DbConfig.Instance.GetWorkingPath("Mappings"))
                 )

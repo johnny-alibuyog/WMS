@@ -26,8 +26,9 @@ export class BranchPage {
     this.filter.onFilter = () => this.getPage();
 
     this.sorter = sorter;
-    this.sorter["code"] = SortDirection.None;
     this.sorter["name"] = SortDirection.Ascending;
+    this.sorter["username"] = SortDirection.None;
+    this.sorter["branchName"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
 
     this.pager = pager;

@@ -26,6 +26,8 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Map(x => x.Status);
 
+            Map(x => x.ExpectedOn);
+
             References(x => x.CreatedBy);
 
             Map(x => x.CreatedOn);
@@ -38,9 +40,9 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Map(x => x.ApprovedOn);
 
-            References(x => x.PayedBy);
+            References(x => x.PaidBy);
 
-            Map(x => x.PayedOn);
+            Map(x => x.PaidOn);
 
             References(x => x.CompletedBy);
 

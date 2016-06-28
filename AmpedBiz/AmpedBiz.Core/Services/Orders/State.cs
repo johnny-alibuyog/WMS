@@ -48,7 +48,7 @@ namespace AmpedBiz.Core.Services.Orders
             }
         }
 
-        public virtual void New(Employee createdBy, PaymentType paymentType = null, Shipper shipper = null,
+        public virtual void New(User createdBy, PaymentType paymentType = null, Shipper shipper = null,
             Money shippingFee = null, decimal? taxRate = null, Customer customer = null, Branch branch = null)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.New))
@@ -65,7 +65,7 @@ namespace AmpedBiz.Core.Services.Orders
                 );
         }
 
-        public virtual void Stage(Employee stagedBy)
+        public virtual void Stage(User stagedBy)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Staged))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "staging", this.Target.Status));
@@ -73,7 +73,7 @@ namespace AmpedBiz.Core.Services.Orders
             this.Target.Stage(stagedBy);
         }
 
-        public virtual void Route(Employee routedBy)
+        public virtual void Route(User routedBy)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Routed))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "routing", this.Target.Status));
@@ -81,7 +81,7 @@ namespace AmpedBiz.Core.Services.Orders
             this.Target.Route(routedBy);
         }
 
-        public virtual void Invoice(Employee invoicedBy, Invoice invoice)
+        public virtual void Invoice(User invoicedBy, Invoice invoice)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Invoiced))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "invoicing", this.Target.Status));
@@ -89,7 +89,7 @@ namespace AmpedBiz.Core.Services.Orders
             this.Target.Invoice(invoicedBy, invoice);
         }
 
-        public virtual void PartiallyPay(Employee partiallyPaidBy)
+        public virtual void PartiallyPay(User partiallyPaidBy)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.PartiallyPaid))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "partial payment", this.Target.Status));
@@ -97,7 +97,7 @@ namespace AmpedBiz.Core.Services.Orders
             this.Target.PartiallyPay(partiallyPaidBy);
         }
 
-        public virtual void Complete(Employee completedBy)
+        public virtual void Complete(User completedBy)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Completed))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "completing", this.Target.Status));
@@ -105,7 +105,7 @@ namespace AmpedBiz.Core.Services.Orders
             this.Target.Complete(completedBy);
         }
 
-        public virtual void Cancel(Employee cancelledBy, string cancellationReason)
+        public virtual void Cancel(User cancelledBy, string cancellationReason)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Cancelled))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "cancelling", this.Target.Status));

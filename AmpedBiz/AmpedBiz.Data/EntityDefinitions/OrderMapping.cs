@@ -42,8 +42,6 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Map(x => x.IsActive);
 
-            //References(x => x.Employee);
-
             References(x => x.Customer);
 
             //HasMany(x => x.Invoices)

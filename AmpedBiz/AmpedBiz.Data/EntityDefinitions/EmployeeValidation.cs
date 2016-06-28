@@ -7,16 +7,9 @@ namespace AmpedBiz.Data.EntityDefinitions
     {
         public EmployeeValidation()
         {
-            Define(x => x.Id);
-
             Define(x => x.Contact);
 
             Define(x => x.EmployeeType);
-
-            Define(x => x.User)
-                .NotNullable()
-                .And
-                .IsValid();
         }
     }
 }

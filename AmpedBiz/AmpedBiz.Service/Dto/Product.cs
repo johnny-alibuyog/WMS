@@ -46,4 +46,24 @@
         public bool Discontinued { get; set; }
     }
 
+    public class ProductInventory
+    {
+        public string Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string UnitOfMeasure { get; set; }
+
+        public decimal? TargetValue { get; set; }
+
+        public decimal? AvailableValue { get; set; }
+
+        public decimal? BasePriceAmount { get; set; }
+
+        public decimal? RetailPriceAmount { get; set; }
+
+        public decimal? WholeSalePriceAmount { get; set; }
+
+        public decimal? DiscountAmount { get; set; }
+    }
 }

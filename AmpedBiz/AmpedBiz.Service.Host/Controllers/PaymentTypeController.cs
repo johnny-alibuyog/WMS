@@ -16,35 +16,35 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("{request.id}")]
-        public GetPaymentType.Response Get([FromUri]GetPaymentType.Request request)
+        public GetPaymentType.Response Process([FromUri]GetPaymentType.Request request)
         {
             return _mediator.Send(request ?? new GetPaymentType.Request());
         }
 
         [HttpGet()]
         [Route("")]
-        public GetPaymentTypeList.Response Get([FromUri]GetPaymentTypeList.Request request)
+        public GetPaymentTypeList.Response Process([FromUri]GetPaymentTypeList.Request request)
         {
             return _mediator.Send(request ?? new GetPaymentTypeList.Request());
         }
 
         [HttpPost()]
         [Route("page")]
-        public GetPaymentTypePage.Response Page([FromBody]GetPaymentTypePage.Request request)
+        public GetPaymentTypePage.Response Process([FromBody]GetPaymentTypePage.Request request)
         {
             return _mediator.Send(request ?? new GetPaymentTypePage.Request());
         }
 
         [HttpPost()]
         [Route("")]
-        public CreatePaymentType.Response Create([FromBody]CreatePaymentType.Request request)
+        public CreatePaymentType.Response Process([FromBody]CreatePaymentType.Request request)
         {
             return _mediator.Send(request ?? new CreatePaymentType.Request());
         }
 
         [HttpPut()]
         [Route("")]
-        public UpdatePaymentType.Response Update([FromBody]UpdatePaymentType.Request request)
+        public UpdatePaymentType.Response Process([FromBody]UpdatePaymentType.Request request)
         {
             return _mediator.Send(request ?? new UpdatePaymentType.Request());
         }

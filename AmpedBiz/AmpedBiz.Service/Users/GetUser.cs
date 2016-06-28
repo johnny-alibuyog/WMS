@@ -4,6 +4,7 @@ using MediatR;
 using NHibernate;
 using NHibernate.Linq;
 using NHibernate.Transform;
+using System;
 using System.Linq;
 
 namespace AmpedBiz.Service.Users
@@ -12,7 +13,7 @@ namespace AmpedBiz.Service.Users
     {
         public class Request : IRequest<Response>
         {
-            public string Id { get; set; }
+            public Guid Id { get; set; }
         }
 
         public class Response : Dto.User { }

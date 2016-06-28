@@ -10,7 +10,7 @@ export class OrderOnRoute {
     this.onRouteOrders = [
       { 
         'orderDate': 'June 10, 2016',
-        'employee': 'John Doe',
+        'user': 'John Doe',
         'customer': 'SM Market',
         'status': 'On Route',
         'paymentDate' : 'June 20, 2016',

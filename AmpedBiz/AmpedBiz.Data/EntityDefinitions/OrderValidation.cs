@@ -44,10 +44,6 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.IsActive);
 
-            //Define(x => x.Employee)
-            //    .NotNullable()
-            //    .And.IsValid();
-
             Define(x => x.Customer)
                 .NotNullable()
                 .And.IsValid();

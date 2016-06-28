@@ -32,7 +32,7 @@ namespace AmpedBiz.Data.Seeders
         {
             var data = new List<Product>();
 
-            for (int i = 0; i < 36; i++)
+            for (int i = 0; i < 580; i++)
             {
                 data.Add(new Product($"product{i}")
                 {
@@ -121,7 +121,7 @@ namespace AmpedBiz.Data.Seeders
                         item.Discontinued = RotateDiscontinued();
                         item.BasePrice = prices.BasePrice;
                         item.RetailPrice = prices.RetailPrice;
-                        item.WholesalePrice = prices.WholeSalePrice;
+                        item.WholeSalePrice = prices.WholeSalePrice;
 
                         item.GoodStockInventory.TargetLevel = new Measure(random.NextDecimal(150M, 300M), item.GoodStockInventory.UnitOfMeasure);
                         item.GoodStockInventory.ReorderLevel = item.GoodStockInventory.TargetLevel - new Measure(random.NextDecimal(50M, 100M), item.GoodStockInventory.UnitOfMeasure);

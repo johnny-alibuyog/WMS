@@ -26,7 +26,7 @@ namespace AmpedBiz.Service.Dto
 
         public decimal TotalAmount { get; set; }
 
-        public DateTime? DateReceived { get; set; }
+        public DateTime? ReceivedOn { get; set; }
 
         public PurchaseOrderDetailStatus Status { get; set; }
     }
@@ -41,9 +41,9 @@ namespace AmpedBiz.Service.Dto
 
         public string QuantityValue { get; set; }
 
-        public string UnitCostAmount { get; set; }
+        public string UnitPriceAmount { get; set; }
 
-        public string ExtendedPriceAmount { get; set; }
+        public string TotalAmount { get; set; }
 
         public string DateReceived { get; set; }
 

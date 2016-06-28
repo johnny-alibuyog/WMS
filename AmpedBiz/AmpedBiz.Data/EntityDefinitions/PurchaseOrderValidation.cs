@@ -30,6 +30,8 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.Status);
 
+            Define(x => x.ExpectedOn);
+
             Define(x => x.CreatedBy);
 
             Define(x => x.CreatedOn);
@@ -42,9 +44,9 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.ApprovedOn);
 
-            Define(x => x.PayedBy);
+            Define(x => x.PaidBy);
 
-            Define(x => x.PayedOn);
+            Define(x => x.PaidOn);
 
             Define(x => x.CompletedBy);
 

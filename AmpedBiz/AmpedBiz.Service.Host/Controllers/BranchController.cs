@@ -23,35 +23,35 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("{request.id}")]
-        public GetBranch.Response Get([FromUri]GetBranch.Request request)
+        public GetBranch.Response Process([FromUri]GetBranch.Request request)
         {
             return _mediator.Send(request ?? new GetBranch.Request());
         }
 
         [HttpGet()]
         [Route("")]
-        public GetBranchList.Response Get([FromUri]GetBranchList.Request request)
+        public GetBranchList.Response Process([FromUri]GetBranchList.Request request)
         {
             return _mediator.Send(request ?? new GetBranchList.Request());
         }
 
         [HttpPost()]
         [Route("page")]
-        public GetBranchPage.Response Page([FromBody]GetBranchPage.Request request)
+        public GetBranchPage.Response Process([FromBody]GetBranchPage.Request request)
         {
             return _mediator.Send(request ?? new GetBranchPage.Request());
         }
 
         [HttpPost()]
         [Route("")]
-        public CreateBranch.Response Create([FromBody]CreateBranch.Request request)
+        public CreateBranch.Response Process([FromBody]CreateBranch.Request request)
         {
             return _mediator.Send(request ?? new CreateBranch.Request());
         }
 
         [HttpPut()]
         [Route("")]
-        public UpdateBranch.Response Update([FromBody]UpdateBranch.Request request)
+        public UpdateBranch.Response Process([FromBody]UpdateBranch.Request request)
         {
             return _mediator.Send(request ?? new UpdateBranch.Request());
         }

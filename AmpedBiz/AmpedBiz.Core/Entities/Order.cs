@@ -57,19 +57,19 @@ namespace AmpedBiz.Core.Entities
 
         public virtual bool IsActive { get; protected set; }
 
-        public virtual Employee CreatedBy { get; protected set; }
+        public virtual User CreatedBy { get; protected set; }
 
-        public virtual Employee StagedBy { get; protected set; }
+        public virtual User StagedBy { get; protected set; }
 
-        public virtual Employee RoutedBy { get; protected set; }
+        public virtual User RoutedBy { get; protected set; }
 
-        public virtual Employee InvoicedBy { get; protected set; }
+        public virtual User InvoicedBy { get; protected set; }
 
-        public virtual Employee PartiallyPaidBy { get; protected set; }
+        public virtual User PartiallyPaidBy { get; protected set; }
 
-        public virtual Employee CompletedBy { get; protected set; }
+        public virtual User CompletedBy { get; protected set; }
 
-        public virtual Employee CancelledBy { get; protected set; }
+        public virtual User CancelledBy { get; protected set; }
 
         public virtual Customer Customer { get; protected set; }
 
@@ -77,14 +77,12 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<OrderDetail> OrderDetails { get; protected set; }
 
-        public virtual State CurrentState
+        public virtual State State
         {
             get { return State.GetState(this); }
         }
 
-        public Order() : this(default(Guid))
-        {
-        }
+        public Order() : this(default(Guid)) { }
 
         public Order(Guid id) : base(id)
         {
@@ -92,12 +90,12 @@ namespace AmpedBiz.Core.Entities
             this.OrderDetails = new Collection<OrderDetail>();
         }
 
-        public Order(PaymentType paymentType, Shipper shipper, decimal? taxRate, Money shippingFee, Employee employee, Customer customer, Branch branch) : this()
+        public Order(PaymentType paymentType, Shipper shipper, decimal? taxRate, Money shippingFee, User user, Customer customer, Branch branch) : this()
         {
-            New(paymentType, shipper, taxRate, shippingFee, employee, customer, branch);
+            New(paymentType, shipper, taxRate, shippingFee, user, customer, branch);
         }
 
-        public virtual void New(PaymentType paymentType, Shipper shipper, decimal? taxRate, Money shippingFee, Employee employee, Customer customer, Branch branch)
+        public virtual void New(PaymentType paymentType, Shipper shipper, decimal? taxRate, Money shippingFee, User user, Customer customer, Branch branch)
         {
             this.Status = OrderStatus.New;
             this.IsActive = true;
@@ -106,61 +104,61 @@ namespace AmpedBiz.Core.Entities
             this.Shipper = shipper;
             this.TaxRate = taxRate ?? 0.0M;
             this.ShippingFee = shippingFee ?? new Money(0.0M);
-            this.CreatedBy = employee;
+            this.CreatedBy = user;
             this.Customer = customer;
             this.Branch = branch;
         }
 
-        public virtual void Stage(Employee employee)
+        public virtual void Stage(User user)
         {
             this.Status = OrderStatus.Staged;
-            this.StagedBy = employee;
+            this.StagedBy = user;
             this.StagedDate = DateTime.Now;
         }
-        public virtual void Route(Employee employee)
+        public virtual void Route(User user)
         {
             this.Status = OrderStatus.Routed;
-            this.RoutedBy = employee;
+            this.RoutedBy = user;
             this.RoutedDate = DateTime.Now;
 
             //allocate product from inventory
         }
 
-        public virtual void Invoice(Employee employee, Invoice invoice)
+        public virtual void Invoice(User user, Invoice invoice)
         {
             invoice.Order = this;
             this.Invoices.Add(invoice);
             this.Status = OrderStatus.Invoiced;
-            this.InvoicedBy = employee;
+            this.InvoicedBy = user;
             this.InvoicedDate = DateTime.Now;
 
             //deduct from inventory
         }
 
-        public virtual void PartiallyPay(Employee employee)
+        public virtual void PartiallyPay(User user)
         {
             this.Status = OrderStatus.PartiallyPaid;
             this.PaymentDate = DateTime.Now;
-            this.PartiallyPaidBy = employee;
+            this.PartiallyPaidBy = user;
 
             //no invoice yet?
         }
 
-        public virtual void Complete(Employee employee)
+        public virtual void Complete(User user)
         {
             this.Status = OrderStatus.Completed;
             this.IsActive = false;
             this.CompletedDate = DateTime.Now;
-            this.CompletedBy = employee;
+            this.CompletedBy = user;
         }
 
-        public virtual void Cancel(Employee employee, string reason)
+        public virtual void Cancel(User user, string reason)
         {
             this.Status = OrderStatus.Cancelled;
             this.IsActive = false;
             this.CancelDate = DateTime.Now;
             this.CancelReason = reason;
-            this.CancelledBy = employee;
+            this.CancelledBy = user;
         }
 
         public virtual void AddOrderDetail(OrderDetail orderDetail)

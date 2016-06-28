@@ -13,6 +13,8 @@ namespace AmpedBiz.Core.Services.PurchaseOrderDetails
 
         public virtual IDictionary<PurchaseOrderDetailStatus, string> AllowedTransitions { get; protected set; }
 
+        public State() { }
+
         public State(PurchaseOrderDetail purchaseOrderDetail)
         {
             this.Target = purchaseOrderDetail;
@@ -36,36 +38,36 @@ namespace AmpedBiz.Core.Services.PurchaseOrderDetails
             }
         }
 
-        public virtual void New(Product product, Money unitPrice, decimal quantity)
+        public virtual PurchaseOrderDetail New(Product product, Money unitPrice, decimal quantity)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderDetailStatus.New))
                 throw new InvalidOperationException(string.Format("You cannot perform creation of new purchase order detail on {0} stage.", this.Target.Status));
 
-            this.Target.New(product: product, unitPrice: unitPrice, quantity: quantity);
+            return this.Target.New(product: product, unitPrice: unitPrice, quantity: quantity);
         }
 
-        protected internal virtual void Submit()
+        public virtual PurchaseOrderDetail Submit()
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderDetailStatus.Submitted))
                 throw new InvalidOperationException(string.Format("You cannot perform submission of new purchase order detail on {0} stage.", this.Target.Status));
 
-            this.Target.Submit();
+            return this.Target.Submit();
         }
 
-        protected internal virtual void Post()
+        public virtual PurchaseOrderDetail Post()
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderDetailStatus.Posted))
                 throw new InvalidOperationException(string.Format("You cannot perform post of new purchase order detail on {0} stage.", this.Target.Status));
 
-            this.Target.Post();
+            return this.Target.Post();
         }
 
-        protected internal virtual void Cancel()
+        public virtual PurchaseOrderDetail Cancel()
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderDetailStatus.Cancelled))
                 throw new InvalidOperationException(string.Format("You cannot perform cancellation of new purchase order detail on {0} stage.", this.Target.Status));
 
-            this.Target.Cancel();
+            return this.Target.Cancel();
         }
     }
 

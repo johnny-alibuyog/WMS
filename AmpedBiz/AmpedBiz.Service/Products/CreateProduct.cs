@@ -33,7 +33,7 @@ namespace AmpedBiz.Service.Products
                     var entity = message.MapTo(new Product(message.Id));
                     entity.BasePrice = new Money(message.BasePriceAmount, currency);
                     entity.RetailPrice = new Money(message.RetailPriceAmount, currency);
-                    entity.WholesalePrice = new Money(message.WholesalePriceAmount, currency);
+                    entity.WholeSalePrice = new Money(message.WholesalePriceAmount, currency);
                     entity.Supplier = session.Load<Supplier>(message.SupplierId);
                     entity.Category = session.Load<ProductCategory>(message.CategoryId);
 

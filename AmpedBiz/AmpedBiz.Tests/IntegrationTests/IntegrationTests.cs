@@ -1,29 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AmpedBiz.Core.Entities;
 using AmpedBiz.Data;
+using AmpedBiz.Data.Configurations;
+using AmpedBiz.Data.Seeders;
+using AmpedBiz.Service.Branches;
+using AmpedBiz.Service.Customers;
+using AmpedBiz.Service.Dto.Mappers;
 using AmpedBiz.Service.Host.Plugins.Providers;
-using AmpedBiz.Service.ProductCategories;
-using AmpedBiz.Service.Employees;
-using NHibernate.Validator.Engine;
-using NUnit.Framework;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Service.Products;
+using AmpedBiz.Service.PurchaseOrders;
+using AmpedBiz.Service.Suppliers;
 using AmpedBiz.Service.Users;
 using NHibernate;
-using AmpedBiz.Data.Configurations;
-using AmpedBiz.Service.Branches;
-using AmpedBiz.Service.EmployeeTypes;
-using System.Diagnostics;
-using AmpedBiz.Service.Customers;
-using AmpedBiz.Data.Seeders;
-using System.Reflection;
 using NHibernate.Linq;
-using AmpedBiz.Service.Suppliers;
-using AmpedBiz.Service.Products;
-using AmpedBiz.Service.Dto.Mappers;
-using AmpedBiz.Service.PurchaseOrders;
+using NHibernate.Validator.Engine;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AmpedBiz.Tests.IntegrationTests
 {
@@ -33,7 +26,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
     Entity Creations
 
-    - Create Employees
+    - Create Users
     - Create Customers
     - Create Suppliers
     - Create Product Categories
@@ -76,7 +69,6 @@ namespace AmpedBiz.Tests.IntegrationTests
         private IAuditProvider auditProvider;
 
         private List<Currency> currencies = new List<Currency>();
-        private List<EmployeeType> employeeTypes = new List<EmployeeType>();
         private List<PaymentType> paymentTypes = new List<PaymentType>();
         private List<PricingScheme> pricingSchemes = new List<PricingScheme>();
         private List<ProductCategory> productCategories = new List<ProductCategory>();
@@ -125,7 +117,6 @@ namespace AmpedBiz.Tests.IntegrationTests
             using (var session = this.sessionFactory.OpenSession())
             {
                 this.currencies = session.Query<Currency>().ToList();
-                this.employeeTypes = session.Query<EmployeeType>().ToList();
                 this.paymentTypes = session.Query<PaymentType>().ToList();
                 this.pricingSchemes = session.Query<PricingScheme>().ToList();
                 this.productCategories = session.Query<ProductCategory>().ToList();
@@ -149,56 +140,55 @@ namespace AmpedBiz.Tests.IntegrationTests
             return handler as Service.Dto.Branch;
         }
 
-        private Service.Dto.User CreateUser(Service.Dto.User user)
+        private List<Service.Dto.User> CreateUsers(int count = 1)
         {
-            var request = new CreateUser.Request()
-            {
-                Address = user.Address,
-                BranchId = user.BranchId,
-                Id = user.Id,
-                Password = user.Password,
-                Person = user.Person,
-                Roles = user.Roles,
-                Username = user.Username
-            };
-
-            var handler = new CreateUser.Handler(this.sessionFactory).Handle(request);
-
-            return handler as Service.Dto.User;
-        }
-
-        private List<Service.Dto.Employee> CreateEmployees(int count = 1)
-        {
-            var employees = new List<Service.Dto.Employee>();
-
+            var users = new List<Service.Dto.User>();
             var branch = this.CreateBranch(this.dummyData.GenerateBranch());
-            var user = this.dummyData.GenerateUser();
-            user.BranchId = branch.Id;
-
-            this.CreateUser(user);
 
             var empTypeIndex = -1;
-            for (var i = 0; i< count; i++)
+            for (var i = 0; i < count; i++)
             {
                 empTypeIndex++;
 
-                var request = new CreateEmployee.Request()
+                var request = new CreateUser.Request()
                 {
-                    Id = dummyData.GenerateUniqueString("Id"),
-                    Contact = dummyData.GenerateContact(),
-                    EmployeeTypeId = this.employeeTypes[empTypeIndex].Id,
-                    User = user
+                    //Id = dummyData.GenerateUniqueString("Id"),
+                    //Contact = dummyData.GenerateContact(),
+                    BranchId = branch.Id,
+                    Username = dummyData.GenerateUniqueString("Username"),
+                    Password = dummyData.GenerateUniqueString("Password"),
+                    Person = new Service.Dto.Person()
+                    {
+                        FirstName = dummyData.GenerateUniqueString("FirstName"),
+                        MiddleName = dummyData.GenerateUniqueString("MiddleName"),
+                        LastName = dummyData.GenerateUniqueString("LastName"),
+                        BirthDate = DateTime.Today
+                    },
+                    Address = new Service.Dto.Address()
+                    {
+                        Street = dummyData.GenerateUniqueString("Street"),
+                        Barangay = dummyData.GenerateUniqueString("Barangay"),
+                        City = dummyData.GenerateUniqueString("City"),
+                        Province = dummyData.GenerateUniqueString("Province"),
+                        Region = dummyData.GenerateUniqueString("Region"),
+                        Country = dummyData.GenerateUniqueString("Country"),
+                        ZipCode = dummyData.GenerateUniqueString("ZipCode")
+                    },
+                    Roles = Role.All.Select(x => new Service.Dto.Role()
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Assigned = true
+                    })
+                    .ToList()
                 };
 
-                var handler = new CreateEmployee.Handler(this.sessionFactory).Handle(request);
+                var handler = new CreateUser.Handler(this.sessionFactory).Handle(request);
 
-                employees.Add(handler as Service.Dto.Employee);
-
-                if (empTypeIndex == this.employeeTypes.Count - 1)
-                    empTypeIndex = 0;
+                users.Add(handler as Service.Dto.User);
             }
 
-            return employees;
+            return users;
         }
 
         private List<Service.Dto.Customer> CreateCustomers(int count = 1)
@@ -316,30 +306,29 @@ namespace AmpedBiz.Tests.IntegrationTests
             var pOrders = new List<Service.Dto.PurchaseOrder>();
 
             var suppliers = new List<Supplier>();
-            var employees = new List<Employee>();
+            var users = new List<User>();
 
             using (var session = this.sessionFactory.OpenSession())
             {
                 suppliers = session.Query<Supplier>().ToList();
-                employees = session.Query<Employee>().ToList();
+                users = session.Query<User>().ToList();
             }
 
             for (var i = 0; i < count; i++)
             {
-                var request = new CreatePurchaseOrder.Request()
+                var request = new CreateNewPurchaseOder.Request()
                 {
                     Id = Guid.NewGuid(),
                     Status = Service.Dto.PurchaseOrderStatus.New,
-                    EmployeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id,
+                    UserId = users[this.rnd.Next(0, users.Count - 1)].Id,
                     SupplierId = suppliers[this.rnd.Next(0, suppliers.Count - 1)].Id,
                     PaymentTypeId = this.paymentTypes[this.rnd.Next(0, this.paymentTypes.Count - 1)].Id,
-                    ExpectedDate = DateTime.Now.AddDays(10),
-                    PaymentDate = DateTime.Now.AddDays(5)
+                    ExpectedOn = DateTime.Now.AddDays(10),
+                    PaidOn = DateTime.Now.AddDays(5)
                 };
                 request.PurchaseOrderDetails = this.CreatePurchaseOrderDetails(request, this.rnd.Next(10, 20));
 
-
-                var handler = new CreatePurchaseOrder.Handler(this.sessionFactory).Handle(request);
+                var handler = new CreateNewPurchaseOder.Handler(this.sessionFactory).Handle(request);
 
                 pOrders.Add(handler as Service.Dto.PurchaseOrder);
             }
@@ -360,11 +349,11 @@ namespace AmpedBiz.Tests.IntegrationTests
 
                 poDetails.Add(new Service.Dto.PurchaseOrderDetail
                 {
-                   TotalAmount = product.RetailPriceAmount + 1m,
+                   //TotalAmount = product.RetailPriceAmount + 1m,
                    ProductId = product.Id,
                    PurchaseOrderId = po.Id,
                    QuantityValue = this.rnd.Next(1, 100),
-                   UnitPriceAmount = product.BasePriceAmount + 1m
+                   UnitPriceAmount = product.RetailPriceAmount + 1m,
                 });
             }
 
@@ -374,22 +363,22 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         private IEnumerable<Service.Dto.PurchaseOrder> GetPurchaseOrders(Service.Dto.PurchaseOrderStatus status, int count = 1)
         {
-            var request = new GetPurchaseOrderList.Request() { };
-            var pOrders = new GetPurchaseOrderList.Handler(this.sessionFactory).Handle(request);
+            var request = new GetPurchaseOderList.Request() { };
+            var pOrders = new GetPurchaseOderList.Handler(this.sessionFactory).Handle(request);
 
             return pOrders.Where(po => po.Status == Service.Dto.PurchaseOrderStatus.New).Take(count);
         }
 
         private Service.Dto.PurchaseOrder SubmitPurchaseOrder(Service.Dto.PurchaseOrder pOrder)
         {
-            var employees = new List<Employee>();
+            var users = new List<User>();
 
             using (var session = this.sessionFactory.OpenSession())
-                employees = session.Query<Employee>().ToList();
+                users = session.Query<User>().ToList();
 
-            var employeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id;
+            var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
 
-            var request = new SubmitPurchaseOrder.Request() { Id = pOrder.Id, EmployeeId = employeeId };
+            var request = new SubmitPurchaseOrder.Request() { Id = pOrder.Id, UserId = userId };
             var order = new SubmitPurchaseOrder.Handler(this.sessionFactory).Handle(request);
 
             return order;
@@ -397,44 +386,59 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         private Service.Dto.PurchaseOrder ApprovePurchaseOrder(Service.Dto.PurchaseOrder pOrder)
         {
-            var employees = new List<Employee>();
+            var users = new List<User>();
 
             using (var session = this.sessionFactory.OpenSession())
-                employees = session.Query<Employee>().ToList();
+                users = session.Query<User>().ToList();
 
-            var employeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id;
+            var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
 
-            var request = new ApprovePurchaseOrder.Request() { Id = pOrder.Id, EmployeeId = employeeId };
-            var order = new ApprovePurchaseOrder.Handler(this.sessionFactory).Handle(request);
+            var request = new ApprovePurchaseOder.Request() { Id = pOrder.Id, UserId = userId };
+            var order = new ApprovePurchaseOder.Handler(this.sessionFactory).Handle(request);
+
+            return order;
+        }
+
+        private Service.Dto.PurchaseOrder PaymentPurchaseOrder(Service.Dto.PurchaseOrder pOrder)
+        {
+            var users = new List<User>();
+
+            using (var session = this.sessionFactory.OpenSession())
+                users = session.Query<User>().ToList();
+
+            var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
+
+            var request = new PayPurchaseOrder.Request() { Id = pOrder.Id, UserId = userId };
+            var order = new PayPurchaseOrder.Handler(this.sessionFactory).Handle(request);
 
             return order;
         }
 
         private Service.Dto.PurchaseOrder CancelPurchaseOrder(Service.Dto.PurchaseOrder pOrder)
         {
-            var employees = new List<Employee>();
+            var users = new List<User>();
 
             using (var session = this.sessionFactory.OpenSession())
-                employees = session.Query<Employee>().ToList();
+                users = session.Query<User>().ToList();
 
-            var employeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id;
+            var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
 
-            var request = new CancelPurchaseOrder.Request() { Id = pOrder.Id, EmployeeId = employeeId, Reason = "Products not needed" };
-            var order = new CancelPurchaseOrder.Handler(this.sessionFactory).Handle(request);
+            var request = new CancelPurchaseOder.Request() { Id = pOrder.Id, UserId = userId, CancelReason = "Products not needed" };
+            var order = new CancelPurchaseOder.Handler(this.sessionFactory).Handle(request);
 
             return order;
         }
 
         private Service.Dto.PurchaseOrder PayPurchaseOrder(Service.Dto.PurchaseOrder pOrder)
         {
-            var employees = new List<Employee>();
+            var users = new List<User>();
 
             using (var session = this.sessionFactory.OpenSession())
-                employees = session.Query<Employee>().ToList();
+                users = session.Query<User>().ToList();
 
-            var employeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id;
+            var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
 
-            var request = new PayPurchaseOrder.Request() { Id = pOrder.Id, EmployeeId = employeeId, TotalAmount = pOrder.TotalAmount };
+            var request = new PayPurchaseOrder.Request() { Id = pOrder.Id, UserId = userId, TotalAmount = pOrder.TotalAmount };
             var order = new PayPurchaseOrder.Handler(this.sessionFactory).Handle(request);
 
             return order;
@@ -442,14 +446,14 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         private Service.Dto.PurchaseOrder ReceivePurchaseOrder(Service.Dto.PurchaseOrder pOrder)
         {
-            var employees = new List<Employee>();
+            var users = new List<User>();
 
             using (var session = this.sessionFactory.OpenSession())
-                employees = session.Query<Employee>().ToList();
+                users = session.Query<User>().ToList();
 
-            var employeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id;
+            var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
 
-            var request = new ReceivePurchaseOrder.Request() { Id = pOrder.Id, EmployeeId = employeeId };
+            var request = new ReceivePurchaseOrder.Request() { Id = pOrder.Id, UserId = userId };
             var order = new ReceivePurchaseOrder.Handler(this.sessionFactory).Handle(request);
 
             return order;
@@ -457,15 +461,15 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         private Service.Dto.PurchaseOrder CompletePurchaseOrder(Service.Dto.PurchaseOrder pOrder)
         {
-            var employees = new List<Employee>();
+            var users = new List<User>();
 
             using (var session = this.sessionFactory.OpenSession())
-                employees = session.Query<Employee>().ToList();
+                users = session.Query<User>().ToList();
 
-            var employeeId = employees[this.rnd.Next(0, employees.Count - 1)].Id;
+            var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
 
-            var request = new CompletePurchaseOrder.Request() { Id = pOrder.Id, EmployeeId = employeeId };
-            var order = new CompletePurchaseOrder.Handler(this.sessionFactory).Handle(request);
+            var request = new CompletePurchaseOder.Request() { Id = pOrder.Id, UserId = userId };
+            var order = new CompletePurchaseOder.Handler(this.sessionFactory).Handle(request);
 
             return order;
         }
@@ -473,11 +477,11 @@ namespace AmpedBiz.Tests.IntegrationTests
         [Test]
         public void CommonScenarioTests()
         {
-            //-----Create Employees-----
-            var employees = this.CreateEmployees(5);
+            //-----Create Users -----
+            var users = this.CreateUsers(5);
 
-            CollectionAssert.IsNotEmpty(employees);
-            CollectionAssert.AllItemsAreNotNull(employees);
+            CollectionAssert.IsNotEmpty(users);
+            CollectionAssert.AllItemsAreNotNull(users);
 
             //-----Create Customers-----
             var customers = this.CreateCustomers(10);
@@ -508,7 +512,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             New = 1,
             Submitted = 2,
             Approved = 3,
-            Payed = 4,
+            Paid = 4,
             Received = 5,
             Completed = 6,
             Cancelled = 7
@@ -544,7 +548,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             var rejectedPurchaseOrder = this.CancelPurchaseOrder(purchaseOrder2);
             Assert.IsTrue(rejectedPurchaseOrder.Status == Service.Dto.PurchaseOrderStatus.Cancelled);
 
-            //- Pay PO - Assert Status, it should be PAYED
+            //- Pay PO - Assert Status, it should be PAID
             var paidPurchaseOrder = this.PayPurchaseOrder(purchaseOrder1);
             Assert.IsTrue(paidPurchaseOrder.Status == Service.Dto.PurchaseOrderStatus.Paid);
 

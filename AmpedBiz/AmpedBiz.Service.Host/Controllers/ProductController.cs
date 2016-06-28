@@ -25,35 +25,35 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("{request.id}")]
-        public GetProduct.Response Get([FromUri]GetProduct.Request request)
+        public GetProduct.Response Process([FromUri]GetProduct.Request request)
         {
             return _mediator.Send(request ?? new GetProduct.Request());
         }
 
         [HttpGet()]
         [Route("")]
-        public GetProductList.Response Get([FromUri]GetProductList.Request request)
+        public GetProductList.Response Process([FromUri]GetProductList.Request request)
         {
             return _mediator.Send(request ?? new GetProductList.Request());
         }
 
         [HttpPost()]
         [Route("page")]
-        public GetProductPage.Response Page([FromBody]GetProductPage.Request request)
+        public GetProductPage.Response Process([FromBody]GetProductPage.Request request)
         {
             return _mediator.Send(request ?? new GetProductPage.Request());
         }
 
         [HttpPost()]
         [Route("")]
-        public CreateProduct.Response Create([FromBody]CreateProduct.Request request)
+        public CreateProduct.Response Process([FromBody]CreateProduct.Request request)
         {
             return _mediator.Send(request ?? new CreateProduct.Request());
         }
 
         [HttpPut()]
         [Route("")]
-        public UpdateProduct.Response Update([FromBody]UpdateProduct.Request request)
+        public UpdateProduct.Response Process([FromBody]UpdateProduct.Request request)
         {
             return _mediator.Send(request ?? new UpdateProduct.Request());
         }

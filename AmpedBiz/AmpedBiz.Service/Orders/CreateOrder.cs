@@ -13,7 +13,7 @@ namespace AmpedBiz.Service.Orders
     {
         public class Request : Dto.Order, IRequest<Response>
         {
-            public virtual string EmployeeId { get; set; }
+            public virtual string UserId { get; set; }
         }
 
         public class Response : Dto.Order { }
@@ -36,8 +36,8 @@ namespace AmpedBiz.Service.Orders
                     var currency = session.Load<Currency>(Currency.PHP.Id);
                     var entity = message.MapTo(new Order(message.Id));
 
-                    entity.CurrentState.New(
-                        createdBy: session.Load<Employee>(message.EmployeeId),
+                    entity.State.New(
+                        createdBy: session.Load<User>(message.UserId),
                         paymentType: session.Load<PaymentType>(message.PaymentTypeId),
                         shipper: null,
                         shippingFee: new Money(message.ShippingFeeAmount, currency),

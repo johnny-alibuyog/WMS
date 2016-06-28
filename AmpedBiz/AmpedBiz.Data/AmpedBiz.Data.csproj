@@ -109,10 +109,6 @@
     <Compile Include="Conventions\_CustomJoinedSubclassConvention.cs" />
     <Compile Include="CustomTypes\JsonType.cs" />
     <Compile Include="CustomTypes\XmlType.cs" />
-    <Compile Include="EntityDefinitions\EmployeeMapping.cs" />
-    <Compile Include="EntityDefinitions\EmployeeTypeMapping.cs" />
-    <Compile Include="EntityDefinitions\EmployeeTypeValidation.cs" />
-    <Compile Include="EntityDefinitions\EmployeeValidation.cs" />
     <Compile Include="EntityDefinitions\InventoryMapping.cs" />
     <Compile Include="EntityDefinitions\InventoryValidation.cs" />
     <Compile Include="EntityDefinitions\MeasureMapping.cs" />
@@ -137,8 +133,6 @@
     <Compile Include="Seeders\BranchSeeder.cs" />
     <Compile Include="Seeders\CurrencySeeder.cs" />
     <Compile Include="Seeders\CustomerSeeder.cs" />
-    <Compile Include="Seeders\EmployeeSeeder.cs" />
-    <Compile Include="Seeders\EmployeeTypeSeeder.cs" />
     <Compile Include="Seeders\ISeeder.cs" />
     <Compile Include="Seeders\OrderSeeder.cs" />
     <Compile Include="Seeders\PaymentTypeSeeder.cs" />

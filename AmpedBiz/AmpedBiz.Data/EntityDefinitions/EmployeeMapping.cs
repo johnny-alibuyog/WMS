@@ -3,32 +3,29 @@ using FluentNHibernate.Mapping;
 
 namespace AmpedBiz.Data.EntityDefinitions
 {
-    public class EmployeeMapping : ClassMap<Employee>
+    public class EmployeeMapping : SubclassMap<Employee>
     {
         public EmployeeMapping()
         {
-            Id(x => x.Id)
-                .GeneratedBy.Assigned();
-
             Component(x => x.Contact);
 
             References(x => x.EmployeeType);
 
-            References(x => x.User);
+            //DiscriminatorValue("Employee");
 
-            HasMany(x => x.Orders)
-                .Cascade.AllDeleteOrphan()
-                .Not.KeyNullable()
-                .Not.KeyUpdate()
-                .Inverse()
-                .AsBag();
+            //HasMany(x => x.Orders)
+            //    .Cascade.AllDeleteOrphan()
+            //    .Not.KeyNullable()
+            //    .Not.KeyUpdate()
+            //    .Inverse()
+            //    .AsBag();
 
-            HasMany(x => x.PurchaseOrders)
-                .Cascade.AllDeleteOrphan()
-                .Not.KeyNullable()
-                .Not.KeyUpdate()
-                .Inverse()
-                .AsBag();
+            //HasMany(x => x.PurchaseOrders)
+            //    .Cascade.AllDeleteOrphan()
+            //    .Not.KeyNullable()
+            //    .Not.KeyUpdate()
+            //    .Inverse()
+            //    .AsBag();
         }
     }
 }

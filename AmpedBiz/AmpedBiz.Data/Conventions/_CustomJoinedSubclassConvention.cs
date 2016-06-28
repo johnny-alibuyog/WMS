@@ -19,7 +19,7 @@ namespace AmpedBiz.Data.Conventions
         public void Apply(IJoinedSubclassInstance instance)
         {
             instance.Table(_pluralizationService.Pluralize(instance.EntityType.Name));
-            instance.Key.Column(instance.EntityType.Name + "Id");
+            //instance.Key.Column(instance.EntityType.Name + "Id");
         }
     }
 }

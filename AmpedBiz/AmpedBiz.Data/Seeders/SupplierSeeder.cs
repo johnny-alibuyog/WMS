@@ -25,7 +25,7 @@ namespace AmpedBiz.Data.Seeders
 
         public int ExecutionOrder
         {
-            get { return 5; }
+            get { return 6; }
         }
 
         public void Seed()

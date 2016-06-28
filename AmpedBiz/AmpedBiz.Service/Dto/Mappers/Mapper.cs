@@ -17,12 +17,19 @@ namespace AmpedBiz.Service.Dto.Mappers
             ExpressMapper.Mapper.Register<Entity.Customer, GetCustomer.Response>()
                 .Member(x => x.CreditLimitAmount, x => x.CreditLimit.Amount)
                 .Member(x => x.PricingSchemeId, x => x.PricingScheme.Id);
+            
+            ExpressMapper.Mapper.Register<Entity.Product, Dto.Product>()
+                .Member(x => x.SupplierId, x => x.Supplier.Id)
+                .Member(x => x.CategoryId, x => x.Category.Id)
+                .Member(x => x.BasePriceAmount, x => x.BasePrice.Amount)
+                .Member(x => x.WholesalePriceAmount, x => x.WholeSalePrice.Amount)
+                .Member(x => x.RetailPriceAmount, x => x.RetailPrice.Amount);
 
             ExpressMapper.Mapper.Register<Entity.Product, GetProduct.Response>()
                 .Member(x => x.SupplierId, x => x.Supplier.Id)
                 .Member(x => x.CategoryId, x => x.Category.Id)
                 .Member(x => x.BasePriceAmount, x => x.BasePrice.Amount)
-                .Member(x => x.WholesalePriceAmount, x => x.WholesalePrice.Amount)
+                .Member(x => x.WholesalePriceAmount, x => x.WholeSalePrice.Amount)
                 .Member(x => x.RetailPriceAmount, x => x.RetailPrice.Amount);
 
             ExpressMapper.Mapper.Register<Entity.UnitOfMeasure, Dto.UnitOfMeasure>()
@@ -42,27 +49,57 @@ namespace AmpedBiz.Service.Dto.Mappers
                 });
 
             ExpressMapper.Mapper.Register<Entity.PurchaseOrderDetail, Dto.PurchaseOrderDetail>()
-                .Member(x => x.TotalAmount, x => x.Total.Amount)
+                .Member(x => x.PurchaseOrderId, x => x.PurchaseOrder.Id)
                 .Member(x => x.ProductId, x => x.Product.Id)
                 .Member(x => x.UnitPriceAmount, x => x.UnitPrice.Amount)
-                .Member(x => x.PurchaseOrderId, x => x.PurchaseOrder.Id);
+                .Member(x => x.TotalAmount, x => x.Total.Amount);
 
             ExpressMapper.Mapper.Register<Entity.PurchaseOrderDetail, Dto.PurchaseOrderDetailPageItem>()
-                .Member(x => x.ExtendedPriceAmount, x => x.Total.ToStringWithSymbol())
+                .Member(x => x.PurchaseOrderId, x => x.PurchaseOrder.Id.ToString())
                 .Member(x => x.ProductName, x => x.Product.Name)
                 .Member(x => x.QuantityValue, x => x.Quantity.Value)
-                .Member(x => x.UnitCostAmount, x => x.UnitPrice.ToStringWithSymbol())
-                .Member(x => x.PurchaseOrderId, x => x.PurchaseOrder.Id.ToString());
+                .Member(x => x.UnitPriceAmount, x => x.UnitPrice.ToStringWithSymbol())
+                .Member(x => x.TotalAmount, x => x.Total.ToStringWithSymbol());
 
-            ExpressMapper.Mapper.Register<Entity.PurchaseOrder, GetPurchaseOrder.Response>()
-                .Member(x => x.CompletedByEmployeeId, x => x.CompletedBy.Id)
-                .Member(x => x.CreatedByEmployeeId, x => x.CreatedBy.Id)
-                .Member(x => x.ApprovedByEmployeeId, x => x.CreatedBy.Id)
-                .Member(x => x.RejectedByEmployeeId, x => x.CreatedBy.Id)
-                .Member(x => x.PaymentAmount, x => x.Payment.Amount)
-                .Member(x => x.PaymentTypeId, x => x.PaymentType.Id)    
-                .Member(x => x.ShippingFeeAmount, x => x.ShippingFee.Amount)
-                .Member(x => x.SubmittedByEmployeeId, x => x.SubmittedBy.Id)
+            ExpressMapper.Mapper.Register<Entity.PurchaseOrder, GetPurchaseOder.Response>()
+                //.Member(x => x.CreatedBy, x => x.CompletedBy.User.Person.FirstName + " " + x.CompletedBy.User.Person.LastName)
+                //.Member(x => x.SubmittedBy, x => x.SubmittedBy.User.Person.FirstName + " " + x.SubmittedBy.User.Person.LastName)
+                //.Member(x => x.ApprovedBy, x => x.ApprovedBy.User.Person.FirstName + " " + x.ApprovedBy.User.Person.LastName)
+                //.Member(x => x.PaidBy, x => x.PaidBy.User.Person.FirstName + " " + x.PaidBy.User.Person.LastName)
+                //.Member(x => x.CompletedBy, x => x.CompletedBy.User.Person.FirstName + " " + x.CompletedBy.User.Person.LastName)
+                //.Member(x => x.CancelledBy, x => x.CancelledBy.User.Person.FirstName + " " + x.CancelledBy.User.Person.LastName)
+                //.Member(x => x.CreatedOn, x => x.CreatedOn)
+                //.Member(x => x.SubmittedOn, x => x.SubmittedOn)
+                //.Member(x => x.ApprovedOn, x => x.ApprovedOn)
+                //.Member(x => x.PaidOn, x => x.PaidOn)
+                //.Member(x => x.CompletedOn, x => x.CompletedOn)
+                //.Member(x => x.CancelledOn, x => x.CancelledOn)
+                .Member(x => x.Status, x => x.Status.Parse<Dto.PurchaseOrderStatus>())
+                .Member(x => x.SubTotalAmount, x => x.Total.Amount)
+                .Member(x => x.SupplierId, x => x.Supplier.Id)
+                .Member(x => x.TaxAmount, x => x.Tax.Amount)
+                .Member(x => x.TotalAmount, x => x.Total.Amount)
+                .Member(x => x.PurchaseOrderDetails, x => x.PurchaseOrderDetails);
+
+            ExpressMapper.Mapper.Register<Entity.PurchaseOrder, CreateNewPurchaseOder.Response>()
+                //.Ignore(x => x.CreatedBy)
+                //.Ignore(x => x.SubmittedBy)
+                //.Ignore(x => x.ApprovedBy)
+                //.Ignore(x => x.PaidBy)
+                //.Ignore(x => x.CompletedBy)
+                //.Ignore(x => x.CancelledBy)
+                //.Member(x => x.CreatedBy, x => x.CreatedBy.ToString())
+                //.Member(x => x.SubmittedBy, x => x.SubmittedBy.User.Person.FirstName + " " + x.SubmittedBy.User.Person.LastName)
+                //.Member(x => x.ApprovedBy, x => x.ApprovedBy.User.Person.FirstName + " " + x.ApprovedBy.User.Person.LastName)
+                //.Member(x => x.PaidBy, x => x.PaidBy.User.Person.FirstName + " " + x.PaidBy.User.Person.LastName)
+                //.Member(x => x.CompletedBy, x => x.CompletedBy.User.Person.FirstName + " " + x.CompletedBy.User.Person.LastName)
+                //.Member(x => x.CancelledBy, x => x.CancelledBy.User.Person.FirstName + " " + x.CancelledBy.User.Person.LastName)
+                //.Member(x => x.CreatedOn, x => x.CreatedOn)
+                //.Member(x => x.SubmittedOn, x => x.SubmittedOn)
+                //.Member(x => x.ApprovedOn, x => x.ApprovedOn)
+                //.Member(x => x.PaidOn, x => x.PaidOn)
+                //.Member(x => x.CompletedOn, x => x.CompletedOn)
+                //.Member(x => x.CancelledOn, x => x.CancelledOn)
                 .Member(x => x.SubTotalAmount, x => x.Total.Amount)
                 .Member(x => x.SupplierId, x => x.Supplier.Id)
                 .Member(x => x.TaxAmount, x => x.Tax.Amount)

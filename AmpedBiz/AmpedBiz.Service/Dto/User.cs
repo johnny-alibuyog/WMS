@@ -8,7 +8,7 @@ namespace AmpedBiz.Service.Dto
 {
     public class User
     {
-        public virtual string Id { get; set; }
+        public virtual Guid Id { get; set; }
 
         public virtual string Username { get; set; }
 
@@ -25,7 +25,7 @@ namespace AmpedBiz.Service.Dto
 
     public class UserPageItem
     {
-        public virtual string Id { get; set; }
+        public virtual Guid Id { get; set; }
 
         public virtual string Username { get; set; }
 
@@ -35,4 +35,13 @@ namespace AmpedBiz.Service.Dto
 
         public virtual Address Address { get; set; }
     }
+
+
+    public class UserIdentity
+    {
+        public Guid Id { get; set; }
+
+        public string Name { get; set; }
+    }
+
 }

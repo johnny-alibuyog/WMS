@@ -11,11 +11,11 @@ export class AuthService {
   private _notification: NotificationService;
 
   public get user(): User {
-    return <User>localStorage["token:auth-user"];
+    return <User>JSON.parse(localStorage["token:auth-user"]);
   };
 
   public set user(user: User) {
-    localStorage["token:auth-user"] = user;
+    localStorage["token:auth-user"] = JSON.stringify(user);
   };
 
   constructor(app: Aurelia, httpClient: HttpClientFacade, notification: NotificationService) {

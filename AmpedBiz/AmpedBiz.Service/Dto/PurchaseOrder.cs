@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AmpedBiz.Service.Dto
 {
@@ -21,21 +18,9 @@ namespace AmpedBiz.Service.Dto
     {
         public Guid Id { get; set; }
 
-        public DateTime? OrderDate { get; set; }
+        public Guid UserId { get; set; }
 
-        public DateTime? CreationDate { get; set; }
-
-        public DateTime? ExpectedDate { get; set; }
-
-        public DateTime? ApprovedDate { get; set; }
-
-        public DateTime? RejectedDate { get; set; }
-
-        public DateTime? PaymentDate { get; set; }
-
-        public DateTime? SubmittedDate { get; set; }
-
-        public DateTime? ClosedDate { get; set; }
+        public string SupplierId { get; set; }
 
         public string PaymentTypeId { get; set; }
 
@@ -51,19 +36,33 @@ namespace AmpedBiz.Service.Dto
 
         public PurchaseOrderStatus Status { get; set; }
 
-        public string CreatedByEmployeeId { get; set; }
+        public DateTime? ExpectedOn { get; set; }
 
-        public string SubmittedByEmployeeId { get; set; }
+        public UserIdentity CreatedBy { get; set; }
 
-        public string ApprovedByEmployeeId { get; set; }
+        public DateTime? CreatedOn { get; set; }
 
-        public string RejectedByEmployeeId { get; set; }
+        public UserIdentity ApprovedBy { get; set; }
 
-        public string CompletedByEmployeeId { get; set; }
+        public DateTime? ApprovedOn { get; set; }
 
-        public string SupplierId { get; set; }
+        public UserIdentity PayedBy { get; set; }
 
-        public string Reason { get; set; }
+        public DateTime? PaidOn { get; set; }
+
+        public UserIdentity SubmitterBy { get; set; }
+
+        public DateTime? SubmittedOn { get; set; }
+
+        public UserIdentity CompletedBy { get; set; }
+
+        public DateTime? CompletedOn { get; set; }
+
+        public UserIdentity CancelledBy { get; set; }
+
+        public DateTime? CancelledOn { get; set; }
+
+        public string CancelReason { get; set; }
 
         public IEnumerable<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
     }
@@ -84,9 +83,9 @@ namespace AmpedBiz.Service.Dto
 
         public DateTime? SubmittedOn { get; set; }
 
-        public string PayedBy { get; set; }
+        public string PaidBy { get; set; }
 
-        public DateTime? PayedOn { get; set; }
+        public DateTime? PaidOn { get; set; }
 
         public string Total { get; set; }
     }

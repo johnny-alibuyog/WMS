@@ -1,6 +1,7 @@
 ﻿using System.Web.Http;
 using AmpedBiz.Service.Suppliers;
 using MediatR;
+using AmpedBiz.Service.Products;
 
 namespace AmpedBiz.Service.Host.Controllers
 {
@@ -26,6 +27,13 @@ namespace AmpedBiz.Service.Host.Controllers
         public GetSupplierList.Response Get([FromUri]GetSupplierList.Request request)
         {
             return _mediator.Send(request ?? new GetSupplierList.Request());
+        }
+
+        [HttpGet()]
+        [Route("{supplierId}/product-inventories")]
+        public GetProductInventory.Response Get([FromUri]GetProductInventory.Request request)
+        {
+            return _mediator.Send(request ?? new GetProductInventory.Request());
         }
 
         [HttpPost()]

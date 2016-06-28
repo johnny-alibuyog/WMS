@@ -10,7 +10,7 @@ export class OrderOnStaging {
     this.onStagingOrders = [
       { 
         'orderDate': 'June 10, 2016',
-        'employee': 'John Doe',
+        'user': 'John Doe',
         'customer': 'SM Market',
         'status': 'On Staging',
         'paymentDate' : 'June 20, 2016',

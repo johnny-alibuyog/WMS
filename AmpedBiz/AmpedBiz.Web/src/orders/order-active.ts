@@ -11,7 +11,7 @@ export class OrderActive {
     this.activeOrders = [
       { 
         'orderDate': 'June 10, 2016',
-        'employee': 'John Doe',
+        'user': 'John Doe',
         'customer': 'SM Market',
         'status': 'New',
         'paymentDate' : 'June 20, 2016',
