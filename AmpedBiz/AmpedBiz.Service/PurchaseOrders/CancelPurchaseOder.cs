@@ -7,12 +7,9 @@ using System;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
-    public class ApprovePurchaseOrder
+    public class CancelPurchaseOder
     {
-        public class Request : Dto.PurchaseOrder, IRequest<Response>
-        {
-            public string EmployeeId { get; set; }
-        }
+        public class Request : Dto.PurchaseOrder, IRequest<Response> { }
 
         public class Response : Dto.PurchaseOrder { }
 
@@ -31,9 +28,9 @@ namespace AmpedBiz.Service.PurchaseOrders
                     if (entity == null)
                         throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
 
-                    var employee = session.Load<Employee>(message.EmployeeId);
+                    var user = session.Load<User>(message.UserId);
 
-                    entity.CurrentState.Approve(employee, DateTime.Now);
+                    entity.State.Cancel(user, DateTime.Now, message.CancelReason);
 
                     session.Save(entity);
                     transaction.Commit();

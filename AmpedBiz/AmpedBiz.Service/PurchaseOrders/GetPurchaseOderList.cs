@@ -5,14 +5,15 @@ using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
+using System;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
-    public class GetPurchaseOrderList
+    public class GetPurchaseOderList
     {
         public class Request : IRequest<Response>
         {
-            public string[] Id { get; set; }
+            public Guid[] Id { get; set; }
         }
 
         public class Response : List<Dto.PurchaseOrder>

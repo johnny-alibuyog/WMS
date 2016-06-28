@@ -9,10 +9,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 {
     public class ReceivePurchaseOrder
     {
-        public class Request : Dto.PurchaseOrder, IRequest<Response>
-        {
-            public string EmployeeId { get; set; }
-        }
+        public class Request : Dto.PurchaseOrder, IRequest<Response> { }
 
         public class Response : Dto.PurchaseOrder { }
 
@@ -31,9 +28,9 @@ namespace AmpedBiz.Service.PurchaseOrders
                     if (entity == null)
                         throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
 
-                    var employee = session.Load<Employee>(message.EmployeeId);
+                    var user = session.Load<User>(message.UserId);
 
-                    entity.CurrentState.Recieve(employee, DateTime.Now);
+                    entity.State.Recieve(user, DateTime.Now);
 
                     session.Save(entity);
                     transaction.Commit();

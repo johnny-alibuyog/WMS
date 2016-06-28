@@ -7,7 +7,7 @@ using System;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
-    public class SubmitPurchaseOrder
+    public class ApprovePurchaseOder
     {
         public class Request : Dto.PurchaseOrder, IRequest<Response> { }
 
@@ -30,7 +30,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 
                     var user = session.Load<User>(message.UserId);
 
-                    entity.State.Submit(user, DateTime.Now);
+                    entity.State.Approve(user, DateTime.Now);
 
                     session.Save(entity);
                     transaction.Commit();

@@ -3,15 +3,13 @@ using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
+using System;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
-    public class GetPurchaseOrder
+    public abstract class PostPaid
     {
-        public class Request : IRequest<Response>
-        {
-            public string Id { get; set; }
-        }
+        public class Request : Dto.PurchaseOrder, IRequest<Response> { }
 
         public class Response : Dto.PurchaseOrder { }
 
@@ -30,9 +28,15 @@ namespace AmpedBiz.Service.PurchaseOrders
                     if (entity == null)
                         throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
 
-                    entity.MapTo(response);
+                    var employee = session.Load<Employee>(message.EmployeeId);
+                    var currency = session.Load<Currency>(Currency.PHP.Id); // this should be taken from the tenant
 
+                    entity.State.Pay(employee, DateTime.Now, new Money(message.PaymentAmount, currency));
+
+                    session.Save(entity);
                     transaction.Commit();
+
+                    entity.MapTo(response);
                 }
 
                 return response;

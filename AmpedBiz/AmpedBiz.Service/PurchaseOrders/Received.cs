@@ -7,7 +7,7 @@ using System;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
-    public class SubmitPurchaseOrder
+    public abstract class Received
     {
         public class Request : Dto.PurchaseOrder, IRequest<Response> { }
 
@@ -28,9 +28,9 @@ namespace AmpedBiz.Service.PurchaseOrders
                     if (entity == null)
                         throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
 
-                    var user = session.Load<User>(message.UserId);
+                    var employee = session.Load<Employee>(message.EmployeeId);
 
-                    entity.State.Submit(user, DateTime.Now);
+                    entity.State.Recieve(employee, DateTime.Now);
 
                     session.Save(entity);
                     transaction.Commit();

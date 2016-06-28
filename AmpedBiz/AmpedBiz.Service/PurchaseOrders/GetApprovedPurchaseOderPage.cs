@@ -2,10 +2,11 @@
 using AmpedBiz.Service.Common;
 using MediatR;
 using NHibernate;
+using System.Threading.Tasks;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
-    public class GetActivePurchaseOrdersPage
+    public class GetApprovedPurchaseOderPage
     {
         public class Request : PageRequest, IRequest<Response> { }
 
@@ -17,24 +18,13 @@ namespace AmpedBiz.Service.PurchaseOrders
 
             public override Response Handle(Request message)
             {
-                var handler = new GetPurchaseOrderPage.Handler(this._sessionFactory);
-                var request = new GetPurchaseOrderPage.Request()
+                var handler = new GetPurchaseOderPage.Handler(this._sessionFactory);
+                var result = handler.Handle(new GetPurchaseOderPage.Request()
                 {
-                    Filter = message.Filter,
+                    Filter = new Filter() { { "status", PurchaseOrderStatus.Approved } },
                     Sorter = message.Sorter,
                     Pager = message.Pager,
-                };
-
-                request.Filter["statuses"] = new PurchaseOrderStatus[]
-                {
-                    PurchaseOrderStatus.New,
-                    PurchaseOrderStatus.Submitted,
-                    PurchaseOrderStatus.Approved,
-                    PurchaseOrderStatus.Paid,
-                    PurchaseOrderStatus.Received,
-                };
-
-                var result = handler.Handle(request);
+                });
 
                 return new Response()
                 {

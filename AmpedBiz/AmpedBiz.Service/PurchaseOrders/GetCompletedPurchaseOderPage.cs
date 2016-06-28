@@ -5,7 +5,7 @@ using NHibernate;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
-    public class GetNewPurchaseOrdersPage
+    public class GetCompletedPurchaseOderPage
     {
         public class Request : PageRequest, IRequest<Response> { }
 
@@ -17,10 +17,10 @@ namespace AmpedBiz.Service.PurchaseOrders
 
             public override Response Handle(Request message)
             {
-                var handler = new GetPurchaseOrderPage.Handler(this._sessionFactory);
-                var result = handler.Handle(new GetPurchaseOrderPage.Request()
+                var handler = new GetPurchaseOderPage.Handler(this._sessionFactory);
+                var result = handler.Handle(new GetPurchaseOderPage.Request()
                 {
-                    Filter = new Filter() { { "status", PurchaseOrderStatus.New } },
+                    Filter = new Filter() { { "status", PurchaseOrderStatus.Completed } },
                     Sorter = message.Sorter,
                     Pager = message.Pager,
                 });

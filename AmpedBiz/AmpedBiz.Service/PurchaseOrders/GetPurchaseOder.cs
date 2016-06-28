@@ -3,15 +3,17 @@ using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
+using NHibernate.Linq;
 using System;
+
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
-    public class CompletePurchaseOrder
+    public class GetPurchaseOder
     {
-        public class Request : Dto.PurchaseOrder, IRequest<Response>
+        public class Request : IRequest<Response>
         {
-            public string EmployeeId { get; set; }
+            public Guid Id { get; set; }
         }
 
         public class Response : Dto.PurchaseOrder { }
@@ -31,14 +33,23 @@ namespace AmpedBiz.Service.PurchaseOrders
                     if (entity == null)
                         throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
 
-                    var employee = session.Load<Employee>(message.EmployeeId);
-
-                    entity.CurrentState.Complete(employee, DateTime.Now);
-
-                    session.Save(entity);
-                    transaction.Commit();
+                    response = new Response()
+                    {
+                        Id = entity.Id,
+                        SupplierId = entity.Supplier.Id,
+                        PaymentTypeId = entity.PaymentType.Id,
+                        TaxAmount = entity.Tax.Amount,
+                        ShippingFeeAmount = entity.ShippingFee.Amount,
+                        PaymentAmount = entity.Payment.Amount,
+                        SubTotalAmount = entity.SubTotal.Amount,
+                        TotalAmount = entity.Total.Amount,
+                        Status = entity.Status.Parse<Dto.PurchaseOrderStatus>(),
+                        ExpectedOn = entity.ExpectedOn,
+                    };
 
                     entity.MapTo(response);
+
+                    transaction.Commit();
                 }
 
                 return response;

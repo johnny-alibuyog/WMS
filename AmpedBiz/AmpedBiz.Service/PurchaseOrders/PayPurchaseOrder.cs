@@ -9,10 +9,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 {
     public class PayPurchaseOrder
     {
-        public class Request : Dto.PurchaseOrder, IRequest<Response>
-        {
-            public string EmployeeId { get; set; }
-        }
+        public class Request : Dto.PurchaseOrder, IRequest<Response> { }
 
         public class Response : Dto.PurchaseOrder { }
 
@@ -31,10 +28,10 @@ namespace AmpedBiz.Service.PurchaseOrders
                     if (entity == null)
                         throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
 
-                    var employee = session.Load<Employee>(message.EmployeeId);
+                    var user = session.Load<User>(message.UserId);
                     var currency = session.Load<Currency>(Currency.PHP.Id);
 
-                    entity.CurrentState.Pay(employee, DateTime.Now, new Money(message.TotalAmount, currency));
+                    entity.State.Pay(user, DateTime.Now, new Money(message.PaymentAmount, currency));
 
                     session.Save(entity);
                     transaction.Commit();

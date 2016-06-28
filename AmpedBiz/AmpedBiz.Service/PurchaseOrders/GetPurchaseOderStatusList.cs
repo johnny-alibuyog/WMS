@@ -7,12 +7,9 @@ using System.Linq;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
-    public class GetPurchaseOrderStatusList
+    public class GetPurchaseOderStatusList
     {
-        public class Request : IRequest<Response>
-        {
-            public string[] Id { get; set; }
-        }
+        public class Request : IRequest<Response> { }
 
         public class Response : List<Dto.PurchaseOrderStatus>
         {

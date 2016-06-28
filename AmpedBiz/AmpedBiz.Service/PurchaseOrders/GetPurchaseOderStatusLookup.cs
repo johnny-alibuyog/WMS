@@ -9,12 +9,9 @@ using AmpedBiz.Common.Extentions;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
-    public class GetPurchaseOrderStatusLookup
+    public class GetPurchaseOderStatusLookup
     {
-        public class Request : IRequest<Response>
-        {
-            public string[] Id { get; set; }
-        }
+        public class Request : IRequest<Response> { }
 
         public class Response : List<KeyValuePair<int, string>>
         {

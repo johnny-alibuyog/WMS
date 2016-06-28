@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
-    public class GetPurchaseOrderPage
+    public class GetPurchaseOderPage
     {
         public class Request : PageRequest, IRequest<Response> { }
 
@@ -62,11 +62,11 @@ namespace AmpedBiz.Service.PurchaseOrders
                     {
                         query = direction == SortDirection.Ascending
                             ? query
-                                .OrderBy(x => x.CreatedBy.User.Person.FirstName)
-                                .ThenBy(x => x.CreatedBy.User.Person.LastName)
+                                .OrderBy(x => x.CreatedBy.Person.FirstName)
+                                .ThenBy(x => x.CreatedBy.Person.LastName)
                             : query
-                                .OrderByDescending(x => x.CreatedBy.User.Person.LastName)
-                                .ThenByDescending(x => x.CreatedBy.User.Person.LastName);
+                                .OrderByDescending(x => x.CreatedBy.Person.LastName)
+                                .ThenByDescending(x => x.CreatedBy.Person.LastName);
                     });
 
                     message.Sorter.Compose("createdOn", direction =>
@@ -80,11 +80,11 @@ namespace AmpedBiz.Service.PurchaseOrders
                     {
                         query = direction == SortDirection.Ascending
                             ? query
-                                .OrderBy(x => x.SubmittedBy.User.Person.FirstName)
-                                .ThenBy(x => x.SubmittedBy.User.Person.LastName)
+                                .OrderBy(x => x.SubmittedBy.Person.FirstName)
+                                .ThenBy(x => x.SubmittedBy.Person.LastName)
                             : query
-                                .OrderByDescending(x => x.SubmittedBy.User.Person.LastName)
-                                .ThenByDescending(x => x.SubmittedBy.User.Person.LastName);
+                                .OrderByDescending(x => x.SubmittedBy.Person.LastName)
+                                .ThenByDescending(x => x.SubmittedBy.Person.LastName);
                     });
 
                     message.Sorter.Compose("submittedOn", direction =>
@@ -94,22 +94,22 @@ namespace AmpedBiz.Service.PurchaseOrders
                             : query.OrderByDescending(x => x.SubmittedOn);
                     });
 
-                    message.Sorter.Compose("payedBy", direction =>
+                    message.Sorter.Compose("paidBy", direction =>
                     {
                         query = direction == SortDirection.Ascending
                             ? query
-                                .OrderBy(x => x.PayedBy.User.Person.FirstName)
-                                .ThenBy(x => x.PayedBy.User.Person.LastName)
+                                .OrderBy(x => x.PaidBy.Person.FirstName)
+                                .ThenBy(x => x.PaidBy.Person.LastName)
                             : query
-                                .OrderByDescending(x => x.PayedBy.User.Person.LastName)
-                                .ThenByDescending(x => x.PayedBy.User.Person.LastName);
+                                .OrderByDescending(x => x.PaidBy.Person.LastName)
+                                .ThenByDescending(x => x.PaidBy.Person.LastName);
                     });
 
-                    message.Sorter.Compose("payedOn", direction =>
+                    message.Sorter.Compose("paidOn", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.PayedOn)
-                            : query.OrderByDescending(x => x.PayedOn);
+                            ? query.OrderBy(x => x.PaidOn)
+                            : query.OrderByDescending(x => x.PaidOn);
                     });
 
                     message.Sorter.Compose("total", direction =>
@@ -126,17 +126,17 @@ namespace AmpedBiz.Service.PurchaseOrders
                             Supplier = x.Supplier.Name,
                             Status = x.Status.ToString(),
                             CreatedBy = 
-                                x.CreatedBy.User.Person.FirstName + " " +
-                                x.CreatedBy.User.Person.LastName,
+                                x.CreatedBy.Person.FirstName + " " +
+                                x.CreatedBy.Person.LastName,
                             CreatedOn = x.CreatedOn,
                             SubmittedBy =
-                                x.SubmittedBy.User.Person.FirstName + " " + 
-                                x.SubmittedBy.User.Person.LastName,
+                                x.SubmittedBy.Person.FirstName + " " + 
+                                x.SubmittedBy.Person.LastName,
                             SubmittedOn = x.SubmittedOn,
-                            PayedBy = 
-                                x.PayedBy.User.Person.FirstName + " " +
-                                x.PayedBy.User.Person.LastName,
-                            PayedOn = x.PayedOn,
+                            PaidBy = 
+                                x.PaidBy.Person.FirstName + " " +
+                                x.PaidBy.Person.LastName,
+                            PaidOn = x.PaidOn,
                             Total = x.Total.ToStringWithSymbol()
                         })
                         .Skip(message.Pager.SkipCount)
