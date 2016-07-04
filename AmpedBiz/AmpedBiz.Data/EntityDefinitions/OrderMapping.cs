@@ -14,6 +14,12 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Map(x => x.OrderDate);
 
+            Map(x => x.StagedDate);
+
+            Map(x => x.RoutedDate);
+
+            Map(x => x.InvoicedDate);
+
             Map(x => x.ShippedDate);
 
             Map(x => x.PaymentDate);
@@ -43,6 +49,20 @@ namespace AmpedBiz.Data.EntityDefinitions
             Map(x => x.IsActive);
 
             References(x => x.Customer);
+
+            References(x => x.CreatedBy);
+
+            References(x => x.StagedBy);
+
+            References(x => x.RoutedBy);
+
+            References(x => x.InvoicedBy);
+
+            References(x => x.PartiallyPaidBy);
+
+            References(x => x.CompletedBy);
+
+            References(x => x.CancelledBy);
 
             //HasMany(x => x.Invoices)
             //    .Cascade.AllDeleteOrphan()

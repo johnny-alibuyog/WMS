@@ -1,4 +1,5 @@
-﻿using AmpedBiz.Common.Exceptions;
+﻿using System;
+using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using MediatR;
@@ -10,7 +11,7 @@ namespace AmpedBiz.Service.Orders
     {
         public class Request : IRequest<Response>
         {
-            public string Id { get; set; }
+            public Guid Id { get; set; }
         }
 
         public class Response : Dto.Order { }
@@ -21,7 +22,7 @@ namespace AmpedBiz.Service.Orders
 
             public override Response Handle(Request message)
             {
-                var response = new Response();
+                Response response;
 
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
@@ -29,6 +30,11 @@ namespace AmpedBiz.Service.Orders
                     var entity = session.Get<Order>(message.Id);
                     if (entity == null)
                         throw new BusinessException($"Order with id {message.Id} does not exists.");
+
+                    response = new Response()
+                    {
+                        //fields that are not properly mapped, put it here
+                    };
 
                     entity.MapTo(response);
 

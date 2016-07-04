@@ -32,7 +32,13 @@ namespace AmpedBiz.Service.Orders
                     {
                         query = query.Where(x => x.Status.ToString().ToLower().Contains(value.ToLower()));
                     });
-                    
+
+
+                    message.Filter.Compose<string>("customer", value =>
+                    {
+                        query = query.Where(x => x.Customer.Id == value);
+                    });
+
                     // compose sort
                     message.Sorter.Compose("status", direction =>
                     {
@@ -41,28 +47,38 @@ namespace AmpedBiz.Service.Orders
                             : query.OrderByDescending(x => x.Status);
                     });
 
-                    //var itemsFuture = query
-                    //    .Select(x => new Dto.OrderPageItem()
-                    //    {
-                    //        Id = x.Id,
-                    //        CreatedByEmployeeName = x.CreatedBy.User.FullName(),
-                    //        CreationDate = x.CreationDate.Value.ToShortDateString(),
-                    //        StatusName = x.Status.ToString(),
-                    //        SupplierName = x.Supplier.Name,
-                    //        Total = x.Total.ToStringWithSymbol()
-                    //    })
-                    //    .Skip(message.Pager.SkipCount)
-                    //    .Take(message.Pager.Size)
-                    //    .ToFuture();
+                    message.Sorter.Compose("createdOn", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.OrderDate)
+                            : query.OrderByDescending(x => x.OrderDate);
+                    });
 
-                    //var countFuture = query
-                    //    .ToFutureValue(x => x.Count());
+                    var itemsFuture = query
+                        .Select(x => new Dto.OrderPageItem()
+                        {
+                            Id = x.Id,
+                            CreatedByName = x.CreatedBy.FullName(),
+                            CustomerName = x.Customer.Name,
+                            OrderDate = x.OrderDate.Value,
+                            ShippingFee = x.ShippingFee.ToStringWithSymbol(),
+                            StatusName = x.Status.ToString(),
+                            SubTotal = x.SubTotal.ToStringWithSymbol(),
+                            Tax = x.Tax.ToStringWithSymbol(),
+                            Total = x.Total.ToStringWithSymbol()
+                        })
+                        .Skip(message.Pager.SkipCount)
+                        .Take(message.Pager.Size)
+                        .ToFuture();
 
-                    //response = new Response()
-                    //{
-                    //    Count = countFuture.Value,
-                    //    Items = itemsFuture.ToList()
-                    //};
+                    var countFuture = query
+                        .ToFutureValue(x => x.Count());
+
+                    response = new Response()
+                    {
+                        Count = countFuture.Value,
+                        Items = itemsFuture.ToList()
+                    };
                 }
 
                 return response;

@@ -5,6 +5,7 @@ using NHibernate;
 using NHibernate.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace AmpedBiz.Service.Orders
 {
@@ -12,7 +13,7 @@ namespace AmpedBiz.Service.Orders
     {
         public class Request : IRequest<Response>
         {
-            public string[] Id { get; set; }
+            public Guid[] Id { get; set; }
         }
 
         public class Response : List<Dto.Order>

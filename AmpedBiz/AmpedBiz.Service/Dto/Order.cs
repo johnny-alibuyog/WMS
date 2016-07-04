@@ -40,7 +40,7 @@ namespace AmpedBiz.Service.Dto
 
         public string PaymentTypeId { get; set; }
 
-        public string ShipperId { get; set; }
+        public Guid ShipperId { get; set; }
 
         public decimal TaxRate { get; set; }
 
@@ -56,19 +56,19 @@ namespace AmpedBiz.Service.Dto
 
         public bool IsActive { get; set; }
 
-        public string CreatedById { get; set; }
+        public Guid CreatedById { get; set; }
 
-        public string StagedById { get; set; }
+        public Guid StagedById { get; set; }
 
-        public string RoutedById { get; set; }
+        public Guid RoutedById { get; set; }
 
-        public string InvoicedById { get; set; }
+        public Guid InvoicedById { get; set; }
 
-        public string PartiallyPaidById { get; set; }
+        public Guid PartiallyPaidById { get; set; }
 
-        public string CompletedById { get; set; }
+        public Guid CompletedById { get; set; }
 
-        public string CancelledById { get; set; }
+        public Guid CancelledById { get; set; }
 
         public string CustomerId { get; set; }
 

@@ -13,6 +13,12 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.OrderDate);
 
+            Define(x => x.StagedDate);
+
+            Define(x => x.RoutedDate);
+
+            Define(x => x.InvoicedDate);
+
             Define(x => x.ShippedDate);
 
             Define(x => x.PaymentDate);
@@ -22,6 +28,20 @@ namespace AmpedBiz.Data.EntityDefinitions
             Define(x => x.CancelDate);
 
             Define(x => x.CancelReason);
+
+            Define(x => x.CreatedBy);
+
+            Define(x => x.StagedBy);
+
+            Define(x => x.RoutedBy);
+
+            Define(x => x.InvoicedBy);
+
+            Define(x => x.PartiallyPaidBy);
+
+            Define(x => x.CompletedBy);
+
+            Define(x => x.CancelledBy);
 
             Define(x => x.PaymentType)
                 .NotNullable()
