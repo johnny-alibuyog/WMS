@@ -1,20 +1,25 @@
-﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AmpedBiz.Service.Products
 {
-    public class GetProductInventory
+    public class GetProductInventoryList
     {
         public class Request : IRequest<Response>
         {
-            public string ProductId { get; set; }
+            public string SupplierId { get; set; }
         }
 
-        public class Response : Dto.ProductInventory { }
+        public class Response : List<Dto.ProductInventory>
+        {
+            public Response() { }
+
+            public Response(List<Dto.ProductInventory> items) : base(items) { }
+        }
 
         public class Handler : RequestHandlerBase<Request, Response>
         {
@@ -27,8 +32,8 @@ namespace AmpedBiz.Service.Products
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var dto = session.Query<Product>()
-                        .Where(x => x.Id == message.ProductId)
+                    var dtos = session.Query<Product>()
+                        .Where(x => x.Supplier.Id == message.SupplierId)
                         .Select(x => new Dto.ProductInventory()
                         {
                             Id = x.Id,
@@ -41,9 +46,9 @@ namespace AmpedBiz.Service.Products
                             WholeSalePriceAmount = x.WholeSalePrice.Amount,
                             DiscountAmount = 0M
                         })
-                        .FirstOrDefault();
+                        .ToList();
 
-                    dto.MapTo(response);
+                    response = new Response(dtos);
 
                     transaction.Commit();
                 }

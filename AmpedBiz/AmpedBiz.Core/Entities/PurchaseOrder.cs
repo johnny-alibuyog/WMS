@@ -116,6 +116,7 @@ namespace AmpedBiz.Core.Entities
             {
                 var value = items.Single(x => x == item);
                 item.SerializeWith(value);
+                item.PurchaseOrder = this;
             }
 
             foreach (var item in itemsToRemove)

@@ -44,7 +44,7 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpGet()]
-        [Route("statuses/lookup")]
+        [Route("status-lookups")]
         public GetPurchaseOderStatusLookup.Response Process([FromBody]GetPurchaseOderStatusLookup.Request request)
         {
             return _mediator.Send(request ?? new GetPurchaseOderStatusLookup.Request());

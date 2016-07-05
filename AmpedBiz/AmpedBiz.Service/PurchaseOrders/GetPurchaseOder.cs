@@ -5,7 +5,7 @@ using MediatR;
 using NHibernate;
 using NHibernate.Linq;
 using System;
-
+using System.Linq;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
@@ -29,23 +29,25 @@ namespace AmpedBiz.Service.PurchaseOrders
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.Get<PurchaseOrder>(message.Id);
+                    var query = session.Query<PurchaseOrder>()
+                        .Where(x => x.Id == message.Id)
+                        .FetchMany(x => x.PurchaseOrderDetails)
+                        .Fetch(x => x.Tax)
+                        .Fetch(x => x.ShippingFee)
+                        .Fetch(x => x.Payment)
+                        .Fetch(x => x.SubTotal)
+                        .Fetch(x => x.Total)
+                        .Fetch(x => x.CreatedBy)
+                        .Fetch(x => x.SubmittedBy)
+                        .Fetch(x => x.ApprovedBy)
+                        .Fetch(x => x.PaidBy)
+                        .Fetch(x => x.CompletedBy)
+                        .Fetch(x => x.CancelledBy)
+                        .ToFutureValue();
+
+                    var entity = query.Value;
                     if (entity == null)
                         throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
-
-                    response = new Response()
-                    {
-                        Id = entity.Id,
-                        SupplierId = entity.Supplier.Id,
-                        PaymentTypeId = entity.PaymentType.Id,
-                        TaxAmount = entity.Tax.Amount,
-                        ShippingFeeAmount = entity.ShippingFee.Amount,
-                        PaymentAmount = entity.Payment.Amount,
-                        SubTotalAmount = entity.SubTotal.Amount,
-                        TotalAmount = entity.Total.Amount,
-                        Status = entity.Status.Parse<Dto.PurchaseOrderStatus>(),
-                        ExpectedOn = entity.ExpectedOn,
-                    };
 
                     entity.MapTo(response);
 

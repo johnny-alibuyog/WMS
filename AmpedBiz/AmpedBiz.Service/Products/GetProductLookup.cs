@@ -1,19 +1,22 @@
-﻿using AmpedBiz.Common.CustomTypes;
+﻿using AmpedBiz.Core.Entities;
 using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using AmpedBiz.Common.CustomTypes;
 
-namespace AmpedBiz.Service.Suppliers
+namespace AmpedBiz.Service.Products
 {
-    public class GetSupplierLookup
+    public class GetProductLookup
     {
         public class Request : IRequest<Response>
         {
             public string[] Id { get; set; }
+
+            public string SupplierId { get; set; }
         }
 
         public class Response : List<Lookup<string>>
@@ -34,7 +37,16 @@ namespace AmpedBiz.Service.Suppliers
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var pairs = session.Query<Supplier>()
+
+                    var query = session.Query<Product>();
+
+                    if (!message.Id.IsNullOrEmpty())
+                        query = query.Where(x => message.Id.Contains(x.Id));
+
+                    if (!string.IsNullOrWhiteSpace(message.SupplierId))
+                        query = query.Where(x => x.Supplier.Id == message.SupplierId);
+
+                    var pairs = query
                         .Select(x => new Lookup<string>()
                         {
                             Id = x.Id,
@@ -42,7 +54,7 @@ namespace AmpedBiz.Service.Suppliers
                         })
                         .Cacheable()
                         .ToList();
-                        
+
                     response = new Response(pairs);
 
                     transaction.Commit();

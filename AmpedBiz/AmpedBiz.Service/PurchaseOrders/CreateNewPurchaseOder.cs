@@ -42,7 +42,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                         supplier: session.Load<Supplier>(message.SupplierId),
                         purchaseOrderDetails: message.PurchaseOrderDetails
                             .Select(x => new PurchaseOrderDetail().State.New(
-                                product: session.Load<Product>(x.ProductId),
+                                product: session.Load<Product>(x.Product.Id),
                                 unitPrice: new Money(x.UnitPriceAmount, currency),
                                 quantity: x.QuantityValue
                             ))

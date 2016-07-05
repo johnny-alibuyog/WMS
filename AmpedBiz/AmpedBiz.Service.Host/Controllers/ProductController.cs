@@ -30,6 +30,14 @@ namespace AmpedBiz.Service.Host.Controllers
             return _mediator.Send(request ?? new GetProduct.Request());
         }
 
+
+        [HttpGet()]
+        [Route("~/product-inventories/{productId}")]
+        public GetProductInventory.Response Process([FromUri]GetProductInventory.Request request)
+        {
+            return _mediator.Send(request ?? new GetProductInventory.Request());
+        }
+
         [HttpGet()]
         [Route("")]
         public GetProductList.Response Process([FromUri]GetProductList.Request request)

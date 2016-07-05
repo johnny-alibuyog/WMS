@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmpedBiz.Common.CustomTypes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,16 +7,13 @@ namespace AmpedBiz.Common.Extentions
 {
     public static class EnumExtention
     {
-        public static List<KeyValuePair<int, string>> ToLookup<TEnum>() where TEnum : struct, IConvertible
+        public static List<Lookup<TEnum>> ToLookup<TEnum>() where TEnum : struct, IConvertible
         {
             if (!typeof(TEnum).IsEnum)
                 throw new ArgumentException("TEnum must be an enumerated type");
 
             return Enum.GetValues(typeof(TEnum)).Cast<TEnum>()
-                .Select(x => new KeyValuePair<int, string>(
-                    key: Convert.ToInt32(x), 
-                    value: x.ToString()
-                ))
+                .Select(x => new Lookup<TEnum>(x, x.ToString()))
                 .ToList();
         }
 

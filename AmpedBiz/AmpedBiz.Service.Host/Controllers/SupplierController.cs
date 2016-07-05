@@ -17,49 +17,56 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("{request.id}")]
-        public GetSupplier.Response Get([FromUri]GetSupplier.Request request)
+        public GetSupplier.Response Process([FromUri]GetSupplier.Request request)
         {
             return _mediator.Send(request ?? new GetSupplier.Request());
         }
 
         [HttpGet()]
         [Route("")]
-        public GetSupplierList.Response Get([FromUri]GetSupplierList.Request request)
+        public GetSupplierList.Response Process([FromUri]GetSupplierList.Request request)
         {
             return _mediator.Send(request ?? new GetSupplierList.Request());
         }
 
         [HttpGet()]
         [Route("{supplierId}/product-inventories")]
-        public GetProductInventory.Response Get([FromUri]GetProductInventory.Request request)
+        public GetProductInventoryList.Response Process([FromUri]GetProductInventoryList.Request request)
         {
-            return _mediator.Send(request ?? new GetProductInventory.Request());
+            return _mediator.Send(request ?? new GetProductInventoryList.Request());
+        }
+
+        [HttpGet()]
+        [Route("{supplierId}/product-lookups")]
+        public GetProductLookup.Response Process([FromUri]GetProductLookup.Request request)
+        {
+            return _mediator.Send(request ?? new GetProductLookup.Request());
         }
 
         [HttpPost()]
         [Route("page")]
-        public GetSupplierPage.Response Page([FromBody]GetSupplierPage.Request request)
+        public GetSupplierPage.Response Process([FromBody]GetSupplierPage.Request request)
         {
             return _mediator.Send(request ?? new GetSupplierPage.Request());
         }
 
         [HttpGet()]
-        [Route("lookup")]
-        public GetSupplierLookup.Response GetStatus([FromBody]GetSupplierLookup.Request request)
+        [Route("~/supplier-lookups")]
+        public GetSupplierLookup.Response Process([FromBody]GetSupplierLookup.Request request)
         {
             return _mediator.Send(request ?? new GetSupplierLookup.Request());
         }
 
         [HttpPost()]
         [Route("")]
-        public CreateSupplier.Response Create([FromBody]CreateSupplier.Request request)
+        public CreateSupplier.Response Process([FromBody]CreateSupplier.Request request)
         {
             return _mediator.Send(request ?? new CreateSupplier.Request());
         }
 
         [HttpPut()]
         [Route("")]
-        public UpdateSupplier.Response Update([FromBody]UpdateSupplier.Request request)
+        public UpdateSupplier.Response Process([FromBody]UpdateSupplier.Request request)
         {
             return _mediator.Send(request ?? new UpdateSupplier.Request());
         }

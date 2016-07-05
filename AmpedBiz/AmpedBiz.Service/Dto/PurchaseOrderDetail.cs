@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AmpedBiz.Common.CustomTypes;
+using System;
 
 namespace AmpedBiz.Service.Dto
 {
@@ -18,7 +15,7 @@ namespace AmpedBiz.Service.Dto
 
         public Guid PurchaseOrderId { get; set; }
 
-        public string ProductId { get; set; }
+        public Lookup<string> Product { get; set; }
 
         public decimal QuantityValue { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Common.CustomTypes;
+using AmpedBiz.Core.Entities;
 using AmpedBiz.Data;
 using AmpedBiz.Data.Configurations;
 using AmpedBiz.Data.Seeders;
@@ -326,7 +327,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     ExpectedOn = DateTime.Now.AddDays(10),
                     PaidOn = DateTime.Now.AddDays(5)
                 };
-                request.PurchaseOrderDetails = this.CreatePurchaseOrderDetails(request, this.rnd.Next(10, 20));
+                request.PurchaseOrderDetails = this.CreatePurchaseOrderDetails(request, this.rnd.Next(20, 90));
 
                 var handler = new CreateNewPurchaseOder.Handler(this.sessionFactory).Handle(request);
 
@@ -340,7 +341,7 @@ namespace AmpedBiz.Tests.IntegrationTests
         {
             var poDetails = new List<Service.Dto.PurchaseOrderDetail>();
 
-            var randomProductIndexes = this.dummyData.GenerateUniqueNumbers(0, 20, count).ToArray();
+            var randomProductIndexes = this.dummyData.GenerateUniqueNumbers(0, count, count).ToArray();
             var selectedProducts = this.SelectProducts(randomProductIndexes).ToList();
 
             for (var i = 0; i < count; i++)
@@ -350,7 +351,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                 poDetails.Add(new Service.Dto.PurchaseOrderDetail
                 {
                    //TotalAmount = product.RetailPriceAmount + 1m,
-                   ProductId = product.Id,
+                   Product = new Lookup<string>(product.Id, product.Name),
                    PurchaseOrderId = po.Id,
                    QuantityValue = this.rnd.Next(1, 100),
                    UnitPriceAmount = product.RetailPriceAmount + 1m,

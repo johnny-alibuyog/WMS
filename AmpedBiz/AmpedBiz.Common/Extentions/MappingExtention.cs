@@ -26,7 +26,7 @@ namespace AmpedBiz.Common.Extentions
             where TDestination : class
         {
             if (source == null)
-                return null;
+                return null; //return Activator.CreateInstance<TDestination>();
 
             return (destination != null)
                 ? Mapper.Map<TSource, TDestination>(source, destination)

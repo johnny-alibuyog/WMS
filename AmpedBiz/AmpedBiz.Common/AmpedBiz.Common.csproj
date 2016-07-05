@@ -58,6 +58,7 @@
     <Compile Include="Extentions\DateTimeExtention.cs" />
     <Compile Include="Extentions\EnumerableExtention.cs" />
     <Compile Include="Extentions\EnumExtention.cs" />
+    <Compile Include="CustomTypes\Lookup.cs" />
     <Compile Include="Extentions\MappingExtention.cs" />
     <Compile Include="Extentions\NumberExtention.cs" />
     <Compile Include="Extentions\ReflectionExtention.cs" />

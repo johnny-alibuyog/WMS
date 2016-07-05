@@ -1,4 +1,6 @@
-﻿namespace AmpedBiz.Service.Dto
+﻿using AmpedBiz.Common.CustomTypes;
+
+namespace AmpedBiz.Service.Dto
 {
     public class Supplier
     {

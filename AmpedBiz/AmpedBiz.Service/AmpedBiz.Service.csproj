@@ -110,7 +110,9 @@
     <Compile Include="Products\CreateProduct.cs" />
     <Compile Include="Products\GetProduct.cs" />
     <Compile Include="Products\GetProductInventory.cs" />
+    <Compile Include="Products\GetProductInventoryList.cs" />
     <Compile Include="Products\GetProductList.cs" />
+    <Compile Include="Products\GetProductLookup.cs" />
     <Compile Include="Products\GetProductPage.cs" />
     <Compile Include="Products\UpdateProduct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

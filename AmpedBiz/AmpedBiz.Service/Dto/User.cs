@@ -35,13 +35,4 @@ namespace AmpedBiz.Service.Dto
 
         public virtual Address Address { get; set; }
     }
-
-
-    public class UserIdentity
-    {
-        public Guid Id { get; set; }
-
-        public string Name { get; set; }
-    }
-
 }

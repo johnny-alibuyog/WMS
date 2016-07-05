@@ -28,7 +28,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                 {
                     var entity = session.Get<PurchaseOrder>(message.Id);
 
-                    if (entity == null) 
+                    if (entity == null)
                         throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
 
                     var currency = session.Load<Currency>(Currency.PHP.Id); // this should be taken from the tenant
@@ -45,8 +45,8 @@ namespace AmpedBiz.Service.PurchaseOrders
                         tax: new Money(message.TaxAmount, currency),
                         supplier: session.Load<Supplier>(message.SupplierId),
                         purchaseOrderDetails: message.PurchaseOrderDetails
-                            .Select(x => new PurchaseOrderDetail().State.New(
-                                product: session.Load<Product>(x.ProductId),
+                            .Select(x => new PurchaseOrderDetail(x.Id).State.New(
+                                product: session.Load<Product>(x.Product.Id),
                                 unitPrice: new Money(x.UnitPriceAmount, currency),
                                 quantity: x.QuantityValue
                             ))

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmpedBiz.Common.CustomTypes;
+using System;
 using System.Collections.Generic;
 
 namespace AmpedBiz.Service.Dto
@@ -38,27 +39,27 @@ namespace AmpedBiz.Service.Dto
 
         public DateTime? ExpectedOn { get; set; }
 
-        public UserIdentity CreatedBy { get; set; }
+        public Lookup<Guid> CreatedBy { get; set; }
 
         public DateTime? CreatedOn { get; set; }
 
-        public UserIdentity ApprovedBy { get; set; }
-
-        public DateTime? ApprovedOn { get; set; }
-
-        public UserIdentity PayedBy { get; set; }
-
-        public DateTime? PaidOn { get; set; }
-
-        public UserIdentity SubmitterBy { get; set; }
+        public Lookup<Guid> SubmitterBy { get; set; }
 
         public DateTime? SubmittedOn { get; set; }
 
-        public UserIdentity CompletedBy { get; set; }
+        public Lookup<Guid> ApprovedBy { get; set; }
+
+        public DateTime? ApprovedOn { get; set; }
+
+        public Lookup<Guid> PaidBy { get; set; }
+
+        public DateTime? PaidOn { get; set; }
+
+        public Lookup<Guid> CompletedBy { get; set; }
 
         public DateTime? CompletedOn { get; set; }
 
-        public UserIdentity CancelledBy { get; set; }
+        public Lookup<Guid> CancelledBy { get; set; }
 
         public DateTime? CancelledOn { get; set; }
 
