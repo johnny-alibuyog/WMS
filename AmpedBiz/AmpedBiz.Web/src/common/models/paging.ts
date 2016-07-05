@@ -83,6 +83,14 @@ export class Pager<T> implements PagerRequest, PagerResponse<T> {
   public count: number;
   public items: T[];
 
+  public get start(): number {
+    return ((this.offset - 1) * this.size);
+  }
+
+  public get end(): number {
+    return (this.start + this.size);
+  }
+
   public onPage: () => void;
 
   constructor() {

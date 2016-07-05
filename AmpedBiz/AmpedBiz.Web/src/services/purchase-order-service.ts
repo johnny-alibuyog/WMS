@@ -1,5 +1,5 @@
 import {autoinject} from 'aurelia-framework';
-import {KeyValuePair} from './common/custom_types/key-value-pair';
+import {Lookup} from './common/custom_types/lookup';
 import {PageRequest} from '.././common/models/paging';
 import {PurchaseOrder, PurchaseOrderStatus} from '.././common/models/purchase-order';
 import {ServiceBase} from './service-base'
@@ -21,10 +21,10 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
       .then(response => <PurchaseOrderStatus[]>response);
   }
 
-  getStatusLookup(): Promise<KeyValuePair<PurchaseOrderStatus, string>[]> {
-    var url = this._resouce + '/statuses/lookup';
+  getStatusLookup(): Promise<Lookup<PurchaseOrderStatus>[]> {
+    var url = this._resouce + '/status-lookups';
     return this._httpClient.get(url)
-      .then(response => <KeyValuePair<PurchaseOrderStatus, string>[]>response);
+      .then(response => <Lookup<PurchaseOrderStatus>[]>response);
   }
 
   getNewPage(page: PageRequest): Promise<any> {
@@ -43,8 +43,8 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
   }
 
   updateNew(entity: PurchaseOrder) {
-    var url = this._resouce + entity.id + '/new';
-    return this._httpClient.post(url, <PurchaseOrder>{
+    var url = this._resouce + '/' + entity.id + '/new';
+    return this._httpClient.patch(url, <PurchaseOrder>{
       id: entity.id,
       userId: this._auth.user.id,
       supplierId: entity.supplierId,

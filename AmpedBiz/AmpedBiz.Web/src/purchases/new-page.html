@@ -15,7 +15,7 @@
           <div class="search-form input">
             <select class="form-control" value.bind="filter['supplier']" change.delegate="filter.doFilter()">
               <option value="">All Suppliers</option>
-              <option repeat.for="item of suppliers" model.bind="item.key">${item.value}</option>
+              <option repeat.for="item of suppliers" model.bind="item.id">${item.name}</option>
             </select>
           </div>
           <div class="search-form input">
@@ -57,7 +57,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr repeat.for="item of pager.items">
+            <tr repeat.for="item of pager.items" click.delegate="edit(item)">
               <td>
                 <a href="javascript:undefined" class="text-info" click.delegate="edit(item)">
                   <i class="fa fa-pencil"></i>

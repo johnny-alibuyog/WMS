@@ -3,8 +3,9 @@ import {DialogController} from 'aurelia-dialog';
 import {Supplier} from './common/models/supplier';
 import {ProductInventory} from './common/models/product';
 import {PurchaseOrder, PurchaseOrderDetail, RecievingDetail, PaymentDetail} from './common/models/purchase-order';
+import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 import {ServiceApi} from '../services/service-api';
-import {KeyValuePair} from '../common/custom_types/key-value-pair';
+import {Lookup} from '../common/custom_types/lookup';
 import {NotificationService} from '../common/controls/notification-service';
 
 @autoinject
@@ -20,32 +21,45 @@ export class PurchaseOrderCreate {
   public selectedPurchaseOrderDetail: PurchaseOrderDetail;
   public selectedRecievingDetail: RecievingDetail;
   public selectedPaymentDetail: PaymentDetail;
-  public products: ProductInventory[];
-  public suppliers: KeyValuePair<string, string>[];
+  public products: Lookup<string>[] = [];
+  public suppliers: Lookup<string>[] = [];
+
+  public purchaseOrderDetailsPage: Pager<PurchaseOrderDetail> = new Pager<PurchaseOrderDetail>();
+  public recievingDetailsPage: Pager<RecievingDetail> = new Pager<RecievingDetail>();
+  public paymentDetailsPage: Pager<PaymentDetail> = new Pager<PaymentDetail>();
 
   constructor(api: ServiceApi, controller: DialogController, notification: NotificationService) {
     this._api = api;
     this._controller = controller;
     this._notification = notification;
 
-    this._api.suppliers.getLookup<string, string>()
-      .then(data => {
-        this.suppliers = data;
-        console.log(this.suppliers);
-      });
+    this.purchaseOrderDetailsPage.onPage = () => this.initializePurchaseOrderDetailsPage();
+
+    this._api.suppliers.getLookups()
+      .then(data => this.suppliers = data);
   }
 
   activate(purchaseOrder: PurchaseOrder): void {
     if (purchaseOrder) {
       this.isEdit = true;
       this._api.purchaseOrders.get(purchaseOrder.id)
-        .then(data => this.purchaseOrder = <PurchaseOrder>data)
+        .then(data => this.setPurchaseOrder(<PurchaseOrder>data))
         .catch(error => this._notification.warning(error));
     }
     else {
       this.isEdit = false;
-      this.purchaseOrder = <PurchaseOrder>{};
+      this.setPurchaseOrder(<PurchaseOrder>{});
     }
+  }
+
+  setPurchaseOrder(purchaseOrder: PurchaseOrder): void {
+    this.purchaseOrder = purchaseOrder;
+    this.purchaseOrder.purchaseOrderDetails = this.purchaseOrder.purchaseOrderDetails || [];
+    this.purchaseOrder.recievingDetails = this.purchaseOrder.recievingDetails || [];
+    this.purchaseOrder.paymentDetails = this.purchaseOrder.paymentDetails || []
+
+    this.initializePurchaseOrderDetailsPage();
+    this.getSupplierProducts();
   }
 
   close() {
@@ -63,34 +77,35 @@ export class PurchaseOrderCreate {
 
   getSupplierProducts(): void {
     if (!this.purchaseOrder.supplierId) {
-      this.products = <ProductInventory[]>{};
+      this.products = [];
       return;
     }
 
-    this._api.suppliers.getProductInventories(this.purchaseOrder.supplierId)
-      .then(response => this.products = response);
-  }
-
-  getProductName(productId: string): string {
-      var product = this.products.find(x => x.id == productId);
-      if (product)
-        return product.name;
-
-      return null;
+    this._api.suppliers.getProductLookups(this.purchaseOrder.supplierId)
+      .then(data => this.products = data);
   }
 
   initializePurchaseOrderDetail(item: PurchaseOrderDetail): void {
-    if (!item.productId) {
+    if (!item.product) {
       item.quantityValue = 0;
       item.unitPriceAmount = 0;
       return;
     }
     else {
-      var product = this.products.find(x => x.id == item.productId);
-
-      item.quantityValue = product.targetValue || 1;
-      item.unitPriceAmount = product.wholeSalePriceAmount || 0;
+      this._api.products.getInventory(item.product.id).then(data => {
+        var product = <ProductInventory>data;
+        item.quantityValue = product.targetValue || 1;
+        item.unitPriceAmount = product.wholeSalePriceAmount || 0;
+      });
     }
+  }
+
+  initializePurchaseOrderDetailsPage(): void {
+    this.purchaseOrderDetailsPage.count = this.purchaseOrder.purchaseOrderDetails.length;
+    this.purchaseOrderDetailsPage.items = this.purchaseOrder.purchaseOrderDetails.slice(
+      this.purchaseOrderDetailsPage.start,
+      this.purchaseOrderDetailsPage.end
+    );
   }
 
   addPurchaseOrderDetail(): void {
@@ -104,6 +119,7 @@ export class PurchaseOrderCreate {
 
     this.purchaseOrder.purchaseOrderDetails.push(item);
     this.selectedPurchaseOrderDetail = item;
+    this.initializePurchaseOrderDetailsPage();
   }
 
   editPurchaseOrderDetail(item: PurchaseOrderDetail): void {
@@ -116,6 +132,7 @@ export class PurchaseOrderCreate {
     if (index > -1) {
       this.purchaseOrder.purchaseOrderDetails.splice(index, 1);
     }
+    this.initializePurchaseOrderDetailsPage();
   }
 
   addRecievingDetail(): void {
@@ -126,10 +143,10 @@ export class PurchaseOrderCreate {
   }
 
   addPaymentDetail(): void {
-    if (!this.purchaseOrder.paymentDetail)
-      this.purchaseOrder.paymentDetail = [];
+    if (!this.purchaseOrder.paymentDetails)
+      this.purchaseOrder.paymentDetails = [];
 
-    this.purchaseOrder.paymentDetail.push(<PaymentDetail>{});
+    this.purchaseOrder.paymentDetails.push(<PaymentDetail>{});
   }
 
   createNew(): void {

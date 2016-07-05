@@ -1,7 +1,6 @@
 import {autoinject} from 'aurelia-framework';
 import {HttpClientFacade} from './http-client-facade';
 import {PageRequest} from '.././common/models/paging';
-import {KeyValuePair} from '.././common/custom_types/key-value-pair';
 
 @autoinject
 export class ServiceBase<TEntity> {
@@ -23,14 +22,6 @@ export class ServiceBase<TEntity> {
     var url = this._resouce;
     return this._httpClient.get(url)
       .then(data => <TEntity[]>data);
-  }
-
-  getLookup<TKey, TValue>(): Promise<KeyValuePair<TKey, TValue>[]> {
-    var url = this._resouce + '/lookup';
-    return this._httpClient.get(url)
-      .then(data => {
-        return <KeyValuePair<TKey, TValue>[]>data;
-      });
   }
 
   getPage(page: PageRequest): Promise<any> {

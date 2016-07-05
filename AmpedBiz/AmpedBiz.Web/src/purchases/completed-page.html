@@ -15,7 +15,7 @@
           <div class="search-form input">
             <select class="form-control" value.bind="filter['supplier']" change.delegate="filter.doFilter()">
               <option value="">All Suppliers</option>
-              <option repeat.for="item of suppliers" model.bind="item.key">${item.value}</option>
+              <option repeat.for="item of suppliers" model.bind="item.id">${item.name}</option>
             </select>
           </div>
           <div class="search-form input">

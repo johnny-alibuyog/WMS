@@ -1,4 +1,7 @@
 <template>
+  <require from="common/controls/pager"></require>
+  <require from="common/converters/lookup-to-id-value-converter"></require>
+  <require from="common/matchers/lookup-matcher"></require>
 
   <ai-dialog>
 
@@ -18,26 +21,26 @@
                   <div class="col-sm-8">
                     <select class="form-control" value.bind="purchaseOrder.supplierId" change.delegate="getSupplierProducts()">
                       <option>Select Supplier</option>
-                      <option repeat.for="supplier of suppliers" model.bind="supplier.key">${supplier.value}</option>
+                      <option repeat.for="supplier of suppliers" model.bind="supplier.id">${supplier.name}</option>
                     </select>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-sm-4">Created By:</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" value.bind="purchaseOrder.createdBy" />
+                    <input type="text" class="form-control" value.bind="purchaseOrder.createdBy.name" disabled />
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-sm-4">Submitted By:</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" value.bind="purchaseOrder.submittedBy" />
+                    <input type="text" class="form-control" value.bind="purchaseOrder.submittedBy.name" disabled />
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-sm-4">Closed By:</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" value.bind="purchaseOrder.closedBy" />
+                    <input type="text" class="form-control" value.bind="purchaseOrder.closedBy.name" disabled />
                   </div>
                 </div>
               </div>
@@ -46,25 +49,25 @@
                 <div class="form-group">
                   <label class="control-label col-sm-4">Expected On:</label>
                   <div class="col-sm-8">
-                    <input type="date" class="form-control" placeholder="Enter Excpected Date" value.bind="purchaseOrder.expectedOn" />
+                    <input type="text" class="form-control" placeholder="Enter Excpected Date" value.bind="purchaseOrder.expectedOn" />
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-sm-4">Created On:</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" value.bind="purchaseOrder.createdOn" />
+                    <input type="text" class="form-control" value.bind="purchaseOrder.createdOn" disabled />
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-sm-4">Submitted On:</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" value.bind="purchaseOrder.submittedOn" />
+                    <input type="text" class="form-control" value.bind="purchaseOrder.submittedOn" disabled />
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-sm-4">Closed On:</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" value.bind="purchaseOrder.closedOn" />
+                    <input type="text" class="form-control" value.bind="purchaseOrder.closedOn" disabled />
                   </div>
                 </div>
               </div>
@@ -105,7 +108,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr repeat.for="item of purchaseOrder.purchaseOrderDetails" click.delegate="editPurchaseOrderDetail(item)">
+                      <tr repeat.for="item of purchaseOrderDetailsPage.items" click.delegate="editPurchaseOrderDetail(item)">
                         <td>
                           <a href="javascript:undefined" class="text-info" click.delegate="editPurchaseOrderDetail(item)">
                             <i class="fa fa-pencil"></i>
@@ -116,16 +119,17 @@
                         </td>
 
                         <!-- read-only mode -->
-                        <td if.bind="$parent.selectedPurchaseOrderDetail !== item">${getProductName(item.productId)}</td>
+                        <td if.bind="$parent.selectedPurchaseOrderDetail !== item">${item.product.name}</td>
                         <td if.bind="$parent.selectedPurchaseOrderDetail !== item" class="text-right">${item.quantityValue}</td>
                         <td if.bind="$parent.selectedPurchaseOrderDetail !== item" class="text-right">${item.unitPriceAmount}</td>
                         <td if.bind="$parent.selectedPurchaseOrderDetail !== item" class="text-right">${item.quantityValue * item.unitPriceAmount}</td>
 
                         <!-- edit mode -->
                         <td if.bind="$parent.selectedPurchaseOrderDetail === item">
-                          <select class="form-control" value.bind="item.productId" change.delegate="initializePurchaseOrderDetail(item)">
+                          <!--<select class="form-control" value.bind="item.product | lookupToId:$parent.products"  change.delegate="initializePurchaseOrderDetail(item)">-->
+                          <select class="form-control" value.bind="item.product" matcher.bind="lookupMatcher" change.delegate="initializePurchaseOrderDetail(item)">
                             <option>Select Supplier</option>
-                            <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
+                            <option repeat.for="product of $parent.products" model.bind="product">${product.name}</option>
                           </select>
                         </td>
                         <td if.bind="$parent.selectedPurchaseOrderDetail === item" class="text-right"><input class="text-right" type="number" value.bind="item.quantityValue" /></td>
@@ -134,6 +138,8 @@
                       </tr>
                     </tbody>
                   </table>
+
+                  <pager current-page.bind="purchaseOrderDetailsPage.offset" total-items.bind="purchaseOrderDetailsPage.count" change.delegate="purchaseOrderDetailsPage.doPage($event)" />
                 </div>
 
                 <!-- Inventory Recieving -->

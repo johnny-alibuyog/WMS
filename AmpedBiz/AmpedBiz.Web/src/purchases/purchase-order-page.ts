@@ -4,7 +4,7 @@ import {PurchaseOrderCreate} from './purchase-order-create';
 import {PurchaseOrder, PurchaseOrderPageItem, PurchaseOrderStatus} from '../common/models/purchase-order';
 import {Supplier} from '../common/models/supplier';
 import {ServiceApi} from '../services/service-api';
-import {KeyValuePair} from '../common/custom_types/key-value-pair';
+import {Lookup} from '../common/custom_types/lookup';
 import {NotificationService} from '../common/controls/notification-service';
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 
@@ -18,8 +18,8 @@ export class PurchaseOrderPage {
   public sorter: Sorter;
   public pager: Pager<PurchaseOrderPageItem>;
 
-  public statuses: KeyValuePair<PurchaseOrderStatus, string>[];
-  public suppliers: KeyValuePair<string, string>[];
+  public statuses: Lookup<PurchaseOrderStatus>[];
+  public suppliers: Lookup<string>[];
 
   constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<PurchaseOrderPageItem>) {
     this._api = api;
@@ -43,7 +43,7 @@ export class PurchaseOrderPage {
     this.pager = pager;
     this.pager.onPage = () => this.getPage();
 
-    this._api.suppliers.getLookup<string, string>()
+    this._api.suppliers.getLookups()
       .then(data => {
         this.suppliers = data;
         console.log(this.suppliers);

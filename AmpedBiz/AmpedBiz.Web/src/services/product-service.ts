@@ -8,4 +8,10 @@ export class ProductService extends ServiceBase<Product> {
   constructor(httpClient: HttpClientFacade) {
     super('products', httpClient);
   } 
+
+  getInventory(productId: string): Promise<ProductInventory> {
+    var url = 'product-inventories/' + productId;
+    return this._httpClient.get(url)
+      .then(response => <ProductInventory>response);
+  }
 }

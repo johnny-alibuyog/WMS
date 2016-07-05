@@ -45,7 +45,7 @@ export class ServiceApi {
     return this._productCategories;
   }
 
-  public get products(): ProductCategoryService {
+  public get products(): ProductService {
     return this._products;
   }
 

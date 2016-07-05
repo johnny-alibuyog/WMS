@@ -1,4 +1,5 @@
 import {ProductInventory} from 'product';
+import {Lookup} from '../custom_types/lookup';
 //import {autoinject, BindingEngine} from 'aurelia-framework';
 
 export enum PurchaseOrderStatus {
@@ -25,12 +26,12 @@ export interface PurchaseOrder {
   closedOn?: Date;
   purchaseOrderDetails?: PurchaseOrderDetail[];
   recievingDetails?: RecievingDetail[];
-  paymentDetail?: PaymentDetail[];
+  paymentDetails?: PaymentDetail[];
 }
 
 export interface PurchaseOrderDetail {
   id?: string;
-  productId?: string;
+  product?: Lookup<string>;
   quantityValue?: number;
   unitPriceAmount?: number;
 }
