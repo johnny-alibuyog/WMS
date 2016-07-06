@@ -6,12 +6,12 @@ const logger = LogManager.getLogger('pager');
 @autoinject
 export class Pager {
 
-  @bindable({ defaultBindingMode: bindingMode.twoWay })
   //@bindable()
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
   public currentPage: number;
 
-  @bindable({ defaultBindingMode: bindingMode.twoWay })
   //@bindable()
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
   public totalItems: number;
 
   public totalPages: number;
@@ -40,15 +40,15 @@ export class Pager {
     };
   }
 
-  attached() {
+  attached(): void {
     this.buildPages();
   }
 
-  currentPageChanged() {
+  currentPageChanged(): void {
     this.buildPages();
   }
-  
-  totalItemsChanged(){
+
+  totalItemsChanged(): void {
     this.buildPages();
   }
 

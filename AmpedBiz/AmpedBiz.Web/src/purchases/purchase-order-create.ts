@@ -1,8 +1,8 @@
 import {autoinject} from 'aurelia-framework';
 import {DialogController} from 'aurelia-dialog';
-import {Supplier} from './common/models/supplier';
-import {ProductInventory} from './common/models/product';
-import {PurchaseOrder, PurchaseOrderDetail, RecievingDetail, PaymentDetail} from './common/models/purchase-order';
+import {Supplier} from '../common/models/supplier';
+import {ProductInventory} from '../common/models/product';
+import {PurchaseOrder, PurchaseOrderDetail, RecievingDetail, PaymentDetail} from '../common/models/purchase-order';
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 import {ServiceApi} from '../services/service-api';
 import {Lookup} from '../common/custom_types/lookup';

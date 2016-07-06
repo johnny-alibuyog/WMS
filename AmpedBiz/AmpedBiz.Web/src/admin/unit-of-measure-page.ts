@@ -1,8 +1,8 @@
 import {autoinject} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
 import {UnitOfMeasureCreate} from './unit-of-measure-create';
-import {UnitOfMeasureClass} from './common/models/unit-of-measure-class';
-import {UnitOfMeasure, UnitOfMeasurePageItem} from './common/models/unit-of-measure';
+import {UnitOfMeasureClass} from '../common/models/unit-of-measure-class';
+import {UnitOfMeasure, UnitOfMeasurePageItem} from '../common/models/unit-of-measure';
 import {ServiceApi} from '../services/service-api';
 import {NotificationService} from '../common/controls/notification-service';
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';

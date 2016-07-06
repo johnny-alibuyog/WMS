@@ -1,5 +1,5 @@
 import {autoinject} from 'aurelia-framework';
-import {Customer} from './common/models/customer'
+import {Customer} from '../common/models/customer'
 import {ServiceBase} from './service-base'
 import {HttpClientFacade} from './http-client-facade';
 

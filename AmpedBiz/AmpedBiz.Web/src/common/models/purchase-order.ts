@@ -1,4 +1,4 @@
-import {ProductInventory} from 'product';
+import {ProductInventory} from './product';
 import {Lookup} from '../custom_types/lookup';
 //import {autoinject, BindingEngine} from 'aurelia-framework';
 

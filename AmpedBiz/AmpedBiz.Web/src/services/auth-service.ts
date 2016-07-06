@@ -1,5 +1,5 @@
 import {autoinject, Aurelia} from 'aurelia-framework';
-import {User} from './common/models/user'
+import {User} from '../common/models/user'
 import {HttpClientFacade} from './http-client-facade';
 import {NotificationService} from '../common/controls/notification-service';
 

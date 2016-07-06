@@ -1,3 +1,4 @@
+import {Router} from 'aurelia-router';
 import {autoinject} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
 import {PurchaseOrderCreate} from './purchase-order-create';
@@ -13,6 +14,7 @@ export class PurchaseOrderPage {
   private _api: ServiceApi;
   private _dialog: DialogService;
   private _notification: NotificationService;
+  private _router: Router;
 
   public filter: Filter;
   public sorter: Sorter;
@@ -21,17 +23,18 @@ export class PurchaseOrderPage {
   public statuses: Lookup<PurchaseOrderStatus>[];
   public suppliers: Lookup<string>[];
 
-  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<PurchaseOrderPageItem>) {
+  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, router: Router) {
     this._api = api;
     this._dialog = dialog;
+    this._router = router;
     this._notification = notification;
 
-    this.filter = filter;
+    this.filter = new Filter();
     this.filter["status"] = PurchaseOrderStatus.new;
     this.filter["supplier"] = null;
     this.filter.onFilter = () => this.getPage();
 
-    this.sorter = sorter;
+    this.sorter = new Sorter();
     this.sorter["supplier"] = SortDirection.None;
     this.sorter["status"] = SortDirection.Ascending;
     this.sorter["createdBy"] = SortDirection.None;
@@ -40,7 +43,7 @@ export class PurchaseOrderPage {
     this.sorter["total"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
 
-    this.pager = pager;
+    this.pager = new Pager<PurchaseOrderPageItem>();
     this.pager.onPage = () => this.getPage();
 
     this._api.suppliers.getLookups()
@@ -82,6 +85,10 @@ export class PurchaseOrderPage {
   }
 
   create() {
+    /*
+    this._router.navigate('purchase-order-create', <PurchaseOrder>{});
+    */
+
     this._dialog
       .open({
         viewModel: PurchaseOrderCreate,
@@ -95,6 +102,10 @@ export class PurchaseOrderPage {
   }
 
   edit(item: PurchaseOrderPageItem) {
+    /*
+    this._router.navigate('purchase-order-create', <PurchaseOrder>{ id: item.id });
+    */
+
     this._dialog
       .open({
         viewModel: PurchaseOrderCreate,

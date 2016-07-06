@@ -1,5 +1,5 @@
 import {autoinject} from 'aurelia-framework';
-import {UnitOfMeasureClass} from './common/models/unit-of-measure-class'
+import {UnitOfMeasureClass} from '../common/models/unit-of-measure-class'
 import {ServiceBase} from './service-base'
 import {HttpClientFacade} from './http-client-facade';
 

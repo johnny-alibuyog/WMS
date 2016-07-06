@@ -1,4 +1,4 @@
-import {User} from './common/models/user'
+import {User} from '../common/models/user'
 import {autoinject} from 'aurelia-framework';
 //import {Validation, ValidationGroup} from 'aurelia-validation';
 import {AuthService} from '../services/auth-service';

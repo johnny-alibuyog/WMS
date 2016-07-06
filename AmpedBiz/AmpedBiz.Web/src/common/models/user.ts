@@ -1,6 +1,6 @@
-import {Role} from 'role';
-import {Person} from 'person';
-import {Address} from 'address';
+import {Role} from './role';
+import {Person} from './person';
+import {Address} from './address';
 
 export interface User {
   id?: string;

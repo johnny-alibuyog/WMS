@@ -1,5 +1,5 @@
-import {Address} from 'address';
-import {Contact} from 'contact';
+import {Address} from './address';
+import {Contact} from './contact';
 
 export interface Supplier {
   id?: string;

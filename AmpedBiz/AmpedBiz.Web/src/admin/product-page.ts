@@ -1,7 +1,7 @@
 import {autoinject} from 'aurelia-framework';
 import {DialogService} from 'aurelia-dialog';
 import {ProductCreate} from './product-create';
-import {Product, ProductPageItem} from './common/models/product';
+import {Product, ProductPageItem} from '../common/models/product';
 import {ServiceApi} from '../services/service-api';
 import {NotificationService} from '../common/controls/notification-service';
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';

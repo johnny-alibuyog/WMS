@@ -1,5 +1,5 @@
 import {autoinject} from 'aurelia-framework';
-import {PaymentType} from './common/models/payment-type'
+import {PaymentType} from '../common/models/payment-type'
 import {ServiceBase} from './service-base'
 import {HttpClientFacade} from './http-client-facade';
 

@@ -1,7 +1,7 @@
 import {autoinject} from 'aurelia-framework';
-import {Lookup} from './common/custom_types/lookup';
-import {PageRequest} from '.././common/models/paging';
-import {PurchaseOrder, PurchaseOrderStatus} from '.././common/models/purchase-order';
+import {Lookup} from '../common/custom_types/lookup';
+import {PageRequest} from '../common/models/paging';
+import {PurchaseOrder, PurchaseOrderStatus} from '../common/models/purchase-order';
 import {ServiceBase} from './service-base'
 import {AuthService} from './auth-service';
 import {HttpClientFacade} from './http-client-facade';

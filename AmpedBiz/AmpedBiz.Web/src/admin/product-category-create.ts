@@ -1,6 +1,6 @@
 import {autoinject} from 'aurelia-framework';
 import {DialogController} from 'aurelia-dialog';
-import {ProductCategory} from './common/models/product-category';
+import {ProductCategory} from '../common/models/product-category';
 import {ServiceApi} from '../services/service-api';
 import {NotificationService} from '../common/controls/notification-service';
 

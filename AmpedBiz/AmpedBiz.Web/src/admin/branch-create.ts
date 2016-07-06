@@ -1,8 +1,10 @@
 import {autoinject} from 'aurelia-framework';
 import {DialogController} from 'aurelia-dialog';
-import {Branch} from './common/models/branch';
+import {Branch} from '../common/models/branch';
 import {ServiceApi} from '../services/service-api';
 import {NotificationService} from '../common/controls/notification-service';
+
+
 
 @autoinject
 export class BranchCreate {
