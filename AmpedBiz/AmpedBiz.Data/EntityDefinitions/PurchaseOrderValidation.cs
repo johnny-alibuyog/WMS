@@ -58,7 +58,7 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.CancellationReason);
 
-            Define(x => x.PurchaseOrderDetails)
+            Define(x => x.Items)
                 .HasValidElements();
         }
     }

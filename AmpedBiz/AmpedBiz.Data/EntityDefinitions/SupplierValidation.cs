@@ -20,6 +20,9 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.Contact)
                 .IsValid();
+
+            Define(x => x.Products)
+                .HasValidElements();
         }
     }
 }

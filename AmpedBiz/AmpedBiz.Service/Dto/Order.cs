@@ -74,7 +74,7 @@ namespace AmpedBiz.Service.Dto
 
         public IEnumerable<Invoice> Invoices { get; set; }
 
-        public IEnumerable<OrderDetail> OrderDetails { get; set; }
+        public IEnumerable<OrderItem> OrderItems { get; set; }
     }
 
     public class OrderPageItem

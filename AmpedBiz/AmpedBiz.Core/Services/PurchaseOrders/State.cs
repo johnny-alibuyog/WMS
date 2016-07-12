@@ -45,7 +45,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
         }
 
         public virtual PurchaseOrder New(User createdBy, DateTime createdOn, DateTime? expectedOn = null, PaymentType paymentType = null, 
-            Shipper shipper = null, Money shippingFee = null, Money tax = null, Supplier supplier = null, IEnumerable<PurchaseOrderDetail> purchaseOrderDetails = null)
+            Shipper shipper = null, Money shippingFee = null, Money tax = null, Supplier supplier = null, IEnumerable<PurchaseOrderItem> purchaseOrderItems = null)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.New))
                 throw new InvalidOperationException(string.Format("You cannot perform creation of new purchase order on {0} stage.", this.Target.Status));
@@ -58,7 +58,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
                 tax: tax,
                 shippingFee: shippingFee,
                 supplier: supplier,
-                purchaseOrderDetails: purchaseOrderDetails
+                purchaseOrderItems: purchaseOrderItems
             );
         }
 

@@ -55,14 +55,14 @@ namespace AmpedBiz.Core.Services.Orders
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, this.Target.Status));
 
             this.Target.New(
-                paymentType,
-                shipper,
-                taxRate,
-                shippingFee,
-                createdBy,
-                customer,
-                branch
-                );
+                paymentType: paymentType,
+                shipper: shipper,
+                taxRate: taxRate,
+                shippingFee: shippingFee,
+                createdBy: createdBy,
+                customer: customer,
+                branch: branch
+            );
         }
 
         public virtual void Stage(User stagedBy)

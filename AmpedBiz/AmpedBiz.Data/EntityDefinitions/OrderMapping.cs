@@ -71,7 +71,7 @@ namespace AmpedBiz.Data.EntityDefinitions
             //    .Inverse()
             //    .AsBag();
 
-            HasMany(x => x.OrderDetails)
+            HasMany(x => x.Items)
                 .Cascade.AllDeleteOrphan()
                 .Not.KeyNullable()
                 .Not.KeyUpdate()

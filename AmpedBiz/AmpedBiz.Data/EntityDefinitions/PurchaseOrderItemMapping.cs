@@ -3,9 +3,9 @@ using FluentNHibernate.Mapping;
 
 namespace AmpedBiz.Data.EntityDefinitions
 {
-    public class PurchaseOrderDetailMapping : ClassMap<PurchaseOrderDetail>
+    public class PurchaseOrderItemMapping : ClassMap<PurchaseOrderItem>
     {
-        public PurchaseOrderDetailMapping()
+        public PurchaseOrderItemMapping()
         {
             Id(x => x.Id)
                 .GeneratedBy.GuidComb();
@@ -16,9 +16,9 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Component(x => x.Quantity, MeasureMapping.Map("Quantity_", nameof(GoodStockInventory)));
 
-            Component(x => x.UnitPrice, MoneyMapping.Map("UnitPrice_", nameof(PurchaseOrderDetail)));
+            Component(x => x.UnitPrice, MoneyMapping.Map("UnitPrice_", nameof(PurchaseOrderItem)));
 
-            Component(x => x.Total, MoneyMapping.Map("Total_", nameof(PurchaseOrderDetail)));
+            Component(x => x.Total, MoneyMapping.Map("Total_", nameof(PurchaseOrderItem)));
 
             Map(x => x.DateReceived);
 

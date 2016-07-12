@@ -3,9 +3,9 @@ using NHibernate.Validator.Cfg.Loquacious;
 
 namespace AmpedBiz.Data.EntityDefinitions
 {
-    public class PurchaseOrderDetailValidation : ValidationDef<PurchaseOrderDetail>
+    public class PurchaseOrderItemValidation : ValidationDef<PurchaseOrderItem>
     {
-        public PurchaseOrderDetailValidation()
+        public PurchaseOrderItemValidation()
         {
             Define(x => x.Id);
 

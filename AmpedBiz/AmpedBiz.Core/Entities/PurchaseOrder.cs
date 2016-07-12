@@ -66,7 +66,11 @@ namespace AmpedBiz.Core.Entities
 
         public virtual string CancellationReason { get; protected set; }
 
-        public virtual IEnumerable<PurchaseOrderDetail> PurchaseOrderDetails { get; protected set; }
+        public virtual IEnumerable<PurchaseOrderItem> Items { get; protected set; }
+
+        public virtual IEnumerable<PurchaseOrderPayment> Payments { get; protected set; }
+
+        public virtual IEnumerable<PurchaseOrderReceipt> Receipts { get; protected set; }
 
         public virtual State State
         {
@@ -77,11 +81,13 @@ namespace AmpedBiz.Core.Entities
 
         public PurchaseOrder(Guid id) : base(id)
         {
-            this.PurchaseOrderDetails = new Collection<PurchaseOrderDetail>();
+            this.Items = new Collection<PurchaseOrderItem>();
+            this.Payments = new Collection<PurchaseOrderPayment>();
+            this.Receipts = new Collection<PurchaseOrderReceipt>();
         }
 
         protected internal virtual PurchaseOrder New(User createdBy, DateTime createdOn, DateTime? expectedOn = null, PaymentType paymentType = null, 
-            Shipper shipper = null, Money shippingFee = null, Money tax = null, Supplier supplier = null, IEnumerable<PurchaseOrderDetail> purchaseOrderDetails = null)
+            Shipper shipper = null, Money shippingFee = null, Money tax = null, Supplier supplier = null, IEnumerable<PurchaseOrderItem> purchaseOrderItems = null)
         {
             this.CreatedBy = createdBy;
             this.CreatedOn = createdOn;
@@ -91,25 +97,25 @@ namespace AmpedBiz.Core.Entities
             this.ShippingFee = shippingFee ?? this.ShippingFee;
             this.Supplier = supplier ?? this.Supplier;
             this.Total = this.Tax + this.ShippingFee + this.Payment;
-            this.SetPurchaseOrderDetails(purchaseOrderDetails);
+            this.SetPurchaseOrderItems(purchaseOrderItems);
             this.Status = PurchaseOrderStatus.New;
 
             return this;
         }
 
-        protected internal virtual PurchaseOrder SetPurchaseOrderDetails(IEnumerable<PurchaseOrderDetail> items)
+        protected internal virtual PurchaseOrder SetPurchaseOrderItems(IEnumerable<PurchaseOrderItem> items)
         {
             if (items.IsNullOrEmpty())
                 return this;
 
-            var itemsToInsert = items.Except(this.PurchaseOrderDetails).ToList();
-            var itemsToUpdate = this.PurchaseOrderDetails.Where(x => items.Contains(x)).ToList();
-            var itemsToRemove = this.PurchaseOrderDetails.Except(items).ToList();
+            var itemsToInsert = items.Except(this.Items).ToList();
+            var itemsToUpdate = this.Items.Where(x => items.Contains(x)).ToList();
+            var itemsToRemove = this.Items.Except(items).ToList();
 
             foreach (var item in itemsToInsert)
             {
                 item.PurchaseOrder = this;
-                this.PurchaseOrderDetails.Add(item);
+                this.Items.Add(item);
             }
 
             foreach (var item in itemsToUpdate)
@@ -122,7 +128,7 @@ namespace AmpedBiz.Core.Entities
             foreach (var item in itemsToRemove)
             {
                 item.PurchaseOrder = null;
-                this.PurchaseOrderDetails.Remove(item);
+                this.Items.Remove(item);
             }
 
             return this;
@@ -190,24 +196,23 @@ namespace AmpedBiz.Core.Entities
 
         protected virtual void Compute()
         {
-            var detailsTotal = default(Money);
+            var itemTotal = default(Money);
 
-            foreach (var detail in this.PurchaseOrderDetails)
+            foreach (var item in this.Items)
             {
-
-                detailsTotal += detail.Total;
+                itemTotal += item.Total;
             }
 
-            this.Total = this.Tax + this.ShippingFee + this.Payment + detailsTotal;
+            this.Total = this.Tax + this.ShippingFee + this.Payment + itemTotal;
         }
 
-        public virtual void AddPurchaseOrderDetail(PurchaseOrderDetail orderDetail)
+        public virtual void AddPurchaseOrderItem(PurchaseOrderItem purchaseOrderItem)
         {
-            orderDetail.PurchaseOrder = this;
-            this.PurchaseOrderDetails.Add(orderDetail);
+            purchaseOrderItem.PurchaseOrder = this;
+            this.Items.Add(purchaseOrderItem);
 
-            this.SubTotal += orderDetail.Total;
-            this.Total += orderDetail.Total;
+            this.SubTotal += purchaseOrderItem.Total;
+            this.Total += purchaseOrderItem.Total;
         }
     }
 }

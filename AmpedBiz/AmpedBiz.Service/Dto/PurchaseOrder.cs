@@ -63,9 +63,11 @@ namespace AmpedBiz.Service.Dto
 
         public DateTime? CancelledOn { get; set; }
 
-        public string CancelReason { get; set; }
+        public string CancellationReason { get; set; }
 
-        public IEnumerable<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
+        public IEnumerable<PurchaseOrderItem> Items { get; set; }
+
+        public Dictionary<Dto.PurchaseOrderStatus, string> AllowedTransitions { get; set; }
     }
 
     public class PurchaseOrderPageItem

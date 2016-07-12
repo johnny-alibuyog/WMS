@@ -18,7 +18,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             for (int i = 0; i < 100; i++)
             {
-                //order.AddOrderDetail(new OrderDetail() { ExtendedPrice = new Money(10) });
+                //order.AddOrderItem(new OrderItem() { ExtendedPrice = new Money(10) });
             }
         }
     }

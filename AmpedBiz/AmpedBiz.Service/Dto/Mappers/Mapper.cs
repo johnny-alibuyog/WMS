@@ -41,13 +41,17 @@ namespace AmpedBiz.Service.Dto.Mappers
                     desitnation.WithUnits(units);
                 });
 
-            ExpressMapper.Mapper.Register<Entity.PurchaseOrder, GetPurchaseOder.Response>().Flatten();
+            ExpressMapper.Mapper.Register<Entity.PurchaseOrder, GetPurchaseOder.Response>()
+                .Member(x => x.AllowedTransitions, x => x.State.AllowedTransitions
+                    .ToDictionary(o => ExpressMapper.Mapper.Map<Entity.PurchaseOrderStatus, Dto.PurchaseOrderStatus>(o.Key), y => y.Value)
+                )
+                .Flatten();
 
             ExpressMapper.Mapper.Register<Entity.PurchaseOrder, CreateNewPurchaseOder.Response>().Flatten();
 
-            ExpressMapper.Mapper.Register<Entity.PurchaseOrderDetail, Dto.PurchaseOrderDetail>().Flatten();
+            ExpressMapper.Mapper.Register<Entity.PurchaseOrderItem, Dto.PurchaseOrderItem>().Flatten();
 
-            ExpressMapper.Mapper.Register<Entity.PurchaseOrderDetail, Dto.PurchaseOrderDetailPageItem>().Flatten();
+            ExpressMapper.Mapper.Register<Entity.PurchaseOrderItem, Dto.PurchaseOrderItemPageItem>().Flatten();
 
             ExpressMapper.Mapper.Register<Entity.User, Lookup<Guid>>()
                 .Member(x => x.Id, x => x.Id)

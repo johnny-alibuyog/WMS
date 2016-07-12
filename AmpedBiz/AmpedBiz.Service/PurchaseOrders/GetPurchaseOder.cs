@@ -31,7 +31,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                 {
                     var query = session.Query<PurchaseOrder>()
                         .Where(x => x.Id == message.Id)
-                        .FetchMany(x => x.PurchaseOrderDetails)
+                        .FetchMany(x => x.Items)
                         .Fetch(x => x.Tax)
                         .Fetch(x => x.ShippingFee)
                         .Fetch(x => x.Payment)

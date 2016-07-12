@@ -25,7 +25,7 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return this.user != "null";
+    return this.user != null;
   }
 
   login(user: User): Promise<any> {

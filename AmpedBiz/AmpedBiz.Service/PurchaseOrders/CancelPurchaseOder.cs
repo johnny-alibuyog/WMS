@@ -30,7 +30,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 
                     var user = session.Load<User>(message.UserId);
 
-                    entity.State.Cancel(user, DateTime.Now, message.CancelReason);
+                    entity.State.Cancel(user, DateTime.Now, message.CancellationReason);
 
                     session.Save(entity);
                     transaction.Commit();

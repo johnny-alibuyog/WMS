@@ -48,13 +48,6 @@ export class Index {
         moduleId: './purchase-order-create',
         nav: false,
         title: 'Create Purchases'
-      },
-      {
-        route: ['not-modal-page'],
-        name: 'not-modal-page',
-        moduleId: './not-modal-page',
-        nav: false,
-        title: 'Not Modal'
       }
     ]);
     

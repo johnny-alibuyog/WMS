@@ -1,21 +1,68 @@
 <template>
   <require from="common/controls/pager"></require>
   <require from="common/converters/lookup-to-id-value-converter"></require>
-  <require from="common/matchers/lookup-matcher"></require>
+  <!--<require from="common/matchers/lookup-matcher"></require>-->
 
-  <ai-dialog>
+  <div class="row row-no-padding">
+    
+    <div class="col-md-8">
 
-    <ai-dialog-header>
-      <h3>${header}</h3>
-    </ai-dialog-header>
-
-    <ai-dialog-body>
       <div class="panel panel-default">
+
+        <!-- heading -->
+        <div class="panel-heading">
+
+          <!-- heading label -->
+          <h4 class="panel-title row-fluid">
+            <span6>&nbsp ${header} &nbsp</span6>
+
+            <!-- transition buttons -->
+            <button type="button" class="btn btn-default" if.bind="purchaseOrder.allowedTransitions['new']" click.trigger="save()">
+              <i class="fa fa-check"></i> ${purchaseOrder.allowedTransitions['new']}
+            </button>
+            
+            <button type="button" class="btn btn-default" if.bind="purchaseOrder.allowedTransitions['submitted']" click.trigger="submit()">
+              <i class="fa fa-check"></i> ${purchaseOrder.allowedTransitions['submitted']}
+            </button>
+            
+            <button type="button" class="btn btn-default" if.bind="purchaseOrder.allowedTransitions['approved']" click.trigger="approve()">
+              <i class="fa fa-check"></i> ${purchaseOrder.allowedTransitions['approved']}
+            </button>
+            
+            <button type="button" class="btn btn-default" if.bind="purchaseOrder.allowedTransitions['paid']" click.trigger="pay()">
+              <i class="fa fa-check"></i> ${purchaseOrder.allowedTransitions['paid']}
+            </button>
+            
+            <button type="button" class="btn btn-default" if.bind="purchaseOrder.allowedTransitions['recieved']" click.trigger="recieve()">
+              <i class="fa fa-check"></i> ${purchaseOrder.allowedTransitions['recieved']}
+            </button>
+            
+            <button type="button" class="btn btn-default" if.bind="purchaseOrder.allowedTransitions['completed']" click.trigger="complete()">
+              <i class="fa fa-check"></i> ${purchaseOrder.allowedTransitions['completed']}
+            </button>
+            
+            <button type="button" class="btn btn-default" if.bind="purchaseOrder.allowedTransitions['cancelled']" click.trigger="cancel()">
+              <i class="fa fa-check"></i> ${purchaseOrder.allowedTransitions['cancelled']}
+            </button>
+            
+            <button type="button" class="btn btn-default" click.trigger="back()">
+              <i class="fa fa-times"></i> Back
+            </button>
+
+          </h4>
+
+        </div>
+
+        <!-- body -->
         <div class="panel-body">
+
           <form class="form-horizontal" role="form">
 
+            <!-- inputs -->
             <div class="row">
+
               <div class="col-lg-6">
+
                 <div class="form-group">
                   <label class="control-label col-sm-4">Supplier:</label>
                   <div class="col-sm-8">
@@ -25,217 +72,244 @@
                     </select>
                   </div>
                 </div>
+
                 <div class="form-group">
                   <label class="control-label col-sm-4">Created By:</label>
                   <div class="col-sm-8">
                     <input type="text" class="form-control" value.bind="purchaseOrder.createdBy.name" disabled />
                   </div>
                 </div>
+
                 <div class="form-group">
                   <label class="control-label col-sm-4">Submitted By:</label>
                   <div class="col-sm-8">
                     <input type="text" class="form-control" value.bind="purchaseOrder.submittedBy.name" disabled />
                   </div>
                 </div>
+
                 <div class="form-group">
                   <label class="control-label col-sm-4">Closed By:</label>
                   <div class="col-sm-8">
                     <input type="text" class="form-control" value.bind="purchaseOrder.closedBy.name" disabled />
                   </div>
                 </div>
+
               </div>
 
               <div class="col-lg-6 form-group">
+
                 <div class="form-group">
                   <label class="control-label col-sm-4">Expected On:</label>
                   <div class="col-sm-8">
                     <input type="text" class="form-control" placeholder="Enter Excpected Date" value.bind="purchaseOrder.expectedOn" />
                   </div>
                 </div>
+
                 <div class="form-group">
                   <label class="control-label col-sm-4">Created On:</label>
                   <div class="col-sm-8">
                     <input type="text" class="form-control" value.bind="purchaseOrder.createdOn" disabled />
                   </div>
                 </div>
+
                 <div class="form-group">
                   <label class="control-label col-sm-4">Submitted On:</label>
                   <div class="col-sm-8">
                     <input type="text" class="form-control" value.bind="purchaseOrder.submittedOn" disabled />
                   </div>
                 </div>
+
                 <div class="form-group">
                   <label class="control-label col-sm-4">Closed On:</label>
                   <div class="col-sm-8">
                     <input type="text" class="form-control" value.bind="purchaseOrder.closedOn" disabled />
                   </div>
                 </div>
+
               </div>
 
             </div>
 
+            <!-- tabs -->
             <div class="row">
-              <ul class="nav nav-tabs">
-                <li class="active">
-                  <a data-toggle="tab" href="#purchaseDetails">Purchase Details</a>
-                </li>
-                <li>
-                  <a data-toggle="tab" href="#inventoryRecieving">Inventory Recieving</a>
-                </li>
-                <li>
-                  <a data-toggle="tab" href="#paymentInformations">Payment Informations</a>
-                </li>
-              </ul>
 
-              <div class="tab-content">
+              <div class="col-lg-12">
 
-                <!-- Purchase Details -->
-                <div id="purchaseDetails" class="tab-pane fade in active">
-                  <br />
-                  <!-- create new -->
-                  <button type="button" class="btn btn-default" click.delegate="addPurchaseOrderDetail()">
-                    <i class="fa fa-plus"></i> New
-                  </button>
+                <ul class="nav nav-tabs">
+                  <li class="active">
+                    <a data-toggle="tab" href="#purchaseItems">Purchase Items</a>
+                  </li>
+                  <li>
+                    <a data-toggle="tab" href="#inventoryRecieving">Inventory Recieving</a>
+                  </li>
+                  <li>
+                    <a data-toggle="tab" href="#paymentInformations">Payment Informations</a>
+                  </li>
+                </ul>
 
-                  <table class="table table-striped table-hover table-condensed">
-                    <thead>
-                      <tr>
-                        <th class="col-sm-1">Action</th>
-                        <th class="col-sm-2">Product</th>
-                        <th class="col-sm-2 text-right">Quanity</th>
-                        <th class="col-sm-2 text-right">Price</th>
-                        <th class="col-sm-1 text-right">Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr repeat.for="item of purchaseOrderDetailsPage.items" click.delegate="editPurchaseOrderDetail(item)">
-                        <td>
-                          <a href="javascript:undefined" class="text-info" click.delegate="editPurchaseOrderDetail(item)">
-                            <i class="fa fa-pencil"></i>
-                          </a>
-                          <a href="javascript:undefined" class="text-danger" click.delegate="deletePurchaseOrderDetail(item)">
-                            <i class="fa fa-times"></i>
-                          </a>
-                        </td>
+                <div class="tab-content">
 
-                        <!-- read-only mode -->
-                        <td if.bind="$parent.selectedPurchaseOrderDetail !== item">${item.product.name}</td>
-                        <td if.bind="$parent.selectedPurchaseOrderDetail !== item" class="text-right">${item.quantityValue}</td>
-                        <td if.bind="$parent.selectedPurchaseOrderDetail !== item" class="text-right">${item.unitPriceAmount}</td>
-                        <td if.bind="$parent.selectedPurchaseOrderDetail !== item" class="text-right">${item.quantityValue * item.unitPriceAmount}</td>
+                  <!-- purchase details -->
+                  <div id="purchaseItems" class="tab-pane fade in active">
+                    <br />
 
-                        <!-- edit mode -->
-                        <td if.bind="$parent.selectedPurchaseOrderDetail === item">
-                          <!--<select class="form-control" value.bind="item.product | lookupToId:$parent.products"  change.delegate="initializePurchaseOrderDetail(item)">-->
-                          <select class="form-control" value.bind="item.product" matcher.bind="lookupMatcher" change.delegate="initializePurchaseOrderDetail(item)">
-                            <option>Select Supplier</option>
-                            <option repeat.for="product of $parent.products" model.bind="product">${product.name}</option>
-                          </select>
-                        </td>
-                        <td if.bind="$parent.selectedPurchaseOrderDetail === item" class="text-right"><input class="text-right" type="number" value.bind="item.quantityValue" /></td>
-                        <td if.bind="$parent.selectedPurchaseOrderDetail === item" class="text-right"><input class="text-right" type="number" value.bind="item.unitPriceAmount" /></td>
-                        <td if.bind="$parent.selectedPurchaseOrderDetail === item" class="text-right">${item.quantityValue * item.unitPriceAmount}</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                    <!-- create new -->
+                    <button type="button" class="btn btn-default" click.delegate="addItem()">
+                      <i class="fa fa-plus"></i> New
+                    </button>
 
-                  <pager current-page.bind="purchaseOrderDetailsPage.offset" total-items.bind="purchaseOrderDetailsPage.count" change.delegate="purchaseOrderDetailsPage.doPage($event)" />
+                    <!-- list -->
+                    <table class="table table-striped table-hover table-condensed">
+
+                      <thead>
+                        <tr class="row-no-padding">
+                          <th class="col-sm-1">Action</th>
+                          <th class="col-sm-2">Product</th>
+                          <th class="col-sm-2 text-right">Quanity</th>
+                          <th class="col-sm-2 text-right">Price</th>
+                          <th class="col-sm-1 text-right">Total</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <tr repeat.for="item of itemPage.items" click.delegate="editItem(item)">
+                          <td>
+                            <a href="javascript:undefined" class="text-info" click.delegate="editItem(item)">
+                              <i class="fa fa-pencil"></i>
+                            </a>
+                            <a href="javascript:undefined" class="text-danger" click.delegate="deleteItem(item)">
+                              <i class="fa fa-times"></i>
+                            </a>
+                          </td>
+
+                          <!-- read-only mode -->
+                          <td if.bind="$parent.selectedItem !== item">${item.product.name}</td>
+                          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantityValue}</td>
+                          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.unitPriceAmount}</td>
+                          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantityValue * item.unitPriceAmount}</td>
+
+                          <!-- edit mode -->
+                          <td if.bind="$parent.selectedItem === item">
+                            <!--<select class="form-control" value.bind="item.product" matcher.bind="lookupMatcher" change.delegate="initializeItem(item)">-->
+                            <select class="form-control" value.bind="item.product | lookupToId:$parent.products"  change.delegate="initializeItem(item)">
+                                <option>Select Supplier</option>
+                                <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
+                              </select>
+                          </td>
+                          <td if.bind="$parent.selectedItem === item" class="text-right">
+                            <input class="form-control text-right" type="number" value.bind="item.quantityValue" />
+                          </td>
+                          <td if.bind="$parent.selectedItem === item" class="text-right">
+                            <input class="form-control text-right" type="number" value.bind="item.unitPriceAmount" />
+                          </td>
+                          <td if.bind="$parent.selectedItem === item" class="text-right">${item.quantityValue * item.unitPriceAmount}</td>
+                        </tr>
+                      </tbody>
+
+                    </table>
+
+                    <!-- pager -->
+                    <pager current-page.bind="itemPage.offset" total-items.bind="itemPage.count" change.delegate="itemPage.doPage($event)" />
+
+                  </div>
+
+                  <!-- inventory recieving -->
+                  <div id="inventoryRecieving" class="tab-pane fade">
+                    <br />
+                    <table class="table table-striped table-hover table-condensed">
+                      <thead>
+                        <tr>
+                          <th class="col-sm-1">Action</th>
+                          <th class="col-sm-2">Code</th>
+                          <th class="col-sm-2">Name</th>
+                          <th class="col-sm-2">Base</th>
+                          <th class="col-sm-2">Convertion</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr repeat.for="item of unitOfMeasureClass.units" click.delegate="editItem(item)">
+                          <td>
+                            <a href="javascript:undefined" class="text-info" click.delegate="editItem(item)">
+                              <i class="fa fa-pencil"></i>
+                            </a>
+                            <a href="javascript:undefined" class="text-danger" click.delegate="deleteItem(item)">
+                              <i class="fa fa-times"></i>
+                            </a>
+                          </td>
+
+                          <!-- read-only mode -->
+                          <td if.bind="$parent.selectedUnit !== item">${item.id}</td>
+                          <td if.bind="$parent.selectedUnit !== item">${item.name}</td>
+                          <td if.bind="$parent.selectedUnit !== item">${item.isBaseUnit}</td>
+                          <td if.bind="$parent.selectedUnit !== item">${item.convertionFactor}</td>
+
+                          <!-- edit mode -->
+                          <td if.bind="$parent.selectedUnit === item"><input type="text" value.bind="item.id" /></td>
+                          <td if.bind="$parent.selectedUnit === item"><input type="text" value.bind="item.name" /></td>
+                          <td if.bind="$parent.selectedUnit === item"><input type="checkbox" checked.bind="item.isBaseUnit" /></td>
+                          <td if.bind="$parent.selectedUnit === item"><input class="text-right" type="number" value.bind="item.convertionFactor" /></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- payment informations -->
+                  <div id="paymentInformations" class="tab-pane fade">
+                    <br />
+                    
+                    <table class="table table-striped table-hover table-condensed">
+
+                      <thead>
+                        <tr class="row row-no-padding">
+                          <th class="col-sm-1">Action</th>
+                          <th class="col-sm-2">Code</th>
+                          <th class="col-sm-2">Name</th>
+                          <th class="col-sm-2">Base</th>
+                          <th class="col-sm-2">Convertion</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <tr repeat.for="item of unitOfMeasureClass.units" click.delegate="editItem(item)">
+                          <td>
+                            <a href="javascript:undefined" class="text-info" click.delegate="editItem(item)">
+                              <i class="fa fa-pencil"></i>
+                            </a>
+                            <a href="javascript:undefined" class="text-danger" click.delegate="deleteItem(item)">
+                              <i class="fa fa-times"></i>
+                            </a>
+                          </td>
+
+                          <!-- read-only mode -->
+                          <td if.bind="$parent.selectedUnit !== item">${item.id}</td>
+                          <td if.bind="$parent.selectedUnit !== item">${item.name}</td>
+                          <td if.bind="$parent.selectedUnit !== item">${item.isBaseUnit}</td>
+                          <td if.bind="$parent.selectedUnit !== item">${item.convertionFactor}</td>
+
+                          <!-- edit mode -->
+                          <td if.bind="$parent.selectedUnit === item"><input type="text" value.bind="item.id" /></td>
+                          <td if.bind="$parent.selectedUnit === item"><input type="text" value.bind="item.name" /></td>
+                          <td if.bind="$parent.selectedUnit === item"><input type="checkbox" checked.bind="item.isBaseUnit" /></td>
+                          <td if.bind="$parent.selectedUnit === item"><input class="text-right" type="number" value.bind="item.convertionFactor" /></td>
+                        </tr>
+                      </tbody>
+                  
+                    </table>
+
+                  </div>
+
                 </div>
 
-                <!-- Inventory Recieving -->
-                <div id="inventoryRecieving" class="tab-pane fade">
-                  <br />
-                  <table class="table table-striped table-hover table-condensed">
-                    <thead>
-                      <tr>
-                        <th class="col-sm-1">Action</th>
-                        <th class="col-sm-2">Code</th>
-                        <th class="col-sm-2">Name</th>
-                        <th class="col-sm-2">Base</th>
-                        <th class="col-sm-2">Convertion</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr repeat.for="item of unitOfMeasureClass.units" click.delegate="editItem(item)">
-                        <td>
-                          <a href="javascript:undefined" class="text-info" click.delegate="editItem(item)">
-                            <i class="fa fa-pencil"></i>
-                          </a>
-                          <a href="javascript:undefined" class="text-danger" click.delegate="deleteItem(item)">
-                            <i class="fa fa-times"></i>
-                          </a>
-                        </td>
-
-                        <!-- read-only mode -->
-                        <td if.bind="$parent.selectedUnit !== item">${item.id}</td>
-                        <td if.bind="$parent.selectedUnit !== item">${item.name}</td>
-                        <td if.bind="$parent.selectedUnit !== item">${item.isBaseUnit}</td>
-                        <td if.bind="$parent.selectedUnit !== item">${item.convertionFactor}</td>
-
-                        <!-- edit mode -->
-                        <td if.bind="$parent.selectedUnit === item"><input type="text" value.bind="item.id" /></td>
-                        <td if.bind="$parent.selectedUnit === item"><input type="text" value.bind="item.name" /></td>
-                        <td if.bind="$parent.selectedUnit === item"><input type="checkbox" checked.bind="item.isBaseUnit" /></td>
-                        <td if.bind="$parent.selectedUnit === item"><input class="text-right" type="number" value.bind="item.convertionFactor" /></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <!-- Payment Informations -->
-                <div id="paymentInformations" class="tab-pane fade">
-                  <br />
-                  <table class="table table-striped table-hover table-condensed">
-                    <thead>
-                      <tr>
-                        <th class="col-sm-1">Action</th>
-                        <th class="col-sm-2">Code</th>
-                        <th class="col-sm-2">Name</th>
-                        <th class="col-sm-2">Base</th>
-                        <th class="col-sm-2">Convertion</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr repeat.for="item of unitOfMeasureClass.units" click.delegate="editItem(item)">
-                        <td>
-                          <a href="javascript:undefined" class="text-info" click.delegate="editItem(item)">
-                            <i class="fa fa-pencil"></i>
-                          </a>
-                          <a href="javascript:undefined" class="text-danger" click.delegate="deleteItem(item)">
-                            <i class="fa fa-times"></i>
-                          </a>
-                        </td>
-
-                        <!-- read-only mode -->
-                        <td if.bind="$parent.selectedUnit !== item">${item.id}</td>
-                        <td if.bind="$parent.selectedUnit !== item">${item.name}</td>
-                        <td if.bind="$parent.selectedUnit !== item">${item.isBaseUnit}</td>
-                        <td if.bind="$parent.selectedUnit !== item">${item.convertionFactor}</td>
-
-                        <!-- edit mode -->
-                        <td if.bind="$parent.selectedUnit === item"><input type="text" value.bind="item.id" /></td>
-                        <td if.bind="$parent.selectedUnit === item"><input type="text" value.bind="item.name" /></td>
-                        <td if.bind="$parent.selectedUnit === item"><input type="checkbox" checked.bind="item.isBaseUnit" /></td>
-                        <td if.bind="$parent.selectedUnit === item"><input class="text-right" type="number" value.bind="item.convertionFactor" /></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
               </div>
+
             </div>
 
           </form>
         </div>
+
       </div>
-    </ai-dialog-body>
 
-    <ai-dialog-footer>
-      <button type="button" class="btn btn-success" click.trigger="save()">
-        <i class="fa fa-check-circle"></i> Save
-      </button>
-      <button type="button" class="btn btn-danger" click.trigger="close()">
-        <i class="fa fa-times-circle"></i> Close</button>
-    </ai-dialog-footer>
-  </ai-dialog>
-
+    <div>
+    
+  <div>
 </template>

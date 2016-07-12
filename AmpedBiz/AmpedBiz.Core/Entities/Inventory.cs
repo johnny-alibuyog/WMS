@@ -100,7 +100,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Product Product { get; set; }
 
-        public virtual PurchaseOrderDetail PurchaseOrderDetail { get; set; }
+        public virtual PurchaseOrderItem PurchaseOrderItem { get; set; }
 
         public virtual Measure Received { get; set; }
 

@@ -2,7 +2,7 @@
 
 namespace AmpedBiz.Service.Dto
 {
-    public enum OrderDetailStatus
+    public enum OrderItemStatus
     {
         Allocated,
         Invoiced,
@@ -10,7 +10,7 @@ namespace AmpedBiz.Service.Dto
         BackOrdered
     }
 
-    public class OrderDetail
+    public class OrderItem
     {
         public Guid Id { get; set; }
 
@@ -26,12 +26,12 @@ namespace AmpedBiz.Service.Dto
 
         public decimal ExtendedPriceAmount { get; set; }
 
-        public OrderDetailStatus Status { get; set; }
+        public OrderItemStatus Status { get; set; }
 
         public bool InsufficientInventory { get; set; }
     }
 
-    public class OrderDetailPageItem
+    public class OrderItemPageItem
     {
         public Guid Id { get; set; }
 

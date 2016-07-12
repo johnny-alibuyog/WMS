@@ -281,25 +281,26 @@ namespace AmpedBiz.Tests.IntegrationTests
             return products;
         }
 
-        private IEnumerable<Service.Dto.Product> SelectProducts(int[] indexes = null)
+        private IEnumerable<Service.Dto.Product> SelectRandomProducts(string supplierId, int count = 12)
         {
-            var request = new GetProductPage.Request() { Filter = this.filter, Pager = this.pager, Sorter = this.sorter };
-            var products = new GetProductPage.Handler(this.sessionFactory).Handle(request).Items.ToList();
+            var request = new GetProductList.Request() { SupplierId = supplierId };
+            var response = new GetProductList.Handler(this.sessionFactory).Handle(request);
+            var totalProduct = response.Count();
 
-            if (indexes == null)
-                indexes = new int[] { 1,2,3,4,5 };
+            count = totalProduct < count ? totalProduct : count;
 
-            var count = indexes.Count();
+            var randomIndexs = this.dummyData.GenerateUniqueNumbers(0, totalProduct, count);
 
-            for (var i = 0; i< count; i++)
-            {
-                var product = new GetProduct.Handler(this.sessionFactory).Handle(new GetProduct.Request()
+            var products = response
+                .Select((product, index) => new
                 {
-                    Id = products[indexes[i]].Id
-                });
+                    Index = index,
+                    Product = product
+                })
+                .Where(x => randomIndexs.Contains(x.Index))
+                .Select(x => x.Product);
 
-                yield return product;
-            }
+            return products;
         }
 
         private List<Service.Dto.PurchaseOrder> CreatePurchaseOrders(int count = 1)
@@ -311,7 +312,10 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             using (var session = this.sessionFactory.OpenSession())
             {
-                suppliers = session.Query<Supplier>().ToList();
+                suppliers = session.Query<Supplier>()
+                    .Where(x => x.Products.Count() > 0)
+                    .ToList();
+
                 users = session.Query<User>().ToList();
             }
 
@@ -327,7 +331,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     ExpectedOn = DateTime.Now.AddDays(10),
                     PaidOn = DateTime.Now.AddDays(5)
                 };
-                request.PurchaseOrderDetails = this.CreatePurchaseOrderDetails(request, this.rnd.Next(20, 90));
+                request.Items = this.CreatePurchaseOrderItems(request, this.rnd.Next(20, 90));
 
                 var handler = new CreateNewPurchaseOder.Handler(this.sessionFactory).Handle(request);
 
@@ -337,18 +341,14 @@ namespace AmpedBiz.Tests.IntegrationTests
             return pOrders;
         }
 
-        private List<Service.Dto.PurchaseOrderDetail> CreatePurchaseOrderDetails(Service.Dto.PurchaseOrder po, int count = 1)
+        private List<Service.Dto.PurchaseOrderItem> CreatePurchaseOrderItems(Service.Dto.PurchaseOrder po, int count = 1)
         {
-            var poDetails = new List<Service.Dto.PurchaseOrderDetail>();
-
-            var randomProductIndexes = this.dummyData.GenerateUniqueNumbers(0, count, count).ToArray();
-            var selectedProducts = this.SelectProducts(randomProductIndexes).ToList();
-
-            for (var i = 0; i < count; i++)
+            var poItems = new List<Service.Dto.PurchaseOrderItem>();
+            var selectedProducts = this.SelectRandomProducts(po.SupplierId, count);
+            
+            foreach (var product in selectedProducts)
             {
-                var product = selectedProducts[i];
-
-                poDetails.Add(new Service.Dto.PurchaseOrderDetail
+                poItems.Add(new Service.Dto.PurchaseOrderItem
                 {
                    //TotalAmount = product.RetailPriceAmount + 1m,
                    Product = new Lookup<string>(product.Id, product.Name),
@@ -359,7 +359,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             }
 
 
-            return poDetails;
+            return poItems;
         }
 
         private IEnumerable<Service.Dto.PurchaseOrder> GetPurchaseOrders(Service.Dto.PurchaseOrderStatus status, int count = 1)

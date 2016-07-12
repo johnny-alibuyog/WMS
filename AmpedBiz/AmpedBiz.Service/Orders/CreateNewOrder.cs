@@ -47,14 +47,14 @@ namespace AmpedBiz.Service.Orders
                         branch: session.Load<Branch>(message.BranchId)
                     );
 
-                    foreach (var item in message.OrderDetails)
+                    foreach (var item in message.OrderItems)
                     {
-                        var detail = new OrderDetail(item.Id);
-                        detail.CurrentState.Allocate();
+                        var orderItem = new OrderItem(item.Id);
+                        orderItem.CurrentState.Allocate();
 
-                        item.MapTo(detail);
+                        item.MapTo(orderItem);
 
-                        entity.AddOrderDetail(detail);
+                        entity.AddOrderItem(orderItem);
                     }
 
                     session.Save(entity);

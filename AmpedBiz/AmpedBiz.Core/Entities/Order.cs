@@ -75,7 +75,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<Invoice> Invoices { get; protected set; }
 
-        public virtual IEnumerable<OrderDetail> OrderDetails { get; protected set; }
+        public virtual IEnumerable<OrderItem> Items { get; protected set; }
 
         public virtual State State
         {
@@ -87,15 +87,15 @@ namespace AmpedBiz.Core.Entities
         public Order(Guid id) : base(id)
         {
             this.Invoices = new Collection<Invoice>();
-            this.OrderDetails = new Collection<OrderDetail>();
+            this.Items = new Collection<OrderItem>();
         }
 
-        public Order(PaymentType paymentType, Shipper shipper, decimal? taxRate, Money shippingFee, User user, Customer customer, Branch branch) : this()
+        public Order(PaymentType paymentType, Shipper shipper, decimal? taxRate, Money shippingFee, User createdBy, Customer customer, Branch branch) : this()
         {
-            New(paymentType, shipper, taxRate, shippingFee, user, customer, branch);
+            New(paymentType, shipper, taxRate, shippingFee, createdBy, customer, branch);
         }
 
-        public virtual void New(PaymentType paymentType, Shipper shipper, decimal? taxRate, Money shippingFee, User user, Customer customer, Branch branch)
+        public virtual void New(PaymentType paymentType, Shipper shipper, decimal? taxRate, Money shippingFee, User createdBy, Customer customer, Branch branch)
         {
             this.Status = OrderStatus.New;
             this.IsActive = true;
@@ -104,7 +104,7 @@ namespace AmpedBiz.Core.Entities
             this.Shipper = shipper;
             this.TaxRate = taxRate ?? 0.0M;
             this.ShippingFee = shippingFee ?? new Money(0.0M);
-            this.CreatedBy = user;
+            this.CreatedBy = createdBy;
             this.Customer = customer;
             this.Branch = branch;
         }
@@ -161,12 +161,12 @@ namespace AmpedBiz.Core.Entities
             this.CancelledBy = user;
         }
 
-        public virtual void AddOrderDetail(OrderDetail orderDetail)
+        public virtual void AddOrderItem(OrderItem orderItem)
         {
-            orderDetail.Order = this;
-            this.OrderDetails.Add(orderDetail);
+            orderItem.Order = this;
+            this.Items.Add(orderItem);
 
-            this.SubTotal += orderDetail.ExtendedPrice ?? new Money(0.0M);
+            this.SubTotal += orderItem.ExtendedPrice ?? new Money(0.0M);
 
             this.Tax = new Money(this.SubTotal.Amount * this.TaxRate.Value);
 

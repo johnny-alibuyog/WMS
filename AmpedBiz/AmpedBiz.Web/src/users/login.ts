@@ -38,8 +38,8 @@ export class Login {
 
   activate() {
     this.user = {
-      username: 'Username1',
-      password: 'Password1'
+      username: 'supper_user',
+      password: '123!@#qweASD'
     };
   }
 }

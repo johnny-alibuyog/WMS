@@ -79,13 +79,13 @@
     <Compile Include="Dto\Measure.cs" />
     <Compile Include="Dto\Money.cs" />
     <Compile Include="Dto\Order.cs" />
-    <Compile Include="Dto\OrderDetail.cs" />
+    <Compile Include="Dto\OrderItem.cs" />
     <Compile Include="Dto\PaymentType.cs" />
     <Compile Include="Dto\Person.cs" />
     <Compile Include="Dto\Product.cs" />
     <Compile Include="Dto\ProductCategory.cs" />
     <Compile Include="Dto\PurchaseOrder.cs" />
-    <Compile Include="Dto\PurchaseOrderDetail.cs" />
+    <Compile Include="Dto\PurchaseOrderItem.cs" />
     <Compile Include="Dto\Role.cs" />
     <Compile Include="Dto\Supplier.cs" />
     <Compile Include="Dto\UnitOfMeasure.cs" />

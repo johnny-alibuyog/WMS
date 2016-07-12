@@ -1,6 +1,6 @@
 import {ProductInventory} from './product';
 import {Lookup} from '../custom_types/lookup';
-//import {autoinject, BindingEngine} from 'aurelia-framework';
+import {Dictionary} from '../custom_types/dictionary';
 
 export enum PurchaseOrderStatus {
   new = 1,
@@ -16,6 +16,12 @@ export interface PurchaseOrder {
   id?: string;
   userId?: string;
   supplierId?: string;
+  paymentTypeId?: string;
+  taxAmount?: number;
+  shippingFeeAmount?: number;
+  paymentAmount?: number;
+  subTotalAmount?: number;
+  totalAmount?: number;
   status?: PurchaseOrderStatus;
   expectedOn?: Date;
   createdBy?: string;
@@ -24,72 +30,29 @@ export interface PurchaseOrder {
   submittedOn?: Date;
   closedBy?: string;
   closedOn?: Date;
-  purchaseOrderDetails?: PurchaseOrderDetail[];
-  recievingDetails?: RecievingDetail[];
-  paymentDetails?: PaymentDetail[];
+  cancelledBy?: string,
+  cancelledOn?: Date,
+  cancellationReason?: string,
+  items?: PurchaseOrderItem[];
+  payments?: PurchaseOrderPayment[];
+  reciepts?: PurchaseOrderReciept[];
+  allowedTransitions?: Dictionary<string>;
 }
 
-export interface PurchaseOrderDetail {
+export interface PurchaseOrderItem {
   id?: string;
   product?: Lookup<string>;
   quantityValue?: number;
   unitPriceAmount?: number;
 }
 
-export interface RecievingDetail {
+export interface PurchaseOrderReciept {
 
 }
 
-export interface PaymentDetail {
+export interface PurchaseOrderPayment {
 
 }
-
-/*
-@autoinject
-export class DetailsFactory {
-  private _bindingEngine: BindingEngine;
-
-  constructor(bindingEngine: BindingEngine) {
-    this._bindingEngine = bindingEngine;
-  }
-
-  create(type: string, instance?: any): any {
-
-    switch (type) {
-
-      case 'PurchaseOrderDetail':
-        var item = <PurchaseOrderDetail>{
-          available: 0,
-          quantity: 0,
-          price: 0,
-          discount: 0,
-        };
-
-        var computeTotal = () => item.quantity * (item.price - item.discount);
-
-        this._bindingEngine.propertyObserver(item, 'quantity')
-          .subscribe((newValue: any, oldValue: any) => item.totalPrice = computeTotal());
-
-        this._bindingEngine.propertyObserver(item, 'price')
-          .subscribe((newValue: any, oldValue: any) => item.totalPrice = computeTotal());
-
-        this._bindingEngine.propertyObserver(item, 'discount')
-          .subscribe((newValue: any, oldValue: any) => item.totalPrice = computeTotal());
-
-        return item;
-
-      case 'RecievingDetail':
-        return null;
-
-      case 'PaymentDetail':
-        return null;
-
-      default:
-        throw new Error('Type ${type} is not defined');
-    }
-  }
-}
-*/
 
 export interface PurchaseOrderPageItem {
   id?: string;

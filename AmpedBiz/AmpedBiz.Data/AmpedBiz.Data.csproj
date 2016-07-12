@@ -113,14 +113,14 @@
     <Compile Include="EntityDefinitions\InventoryValidation.cs" />
     <Compile Include="EntityDefinitions\MeasureMapping.cs" />
     <Compile Include="EntityDefinitions\MeasureValidation.cs" />
-    <Compile Include="EntityDefinitions\OrderDetailMapping.cs" />
-    <Compile Include="EntityDefinitions\OrderDetailValidation.cs" />
+    <Compile Include="EntityDefinitions\OrderItemMapping.cs" />
+    <Compile Include="EntityDefinitions\OrderItemValidation.cs" />
     <Compile Include="EntityDefinitions\OrderMapping.cs" />
     <Compile Include="EntityDefinitions\OrderValidation.cs" />
     <Compile Include="EntityDefinitions\PricingSchemeMapping.cs" />
     <Compile Include="EntityDefinitions\PricingShemeValidation.cs" />
-    <Compile Include="EntityDefinitions\PurchaseOrderDetailMapping.cs" />
-    <Compile Include="EntityDefinitions\PurchaseOrderDetailValidation.cs" />
+    <Compile Include="EntityDefinitions\PurchaseOrderItemMapping.cs" />
+    <Compile Include="EntityDefinitions\PurchaseOrderItemValidation.cs" />
     <Compile Include="EntityDefinitions\PurchaseOrderMapping.cs" />
     <Compile Include="EntityDefinitions\PurchaseOrderValidation.cs" />
     <Compile Include="EntityDefinitions\ShipperMapping.cs" />
@@ -133,6 +133,7 @@
     <Compile Include="Seeders\BranchSeeder.cs" />
     <Compile Include="Seeders\CurrencySeeder.cs" />
     <Compile Include="Seeders\CustomerSeeder.cs" />
+    <Compile Include="Seeders\DefaultUserSeeder.cs" />
     <Compile Include="Seeders\ISeeder.cs" />
     <Compile Include="Seeders\OrderSeeder.cs" />
     <Compile Include="Seeders\PaymentTypeSeeder.cs" />

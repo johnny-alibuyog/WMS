@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Entities
@@ -12,8 +11,13 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Contact Contact { get; set; }
 
+        public virtual IEnumerable<Product> Products { get; protected set; }
+
         public Supplier() : this(default(string)) { }
 
-        public Supplier(string id) : base(id) { }
+        public Supplier(string id) : base(id)
+        {
+            this.Products = new Collection<Product>();
+        }
     }
 }

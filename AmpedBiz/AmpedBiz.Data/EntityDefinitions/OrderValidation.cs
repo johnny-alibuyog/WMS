@@ -71,9 +71,9 @@ namespace AmpedBiz.Data.EntityDefinitions
             Define(x => x.Invoices)
                 .HasValidElements();
 
-            //Define(x => x.OrderDetails)
-            //    .NotNullableAndNotEmpty()
-            //    .And.HasValidElements();
+            Define(x => x.Items)
+                .NotNullableAndNotEmpty()
+                .And.HasValidElements();
         }
     }
 }

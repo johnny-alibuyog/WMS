@@ -1,5 +1,4 @@
-﻿using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
@@ -40,8 +39,8 @@ namespace AmpedBiz.Service.PurchaseOrders
                         shippingFee: new Money(message.ShippingFeeAmount, currency),
                         tax: new Money(message.TaxAmount, currency),
                         supplier: session.Load<Supplier>(message.SupplierId),
-                        purchaseOrderDetails: message.PurchaseOrderDetails
-                            .Select(x => new PurchaseOrderDetail().State.New(
+                        purchaseOrderItems: message.Items
+                            .Select(x => new PurchaseOrderItem().State.New(
                                 product: session.Load<Product>(x.Product.Id),
                                 unitPrice: new Money(x.UnitPriceAmount, currency),
                                 quantity: x.QuantityValue

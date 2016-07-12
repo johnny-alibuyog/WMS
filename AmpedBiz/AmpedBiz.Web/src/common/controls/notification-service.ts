@@ -10,39 +10,47 @@ export class NotificationService {
     this._dialog = dialog;
   }
 
-  info(message: string) : Promise<any>  {
-    return this._dialog.open({ viewModel: Notification, model: {
+  info(message: string): Promise<any> {
+    return this._dialog.open({
+      viewModel: Notification,
+      model: <Alert>{
         type: 'info',
         emphasis: 'Info!',
         message: message
-      } 
+      }
     });
   }
 
-  success(message: string) : Promise<any> {
-    return this._dialog.open({ viewModel: Notification, model: {
-      type: 'success',
-      emphasis: 'Success!',
-      message: message
-    }
+  success(message: string): Promise<any> {
+    return this._dialog.open({
+      viewModel: Notification,
+      model: <Alert>{
+        type: 'success',
+        emphasis: 'Success!',
+        message: message
+      }
     });
   }
 
-  warning(message: string)  : Promise<any>{
-    return this._dialog.open({ viewModel: Notification, model: {
-      type: 'warning',
-      emphasis: 'Warning!',
-      message: message
-    }
+  warning(message: string): Promise<any> {
+    return this._dialog.open({
+      viewModel: Notification,
+      model: <Alert>{
+        type: 'warning',
+        emphasis: 'Warning!',
+        message: message
+      }
     });
   }
 
-  error(message: string)  : Promise<any>{
-    return this._dialog.open({ viewModel: Notification, model: {
-      type: 'danger',
-      emphasis: 'Error!',
-      message: message
-    }
+  error(message: string): Promise<any> {
+    return this._dialog.open({
+      viewModel: Notification,
+      model: <Alert>{
+        type: 'danger',
+        emphasis: 'Error!',
+        message: message
+      }
     });
   }
 }

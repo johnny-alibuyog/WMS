@@ -74,10 +74,6 @@ export class PurchaseOrderPage {
         var response = <PagerResponse<PurchaseOrderPageItem>>data;
         this.pager.count = response.count;
         this.pager.items = response.items;
-
-        if (this.pager.count === 0) {
-          this._notification.warning("No items found!");
-        }
       })
       .catch(error => {
         this._notification.error("Error encountered during search!");
@@ -85,37 +81,11 @@ export class PurchaseOrderPage {
   }
 
   create() {
-    /*
-    this._router.navigate('purchase-order-create', <PurchaseOrder>{});
-    */
-
-    this._dialog
-      .open({
-        viewModel: PurchaseOrderCreate,
-        model: null
-      })
-      .then(response => {
-        if (!response.wasCancelled) {
-          this.getPage();
-        }
-      });
+    this._router.navigateToRoute('purchase-order-create');
   }
 
   edit(item: PurchaseOrderPageItem) {
-    /*
-    this._router.navigate('purchase-order-create', <PurchaseOrder>{ id: item.id });
-    */
-
-    this._dialog
-      .open({
-        viewModel: PurchaseOrderCreate,
-        model: <PurchaseOrder>{ id: item.id }
-      })
-      .then(response => {
-        if (!response.wasCancelled) {
-          this.getPage();
-        }
-      });
+    this._router.navigateToRoute('purchase-order-create', <PurchaseOrder>{ id: item.id });
   }
 
   delete(item: PurchaseOrderPageItem) {

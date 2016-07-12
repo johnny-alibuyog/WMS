@@ -44,8 +44,8 @@ namespace AmpedBiz.Service.PurchaseOrders
                         shippingFee: new Money(message.ShippingFeeAmount, currency),
                         tax: new Money(message.TaxAmount, currency),
                         supplier: session.Load<Supplier>(message.SupplierId),
-                        purchaseOrderDetails: message.PurchaseOrderDetails
-                            .Select(x => new PurchaseOrderDetail(x.Id).State.New(
+                        purchaseOrderItems: message.Items
+                            .Select(x => new PurchaseOrderItem(x.Id).State.New(
                                 product: session.Load<Product>(x.Product.Id),
                                 unitPrice: new Money(x.UnitPriceAmount, currency),
                                 quantity: x.QuantityValue

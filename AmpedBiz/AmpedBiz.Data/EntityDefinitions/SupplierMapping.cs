@@ -15,6 +15,13 @@ namespace AmpedBiz.Data.EntityDefinitions
             Component(x => x.Address);
 
             Component(x => x.Contact);
+
+            HasMany(x => x.Products)
+                .Cascade.AllDeleteOrphan()
+                .Not.KeyNullable()
+                .Not.KeyUpdate()
+                .Inverse()
+                .AsBag();
         }
     }
 }

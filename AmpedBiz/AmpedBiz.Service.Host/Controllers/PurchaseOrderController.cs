@@ -79,8 +79,8 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpPost()]
-        [Route("{request.id}/submitted")]
-        public SubmitPurchaseOrder.Response Process([FromUri]SubmitPurchaseOrder.Request request)
+        [Route("{id}/submitted")]
+        public SubmitPurchaseOrder.Response Process([FromUri]Guid id, [FromBody]SubmitPurchaseOrder.Request request)
         {
             return _mediator.Send(request ?? new SubmitPurchaseOrder.Request());
         }
@@ -91,6 +91,20 @@ namespace AmpedBiz.Service.Host.Controllers
         {
             return _mediator.Send(request ?? new GetSubmittedPurchaseOderPage.Request());
         }
+
+        [HttpPost()]
+        [Route("{id}/paid")]
+        public PayPurchaseOrder.Response Process([FromUri]Guid id, [FromBody]PayPurchaseOrder.Request request)
+        {
+            return _mediator.Send(request ?? new PayPurchaseOrder.Request());
+        }
+
+        //[HttpPost()]
+        //[Route("paid/page")]
+        //public GetPaidPurchaseOrderPage.Response Process([FromBody]GetPaidPurchaseOrderPage.Request request)
+        //{
+        //    return _mediator.Send(request ?? new GetPaidPurchaseOrderPage.Request());
+        //}
 
         [HttpPost()]
         [Route("{id}/approved")]

@@ -13,6 +13,8 @@ namespace AmpedBiz.Service.Products
         public class Request : IRequest<Response>
         {
             public string[] Id { get; set; }
+
+            public string SupplierId { get; set; }
         }
 
         public class Response : List<Dto.Product>
@@ -33,8 +35,17 @@ namespace AmpedBiz.Service.Products
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entites = session.Query<Product>().ToList();
-                    var dtos = entites.MapTo(default(List<Dto.Product>));
+                    var query = session.Query<Product>();
+
+                    if (!message.Id.IsNullOrEmpty())
+                        query = query.Where(x => message.Id.Contains(x.Id));
+
+                    if (!string.IsNullOrWhiteSpace(message.SupplierId))
+                        query = query.Where(x => x.Supplier.Id == message.SupplierId);
+
+                    var entities = query.ToList();
+
+                    var dtos = entities.MapTo(default(List<Dto.Product>));
 
                     response = new Response(dtos);
 

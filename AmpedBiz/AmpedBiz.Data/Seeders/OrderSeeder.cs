@@ -110,6 +110,21 @@ namespace AmpedBiz.Data.Seeders
                     return result;
                 };
 
+                var userIndex = 0;
+                var users = session.Query<User>().ToList();
+
+                Func<User> RotateUser = () =>
+                {
+                    var result = users[userIndex];
+
+                    if (userIndex < users.Count - 1)
+                        userIndex++;
+                    else
+                        userIndex = 0;
+
+                    return result;
+                };
+
                 var random = new Random();
 
                 var entity = session.Query<Order>().ToList();
@@ -123,7 +138,7 @@ namespace AmpedBiz.Data.Seeders
                             shipper: RotateShipper(),
                             taxRate: random.NextDecimal(0.01M, 0.30M),
                             shippingFee: new Money(random.NextDecimal(10M, 10000M)),
-                            user: new User(Guid.NewGuid()),
+                            createdBy: RotateUser(),
                             customer: RotateCustomer(),
                             branch: RotateBranch()
                         );
@@ -131,14 +146,14 @@ namespace AmpedBiz.Data.Seeders
                         for (int j = 0; j < random.NextDecimal(1M, 25M); j++)
                         {
                             var product = RotateProduct();
-                            var orderDetail = new OrderDetail(
+                            var orderItem = new OrderItem(
                                 product: product,
                                 quantity: new Measure(random.NextDecimal(1M, 100M), product.GoodStockInventory.UnitOfMeasure),
                                 discount: new Money(random.NextDecimal(100M, 500M)),
                                 unitPrice: new Money(random.NextDecimal(1000M, 100000M)));
 
-                            orderDetail.Allocate();
-                            order.AddOrderDetail(orderDetail);
+                            orderItem.Allocate();
+                            order.AddOrderItem(orderItem);
                         }
 
                         session.Save(order, order.Id);

@@ -32,27 +32,6 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
     return this._httpClient.post(url, page);
   }
 
-  createNew(entity: PurchaseOrder) {
-    var url = this._resouce + '/new';
-    return this._httpClient.post(url, <PurchaseOrder>{
-      userId: this._auth.user.id,
-      supplierId: entity.supplierId,
-      expectedOn: entity.expectedOn,
-      purchaseOrderDetails: entity.purchaseOrderDetails
-    });
-  }
-
-  updateNew(entity: PurchaseOrder) {
-    var url = this._resouce + '/' + entity.id + '/new';
-    return this._httpClient.patch(url, <PurchaseOrder>{
-      id: entity.id,
-      userId: this._auth.user.id,
-      supplierId: entity.supplierId,
-      expectedOn: entity.expectedOn,
-      purchaseOrderDetails: entity.purchaseOrderDetails
-    });
-  }
-
   getActivePage(page: PageRequest): Promise<any> {
     var url = this._resouce + '/active/page';
     return this._httpClient.post(url, page);
@@ -66,5 +45,86 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
   getCompletedPage(page: PageRequest): Promise<any> {
     var url = this._resouce + '/completed/page';
     return this._httpClient.post(url, page);
+  }
+
+  createNew(entity: PurchaseOrder) {
+    var url = this._resouce + '/new';
+    return this._httpClient.post(url, <PurchaseOrder>{
+      userId: this._auth.user.id,
+      supplierId: entity.supplierId,
+      expectedOn: entity.expectedOn,
+      items: entity.items
+    });
+  }
+
+  updateNew(entity: PurchaseOrder) {
+    var url = this._resouce + '/' + entity.id + '/new';
+    return this._httpClient.patch(url, <PurchaseOrder>{
+      id: entity.id,
+      userId: this._auth.user.id,
+      supplierId: entity.supplierId,
+      expectedOn: entity.expectedOn,
+      items: entity.items
+    });
+  }
+
+  submit(entity: PurchaseOrder){
+    var url = this._resouce + '/' + entity.id + '/submitted';
+    return this._httpClient.post(url, <PurchaseOrder>{
+      id: entity.id,
+      userId: this._auth.user.id,
+    });
+  }
+
+  approve(entity: PurchaseOrder) {
+    var url = this._resouce + '/' + entity.id + '/approved';
+    return this._httpClient.post(url, <PurchaseOrder>{
+      id: entity.id,
+      userId: this._auth.user.id,
+    });
+  }
+
+  reject(entity: PurchaseOrder){
+    var url = this._resouce + '/' + entity.id + '/new';
+    return this._httpClient.patch(url, <PurchaseOrder>{
+      id: entity.id,
+      userId: this._auth.user.id,
+    });
+  }
+
+  pay(entity: PurchaseOrder) {
+    var url = this._resouce + '/' + entity.id + '/paid';
+    return this._httpClient.post(url, <PurchaseOrder>{
+      id: entity.id,
+      userId: this._auth.user.id,
+      paymentTypeId: entity.paymentTypeId,
+      paymentAmount: entity.paymentAmount
+    });
+  }
+
+  receive(entity: PurchaseOrder) {
+    var url = this._resouce + '/' + entity.id + '/received';
+    return this._httpClient.post(url, <PurchaseOrder>{
+      id: entity.id,
+      userId: this._auth.user.id,
+      /* todo: add receipts */
+    });
+  }
+
+  complete(entity: PurchaseOrder) {
+    var url = this._resouce + '/' + entity.id + '/completed';
+    return this._httpClient.post(url, <PurchaseOrder>{
+      id: entity.id,
+      userId: this._auth.user.id,
+    });
+  }
+
+  cancel(entity: PurchaseOrder) {
+    var url = this._resouce + '/' + entity.id + '/cancelled';
+    return this._httpClient.post(url, <PurchaseOrder>{
+      id: entity.id,
+      userId: this._auth.user.id,
+      cancellationReason: entity.cancellationReason
+    });
   }
 }

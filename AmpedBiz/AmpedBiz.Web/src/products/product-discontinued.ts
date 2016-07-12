@@ -50,10 +50,6 @@ export class ProductDiscontinued {
         var response = <PagerResponse<ProductPageItem>>data;
         this.pager.count = response.count;
         this.pager.items = response.items;
-
-        if (this.pager.count === 0) {
-          this._notification.warning("No items found!");
-        }
       })
       .catch(error => {
         this._notification.error("Error encountered during search!");
