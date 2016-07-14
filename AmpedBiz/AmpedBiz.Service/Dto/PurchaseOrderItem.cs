@@ -27,23 +27,4 @@ namespace AmpedBiz.Service.Dto
 
         public PurchaseOrderItemStatus Status { get; set; }
     }
-
-    public class PurchaseOrderItemPageItem
-    {
-        public string PurchaseOrderId { get; set; }
-
-        public string Id { get; set; }
-
-        public string ProductName { get; set; }
-
-        public string QuantityValue { get; set; }
-
-        public string UnitPriceAmount { get; set; }
-
-        public string TotalAmount { get; set; }
-
-        public string DateReceived { get; set; }
-
-        public string StatusName { get; set; }
-    }
 }

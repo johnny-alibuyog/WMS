@@ -38,7 +38,7 @@ export class SupplierPage {
     this.getPage();
   }
 
-   getPage(): void {
+  getPage(): void {
     this._api.suppliers
       .getPage({
         filter: this.filter,
@@ -55,30 +55,14 @@ export class SupplierPage {
       });
   }
 
-create() {
-    this._dialog
-      .open({ 
-        viewModel: SupplierCreate, 
-        model: null 
-      })
-      .then(response => {
-        if (!response.wasCancelled) {
-          this.getPage();
-        }
-      });
+  create() {
+    this._dialog.open({ viewModel: SupplierCreate, model: null })
+      .then(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   edit(item: SupplierPageItem) {
-    this._dialog
-      .open({ 
-        viewModel: SupplierCreate, 
-        model: <Supplier>{ id: item.id }  
-      })
-      .then(response => {
-        if (!response.wasCancelled) {
-          this.getPage();
-        }
-      });
+    this._dialog.open({ viewModel: SupplierCreate, model: <Supplier>{ id: item.id } })
+      .then(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   delete(item: any) {

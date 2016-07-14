@@ -57,23 +57,13 @@ export class BranchPage {
   }
 
   create() {
-    this._dialog
-      .open({ viewModel: UserCreate, model: null })
-      .then(response => {
-        if (!response.wasCancelled) {
-          this.getPage();
-        }
-      });
+    this._dialog.open({ viewModel: UserCreate, model: null })
+      .then(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   edit(item: User) {
-    this._dialog
-      .open({ viewModel: UserCreate, model: item })
-      .then(response => {
-        if (!response.wasCancelled) {
-          this.getPage();
-        }
-      });
+    this._dialog.open({ viewModel: UserCreate, model: item })
+      .then(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   delete(item: any) {

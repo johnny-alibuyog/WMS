@@ -1,7 +1,7 @@
 import {autoinject} from 'aurelia-framework';
 import {Lookup} from '../common/custom_types/lookup';
 import {PageRequest} from '../common/models/paging';
-import {PurchaseOrder, PurchaseOrderStatus} from '../common/models/purchase-order';
+import {PurchaseOrder, PurchaseOrderStatus, PurchaseOrderPayment} from '../common/models/purchase-order';
 import {ServiceBase} from './service-base'
 import {AuthService} from './auth-service';
 import {HttpClientFacade} from './http-client-facade';
@@ -68,7 +68,7 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
     });
   }
 
-  submit(entity: PurchaseOrder){
+  submit(entity: PurchaseOrder) {
     var url = this._resouce + '/' + entity.id + '/submitted';
     return this._httpClient.post(url, <PurchaseOrder>{
       id: entity.id,
@@ -84,7 +84,7 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
     });
   }
 
-  reject(entity: PurchaseOrder){
+  reject(entity: PurchaseOrder) {
     var url = this._resouce + '/' + entity.id + '/new';
     return this._httpClient.patch(url, <PurchaseOrder>{
       id: entity.id,
@@ -92,14 +92,9 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
     });
   }
 
-  pay(entity: PurchaseOrder) {
-    var url = this._resouce + '/' + entity.id + '/paid';
-    return this._httpClient.post(url, <PurchaseOrder>{
-      id: entity.id,
-      userId: this._auth.user.id,
-      paymentTypeId: entity.paymentTypeId,
-      paymentAmount: entity.paymentAmount
-    });
+  pay(entity: PurchaseOrderPayment) {
+    var url = this._resouce + '/' + entity.purchaseOrderId + '/paid';
+    return this._httpClient.post(url, entity);
   }
 
   receive(entity: PurchaseOrder) {

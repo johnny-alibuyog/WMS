@@ -60,6 +60,13 @@ namespace AmpedBiz.Data.EntityDefinitions
                 .Not.KeyUpdate()
                 .Inverse()
                 .AsBag();
+
+            HasMany(x => x.Payments)
+                .Cascade.AllDeleteOrphan()
+                .Not.KeyNullable()
+                .Not.KeyUpdate()
+                .Inverse()
+                .AsBag();
         }
     }
 }

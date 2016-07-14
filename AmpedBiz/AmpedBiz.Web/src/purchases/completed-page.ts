@@ -1,5 +1,4 @@
 import {autoinject} from 'aurelia-framework';
-import {DialogService} from 'aurelia-dialog';
 import {PurchaseOrderCreate} from './purchase-order-create';
 import {PurchaseOrder, PurchaseOrderPageItem} from '../common/models/purchase-order';
 import {Supplier} from '../common/models/supplier';
@@ -11,7 +10,6 @@ import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from 
 @autoinject
 export class ApprovedPage {
   private _api: ServiceApi;
-  private _dialog: DialogService;
   private _notification: NotificationService;
 
   public filter: Filter;
@@ -20,16 +18,15 @@ export class ApprovedPage {
 
   public suppliers: Lookup<string>[];
 
-  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<PurchaseOrderPageItem>) {
+  constructor(api: ServiceApi, notification: NotificationService) {
     this._api = api;
-    this._dialog = dialog;
     this._notification = notification;
 
-    this.filter = filter;
+    this.filter = new Filter();
     this.filter["supplier"] = null;
     this.filter.onFilter = () => this.getPage();
 
-    this.sorter = sorter;
+    this.sorter = new Sorter();
     this.sorter["supplier"] = SortDirection.None;
     this.sorter["createdBy"] = SortDirection.None;
     this.sorter["createdOn"] = SortDirection.None;
@@ -37,7 +34,7 @@ export class ApprovedPage {
     this.sorter["total"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
 
-    this.pager = pager;
+    this.pager = new Pager<PurchaseOrderPageItem>();
     this.pager.onPage = () => this.getPage();
 
     this._api.suppliers.getLookups()

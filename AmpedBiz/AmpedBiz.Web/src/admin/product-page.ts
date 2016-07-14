@@ -57,29 +57,13 @@ export class ProductPage {
   }
 
   create() {
-    this._dialog
-      .open({ 
-        viewModel: ProductCreate, 
-        model: null 
-      })
-      .then(response => {
-        if (!response.wasCancelled) {
-          this.getPage();
-        }
-      });
+    this._dialog.open({ viewModel: ProductCreate, model: null })
+      .then(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   edit(item: ProductPageItem) {
-    this._dialog
-      .open({ 
-        viewModel: ProductCreate, 
-        model: <Product>{ id: item.id }  
-      })
-      .then(response => {
-        if (!response.wasCancelled) {
-          this.getPage();
-        }
-      });
+    this._dialog.open({ viewModel: ProductCreate, model: <Product>{ id: item.id } })
+      .then(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   delete(item: ProductPageItem) {

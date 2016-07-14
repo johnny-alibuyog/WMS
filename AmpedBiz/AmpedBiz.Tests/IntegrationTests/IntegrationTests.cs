@@ -424,7 +424,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
 
-            var request = new CancelPurchaseOder.Request() { Id = pOrder.Id, UserId = userId, CancelReason = "Products not needed" };
+            var request = new CancelPurchaseOder.Request() { Id = pOrder.Id, UserId = userId, CancellationReason = "Products not needed" };
             var order = new CancelPurchaseOder.Handler(this.sessionFactory).Handle(request);
 
             return order;

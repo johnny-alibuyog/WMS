@@ -67,6 +67,8 @@ namespace AmpedBiz.Service.Dto
 
         public IEnumerable<PurchaseOrderItem> Items { get; set; }
 
+        public IEnumerable<PurchaseOrderPayment> Payments { get; set; }
+
         public Dictionary<Dto.PurchaseOrderStatus, string> AllowedTransitions { get; set; }
     }
 

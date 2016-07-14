@@ -9,7 +9,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 {
     public class PayPurchaseOrder
     {
-        public class Request : Dto.PurchaseOrder, IRequest<Response> { }
+        public class Request : Dto.PurchaseOrderPayment, IRequest<Response> { }
 
         public class Response : Dto.PurchaseOrder { }
 
@@ -24,14 +24,16 @@ namespace AmpedBiz.Service.PurchaseOrders
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.Get<PurchaseOrder>(message.Id);
+                    var entity = session.Get<PurchaseOrder>(message.PurchaseOrderId);
                     if (entity == null)
                         throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
 
-                    var user = session.Load<User>(message.UserId);
-                    var currency = session.Load<Currency>(Currency.PHP.Id);
-
-                    entity.State.Pay(user, DateTime.Now, new Money(message.PaymentAmount, currency));
+                    entity.State.Pay(
+                        paidOn: message.PaidOn ?? DateTime.Now,
+                        paidBy: session.Load<User>(message.PaidBy.Id), 
+                        paymentType: session.Load<PaymentType>(message.PaymentType.Id),
+                        payment: new Money(message.PaymentAmount, session.Load<Currency>(Currency.PHP.Id))
+                    );
 
                     session.Save(entity);
                     transaction.Commit();

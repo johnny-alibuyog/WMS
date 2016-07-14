@@ -86,6 +86,7 @@
     <Compile Include="Dto\ProductCategory.cs" />
     <Compile Include="Dto\PurchaseOrder.cs" />
     <Compile Include="Dto\PurchaseOrderItem.cs" />
+    <Compile Include="Dto\PurchaseOrderPayment.cs" />
     <Compile Include="Dto\Role.cs" />
     <Compile Include="Dto\Supplier.cs" />
     <Compile Include="Dto\UnitOfMeasure.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Orders\GetOrderList.cs" />
     <Compile Include="Orders\GetOrderPage.cs" />
     <Compile Include="Orders\UpdateNewOrder.cs" />
+    <Compile Include="PaymentTypes\GetPaymentTypeLookup.cs" />
     <Compile Include="PaymentTypes\GetPaymentTypePage.cs" />
     <Compile Include="ProductCategories\CreateProductCategory.cs" />
     <Compile Include="ProductCategories\GetProductCategory.cs" />

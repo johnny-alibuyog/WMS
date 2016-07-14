@@ -35,6 +35,13 @@ namespace AmpedBiz.Service.Host.Controllers
             return _mediator.Send(request ?? new GetPaymentTypePage.Request());
         }
 
+        [HttpGet()]
+        [Route("~/payment-type-lookups")]
+        public GetPaymentTypeLookup.Response Process([FromBody]GetPaymentTypeLookup.Request request)
+        {
+            return _mediator.Send(request ?? new GetPaymentTypeLookup.Request());
+        }
+
         [HttpPost()]
         [Route("")]
         public CreatePaymentType.Response Process([FromBody]CreatePaymentType.Request request)

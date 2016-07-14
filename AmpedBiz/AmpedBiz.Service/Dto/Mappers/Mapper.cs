@@ -51,7 +51,7 @@ namespace AmpedBiz.Service.Dto.Mappers
 
             ExpressMapper.Mapper.Register<Entity.PurchaseOrderItem, Dto.PurchaseOrderItem>().Flatten();
 
-            ExpressMapper.Mapper.Register<Entity.PurchaseOrderItem, Dto.PurchaseOrderItemPageItem>().Flatten();
+            ExpressMapper.Mapper.Register<Entity.PurchaseOrderPayment, Dto.PurchaseOrderPayment>().Flatten();
 
             ExpressMapper.Mapper.Register<Entity.User, Lookup<Guid>>()
                 .Member(x => x.Id, x => x.Id)

@@ -103,37 +103,6 @@ namespace AmpedBiz.Core.Entities
             return this;
         }
 
-        protected internal virtual PurchaseOrder SetPurchaseOrderItems(IEnumerable<PurchaseOrderItem> items)
-        {
-            if (items.IsNullOrEmpty())
-                return this;
-
-            var itemsToInsert = items.Except(this.Items).ToList();
-            var itemsToUpdate = this.Items.Where(x => items.Contains(x)).ToList();
-            var itemsToRemove = this.Items.Except(items).ToList();
-
-            foreach (var item in itemsToInsert)
-            {
-                item.PurchaseOrder = this;
-                this.Items.Add(item);
-            }
-
-            foreach (var item in itemsToUpdate)
-            {
-                var value = items.Single(x => x == item);
-                item.SerializeWith(value);
-                item.PurchaseOrder = this;
-            }
-
-            foreach (var item in itemsToRemove)
-            {
-                item.PurchaseOrder = null;
-                this.Items.Remove(item);
-            }
-
-            return this;
-        }
-
         protected internal virtual PurchaseOrder Submit(User submittedBy, DateTime submittedOn)
         {
             this.SubmittedBy = submittedBy;
@@ -152,11 +121,14 @@ namespace AmpedBiz.Core.Entities
             return this;
         }
 
-        protected internal virtual PurchaseOrder Pay(User paidBy, DateTime paidOn, Money payment)
+        protected internal virtual PurchaseOrder Pay(User paidBy, DateTime paidOn, Money payment, PaymentType paymentType)
         {
-            this.PaidBy = paidBy;
-            this.PaidOn = paidOn;
-            this.Payment += payment;
+            this.AddPayment(new PurchaseOrderPayment(
+                paidBy: paidBy,
+                paidOn: paidOn,
+                payment: payment,
+                paymentType: paymentType
+            ));
             this.Status = PurchaseOrderStatus.Paid;
 
             return this;
@@ -206,13 +178,49 @@ namespace AmpedBiz.Core.Entities
             this.Total = this.Tax + this.ShippingFee + this.Payment + itemTotal;
         }
 
-        public virtual void AddPurchaseOrderItem(PurchaseOrderItem purchaseOrderItem)
+        private PurchaseOrder SetPurchaseOrderItems(IEnumerable<PurchaseOrderItem> items)
         {
-            purchaseOrderItem.PurchaseOrder = this;
-            this.Items.Add(purchaseOrderItem);
+            if (items.IsNullOrEmpty())
+                return this;
 
-            this.SubTotal += purchaseOrderItem.Total;
-            this.Total += purchaseOrderItem.Total;
+            var itemsToInsert = items.Except(this.Items).ToList();
+            var itemsToUpdate = this.Items.Where(x => items.Contains(x)).ToList();
+            var itemsToRemove = this.Items.Except(items).ToList();
+
+            foreach (var item in itemsToInsert)
+            {
+                item.PurchaseOrder = this;
+                this.Items.Add(item);
+            }
+
+            foreach (var item in itemsToUpdate)
+            {
+                var value = items.Single(x => x == item);
+                item.SerializeWith(value);
+                item.PurchaseOrder = this;
+            }
+
+            foreach (var item in itemsToRemove)
+            {
+                item.PurchaseOrder = null;
+                this.Items.Remove(item);
+            }
+
+            return this;
         }
+
+        private PurchaseOrder AddPayment(PurchaseOrderPayment payment)
+        {
+            this.PaidBy = payment.PaidBy;
+            this.PaidOn = payment.PaidOn;
+            this.PaymentType = payment.PaymentType;
+            this.Payment += payment.Payment;
+
+            payment.PurchaseOrder = this;
+            this.Payments.Add(payment);
+
+            return this;
+        }
+
     }
 }

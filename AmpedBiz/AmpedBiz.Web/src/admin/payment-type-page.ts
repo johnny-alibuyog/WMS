@@ -56,29 +56,13 @@ export class PaymentTypePage {
   }
 
   create() {
-    this._dialog
-      .open({
-        viewModel: PaymentTypeCreate,
-        model: null
-      })
-      .then(response => {
-        if (!response.wasCancelled) {
-          this.getPage();
-        }
-      });
+    this._dialog.open({ viewModel: PaymentTypeCreate, model: null })
+      .then(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   edit(item: PaymentTypePageItem) {
-    this._dialog
-      .open({
-        viewModel: PaymentTypeCreate,
-        model: <PaymentType>{ id: item.id }
-      })
-      .then(response => {
-        if (!response.wasCancelled) {
-          this.getPage();
-        }
-      });
+    this._dialog.open({ viewModel: PaymentTypeCreate, model: <PaymentType>{ id: item.id } })
+      .then(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   delete(item: any) {

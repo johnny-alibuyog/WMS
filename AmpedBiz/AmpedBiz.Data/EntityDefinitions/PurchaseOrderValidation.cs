@@ -60,6 +60,9 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.Items)
                 .HasValidElements();
+
+            Define(x => x.Payments)
+                .HasValidElements();
         }
     }
 }

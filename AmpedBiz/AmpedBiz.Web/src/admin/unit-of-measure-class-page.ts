@@ -56,23 +56,13 @@ export class UnitOfMeasureClassPage {
   }
 
   create() {
-    this._dialog
-      .open({ viewModel: UnitOfMeasureClassCreate, model: null })
-      .then(response => {
-        if (!response.wasCancelled) {
-          this.getPage();
-        }
-      });
+    this._dialog.open({ viewModel: UnitOfMeasureClassCreate, model: null })
+      .then(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   edit(item: UnitOfMeasureClass) {
-    this._dialog
-      .open({ viewModel: UnitOfMeasureClassCreate, model: item })
-      .then(response => {
-        if (!response.wasCancelled) {
-          this.getPage();
-        }
-      });
+    this._dialog.open({ viewModel: UnitOfMeasureClassCreate, model: item })
+      .then(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   delete(item: any) {

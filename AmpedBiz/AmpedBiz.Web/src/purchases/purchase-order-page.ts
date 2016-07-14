@@ -1,6 +1,5 @@
 import {Router} from 'aurelia-router';
 import {autoinject} from 'aurelia-framework';
-import {DialogService} from 'aurelia-dialog';
 import {PurchaseOrderCreate} from './purchase-order-create';
 import {PurchaseOrder, PurchaseOrderPageItem, PurchaseOrderStatus} from '../common/models/purchase-order';
 import {Supplier} from '../common/models/supplier';
@@ -12,9 +11,8 @@ import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from 
 @autoinject
 export class PurchaseOrderPage {
   private _api: ServiceApi;
-  private _dialog: DialogService;
-  private _notification: NotificationService;
   private _router: Router;
+  private _notification: NotificationService;
 
   public filter: Filter;
   public sorter: Sorter;
@@ -23,9 +21,8 @@ export class PurchaseOrderPage {
   public statuses: Lookup<PurchaseOrderStatus>[];
   public suppliers: Lookup<string>[];
 
-  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, router: Router) {
+  constructor(api: ServiceApi, router: Router, notification: NotificationService) {
     this._api = api;
-    this._dialog = dialog;
     this._router = router;
     this._notification = notification;
 
@@ -46,17 +43,10 @@ export class PurchaseOrderPage {
     this.pager = new Pager<PurchaseOrderPageItem>();
     this.pager.onPage = () => this.getPage();
 
-    this._api.suppliers.getLookups()
-      .then(data => {
-        this.suppliers = data;
-        console.log(this.suppliers);
-      });
-
-    this._api.purchaseOrders.getStatusLookup()
-      .then(data => {
-        this.statuses = data;
-        console.log(this.statuses);
-      });
+    Promise.all([
+      this._api.suppliers.getLookups().then(data => this.suppliers = data),
+      this._api.purchaseOrders.getStatusLookup().then(data => this.statuses = data)
+    ]);
   }
 
   activate() {

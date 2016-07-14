@@ -56,29 +56,13 @@ export class ProductCategoryPage {
   }
 
   create() {
-    this._dialog
-      .open({ 
-        viewModel: ProductCategoryCreate, 
-        model: null 
-      })
-      .then(response => {
-        if (!response.wasCancelled) {
-          this.getPage();
-        }
-      });
+    this._dialog.open({ viewModel: ProductCategoryCreate, model: null })
+      .then(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   edit(item: ProductCategoryPageItem) {
-    this._dialog
-      .open({ 
-        viewModel: ProductCategoryCreate, 
-        model: <ProductCategory>{ id: item.id }  
-      })
-      .then(response => {
-        if (!response.wasCancelled) {
-          this.getPage();
-        }
-      });
+    this._dialog.open({ viewModel: ProductCategoryCreate, model: <ProductCategory>{ id: item.id } })
+      .then(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   delete(item: any) {

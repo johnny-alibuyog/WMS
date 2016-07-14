@@ -78,12 +78,12 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             return this.Target.Approve(approvedBy, approvedOn);
         }
 
-        public virtual PurchaseOrder Pay(User paidBy, DateTime paidOn, Money payment)
+        public virtual PurchaseOrder Pay(User paidBy, DateTime paidOn, Money payment, PaymentType paymentType)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Paid))
                 throw new InvalidOperationException(string.Format("You cannot perform approval of purchase order on {0} stage.", this.Target.Status));
 
-            return this.Target.Pay(paidBy, paidOn, payment);
+            return this.Target.Pay(paidBy, paidOn, payment, paymentType);
         }
 
         public virtual PurchaseOrder Recieve(User recieveBy, DateTime recieveOn)

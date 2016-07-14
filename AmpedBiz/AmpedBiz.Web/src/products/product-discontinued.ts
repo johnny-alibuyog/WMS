@@ -1,5 +1,4 @@
 import {autoinject} from 'aurelia-framework';
-import {DialogService} from 'aurelia-dialog';
 import {Product, ProductPageItem} from '../common/models/product';
 import {ServiceApi} from '../services/service-api';
 import {NotificationService} from '../common/controls/notification-service';
@@ -8,16 +7,14 @@ import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from 
 @autoinject
 export class ProductDiscontinued {
   private _api: ServiceApi;
-  private _dialog: DialogService;
   private _notification: NotificationService;
 
   public filter: Filter;
   public sorter: Sorter;
   public pager: Pager<ProductPageItem>;
 
-  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<ProductPageItem>) {
+  constructor(api: ServiceApi, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<ProductPageItem>) {
     this._api = api;
-    this._dialog = dialog;
     this._notification = notification;
 
     this.filter = filter;

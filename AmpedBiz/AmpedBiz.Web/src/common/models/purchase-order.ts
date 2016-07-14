@@ -24,13 +24,13 @@ export interface PurchaseOrder {
   totalAmount?: number;
   status?: PurchaseOrderStatus;
   expectedOn?: Date;
-  createdBy?: string;
+  createdBy?: Lookup<string>;
   createdOn?: Date;
-  submittedBy?: string;
+  submittedBy?: Lookup<string>;
   submittedOn?: Date;
-  closedBy?: string;
+  closedBy?: Lookup<string>;
   closedOn?: Date;
-  cancelledBy?: string,
+  cancelledBy?: Lookup<string>,
   cancelledOn?: Date,
   cancellationReason?: string,
   items?: PurchaseOrderItem[];
@@ -47,11 +47,15 @@ export interface PurchaseOrderItem {
 }
 
 export interface PurchaseOrderReciept {
-
 }
 
 export interface PurchaseOrderPayment {
-
+  id?: string;
+  purchaseOrderId?: string;
+  paidBy?: Lookup<string>;
+  paidOn?: Date;
+  paymentAmount?: number;
+  paymentType?: Lookup<string>;
 }
 
 export interface PurchaseOrderPageItem {

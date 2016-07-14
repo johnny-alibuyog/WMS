@@ -39,10 +39,10 @@ export class UnitOfMeasurePage {
 
     this.pager = pager;
     this.pager.onPage = () => this.getPage();
-    
+
     this._api.unitOfMeasureClasses.getList()
-        .then(data => this.unitOfMeasureClasses = <UnitOfMeasureClass[]>data)
-        .catch(error => this._notification.warning(error));
+      .then(data => this.unitOfMeasureClasses = <UnitOfMeasureClass[]>data)
+      .catch(error => this._notification.warning(error));
   }
 
   activate() {
@@ -67,23 +67,13 @@ export class UnitOfMeasurePage {
   }
 
   create() {
-    this._dialog
-      .open({ viewModel: UnitOfMeasureCreate, model: null })
-      .then(response => {
-        if (!response.wasCancelled) {
-          this.getPage();
-        }
-      });
+    this._dialog.open({ viewModel: UnitOfMeasureCreate, model: null })
+      .then(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   edit(item: UnitOfMeasure) {
-    this._dialog
-      .open({ viewModel: UnitOfMeasureCreate, model: item })
-      .then(response => {
-        if (!response.wasCancelled) {
-          this.getPage();
-        }
-      });
+    this._dialog.open({ viewModel: UnitOfMeasureCreate, model: item })
+      .then(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   delete(item: any) {

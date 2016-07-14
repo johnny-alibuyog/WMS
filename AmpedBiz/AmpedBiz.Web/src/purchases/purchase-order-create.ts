@@ -1,7 +1,9 @@
 import {Router} from 'aurelia-router';
 import {autoinject} from 'aurelia-framework';
+import {DialogService} from 'aurelia-dialog';
 import {Supplier} from '../common/models/supplier';
 import {ProductInventory} from '../common/models/product';
+import {PurchaseOrderPaymentCreate} from './purchase-order-payment-create';
 import {PurchaseOrder, PurchaseOrderStatus, PurchaseOrderItem, PurchaseOrderReciept, PurchaseOrderPayment} from '../common/models/purchase-order';
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 import {ServiceApi} from '../services/service-api';
@@ -12,6 +14,7 @@ import {NotificationService} from '../common/controls/notification-service';
 export class PurchaseOrderCreate {
   private _api: ServiceApi;
   private _router: Router;
+  private _dialog: DialogService;
   private _notification: NotificationService;
 
   public header: string = 'Purchase Order';
@@ -28,12 +31,14 @@ export class PurchaseOrderCreate {
   public recieptPage: Pager<PurchaseOrderReciept> = new Pager<PurchaseOrderReciept>();
   public paymentPage: Pager<PurchaseOrderPayment> = new Pager<PurchaseOrderPayment>();
 
-  constructor(api: ServiceApi, router: Router, notification: NotificationService) {
+  constructor(api: ServiceApi, router: Router, dialog: DialogService, notification: NotificationService) {
     this._api = api;
     this._router = router;
+    this._dialog = dialog;
     this._notification = notification;
 
     this.itemPage.onPage = () => this.initializeItemPage();
+    this.paymentPage.onPage = () => this.initializePaymentPage();
 
     this._api.suppliers.getLookups()
       .then(data => this.suppliers = data);
@@ -52,15 +57,23 @@ export class PurchaseOrderCreate {
     }
   }
 
+  resetAndNoify(purchaseOrder: PurchaseOrder, notificationMessage: string) {
+    this.setPurchaseOrder(purchaseOrder);
+
+    if (notificationMessage) {
+      this._notification.success(notificationMessage);
+    }
+  }
+
   setPurchaseOrder(purchaseOrder: PurchaseOrder): void {
     this.purchaseOrder = purchaseOrder;
     this.purchaseOrder.items = this.purchaseOrder.items || [];
     this.purchaseOrder.reciepts = this.purchaseOrder.reciepts || [];
     this.purchaseOrder.payments = this.purchaseOrder.payments || []
 
-    console.log(this.purchaseOrder.allowedTransitions[PurchaseOrderStatus.submitted]);
-
     this.initializeItemPage();
+    this.initializePaymentPage();
+
     this.getSupplierProducts();
   }
 
@@ -86,6 +99,43 @@ export class PurchaseOrderCreate {
     this._api.suppliers.getProductLookups(this.purchaseOrder.supplierId)
       .then(data => this.products = data);
   }
+
+  initializePaymentPage(): void {
+    this.paymentPage.count = this.purchaseOrder.payments.length;
+    this.paymentPage.items = this.purchaseOrder.payments.slice(
+      this.paymentPage.start,
+      this.paymentPage.end
+    );
+  }
+
+  /*
+  addItem(): void {
+    if (!this.purchaseOrder.items)
+      this.purchaseOrder.items = <PurchaseOrderItem[]>[];
+
+    var item = <PurchaseOrderItem>{
+      quantityValue: 0,
+      unitPriceAmountce: 0,
+    };
+
+    this.purchaseOrder.items.push(item);
+    this.selectedItem = item;
+    this.initializeItemPage();
+  }
+
+  editItem(item: PurchaseOrderItem): void {
+    if (this.selectedItem !== item)
+      this.selectedItem = item;
+  }
+
+  deleteItem(item: PurchaseOrderItem): void {
+    var index = this.purchaseOrder.items.indexOf(item);
+    if (index > -1) {
+      this.purchaseOrder.items.splice(index, 1);
+    }
+    this.initializeItemPage();
+  }
+  */
 
   initializeItem(item: PurchaseOrderItem): void {
     if (!item.product) {
@@ -145,63 +195,64 @@ export class PurchaseOrderCreate {
   }
 
   addPayment(): void {
-    if (!this.purchaseOrder.payments)
-      this.purchaseOrder.payments = [];
-
-    this.purchaseOrder.payments.push(<PurchaseOrderPayment>{});
+    this._dialog.open({ viewModel: PurchaseOrderPaymentCreate, model: this.purchaseOrder })
+      .then(response => {
+        if (!response.wasCancelled)
+          this.setPurchaseOrder(<PurchaseOrder>response.output);
+      });
   }
 
   createNew(): void {
     this._api.purchaseOrders.createNew(this.purchaseOrder)
-      .then(data => this._notification.success("Purchase order has been created."))
+      .then(data => this.resetAndNoify(data, "Purchase order has been created."))
       .catch(error => this._notification.warning(error));
   }
 
   updateNew(): void {
     this._api.purchaseOrders.updateNew(this.purchaseOrder)
-      .then(data => this._notification.success("Purchase order has been updated."))
+      .then(data => this.resetAndNoify(data, "Purchase order has been updated."))
       .catch(error => this._notification.warning(error));
   }
 
   submit(): void {
     this._api.purchaseOrders.submit(this.purchaseOrder)
-      .then(data => this._notification.success("Purchase order has been submitted."))
+      .then(data => this.resetAndNoify(data, "Purchase order has been submitted."))
       .catch(error => this._notification.warning(error));
   }
 
   approve(): void {
     this._api.purchaseOrders.approve(this.purchaseOrder)
-      .then(data => this._notification.success("Purchase order has been approved."))
+      .then(data => this.resetAndNoify(data, "Purchase order has been approved."))
       .catch(error => this._notification.warning(error));
   }
 
   reject(): void {
     this._api.purchaseOrders.reject(this.purchaseOrder)
-      .then(data => this._notification.success("Purchase order has been rejected."))
+      .then(data => this.resetAndNoify(data, "Purchase order has been rejected."))
       .catch(error => this._notification.warning(error));
   }
 
   pay(): void {
     this._api.purchaseOrders.pay(this.purchaseOrder)
-      .then(data => this._notification.success("Purchase order has been payed."))
+      .then(data => this.resetAndNoify(data, "Purchase order has been paid."))
       .catch(error => this._notification.warning(error));
   }
 
   recieve(): void {
     this._api.purchaseOrders.receive(this.purchaseOrder)
-      .then(data => this._notification.success("Purchase order has been received."))
+      .then(data => this.resetAndNoify(data, "Purchase order has been received."))
       .catch(error => this._notification.warning(error));
   }
 
   complete(): void {
     this._api.purchaseOrders.complete(this.purchaseOrder)
-      .then(data => this._notification.success("Purchase order has been completed."))
+      .then(data => this.resetAndNoify(data, "Purchase order has been completed."))
       .catch(error => this._notification.warning(error));
   }
 
   cancel(): void {
     this._api.purchaseOrders.cancel(this.purchaseOrder)
-      .then(data => this._notification.success("Purchase order has been cancelled."))
+      .then(data => this.resetAndNoify(data, "Purchase order has been cancelled."))
       .catch(error => this._notification.warning(error));
   }
 
