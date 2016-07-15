@@ -49,7 +49,8 @@ namespace AmpedBiz.Core.Services.Orders
         }
 
         public virtual void New(User createdBy, PaymentType paymentType = null, Shipper shipper = null,
-            Money shippingFee = null, decimal? taxRate = null, Customer customer = null, Branch branch = null)
+            Money shippingFee = null, decimal? taxRate = null, Customer customer = null, Branch branch = null,
+            IEnumerable<OrderItem> orderItems = null)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.New))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, this.Target.Status));
@@ -61,7 +62,8 @@ namespace AmpedBiz.Core.Services.Orders
                 shippingFee: shippingFee,
                 createdBy: createdBy,
                 customer: customer,
-                branch: branch
+                branch: branch,
+                orderItems: orderItems
             );
         }
 
@@ -81,12 +83,12 @@ namespace AmpedBiz.Core.Services.Orders
             this.Target.Route(routedBy);
         }
 
-        public virtual void Invoice(User invoicedBy, Invoice invoice)
+        public virtual void Invoice(User invoicedBy, IEnumerable<Invoice> invoices = null)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Invoiced))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "invoicing", this.Target.Status));
 
-            this.Target.Invoice(invoicedBy, invoice);
+            this.Target.Invoice(invoicedBy, invoices);
         }
 
         public virtual void PartiallyPay(User partiallyPaidBy)
@@ -119,7 +121,7 @@ namespace AmpedBiz.Core.Services.Orders
         public NewState(Order target) : base(target)
         {
             this.AllowedTransitions.Add(OrderStatus.New, "Save");
-            this.AllowedTransitions.Add(OrderStatus.Routed, "Stage");
+            this.AllowedTransitions.Add(OrderStatus.Staged, "Stage");
             this.AllowedTransitions.Add(OrderStatus.Routed, "Route");
             this.AllowedTransitions.Add(OrderStatus.Cancelled, "Cancel");
         }
@@ -129,6 +131,7 @@ namespace AmpedBiz.Core.Services.Orders
     {
         public StagedState(Order target) : base(target)
         {
+            this.AllowedTransitions.Add(OrderStatus.Routed, "Route");
             this.AllowedTransitions.Add(OrderStatus.PartiallyPaid, "Partially Pay");
             this.AllowedTransitions.Add(OrderStatus.Invoiced, "Invoice");
             this.AllowedTransitions.Add(OrderStatus.Cancelled, "Cancel");

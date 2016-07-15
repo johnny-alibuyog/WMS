@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using AmpedBiz.Common.Extentions;
@@ -95,7 +96,8 @@ namespace AmpedBiz.Core.Entities
             New(paymentType, shipper, taxRate, shippingFee, createdBy, customer, branch);
         }
 
-        public virtual void New(PaymentType paymentType, Shipper shipper, decimal? taxRate, Money shippingFee, User createdBy, Customer customer, Branch branch)
+        public virtual void New(PaymentType paymentType, Shipper shipper, decimal? taxRate, Money shippingFee, User createdBy,
+            Customer customer, Branch branch, IEnumerable<OrderItem> orderItems = null)
         {
             this.Status = OrderStatus.New;
             this.IsActive = true;
@@ -107,6 +109,67 @@ namespace AmpedBiz.Core.Entities
             this.CreatedBy = createdBy;
             this.Customer = customer;
             this.Branch = branch;
+            this.SetOrderItems(orderItems);
+        }
+
+        protected internal virtual Order SetOrderItems(IEnumerable<OrderItem> items)
+        {
+            if (items.IsNullOrEmpty())
+                return this;
+
+            var itemsToInsert = items.Except(this.Items).ToList();
+            var itemsToUpdate = this.Items.Where(x => items.Contains(x)).ToList();
+            var itemsToRemove = this.Items.Except(items).ToList();
+
+            foreach (var item in itemsToInsert)
+            {
+                this.AddOrderItem(item);
+            }
+
+            foreach (var item in itemsToUpdate)
+            {
+                var value = items.Single(x => x == item);
+                item.SerializeWith(value);
+                item.Order = this;
+            }
+
+            foreach (var item in itemsToRemove)
+            {
+                item.Order = null;
+                this.Items.Remove(item);
+            }
+
+            return this;
+        }
+
+        protected internal virtual Order SetInvoices(IEnumerable<Invoice> invoices)
+        {
+            if (invoices.IsNullOrEmpty())
+                return this;
+
+            var itemsToInsert = invoices.Except(this.Invoices).ToList();
+            var itemsToUpdate = this.Invoices.Where(x => invoices.Contains(x)).ToList();
+            var itemsToRemove = this.Invoices.Except(invoices).ToList();
+
+            foreach (var item in itemsToInsert)
+            {
+                this.AddInvoice(item);
+            }
+
+            foreach (var item in itemsToUpdate)
+            {
+                var value = invoices.Single(x => x == item);
+                item.SerializeWith(value);
+                item.Order = this;
+            }
+
+            foreach (var item in itemsToRemove)
+            {
+                item.Order = null;
+                this.Invoices.Remove(item);
+            }
+
+            return this;
         }
 
         public virtual void Stage(User user)
@@ -122,15 +185,20 @@ namespace AmpedBiz.Core.Entities
             this.RoutedDate = DateTime.Now;
 
             //allocate product from inventory
+            
         }
 
-        public virtual void Invoice(User user, Invoice invoice)
+        public virtual void Invoice(User user, IEnumerable<Invoice> invoices = null)
         {
-            invoice.Order = this;
-            this.Invoices.Add(invoice);
             this.Status = OrderStatus.Invoiced;
             this.InvoicedBy = user;
             this.InvoicedDate = DateTime.Now;
+            this.SetInvoices(invoices);
+
+            foreach (var item in this.Items)
+            {
+                item.Invoice();
+            }
 
             //deduct from inventory
         }
@@ -166,11 +234,21 @@ namespace AmpedBiz.Core.Entities
             orderItem.Order = this;
             this.Items.Add(orderItem);
 
-            this.SubTotal += orderItem.ExtendedPrice ?? new Money(0.0M);
+            var extendedPriceAmount = (orderItem.ExtendedPrice ?? new Money(0.0M)).Amount;
+
+            this.SubTotal += new Money(extendedPriceAmount);
 
             this.Tax = new Money(this.SubTotal.Amount * this.TaxRate.Value);
 
             this.Total = new Money(this.SubTotal.Amount + this.Tax.Amount + this.ShippingFee.Amount);
+        }
+
+        public virtual void AddInvoice(Invoice invoice)
+        {
+            this.Invoices = this.Invoices ?? new List<Invoice>();
+
+            invoice.Order = this;
+            this.Invoices.Add(invoice);
         }
     }
 }

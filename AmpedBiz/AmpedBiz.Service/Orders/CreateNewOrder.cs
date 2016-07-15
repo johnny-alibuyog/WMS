@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
@@ -12,7 +13,7 @@ namespace AmpedBiz.Service.Orders
     {
         public class Request : Dto.Order, IRequest<Response>
         {
-            public virtual string UserId { get; set; }
+            public virtual Guid UserId { get; set; }
         }
 
         public class Response : Dto.Order { }
@@ -44,18 +45,14 @@ namespace AmpedBiz.Service.Orders
                         shippingFee: new Money(message.ShippingFeeAmount, currency),
                         taxRate: message.TaxRate,
                         customer: session.Load<Customer>(message.CustomerId),
-                        branch: session.Load<Branch>(message.BranchId)
+                        branch: session.Load<Branch>(message.BranchId),
+                        orderItems: message.OrderItems
+                            .Select(x => new OrderItem(
+                                product: session.Load<Product>(x.ProductId),
+                                quantity: new Measure(x.QuantityValue, session.Load<Product>(x.ProductId).UnitOfMeasure),
+                                discount: new Money(x.DiscountAmount, currency),
+                                unitPrice: new Money(x.UnitPriceAmount, currency)))
                     );
-
-                    foreach (var item in message.OrderItems)
-                    {
-                        var orderItem = new OrderItem(item.Id);
-                        orderItem.CurrentState.Allocate();
-
-                        item.MapTo(orderItem);
-
-                        entity.AddOrderItem(orderItem);
-                    }
 
                     session.Save(entity);
                     transaction.Commit();

@@ -64,12 +64,12 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             References(x => x.CancelledBy);
 
-            //HasMany(x => x.Invoices)
-            //    .Cascade.AllDeleteOrphan()
-            //    .Not.KeyNullable()
-            //    .Not.KeyUpdate()
-            //    .Inverse()
-            //    .AsBag();
+            HasMany(x => x.Invoices)
+                .Cascade.AllDeleteOrphan()
+                .Not.KeyNullable()
+                .Not.KeyUpdate()
+                .Inverse()
+                .AsBag();
 
             HasMany(x => x.Items)
                 .Cascade.AllDeleteOrphan()

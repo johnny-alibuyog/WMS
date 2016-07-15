@@ -75,6 +75,7 @@ namespace AmpedBiz.Core.Services.OrderItems
     {
         public AllocatedState(OrderItem target) : base(target)
         {
+            this.AllowedTransitions.Add(OrderItemStatus.Allocated, "Allocate");
             this.AllowedTransitions.Add(OrderItemStatus.Invoiced, "Invoice");
             this.AllowedTransitions.Add(OrderItemStatus.BackOrdered, "Backorder");
         }

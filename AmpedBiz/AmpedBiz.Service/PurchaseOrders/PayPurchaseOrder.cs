@@ -26,7 +26,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                 {
                     var entity = session.Get<PurchaseOrder>(message.PurchaseOrderId);
                     if (entity == null)
-                        throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
+                        throw new BusinessException($"PurchaseOrder with id {message.PurchaseOrderId} does not exists.");
 
                     entity.State.Pay(
                         paidOn: message.PaidOn ?? DateTime.Now,

@@ -75,6 +75,8 @@ namespace AmpedBiz.Service.Dto
         public IEnumerable<Invoice> Invoices { get; set; }
 
         public IEnumerable<OrderItem> OrderItems { get; set; }
+
+        public Dictionary<Dto.OrderStatus, string> AllowedTransitions { get; set; }
     }
 
     public class OrderPageItem

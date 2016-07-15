@@ -18,6 +18,6 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? SubTotalAmount { get; set; }
 
-        public decimal? DueAmount { get; set; }
+        public decimal? TotalAmount { get; set; }
     }
 }

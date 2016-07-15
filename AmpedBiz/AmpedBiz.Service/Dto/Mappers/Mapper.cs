@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Entity = AmpedBiz.Core.Entities;
+using AmpedBiz.Service.Orders;
 
 namespace AmpedBiz.Service.Dto.Mappers
 {
@@ -56,6 +57,33 @@ namespace AmpedBiz.Service.Dto.Mappers
             ExpressMapper.Mapper.Register<Entity.User, Lookup<Guid>>()
                 .Member(x => x.Id, x => x.Id)
                 .Member(x => x.Name, x => x.FullName());
+
+            ExpressMapper.Mapper.Register<Entity.Order, GetOrder.Response>()
+                .Member(x => x.AllowedTransitions, x => x.State.AllowedTransitions
+                    .ToDictionary(o => ExpressMapper.Mapper.Map<Entity.OrderStatus, Dto.OrderStatus>(o.Key), y => y.Value)
+                )
+                .Flatten();
+
+            ExpressMapper.Mapper.Register<Entity.Order, CreateNewOrder.Response>()
+                .Member(x => x.OrderItems, x => x.Items)
+                .Flatten();
+
+            ExpressMapper.Mapper.Register<Entity.Invoice, Dto.Invoice>()
+                .Member(x => x.ShippingAmount, x => x.Shipping.Amount)
+                .Member(x => x.SubTotalAmount, x => x.SubTotal.Amount)
+                .Member(x => x.TaxAmount, x => x.Tax.Amount)
+                .Member(x => x.TotalAmount, x => x.Total.Amount)
+                .Flatten();
+
+            ExpressMapper.Mapper.Register<Entity.Order, InvoiceOrder.Response>()
+                .Member(x => x.OrderItems, x => x.Items)
+                .Member(x => x.Invoices, x => x.Invoices)
+                .Flatten();
+
+            ExpressMapper.Mapper.Register<Entity.OrderItem, Dto.OrderItem>().Flatten();
+
+            ExpressMapper.Mapper.Register<Entity.OrderItem, Dto.OrderItemPageItem>().Flatten();
+
         }
 
         private void RegisterMapping<TEntity, TDto>()

@@ -18,6 +18,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AmpedBiz.Service.Orders;
 
 namespace AmpedBiz.Tests.IntegrationTests
 {
@@ -126,6 +127,8 @@ namespace AmpedBiz.Tests.IntegrationTests
             }
         }
 
+        #region Common Helpers
+
         private Service.Dto.Branch CreateBranch(Service.Dto.Branch branch)
         {
             var request = new CreateBranch.Request()
@@ -196,7 +199,7 @@ namespace AmpedBiz.Tests.IntegrationTests
         {
             var customers = new List<Service.Dto.Customer>();
 
-            for(var i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 var custData = this.dummyData.GenerateCustomer();
                 custData.PricingSchemeId = this.pricingSchemes[this.rnd.Next(0, this.pricingSchemes.Count - 1)].Id;
@@ -293,7 +296,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             var products = response
                 .Select((product, index) => new
-                {
+            {
                     Index = index,
                     Product = product
                 })
@@ -301,7 +304,11 @@ namespace AmpedBiz.Tests.IntegrationTests
                 .Select(x => x.Product);
 
             return products;
-        }
+            }
+
+        #endregion
+
+        #region PurchaseOrders Helper
 
         private List<Service.Dto.PurchaseOrder> CreatePurchaseOrders(int count = 1)
         {
@@ -345,16 +352,16 @@ namespace AmpedBiz.Tests.IntegrationTests
         {
             var poItems = new List<Service.Dto.PurchaseOrderItem>();
             var selectedProducts = this.SelectRandomProducts(po.SupplierId, count);
-            
+
             foreach (var product in selectedProducts)
             {
                 poItems.Add(new Service.Dto.PurchaseOrderItem
                 {
-                   //TotalAmount = product.RetailPriceAmount + 1m,
-                   Product = new Lookup<string>(product.Id, product.Name),
-                   PurchaseOrderId = po.Id,
-                   QuantityValue = this.rnd.Next(1, 100),
-                   UnitPriceAmount = product.RetailPriceAmount + 1m,
+                    //TotalAmount = product.RetailPriceAmount + 1m,
+                    Product = new Lookup<string>(product.Id, product.Name),
+                    PurchaseOrderId = po.Id,
+                    QuantityValue = this.rnd.Next(1, 100),
+                    UnitPriceAmount = product.RetailPriceAmount + 1m,
                 });
             }
 
@@ -409,7 +416,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
 
-            var request = new PayPurchaseOrder.Request() { Id = pOrder.Id, UserId = userId };
+            var request = new PayPurchaseOrder.Request() { Id = pOrder.Id };
             var order = new PayPurchaseOrder.Handler(this.sessionFactory).Handle(request);
 
             return order;
@@ -439,7 +446,16 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
 
-            var request = new PayPurchaseOrder.Request() { Id = pOrder.Id, UserId = userId, TotalAmount = pOrder.TotalAmount };
+            var request = new PayPurchaseOrder.Request()
+            {
+                PurchaseOrderId = pOrder.Id,
+                PaidBy = new Lookup<Guid>() { Id = userId },
+                PaymentAmount = pOrder.Items.Sum(x => x.TotalAmount),
+                PaymentType = new Lookup<string>
+                {
+                    Id = this.paymentTypes[this.rnd.Next(0, this.paymentTypes.Count -1)].Id
+                }
+            };
             var order = new PayPurchaseOrder.Handler(this.sessionFactory).Handle(request);
 
             return order;
@@ -474,6 +490,188 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             return order;
         }
+
+        #endregion
+
+        #region Orders Helper
+
+        private List<Service.Dto.Order> CreateOrders(int count = 1)
+        {
+            var orders = new List<Service.Dto.Order>();
+            var users = new List<User>();
+            var branches = new List<Branch>();
+            var customers = this.CreateCustomers(10);
+
+            using (var session = this.sessionFactory.OpenSession())
+            {
+                users = session.Query<User>().ToList();
+                branches = session.Query<Branch>().ToList();
+            }
+
+            for (var i = 0; i < count; i++)
+            {
+                var request = new CreateNewOrder.Request()
+                {
+                    BranchId = branches[this.rnd.Next(0, branches.Count - 1)].Id,
+                    UserId = users[this.rnd.Next(0, users.Count - 1)].Id,
+                    CustomerId = customers[this.rnd.Next(0, customers.Count - 1)].Id,
+                    IsActive = true,
+                    TaxRate = .12M,
+                    PaymentTypeId = this.paymentTypes[this.rnd.Next(0, this.paymentTypes.Count - 1)].Id,
+                };
+
+                request.OrderItems = this.CreateOrderItems(request, this.rnd.Next(20, 50));
+                var handler = new CreateNewOrder.Handler(this.sessionFactory).Handle(request);
+
+                orders.Add(handler as Service.Dto.Order);
+            }
+
+            return orders;
+        }
+
+        private List<Service.Dto.OrderItem> CreateOrderItems(Service.Dto.Order order, int count = 1)
+        {
+            var orderItems = new List<Service.Dto.OrderItem>();
+
+            var suppliersId = new List<string>();
+
+            using (var session = this.sessionFactory.OpenSession())
+            {
+                suppliersId = session
+                    .Query<Supplier>()
+                    .Select(s => s.Id)
+                    .ToList();
+
+                if (suppliersId.Count < 1)
+                {
+                    suppliersId = this.CreateSuppliers(10)
+                        .Select(s => s.Id)
+                        .ToList();
+                }
+            }
+
+            var randomProductIndexes = this.dummyData.GenerateUniqueNumbers(0, count, count).ToArray();
+
+            comeAsYouAre:
+
+            var selectedProducts = this.SelectRandomProducts(suppliersId[this.rnd.Next(0, suppliersId.Count - 1)], 10).ToList();
+
+            if (selectedProducts.Count < 1)
+                goto comeAsYouAre;
+
+            for (var i = 0; i < selectedProducts.Count; i++)
+            {
+                var product = selectedProducts[i];
+
+                orderItems.Add(new Service.Dto.OrderItem
+                {
+                    ExtendedPriceAmount = 0M,
+                    OrderId = order.Id,
+                    ProductId = product.Id,
+                    QuantityValue = this.rnd.Next(1, 100),
+                    UnitPriceAmount = product.RetailPriceAmount
+                });
+            }
+
+            return orderItems;
+        }
+
+        private Service.Dto.Order StageOrder(Service.Dto.Order order)
+        {
+            var users = new List<User>();
+
+            using (var session = this.sessionFactory.OpenSession())
+                users = session.Query<User>().ToList();
+
+            var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
+
+            var request = new StageOrder.Request() { Id = order.Id, UserId = userId};
+            var handler = new StageOrder.Handler(this.sessionFactory).Handle(request);
+
+            return handler;
+        }
+
+        private Service.Dto.Order RouteOrder(Service.Dto.Order order)
+        {
+            var users = new List<User>();
+
+            using (var session = this.sessionFactory.OpenSession())
+                users = session.Query<User>().ToList();
+
+            var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
+
+            var request = new RouteOrder.Request() { Id = order.Id, UserId = userId };
+            var handler = new RouteOrder.Handler(this.sessionFactory).Handle(request);
+
+            return handler;
+        }
+
+        private Service.Dto.Order PartiallyPayOrder(Service.Dto.Order order)
+        {
+            var users = new List<User>();
+
+            using (var session = this.sessionFactory.OpenSession())
+                users = session.Query<User>().ToList();
+
+            var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
+
+            var request = new PartiallyPayOrder.Request() { Id = order.Id, UserId = userId };
+            var handler = new PartiallyPayOrder.Handler(this.sessionFactory).Handle(request);
+
+            return handler;
+        }
+
+        private Service.Dto.Order InvoiceOrder(Service.Dto.Order order)
+        {
+            var users = new List<User>();
+            var eOrder = new Order();
+
+            using (var session = this.sessionFactory.OpenSession())
+            {
+                users = session.Query<User>().ToList();
+                eOrder = session.Query<Order>().FirstOrDefault(x => x.Id == order.Id);
+            }
+
+            var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
+
+            var request = new InvoiceOrder.Request()
+            {
+                Id = order.Id,
+                UserId = userId,
+                Invoices = new List<Service.Dto.Invoice>
+                {
+                    new Service.Dto.Invoice()
+                    {
+                        InvoiceDate = DateTime.Now,
+                        ShippingAmount = eOrder.ShippingFee.Amount,
+                        SubTotalAmount = eOrder.SubTotal.Amount,
+                        TaxAmount = eOrder.Tax.Amount,
+                        TotalAmount = eOrder.Total.Amount
+                    }
+                }
+            };
+
+            var handler = new InvoiceOrder.Handler(this.sessionFactory).Handle(request);
+
+            return handler;
+        }
+
+        private Service.Dto.Order CompleteOrder(Service.Dto.Order order)
+        {
+            var users = new List<User>();
+
+            using (var session = this.sessionFactory.OpenSession())
+                users = session.Query<User>().ToList();
+
+            var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
+
+            var request = new CompleteOrder.Request() { Id = order.Id, UserId = userId };
+            var handler = new CompleteOrder.Handler(this.sessionFactory).Handle(request);
+
+            return handler;
+        }
+
+        #endregion
 
         [Test]
         public void CommonScenarioTests()
@@ -563,17 +761,60 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             //todo: implement inventory checking
 
+
             /*
-            var getCustomer = new GetCustomer.Handler(this.sessionFactory).Handle(new GetCustomer.Request() { Id = customer.Id });
-            var getCustomerPage = new GetCustomerPage
-                .Handler(this.sessionFactory)
-                .Handle(new GetCustomerPage.Request()
-                {
-                    Filter = new Service.Common.Filter(),
-                    Pager = new Service.Common.Pager() { Size =10, Offset = 1 },
-                    Sorter = new Service.Common.Sorter()
-                });
+            Deduct Inventory
+            
+            Order cycles
+
+            New = 1,
+            Staged = 2,
+            Routed = 3,
+            Invoiced = 4,
+            PartiallyPaid = 5,
+            Completed = 6,
+            Cancelled = 7
+
             */
+
+            //Assert: Orders = New, Items = Allocated
+            var newOrders = this.CreateOrders(expected);
+            Assert.AreEqual(expected, newOrders.Count(o => o.Status == Service.Dto.OrderStatus.New));
+            Assert.False(newOrders.SelectMany(o => o.OrderItems.Where(x => x != null))
+                .Any(i => i.Status != Service.Dto.OrderItemStatus.Allocated));
+
+            Service.Dto.Order
+                order1 = newOrders[0],
+                order2 = newOrders[1],
+                order3 = newOrders[2],
+                order4 = newOrders[3];
+
+            var stagedOrder = this.StageOrder(order1);
+            Assert.IsTrue(stagedOrder.Status == Service.Dto.OrderStatus.Staged);
+
+            var routedOrder = this.RouteOrder(stagedOrder);
+            Assert.IsTrue(routedOrder.Status == Service.Dto.OrderStatus.Routed);
+
+            var partiallyPaidOrder = this.PartiallyPayOrder(routedOrder);
+            Assert.IsTrue(partiallyPaidOrder.Status == Service.Dto.OrderStatus.PartiallyPaid);
+
+            //invoice from partially paid
+            var invoicedOrder = this.InvoiceOrder(partiallyPaidOrder);
+            Assert.IsTrue(invoicedOrder.Status == Service.Dto.OrderStatus.Invoiced);
+
+            //invoice from staged
+            var invoicedOrder2 = this.InvoiceOrder(this.StageOrder(order2));
+            Assert.IsTrue(invoicedOrder2.Status == Service.Dto.OrderStatus.Invoiced);
+
+            //invoice from routed
+            var invoicedOrder3 = this.InvoiceOrder(this.RouteOrder(order3));
+            Assert.IsTrue(invoicedOrder3.Status == Service.Dto.OrderStatus.Invoiced);
+
+            //complete all
+            var completeOrder = this.CompleteOrder(invoicedOrder);
+            Assert.IsTrue(completeOrder.Status == Service.Dto.OrderStatus.Completed);
+
+            //todo: implement inventory checking
 
         }
 

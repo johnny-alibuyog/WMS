@@ -29,7 +29,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual bool InsufficientInventory { get; protected set; }
 
-        public virtual State CurrentState
+        public virtual State State
         {
             get { return State.GetState(this); }
         }
@@ -44,14 +44,13 @@ namespace AmpedBiz.Core.Entities
             this.Quantity = quantity;
             this.Discount = discount ?? new Money(0.0M);
             this.UnitPrice = unitPrice;
+            this.Status = OrderItemStatus.Allocated;
 
             this.Allocate();
         }
 
         public virtual void Allocate()
         {
-            this.Status = OrderItemStatus.Allocated;
-
             this.ExtendedPrice = new Money((this.UnitPrice.Amount - this.Discount.Amount) * this.Quantity.Value);
             this.Product.GoodStockInventory.Allocated += this.Quantity;
         }
