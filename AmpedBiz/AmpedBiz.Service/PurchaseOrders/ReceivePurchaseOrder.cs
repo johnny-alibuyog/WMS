@@ -1,15 +1,18 @@
 ﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Envents.PurchaseOrders;
 using MediatR;
 using NHibernate;
+using NHibernate.Linq;
 using System;
+using System.Linq;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
     public class ReceivePurchaseOrder
     {
-        public class Request : Dto.PurchaseOrder, IRequest<Response> { }
+        public class Request : Dto.PurchaseOrderReceivedEvent, IRequest<Response> { }
 
         public class Response : Dto.PurchaseOrder { }
 
@@ -24,13 +27,38 @@ namespace AmpedBiz.Service.PurchaseOrders
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.Get<PurchaseOrder>(message.Id);
+                    var entity = session.Get<PurchaseOrder>(message.PurchaseOrderId);
                     if (entity == null)
-                        throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
+                        throw new BusinessException($"PurchaseOrder with id {message.PurchaseOrderId} does not exists.");
 
-                    var user = session.Load<User>(message.UserId);
+                    var productIds = message.Receipts
+                        .Select(x => x.Product.Id);
 
-                    entity.State.Recieve(user, DateTime.Now);
+                    var products = session.Query<Product>()
+                        .Where(x => productIds.Contains(x.Id))
+                        .Fetch(x => x.GoodStockInventory)
+                        .ThenFetch(x => x.UnitOfMeasure)
+                        .ToList();
+
+                    var receivedEvent = new PurchaseOrderReceivedEvent(
+                        receipts: message.Receipts.Select(x => new PurchaseOrderReceipt(
+                            batchNumber: x.BatchNumber,
+                            receivedBy: session.Load<User>(x.ReceivedBy.Id),
+                            receivedOn: x.ReceivedOn ?? DateTime.Now,
+                            expiresOn: x.ExpiresOn,
+                            product: products.FirstOrDefault(o => o.Id == x.Product.Id),
+                            quantity: new Measure(
+                                value: x.QuantityValue, 
+                                unit: products
+                                    .Where(o => o.Id == x.Product.Id)
+                                    .Select(o => o.UnitOfMeasure)
+                                    .FirstOrDefault()
+                                )
+                            )
+                        )
+                    );
+
+                    entity.State.Receive(receivedEvent);
 
                     session.Save(entity);
                     transaction.Commit();

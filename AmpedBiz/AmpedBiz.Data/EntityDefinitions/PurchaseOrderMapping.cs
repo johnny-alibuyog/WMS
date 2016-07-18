@@ -44,6 +44,10 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Map(x => x.PaidOn);
 
+            References(x => x.ReceivedBy);
+
+            Map(x => x.ReceivedOn);
+
             References(x => x.CompletedBy);
 
             Map(x => x.CompletedOn);
@@ -62,6 +66,13 @@ namespace AmpedBiz.Data.EntityDefinitions
                 .AsBag();
 
             HasMany(x => x.Payments)
+                .Cascade.AllDeleteOrphan()
+                .Not.KeyNullable()
+                .Not.KeyUpdate()
+                .Inverse()
+                .AsBag();
+
+            HasMany(x => x.Receipts)
                 .Cascade.AllDeleteOrphan()
                 .Not.KeyNullable()
                 .Not.KeyUpdate()

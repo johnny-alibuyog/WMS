@@ -43,7 +43,7 @@ namespace AmpedBiz.Service.Dto
 
         public DateTime? CreatedOn { get; set; }
 
-        public Lookup<Guid> SubmitterBy { get; set; }
+        public Lookup<Guid> SubmittedBy { get; set; }
 
         public DateTime? SubmittedOn { get; set; }
 

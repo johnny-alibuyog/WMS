@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Envents.PurchaseOrders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,70 +45,60 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             }
         }
 
-        public virtual PurchaseOrder New(User createdBy, DateTime createdOn, DateTime? expectedOn = null, PaymentType paymentType = null, 
-            Shipper shipper = null, Money shippingFee = null, Money tax = null, Supplier supplier = null, IEnumerable<PurchaseOrderItem> purchaseOrderItems = null)
+        public virtual PurchaseOrder New(PurchaseOrderNewlyCreatedEvent @event)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.New))
                 throw new InvalidOperationException(string.Format("You cannot perform creation of new purchase order on {0} stage.", this.Target.Status));
 
-            return this.Target.New(
-                createdBy: createdBy,
-                createdOn: createdOn,
-                expectedOn: expectedOn,
-                paymentType: paymentType,
-                tax: tax,
-                shippingFee: shippingFee,
-                supplier: supplier,
-                purchaseOrderItems: purchaseOrderItems
-            );
+            return this.Target.New(@event);
         }
 
-        public virtual PurchaseOrder Submit(User submittedBy, DateTime submittedOn)
+        public virtual PurchaseOrder Submit(PurchaseOrderSubmittedEvent @event)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Submitted))
                 throw new InvalidOperationException(string.Format("You cannot perform submission of purchase order on {0} stage.", this.Target.Status));
 
-            return this.Target.Submit(submittedBy, submittedOn);
+            return this.Target.Submit(@event);
         }
 
-        public virtual PurchaseOrder Approve(User approvedBy, DateTime approvedOn)
+        public virtual PurchaseOrder Approve(PurchaseOrderApprovedEvent @event)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Approved))
                 throw new InvalidOperationException(string.Format("You cannot perform approval of purchase order on {0} stage.", this.Target.Status));
 
-            return this.Target.Approve(approvedBy, approvedOn);
+            return this.Target.Approve(@event);
         }
 
-        public virtual PurchaseOrder Pay(User paidBy, DateTime paidOn, Money payment, PaymentType paymentType)
+        public virtual PurchaseOrder Pay(PurchaseOrderPaidEvent @event)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Paid))
                 throw new InvalidOperationException(string.Format("You cannot perform approval of purchase order on {0} stage.", this.Target.Status));
 
-            return this.Target.Pay(paidBy, paidOn, payment, paymentType);
+            return this.Target.Pay(@event);
         }
 
-        public virtual PurchaseOrder Recieve(User recieveBy, DateTime recieveOn)
+        public virtual PurchaseOrder Receive(PurchaseOrderReceivedEvent @event)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Received))
                 throw new InvalidOperationException(string.Format("You cannot perform recieving of purchase order on {0} stage.", this.Target.Status));
 
-            return this.Target.Recieve(recieveBy, recieveOn);
+            return this.Target.Receive(@event);
         }
 
-        public virtual PurchaseOrder Complete(User completedBy, DateTime completedOn)
+        public virtual PurchaseOrder Complete(PurchaseOrderCompletedEvent @event)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Completed))
                 throw new InvalidOperationException(string.Format("You cannot perform completion of purchase order on {0} stage.", this.Target.Status));
 
-            return this.Target.Complete(completedBy, completedOn);
+            return this.Target.Complete(@event);
         }
 
-        public virtual PurchaseOrder Cancel(User cancelledBy, DateTime cancelledOn, string cancellationReason)
+        public virtual PurchaseOrder Cancel(PurchaseOrderCancelledEvent @event)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Cancelled))
                 throw new InvalidOperationException(string.Format("You cannot perform cancellation of purchase order on {0} stage.", this.Target.Status));
 
-            return this.Target.Cancel(cancelledBy, cancelledOn, cancellationReason);
+            return this.Target.Cancel(@event);
         }
     }
 
@@ -137,7 +128,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
         {
             this.AllowedTransitions.Add(PurchaseOrderStatus.New, "Reject");
             this.AllowedTransitions.Add(PurchaseOrderStatus.Paid, "Pay");
-            this.AllowedTransitions.Add(PurchaseOrderStatus.Received, "Recieve");
+            this.AllowedTransitions.Add(PurchaseOrderStatus.Received, "Receive");
             this.AllowedTransitions.Add(PurchaseOrderStatus.Cancelled, "Cancel");
         }
     }
@@ -147,7 +138,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
         public PaidState(PurchaseOrder target) : base(target)
         {
             this.AllowedTransitions.Add(PurchaseOrderStatus.Paid, "Pay");
-            this.AllowedTransitions.Add(PurchaseOrderStatus.Received, "Recieve");
+            this.AllowedTransitions.Add(PurchaseOrderStatus.Received, "Receive");
             this.AllowedTransitions.Add(PurchaseOrderStatus.Completed, "Complete");
             this.AllowedTransitions.Add(PurchaseOrderStatus.Cancelled, "Cancel");
         }
@@ -157,7 +148,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
     {
         public ReceivedState(PurchaseOrder target) : base(target)
         {
-            this.AllowedTransitions.Add(PurchaseOrderStatus.Received, "Recieve");
+            this.AllowedTransitions.Add(PurchaseOrderStatus.Received, "Receive");
             this.AllowedTransitions.Add(PurchaseOrderStatus.Completed, "Complete");
             this.AllowedTransitions.Add(PurchaseOrderStatus.Cancelled, "Cancel");
         }

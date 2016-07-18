@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Envents.PurchaseOrders;
 using MediatR;
 using NHibernate;
 using System;
@@ -9,7 +10,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 {
     public class PayPurchaseOrder
     {
-        public class Request : Dto.PurchaseOrderPayment, IRequest<Response> { }
+        public class Request : Dto.PurchaseOrderPaidEvent, IRequest<Response> { }
 
         public class Response : Dto.PurchaseOrder { }
 
@@ -28,12 +29,15 @@ namespace AmpedBiz.Service.PurchaseOrders
                     if (entity == null)
                         throw new BusinessException($"PurchaseOrder with id {message.PurchaseOrderId} does not exists.");
 
-                    entity.State.Pay(
+                    var currency = session.Load<Currency>(Currency.PHP.Id); //TODO: this should be taken from tenant
+                    var paidEvent = new PurchaseOrderPaidEvent(
                         paidOn: message.PaidOn ?? DateTime.Now,
-                        paidBy: session.Load<User>(message.PaidBy.Id), 
+                        paidBy: session.Load<User>(message.PaidBy.Id),
                         paymentType: session.Load<PaymentType>(message.PaymentType.Id),
-                        payment: new Money(message.PaymentAmount, session.Load<Currency>(Currency.PHP.Id))
+                        payment: new Money(message.PaymentAmount, currency)
                     );
+
+                    entity.State.Pay(paidEvent);
 
                     session.Save(entity);
                     transaction.Commit();

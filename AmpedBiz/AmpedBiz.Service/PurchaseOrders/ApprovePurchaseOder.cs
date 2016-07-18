@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Envents.PurchaseOrders;
 using MediatR;
 using NHibernate;
 using System;
@@ -9,7 +10,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 {
     public class ApprovePurchaseOder
     {
-        public class Request : Dto.PurchaseOrder, IRequest<Response> { }
+        public class Request : Dto.PurchaseOrderApprovedEvent, IRequest<Response> { }
 
         public class Response : Dto.PurchaseOrder { }
 
@@ -28,9 +29,12 @@ namespace AmpedBiz.Service.PurchaseOrders
                     if (entity == null)
                         throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
 
-                    var user = session.Load<User>(message.UserId);
+                    var approvedEvent = new PurchaseOrderApprovedEvent(
+                        approvedBy: session.Load<User>(message.ApprovedBy.Id),
+                        approvedOn: message.ApprovedOn ?? DateTime.Now
+                    );
 
-                    entity.State.Approve(user, DateTime.Now);
+                    entity.State.Approve(approvedEvent);
 
                     session.Save(entity);
                     transaction.Commit();

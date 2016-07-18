@@ -76,10 +76,61 @@ namespace AmpedBiz.Tests.IntegrationTests
         private List<ProductCategory> productCategories = new List<ProductCategory>();
         private List<Role> roles = new List<Role>();
         private List<UnitOfMeasureClass> unitOfMeasures = new List<UnitOfMeasureClass>();
+        private List<User> users = new List<User>();
+        private List<Supplier> suppliers = new List<Supplier>();
+
+        private Lookup<string> RandomCurrency()
+        {
+            var random = this.currencies[this.rnd.Next(0, this.currencies.Count - 1)];
+            return new Lookup<string>(random.Id, random.Name);
+        }
+
+        private Lookup<string> RandomPaymentType()
+        {
+            var random = this.paymentTypes[this.rnd.Next(0, this.paymentTypes.Count - 1)];
+            return new Lookup<string>(random.Id, random.Name);
+        }
+
+        private Lookup<string> RandomPricingScheme()
+        {
+            var random = this.pricingSchemes[this.rnd.Next(0, this.pricingSchemes.Count - 1)];
+            return new Lookup<string>(random.Id, random.Name);
+        }
+
+        private Lookup<string> RandomProductCategory()
+        {
+            var random = this.productCategories[this.rnd.Next(0, this.productCategories.Count - 1)];
+            return new Lookup<string>(random.Id, random.Name);
+        }
+
+        private Lookup<string> RandomRoles()
+        {
+            var random = this.roles[this.rnd.Next(0, this.roles.Count - 1)];
+            return new Lookup<string>(random.Id, random.Name);
+        }
+
+        private Lookup<string> RandomUnitOfMeasure()
+        {
+            var random = this.unitOfMeasures[this.rnd.Next(0, this.unitOfMeasures.Count - 1)];
+            return new Lookup<string>(random.Id, random.Name);
+        }
+
+        private Lookup<Guid> RandomUser()
+        {
+            var random = this.users[this.rnd.Next(0, this.users.Count - 1)];
+            return new Lookup<Guid>(random.Id, random.FullName());
+        }
+
+        private Lookup<string> RandomSupplier()
+        {
+            var random = this.suppliers[this.rnd.Next(0, this.suppliers.Count - 1)];
+            return new Lookup<string>(random.Id, random.Name);
+        }
 
         private Service.Common.Filter filter = new Service.Common.Filter();
         private Service.Common.Pager pager = new Service.Common.Pager() { Offset = 1, Size = 1000 };
-        private Service.Common.Sorter sorter = new Service.Common.Sorter() {};
+        private Service.Common.Sorter sorter = new Service.Common.Sorter() { };
+
         public IntegrationTests()
         {
         }
@@ -124,6 +175,10 @@ namespace AmpedBiz.Tests.IntegrationTests
                 this.productCategories = session.Query<ProductCategory>().ToList();
                 this.roles = session.Query<Role>().ToList();
                 this.unitOfMeasures = session.Query<UnitOfMeasureClass>().ToList();
+                this.users = session.Query<User>().ToList();
+                this.suppliers = session.Query<Supplier>()
+                    .Where(x => x.Products.Count() > 0)
+                    .ToList();
             }
         }
 
@@ -314,29 +369,18 @@ namespace AmpedBiz.Tests.IntegrationTests
         {
             var pOrders = new List<Service.Dto.PurchaseOrder>();
 
-            var suppliers = new List<Supplier>();
-            var users = new List<User>();
-
-            using (var session = this.sessionFactory.OpenSession())
-            {
-                suppliers = session.Query<Supplier>()
-                    .Where(x => x.Products.Count() > 0)
-                    .ToList();
-
-                users = session.Query<User>().ToList();
-            }
-
             for (var i = 0; i < count; i++)
             {
                 var request = new CreateNewPurchaseOder.Request()
                 {
-                    Id = Guid.NewGuid(),
-                    Status = Service.Dto.PurchaseOrderStatus.New,
-                    UserId = users[this.rnd.Next(0, users.Count - 1)].Id,
-                    SupplierId = suppliers[this.rnd.Next(0, suppliers.Count - 1)].Id,
-                    PaymentTypeId = this.paymentTypes[this.rnd.Next(0, this.paymentTypes.Count - 1)].Id,
+                    CreatedBy = this.RandomUser(),
+                    CreatedOn = DateTime.Now,
                     ExpectedOn = DateTime.Now.AddDays(10),
-                    PaidOn = DateTime.Now.AddDays(5)
+                    Supplier = RandomSupplier(),
+                    Shipper = null,
+                    ShippingFeeAmount = 0M,
+                    TaxAmount = 0M,
+                    PaymentType = RandomPaymentType(),
                 };
                 request.Items = this.CreatePurchaseOrderItems(request, this.rnd.Next(20, 90));
 
@@ -348,10 +392,10 @@ namespace AmpedBiz.Tests.IntegrationTests
             return pOrders;
         }
 
-        private List<Service.Dto.PurchaseOrderItem> CreatePurchaseOrderItems(Service.Dto.PurchaseOrder po, int count = 1)
+        private List<Service.Dto.PurchaseOrderItem> CreatePurchaseOrderItems(CreateNewPurchaseOder.Request request, int count = 1)
         {
             var poItems = new List<Service.Dto.PurchaseOrderItem>();
-            var selectedProducts = this.SelectRandomProducts(po.SupplierId, count);
+            var selectedProducts = this.SelectRandomProducts(request.Supplier.Id, count);
 
             foreach (var product in selectedProducts)
             {
@@ -359,7 +403,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                 {
                     //TotalAmount = product.RetailPriceAmount + 1m,
                     Product = new Lookup<string>(product.Id, product.Name),
-                    PurchaseOrderId = po.Id,
+                    PurchaseOrderId = request.PurchaseOrderId,
                     QuantityValue = this.rnd.Next(1, 100),
                     UnitPriceAmount = product.RetailPriceAmount + 1m,
                 });
@@ -377,115 +421,86 @@ namespace AmpedBiz.Tests.IntegrationTests
             return pOrders.Where(po => po.Status == Service.Dto.PurchaseOrderStatus.New).Take(count);
         }
 
-        private Service.Dto.PurchaseOrder SubmitPurchaseOrder(Service.Dto.PurchaseOrder pOrder)
+        private Service.Dto.PurchaseOrder SubmitPurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
-            var users = new List<User>();
-
-            using (var session = this.sessionFactory.OpenSession())
-                users = session.Query<User>().ToList();
-
-            var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
-
-            var request = new SubmitPurchaseOrder.Request() { Id = pOrder.Id, UserId = userId };
+            var request = new SubmitPurchaseOrder.Request() { Id = purchaseOrder.Id, SubmittedBy = this.RandomUser() };
             var order = new SubmitPurchaseOrder.Handler(this.sessionFactory).Handle(request);
 
             return order;
         }
 
-        private Service.Dto.PurchaseOrder ApprovePurchaseOrder(Service.Dto.PurchaseOrder pOrder)
+        private Service.Dto.PurchaseOrder ApprovePurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
-            var users = new List<User>();
-
-            using (var session = this.sessionFactory.OpenSession())
-                users = session.Query<User>().ToList();
-
-            var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
-
-            var request = new ApprovePurchaseOder.Request() { Id = pOrder.Id, UserId = userId };
+            var request = new ApprovePurchaseOder.Request() { Id = purchaseOrder.Id, ApprovedBy = this.RandomUser() };
             var order = new ApprovePurchaseOder.Handler(this.sessionFactory).Handle(request);
 
             return order;
         }
 
-        private Service.Dto.PurchaseOrder PaymentPurchaseOrder(Service.Dto.PurchaseOrder pOrder)
+        private Service.Dto.PurchaseOrder PaymentPurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
-            var users = new List<User>();
-
-            using (var session = this.sessionFactory.OpenSession())
-                users = session.Query<User>().ToList();
-
-            var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
-
-            var request = new PayPurchaseOrder.Request() { Id = pOrder.Id };
+            var request = new PayPurchaseOrder.Request() { Id = purchaseOrder.Id, PaidBy = this.RandomUser() };
             var order = new PayPurchaseOrder.Handler(this.sessionFactory).Handle(request);
 
             return order;
         }
 
-        private Service.Dto.PurchaseOrder CancelPurchaseOrder(Service.Dto.PurchaseOrder pOrder)
+        private Service.Dto.PurchaseOrder CancelPurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
-            var users = new List<User>();
-
-            using (var session = this.sessionFactory.OpenSession())
-                users = session.Query<User>().ToList();
-
-            var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
-
-            var request = new CancelPurchaseOder.Request() { Id = pOrder.Id, UserId = userId, CancellationReason = "Products not needed" };
+            var request = new CancelPurchaseOder.Request() { Id = purchaseOrder.Id, CancelledBy = this.RandomUser(), CancellationReason = "Products not needed" };
             var order = new CancelPurchaseOder.Handler(this.sessionFactory).Handle(request);
 
             return order;
         }
 
-        private Service.Dto.PurchaseOrder PayPurchaseOrder(Service.Dto.PurchaseOrder pOrder)
+        private Service.Dto.PurchaseOrder PayPurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
-            var users = new List<User>();
-
-            using (var session = this.sessionFactory.OpenSession())
-                users = session.Query<User>().ToList();
-
-            var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
 
             var request = new PayPurchaseOrder.Request()
             {
-                PurchaseOrderId = pOrder.Id,
-                PaidBy = new Lookup<Guid>() { Id = userId },
-                PaymentAmount = pOrder.Items.Sum(x => x.TotalAmount),
-                PaymentType = new Lookup<string>
-                {
-                    Id = this.paymentTypes[this.rnd.Next(0, this.paymentTypes.Count -1)].Id
-                }
+                PurchaseOrderId = purchaseOrder.Id,
+                PaidOn = DateTime.Today,
+                PaidBy = this.RandomUser(),
+                PaymentType = this.RandomPaymentType(),
+                PaymentAmount = purchaseOrder.TotalAmount
             };
             var order = new PayPurchaseOrder.Handler(this.sessionFactory).Handle(request);
 
             return order;
         }
 
-        private Service.Dto.PurchaseOrder ReceivePurchaseOrder(Service.Dto.PurchaseOrder pOrder)
+        private Service.Dto.PurchaseOrder ReceivePurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
-            var users = new List<User>();
+            var data = new
+            {
+                BatchNumber = "XL001",
+                ReceivedBy = this.RandomUser(),
+                ReceivedOn = DateTime.Now
+            };
 
-            using (var session = this.sessionFactory.OpenSession())
-                users = session.Query<User>().ToList();
+            var request = new ReceivePurchaseOrder.Request()
+            {
+                PurchaseOrderId = purchaseOrder.Id,
+                Receipts = purchaseOrder.Items
+                    .Select(x => new Service.Dto.PurchaseOrderReceipt()
+                    {
+                        PurchaseOrderId = purchaseOrder.Id,
+                        ReceivedBy = data.ReceivedBy,
+                        ReceivedOn = data.ReceivedOn,
+                        ExpiresOn = data.ReceivedOn.AddYears(1),
+                        Product = x.Product,
+                        QuantityValue = x.QuantityValue
+                    })
+            };
 
-            var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
-
-            var request = new ReceivePurchaseOrder.Request() { Id = pOrder.Id, UserId = userId };
             var order = new ReceivePurchaseOrder.Handler(this.sessionFactory).Handle(request);
 
             return order;
         }
 
-        private Service.Dto.PurchaseOrder CompletePurchaseOrder(Service.Dto.PurchaseOrder pOrder)
+        private Service.Dto.PurchaseOrder CompletePurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
-            var users = new List<User>();
-
-            using (var session = this.sessionFactory.OpenSession())
-                users = session.Query<User>().ToList();
-
-            var userId = users[this.rnd.Next(0, users.Count - 1)].Id;
-
-            var request = new CompletePurchaseOder.Request() { Id = pOrder.Id, UserId = userId };
+            var request = new CompletePurchaseOder.Request() { Id = purchaseOrder.Id, CompletedBy = this.RandomUser() };
             var order = new CompletePurchaseOder.Handler(this.sessionFactory).Handle(request);
 
             return order;
@@ -825,7 +840,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             //var hash = this.dummyData.GenerateUniqueNumbers(0, 20, 10);
 
-           // var purchaseOrders = this.CreatePurchaseOrders(10);
+            // var purchaseOrders = this.CreatePurchaseOrders(10);
         }
     }
 }

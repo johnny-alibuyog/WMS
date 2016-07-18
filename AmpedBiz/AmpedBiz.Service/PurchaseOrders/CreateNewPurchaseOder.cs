@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Envents.PurchaseOrders;
 using MediatR;
 using NHibernate;
 using System;
@@ -9,7 +10,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 {
     public class CreateNewPurchaseOder
     {
-        public class Request : Dto.PurchaseOrder, IRequest<Response> { }
+        public class Request : Dto.PurchaseOrderNewlyCreatedEvent, IRequest<Response> { }
 
         public class Response : Dto.PurchaseOrder { }
 
@@ -25,20 +26,19 @@ namespace AmpedBiz.Service.PurchaseOrders
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = new PurchaseOrder();
-
                     var currency = session.Load<Currency>(Currency.PHP.Id); // this should be taken from the tenant
-
-                    entity.State.New(
-                        createdBy: !message.UserId.IsNullOrDefault() 
-                            ? session.Load<User>(message.UserId) : null,
-                        createdOn: DateTime.Now,
-                        expectedOn: message.ExpectedOn,
-                        paymentType: !message.PaymentTypeId.IsNullOrEmpty() 
-                            ? session.Load<PaymentType>(message.PaymentTypeId) : null,
+                    var newlyCreatedEvent = new PurchaseOrderNewlyCreatedEvent(
+                       createdBy: (!message?.CreatedBy?.Id.IsNullOrDefault() ?? false)
+                            ? session.Load<User>(message.CreatedBy.Id) : null,
+                        createdOn: message?.CreatedOn ?? DateTime.Now,
+                        expectedOn: message?.ExpectedOn,
+                        paymentType: (!message?.PaymentType?.Id.IsNullOrEmpty() ?? false)
+                            ? session.Load<PaymentType>(message.PaymentType.Id) : null,
+                        supplier: (!message?.Supplier?.Id.IsNullOrDefault() ?? false)
+                            ? session.Load<Supplier>(message.Supplier.Id) : null,
                         shipper: null,
                         shippingFee: new Money(message.ShippingFeeAmount, currency),
                         tax: new Money(message.TaxAmount, currency),
-                        supplier: session.Load<Supplier>(message.SupplierId),
                         purchaseOrderItems: message.Items
                             .Select(x => new PurchaseOrderItem().State.New(
                                 product: session.Load<Product>(x.Product.Id),
@@ -46,6 +46,8 @@ namespace AmpedBiz.Service.PurchaseOrders
                                 quantity: x.QuantityValue
                             ))
                     );
+
+                    entity.State.New(newlyCreatedEvent);
 
                     session.Save(entity);
                     transaction.Commit();

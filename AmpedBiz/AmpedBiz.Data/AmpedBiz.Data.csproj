@@ -126,6 +126,8 @@
     <Compile Include="EntityDefinitions\PurchaseOrderMapping.cs" />
     <Compile Include="EntityDefinitions\PurchaseOrderPaymentMapping.cs" />
     <Compile Include="EntityDefinitions\PurchaseOrderPaymentValidation.cs" />
+    <Compile Include="EntityDefinitions\PurchaseOrderReceiptMapping.cs" />
+    <Compile Include="EntityDefinitions\PurchaseOrderReceiptValidation.cs" />
     <Compile Include="EntityDefinitions\PurchaseOrderValidation.cs" />
     <Compile Include="EntityDefinitions\ShipperMapping.cs" />
     <Compile Include="EntityDefinitions\ShipperValidation.cs" />

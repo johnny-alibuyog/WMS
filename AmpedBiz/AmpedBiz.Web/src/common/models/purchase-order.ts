@@ -46,18 +46,6 @@ export interface PurchaseOrderItem {
   unitPriceAmount?: number;
 }
 
-export interface PurchaseOrderReciept {
-}
-
-export interface PurchaseOrderPayment {
-  id?: string;
-  purchaseOrderId?: string;
-  paidBy?: Lookup<string>;
-  paidOn?: Date;
-  paymentAmount?: number;
-  paymentType?: Lookup<string>;
-}
-
 export interface PurchaseOrderPageItem {
   id?: string;
   supplier?: string;
@@ -69,4 +57,24 @@ export interface PurchaseOrderPageItem {
   payedBy?: string;
   payedOn?: Date;
   total?: string;
+}
+
+
+export interface PurchaseOrderPayment {
+  id?: string;
+  purchaseOrderId?: string;
+  paidBy?: Lookup<string>;
+  paidOn?: Date;
+  paymentAmount?: number;
+  paymentType?: Lookup<string>;
+}
+
+export interface PurchaseOrderReciept {
+  id?: string;
+  purchaseOrderId?: string;
+  batchNumber?: string;
+  receivedBy?: Lookup<string>;
+  receivedOn?: Date; 
+  product?: Lookup<string>;
+  quantityValue?: number;
 }

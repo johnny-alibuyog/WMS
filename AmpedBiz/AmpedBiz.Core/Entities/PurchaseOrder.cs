@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using AmpedBiz.Core.Envents.PurchaseOrders;
 
 namespace AmpedBiz.Core.Entities
 {
@@ -56,6 +57,10 @@ namespace AmpedBiz.Core.Entities
 
         public virtual DateTime? PaidOn { get; protected set; }
 
+        public virtual User ReceivedBy { get; protected set; }
+
+        public virtual DateTime? ReceivedOn { get; protected set; }
+
         public virtual User CompletedBy { get; protected set; }
 
         public virtual DateTime? CompletedOn { get; protected set; }
@@ -72,6 +77,8 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<PurchaseOrderReceipt> Receipts { get; protected set; }
 
+        //public virtual IEnumerable<PurchaseOrderEvent> Events { get; protected set; }
+
         public virtual State State
         {
             get { return State.GetState(this); }
@@ -84,81 +91,78 @@ namespace AmpedBiz.Core.Entities
             this.Items = new Collection<PurchaseOrderItem>();
             this.Payments = new Collection<PurchaseOrderPayment>();
             this.Receipts = new Collection<PurchaseOrderReceipt>();
+            //this.Events = new Collection<PurchaseOrderEvent>();
         }
 
-        protected internal virtual PurchaseOrder New(User createdBy, DateTime createdOn, DateTime? expectedOn = null, PaymentType paymentType = null, 
-            Shipper shipper = null, Money shippingFee = null, Money tax = null, Supplier supplier = null, IEnumerable<PurchaseOrderItem> purchaseOrderItems = null)
+        protected internal virtual PurchaseOrder New(PurchaseOrderNewlyCreatedEvent @event)
         {
-            this.CreatedBy = createdBy;
-            this.CreatedOn = createdOn;
-            this.ExpectedOn = expectedOn ?? this.ExpectedOn;
-            this.PaymentType = paymentType ?? this.PaymentType;
-            this.Tax = tax ?? this.Tax;
-            this.ShippingFee = shippingFee ?? this.ShippingFee;
-            this.Supplier = supplier ?? this.Supplier;
+            this.CreatedBy = @event.CreatedBy ?? this.CreatedBy;
+            this.CreatedOn = @event.CreatedOn ?? this.CreatedOn;
+            this.ExpectedOn = @event.ExpectedOn ?? this.ExpectedOn;
+            this.PaymentType = @event.PaymentType ?? this.PaymentType;
+            this.Tax = @event.Tax ?? this.Tax;
+            this.ShippingFee = @event.ShippingFee ?? this.ShippingFee;
+            this.Supplier = @event.Supplier ?? this.Supplier;
             this.Total = this.Tax + this.ShippingFee + this.Payment;
-            this.SetPurchaseOrderItems(purchaseOrderItems);
+            this.SetPurchaseOrderItems(@event.PurchaseOrderItems);
             this.Status = PurchaseOrderStatus.New;
 
             return this;
         }
 
-        protected internal virtual PurchaseOrder Submit(User submittedBy, DateTime submittedOn)
+        protected internal virtual PurchaseOrder Submit(PurchaseOrderSubmittedEvent @event)
         {
-            this.SubmittedBy = submittedBy;
-            this.SubmittedOn = submittedOn;
+            this.SubmittedBy = @event.SubmittedBy;
+            this.SubmittedOn = @event.SubmittedOn;
             this.Status = PurchaseOrderStatus.Submitted;
 
             return this;
         }
 
-        protected internal virtual PurchaseOrder Approve(User approvedBy, DateTime approvedOn)
+        protected internal virtual PurchaseOrder Approve(PurchaseOrderApprovedEvent @event)
         {
-            this.ApprovedBy = approvedBy;
-            this.ApprovedOn = approvedOn;
+            this.ApprovedBy = @event.ApprovedBy;
+            this.ApprovedOn = @event.ApprovedOn;
             this.Status = PurchaseOrderStatus.Approved;
 
             return this;
         }
 
-        protected internal virtual PurchaseOrder Pay(User paidBy, DateTime paidOn, Money payment, PaymentType paymentType)
+        protected internal virtual PurchaseOrder Pay(PurchaseOrderPaidEvent @event)
         {
             this.AddPayment(new PurchaseOrderPayment(
-                paidBy: paidBy,
-                paidOn: paidOn,
-                payment: payment,
-                paymentType: paymentType
+                paidBy: @event.PaidBy,
+                paidOn: @event.PaidOn,
+                payment: @event.Payment,
+                paymentType: @event.PaymentType
             ));
             this.Status = PurchaseOrderStatus.Paid;
 
             return this;
         }
 
-        protected internal virtual PurchaseOrder Recieve(User recieveBy, DateTime recievedOn)
+        protected internal virtual PurchaseOrder Receive(PurchaseOrderReceivedEvent @event)
         {
-            this.CancelledBy = recieveBy;
-            this.CancelledOn = recievedOn;
+            this.AddReceipts(@event.Receipts);
             this.Status = PurchaseOrderStatus.Received;
-
-            // TODO: Inventory
 
             return this;
         }
 
-        protected internal virtual PurchaseOrder Complete(User completedBy, DateTime completedOn)
+        protected internal virtual PurchaseOrder Complete(PurchaseOrderCompletedEvent @event)
         {
-            this.CompletedBy = completedBy;
-            this.CompletedOn = completedOn;
+            this.CompletedBy = @event.CompletedBy;
+            this.CompletedOn = @event.CompletedOn;
             this.Status = PurchaseOrderStatus.Completed;
 
             return this;
         }
 
-        protected internal virtual PurchaseOrder Cancel(User cancelledBy, DateTime cancelledOn, string cancellationReason)
+        protected internal virtual PurchaseOrder Cancel(PurchaseOrderCancelledEvent @event)
         {
-            this.CancelledBy = cancelledBy;
-            this.CancelledOn = cancelledOn;
-            this.CancellationReason = cancellationReason;
+            this.CancelledBy = @event.CancelledBy;
+            this.CancelledOn = @event.CancelledOn;
+            this.CancellationReason = @event.CancellationReason;
             this.Status = PurchaseOrderStatus.Cancelled;
 
             // TODO: Inventory adjustment if necessary
@@ -222,5 +226,15 @@ namespace AmpedBiz.Core.Entities
             return this;
         }
 
+        private PurchaseOrder AddReceipts(IEnumerable<PurchaseOrderReceipt> receipts)
+        {
+            foreach(var receipt in receipts)
+            {
+                receipt.PurchaseOrder = this;
+                this.Receipts.Add(receipt);
+            }
+
+            return this;
+        }
     }
 }

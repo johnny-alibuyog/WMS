@@ -6,7 +6,10 @@ namespace AmpedBiz.Core
     {
         private int? _oldHashCode;
 
-        private bool IsTransient { get { return Equals(this.Id, default(TId)); } }
+        private bool IsTransient
+        {
+            get { return Equals(this.Id, default(TId)); }
+        }
 
         public virtual TId Id { get; protected set; }
 
@@ -70,5 +73,5 @@ namespace AmpedBiz.Core
         }
 
         #endregion
-    } 
+    }
 }
