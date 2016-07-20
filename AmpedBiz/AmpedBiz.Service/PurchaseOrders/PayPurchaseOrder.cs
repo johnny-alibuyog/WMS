@@ -5,6 +5,7 @@ using AmpedBiz.Core.Envents.PurchaseOrders;
 using MediatR;
 using NHibernate;
 using System;
+using System.Linq;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
@@ -31,11 +32,13 @@ namespace AmpedBiz.Service.PurchaseOrders
 
                     var currency = session.Load<Currency>(Currency.PHP.Id); //TODO: this should be taken from tenant
                     var paidEvent = new PurchaseOrderPaidEvent(
-                        paidOn: message.PaidOn ?? DateTime.Now,
-                        paidBy: session.Load<User>(message.PaidBy.Id),
-                        paymentType: session.Load<PaymentType>(message.PaymentType.Id),
-                        payment: new Money(message.PaymentAmount, currency)
-                    );
+                        payments: message.Payments.Select(x => new PurchaseOrderPayment(
+                            paidOn: x.PaidOn ?? DateTime.Now,
+                            paidBy: session.Load<User>(x.PaidBy.Id),
+                            paymentType: session.Load<PaymentType>(x.PaymentType.Id),
+                            payment: new Money(x.PaymentAmount, currency)
+                        )
+                    ));
 
                     entity.State.Pay(paidEvent);
 

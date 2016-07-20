@@ -148,6 +148,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
     {
         public ReceivedState(PurchaseOrder target) : base(target)
         {
+            this.AllowedTransitions.Add(PurchaseOrderStatus.Paid, "Pay");
             this.AllowedTransitions.Add(PurchaseOrderStatus.Received, "Receive");
             this.AllowedTransitions.Add(PurchaseOrderStatus.Completed, "Complete");
             this.AllowedTransitions.Add(PurchaseOrderStatus.Cancelled, "Cancel");

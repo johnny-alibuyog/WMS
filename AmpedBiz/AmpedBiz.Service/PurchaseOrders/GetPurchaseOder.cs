@@ -1,9 +1,11 @@
-﻿using AmpedBiz.Common.Exceptions;
+﻿using AmpedBiz.Common.CustomTypes;
+using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
+using NHibernate.Transform;
 using System;
 using System.Linq;
 
@@ -30,10 +32,13 @@ namespace AmpedBiz.Service.PurchaseOrders
                 using (var transaction = session.BeginTransaction())
                 {
                     var query = session.Query<PurchaseOrder>()
-                        .Where(x => x.Id == message.Id)
-                        .FetchMany(x => x.Items)
+                        .Where(x => x.Id == message.Id);
+
+                    query
                         .Fetch(x => x.Tax)
                         .Fetch(x => x.ShippingFee)
+                        .Fetch(x => x.Supplier)
+                        .Fetch(x => x.PaymentType)
                         .Fetch(x => x.Payment)
                         .Fetch(x => x.SubTotal)
                         .Fetch(x => x.Total)
@@ -43,13 +48,33 @@ namespace AmpedBiz.Service.PurchaseOrders
                         .Fetch(x => x.PaidBy)
                         .Fetch(x => x.CompletedBy)
                         .Fetch(x => x.CancelledBy)
-                        .ToFutureValue();
+                        .ToFuture();
 
-                    var entity = query.Value;
+                    query
+                        .FetchMany(x => x.Items)
+                        .ThenFetch(x => x.Product)
+                        .ThenFetch(x => x.GoodStockInventory)
+                        .ToFuture();
+
+                    query
+                        .FetchMany(x => x.Payments)
+                        .ThenFetch(x => x.PaidBy)
+                        .ToFuture();
+
+                    query
+                        .FetchMany(x => x.Receipts)
+                        .ThenFetch(x => x.Product)
+                        .ThenFetch(x => x.GoodStockInventory)
+                        .ToFuture();
+
+                    var entity = query.ToFutureValue().Value;
+
                     if (entity == null)
                         throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
 
                     entity.MapTo(response);
+
+                    response.Receivables = Dto.PurchaseOrderReceivable.Evaluate(entity);
 
                     transaction.Commit();
                 }

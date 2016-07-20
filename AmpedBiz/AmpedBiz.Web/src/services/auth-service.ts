@@ -1,5 +1,6 @@
 import {autoinject, Aurelia} from 'aurelia-framework';
 import {User} from '../common/models/user'
+import {Lookup} from '../common/custom_types/lookup';
 import {HttpClientFacade} from './http-client-facade';
 import {NotificationService} from '../common/controls/notification-service';
 
@@ -27,6 +28,17 @@ export class AuthService {
     return userFullname;
   }
 
+  public get userAsLookup(): Lookup<string> {
+    if (!this.isAuthenticated){
+      return  null;
+    }
+
+    return <Lookup<string>>{
+      id: this.user.id,
+      name: this.userFullname
+    };
+  }
+
   constructor(app: Aurelia, httpClient: HttpClientFacade, notification: NotificationService) {
     this._app = app;
     this._httpClient = httpClient;
@@ -34,7 +46,7 @@ export class AuthService {
   }
 
   public isAuthenticated(): boolean {
-    return this.user != null;
+    return this.user != null && this.user.id != null;
   }
 
   public login(user: User): Promise<any> {

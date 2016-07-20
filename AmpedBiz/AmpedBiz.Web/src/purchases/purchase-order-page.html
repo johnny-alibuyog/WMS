@@ -12,7 +12,7 @@
 
           <!-- heading label -->
           <h4 class="panel-title row">
-            <span>&nbsp Purchase Orders &nbsp</span>
+            <span>&nbsp ${header} &nbsp</span>
 
             <!-- create new -->
             <button type="button" class="btn btn-default" click.delegate="create()">
@@ -72,8 +72,8 @@
                 <th class="col-md-2" click.delegate="sorter.doSort('submittedBy')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['submittedBy'])}"></i>SubmittedBy
                 </th>
-                <th class="col-md-1" click.delegate="sorter.doSort('payedOn')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['payedOn'])}"></i>PayedOn
+                <th class="col-md-1" click.delegate="sorter.doSort('paidOn')">
+                  <i class="fa fa-fw fa-${sorter.class(sorter['paidOn'])}"></i>PaidOn
                 </th>
                 <th class="col-md-1 text-right" click.delegate="sorter.doSort('total')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['total'])}"></i>Total
@@ -96,7 +96,7 @@
                 <td>${item.status}</td>
                 <td>${item.supplier}</td>
                 <td>${item.submittedBy}</td>
-                <td>${item.payedOn}</td>
+                <td>${item.paidOn}</td>
                 <td class="text-right">${item.total}</td>
               </tr>
             </tbody>

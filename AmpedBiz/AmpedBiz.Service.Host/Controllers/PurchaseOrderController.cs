@@ -64,19 +64,19 @@ namespace AmpedBiz.Service.Host.Controllers
             return _mediator.Send(request ?? new UpdateNewPurchaseOder.Request());
         }
 
-        [HttpPost()]
-        [Route("new/page")]
-        public GetNewPurchaseOderPage.Response Process([FromBody]GetNewPurchaseOderPage.Request request)
-        {
-            return _mediator.Send(request ?? new GetNewPurchaseOderPage.Request());
-        }
+        //[HttpPost()]
+        //[Route("new/page")]
+        //public GetNewPurchaseOderPage.Response Process([FromBody]GetNewPurchaseOderPage.Request request)
+        //{
+        //    return _mediator.Send(request ?? new GetNewPurchaseOderPage.Request());
+        //}
 
-        [HttpPost()]
-        [Route("active/page")]
-        public GetActivePurchaseOderPage.Response Process([FromBody]GetActivePurchaseOderPage.Request request)
-        {
-            return _mediator.Send(request ?? new GetActivePurchaseOderPage.Request());
-        }
+        //[HttpPost()]
+        //[Route("active/page")]
+        //public GetActivePurchaseOderPage.Response Process([FromBody]GetActivePurchaseOderPage.Request request)
+        //{
+        //    return _mediator.Send(request ?? new GetActivePurchaseOderPage.Request());
+        //}
 
         [HttpPost()]
         [Route("{id}/submitted")]
@@ -85,12 +85,26 @@ namespace AmpedBiz.Service.Host.Controllers
             return _mediator.Send(request ?? new SubmitPurchaseOrder.Request());
         }
 
+        //[HttpPost()]
+        //[Route("submitted/page")]
+        //public GetSubmittedPurchaseOderPage.Response Process([FromBody]GetSubmittedPurchaseOderPage.Request request)
+        //{
+        //    return _mediator.Send(request ?? new GetSubmittedPurchaseOderPage.Request());
+        //}
+
         [HttpPost()]
-        [Route("submitted/page")]
-        public GetSubmittedPurchaseOderPage.Response Process([FromBody]GetSubmittedPurchaseOderPage.Request request)
+        [Route("{id}/approved")]
+        public ApprovePurchaseOder.Response Process([FromUri]Guid id, [FromBody]ApprovePurchaseOder.Request request)
         {
-            return _mediator.Send(request ?? new GetSubmittedPurchaseOderPage.Request());
+            return _mediator.Send(request ?? new ApprovePurchaseOder.Request());
         }
+
+        //[HttpPost()]
+        //[Route("approved/page")]
+        //public GetApprovedPurchaseOderPage.Response Process([FromBody]GetApprovedPurchaseOderPage.Request request)
+        //{
+        //    return _mediator.Send(request ?? new GetApprovedPurchaseOderPage.Request());
+        //}
 
         [HttpPost()]
         [Route("{id}/paid")]
@@ -107,18 +121,25 @@ namespace AmpedBiz.Service.Host.Controllers
         //}
 
         [HttpPost()]
-        [Route("{id}/approved")]
-        public ApprovePurchaseOder.Response Process([FromUri]Guid id, [FromBody]ApprovePurchaseOder.Request request)
+        [Route("{id}/received")]
+        public ReceivePurchaseOrder.Response Process([FromUri]Guid id, [FromBody]ReceivePurchaseOrder.Request request)
         {
-            return _mediator.Send(request ?? new ApprovePurchaseOder.Request());
+            return _mediator.Send(request ?? new ReceivePurchaseOrder.Request());
         }
 
-        [HttpPost()]
-        [Route("approved/page")]
-        public GetApprovedPurchaseOderPage.Response Process([FromBody]GetApprovedPurchaseOderPage.Request request)
+        [HttpGet()]
+        [Route("{id}/receivables")]
+        public GetPurchaseOrderReceivableList.Response Process([FromUri]GetPurchaseOrderReceivableList.Request request)
         {
-            return _mediator.Send(request ?? new GetApprovedPurchaseOderPage.Request());
+            return _mediator.Send(request ?? new GetPurchaseOrderReceivableList.Request());
         }
+
+        //[HttpPost()]
+        //[Route("received/page")]
+        //public GetPaidPurchaseOrderPage.Response Process([FromBody]GetPaidPurchaseOrderPage.Request request)
+        //{
+        //    return _mediator.Send(request ?? new GetPaidPurchaseOrderPage.Request());
+        //}
 
         [HttpPost()]
         [Route("{id}/cancelled")]
@@ -127,12 +148,12 @@ namespace AmpedBiz.Service.Host.Controllers
             return _mediator.Send(request ?? new CancelPurchaseOder.Request());
         }
 
-        [HttpPost()]
-        [Route("cancelled/page")]
-        public GetCancelledPurchaseOderPage.Response Process([FromBody]GetCancelledPurchaseOderPage.Request request)
-        {
-            return _mediator.Send(request ?? new GetCancelledPurchaseOderPage.Request());
-        }
+        //[HttpPost()]
+        //[Route("cancelled/page")]
+        //public GetCancelledPurchaseOderPage.Response Process([FromBody]GetCancelledPurchaseOderPage.Request request)
+        //{
+        //    return _mediator.Send(request ?? new GetCancelledPurchaseOderPage.Request());
+        //}
 
         [HttpPost()]
         [Route("{id}/completed")]
@@ -141,11 +162,11 @@ namespace AmpedBiz.Service.Host.Controllers
             return _mediator.Send(request ?? new CompletePurchaseOder.Request());
         }
 
-        [HttpPost()]
-        [Route("completed/page")]
-        public GetCompletedPurchaseOderPage.Response Process([FromBody]GetCompletedPurchaseOderPage.Request request)
-        {
-            return _mediator.Send(request ?? new GetCompletedPurchaseOderPage.Request());
-        }
+        //[HttpPost()]
+        //[Route("completed/page")]
+        //public GetCompletedPurchaseOderPage.Response Process([FromBody]GetCompletedPurchaseOderPage.Request request)
+        //{
+        //    return _mediator.Send(request ?? new GetCompletedPurchaseOderPage.Request());
+        //}
     }
 }

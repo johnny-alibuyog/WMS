@@ -21,9 +21,11 @@ namespace AmpedBiz.Service.Dto
 
         public Guid UserId { get; set; }
 
-        public string SupplierId { get; set; }
+        public Lookup<string> PaymentType { get; set; }
 
-        public string PaymentTypeId { get; set; }
+        public Lookup<string> Shipper { get; set; }
+
+        public Lookup<string> Supplier { get; set; }
 
         public decimal TaxAmount { get; set; }
 
@@ -69,7 +71,11 @@ namespace AmpedBiz.Service.Dto
 
         public IEnumerable<PurchaseOrderPayment> Payments { get; set; }
 
-        public Dictionary<Dto.PurchaseOrderStatus, string> AllowedTransitions { get; set; }
+        public IEnumerable<PurchaseOrderReceipt> Receipts { get; set; }
+
+        public IEnumerable<PurchaseOrderReceivable> Receivables { get; set; }
+
+        public Dictionary<PurchaseOrderStatus, string> AllowedTransitions { get; set; }
     }
 
     public class PurchaseOrderPageItem

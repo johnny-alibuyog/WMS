@@ -437,32 +437,22 @@ namespace AmpedBiz.Tests.IntegrationTests
             return order;
         }
 
-        private Service.Dto.PurchaseOrder PaymentPurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
-        {
-            var request = new PayPurchaseOrder.Request() { Id = purchaseOrder.Id, PaidBy = this.RandomUser() };
-            var order = new PayPurchaseOrder.Handler(this.sessionFactory).Handle(request);
-
-            return order;
-        }
-
-        private Service.Dto.PurchaseOrder CancelPurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
-        {
-            var request = new CancelPurchaseOder.Request() { Id = purchaseOrder.Id, CancelledBy = this.RandomUser(), CancellationReason = "Products not needed" };
-            var order = new CancelPurchaseOder.Handler(this.sessionFactory).Handle(request);
-
-            return order;
-        }
-
         private Service.Dto.PurchaseOrder PayPurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
 
             var request = new PayPurchaseOrder.Request()
             {
                 PurchaseOrderId = purchaseOrder.Id,
-                PaidOn = DateTime.Today,
-                PaidBy = this.RandomUser(),
-                PaymentType = this.RandomPaymentType(),
-                PaymentAmount = purchaseOrder.TotalAmount
+                Payments = new Service.Dto.PurchaseOrderPayment[]
+                {
+                    new Service.Dto.PurchaseOrderPayment()
+                    {
+                        PaidOn = DateTime.Today,
+                        PaidBy = this.RandomUser(),
+                        PaymentType = this.RandomPaymentType(),
+                        PaymentAmount = purchaseOrder.TotalAmount
+                    }
+                }
             };
             var order = new PayPurchaseOrder.Handler(this.sessionFactory).Handle(request);
 
@@ -502,6 +492,14 @@ namespace AmpedBiz.Tests.IntegrationTests
         {
             var request = new CompletePurchaseOder.Request() { Id = purchaseOrder.Id, CompletedBy = this.RandomUser() };
             var order = new CompletePurchaseOder.Handler(this.sessionFactory).Handle(request);
+
+            return order;
+        }
+
+        private Service.Dto.PurchaseOrder CancelPurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
+        {
+            var request = new CancelPurchaseOder.Request() { Id = purchaseOrder.Id, CancelledBy = this.RandomUser(), CancellationReason = "Products not needed" };
+            var order = new CancelPurchaseOder.Handler(this.sessionFactory).Handle(request);
 
             return order;
         }

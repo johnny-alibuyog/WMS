@@ -31,7 +31,7 @@ namespace AmpedBiz.Core.Envents.PurchaseOrders
 
         public virtual Supplier Supplier { get; protected set; }
 
-        public virtual IEnumerable<PurchaseOrderItem> PurchaseOrderItems { get; protected set; }
+        public virtual IEnumerable<PurchaseOrderItem> Items { get; protected set; }
 
         public PurchaseOrderNewlyCreatedEvent(Guid? id = null, User createdBy = null, DateTime? createdOn = null, 
             DateTime? expectedOn = null, PaymentType paymentType = null, Shipper shipper = null, Money shippingFee = null, 
@@ -44,7 +44,7 @@ namespace AmpedBiz.Core.Envents.PurchaseOrders
             this.Tax = tax;
             this.ShippingFee = shippingFee;
             this.Supplier = supplier;
-            this.PurchaseOrderItems = purchaseOrderItems;
+            this.Items = purchaseOrderItems;
         }
     }
 
@@ -80,22 +80,13 @@ namespace AmpedBiz.Core.Envents.PurchaseOrders
 
     public class PurchaseOrderPaidEvent : PurchaseOrderEvent
     {
-        public virtual User PaidBy { get; protected set; }
-
-        public virtual DateTime? PaidOn { get; protected set; }
-
-        public virtual Money Payment { get; protected set; }
-
-        public virtual PaymentType PaymentType { get; protected set; }
+        public virtual IEnumerable<PurchaseOrderPayment> Payments { get; protected set; }
 
         public PurchaseOrderPaidEvent() : this(default(Guid)) { }
 
-        public PurchaseOrderPaidEvent(Guid? id = null, User paidBy = null, DateTime? paidOn = null, Money payment = null, PaymentType paymentType = null) : base(id ?? default(Guid))
+        public PurchaseOrderPaidEvent(Guid? id = null, IEnumerable<PurchaseOrderPayment> payments = null) : base(id ?? default(Guid))
         {
-            this.PaidBy = paidBy;
-            this.PaidOn = paidOn;
-            this.Payment = payment;
-            this.PaymentType = paymentType;
+            this.Payments = payments;
         }
     }
 

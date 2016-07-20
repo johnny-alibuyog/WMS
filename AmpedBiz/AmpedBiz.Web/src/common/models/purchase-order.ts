@@ -6,7 +6,7 @@ export enum PurchaseOrderStatus {
   new = 1,
   submitted = 2,
   approved = 3,
-  payed = 4,
+  paid = 4,
   received = 5,
   completed = 6,
   cancelled = 7
@@ -14,9 +14,10 @@ export enum PurchaseOrderStatus {
 
 export interface PurchaseOrder {
   id?: string;
-  userId?: string;
-  supplierId?: string;
-  paymentTypeId?: string;
+  user?: Lookup<string>;
+  supplier?: Lookup<string>;
+  shipper?: Lookup<string>;
+  paymentType?: string;
   taxAmount?: number;
   shippingFeeAmount?: number;
   paymentAmount?: number;
@@ -35,15 +36,9 @@ export interface PurchaseOrder {
   cancellationReason?: string,
   items?: PurchaseOrderItem[];
   payments?: PurchaseOrderPayment[];
-  reciepts?: PurchaseOrderReciept[];
+  receipts?: PurchaseOrderReceipt[];
+  receivables?: PurchaseOrderReceivable[];
   allowedTransitions?: Dictionary<string>;
-}
-
-export interface PurchaseOrderItem {
-  id?: string;
-  product?: Lookup<string>;
-  quantityValue?: number;
-  unitPriceAmount?: number;
 }
 
 export interface PurchaseOrderPageItem {
@@ -54,11 +49,17 @@ export interface PurchaseOrderPageItem {
   createdOn?: Date;
   submittedBy?: string;
   submittedOn?: Date;
-  payedBy?: string;
-  payedOn?: Date;
+  paidBy?: string;
+  paidOn?: Date;
   total?: string;
 }
 
+export interface PurchaseOrderItem {
+  id?: string;
+  product?: Lookup<string>;
+  quantityValue?: number;
+  unitPriceAmount?: number;
+}
 
 export interface PurchaseOrderPayment {
   id?: string;
@@ -69,12 +70,23 @@ export interface PurchaseOrderPayment {
   paymentType?: Lookup<string>;
 }
 
-export interface PurchaseOrderReciept {
+export interface PurchaseOrderReceipt {
   id?: string;
   purchaseOrderId?: string;
   batchNumber?: string;
   receivedBy?: Lookup<string>;
-  receivedOn?: Date; 
+  receivedOn?: Date;
+  expiresOn?: Date;
   product?: Lookup<string>;
   quantityValue?: number;
+}
+
+export interface PurchaseOrderReceivable {
+  purchaseOrderId?: string;
+  product?: Lookup<string>;
+  expiresOn?: Date;
+  orderedQuantity?: number;
+  receivedQuantity?: number;
+  receivableQuantity?: number;
+  receivingQuantity?: number;
 }

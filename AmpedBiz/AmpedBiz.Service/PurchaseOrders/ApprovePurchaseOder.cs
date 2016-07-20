@@ -25,9 +25,9 @@ namespace AmpedBiz.Service.PurchaseOrders
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.Get<PurchaseOrder>(message.Id);
+                    var entity = session.Get<PurchaseOrder>(message.PurchaseOrderId);
                     if (entity == null)
-                        throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
+                        throw new BusinessException($"PurchaseOrder with id {message.PurchaseOrderId} does not exists.");
 
                     var approvedEvent = new PurchaseOrderApprovedEvent(
                         approvedBy: session.Load<User>(message.ApprovedBy.Id),

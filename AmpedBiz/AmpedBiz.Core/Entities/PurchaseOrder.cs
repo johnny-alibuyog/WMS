@@ -104,7 +104,7 @@ namespace AmpedBiz.Core.Entities
             this.ShippingFee = @event.ShippingFee ?? this.ShippingFee;
             this.Supplier = @event.Supplier ?? this.Supplier;
             this.Total = this.Tax + this.ShippingFee + this.Payment;
-            this.SetPurchaseOrderItems(@event.PurchaseOrderItems);
+            this.SetPurchaseOrderItems(@event.Items);
             this.Status = PurchaseOrderStatus.New;
 
             return this;
@@ -130,12 +130,7 @@ namespace AmpedBiz.Core.Entities
 
         protected internal virtual PurchaseOrder Pay(PurchaseOrderPaidEvent @event)
         {
-            this.AddPayment(new PurchaseOrderPayment(
-                paidBy: @event.PaidBy,
-                paidOn: @event.PaidOn,
-                payment: @event.Payment,
-                paymentType: @event.PaymentType
-            ));
+            this.AddPayments(@event.Payments);
             this.Status = PurchaseOrderStatus.Paid;
 
             return this;
@@ -213,22 +208,36 @@ namespace AmpedBiz.Core.Entities
             return this;
         }
 
-        private PurchaseOrder AddPayment(PurchaseOrderPayment payment)
+        private PurchaseOrder AddPayments(IEnumerable<PurchaseOrderPayment> payments)
         {
-            this.PaidBy = payment.PaidBy;
-            this.PaidOn = payment.PaidOn;
-            this.PaymentType = payment.PaymentType;
-            this.Payment += payment.Payment;
+            var lastPayment = payments.OrderBy(x => x.PaidOn).LastOrDefault();
+            if (lastPayment == null)
+                return this;
 
-            payment.PurchaseOrder = this;
-            this.Payments.Add(payment);
+            this.PaidBy = lastPayment.PaidBy;
+            this.PaidOn = lastPayment.PaidOn;
+            this.PaymentType = lastPayment.PaymentType;
+            this.Payment += lastPayment.Payment;
+
+            foreach (var payment in payments)
+            {
+                payment.PurchaseOrder = this;
+                this.Payments.Add(payment);
+            }
 
             return this;
         }
 
         private PurchaseOrder AddReceipts(IEnumerable<PurchaseOrderReceipt> receipts)
         {
-            foreach(var receipt in receipts)
+            var lastReceipt = receipts.OrderBy(x => x.ReceivedOn).LastOrDefault();
+            if (lastReceipt == null)
+                return this;
+
+            this.ReceivedBy = lastReceipt.ReceivedBy;
+            this.ReceivedOn = lastReceipt.ReceivedOn;
+
+            foreach (var receipt in receipts)
             {
                 receipt.PurchaseOrder = this;
                 this.Receipts.Add(receipt);

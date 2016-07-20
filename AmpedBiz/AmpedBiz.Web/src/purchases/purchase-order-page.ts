@@ -1,4 +1,4 @@
-import {Router} from 'aurelia-router';
+import {Router, RouteConfig, NavigationInstruction, activationStrategy} from 'aurelia-router';
 import {autoinject} from 'aurelia-framework';
 import {PurchaseOrderCreate} from './purchase-order-create';
 import {PurchaseOrder, PurchaseOrderPageItem, PurchaseOrderStatus} from '../common/models/purchase-order';
@@ -13,6 +13,8 @@ export class PurchaseOrderPage {
   private _api: ServiceApi;
   private _router: Router;
   private _notification: NotificationService;
+
+  public header: string = 'Purchase Orders';
 
   public filter: Filter;
   public sorter: Sorter;
@@ -42,16 +44,44 @@ export class PurchaseOrderPage {
 
     this.pager = new Pager<PurchaseOrderPageItem>();
     this.pager.onPage = () => this.getPage();
-
-    Promise.all([
-      this._api.suppliers.getLookups().then(data => this.suppliers = data),
-      this._api.purchaseOrders.getStatusLookup().then(data => this.statuses = data)
-    ]);
   }
 
+  activate(params: any, routeConfig: RouteConfig, $navigationInstruction: NavigationInstruction): any {
+
+    let requests: [Promise<Lookup<string>[]>, Promise<Lookup<PurchaseOrderStatus>[]>] = [
+      this._api.suppliers.getLookups(),
+      this._api.purchaseOrders.getStatusLookup()
+    ];
+
+    Promise.all(requests).then((responses: [Lookup<string>[], Lookup<PurchaseOrderStatus>[]]) => {
+      this.suppliers = responses[0];
+      this.statuses = responses[1];
+      this.filter["status"] = routeConfig.settings.status;
+      this.header = routeConfig.title;
+
+      this.getPage();
+    });
+  }
+
+  determineActivationStrategy(): string {
+    return activationStrategy.invokeLifecycle;
+  }
+
+  /*
   activate() {
-    this.getPage();
+    let requests: [Promise<Lookup<string>[]>, Promise<Lookup<PurchaseOrderStatus>[]>] = [
+      this._api.suppliers.getLookups(),
+      this._api.purchaseOrders.getStatusLookup()
+    ];
+
+    Promise.all(requests).then((responses: [Lookup<string>[], Lookup<PurchaseOrderStatus>[]]) => {
+      this.suppliers = responses[0];
+      this.statuses = responses[1];
+
+      this.getPage();
+    });
   }
+  */
 
   getPage(): void {
     this._api.purchaseOrders

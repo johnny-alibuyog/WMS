@@ -34,7 +34,6 @@ namespace AmpedBiz.Service.Dto
         public IEnumerable<PurchaseOrderItem> Items { get; set; }
     }
 
-
     public class PurchaseOrderSubmittedEvent : PurchaseOrderEvent
     {
         public Lookup<Guid> SubmittedBy { get; set; }
@@ -51,13 +50,7 @@ namespace AmpedBiz.Service.Dto
 
     public class PurchaseOrderPaidEvent : PurchaseOrderEvent
     {
-        public Lookup<Guid> PaidBy { get; set; }
-
-        public DateTime? PaidOn { get; set; }
-
-        public decimal PaymentAmount { get; set; }
-
-        public Lookup<string> PaymentType { get; set; }
+        public IEnumerable<PurchaseOrderPayment> Payments { get; set; }
     }
 
     public class PurchaseOrderReceivedEvent : PurchaseOrderEvent
