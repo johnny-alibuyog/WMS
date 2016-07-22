@@ -20,7 +20,7 @@ namespace AmpedBiz.Data.EntityDefinitions
                 mapping.Map(x => x.Value, $"{prefix}Value");
 
                 mapping.References(x => x.Unit, $"{prefix}UnitId")
-                .ForeignKey($"FK_{parent}_{prefix}Unit");
+                    .ForeignKey($"FK_{parent}_{prefix}Unit");
             };
         }
     }

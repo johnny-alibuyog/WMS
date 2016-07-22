@@ -1,16 +1,7 @@
 ﻿using System;
-using AmpedBiz.Core.Services.OrderItems;
 
 namespace AmpedBiz.Core.Entities
 {
-    public enum OrderItemStatus
-    {
-        Allocated,
-        Invoiced,
-        Shipped,
-        BackOrdered
-    }
-
     public class OrderItem : Entity<Guid, OrderItem>
     {
         public virtual Product Product { get; protected set; }
@@ -25,55 +16,44 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Money ExtendedPrice { get; protected set; }
 
-        public virtual OrderItemStatus Status { get; protected set; }
+        public OrderItem() : base(default(Guid)) { }
 
-        public virtual bool InsufficientInventory { get; protected set; }
-
-        public virtual State State
-        {
-            get { return State.GetState(this); }
-        }
-
-        public OrderItem() : this(default(Guid)) { }
-
-        public OrderItem(Guid id) : base(id) { }
-
-        public OrderItem(Product product, Measure quantity, Money discount, Money unitPrice) : this()
+        public OrderItem(Product product, Measure quantity, Money discount, Money unitPrice, Guid? id = null) 
+            : base(id ?? default(Guid))
         {
             this.Product = product;
             this.Quantity = quantity;
             this.Discount = discount ?? new Money(0.0M);
             this.UnitPrice = unitPrice;
-            this.Status = OrderItemStatus.Allocated;
 
-            this.Allocate();
+            //this.Allocate();
         }
 
         public virtual void Allocate()
         {
             this.ExtendedPrice = new Money((this.UnitPrice.Amount - this.Discount.Amount) * this.Quantity.Value);
-            this.Product.GoodStockInventory.Allocated += this.Quantity;
+            this.Product.Inventory.Allocated += this.Quantity;
         }
 
         public virtual void Invoice()
         {
-            this.Status = OrderItemStatus.Invoiced;
+            //this.Status = OrderItemStatus.Invoiced;
 
-            this.Product.GoodStockInventory.OnOrder += this.Quantity;
+            this.Product.Inventory.OnOrder += this.Quantity;
         }
 
         public virtual void Ship()
         {
-            this.Status = OrderItemStatus.Shipped;
+            //this.Status = OrderItemStatus.Shipped;
 
-            this.Product.GoodStockInventory.Shipped += this.Quantity;
+            this.Product.Inventory.Shipped += this.Quantity;
         }
 
         public virtual void BackOrder()
         {
-            this.Status = OrderItemStatus.BackOrdered;
+            //this.Status = OrderItemStatus.BackOrdered;
 
-            this.Product.GoodStockInventory.BackOrdered += this.Quantity;
+            this.Product.Inventory.BackOrdered += this.Quantity;
         }
     }
 }

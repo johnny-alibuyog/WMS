@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmpedBiz.Common.CustomTypes;
+using System;
 
 namespace AmpedBiz.Service.Dto
 {
@@ -14,9 +15,9 @@ namespace AmpedBiz.Service.Dto
     {
         public Guid Id { get; set; }
 
-        public string ProductId { get; set; }
-
         public Guid OrderId { get; set; }
+
+        public Lookup<string> Product { get; set; }
 
         public decimal QuantityValue { get; set; }
 
@@ -27,8 +28,6 @@ namespace AmpedBiz.Service.Dto
         public decimal ExtendedPriceAmount { get; set; }
 
         public OrderItemStatus Status { get; set; }
-
-        public bool InsufficientInventory { get; set; }
     }
 
     public class OrderItemPageItem

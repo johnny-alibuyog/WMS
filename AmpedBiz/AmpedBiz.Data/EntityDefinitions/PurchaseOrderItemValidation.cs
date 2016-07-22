@@ -17,17 +17,13 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.Quantity);
 
-            Define(x => x.UnitPrice)
+            Define(x => x.UnitCost)
                 .NotNullable()
                 .And.IsValid();
 
-            Define(x => x.Total)
+            Define(x => x.ExtendedCost)
                 .NotNullable()
                 .And.IsValid();
-
-            Define(x => x.DateReceived);
-
-            Define(x => x.Status);
         }
     }
 }

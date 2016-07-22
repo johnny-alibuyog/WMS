@@ -6,9 +6,11 @@ namespace AmpedBiz.Core.Envents.PurchaseOrders
 {
     public class PurchaseOrderEvent : Event
     {
+        public virtual PurchaseOrder PurchaseOrder { get; set; }
+
         public virtual string TransitionDescription { get; set; }
 
-        public PurchaseOrderEvent() : this(default(Guid)) { }
+        public PurchaseOrderEvent() : base(default(Guid)) { }
 
         public PurchaseOrderEvent(Guid id) : base(id) {  }
     }
@@ -54,8 +56,6 @@ namespace AmpedBiz.Core.Envents.PurchaseOrders
 
         public virtual DateTime? SubmittedOn { get; protected set; }
 
-        public PurchaseOrderSubmittedEvent() : this(default(Guid)) { }
-
         public PurchaseOrderSubmittedEvent(Guid? id = null, User submittedBy = null, DateTime? submittedOn = null) : base(id ?? default(Guid))
         {
             this.SubmittedBy = submittedBy;
@@ -69,8 +69,6 @@ namespace AmpedBiz.Core.Envents.PurchaseOrders
 
         public virtual DateTime? ApprovedOn { get; protected set; }
 
-        public PurchaseOrderApprovedEvent() : this(default(Guid)) { }
-
         public PurchaseOrderApprovedEvent(Guid? id = null, User approvedBy = null, DateTime? approvedOn = null) : base(id ?? default(Guid))
         {
             this.ApprovedBy = approvedBy;
@@ -82,9 +80,7 @@ namespace AmpedBiz.Core.Envents.PurchaseOrders
     {
         public virtual IEnumerable<PurchaseOrderPayment> Payments { get; protected set; }
 
-        public PurchaseOrderPaidEvent() : this(default(Guid)) { }
-
-        public PurchaseOrderPaidEvent(Guid? id = null, IEnumerable<PurchaseOrderPayment> payments = null) : base(id ?? default(Guid))
+        public PurchaseOrderPaidEvent(IEnumerable<PurchaseOrderPayment> payments, Guid? id = null) : base(id ?? default(Guid))
         {
             this.Payments = payments;
         }
@@ -94,9 +90,7 @@ namespace AmpedBiz.Core.Envents.PurchaseOrders
     {
         public virtual IEnumerable<PurchaseOrderReceipt> Receipts { get; protected set; }
 
-        public PurchaseOrderReceivedEvent() : this(default(Guid)) { }
-
-        public PurchaseOrderReceivedEvent(Guid? id = null, IEnumerable<PurchaseOrderReceipt> receipts = null) : base(id ?? default(Guid))
+        public PurchaseOrderReceivedEvent(IEnumerable<PurchaseOrderReceipt> receipts, Guid? id = null) : base(id ?? default(Guid))
         {
             this.Receipts = receipts;
         }
@@ -108,9 +102,10 @@ namespace AmpedBiz.Core.Envents.PurchaseOrders
 
         public virtual DateTime? CompletedOn { get; protected set; }
 
-        public PurchaseOrderCompletedEvent() : this(default(Guid)) { }
+        public PurchaseOrderCompletedEvent() : base(default(Guid)) { }
 
-        public PurchaseOrderCompletedEvent(Guid? id = null, User completedBy = null, DateTime? completedOn = null) : base(id ?? default(Guid))
+        public PurchaseOrderCompletedEvent(User completedBy, DateTime? completedOn, Guid? id = null) 
+            : base(id ?? default(Guid))
         {
             this.CompletedBy = completedBy;
             this.CompletedOn = completedOn;
@@ -125,9 +120,10 @@ namespace AmpedBiz.Core.Envents.PurchaseOrders
 
         public virtual string CancellationReason { get; protected set; }
 
-        public PurchaseOrderCancelledEvent() : this(default(Guid)) { }
+        public PurchaseOrderCancelledEvent() : base(default(Guid)) { }
 
-        public PurchaseOrderCancelledEvent(Guid? id = null, User cancelledBy = null, DateTime? cancelledOn = null, string cancellationReason = null) : base(id ?? default(Guid))
+        public PurchaseOrderCancelledEvent(User cancelledBy, DateTime? cancelledOn, string cancellationReason, Guid? id = null) 
+            : base(id ?? default(Guid))
         {
             this.CancelledBy = cancelledBy;
             this.CancelledOn = cancelledOn;

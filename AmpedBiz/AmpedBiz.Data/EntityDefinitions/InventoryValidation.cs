@@ -1,73 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Entities;
 using NHibernate.Validator.Cfg.Loquacious;
 
 namespace AmpedBiz.Data.EntityDefinitions
 {
-    public class GoodStockInventoryValidation : ValidationDef<GoodStockInventory>
+    public class InventoryValidation : ValidationDef<Inventory>
     {
-        public GoodStockInventoryValidation()
+        public InventoryValidation()
         {
             Define(x => x.Id);
 
-            Define(x => x.ReorderLevel);
+            Define(x => x.Product)
+                .IsValid();
 
-            Define(x => x.TargetLevel);
+            Define(x => x.UnitOfMeasure);
 
-            Define(x => x.MinimumReorderQuantity);
+            Define(x => x.UnitOfMeasureBase);
+
+            Define(x => x.ConvertionFactor);
 
             Define(x => x.Received);
 
             Define(x => x.OnOrder);
 
-            Define(x => x.Shipped);
+            Define(x => x.OnHand);
 
             Define(x => x.Allocated);
 
+            Define(x => x.Shipped);
+
             Define(x => x.BackOrdered);
-
-            Define(x => x.InitialLevel);
-
-            Define(x => x.OnHand);
 
             Define(x => x.Available);
 
+            Define(x => x.InitialLevel);
+
+            Define(x => x.Shrinkage);
+
             Define(x => x.CurrentLevel);
+
+            Define(x => x.TargetLevel);
 
             Define(x => x.BelowTargetLevel);
 
+            Define(x => x.ReorderLevel);
+
             Define(x => x.ReorderQuantity);
 
-            Define(x => x.UnitOfMeasure);
+            Define(x => x.MinimumReorderQuantity);
 
-            Define(x => x.UnitOfMeasureBase);
-
-            Define(x => x.Product)
-                .IsValid();
-
-            Define(x => x.Shrinkages)
-                .HasValidElements();
+            Define(x => x.Stocks);
         }
     }
 
-    public class BadStockInventoryValidation : ValidationDef<BadStockInventory>
-    {
-        public BadStockInventoryValidation()
-        {
-            Define(x => x.Id);
+    //public class BadStockInventoryValidation : ValidationDef<BadStockInventory>
+    //{
+    //    public BadStockInventoryValidation()
+    //    {
+    //        Define(x => x.Id);
 
-            Define(x => x.OnHand);
+    //        Define(x => x.OnHand);
 
-            Define(x => x.Product)
-                .IsValid();
+    //        Define(x => x.Product)
+    //            .IsValid();
 
-            Define(x => x.UnitOfMeasure);
+    //        Define(x => x.UnitOfMeasure);
 
-            Define(x => x.UnitOfMeasureBase);
-        }
-    }
+    //        Define(x => x.UnitOfMeasureBase);
+    //    }
+    //}
 }

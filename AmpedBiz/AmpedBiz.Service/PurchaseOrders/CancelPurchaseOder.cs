@@ -35,7 +35,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                         cancellationReason: message.CancellationReason
                     );
 
-                    entity.State.Cancel(cancelledEvent);
+                    entity.State.Process(cancelledEvent);
 
                     session.Save(entity);
                     transaction.Commit();

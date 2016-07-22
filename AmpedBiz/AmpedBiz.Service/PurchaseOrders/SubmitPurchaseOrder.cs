@@ -34,7 +34,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                         submittedOn: message.SubmittedOn ?? DateTime.Now
                     );
 
-                    entity.State.Submit(submittedEvent);
+                    entity.State.Process(submittedEvent);
 
                     session.Save(entity);
                     transaction.Commit();

@@ -7,6 +7,7 @@ using AmpedBiz.Core.Entities;
 using AmpedBiz.Common.Extentions;
 using NHibernate;
 using NHibernate.Linq;
+using AmpedBiz.Core.Events.Orders;
 
 namespace AmpedBiz.Data.Seeders
 {
@@ -133,28 +134,28 @@ namespace AmpedBiz.Data.Seeders
                     for (int i = 0; i < 153; i++)
                     {
                         var order = new Order(Guid.NewGuid());
-                        order.New(
-                            paymentType: RotatePaymentType(),
-                            shipper: RotateShipper(),
-                            taxRate: random.NextDecimal(0.01M, 0.30M),
-                            shippingFee: new Money(random.NextDecimal(10M, 10000M)),
+                        var newlyCreatedEvent = new OrderNewlyCreatedEvent(
                             createdBy: RotateUser(),
+                            createdOn: DateTime.Now,
+                            branch: RotateBranch(),
                             customer: RotateCustomer(),
-                            branch: RotateBranch()
+                            shipper: RotateShipper(),
+                            paymentType: RotatePaymentType(),
+                            taxRate: random.NextDecimal(0.01M, 0.30M),
+                            tax: null, // compute this
+                            shippingFee: new Money(random.NextDecimal(10M, 10000M)),
+                            discount: null, // compute this from the items discount,
+                            items: Enumerable.Range(0, (int)random.NextDecimal(1M, 25M))
+                                .Select(x => RotateProduct())
+                                .Select(x => new OrderItem(
+                                    product: x,
+                                    quantity: new Measure(random.NextDecimal(1M, 100M), x.Inventory.UnitOfMeasure),
+                                    discount: new Money(random.NextDecimal(100M, 500M)),
+                                    unitPrice: new Money(random.NextDecimal(1000M, 100000M))
+                                ))
                         );
 
-                        for (int j = 0; j < random.NextDecimal(1M, 25M); j++)
-                        {
-                            var product = RotateProduct();
-                            var orderItem = new OrderItem(
-                                product: product,
-                                quantity: new Measure(random.NextDecimal(1M, 100M), product.GoodStockInventory.UnitOfMeasure),
-                                discount: new Money(random.NextDecimal(100M, 500M)),
-                                unitPrice: new Money(random.NextDecimal(1000M, 100000M)));
-
-                            orderItem.Allocate();
-                            order.AddOrderItem(orderItem);
-                        }
+                        order.State.Process(newlyCreatedEvent);
 
                         session.Save(order, order.Id);
                     }

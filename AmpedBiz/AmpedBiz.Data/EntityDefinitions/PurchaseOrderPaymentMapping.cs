@@ -23,7 +23,8 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             References(x => x.PaymentType);
 
-            Component(x => x.Payment, MoneyMapping.Map("Payment_", nameof(PurchaseOrderPayment)));
+            Component(x => x.Payment, 
+                MoneyMapping.Map("Payment_", nameof(PurchaseOrderPayment)));
         }
     }
 }

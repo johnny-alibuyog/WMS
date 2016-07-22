@@ -45,60 +45,60 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             }
         }
 
-        public virtual PurchaseOrder New(PurchaseOrderNewlyCreatedEvent @event)
+        public virtual PurchaseOrder Process(PurchaseOrderNewlyCreatedEvent @event)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.New))
                 throw new InvalidOperationException(string.Format("You cannot perform creation of new purchase order on {0} stage.", this.Target.Status));
 
-            return this.Target.New(@event);
+            return this.Target.Process(@event);
         }
 
-        public virtual PurchaseOrder Submit(PurchaseOrderSubmittedEvent @event)
+        public virtual PurchaseOrder Process(PurchaseOrderSubmittedEvent @event)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Submitted))
                 throw new InvalidOperationException(string.Format("You cannot perform submission of purchase order on {0} stage.", this.Target.Status));
 
-            return this.Target.Submit(@event);
+            return this.Target.Process(@event);
         }
 
-        public virtual PurchaseOrder Approve(PurchaseOrderApprovedEvent @event)
+        public virtual PurchaseOrder Process(PurchaseOrderApprovedEvent @event)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Approved))
                 throw new InvalidOperationException(string.Format("You cannot perform approval of purchase order on {0} stage.", this.Target.Status));
 
-            return this.Target.Approve(@event);
+            return this.Target.Process(@event);
         }
 
-        public virtual PurchaseOrder Pay(PurchaseOrderPaidEvent @event)
+        public virtual PurchaseOrder Process(PurchaseOrderPaidEvent @event)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Paid))
                 throw new InvalidOperationException(string.Format("You cannot perform approval of purchase order on {0} stage.", this.Target.Status));
 
-            return this.Target.Pay(@event);
+            return this.Target.Process(@event);
         }
 
-        public virtual PurchaseOrder Receive(PurchaseOrderReceivedEvent @event)
+        public virtual PurchaseOrder Process(PurchaseOrderReceivedEvent @event)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Received))
                 throw new InvalidOperationException(string.Format("You cannot perform recieving of purchase order on {0} stage.", this.Target.Status));
 
-            return this.Target.Receive(@event);
+            return this.Target.Process(@event);
         }
 
-        public virtual PurchaseOrder Complete(PurchaseOrderCompletedEvent @event)
+        public virtual PurchaseOrder Process(PurchaseOrderCompletedEvent @event)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Completed))
                 throw new InvalidOperationException(string.Format("You cannot perform completion of purchase order on {0} stage.", this.Target.Status));
 
-            return this.Target.Complete(@event);
+            return this.Target.Process(@event);
         }
 
-        public virtual PurchaseOrder Cancel(PurchaseOrderCancelledEvent @event)
+        public virtual PurchaseOrder Process(PurchaseOrderCancelledEvent @event)
         {
             if (!this.AllowedTransitions.ContainsKey(PurchaseOrderStatus.Cancelled))
                 throw new InvalidOperationException(string.Format("You cannot perform cancellation of purchase order on {0} stage.", this.Target.Status));
 
-            return this.Target.Cancel(@event);
+            return this.Target.Process(@event);
         }
     }
 

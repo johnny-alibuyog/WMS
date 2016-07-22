@@ -23,26 +23,16 @@ namespace AmpedBiz.Core.Entities
 
         public virtual bool Discontinued { get; set; }
 
-        public virtual GoodStockInventory GoodStockInventory { get; set; }
+        public virtual Inventory Inventory { get; set; }
 
-        public virtual BadStockInventory BadStockInventory { get; set; }
-
-        public virtual UnitOfMeasure UnitOfMeasure
+        public Product() : base(default(string))
         {
-            get { return this.GoodStockInventory.UnitOfMeasure; }
+            this.Inventory = new Inventory(this);
         }
-
-        //public virtual IEnumerable<Attachment> Attachments { get; set; }
-
-        public Product() : this(default(string)) { }
 
         public Product(string id) : base(id)
         {
-            this.GoodStockInventory = new GoodStockInventory();
-            this.GoodStockInventory.Product = this;
-
-            this.BadStockInventory = new BadStockInventory();
-            this.BadStockInventory.Product = this;
+            this.Inventory = new Inventory(this);
         }
 
         //public virtual UOM UnitOfMeasurement { get; set; }

@@ -40,12 +40,12 @@ namespace AmpedBiz.Service.PurchaseOrders
 
                     query.FetchMany(x => x.Items)
                         .ThenFetch(x => x.Product)
-                        .ThenFetch(x => x.GoodStockInventory)
+                        .ThenFetch(x => x.Inventory)
                         .ToFuture();
 
                     query.FetchMany(x => x.Receipts)
                         .ThenFetch(x => x.Product)
-                        .ThenFetch(x => x.GoodStockInventory)
+                        .ThenFetch(x => x.Inventory)
                         .ToFuture();
 
                     var entity = query.ToFutureValue().Value;

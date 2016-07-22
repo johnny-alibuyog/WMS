@@ -3,6 +3,7 @@ using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Envents.PurchaseOrders;
 using MediatR;
 using NHibernate;
+using NHibernate.Linq;
 using System;
 using System.Linq;
 
@@ -26,7 +27,20 @@ namespace AmpedBiz.Service.PurchaseOrders
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = new PurchaseOrder();
+
                     var currency = session.Load<Currency>(Currency.PHP.Id); // this should be taken from the tenant
+
+                    var productIds = message.Items.Select(x => x.Product.Id);
+
+                    var products = session.Query<Product>()
+                        .Where(x => productIds.Contains(x.Id))
+                        .Fetch(x => x.Inventory)
+                        .ToList();
+
+                    Func<string, Product> GetProduct = (id) => products.First(x => x.Id == id);
+
+                    Func<string, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
+
                     var newlyCreatedEvent = new PurchaseOrderNewlyCreatedEvent(
                        createdBy: (!message?.CreatedBy?.Id.IsNullOrDefault() ?? false)
                             ? session.Load<User>(message.CreatedBy.Id) : null,
@@ -40,14 +54,14 @@ namespace AmpedBiz.Service.PurchaseOrders
                         shippingFee: new Money(message.ShippingFeeAmount, currency),
                         tax: new Money(message.TaxAmount, currency),
                         purchaseOrderItems: message.Items
-                            .Select(x => new PurchaseOrderItem().State.New(
-                                product: session.Load<Product>(x.Product.Id),
-                                unitPrice: new Money(x.UnitPriceAmount, currency),
-                                quantity: x.QuantityValue
+                            .Select(x => new PurchaseOrderItem(
+                                product: GetProduct(x.Product.Id),
+                                unitCost: new Money(x.UnitCostAmount, currency),
+                                quantity: new Measure(x.QuantityValue, GetUnitOfMeasure(x.Product.Id))
                             ))
                     );
 
-                    entity.State.New(newlyCreatedEvent);
+                    entity.State.Process(newlyCreatedEvent);
 
                     session.Save(entity);
                     transaction.Commit();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmpedBiz.Common.CustomTypes;
+using System;
 using System.Collections.Generic;
 
 namespace AmpedBiz.Service.Dto
@@ -9,7 +10,7 @@ namespace AmpedBiz.Service.Dto
         Staged = 2,
         Routed = 3,
         Invoiced = 4,
-        PartiallyPaid = 5,
+        Paid = 5,
         Completed = 6,
         Cancelled = 7
     }
@@ -18,63 +19,71 @@ namespace AmpedBiz.Service.Dto
     {
         public Guid Id { get; set; }
 
-        public string BranchId { get; set; }
+        public Lookup<string> Branch { get; set; }
 
-        public DateTime? OrderDate { get; set; }
+        public Lookup<string> Customer { get; set; }
 
-        public DateTime? StagedDate { get; set; }
+        public Lookup<string> PaymentType { get; set; }
 
-        public DateTime? RoutedDate { get; set; }
+        public Lookup<string> Shipper { get; set; }
 
-        public DateTime? InvoicedDate { get; set; }
-
-        public DateTime? ShippedDate { get; set; }
-
-        public DateTime? PaymentDate { get; set; }
-
-        public DateTime? CompletedDate { get; set; }
-
-        public DateTime? CancelDate { get; set; }
-
-        public string CancelReason { get; set; }
-
-        public string PaymentTypeId { get; set; }
-
-        public Guid ShipperId { get; set; }
-
-        public decimal TaxRate { get; set; }
+        public decimal? TaxRate { get; set; }
 
         public decimal TaxAmount { get; set; }
 
         public decimal ShippingFeeAmount { get; set; }
 
+        public decimal DiscountAmount { get; set; }
+
         public decimal SubTotalAmount { get; set; }
 
         public decimal TotalAmount { get; set; }
 
-        public OrderStatus Status { get; set; }
+        public Dto.OrderStatus Status { get; set; }
 
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } // this should be removed
 
-        public Guid CreatedById { get; set; }
+        public DateTime? OrderedOn { get; set; }
 
-        public Guid StagedById { get; set; }
+        public Lookup<Guid> OrderedBy { get; set; }
 
-        public Guid RoutedById { get; set; }
+        public DateTime? CreatedOn { get; set; }
 
-        public Guid InvoicedById { get; set; }
+        public Lookup<Guid> CreatedBy { get; set; }
 
-        public Guid PartiallyPaidById { get; set; }
+        public DateTime? StagedOn { get; set; }
 
-        public Guid CompletedById { get; set; }
+        public Lookup<Guid> StagedBy { get; set; }
 
-        public Guid CancelledById { get; set; }
+        public DateTime? ShippedOn { get; set; }
 
-        public string CustomerId { get; set; }
+        public Lookup<Guid> ShippedBy { get; set; }
 
-        public IEnumerable<Invoice> Invoices { get; set; }
+        public DateTime? RoutedOn { get; set; }
 
-        public IEnumerable<OrderItem> OrderItems { get; set; }
+        public Lookup<Guid> RoutedBy { get; set; }
+
+        public DateTime? InvoicedOn { get; set; }
+
+        public Lookup<Guid> InvoicedBy { get; set; }
+
+        public DateTime? PaidOn { get; set; }
+
+        public Lookup<Guid> PaidTo { get; set; }
+
+        public DateTime? CompletedOn { get; set; }
+
+        public Lookup<Guid> CompletedBy { get; set; }
+
+        public DateTime? CancelledOn { get; set; }
+
+        public Lookup<Guid> CancelledBy { get; set; }
+
+        public string CancellationReason { get; set; }
+
+        public IEnumerable<Dto.OrderItem> Items { get; set; }
+
+        public IEnumerable<Dto.OrderInvoice> Invoices { get; set; }
 
         public Dictionary<Dto.OrderStatus, string> AllowedTransitions { get; set; }
     }
@@ -83,7 +92,13 @@ namespace AmpedBiz.Service.Dto
     {
         public Guid Id { get; set; }
 
-        public DateTime OrderDate { get; set; }
+        public string StatusName { get; set; }
+
+        public string CreatedByName { get; set; }
+
+        public string CustomerName { get; set; }
+
+        public DateTime OrderOn { get; set; }
 
         public string Tax { get; set; }
 
@@ -92,11 +107,5 @@ namespace AmpedBiz.Service.Dto
         public string SubTotal { get; set; }
 
         public string Total { get; set; }
-
-        public string StatusName { get; set; }
-
-        public string CreatedByName { get; set; }
-
-        public string CustomerName { get; set; }
     }
 }

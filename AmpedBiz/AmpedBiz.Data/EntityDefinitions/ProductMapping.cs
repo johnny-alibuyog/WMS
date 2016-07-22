@@ -7,7 +7,8 @@ namespace AmpedBiz.Data.EntityDefinitions
     {
         public ProductMapping()
         {
-            Id(x => x.Id).GeneratedBy.Assigned();
+            Id(x => x.Id)
+                .GeneratedBy.Assigned();
 
             Map(x => x.Name);
 
@@ -21,13 +22,17 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             References(x => x.Supplier);
 
-            Component(x => x.BasePrice, MoneyMapping.Map("BasePrice_", nameof(Product)));
+            Component(x => x.BasePrice, 
+                MoneyMapping.Map("BasePrice_", nameof(Product)));
 
-            Component(x => x.RetailPrice, MoneyMapping.Map("RetailPrice_", nameof(Product)));
+            Component(x => x.RetailPrice, 
+                MoneyMapping.Map("RetailPrice_", nameof(Product)));
 
-            Component(x => x.WholeSalePrice, MoneyMapping.Map("WholeSalePrice_", nameof(Product)));
+            Component(x => x.WholeSalePrice, 
+                MoneyMapping.Map("WholeSalePrice_", nameof(Product)));
 
-            HasOne(x => x.GoodStockInventory).Cascade.All();
+            HasOne(x => x.Inventory)
+                .Cascade.All();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace AmpedBiz.Core.Entities
     {
         public virtual string Name { get; set; }
 
-        public Role() : this(default(string)) { }
+        public Role() : base(default(string)) { }
 
         public Role(string id, string name = null) : base(id)
         {

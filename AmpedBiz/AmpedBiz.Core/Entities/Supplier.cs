@@ -13,7 +13,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<Product> Products { get; protected set; }
 
-        public Supplier() : this(default(string)) { }
+        public Supplier() : base(default(string)) { }
 
         public Supplier(string id) : base(id)
         {

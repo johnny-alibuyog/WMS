@@ -21,6 +21,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql", "sql", "{D73BF1EE-C7B6-430B-AD2A-9F1F307D6242}"
 	ProjectSection(SolutionItems) = preProject
 		create_db.sql = create_db.sql
+		drop_all_tables.sql = drop_all_tables.sql
 		postgres_alter_superuser_password.sql = postgres_alter_superuser_password.sql
 	EndProjectSection
 EndProject

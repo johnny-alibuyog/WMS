@@ -12,13 +12,10 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Location Location { get; set; }
 
-        public virtual IEnumerable<DeliveryItem> Items { get; protected set; }
+        public virtual IEnumerable<DeliveryItem> Items { get; protected set; } = new Collection<DeliveryItem>();
 
-        public Delivery() : this(default(Guid)) { }
+        public Delivery() : base(default(Guid)) { }
 
-        public Delivery(Guid id) : base(id)
-        {
-            this.Items = new Collection<DeliveryItem>();
-        }
+        public Delivery(Guid id) : base(id) { }
     }
 }

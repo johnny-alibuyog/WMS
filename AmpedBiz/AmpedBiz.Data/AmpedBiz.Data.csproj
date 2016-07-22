@@ -111,8 +111,8 @@
     <Compile Include="CustomTypes\XmlType.cs" />
     <Compile Include="EntityDefinitions\InventoryMapping.cs" />
     <Compile Include="EntityDefinitions\InventoryValidation.cs" />
-    <Compile Include="EntityDefinitions\InvoiceMapping.cs" />
-    <Compile Include="EntityDefinitions\InvoiceValidation.cs" />
+    <Compile Include="EntityDefinitions\OrderInvoiceMapping.cs" />
+    <Compile Include="EntityDefinitions\OrderInvoiceValidation.cs" />
     <Compile Include="EntityDefinitions\MeasureMapping.cs" />
     <Compile Include="EntityDefinitions\MeasureValidation.cs" />
     <Compile Include="EntityDefinitions\OrderItemMapping.cs" />
@@ -131,6 +131,7 @@
     <Compile Include="EntityDefinitions\PurchaseOrderValidation.cs" />
     <Compile Include="EntityDefinitions\ShipperMapping.cs" />
     <Compile Include="EntityDefinitions\ShipperValidation.cs" />
+    <Compile Include="EntityDefinitions\StockMapping.cs" />
     <Compile Include="EntityDefinitions\TenantMapping.cs" />
     <Compile Include="EntityDefinitions\UnitOfMeasureClassMapping.cs" />
     <Compile Include="EntityDefinitions\UnitOfMeasureClassValidation.cs" />

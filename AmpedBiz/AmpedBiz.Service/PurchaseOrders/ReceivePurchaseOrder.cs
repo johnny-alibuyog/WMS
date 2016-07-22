@@ -36,7 +36,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 
                     var products = session.Query<Product>()
                         .Where(x => productIds.Contains(x.Id))
-                        .Fetch(x => x.GoodStockInventory)
+                        .Fetch(x => x.Inventory)
                         .ThenFetch(x => x.UnitOfMeasure)
                         .ToList();
 
@@ -51,14 +51,14 @@ namespace AmpedBiz.Service.PurchaseOrders
                                 value: x.QuantityValue, 
                                 unit: products
                                     .Where(o => o.Id == x.Product.Id)
-                                    .Select(o => o.UnitOfMeasure)
+                                    .Select(o => o.Inventory.UnitOfMeasure)
                                     .FirstOrDefault()
                                 )
                             )
                         )
                     );
 
-                    entity.State.Receive(receivedEvent);
+                    entity.State.Process(receivedEvent);
 
                     session.Save(entity);
                     transaction.Commit();

@@ -35,7 +35,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 
                     );
 
-                    entity.State.Complete(completedEvent);
+                    entity.State.Process(completedEvent);
 
                     session.Save(entity);
                     transaction.Commit();

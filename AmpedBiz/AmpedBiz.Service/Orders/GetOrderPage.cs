@@ -50,21 +50,21 @@ namespace AmpedBiz.Service.Orders
                     message.Sorter.Compose("createdOn", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.OrderDate)
-                            : query.OrderByDescending(x => x.OrderDate);
+                            ? query.OrderBy(x => x.OrderedOn)
+                            : query.OrderByDescending(x => x.OrderedOn);
                     });
 
                     var itemsFuture = query
                         .Select(x => new Dto.OrderPageItem()
                         {
                             Id = x.Id,
-                            CreatedByName = x.CreatedBy.FullName(),
+                            CreatedByName = x.CreatedBy.Name,
                             CustomerName = x.Customer.Name,
-                            OrderDate = x.OrderDate.Value,
+                            OrderOn = x.OrderedOn.Value,
+                            Tax = x.Tax.ToStringWithSymbol(),
                             ShippingFee = x.ShippingFee.ToStringWithSymbol(),
                             StatusName = x.Status.ToString(),
                             SubTotal = x.SubTotal.ToStringWithSymbol(),
-                            Tax = x.Tax.ToStringWithSymbol(),
                             Total = x.Total.ToStringWithSymbol()
                         })
                         .Skip(message.Pager.SkipCount)

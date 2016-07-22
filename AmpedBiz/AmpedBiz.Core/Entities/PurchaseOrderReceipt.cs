@@ -6,7 +6,7 @@ namespace AmpedBiz.Core.Entities
     {
         public virtual PurchaseOrder PurchaseOrder { get; set; }
 
-        public virtual string BatchNumber { get; set; }
+        public virtual string BatchNumber { get; protected set; }
 
         public virtual User ReceivedBy { get; protected set; }
 
@@ -18,20 +18,18 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Measure Quantity { get; protected set; }
 
-        public PurchaseOrderReceipt() : this(default(Guid)) { }
+        public PurchaseOrderReceipt() : base(default(Guid)) { }
 
-        public PurchaseOrderReceipt(Guid id) : base(id) { }
-
-        public PurchaseOrderReceipt(Guid? id = null, string batchNumber = null, User receivedBy = null, DateTime? receivedOn = null, 
-            DateTime? expiresOn = null, Product product = null, Measure quantity = null) : this(default(Guid))
+        public PurchaseOrderReceipt(string batchNumber, User receivedBy, DateTime? receivedOn, 
+            DateTime? expiresOn, Product product, Measure quantity, Guid? id = null) : base(id ?? default(Guid))
         {
             this.Id = id ?? this.Id;
-            this.BatchNumber = batchNumber ?? this.BatchNumber;
-            this.ReceivedBy = receivedBy ?? this.ReceivedBy;
-            this.ReceivedOn = receivedOn ?? this.ReceivedOn;
-            this.ExpiresOn = expiresOn ?? this.ExpiresOn;
-            this.Product = product ?? this.Product;
-            this.Quantity = quantity ?? this.Quantity;
+            this.BatchNumber = batchNumber;
+            this.ReceivedBy = receivedBy;
+            this.ReceivedOn = receivedOn;
+            this.ExpiresOn = expiresOn;
+            this.Product = product;
+            this.Quantity = quantity;
         }
     }
 }

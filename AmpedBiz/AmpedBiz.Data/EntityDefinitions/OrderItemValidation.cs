@@ -27,10 +27,6 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.ExtendedPrice)
                 .IsValid();
-
-            Define(x => x.Status);
-
-            Define(x => x.InsufficientInventory);
         }
     }
 }

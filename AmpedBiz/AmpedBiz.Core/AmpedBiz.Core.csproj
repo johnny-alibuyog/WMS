@@ -47,7 +47,6 @@
     <Compile Include="Entities\Currency.cs" />
     <Compile Include="Entities\Delivery.cs" />
     <Compile Include="Entities\DeliveryItem.cs" />
-    <Compile Include="Entities\InventoryShrinkage.cs" />
     <Compile Include="Entities\Measure.cs" />
     <Compile Include="Entities\Money.cs" />
     <Compile Include="Entities\Order.cs" />
@@ -56,11 +55,13 @@
     <Compile Include="Entities\PricingScheme.cs" />
     <Compile Include="Entities\ProductCategory.cs" />
     <Compile Include="Entities\Customer.cs" />
-    <Compile Include="Entities\Invoice.cs" />
+    <Compile Include="Entities\OrderInvoice.cs" />
     <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\PaymentType.cs" />
     <Compile Include="Entities\PurchaseOrder.cs" />
+    <Compile Include="Entities\Stock.cs" />
+    <Compile Include="Events\Orders\OrderEvent.cs" />
     <Compile Include="Events\PurchaseOrders\PurchaseOrderEvent.cs" />
     <Compile Include="Entities\PurchaseOrderItem.cs" />
     <Compile Include="Entities\PurchaseOrderPayment.cs" />
@@ -82,9 +83,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\HashProvider.cs" />
     <Compile Include="Services\IHashProvider.cs" />
-    <Compile Include="Services\OrderItems\State.cs" />
     <Compile Include="Services\Orders\State.cs" />
-    <Compile Include="Services\PurchaseOrderItems\State.cs" />
     <Compile Include="Services\PurchaseOrders\State.cs" />
     <Compile Include="ValueObject.cs" />
   </ItemGroup>

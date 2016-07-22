@@ -1,15 +1,18 @@
-﻿using System;
-using AmpedBiz.Common.Exceptions;
+﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Events.Orders;
 using MediatR;
 using NHibernate;
+using NHibernate.Linq;
+using System;
+using System.Linq;
 
 namespace AmpedBiz.Service.Orders
 {
     public class UpdateNewOrder
     {
-        public class Request : Dto.Order, IRequest<Response>
+        public class Request : Dto.OrderNewlyCreatedEvent, IRequest<Response>
         {
             public virtual Guid UserId { get; set; }
         }
@@ -27,21 +30,49 @@ namespace AmpedBiz.Service.Orders
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var currency = session.Load<Currency>(Currency.PHP.Id); // this should be taken from the tenant
-                    var entity = session.Get<Order>(message.Id);
+                    var entity = session.Get<Order>(message.OrderId);
                     if (entity == null)
-                        throw new BusinessException($"Order with id {message.Id} does not exists.");
+                        throw new BusinessException($"Order with id {message.OrderId} does not exists.");
 
-                    entity.State.New(
-                        createdBy: !message.CreatedById.IsNullOrDefault()
-                            ? session.Load<User>(message.UserId) : null,
-                        paymentType: session.Load<PaymentType>(message.PaymentTypeId),
-                        shipper: null,
-                        shippingFee: new Money(message.ShippingFeeAmount, currency),
+                    var currency = session.Load<Currency>(Currency.PHP.Id); // this should be taken from the tenant
+
+                    var productIds = message.Items.Select(x => x.Product.Id);
+
+                    var products = session.Query<Product>()
+                        .Where(x => productIds.Contains(x.Id))
+                        .Fetch(x => x.Inventory)
+                        .ToList();
+
+                    Func<string, Product> GetProduct = (id) => products.First(x => x.Id == id);
+
+                    Func<string, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
+
+                    var newlyCreatedEvent = new OrderNewlyCreatedEvent(
+                        createdBy: (!message?.CreatedBy?.Id.IsNullOrDefault() ?? false)
+                            ? session.Load<User>(message.CreatedBy.Id) : null,
+                        createdOn: message?.CreatedOn ?? DateTime.Now,
+                        branch: (!message?.Branch?.Id.IsNullOrEmpty() ?? false)
+                            ? session.Load<Branch>(message.Branch.Id) : null,
+                        customer: (!message?.Customer?.Id.IsNullOrEmpty() ?? false)
+                            ? session.Load<Customer>(message.Customer.Id) : null,
+                        shipper: (!message?.Shipper?.Id.IsNullOrEmpty() ?? false)
+                            ? session.Load<Shipper>(message.Shipper.Id) : null,
+                        paymentType: (!message?.PaymentType?.Id.IsNullOrEmpty() ?? false)
+                            ? session.Load<PaymentType>(message.PaymentType.Id) : null,
                         taxRate: message.TaxRate,
-                        customer: session.Load<Customer>(message.CustomerId),
-                        branch: session.Load<Branch>(message.BranchId)
+                        tax: new Money(message.TaxAmount, currency),
+                        shippingFee: new Money(message.ShippingFeeAmount, currency),
+                        discount: new Money(message.DiscountAmount, currency),
+                        items: message.Items
+                            .Select(x => new OrderItem(
+                                product: GetProduct(x.Product.Id),
+                                discount: new Money(x.DiscountAmount, currency),
+                                unitPrice: new Money(x.UnitPriceAmount, currency),
+                                quantity: new Measure(x.QuantityValue, GetUnitOfMeasure(x.Product.Id))
+                            ))
                     );
+
+                    entity.State.Process(newlyCreatedEvent);
 
                     transaction.Commit();
 

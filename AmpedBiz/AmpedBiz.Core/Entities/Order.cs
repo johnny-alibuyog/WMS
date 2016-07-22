@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Services.Orders;
+using AmpedBiz.Core.Events.Orders;
 
 namespace AmpedBiz.Core.Entities
 {
@@ -13,7 +14,7 @@ namespace AmpedBiz.Core.Entities
         Staged = 2,
         Routed = 3,
         Invoiced = 4,
-        PartiallyPaid = 5,
+        Paid = 5,
         Completed = 6,
         Cancelled = 7
     }
@@ -22,23 +23,7 @@ namespace AmpedBiz.Core.Entities
     {
         public virtual Branch Branch { get; set; }
 
-        public virtual DateTime? OrderDate { get; protected set; }
-
-        public virtual DateTime? StagedDate { get; protected set; }
-
-        public virtual DateTime? RoutedDate { get; protected set; }
-
-        public virtual DateTime? InvoicedDate { get; protected set; }
-
-        public virtual DateTime? ShippedDate { get; protected set; }
-
-        public virtual DateTime? PaymentDate { get; protected set; }
-
-        public virtual DateTime? CompletedDate { get; protected set; }
-
-        public virtual DateTime? CancelDate { get; protected set; }
-
-        public virtual string CancelReason { get; protected set; }
+        public virtual Customer Customer { get; protected set; }
 
         public virtual PaymentType PaymentType { get; protected set; }
 
@@ -50,69 +35,168 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Money ShippingFee { get; protected set; }
 
+        public virtual Money Discount { get; protected set; }
+
         public virtual Money SubTotal { get; protected set; }
 
         public virtual Money Total { get; protected set; }
 
         public virtual OrderStatus Status { get; protected set; }
 
-        public virtual bool IsActive { get; protected set; }
+        public virtual bool IsActive { get; protected set; } // this should be removed
+
+        public virtual DateTime? OrderedOn { get; protected set; }
+
+        public virtual User OrderedBy { get; protected set; }
+
+        public virtual DateTime? CreatedOn { get; protected set; }
 
         public virtual User CreatedBy { get; protected set; }
 
+        public virtual DateTime? StagedOn { get; protected set; }
+
         public virtual User StagedBy { get; protected set; }
+
+        public virtual DateTime? ShippedOn { get; protected set; }
+
+        public virtual User ShippedBy { get; protected set; }
+
+        public virtual DateTime? RoutedOn { get; protected set; }
 
         public virtual User RoutedBy { get; protected set; }
 
+        public virtual DateTime? InvoicedOn { get; protected set; }
+
         public virtual User InvoicedBy { get; protected set; }
 
-        public virtual User PartiallyPaidBy { get; protected set; }
+        public virtual DateTime? PaidOn { get; protected set; }
+
+        public virtual User PaidTo { get; protected set; }
+
+        public virtual DateTime? CompletedOn { get; protected set; }
 
         public virtual User CompletedBy { get; protected set; }
 
+        public virtual DateTime? CancelledOn { get; protected set; }
+
         public virtual User CancelledBy { get; protected set; }
 
-        public virtual Customer Customer { get; protected set; }
+        public virtual string CancellationReason { get; protected set; }
 
-        public virtual IEnumerable<Invoice> Invoices { get; protected set; }
+        public virtual IEnumerable<OrderItem> Items { get; protected set; } = new Collection<OrderItem>();
 
-        public virtual IEnumerable<OrderItem> Items { get; protected set; }
+        public virtual IEnumerable<OrderInvoice> Invoices { get; protected set; } = new Collection<OrderInvoice>();
 
         public virtual State State
         {
             get { return State.GetState(this); }
         }
 
-        public Order() : this(default(Guid)) { }
+        public Order() : base(default(Guid)) { }
 
-        public Order(Guid id) : base(id)
-        {
-            this.Invoices = new Collection<Invoice>();
-            this.Items = new Collection<OrderItem>();
-        }
+        public Order(Guid id) : base(id) { }
 
-        public Order(PaymentType paymentType, Shipper shipper, decimal? taxRate, Money shippingFee, User createdBy, Customer customer, Branch branch) : this()
+        protected internal virtual Order Process(OrderNewlyCreatedEvent @event)
         {
-            New(paymentType, shipper, taxRate, shippingFee, createdBy, customer, branch);
-        }
-
-        public virtual void New(PaymentType paymentType, Shipper shipper, decimal? taxRate, Money shippingFee, User createdBy,
-            Customer customer, Branch branch, IEnumerable<OrderItem> orderItems = null)
-        {
+            this.CreatedBy = @event.CreatedBy ?? this.CreatedBy;
+            this.CreatedOn = @event.CreatedOn ?? this.CreatedOn;
+            this.Branch = @event.Branch ?? this.Branch;
+            this.Customer = @event.Customer ?? this.Customer;
+            this.Shipper = @event.Shipper ?? this.Shipper;
+            this.PaymentType = @event.PaymentType ?? this.PaymentType;
+            this.TaxRate = @event.TaxRate ?? this.TaxRate;
+            this.Tax = @event.Tax ?? this.Tax;
+            this.ShippingFee = @event.ShippingFee ?? this.ShippingFee;
+            this.Discount = @event.Discount ?? this.Discount;
+            this.SetItems(@event.Items);
             this.Status = OrderStatus.New;
-            this.IsActive = true;
-            this.OrderDate = DateTime.Now;
-            this.PaymentType = paymentType;
-            this.Shipper = shipper;
-            this.TaxRate = taxRate ?? 0.0M;
-            this.ShippingFee = shippingFee ?? new Money(0.0M);
-            this.CreatedBy = createdBy;
-            this.Customer = customer;
-            this.Branch = branch;
-            this.SetOrderItems(orderItems);
+
+            return this;
         }
 
-        protected internal virtual Order SetOrderItems(IEnumerable<OrderItem> items)
+        protected internal virtual Order Process(OrderStagedEvent @event)
+        {
+            this.StagedBy = @event.StagedBy ?? this.StagedBy;
+            this.StagedOn = @event.StagedOn ?? this.StagedOn;
+            this.Status = OrderStatus.Staged;
+
+            return this;
+        }
+
+        protected internal virtual Order Process(OrderRoutedEvent @event)
+        {
+            this.RoutedBy = @event.RoutedBy ?? this.RoutedBy;
+            this.RoutedOn = @event.RoutedOn ?? this.RoutedOn;
+            this.Status = OrderStatus.Routed;
+
+            return this;
+            //allocate product from inventory
+        }
+
+        protected internal virtual Order Process(OrderInvoicedEvent @event)
+        {
+            this.AddInvoices(@event.Invoices);
+            this.Status = OrderStatus.Invoiced;
+
+            return this;
+            //deduct from inventory
+        }
+
+        protected internal virtual Order Process(OrderPaidEvent @event)
+        {
+            this.PaidTo = @event.PaidTo;
+            this.PaidOn = @event.PaidOn;
+            this.PaymentType = @event.PaymentType;
+            this.Status = OrderStatus.Paid;
+
+            //no invoice yet?
+            return this;
+        }
+
+        protected internal virtual Order Process(OrderCompletedEvent @event)
+        {
+            this.IsActive = false;
+            this.CompletedBy = @event.CompletedBy;
+            this.CompletedOn = @event.CompletedOn;
+            this.Status = OrderStatus.Completed;
+
+            return this;
+        }
+
+        protected internal virtual Order Process(OrderCancelledEvent @event)
+        {
+            this.IsActive = false;
+            this.CancelledBy = @event.CancelledBy ?? this.CancelledBy;
+            this.CancelledOn = @event.CancelledOn ?? this.CancelledOn;
+            this.CancellationReason = @event.CancellationReason ?? this.CancellationReason;
+            this.Status = OrderStatus.Cancelled;
+
+            return this;
+        }
+
+        private void AddOrderItem(OrderItem orderItem)
+        {
+            orderItem.Order = this;
+            this.Items.Add(orderItem);
+
+            var extendedPriceAmount = (orderItem.ExtendedPrice ?? new Money(0.0M)).Amount;
+
+            this.SubTotal += new Money(extendedPriceAmount);
+
+            this.Tax = new Money(this.SubTotal.Amount * this.TaxRate.Value);
+
+            this.Total = new Money(this.SubTotal.Amount + this.Tax.Amount + this.ShippingFee.Amount);
+        }
+
+        private void AddInvoice(OrderInvoice invoice)
+        {
+            this.Invoices = this.Invoices ?? new List<OrderInvoice>();
+
+            invoice.Order = this;
+            this.Invoices.Add(invoice);
+        }
+
+        private Order SetItems(IEnumerable<OrderItem> items)
         {
             if (items.IsNullOrEmpty())
                 return this;
@@ -123,7 +207,8 @@ namespace AmpedBiz.Core.Entities
 
             foreach (var item in itemsToInsert)
             {
-                this.AddOrderItem(item);
+                item.Order = this;
+                this.Items.Add(item);
             }
 
             foreach (var item in itemsToUpdate)
@@ -139,10 +224,12 @@ namespace AmpedBiz.Core.Entities
                 this.Items.Remove(item);
             }
 
+            // calculate here
+
             return this;
         }
 
-        protected internal virtual Order SetInvoices(IEnumerable<Invoice> invoices)
+        private Order SetInvoices(IEnumerable<OrderInvoice> invoices)
         {
             if (invoices.IsNullOrEmpty())
                 return this;
@@ -172,83 +259,24 @@ namespace AmpedBiz.Core.Entities
             return this;
         }
 
-        public virtual void Stage(User user)
+        private Order AddInvoices(IEnumerable<OrderInvoice> invoices)
         {
-            this.Status = OrderStatus.Staged;
-            this.StagedBy = user;
-            this.StagedDate = DateTime.Now;
-        }
-        public virtual void Route(User user)
-        {
-            this.Status = OrderStatus.Routed;
-            this.RoutedBy = user;
-            this.RoutedDate = DateTime.Now;
+            var lastInvoice = invoices.OrderBy(x => x.InvoicedOn).LastOrDefault();
+            if (lastInvoice == null)
+                return this;
 
-            //allocate product from inventory
-            
-        }
+            this.InvoicedOn = lastInvoice.InvoicedOn;
+            this.InvoicedBy = lastInvoice.InvoicedBy;
 
-        public virtual void Invoice(User user, IEnumerable<Invoice> invoices = null)
-        {
-            this.Status = OrderStatus.Invoiced;
-            this.InvoicedBy = user;
-            this.InvoicedDate = DateTime.Now;
-            this.SetInvoices(invoices);
-
-            foreach (var item in this.Items)
+            foreach (var invoice in invoices)
             {
-                item.Invoice();
+                invoice.Order = this;
+                this.Invoices.Add(invoice);
             }
 
-            //deduct from inventory
-        }
+            // compute here
 
-        public virtual void PartiallyPay(User user)
-        {
-            this.Status = OrderStatus.PartiallyPaid;
-            this.PaymentDate = DateTime.Now;
-            this.PartiallyPaidBy = user;
-
-            //no invoice yet?
-        }
-
-        public virtual void Complete(User user)
-        {
-            this.Status = OrderStatus.Completed;
-            this.IsActive = false;
-            this.CompletedDate = DateTime.Now;
-            this.CompletedBy = user;
-        }
-
-        public virtual void Cancel(User user, string reason)
-        {
-            this.Status = OrderStatus.Cancelled;
-            this.IsActive = false;
-            this.CancelDate = DateTime.Now;
-            this.CancelReason = reason;
-            this.CancelledBy = user;
-        }
-
-        public virtual void AddOrderItem(OrderItem orderItem)
-        {
-            orderItem.Order = this;
-            this.Items.Add(orderItem);
-
-            var extendedPriceAmount = (orderItem.ExtendedPrice ?? new Money(0.0M)).Amount;
-
-            this.SubTotal += new Money(extendedPriceAmount);
-
-            this.Tax = new Money(this.SubTotal.Amount * this.TaxRate.Value);
-
-            this.Total = new Money(this.SubTotal.Amount + this.Tax.Amount + this.ShippingFee.Amount);
-        }
-
-        public virtual void AddInvoice(Invoice invoice)
-        {
-            this.Invoices = this.Invoices ?? new List<Invoice>();
-
-            invoice.Order = this;
-            this.Invoices.Add(invoice);
+            return this;
         }
     }
 }

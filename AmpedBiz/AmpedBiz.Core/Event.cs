@@ -8,7 +8,7 @@ namespace AmpedBiz.Core
 {
     public class Event : Entity<Guid, Event>
     {
-        public Event() : this(default(Guid)) { }
+        public Event() : base(default(Guid)) { }
 
         public Event(Guid id) : base(id) { }
     }

@@ -12,7 +12,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Address Address { get; set; }
 
-        public Branch() : this(default(string)) { }
+        public Branch() : base(default(string)) { }
 
         public Branch(string id) : base(id) { }
     }

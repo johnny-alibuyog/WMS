@@ -14,15 +14,22 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             References(x => x.Supplier);
 
-            Component(x => x.Tax, MoneyMapping.Map("Tax_", nameof(PurchaseOrder)));
+            References(x => x.Shipper);
 
-            Component(x => x.ShippingFee, MoneyMapping.Map("ShippingFee_", nameof(PurchaseOrder)));
+            Component(x => x.Tax,
+                MoneyMapping.Map("Tax_", nameof(PurchaseOrder)));
 
-            Component(x => x.Payment, MoneyMapping.Map("Payment_", nameof(PurchaseOrder)));
+            Component(x => x.ShippingFee,
+                MoneyMapping.Map("ShippingFee_", nameof(PurchaseOrder)));
 
-            Component(x => x.SubTotal, MoneyMapping.Map("SubTotal_", nameof(PurchaseOrder)));
+            Component(x => x.Payment,
+                MoneyMapping.Map("Payment_", nameof(PurchaseOrder)));
 
-            Component(x => x.Total, MoneyMapping.Map("Total_", nameof(PurchaseOrder)));
+            Component(x => x.SubTotal,
+                MoneyMapping.Map("SubTotal_", nameof(PurchaseOrder)));
+
+            Component(x => x.Total,
+                MoneyMapping.Map("Total_", nameof(PurchaseOrder)));
 
             Map(x => x.Status);
 

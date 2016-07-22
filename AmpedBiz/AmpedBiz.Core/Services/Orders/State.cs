@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Events.Orders;
 
 namespace AmpedBiz.Core.Services.Orders
 {
     public abstract class State
     {
-        private const string STATE_EXCEPTION_MESSAGE = "You cannot perform {0} of order on {1} stage.";
+        protected const string STATE_EXCEPTION_MESSAGE = "You cannot perform {0} of order on {1} stage.";
 
         protected Order Target { get; private set; }
 
@@ -34,8 +35,8 @@ namespace AmpedBiz.Core.Services.Orders
                 case OrderStatus.Invoiced:
                     return new InvoicedState(target);
 
-                case OrderStatus.PartiallyPaid:
-                    return new PartiallyPaidState(target);
+                case OrderStatus.Paid:
+                    return new PaidState(target);
 
                 case OrderStatus.Completed:
                     return new CompletedState(target);
@@ -48,71 +49,60 @@ namespace AmpedBiz.Core.Services.Orders
             }
         }
 
-        public virtual void New(User createdBy, PaymentType paymentType = null, Shipper shipper = null,
-            Money shippingFee = null, decimal? taxRate = null, Customer customer = null, Branch branch = null,
-            IEnumerable<OrderItem> orderItems = null)
+        public virtual void Process(OrderNewlyCreatedEvent @event)
         {
-            if (!this.AllowedTransitions.ContainsKey(OrderStatus.New))
-                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, this.Target.Status));
+            //if (!this.AllowedTransitions.ContainsKey(OrderStatus.New))
+            //    throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "creation/modification", this.Target.Status));
 
-            this.Target.New(
-                paymentType: paymentType,
-                shipper: shipper,
-                taxRate: taxRate,
-                shippingFee: shippingFee,
-                createdBy: createdBy,
-                customer: customer,
-                branch: branch,
-                orderItems: orderItems
-            );
+            this.Target.Process(@event);
         }
 
-        public virtual void Stage(User stagedBy)
+        public virtual void Process(OrderStagedEvent @event)
         {
-            if (!this.AllowedTransitions.ContainsKey(OrderStatus.Staged))
-                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "staging", this.Target.Status));
+            //if (!this.AllowedTransitions.ContainsKey(OrderStatus.Staged))
+            //    throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "staging", this.Target.Status));
 
-            this.Target.Stage(stagedBy);
+            this.Target.Process(@event);
         }
 
-        public virtual void Route(User routedBy)
+        public virtual void Process(OrderRoutedEvent @event)
         {
-            if (!this.AllowedTransitions.ContainsKey(OrderStatus.Routed))
-                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "routing", this.Target.Status));
+            //if (!this.AllowedTransitions.ContainsKey(OrderStatus.Routed))
+            //    throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "routing", this.Target.Status));
 
-            this.Target.Route(routedBy);
+            this.Target.Process(@event);
         }
 
-        public virtual void Invoice(User invoicedBy, IEnumerable<Invoice> invoices = null)
+        public virtual void Process(OrderInvoicedEvent @event)
         {
-            if (!this.AllowedTransitions.ContainsKey(OrderStatus.Invoiced))
-                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "invoicing", this.Target.Status));
+            //if (!this.AllowedTransitions.ContainsKey(OrderStatus.Invoiced))
+            //    throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "invoicing", this.Target.Status));
 
-            this.Target.Invoice(invoicedBy, invoices);
+            this.Target.Process(@event);
         }
 
-        public virtual void PartiallyPay(User partiallyPaidBy)
+        public virtual void Process(OrderPaidEvent @event)
         {
-            if (!this.AllowedTransitions.ContainsKey(OrderStatus.PartiallyPaid))
-                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "partial payment", this.Target.Status));
+            //if (!this.AllowedTransitions.ContainsKey(OrderStatus.Paid))
+            //    throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "payment", this.Target.Status));
 
-            this.Target.PartiallyPay(partiallyPaidBy);
+            this.Target.Process(@event);
         }
 
-        public virtual void Complete(User completedBy)
+        public virtual void Process(OrderCompletedEvent @event)
         {
-            if (!this.AllowedTransitions.ContainsKey(OrderStatus.Completed))
-                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "completing", this.Target.Status));
+            //if (!this.AllowedTransitions.ContainsKey(OrderStatus.Completed))
+            //    throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "completing", this.Target.Status));
 
-            this.Target.Complete(completedBy);
+            this.Target.Process(@event);
         }
 
-        public virtual void Cancel(User cancelledBy, string cancellationReason)
+        public virtual void Process(OrderCancelledEvent @event)
         {
-            if (!this.AllowedTransitions.ContainsKey(OrderStatus.Cancelled))
-                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "cancelling", this.Target.Status));
+            //if (!this.AllowedTransitions.ContainsKey(OrderStatus.Cancelled))
+            //    throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "canceling", this.Target.Status));
 
-            this.Target.Cancel(cancelledBy, cancellationReason);
+            this.Target.Process(@event);
         }
     }
 
@@ -132,7 +122,7 @@ namespace AmpedBiz.Core.Services.Orders
         public StagedState(Order target) : base(target)
         {
             this.AllowedTransitions.Add(OrderStatus.Routed, "Route");
-            this.AllowedTransitions.Add(OrderStatus.PartiallyPaid, "Partially Pay");
+            this.AllowedTransitions.Add(OrderStatus.Paid, "Partially Pay");
             this.AllowedTransitions.Add(OrderStatus.Invoiced, "Invoice");
             this.AllowedTransitions.Add(OrderStatus.Cancelled, "Cancel");
         }
@@ -142,7 +132,7 @@ namespace AmpedBiz.Core.Services.Orders
     {
         public RoutedState(Order target) : base(target)
         {
-            this.AllowedTransitions.Add(OrderStatus.PartiallyPaid, "Partially Pay");
+            this.AllowedTransitions.Add(OrderStatus.Paid, "Partially Pay");
             this.AllowedTransitions.Add(OrderStatus.Invoiced, "Invoice");
             this.AllowedTransitions.Add(OrderStatus.Cancelled, "Cancel");
         }
@@ -152,14 +142,14 @@ namespace AmpedBiz.Core.Services.Orders
     {
         public InvoicedState(Order target) : base(target)
         {
-            this.AllowedTransitions.Add(OrderStatus.PartiallyPaid, "Partially Pay");
+            this.AllowedTransitions.Add(OrderStatus.Paid, "Partially Pay");
             this.AllowedTransitions.Add(OrderStatus.Completed, "Complete");
         }
     }
 
-    public class PartiallyPaidState : State
+    public class PaidState : State
     {
-        public PartiallyPaidState(Order target) : base(target)
+        public PaidState(Order target) : base(target)
         {
             this.AllowedTransitions.Add(OrderStatus.Invoiced, "Invoice");
             this.AllowedTransitions.Add(OrderStatus.Completed, "Complete");
@@ -169,15 +159,11 @@ namespace AmpedBiz.Core.Services.Orders
 
     public class CompletedState : State
     {
-        public CompletedState(Order target) : base(target)
-        {
-        }
+        public CompletedState(Order target) : base(target) { }
     }
 
     public class CancelledState : State
     {
-        public CancelledState(Order target) : base(target)
-        {
-        }
+        public CancelledState(Order target) : base(target) { }
     }
 }

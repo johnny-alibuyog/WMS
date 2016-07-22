@@ -12,7 +12,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual string Name { get; set; }
 
-        public ProductCategory() : this(default(string)) { }
+        public ProductCategory() : base(default(string)) { }
 
         public ProductCategory(string id, string name = null) : base(id)
         {

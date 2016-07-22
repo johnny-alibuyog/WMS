@@ -6,7 +6,7 @@ namespace AmpedBiz.Core.Entities
     {
         public virtual string Name { get; set; }
 
-        public PaymentType() : this(default(string)) { }
+        public PaymentType() : base(default(string)) { }
 
         public PaymentType(string id, string name = null) : base(id)
         {

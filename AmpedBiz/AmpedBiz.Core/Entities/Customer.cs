@@ -24,7 +24,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<Location> Locations { get; set; }
 
-        public Customer() : this(default(string)) { }
+        public Customer() : base(default(string)) { }
 
         public Customer(string id) : base(id)
         {

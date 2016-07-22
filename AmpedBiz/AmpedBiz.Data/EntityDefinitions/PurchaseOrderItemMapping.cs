@@ -14,15 +14,14 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             References(x => x.Product);
 
-            Component(x => x.Quantity, MeasureMapping.Map("Quantity_", nameof(GoodStockInventory)));
+            Component(x => x.Quantity, 
+                MeasureMapping.Map("Quantity_", nameof(PurchaseOrderItem)));
 
-            Component(x => x.UnitPrice, MoneyMapping.Map("UnitPrice_", nameof(PurchaseOrderItem)));
+            Component(x => x.UnitCost, 
+                MoneyMapping.Map("UnitCost_", nameof(PurchaseOrderItem)));
 
-            Component(x => x.Total, MoneyMapping.Map("Total_", nameof(PurchaseOrderItem)));
-
-            Map(x => x.DateReceived);
-
-            Map(x => x.Status);
+            Component(x => x.ExtendedCost, 
+                MoneyMapping.Map("ExtendedCost_", nameof(PurchaseOrderItem)));
         }
     }
 }

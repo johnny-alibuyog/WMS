@@ -12,23 +12,23 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             References(x => x.Branch);
 
-            Map(x => x.OrderDate);
+            Map(x => x.OrderedOn);
 
-            Map(x => x.StagedDate);
+            Map(x => x.StagedOn);
 
-            Map(x => x.RoutedDate);
+            Map(x => x.RoutedOn);
 
-            Map(x => x.InvoicedDate);
+            Map(x => x.InvoicedOn);
 
-            Map(x => x.ShippedDate);
+            Map(x => x.ShippedOn);
 
-            Map(x => x.PaymentDate);
+            Map(x => x.PaidOn);
 
-            Map(x => x.CompletedDate);
+            Map(x => x.CompletedOn);
 
-            Map(x => x.CancelDate);
+            Map(x => x.CancelledOn);
 
-            Map(x => x.CancelReason);
+            Map(x => x.CancellationReason);
 
             References(x => x.PaymentType);
 
@@ -36,13 +36,20 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Map(x => x.TaxRate);
 
-            Component(x => x.Tax, MoneyMapping.Map("Tax_", nameof(Order)));
+            Component(x => x.Tax, 
+                MoneyMapping.Map("Tax_", nameof(Order)));
 
-            Component(x => x.ShippingFee, MoneyMapping.Map("ShippingFee_", nameof(Order)));
+            Component(x => x.ShippingFee, 
+                MoneyMapping.Map("ShippingFee_", nameof(Order)));
 
-            Component(x => x.SubTotal, MoneyMapping.Map("SubTotal_", nameof(Order)));
+            Component(x => x.Discount, 
+                MoneyMapping.Map("Discount_", nameof(Order)));
 
-            Component(x => x.Total, MoneyMapping.Map("Total_", nameof(Order)));
+            Component(x => x.SubTotal, 
+                MoneyMapping.Map("SubTotal_", nameof(Order)));
+
+            Component(x => x.Total, 
+                MoneyMapping.Map("Total_", nameof(Order)));
 
             Map(x => x.Status);
 
@@ -58,20 +65,20 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             References(x => x.InvoicedBy);
 
-            References(x => x.PartiallyPaidBy);
+            References(x => x.PaidTo);
 
             References(x => x.CompletedBy);
 
             References(x => x.CancelledBy);
 
-            HasMany(x => x.Invoices)
+            HasMany(x => x.Items)
                 .Cascade.AllDeleteOrphan()
                 .Not.KeyNullable()
                 .Not.KeyUpdate()
                 .Inverse()
                 .AsBag();
 
-            HasMany(x => x.Items)
+            HasMany(x => x.Invoices)
                 .Cascade.AllDeleteOrphan()
                 .Not.KeyNullable()
                 .Not.KeyUpdate()

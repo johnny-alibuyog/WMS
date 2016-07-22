@@ -11,23 +11,23 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.Branch);
 
-            Define(x => x.OrderDate);
+            Define(x => x.OrderedOn);
 
-            Define(x => x.StagedDate);
+            Define(x => x.StagedOn);
 
-            Define(x => x.RoutedDate);
+            Define(x => x.RoutedOn);
 
-            Define(x => x.InvoicedDate);
+            Define(x => x.InvoicedOn);
 
-            Define(x => x.ShippedDate);
+            Define(x => x.ShippedOn);
 
-            Define(x => x.PaymentDate);
+            Define(x => x.PaidOn);
 
-            Define(x => x.CompletedDate);
+            Define(x => x.CompletedOn);
 
-            Define(x => x.CancelDate);
+            Define(x => x.CancelledOn);
 
-            Define(x => x.CancelReason);
+            Define(x => x.CancellationReason);
 
             Define(x => x.CreatedBy);
 
@@ -37,7 +37,7 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.InvoicedBy);
 
-            Define(x => x.PartiallyPaidBy);
+            Define(x => x.PaidTo);
 
             Define(x => x.CompletedBy);
 
@@ -55,6 +55,8 @@ namespace AmpedBiz.Data.EntityDefinitions
             Define(x => x.Tax);
 
             Define(x => x.ShippingFee);
+
+            Define(x => x.Discount);
 
             Define(x => x.SubTotal);
 

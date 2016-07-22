@@ -37,6 +37,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                     query
                         .Fetch(x => x.Tax)
                         .Fetch(x => x.ShippingFee)
+                        .Fetch(x => x.Shipper)
                         .Fetch(x => x.Supplier)
                         .Fetch(x => x.PaymentType)
                         .Fetch(x => x.Payment)
@@ -53,7 +54,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                     query
                         .FetchMany(x => x.Items)
                         .ThenFetch(x => x.Product)
-                        .ThenFetch(x => x.GoodStockInventory)
+                        .ThenFetch(x => x.Inventory)
                         .ToFuture();
 
                     query
@@ -64,7 +65,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                     query
                         .FetchMany(x => x.Receipts)
                         .ThenFetch(x => x.Product)
-                        .ThenFetch(x => x.GoodStockInventory)
+                        .ThenFetch(x => x.Inventory)
                         .ToFuture();
 
                     var entity = query.ToFutureValue().Value;

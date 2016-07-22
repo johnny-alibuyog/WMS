@@ -27,6 +27,8 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Supplier Supplier { get; protected set; }
 
+        public virtual Shipper Shipper { get; protected set; }
+
         public virtual Money Tax { get; protected set; }
 
         public virtual Money ShippingFee { get; protected set; }
@@ -71,11 +73,11 @@ namespace AmpedBiz.Core.Entities
 
         public virtual string CancellationReason { get; protected set; }
 
-        public virtual IEnumerable<PurchaseOrderItem> Items { get; protected set; }
+        public virtual IEnumerable<PurchaseOrderItem> Items { get; protected set; } = new Collection<PurchaseOrderItem>();
 
-        public virtual IEnumerable<PurchaseOrderPayment> Payments { get; protected set; }
+        public virtual IEnumerable<PurchaseOrderPayment> Payments { get; protected set; } = new Collection<PurchaseOrderPayment>();
 
-        public virtual IEnumerable<PurchaseOrderReceipt> Receipts { get; protected set; }
+        public virtual IEnumerable<PurchaseOrderReceipt> Receipts { get; protected set; } = new Collection<PurchaseOrderReceipt>();
 
         //public virtual IEnumerable<PurchaseOrderEvent> Events { get; protected set; }
 
@@ -84,17 +86,11 @@ namespace AmpedBiz.Core.Entities
             get { return State.GetState(this); }
         }
 
-        public PurchaseOrder() : this(default(Guid)) { }
+        public PurchaseOrder() : base(default(Guid)) { }
 
-        public PurchaseOrder(Guid id) : base(id)
-        {
-            this.Items = new Collection<PurchaseOrderItem>();
-            this.Payments = new Collection<PurchaseOrderPayment>();
-            this.Receipts = new Collection<PurchaseOrderReceipt>();
-            //this.Events = new Collection<PurchaseOrderEvent>();
-        }
+        public PurchaseOrder(Guid id) : base(id) { }
 
-        protected internal virtual PurchaseOrder New(PurchaseOrderNewlyCreatedEvent @event)
+        protected internal virtual PurchaseOrder Process(PurchaseOrderNewlyCreatedEvent @event)
         {
             this.CreatedBy = @event.CreatedBy ?? this.CreatedBy;
             this.CreatedOn = @event.CreatedOn ?? this.CreatedOn;
@@ -102,15 +98,16 @@ namespace AmpedBiz.Core.Entities
             this.PaymentType = @event.PaymentType ?? this.PaymentType;
             this.Tax = @event.Tax ?? this.Tax;
             this.ShippingFee = @event.ShippingFee ?? this.ShippingFee;
+            this.Shipper = @event.Shipper ?? this.Shipper;
             this.Supplier = @event.Supplier ?? this.Supplier;
             this.Total = this.Tax + this.ShippingFee + this.Payment;
-            this.SetPurchaseOrderItems(@event.Items);
+            this.SetItems(@event.Items);
             this.Status = PurchaseOrderStatus.New;
 
             return this;
         }
 
-        protected internal virtual PurchaseOrder Submit(PurchaseOrderSubmittedEvent @event)
+        protected internal virtual PurchaseOrder Process(PurchaseOrderSubmittedEvent @event)
         {
             this.SubmittedBy = @event.SubmittedBy;
             this.SubmittedOn = @event.SubmittedOn;
@@ -119,7 +116,7 @@ namespace AmpedBiz.Core.Entities
             return this;
         }
 
-        protected internal virtual PurchaseOrder Approve(PurchaseOrderApprovedEvent @event)
+        protected internal virtual PurchaseOrder Process(PurchaseOrderApprovedEvent @event)
         {
             this.ApprovedBy = @event.ApprovedBy;
             this.ApprovedOn = @event.ApprovedOn;
@@ -128,7 +125,7 @@ namespace AmpedBiz.Core.Entities
             return this;
         }
 
-        protected internal virtual PurchaseOrder Pay(PurchaseOrderPaidEvent @event)
+        protected internal virtual PurchaseOrder Process(PurchaseOrderPaidEvent @event)
         {
             this.AddPayments(@event.Payments);
             this.Status = PurchaseOrderStatus.Paid;
@@ -136,7 +133,7 @@ namespace AmpedBiz.Core.Entities
             return this;
         }
 
-        protected internal virtual PurchaseOrder Receive(PurchaseOrderReceivedEvent @event)
+        protected internal virtual PurchaseOrder Process(PurchaseOrderReceivedEvent @event)
         {
             this.AddReceipts(@event.Receipts);
             this.Status = PurchaseOrderStatus.Received;
@@ -144,7 +141,7 @@ namespace AmpedBiz.Core.Entities
             return this;
         }
 
-        protected internal virtual PurchaseOrder Complete(PurchaseOrderCompletedEvent @event)
+        protected internal virtual PurchaseOrder Process(PurchaseOrderCompletedEvent @event)
         {
             this.CompletedBy = @event.CompletedBy;
             this.CompletedOn = @event.CompletedOn;
@@ -153,7 +150,7 @@ namespace AmpedBiz.Core.Entities
             return this;
         }
 
-        protected internal virtual PurchaseOrder Cancel(PurchaseOrderCancelledEvent @event)
+        protected internal virtual PurchaseOrder Process(PurchaseOrderCancelledEvent @event)
         {
             this.CancelledBy = @event.CancelledBy;
             this.CancelledOn = @event.CancelledOn;
@@ -171,13 +168,13 @@ namespace AmpedBiz.Core.Entities
 
             foreach (var item in this.Items)
             {
-                itemTotal += item.Total;
+                itemTotal += item.ExtendedCost;
             }
 
             this.Total = this.Tax + this.ShippingFee + this.Payment + itemTotal;
         }
 
-        private PurchaseOrder SetPurchaseOrderItems(IEnumerable<PurchaseOrderItem> items)
+        private PurchaseOrder SetItems(IEnumerable<PurchaseOrderItem> items)
         {
             if (items.IsNullOrEmpty())
                 return this;

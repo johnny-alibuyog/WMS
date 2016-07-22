@@ -20,7 +20,8 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             References(x => x.Product);
 
-            Component(x => x.Quantity, MeasureMapping.Map("Quantity_", nameof(PurchaseOrderReceipt)));
+            Component(x => x.Quantity, 
+                MeasureMapping.Map("Quantity_", nameof(PurchaseOrderReceipt)));
         }
     }
 }

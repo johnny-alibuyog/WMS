@@ -1,15 +1,13 @@
-﻿using AmpedBiz.Common.CustomTypes;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Service.Customers;
+using AmpedBiz.Service.Orders;
 using AmpedBiz.Service.Products;
 using AmpedBiz.Service.PurchaseOrders;
 using AmpedBiz.Service.UnitOfMeasureClasses;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Entity = AmpedBiz.Core.Entities;
-using AmpedBiz.Service.Orders;
 
 namespace AmpedBiz.Service.Dto.Mappers
 {
@@ -17,16 +15,26 @@ namespace AmpedBiz.Service.Dto.Mappers
     {
         public void Initialze()
         {
+            RegisterCustomersMap();
+            RegisterProductsMap();
+            RegisterUnitOfMeasuresMap();
+            RegisterPurchaseOrderMap();
+            RegisterOrderMap();
+        }
+
+        private void RegisterCustomersMap()
+        {
             ExpressMapper.Mapper.Register<Entity.Customer, GetCustomer.Response>().Flatten();
+        }
 
+        private void RegisterProductsMap()
+        {
             ExpressMapper.Mapper.Register<Entity.Product, Dto.Product>().Flatten();
-
             ExpressMapper.Mapper.Register<Entity.Product, GetProduct.Response>().Flatten();
+        }
 
-            //ExpressMapper.Mapper.Register<Entity.Product, Lookup<string>>()
-            //    .Member(x => x.Id, x => x.Id)
-            //    .Member(x => x.Name, x => x.Name);
-
+        private void RegisterUnitOfMeasuresMap()
+        {
             ExpressMapper.Mapper.Register<Entity.UnitOfMeasure, Dto.UnitOfMeasure>().Flatten();
 
             ExpressMapper.Mapper.Register<Dto.UnitOfMeasure, Entity.UnitOfMeasure>()
@@ -35,18 +43,21 @@ namespace AmpedBiz.Service.Dto.Mappers
             ExpressMapper.Mapper.Register<Entity.UnitOfMeasureClass, GetUnitOfMeasureClass.Response>()
                 .Member(x => x.Units, x => x.Units);
 
-            ExpressMapper.Mapper.Register<UpdateUnitOfMeasureClass.Request, Entity.UnitOfMeasureClass>()
-                .After((source, desitnation) =>
-                {
-                    var units = source.Units.MapTo(default(Collection<Entity.UnitOfMeasure>));
-                    desitnation.WithUnits(units);
-                });
+            ExpressMapper.Mapper.Register<UpdateUnitOfMeasureClass.Request, Entity.UnitOfMeasureClass>().After((source, desitnation) =>
+            {
+                var units = source.Units.MapTo(default(Collection<Entity.UnitOfMeasure>));
+                desitnation.WithUnits(units);
+            });
 
+        }
+
+        private void RegisterPurchaseOrderMap()
+        {
             ExpressMapper.Mapper.Register<Entity.PurchaseOrder, GetPurchaseOder.Response>()
                 .Member(x => x.AllowedTransitions, x => x.State.AllowedTransitions
                     .ToDictionary(o => ExpressMapper.Mapper.Map<Entity.PurchaseOrderStatus, Dto.PurchaseOrderStatus>(o.Key), y => y.Value)
                 )
-                .Flatten();
+            .Flatten();
 
             ExpressMapper.Mapper.Register<Entity.PurchaseOrder, CreateNewPurchaseOder.Response>().Flatten();
 
@@ -56,36 +67,25 @@ namespace AmpedBiz.Service.Dto.Mappers
 
             ExpressMapper.Mapper.Register<Entity.PurchaseOrderReceipt, Dto.PurchaseOrderReceipt>().Flatten();
 
-            ExpressMapper.Mapper.Register<Entity.User, Lookup<Guid>>()
-                .Member(x => x.Id, x => x.Id)
-                .Member(x => x.Name, x => x.FullName());
+        }
 
+        private void RegisterOrderMap()
+        {
             ExpressMapper.Mapper.Register<Entity.Order, GetOrder.Response>()
                 .Member(x => x.AllowedTransitions, x => x.State.AllowedTransitions
                     .ToDictionary(o => ExpressMapper.Mapper.Map<Entity.OrderStatus, Dto.OrderStatus>(o.Key), y => y.Value)
                 )
                 .Flatten();
 
-            ExpressMapper.Mapper.Register<Entity.Order, CreateNewOrder.Response>()
-                .Member(x => x.OrderItems, x => x.Items)
-                .Flatten();
+            ExpressMapper.Mapper.Register<Entity.Order, CreateNewOrder.Response>().Flatten();
 
-            ExpressMapper.Mapper.Register<Entity.Invoice, Dto.Invoice>()
-                .Member(x => x.ShippingAmount, x => x.Shipping.Amount)
-                .Member(x => x.SubTotalAmount, x => x.SubTotal.Amount)
-                .Member(x => x.TaxAmount, x => x.Tax.Amount)
-                .Member(x => x.TotalAmount, x => x.Total.Amount)
-                .Flatten();
+            ExpressMapper.Mapper.Register<Entity.OrderInvoice, Dto.Invoice>().Flatten();
 
-            ExpressMapper.Mapper.Register<Entity.Order, InvoiceOrder.Response>()
-                .Member(x => x.OrderItems, x => x.Items)
-                .Member(x => x.Invoices, x => x.Invoices)
-                .Flatten();
+            ExpressMapper.Mapper.Register<Entity.Order, InvoiceOrder.Response>().Flatten();
 
             ExpressMapper.Mapper.Register<Entity.OrderItem, Dto.OrderItem>().Flatten();
 
             ExpressMapper.Mapper.Register<Entity.OrderItem, Dto.OrderItemPageItem>().Flatten();
-
         }
 
         private void RegisterMapping<TEntity, TDto>()

@@ -12,7 +12,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Product Product { get; set; }
 
-        public Attachment() : this(default(Guid)) { }
+        public Attachment() : base(default(Guid)) { }
 
         public Attachment(Guid id) : base(id) { }
     }

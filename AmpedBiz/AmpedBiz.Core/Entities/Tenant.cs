@@ -10,7 +10,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual string Description { get; set; }
 
-        public Tenant() : this(default(Guid)) { }
+        public Tenant() : base(default(Guid)) { }
 
         public Tenant(Guid id) : base(id) { }
     }

@@ -16,7 +16,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Measure Quantity { get; set; }
 
-        public DeliveryItem() : this(default(Guid)) { }
+        public DeliveryItem() : base(default(Guid)) { }
 
         public DeliveryItem(Guid id) : base(id) { }
     }

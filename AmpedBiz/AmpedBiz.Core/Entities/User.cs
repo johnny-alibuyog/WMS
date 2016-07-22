@@ -19,14 +19,16 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Branch Branch { get; set; }
 
-        public virtual IEnumerable<UserRole> UserRoles { get; set; }
+        public virtual IEnumerable<UserRole> UserRoles { get; set; } = new Collection<UserRole>();
 
-        public User() : this(default(Guid)) { }
-
-        public User(Guid id) : base(id)
+        public virtual string Name
         {
-            this.UserRoles = new Collection<UserRole>();
+            get { return Regex.Replace($"{this.Person.FirstName} {this.Person.MiddleName} {this.Person.LastName}", @"\s+", " "); }
         }
+
+        public User() : base(default(Guid)) { }
+
+        public User(Guid id) : base(id) { }
 
         public virtual void SetRoles(IEnumerable<Role> items)
         {
@@ -53,15 +55,6 @@ namespace AmpedBiz.Core.Entities
                 item.Role = role;
                 this.UserRoles.Add(item);
             }
-        }
-
-        public virtual string FullName()
-        {
-            return Regex.Replace(string.Format("{0} {1} {2}",
-                this.Person.FirstName,
-                this.Person.MiddleName,
-                this.Person.LastName),
-                @"\s+", " ");
         }
     }
 }

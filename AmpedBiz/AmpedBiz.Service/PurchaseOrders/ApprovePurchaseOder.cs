@@ -34,7 +34,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                         approvedOn: message.ApprovedOn ?? DateTime.Now
                     );
 
-                    entity.State.Approve(approvedEvent);
+                    entity.State.Process(approvedEvent);
 
                     session.Save(entity);
                     transaction.Commit();

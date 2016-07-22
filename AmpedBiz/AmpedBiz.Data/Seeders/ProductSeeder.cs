@@ -113,9 +113,9 @@ namespace AmpedBiz.Data.Seeders
                         prices.RetailPrice = new Money(random.NextDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.BasePrice.Amount + 5000M));
                         prices.WholeSalePrice = new Money(random.NextDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.RetailPrice.Amount));
 
-                        item.GoodStockInventory.UnitOfMeasure = UnitOfMeasureClass.Quantity.Units.RandomElement();
-                        item.GoodStockInventory.UnitOfMeasureBase = RotateUnitOfMeasure();
-                        item.GoodStockInventory.ConvertionFactor = random.Next(1, 24);
+                        item.Inventory.UnitOfMeasure = UnitOfMeasureClass.Quantity.Units.RandomElement();
+                        item.Inventory.UnitOfMeasureBase = RotateUnitOfMeasure();
+                        item.Inventory.ConvertionFactor = random.Next(1, 24);
                         item.Category = RotateCategory();
                         item.Supplier = RotateSupplier();
                         item.Discontinued = RotateDiscontinued();
@@ -123,9 +123,9 @@ namespace AmpedBiz.Data.Seeders
                         item.RetailPrice = prices.RetailPrice;
                         item.WholeSalePrice = prices.WholeSalePrice;
 
-                        item.GoodStockInventory.TargetLevel = new Measure(random.NextDecimal(150M, 300M), item.GoodStockInventory.UnitOfMeasure);
-                        item.GoodStockInventory.ReorderLevel = item.GoodStockInventory.TargetLevel - new Measure(random.NextDecimal(50M, 100M), item.GoodStockInventory.UnitOfMeasure);
-                        item.GoodStockInventory.MinimumReorderQuantity = item.GoodStockInventory.TargetLevel - item.GoodStockInventory.ReorderLevel;
+                        item.Inventory.TargetLevel = new Measure(random.NextDecimal(150M, 300M), item.Inventory.UnitOfMeasure);
+                        item.Inventory.ReorderLevel = item.Inventory.TargetLevel - new Measure(random.NextDecimal(50M, 100M), item.Inventory.UnitOfMeasure);
+                        item.Inventory.MinimumReorderQuantity = item.Inventory.TargetLevel - item.Inventory.ReorderLevel;
 
                         session.Save(item);
                     }

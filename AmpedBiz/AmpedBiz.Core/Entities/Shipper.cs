@@ -14,13 +14,10 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Contact Contact { get; set; }
 
-        public virtual IEnumerable<Order> Orders { get; set; }
+        public virtual IEnumerable<Order> Orders { get; set; } = new Collection<Order>();
 
-        public Shipper() : this(default(string)) { }
+        public Shipper() : base(default(string)) { }
 
-        public Shipper(string id) : base(id)
-        {
-            this.Orders = new Collection<Order>();
-        }
+        public Shipper(string id) : base(id) { }
     }
 }

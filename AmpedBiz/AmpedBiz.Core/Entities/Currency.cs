@@ -9,7 +9,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual string Name { get; set; }
 
-        public Currency() : this(default(string)) { }
+        public Currency() : base(default(string)) { }
 
         public Currency(string id, string symbol = null, string name = null) : base(id)
         {

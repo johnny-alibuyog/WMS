@@ -14,11 +14,11 @@ namespace AmpedBiz.Core.Entities
     {
         public virtual string Name { get; set; }
 
-        public virtual IEnumerable<UnitOfMeasure> Units { get; protected set; }
+        public virtual IEnumerable<UnitOfMeasure> Units { get; protected set; } = new Collection<UnitOfMeasure>();
 
-        public UnitOfMeasureClass() : this(default(string)) { }
+        public UnitOfMeasureClass() : base(default(string)) { }
 
-        public UnitOfMeasureClass(string id, string name = null) : base(id)
+        public UnitOfMeasureClass(string id = null, string name = null) : base(id)
         {
             this.Name = name;
             this.Units = new Collection<UnitOfMeasure>();

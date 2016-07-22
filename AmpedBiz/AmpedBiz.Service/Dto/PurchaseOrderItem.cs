@@ -19,9 +19,9 @@ namespace AmpedBiz.Service.Dto
 
         public decimal QuantityValue { get; set; }
 
-        public decimal UnitPriceAmount { get; set; }
+        public decimal UnitCostAmount { get; set; }
 
-        public decimal TotalAmount { get; set; }
+        public decimal ExtendedCostAmount { get; set; }
 
         public DateTime? ReceivedOn { get; set; }
 

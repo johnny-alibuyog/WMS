@@ -82,8 +82,7 @@ namespace AmpedBiz.Data
                 )
                 .Mappings(x => x
                     .FluentMappings.AddFromAssemblyOf<UserMapping>()
-                    //.Conventions.AddFromAssemblyOf<_CustomJoinedSubclassConvention>()
-                    .Conventions.AddFromAssemblyOf<BinaryColumnLengthConvention>()
+                    .Conventions.AddFromAssemblyOf<_CustomJoinedSubclassConvention>()
                     .Conventions.Setup(o => o.Add(AutoImport.Never()))
                     .ExportTo(DbConfig.Instance.GetWorkingPath("Mappings"))
                 )

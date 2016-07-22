@@ -1,16 +1,7 @@
-﻿using AmpedBiz.Core.Services.PurchaseOrderItems;
-using System;
+﻿using System;
 
 namespace AmpedBiz.Core.Entities
 {
-    public enum PurchaseOrderItemStatus
-    {
-        New,
-        Submitted,
-        Cancelled,
-        Posted
-    }
-
     public class PurchaseOrderItem : Entity<Guid, PurchaseOrderItem>
     {
         public virtual PurchaseOrder PurchaseOrder { get; protected internal set; }
@@ -19,48 +10,33 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Measure Quantity { get; protected set; }
 
-        public virtual Money UnitPrice { get; protected set; }
+        public virtual Money UnitCost { get; protected set; }
 
-        public virtual Money Total { get; protected set; }
+        public virtual Money ExtendedCost { get; protected set; }
 
-        public virtual DateTime? DateReceived { get; protected set; }
+        public PurchaseOrderItem() : base(default(Guid)) { }
 
-        public virtual PurchaseOrderItemStatus Status { get; protected set; }
-
-        public virtual State State
-        {
-            get { return State.GetState(this); }
-        }
-
-        public PurchaseOrderItem() : this(default(Guid)) { }
-
-        public PurchaseOrderItem(Guid id) : base(id) { }
-
-        protected internal virtual PurchaseOrderItem New(Product product, Money unitPrice, decimal quantity)
+        public PurchaseOrderItem(Product product, Money unitCost, Measure quantity, Guid? id = null) : base(id ?? default(Guid))
         {
             this.Product = product;
-            this.Quantity = new Measure(quantity, product.UnitOfMeasure);
-            this.UnitPrice = unitPrice;
-            this.Total = new Money(
-                amount: this.UnitPrice.Amount * this.Quantity.Value, 
-                currency: this.UnitPrice.Currency
+            this.Quantity = quantity;
+            this.UnitCost = unitCost;
+            this.ExtendedCost = new Money(
+                amount: this.UnitCost.Amount * this.Quantity.Value, 
+                currency: this.UnitCost.Currency
             );
-
-            this.Status = PurchaseOrderItemStatus.New;
-
-            return this;
         }
 
         protected internal virtual PurchaseOrderItem Submit()
         {
-            this.Status = PurchaseOrderItemStatus.Submitted;
+            //this.Status = PurchaseOrderItemStatus.Submitted;
 
             return this;
         }
 
         protected internal virtual PurchaseOrderItem Cancel()
         {
-            this.Status = PurchaseOrderItemStatus.Cancelled;
+            //this.Status = PurchaseOrderItemStatus.Cancelled;
 
             //TODO: should deduct to inventory if necessary
 
@@ -69,8 +45,8 @@ namespace AmpedBiz.Core.Entities
 
         protected internal virtual PurchaseOrderItem Post()
         {
-            this.DateReceived = DateTime.Now;
-            this.Status = PurchaseOrderItemStatus.Posted;
+            //this.DateReceived = DateTime.Now;
+            //this.Status = PurchaseOrderItemStatus.Posted;
 
             //TODO: should add to inventory
             return this;

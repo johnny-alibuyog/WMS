@@ -13,6 +13,8 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.Supplier);
 
+            Define(x => x.Shipper);
+
             Define(x => x.Tax)
                 .IsValid();
 

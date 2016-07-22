@@ -8,7 +8,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Role Role { get; set; }
 
-        public UserRole() : this(default(Guid)) { }
+        public UserRole() : base(default(Guid)) { }
 
         public UserRole(Guid id) : base(id){ }
     }

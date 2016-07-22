@@ -4,15 +4,13 @@ using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
+using AmpedBiz.Core.Events.Orders;
 
 namespace AmpedBiz.Service.Orders
 {
-    public class PartiallyPayOrder
+    public class PayOrder
     {
-        public class Request : Dto.Order, IRequest<Response>
-        {
-            public virtual Guid UserId { get; set; }
-        }
+        public class Request : Dto.OrderPaidEvent, IRequest<Response> { }
 
         public class Response : Dto.Order { }
 
@@ -29,15 +27,20 @@ namespace AmpedBiz.Service.Orders
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.Get<Order>(message.Id);
-                    var currency = session.Load<Currency>(Currency.PHP.Id);
+                    var entity = session.Get<Order>(message.OrderId);
 
                     if (entity == null)
-                        throw new BusinessException($"Order with id {message.Id} does not exists.");
+                        throw new BusinessException($"Order with id {message.OrderId} does not exists.");
 
-                    var user = session.Load<User>(message.UserId);
+                    var currency = session.Load<Currency>(Currency.PHP.Id);
+                    var paidEvent = new OrderPaidEvent(
+                        paidOn: message.PaidOn ?? DateTime.Now,
+                        paidBy: session.Load<User>(message.PaidBy.Id),
+                        paymentType: session.Load<PaymentType>(message.PaymentType.Id)
+                        //payment: new Money(message.PaymentAmount, currency)
+                    );
 
-                    entity.State.PartiallyPay(user);
+                    entity.State.Process(paidEvent);
 
                     session.Save(entity);
                     transaction.Commit();

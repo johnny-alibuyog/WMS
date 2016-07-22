@@ -33,9 +33,9 @@ namespace AmpedBiz.Service.Products
                         {
                             Id = x.Id,
                             Name = x.Name,
-                            UnitOfMeasure = x.GoodStockInventory.UnitOfMeasure.Name,
-                            TargetValue = x.GoodStockInventory.TargetLevel.Value,
-                            AvailableValue = x.GoodStockInventory.Available.Value,
+                            UnitOfMeasure = x.Inventory.UnitOfMeasure.Name,
+                            TargetValue = x.Inventory.TargetLevel.Value,
+                            AvailableValue = x.Inventory.Available.Value,
                             BasePriceAmount = x.BasePrice.Amount,
                             RetailPriceAmount = x.RetailPrice.Amount,
                             WholeSalePriceAmount = x.WholeSalePrice.Amount,

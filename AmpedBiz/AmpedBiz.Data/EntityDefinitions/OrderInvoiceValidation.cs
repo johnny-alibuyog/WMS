@@ -3,27 +3,30 @@ using NHibernate.Validator.Cfg.Loquacious;
 
 namespace AmpedBiz.Data.EntityDefinitions
 {
-    public class InvoiceValidation : ValidationDef<Invoice>
+    public class OrderInvoiceValidation : ValidationDef<OrderInvoice>
     {
-        public InvoiceValidation()
+        public OrderInvoiceValidation()
         {
             Define(x => x.Id);
 
-            Define(x => x.DueDate);
+            Define(x => x.DueOn);
 
-            Define(x => x.InvoiceDate);
+            Define(x => x.InvoicedOn);
 
             Define(x => x.Order)
                 .NotNullable()
                 .And.IsValid();
 
+            Define(x => x.Tax)
+                .IsValid();
+
             Define(x => x.Shipping)
                 .IsValid();
 
-            Define(x => x.SubTotal)
+            Define(x => x.Discount)
                 .IsValid();
 
-            Define(x => x.Tax)
+            Define(x => x.SubTotal)
                 .IsValid();
 
             Define(x => x.Total)
