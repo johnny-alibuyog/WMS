@@ -58,7 +58,7 @@ export interface PurchaseOrderItem {
   id?: string;
   product?: Lookup<string>;
   quantityValue?: number;
-  unitPriceAmount?: number;
+  unitCostAmount?: number;
 }
 
 export interface PurchaseOrderPayment {

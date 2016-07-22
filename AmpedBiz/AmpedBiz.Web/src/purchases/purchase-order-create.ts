@@ -164,14 +164,14 @@ export class PurchaseOrderCreate {
   initializeItem(item: PurchaseOrderItem): void {
     if (!item.product) {
       item.quantityValue = 0;
-      item.unitPriceAmount = 0;
+      item.unitCostAmount = 0;
       return;
     }
     else {
       this._api.products.getInventory(item.product.id).then(data => {
         var product = <ProductInventory>data;
         item.quantityValue = product.targetValue || 1;
-        item.unitPriceAmount = product.wholeSalePriceAmount || 0;
+        item.unitCostAmount = product.wholeSalePriceAmount || 0;
       });
     }
   }

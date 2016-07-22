@@ -175,7 +175,7 @@
                           <th class="col-sm-1">Action</th>
                           <th class="col-sm-2">Product</th>
                           <th class="col-sm-2 text-right">Quanity</th>
-                          <th class="col-sm-2 text-right">Price</th>
+                          <th class="col-sm-2 text-right">Cost</th>
                           <th class="col-sm-1 text-right">Total</th>
                         </tr>
                       </thead>
@@ -194,8 +194,8 @@
                           <!-- read-only mode -->
                           <td if.bind="$parent.selectedItem !== item">${item.product.name}</td>
                           <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantityValue}</td>
-                          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.unitPriceAmount}</td>
-                          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantityValue * item.unitPriceAmount}</td>
+                          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.unitCostAmount}</td>
+                          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantityValue * item.unitCostAmount}</td>
 
                           <!-- edit mode -->
                           <td if.bind="$parent.selectedItem === item">
@@ -209,9 +209,9 @@
                             <input class="form-control text-right" type="number" value.bind="item.quantityValue" />
                           </td>
                           <td if.bind="$parent.selectedItem === item" class="text-right">
-                            <input class="form-control text-right" type="number" value.bind="item.unitPriceAmount" />
+                            <input class="form-control text-right" type="number" value.bind="item.unitCostAmount" />
                           </td>
-                          <td if.bind="$parent.selectedItem === item" class="text-right">${item.quantityValue * item.unitPriceAmount}</td>
+                          <td if.bind="$parent.selectedItem === item" class="text-right">${item.quantityValue * item.unitCostAmount}</td>
                         </tr>
                       </tbody>
 
