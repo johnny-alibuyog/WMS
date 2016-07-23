@@ -42,9 +42,9 @@
         <h3><u>Display Product Pricelist</u></h3>
         <div style="height: 20px; line-height: 20px;"></div>
 
-        <asp:ObjectDataSource ID="odsSupplier" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="GetSuppliers" TypeName="AmpedBiz.Reports.Datasource.AmpedBizDatasetTableAdapters.suppliersTableAdapter"></asp:ObjectDataSource>
+        <asp:ObjectDataSource ID="odsSupplier" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="GetSuppliers" TypeName="AmpedBiz.Reports.Datasource.AmpedBizDatasetTableAdapters.dtSuppliersTableAdapter"></asp:ObjectDataSource>
 
-        <asp:ObjectDataSource ID="odsCategory" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="GetCategories" TypeName="AmpedBiz.Reports.Datasource.AmpedBizDatasetTableAdapters.productcategoriesTableAdapter"></asp:ObjectDataSource>
+        <asp:ObjectDataSource ID="odsCategory" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="GetCategories" TypeName="AmpedBiz.Reports.Datasource.AmpedBizDatasetTableAdapters.dtProductCategoriesTableAdapter"></asp:ObjectDataSource>
 
         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
             <ContentTemplate>
