@@ -1,21 +1,20 @@
-﻿using AmpedBiz.Service.Dto;
+﻿using AmpedBiz.Common.CustomTypes;
+using AmpedBiz.Common.Extentions;
 using MediatR;
 using NHibernate;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace AmpedBiz.Service.PurchaseOrders
+namespace AmpedBiz.Service.Orders
 {
-    public class GetPurchaseOderStatusList
+    public class GetOrderStatusLookup
     {
         public class Request : IRequest<Response> { }
 
-        public class Response : List<Dto.PurchaseOrderStatus>
+        public class Response : List<Lookup<Dto.OrderStatus>>
         {
             public Response() { }
 
-            public Response(IEnumerable<Dto.PurchaseOrderStatus> items) : base(items) { }
+            public Response(List<Lookup<Dto.OrderStatus>> items) : base(items) { }
         }
 
         public class Handler : RequestHandlerBase<Request, Response>
@@ -24,7 +23,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 
             public override Response Handle(Request message)
             {
-                return new Response(Enum.GetValues(typeof(PurchaseOrderStatus)).Cast<PurchaseOrderStatus>());
+                return new Response(EnumExtention.ToLookup<Dto.OrderStatus>());
             }
         }
     }

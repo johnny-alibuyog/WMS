@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
-    public class GetPurchaseOderStatusLookup
+    public class GetPurchaseOrderStatusLookup
     {
         public class Request : IRequest<Response> { }
 

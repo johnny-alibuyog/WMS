@@ -27,12 +27,15 @@ namespace AmpedBiz.Service.Orders
                     var query = session.Query<Order>();
 
                     // compose filters
-
-                    message.Filter.Compose<string>("status", value =>
+                    message.Filter.Compose<OrderStatus[]>("statuses", value =>
                     {
-                        query = query.Where(x => x.Status.ToString().ToLower().Contains(value.ToLower()));
+                        query = query.Where(x => value.Contains(x.Status));
                     });
 
+                    message.Filter.Compose<OrderStatus>("status", value =>
+                    {
+                        query = query.Where(x => x.Status == value);
+                    });
 
                     message.Filter.Compose<string>("customer", value =>
                     {
@@ -40,6 +43,32 @@ namespace AmpedBiz.Service.Orders
                     });
 
                     // compose sort
+                    message.Sorter.Compose("orderdOn", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.OrderedOn)
+                            : query.OrderByDescending(x => x.OrderedOn);
+                    });
+
+                    message.Sorter.Compose("createdBy", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query
+                                .OrderBy(x => x.CreatedBy.Person.FirstName)
+                                .ThenBy(x => x.CreatedBy.Person.LastName)
+                            : query
+                                .OrderByDescending(x => x.CreatedBy.Person.FirstName)
+                                .ThenByDescending(x => x.CreatedBy.Person.LastName);
+                    });
+
+
+                    message.Sorter.Compose("customer", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.Customer)
+                            : query.OrderByDescending(x => x.Customer);
+                    });
+
                     message.Sorter.Compose("status", direction =>
                     {
                         query = direction == SortDirection.Ascending
@@ -47,25 +76,56 @@ namespace AmpedBiz.Service.Orders
                             : query.OrderByDescending(x => x.Status);
                     });
 
-                    message.Sorter.Compose("createdOn", direction =>
+                    message.Sorter.Compose("paidOn", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.OrderedOn)
-                            : query.OrderByDescending(x => x.OrderedOn);
+                            ? query.OrderBy(x => x.PaidOn)
+                            : query.OrderByDescending(x => x.PaidOn);
+                    });
+
+                    message.Sorter.Compose("taxAmount", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.Tax.Amount)
+                            : query.OrderByDescending(x => x.Tax.Amount);
+                    });
+
+                    message.Sorter.Compose("shippingFeeAmount", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.ShippingFee.Amount)
+                            : query.OrderByDescending(x => x.ShippingFee.Amount);
+                    });
+
+                    message.Sorter.Compose("subTotalAmount", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.SubTotal.Amount)
+                            : query.OrderByDescending(x => x.SubTotal.Amount);
+                    });
+
+                    message.Sorter.Compose("totalAmount", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.Total.Amount)
+                            : query.OrderByDescending(x => x.Total.Amount);
                     });
 
                     var itemsFuture = query
                         .Select(x => new Dto.OrderPageItem()
                         {
                             Id = x.Id,
-                            CreatedByName = x.CreatedBy.Name,
-                            CustomerName = x.Customer.Name,
-                            OrderOn = x.OrderedOn.Value,
-                            Tax = x.Tax.ToStringWithSymbol(),
-                            ShippingFee = x.ShippingFee.ToStringWithSymbol(),
-                            StatusName = x.Status.ToString(),
-                            SubTotal = x.SubTotal.ToStringWithSymbol(),
-                            Total = x.Total.ToStringWithSymbol()
+                            OrderedOn = x.OrderedOn.Value,
+                            CreatedBy = 
+                                x.CreatedBy.Person.FirstName + " " +
+                                x.CreatedBy.Person.LastName,
+                            Customer = x.Customer.Name,
+                            Status = x.Status.ToString(),
+                            PaidOn = x.PaidOn.Value,
+                            TaxAmount = x.Tax.Amount,
+                            ShippingFeeAmount = x.ShippingFee.Amount,
+                            SubTotalAmount = x.SubTotal.Amount,
+                            TotalAmount = x.Total.Amount
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)

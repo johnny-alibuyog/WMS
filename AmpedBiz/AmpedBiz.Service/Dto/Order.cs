@@ -92,20 +92,22 @@ namespace AmpedBiz.Service.Dto
     {
         public Guid Id { get; set; }
 
-        public string StatusName { get; set; }
+        public string Status { get; set; }
 
-        public string CreatedByName { get; set; }
+        public string CreatedBy { get; set; }
 
-        public string CustomerName { get; set; }
+        public string Customer { get; set; }
 
-        public DateTime OrderOn { get; set; }
+        public DateTime? OrderedOn { get; set; }
 
-        public string Tax { get; set; }
+        public DateTime? PaidOn { get; set; }
 
-        public string ShippingFee { get; set; }
+        public decimal? TaxAmount { get; set; }
 
-        public string SubTotal { get; set; }
+        public decimal? ShippingFeeAmount { get; set; }
 
-        public string Total { get; set; }
+        public decimal? SubTotalAmount { get; set; }
+
+        public decimal? TotalAmount { get; set; }
     }
 }

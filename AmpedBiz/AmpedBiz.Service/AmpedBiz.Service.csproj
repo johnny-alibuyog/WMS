@@ -64,6 +64,7 @@
     <Compile Include="Common\PageRequest.cs" />
     <Compile Include="Common\PageResponse.cs" />
     <Compile Include="Customers\CreateCustomer.cs" />
+    <Compile Include="Customers\GetCustomerLookup.cs" />
     <Compile Include="Customers\GetCustomerPage.cs" />
     <Compile Include="Customers\GetCustomer.cs" />
     <Compile Include="Customers\GetCustomerList.cs" />
@@ -104,6 +105,8 @@
     <Compile Include="Orders\GetOrder.cs" />
     <Compile Include="Orders\GetOrderList.cs" />
     <Compile Include="Orders\GetOrderPage.cs" />
+    <Compile Include="Orders\GetOrderStatusList.cs" />
+    <Compile Include="Orders\GetOrderStatusLookup.cs" />
     <Compile Include="Orders\InvoiceOrder.cs" />
     <Compile Include="Orders\PayOrder.cs" />
     <Compile Include="Orders\RouteOrder.cs" />
@@ -135,12 +138,12 @@
     <Compile Include="PurchaseOrders\ApprovePurchaseOder.cs" />
     <Compile Include="PurchaseOrders\CompletePurchaseOder.cs" />
     <Compile Include="PurchaseOrders\CreateNewPurchaseOder.cs" />
-    <Compile Include="PurchaseOrders\GetPurchaseOder.cs" />
-    <Compile Include="PurchaseOrders\GetPurchaseOderList.cs" />
-    <Compile Include="PurchaseOrders\GetPurchaseOderPage.cs" />
+    <Compile Include="PurchaseOrders\GetPurchaseOrder.cs" />
+    <Compile Include="PurchaseOrders\GetPurchaseOrderList.cs" />
+    <Compile Include="PurchaseOrders\GetPurchaseOrderPage.cs" />
     <Compile Include="PurchaseOrders\CancelPurchaseOder.cs" />
-    <Compile Include="PurchaseOrders\GetPurchaseOderStatusList.cs" />
-    <Compile Include="PurchaseOrders\GetPurchaseOderStatusLookup.cs" />
+    <Compile Include="PurchaseOrders\GetPurchaseOrderStatusList.cs" />
+    <Compile Include="PurchaseOrders\GetPurchaseOrderStatusLookup.cs" />
     <Compile Include="PurchaseOrders\SubmitPurchaseOrder.cs" />
     <Compile Include="PurchaseOrders\ReceivePurchaseOrder.cs" />
     <Compile Include="RequestHandlerBase.cs" />

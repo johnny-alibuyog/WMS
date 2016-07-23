@@ -437,8 +437,8 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         private IEnumerable<Service.Dto.PurchaseOrder> GetPurchaseOrders(Service.Dto.PurchaseOrderStatus status, int count = 1)
         {
-            var request = new GetPurchaseOderList.Request() { };
-            var purchaseOrders = new GetPurchaseOderList.Handler(this.sessionFactory).Handle(request);
+            var request = new GetPurchaseOrderList.Request() { };
+            var purchaseOrders = new GetPurchaseOrderList.Handler(this.sessionFactory).Handle(request);
 
             return purchaseOrders.Where(po => po.Status == Service.Dto.PurchaseOrderStatus.New).Take(count);
         }

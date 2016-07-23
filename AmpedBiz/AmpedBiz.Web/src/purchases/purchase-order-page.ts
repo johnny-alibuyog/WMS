@@ -39,7 +39,7 @@ export class PurchaseOrderPage {
     this.sorter["createdBy"] = SortDirection.None;
     this.sorter["createdOn"] = SortDirection.None;
     this.sorter["submittedBy"] = SortDirection.None;
-    this.sorter["total"] = SortDirection.None;
+    this.sorter["totalAmount"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
 
     this.pager = new Pager<PurchaseOrderPageItem>();

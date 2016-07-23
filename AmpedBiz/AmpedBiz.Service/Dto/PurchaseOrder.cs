@@ -98,6 +98,6 @@ namespace AmpedBiz.Service.Dto
 
         public DateTime? PaidOn { get; set; }
 
-        public string Total { get; set; }
+        public decimal? TotalAmount { get; set; }
     }
 }

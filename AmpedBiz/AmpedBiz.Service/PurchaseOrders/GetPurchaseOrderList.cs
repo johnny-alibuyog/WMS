@@ -9,7 +9,7 @@ using System;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
-    public class GetPurchaseOderList
+    public class GetPurchaseOrderList
     {
         public class Request : IRequest<Response>
         {

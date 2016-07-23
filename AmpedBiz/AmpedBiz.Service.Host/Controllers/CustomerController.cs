@@ -39,6 +39,12 @@ namespace AmpedBiz.Service.Host.Controllers
         {
             return _mediator.Send(request ?? new GetCustomerPage.Request());
         }
+        [HttpGet()]
+        [Route("~/customer-lookups")]
+        public GetCustomerLookup.Response Process([FromBody]GetCustomerLookup.Request request)
+        {
+            return _mediator.Send(request ?? new GetCustomerLookup.Request());
+        }
 
         [HttpPost()]
         [Route("")]

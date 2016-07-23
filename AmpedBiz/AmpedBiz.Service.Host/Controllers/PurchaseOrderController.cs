@@ -17,37 +17,37 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("{request.id}")]
-        public GetPurchaseOder.Response Process([FromUri]GetPurchaseOder.Request request)
+        public GetPurchaseOrder.Response Process([FromUri]GetPurchaseOrder.Request request)
         {
-            return _mediator.Send(request ?? new GetPurchaseOder.Request());
+            return _mediator.Send(request ?? new GetPurchaseOrder.Request());
         }
 
         [HttpGet()]
         [Route("")]
-        public GetPurchaseOderList.Response Process([FromUri]GetPurchaseOderList.Request request)
+        public GetPurchaseOrderList.Response Process([FromUri]GetPurchaseOrderList.Request request)
         {
-            return _mediator.Send(request ?? new GetPurchaseOderList.Request());
+            return _mediator.Send(request ?? new GetPurchaseOrderList.Request());
         }
 
         [HttpPost()]
         [Route("page")]
-        public GetPurchaseOderPage.Response Process([FromBody]GetPurchaseOderPage.Request request)
+        public GetPurchaseOrderPage.Response Process([FromBody]GetPurchaseOrderPage.Request request)
         {
-            return _mediator.Send(request ?? new GetPurchaseOderPage.Request());
+            return _mediator.Send(request ?? new GetPurchaseOrderPage.Request());
         }
 
         [HttpGet()]
         [Route("statuses")]
-        public GetPurchaseOderStatusList.Response Process([FromBody]GetPurchaseOderStatusList.Request request)
+        public GetPurchaseOrderStatusList.Response Process([FromBody]GetPurchaseOrderStatusList.Request request)
         {
-            return _mediator.Send(request ?? new GetPurchaseOderStatusList.Request());
+            return _mediator.Send(request ?? new GetPurchaseOrderStatusList.Request());
         }
 
         [HttpGet()]
         [Route("status-lookups")]
-        public GetPurchaseOderStatusLookup.Response Process([FromBody]GetPurchaseOderStatusLookup.Request request)
+        public GetPurchaseOrderStatusLookup.Response Process([FromBody]GetPurchaseOrderStatusLookup.Request request)
         {
-            return _mediator.Send(request ?? new GetPurchaseOderStatusLookup.Request());
+            return _mediator.Send(request ?? new GetPurchaseOrderStatusLookup.Request());
         }
 
         [HttpPost()]

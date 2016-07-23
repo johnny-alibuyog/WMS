@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
-    public class GetPurchaseOder
+    public class GetPurchaseOrder
     {
         public class Request : IRequest<Response>
         {

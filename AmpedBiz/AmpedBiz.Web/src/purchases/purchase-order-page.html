@@ -75,8 +75,8 @@
                 <th class="col-md-1" click.delegate="sorter.doSort('paidOn')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['paidOn'])}"></i>PaidOn
                 </th>
-                <th class="col-md-1 text-right" click.delegate="sorter.doSort('total')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['total'])}"></i>Total
+                <th class="col-md-1 text-right" click.delegate="sorter.doSort('totalAmount')">
+                  <i class="fa fa-fw fa-${sorter.class(sorter['totalAmount'])}"></i>Total
                 </th>
               </tr>
             </thead>
@@ -97,7 +97,7 @@
                 <td>${item.supplier}</td>
                 <td>${item.submittedBy}</td>
                 <td>${item.paidOn}</td>
-                <td class="text-right">${item.total}</td>
+                <td class="text-right">${item.totalAmount}</td>
               </tr>
             </tbody>
             

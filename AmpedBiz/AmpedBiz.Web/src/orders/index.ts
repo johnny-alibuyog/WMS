@@ -1,4 +1,5 @@
 import {Router, RouterConfiguration} from 'aurelia-router'
+import {OrderStatus} from '../common/models/order';
 
 export class Index {
   heading: string = "Orders";
@@ -8,62 +9,89 @@ export class Index {
     config.title = "Orders";
     config.map([
       {
-        route: ['', 'active'],
-        name: 'active',
-        moduleId: './order-active',
+        route: ['', 'new-page'],
+        name: 'new-page',
+        moduleId: './order-page',
         nav: true,
-        title: 'Active Orders'
+        title: 'New',
+        settings: {
+          status: OrderStatus.new
+        }
       },
       {
-        route: ['on-staging'],
-        name: 'on-staging',
-        moduleId: './order-on-staging',
+        route: ['staged-page'],
+        name: 'staged-page',
+        moduleId: './order-page',
         nav: true,
-        title: 'On Staging'
+        title: 'Staged',
+        settings: {
+          status: OrderStatus.staged
+        }
       },
       {
-        route: ['on-route'],
-        name: 'on-route',
-        moduleId: './order-on-route',
+        route: ['routed-page'],
+        name: 'routed-page',
+        moduleId: './order-page',
         nav: true,
-        title: 'On Route'
+        title: 'Routed',
+        settings: {
+          status: OrderStatus.routed
+        }
       },
       {
-        route: ['for-invoicing'],
-        name: 'for-invoicing',
-        moduleId: './order-for-invoicing',
+        route: ['invoiced-page'],
+        name: 'invoiced-page',
+        moduleId: './order-page',
         nav: true,
-        title: 'For Invoicing'
+        title: 'Invoiced',
+        settings: {
+          status: OrderStatus.invoiced
+        }
       },
       {
-        route: ['invoiced'],
-        name: 'invoiced',
-        moduleId: './order-invoiced',
+        route: ['paid-page'],
+        name: 'paid-page',
+        moduleId: './order-page',
         nav: true,
-        title: 'Invoiced'
+        title: 'Paid',
+        settings: {
+          status: OrderStatus.paid
+        }
       },
       {
-        route: ['incomplete-payment'],
-        name: 'incomplete-payment',
-        moduleId: './order-incomplete-payment',
+        route: ['completed-page'],
+        name: 'completed-page',
+        moduleId: './order-page',
         nav: true,
-        title: 'Incomplete Payments'
+        title: 'Completed',
+        settings: {
+          status: OrderStatus.completed
+        }
       },
       {
-        route: ['completed'],
-        name: 'completed',
-        moduleId: './order-completed',
+        route: ['cancelled-page'],
+        name: 'cancelled-page',
+        moduleId: './order-page',
         nav: true,
-        title: 'Completed Orders'
+        title: 'Cancelled',
+        settings: {
+          status: OrderStatus.cancelled
+        }
       },
-      { 
-        //this route should be hidden. The BIR will not like this! :)
-        route: ['subdivide-invoice'],
+      {
+        route: ['subdivide-invoice'],         //this route should be hidden. The BIR will not like this! :)
         name: 'subdivide-invoice',
         moduleId: './subdivide-invoice',
         nav: false,
         title: 'Subdivide Invoice'
       },
+      {
+        route: ['order-create'],
+        name: 'order-create',
+        moduleId: './order-create',
+        nav: false,
+        title: 'Create Order'
+      }
     ]);
     /*
     On-Staging

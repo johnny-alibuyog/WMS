@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
-    public class GetPurchaseOderPage
+    public class GetPurchaseOrderPage
     {
         public class Request : PageRequest, IRequest<Response> { }
 
@@ -112,7 +112,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                             : query.OrderByDescending(x => x.PaidOn);
                     });
 
-                    message.Sorter.Compose("total", direction =>
+                    message.Sorter.Compose("totalAmount", direction =>
                     {
                         query = direction == SortDirection.Ascending
                             ? query.OrderBy(x => x.Total.Amount)
@@ -125,19 +125,19 @@ namespace AmpedBiz.Service.PurchaseOrders
                             Id = x.Id,
                             Supplier = x.Supplier.Name,
                             Status = x.Status.ToString(),
-                            CreatedBy = 
-                                x.CreatedBy.Person.FirstName + " " +
+                            CreatedBy =
+                                x.CreatedBy.Person.FirstName + " " + 
                                 x.CreatedBy.Person.LastName,
                             CreatedOn = x.CreatedOn,
                             SubmittedBy =
-                                x.SubmittedBy.Person.FirstName + " " + 
+                                x.SubmittedBy.Person.FirstName + " " +
                                 x.SubmittedBy.Person.LastName,
                             SubmittedOn = x.SubmittedOn,
                             PaidBy = 
                                 x.PaidBy.Person.FirstName + " " +
                                 x.PaidBy.Person.LastName,
                             PaidOn = x.PaidOn,
-                            Total = x.Total.ToStringWithSymbol()
+                            TotalAmount = x.Total.Amount
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)

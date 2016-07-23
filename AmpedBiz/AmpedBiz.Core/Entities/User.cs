@@ -20,10 +20,10 @@ namespace AmpedBiz.Core.Entities
         public virtual Branch Branch { get; set; }
 
         public virtual IEnumerable<UserRole> UserRoles { get; set; } = new Collection<UserRole>();
-
+        
         public virtual string Name
         {
-            get { return Regex.Replace($"{this.Person.FirstName} {this.Person.MiddleName} {this.Person.LastName}", @"\s+", " "); }
+            get { return Regex.Replace($"{this.Person.FirstName} {this.Person.LastName}", @"\s+", " "); } // this will be used by ExpressMapper
         }
 
         public User() : base(default(Guid)) { }
