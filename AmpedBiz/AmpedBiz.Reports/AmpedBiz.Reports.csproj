@@ -112,10 +112,14 @@
     <Content Include="ReportViewers\MainViewer.aspx" />
     <Content Include="ReportViewers\PriceList.aspx" />
     <Content Include="ReportViewers\PricelistReportSelector.aspx" />
+    <Content Include="ReportViewers\ucCustomerList.ascx" />
+    <Content Include="ReportViewers\ucPricelistSelector.ascx" />
+    <Content Include="ReportViewers\ucUOMDetails.ascx" />
     <Content Include="ReportViewers\UOMDetails.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Code\Reports.cs" />
     <Compile Include="Datasource\AmpedBizDataset.cs">
       <DependentUpon>AmpedBizDataset.xsd</DependentUpon>
     </Compile>
@@ -163,6 +167,27 @@
     <Compile Include="ReportViewers\PricelistReportSelector.aspx.designer.cs">
       <DependentUpon>PricelistReportSelector.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ReportViewers\ucCustomerList.ascx.cs">
+      <DependentUpon>ucCustomerList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ReportViewers\ucCustomerList.ascx.designer.cs">
+      <DependentUpon>ucCustomerList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ReportViewers\ucPricelistSelector.ascx.cs">
+      <DependentUpon>ucPricelistSelector.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ReportViewers\ucPricelistSelector.ascx.designer.cs">
+      <DependentUpon>ucPricelistSelector.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ReportViewers\ucUOMDetails.ascx.cs">
+      <DependentUpon>ucUOMDetails.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ReportViewers\ucUOMDetails.ascx.designer.cs">
+      <DependentUpon>ucUOMDetails.ascx</DependentUpon>
+    </Compile>
     <Compile Include="ReportViewers\UOMDetails.aspx.cs">
       <DependentUpon>UOMDetails.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -171,9 +196,7 @@
       <DependentUpon>UOMDetails.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Reports\CustomerList.rdlc" />
     <EmbeddedResource Include="Reports\PriceList.rdlc" />
@@ -205,15 +228,6 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-    <Error Condition="!Exists('packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props'))" />
-    <Error Condition="!Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

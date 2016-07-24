@@ -10,42 +10,60 @@
 namespace AmpedBiz.Reports.ReportViewers {
     
     
-    public partial class MainViewer {
+    public partial class ucCustomerList {
         
         /// <summary>
-        /// frmMainViewer control.
+        /// odsCustomer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm frmMainViewer;
+        protected global::System.Web.UI.WebControls.ObjectDataSource odsCustomer;
         
         /// <summary>
-        /// ScriptManager1 control.
+        /// UpdatePanel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.ScriptManager ScriptManager1;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
         
         /// <summary>
-        /// rptSelector control.
+        /// rdoAll control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl rptSelector;
+        protected global::System.Web.UI.WebControls.RadioButton rdoAll;
         
         /// <summary>
-        /// rptViewer control.
+        /// rdoCustomer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Microsoft.Reporting.WebForms.ReportViewer rptViewer;
+        protected global::System.Web.UI.WebControls.RadioButton rdoCustomer;
+        
+        /// <summary>
+        /// ddlCustomer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlCustomer;
+        
+        /// <summary>
+        /// btnView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnView;
     }
 }

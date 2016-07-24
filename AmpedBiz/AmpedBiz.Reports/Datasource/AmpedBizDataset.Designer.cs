@@ -7120,11 +7120,11 @@ ORDER BY PricingSchemName";
             this._commandCollection[1].CommandText = @"SELECT        customers.web, customers.mobile, customers.email, customers.landline, customers.fax, customers.billing_zipcode, customers.billing_country, customers.billing_region, customers.billing_province, 
                          customers.billing_city, customers.billing_barangay, customers.billing_street, customers.office_zipcode, customers.office_region, customers.office_province, customers.office_country, customers.office_city, 
                          customers.office_barangay, customers.office_street, customers.creditlimit_currencyid, customers.creditlimit_amount, customers.pricingschemeid, customers.""name"", customers.customerid, 
-                         pricingschemes.""name"" AS PricingSchemeName
+                         pricingschemes.""name"" AS PricingSchemName
 FROM            customers INNER JOIN
                          pricingschemes ON customers.pricingschemeid = pricingschemes.pricingschemeid
 WHERE        (customers.customerid = :paramCustomer)
-ORDER BY PricingSchemeName";
+ORDER BY PricingSchemName";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
             global::Devart.Data.PostgreSql.PgSqlParameter param = new global::Devart.Data.PostgreSql.PgSqlParameter();
             param.ParameterName = "paramCustomer";

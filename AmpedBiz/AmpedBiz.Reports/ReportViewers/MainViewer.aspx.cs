@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
+using Microsoft.Reporting.WebForms;
 
 namespace AmpedBiz.Reports.ReportViewers
 {
@@ -11,7 +8,29 @@ namespace AmpedBiz.Reports.ReportViewers
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.LoadSelector();
+        }
 
+        public void LoadReport(string reportPath, ReportDataSource dataSource)
+        {
+            this.rptViewer.ProcessingMode = ProcessingMode.Local;
+
+            this.rptViewer.LocalReport.DataSources.Clear();
+            this.rptViewer.LocalReport.DataSources.Add(dataSource);
+
+            this.rptViewer.LocalReport.ReportPath = reportPath;
+        }
+
+        private void LoadSelector()
+        {
+            var selector = Request.QueryString.Get(App_Code.Reports.ReportKey.Selector);
+
+            if (!string.IsNullOrEmpty(selector))
+            {
+                var priceListSelector = this.Page.LoadControl(selector) as UserControl;
+                this.rptSelector.Controls.Clear();
+                this.rptSelector.Controls.Add(priceListSelector);
+            }
         }
     }
 }
