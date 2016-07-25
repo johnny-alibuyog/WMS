@@ -59,6 +59,28 @@ export class Index {
         }
       },
       {
+        route: ['shipped-page'],
+        name: 'shipped-page',
+        moduleId: './order-page',
+        nav: true,
+        title: 'Shipped',
+        settings: {
+          status: OrderStatus.shipped
+        }
+      },
+      /*
+      {
+        route: ['delivered-page'],
+        name: 'delivered-page',
+        moduleId: './order-page',
+        nav: true,
+        title: 'Dilivered',
+        settings: {
+          status: OrderStatus.dilivered
+        }
+      },
+      */
+      {
         route: ['completed-page'],
         name: 'completed-page',
         moduleId: './order-page',

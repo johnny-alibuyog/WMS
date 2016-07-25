@@ -42,6 +42,13 @@ namespace AmpedBiz.Service.Host.Controllers
             return _mediator.Send(request ?? new GetBranchPage.Request());
         }
 
+        [HttpGet()]
+        [Route("~/branch-lookups")]
+        public GetBranchLookup.Response Process([FromBody]GetBranchLookup.Request request)
+        {
+            return _mediator.Send(request ?? new GetBranchLookup.Request());
+        }
+
         [HttpPost()]
         [Route("")]
         public CreateBranch.Response Process([FromBody]CreateBranch.Request request)

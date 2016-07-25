@@ -51,56 +51,64 @@ namespace AmpedBiz.Core.Services.Orders
 
         public virtual void Process(OrderNewlyCreatedEvent @event)
         {
-            //if (!this.AllowedTransitions.ContainsKey(OrderStatus.New))
-            //    throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "creation/modification", this.Target.Status));
+            if (!this.AllowedTransitions.ContainsKey(OrderStatus.New))
+                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "creation/modification", this.Target.Status));
 
             this.Target.Process(@event);
         }
 
         public virtual void Process(OrderStagedEvent @event)
         {
-            //if (!this.AllowedTransitions.ContainsKey(OrderStatus.Staged))
-            //    throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "staging", this.Target.Status));
+            if (!this.AllowedTransitions.ContainsKey(OrderStatus.Staged))
+                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "staging", this.Target.Status));
 
             this.Target.Process(@event);
         }
 
         public virtual void Process(OrderRoutedEvent @event)
         {
-            //if (!this.AllowedTransitions.ContainsKey(OrderStatus.Routed))
-            //    throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "routing", this.Target.Status));
+            if (!this.AllowedTransitions.ContainsKey(OrderStatus.Routed))
+                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "routing", this.Target.Status));
 
             this.Target.Process(@event);
         }
 
         public virtual void Process(OrderInvoicedEvent @event)
         {
-            //if (!this.AllowedTransitions.ContainsKey(OrderStatus.Invoiced))
-            //    throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "invoicing", this.Target.Status));
+            if (!this.AllowedTransitions.ContainsKey(OrderStatus.Invoiced))
+                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "invoicing", this.Target.Status));
 
             this.Target.Process(@event);
         }
 
         public virtual void Process(OrderPaidEvent @event)
         {
-            //if (!this.AllowedTransitions.ContainsKey(OrderStatus.Paid))
-            //    throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "payment", this.Target.Status));
+            if (!this.AllowedTransitions.ContainsKey(OrderStatus.Paid))
+                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "payment", this.Target.Status));
+
+            this.Target.Process(@event);
+        }
+
+        public virtual void Process(OrderShippedEvent @event)
+        {
+            if (!this.AllowedTransitions.ContainsKey(OrderStatus.Shipped))
+                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "shipping", this.Target.Status));
 
             this.Target.Process(@event);
         }
 
         public virtual void Process(OrderCompletedEvent @event)
         {
-            //if (!this.AllowedTransitions.ContainsKey(OrderStatus.Completed))
-            //    throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "completing", this.Target.Status));
+            if (!this.AllowedTransitions.ContainsKey(OrderStatus.Completed))
+                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "completing", this.Target.Status));
 
             this.Target.Process(@event);
         }
 
         public virtual void Process(OrderCancelledEvent @event)
         {
-            //if (!this.AllowedTransitions.ContainsKey(OrderStatus.Cancelled))
-            //    throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "canceling", this.Target.Status));
+            if (!this.AllowedTransitions.ContainsKey(OrderStatus.Cancelled))
+                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "canceling", this.Target.Status));
 
             this.Target.Process(@event);
         }
@@ -122,7 +130,6 @@ namespace AmpedBiz.Core.Services.Orders
         public StagedState(Order target) : base(target)
         {
             this.AllowedTransitions.Add(OrderStatus.Routed, "Route");
-            this.AllowedTransitions.Add(OrderStatus.Paid, "Partially Pay");
             this.AllowedTransitions.Add(OrderStatus.Invoiced, "Invoice");
             this.AllowedTransitions.Add(OrderStatus.Cancelled, "Cancel");
         }
@@ -132,7 +139,7 @@ namespace AmpedBiz.Core.Services.Orders
     {
         public RoutedState(Order target) : base(target)
         {
-            this.AllowedTransitions.Add(OrderStatus.Paid, "Partially Pay");
+            this.AllowedTransitions.Add(OrderStatus.Paid, "Pay");
             this.AllowedTransitions.Add(OrderStatus.Invoiced, "Invoice");
             this.AllowedTransitions.Add(OrderStatus.Cancelled, "Cancel");
         }
@@ -142,8 +149,9 @@ namespace AmpedBiz.Core.Services.Orders
     {
         public InvoicedState(Order target) : base(target)
         {
-            this.AllowedTransitions.Add(OrderStatus.Paid, "Partially Pay");
-            this.AllowedTransitions.Add(OrderStatus.Completed, "Complete");
+            this.AllowedTransitions.Add(OrderStatus.Paid, "Pay");
+            this.AllowedTransitions.Add(OrderStatus.Shipped, "Ship");
+            this.AllowedTransitions.Add(OrderStatus.Cancelled, "Cancel");
         }
     }
 
@@ -151,9 +159,16 @@ namespace AmpedBiz.Core.Services.Orders
     {
         public PaidState(Order target) : base(target)
         {
-            this.AllowedTransitions.Add(OrderStatus.Invoiced, "Invoice");
-            this.AllowedTransitions.Add(OrderStatus.Completed, "Complete");
+            this.AllowedTransitions.Add(OrderStatus.Shipped, "Ship");
             this.AllowedTransitions.Add(OrderStatus.Cancelled, "Cancel");
+        }
+    }
+
+    public class ShippedState : State
+    {
+        public ShippedState(Order target) : base(target)
+        {
+            this.AllowedTransitions.Add(OrderStatus.Completed, "Complete");
         }
     }
 

@@ -28,7 +28,11 @@ namespace AmpedBiz.Service.Dto
 
         public Lookup<string> Customer { get; set; }
 
+        public Lookup<string> PricingScheme { get; set; }
+
         public Lookup<string> Shipper { get; set; }
+
+        public Address ShippingAddress { get; set; }
 
         public Lookup<string> PaymentType { get; set; }
 
@@ -37,8 +41,6 @@ namespace AmpedBiz.Service.Dto
         public decimal TaxAmount { get; set; }
 
         public decimal ShippingFeeAmount { get; set; }
-
-        public decimal DiscountAmount { get; set; }
 
         public IEnumerable<OrderItem> Items { get; set; }
     }
@@ -59,16 +61,21 @@ namespace AmpedBiz.Service.Dto
 
     public class OrderInvoicedEvent : OrderEvent
     {
-        public IEnumerable<OrderInvoice> Invoices { get; set; }
+        public Lookup<Guid> InvoicedBy { get; set; }
+
+        public DateTime? InvoicedOn { get; set; }
     }
 
     public class OrderPaidEvent : OrderEvent
     {
-        public Lookup<Guid> PaidBy { get; set; }
+        public IEnumerable<OrderPayment> Payments { get; set; }
+    }
 
-        public DateTime? PaidOn { get; set; }
+    public class OrderShippedEvent : OrderEvent
+    {
+        public Lookup<Guid> ShippedBy { get; set; }
 
-        public Lookup<string> PaymentType { get; set; }
+        public DateTime? ShippedOn { get; set; }
     }
 
     public class OrderCompletedEvent : OrderEvent

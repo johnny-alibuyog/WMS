@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AmpedBiz.Core.Entities
+﻿namespace AmpedBiz.Core.Entities
 {
     public class Product : Entity<string, Product>
     {

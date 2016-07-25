@@ -12,7 +12,7 @@ namespace AmpedBiz.Service.Orders
 {
     public class CreateNewOrder
     {
-        public class Request : Dto.OrderNewlyCreatedEvent, IRequest<Response>
+        public class Request : Dto.Order, IRequest<Response>
         {
             public virtual Guid UserId { get; set; }
         }
@@ -32,9 +32,9 @@ namespace AmpedBiz.Service.Orders
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var exists = session.Query<Order>().Any(x => x.Id == message.OrderId);
+                    var exists = session.Query<Order>().Any(x => x.Id == message.Id);
                     if (exists)
-                        throw new BusinessException($"Order with id {message.OrderId} already exists.");
+                        throw new BusinessException($"Order with id {message.Id} already exists.");
 
                     var currency = session.Load<Currency>(Currency.PHP.Id);
                     var entity = message.MapTo(new Order(message.Id));
@@ -47,14 +47,17 @@ namespace AmpedBiz.Service.Orders
                             ? session.Load<Branch>(message.Branch.Id) : null,
                         customer: (!message?.Customer?.Id.IsNullOrEmpty() ?? false)
                             ? session.Load<Customer>(message.Customer.Id) : null,
+                        pricingScheme: (!message?.PricingScheme?.Id.IsNullOrEmpty() ?? false)
+                            ? session.Load<PricingScheme>(message.PricingScheme.Id) : null,
                         shipper: (!message?.Shipper?.Id.IsNullOrEmpty() ?? false)
                             ? session.Load<Shipper>(message.Shipper.Id) : null,
+                        shippingAddress: (message.ShippingAddress != null)
+                            ? message.ShippingAddress.MapTo<Dto.Address, Address>() : null,
                         paymentType: (!message?.PaymentType?.Id.IsNullOrEmpty() ?? false)
                             ? session.Load<PaymentType>(message.PaymentType.Id) : null,
                         taxRate: message.TaxRate,
                         tax: new Money(message.TaxAmount, currency),
                         shippingFee: new Money(message.ShippingFeeAmount, currency),
-                        discount: new Money(message.DiscountAmount, currency),
                         items: message.Items
                             .Select(x => new OrderItem(
                                 product: session.Get<Product>(x.Product.Id),

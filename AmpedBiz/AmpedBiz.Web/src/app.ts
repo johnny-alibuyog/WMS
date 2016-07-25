@@ -31,6 +31,14 @@ export class App {
         title: 'Products'
       },
       {
+        route: ['purchases'],
+        name: 'purchases',
+        moduleId: './Purchases/index',
+        nav: true,
+        main: true,
+        title: 'Purchases'
+      },
+      {
         route: ['orders'],
         name: 'orders',
         moduleId: './orders/index',
@@ -45,14 +53,6 @@ export class App {
         nav: true,
         main: true,
         title: 'Routes'
-      },
-      {
-        route: ['purchases'],
-        name: 'purchases',
-        moduleId: './Purchases/index',
-        nav: true,
-        main: true,
-        title: 'Purchases'
       },
       {
         route: ['report_center'],

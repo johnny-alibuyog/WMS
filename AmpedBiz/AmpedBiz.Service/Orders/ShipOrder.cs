@@ -8,7 +8,7 @@ using System;
 
 namespace AmpedBiz.Service.Orders
 {
-    public class CompleteOrder
+    public class ShipOrder
     {
         public class Request : Dto.Order, IRequest<Response> { }
 
@@ -16,9 +16,7 @@ namespace AmpedBiz.Service.Orders
 
         public class Handler : RequestHandlerBase<Request, Response>
         {
-            public Handler(ISessionFactory sessionFactory) : base(sessionFactory)
-            {
-            }
+            public Handler(ISessionFactory sessionFactory) : base(sessionFactory) { }
 
             public override Response Handle(Request message)
             {
@@ -28,15 +26,17 @@ namespace AmpedBiz.Service.Orders
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = session.Get<Order>(message.Id);
+                    var currency = session.Load<Currency>(Currency.PHP.Id);
+
                     if (entity == null)
                         throw new BusinessException($"Order with id {message.Id} does not exists.");
 
-                    var completedEvent = new OrderCompletedEvent(
-                        completedBy: session.Load<User>(message.CompletedBy.Id),
-                        completedOn: message.CompletedOn ?? DateTime.Now
+                    var shippedEvent = new OrderShippedEvent(
+                        shippedOn: message.InvoicedOn ?? DateTime.Now,
+                        shippedBy: session.Load<User>(message.InvoicedBy.Id)
                     );
 
-                    entity.State.Process(completedEvent);
+                    entity.State.Process(shippedEvent);
 
                     session.Save(entity);
                     transaction.Commit();
@@ -48,5 +48,5 @@ namespace AmpedBiz.Service.Orders
                 return response;
             }
         }
-    }
+        }
 }

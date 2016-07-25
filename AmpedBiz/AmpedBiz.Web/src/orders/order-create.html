@@ -1,2 +1,217 @@
 <template>
+  <!--<require from="common/matchers/lookup-matcher"></require>-->
+  <require from="common/controls/pager"></require>
+  <require from="common/converters/lookup-id-to-name-value-converter"></require>
+  <require from="common/converters/lookup-to-id-value-converter"></require>
+  <require from="common/converters/lookup-to-name-value-converter"></require>
+  <require from="orders/order-item-page"></require>
+  <require from="orders/order-payment-page"></require>
+
+  <div class="row row-no-padding">
+
+    <div class="col-md-8">
+
+      <div class="panel panel-default">
+
+        <!-- heading -->
+        <div class="panel-heading">
+
+          <!-- heading label -->
+          <h4 class="panel-title row-fluid">
+            <span6>&nbsp ${header} &nbsp</span6>
+
+            <!-- transition buttons -->
+            <button type="button" class="btn btn-default" if.bind="order.allowedTransitions['new']" click.trigger="save()">
+              <i class="fa fa-check"></i> ${order.allowedTransitions['new']}
+            </button>
+
+            <button type="button" class="btn btn-default" if.bind="order.allowedTransitions['staged']" click.trigger="stage()">
+              <i class="fa fa-check"></i> ${order.allowedTransitions['staged']}
+            </button>
+
+            <button type="button" class="btn btn-default" if.bind="order.allowedTransitions['routed']" click.trigger="approve()">
+              <i class="fa fa-check"></i> ${order.allowedTransitions['routed']}
+            </button>
+
+            <button type="button" class="btn btn-default" if.bind="order.allowedTransitions['invoiced']" click.trigger="invoice()">
+              <i class="fa fa-check"></i> ${order.allowedTransitions['invoiced']}
+            </button>
+
+            <!--
+            <button type="button" class="btn btn-default" if.bind="order.allowedTransitions['paid']" click.trigger="recieve()">
+              <i class="fa fa-check"></i> ${order.allowedTransitions['paid']}
+            </button>
+            -->
+
+            <button type="button" class="btn btn-default" if.bind="order.allowedTransitions['shipped']" click.trigger="ship()">
+              <i class="fa fa-check"></i> ${order.allowedTransitions['shipped']}
+            </button>
+
+            <button type="button" class="btn btn-default" if.bind="order.allowedTransitions['completed']" click.trigger="complete()">
+              <i class="fa fa-check"></i> ${order.allowedTransitions['completed']}
+            </button>
+
+            <button type="button" class="btn btn-default" if.bind="order.allowedTransitions['cancelled']" click.trigger="cancel()">
+              <i class="fa fa-check"></i> ${order.allowedTransitions['cancelled']}
+            </button>
+
+            <button type="button" class="btn btn-default" click.trigger="back()">
+              <i class="fa fa-times"></i> Back
+            </button>
+
+          </h4>
+
+        </div>
+
+        <!-- body -->
+        <div class="panel-body">
+
+          <form class="form-horizontal" role="form">
+
+            <!-- inputs -->
+            <div class="row">
+
+              <div class="col-lg-6">
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Branch:</label>
+                  <div class="col-sm-8">
+                    <select class="form-control" value.bind="order.branch | lookupToId:branches">
+                      <option>Select Branch</option>
+                      <option repeat.for="branch of branches" model.bind="branch.id">${branch.name}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Customer:</label>
+                  <div class="col-sm-8">
+                    <select class="form-control" value.bind="order.customer | lookupToId:customers">
+                      <option>Select Customer</option>
+                      <option repeat.for="customer of customers" model.bind="customer.id">${customer.name}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Pricing Scheme:</label>
+                  <div class="col-sm-8">
+                    <select class="form-control" value.bind="order.pricingScheme | lookupToId:pricingSchemes">
+                      <option>Select Pricing Scheme</option>
+                      <option repeat.for="pricingScheme of pricingSchemes" model.bind="pricingScheme.id">${pricingScheme.name}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Status:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" value.bind="order.status | lookupIdToName:statuses" disabled />
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-lg-6 form-group">
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Ordered On:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="Enter Order Date" value.bind="order.orderedOn" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Created On:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" value.bind="order.createdOn" disabled />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Completed On:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" value.bind="order.completedOn" disabled />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Completed By:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" value.bind="order.completedBy.name" disabled />
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- tabs -->
+            <div class="row">
+
+              <div class="col-lg-12">
+
+                <ul class="nav nav-tabs">
+                  <li class="active">
+                    <a data-toggle="tab" href="#itemsTab">
+                      <span>Purchase Items &nbsp</span>
+                      <button type="button" if.bind="order.allowedTransitions['new']" class="btn btn-default btn-circle" click.delegate="addItem()">
+                        <i class="glyphicon glyphicon-plus"></i>
+                      </button>
+                    </a>
+                  </li>
+                  <li>
+                    <a data-toggle="tab" href="#paymentsTab">
+                      <span>Payments &nbsp</span>
+                      <button type="button" if.bind="order.allowedTransitions['paid']" class="btn btn-default btn-circle" click.delegate="addPayment()">
+                        <i class="glyphicon glyphicon-plus"></i>
+                      </button>
+                    </a>
+                  </li>
+                </ul>
+
+                <div class="tab-content">
+
+                  <!-- items -->
+                  <div id="itemsTab" class="tab-pane fade in active">
+                    <br />
+
+                    <order-item-page 
+                      products.bind="products" 
+                      items.bind="order.items" 
+                      order-id.bind="order.id"
+                      pricing-scheme.bind="order.pricingScheme"
+                      allowed-transitions.bind="order.allowedTransitions">
+                    </order-item-page>
+                  </div>
+
+                  <!-- payment informations -->
+                  <div id="paymentsTab" class="tab-pane fade">
+                    <br />
+
+                    <!--
+                    <purchase-order-payment-page 
+                      payments.bind="order.payments" 
+                      purchase-order-id.bind="order.id" 
+                      allowed-transitions.bind="order.allowedTransitions">
+                    </purchase-order-payment-page>
+                    -->
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </template>

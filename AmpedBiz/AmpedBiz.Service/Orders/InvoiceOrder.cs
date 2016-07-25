@@ -5,14 +5,12 @@ using AmpedBiz.Core.Events.Orders;
 using MediatR;
 using NHibernate;
 using System;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace AmpedBiz.Service.Orders
 {
     public class InvoiceOrder
     {
-        public class Request : Dto.OrderInvoicedEvent, IRequest<Response> { }
+        public class Request : Dto.Order, IRequest<Response> { }
 
         public class Response : Dto.Order { }
 
@@ -27,23 +25,16 @@ namespace AmpedBiz.Service.Orders
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.Get<Order>(message.OrderId);
+                    var entity = session.Get<Order>(message.Id);
                     var currency = session.Load<Currency>(Currency.PHP.Id);
 
                     if (entity == null)
-                        throw new BusinessException($"Order with id {message.OrderId} does not exists.");
+                        throw new BusinessException($"Order with id {message.Id} does not exists.");
 
                     var invoicedEvent = new OrderInvoicedEvent(
-                        invoices: message.Invoices.Select(x => new OrderInvoice(
-                            invoicedOn: x.InvoicedOn ?? DateTime.Now,
-                            invoicedBy: session.Load<User>(x.InvoicedBy.Id),
-                            dueOn: x.DueOn,
-                            tax: new Money(x.TaxAmount, currency),
-                            shipping: new Money(x.ShippingAmount, currency),
-                            dicount: new Money(x.DiscountAmount, currency),
-                            subTotal: new Money(x.SubTotalAmount, currency)
-                        )
-                    ));
+                        invoicedOn: message.InvoicedOn ?? DateTime.Now,
+                        invoicedBy: session.Load<User>(message.InvoicedBy.Id)
+                    );
 
                     entity.State.Process(invoicedEvent);
 

@@ -43,9 +43,7 @@ export class HttpClientFacade {
           return response.json();
         } 
         else {
-          var error = new Error(response.statusText);
-          error.message = response.statusText;
-          throw error;
+          throw new Error(response.statusText);
         }
       });
   }

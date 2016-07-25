@@ -15,8 +15,9 @@ namespace AmpedBiz.Core.Entities
         Routed = 3,
         Invoiced = 4,
         Paid = 5,
-        Completed = 6,
-        Cancelled = 7
+        Shipped = 6,
+        Completed = 7,
+        Cancelled = 8
     }
 
     public class Order : Entity<Guid, Order>
@@ -25,9 +26,13 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Customer Customer { get; protected set; }
 
+        public virtual PricingScheme PricingScheme { get; protected set; }
+
         public virtual PaymentType PaymentType { get; protected set; }
 
         public virtual Shipper Shipper { get; protected set; }
+
+        public virtual Address ShippingAddress { get; protected set; }
 
         public virtual decimal? TaxRate { get; protected set; }
 
@@ -43,7 +48,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual OrderStatus Status { get; protected set; }
 
-        public virtual bool IsActive { get; protected set; } // this should be removed
+        public virtual DateTime? DueOn { get; set; }
 
         public virtual DateTime? OrderedOn { get; protected set; }
 
@@ -85,7 +90,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<OrderItem> Items { get; protected set; } = new Collection<OrderItem>();
 
-        public virtual IEnumerable<OrderInvoice> Invoices { get; protected set; } = new Collection<OrderInvoice>();
+        public virtual IEnumerable<OrderPayment> Payments { get; protected set; } = new Collection<OrderPayment>();
 
         public virtual State State
         {
@@ -105,10 +110,11 @@ namespace AmpedBiz.Core.Entities
             this.Shipper = @event.Shipper ?? this.Shipper;
             this.PaymentType = @event.PaymentType ?? this.PaymentType;
             this.TaxRate = @event.TaxRate ?? this.TaxRate;
+            this.TaxRate = @event.TaxRate ?? this.TaxRate;
             this.Tax = @event.Tax ?? this.Tax;
             this.ShippingFee = @event.ShippingFee ?? this.ShippingFee;
-            this.Discount = @event.Discount ?? this.Discount;
             this.SetItems(@event.Items);
+            this.CalculateTotal();
             this.Status = OrderStatus.New;
 
             return this;
@@ -135,27 +141,34 @@ namespace AmpedBiz.Core.Entities
 
         protected internal virtual Order Process(OrderInvoicedEvent @event)
         {
-            this.AddInvoices(@event.Invoices);
+            this.InvoicedOn = @event.InvoicedOn ?? this.InvoicedOn;
+            this.InvoicedBy = @event.InvoicedBy ?? this.InvoicedBy;
+
             this.Status = OrderStatus.Invoiced;
 
             return this;
-            //deduct from inventory
         }
 
         protected internal virtual Order Process(OrderPaidEvent @event)
         {
-            this.PaidTo = @event.PaidTo;
-            this.PaidOn = @event.PaidOn;
-            this.PaymentType = @event.PaymentType;
+            this.SetPayments(@event.Payments);
             this.Status = OrderStatus.Paid;
 
             //no invoice yet?
             return this;
         }
 
+        protected internal virtual Order Process(OrderShippedEvent @event)
+        {
+            this.ShippedOn = @event.ShippedOn;
+            this.ShippedBy = @event.ShippedBy;
+            this.Status = OrderStatus.Shipped;
+
+            return this;
+        }
+
         protected internal virtual Order Process(OrderCompletedEvent @event)
         {
-            this.IsActive = false;
             this.CompletedBy = @event.CompletedBy;
             this.CompletedOn = @event.CompletedOn;
             this.Status = OrderStatus.Completed;
@@ -165,7 +178,6 @@ namespace AmpedBiz.Core.Entities
 
         protected internal virtual Order Process(OrderCancelledEvent @event)
         {
-            this.IsActive = false;
             this.CancelledBy = @event.CancelledBy ?? this.CancelledBy;
             this.CancelledOn = @event.CancelledOn ?? this.CancelledOn;
             this.CancellationReason = @event.CancellationReason ?? this.CancellationReason;
@@ -188,12 +200,12 @@ namespace AmpedBiz.Core.Entities
             this.Total = new Money(this.SubTotal.Amount + this.Tax.Amount + this.ShippingFee.Amount);
         }
 
-        private void AddInvoice(OrderInvoice invoice)
+        private void AddPayment(OrderPayment payment)
         {
-            this.Invoices = this.Invoices ?? new List<OrderInvoice>();
+            this.Payments = this.Payments ?? new List<OrderPayment>();
 
-            invoice.Order = this;
-            this.Invoices.Add(invoice);
+            payment.Order = this;
+            this.Payments.Add(payment);
         }
 
         private Order SetItems(IEnumerable<OrderItem> items)
@@ -223,29 +235,27 @@ namespace AmpedBiz.Core.Entities
                 item.Order = null;
                 this.Items.Remove(item);
             }
-
-            // calculate here
-
+            
             return this;
         }
 
-        private Order SetInvoices(IEnumerable<OrderInvoice> invoices)
+        private Order SetPayments(IEnumerable<OrderPayment> payments)
         {
-            if (invoices.IsNullOrEmpty())
+            if (payments.IsNullOrEmpty())
                 return this;
 
-            var itemsToInsert = invoices.Except(this.Invoices).ToList();
-            var itemsToUpdate = this.Invoices.Where(x => invoices.Contains(x)).ToList();
-            var itemsToRemove = this.Invoices.Except(invoices).ToList();
+            var itemsToInsert = payments.Except(this.Payments).ToList();
+            var itemsToUpdate = this.Payments.Where(x => payments.Contains(x)).ToList();
+            var itemsToRemove = this.Payments.Except(payments).ToList();
 
             foreach (var item in itemsToInsert)
             {
-                this.AddInvoice(item);
+                this.AddPayment(item);
             }
 
             foreach (var item in itemsToUpdate)
             {
-                var value = invoices.Single(x => x == item);
+                var value = payments.Single(x => x == item);
                 item.SerializeWith(value);
                 item.Order = this;
             }
@@ -253,28 +263,53 @@ namespace AmpedBiz.Core.Entities
             foreach (var item in itemsToRemove)
             {
                 item.Order = null;
-                this.Invoices.Remove(item);
+                this.Payments.Remove(item);
             }
 
             return this;
         }
 
-        private Order AddInvoices(IEnumerable<OrderInvoice> invoices)
+        private Order AddPayments(IEnumerable<OrderPayment> payments)
         {
-            var lastInvoice = invoices.OrderBy(x => x.InvoicedOn).LastOrDefault();
-            if (lastInvoice == null)
+            var lastPayment = payments.OrderBy(x => x.PaidOn).LastOrDefault();
+            if (lastPayment == null)
                 return this;
 
-            this.InvoicedOn = lastInvoice.InvoicedOn;
-            this.InvoicedBy = lastInvoice.InvoicedBy;
+            this.InvoicedOn = lastPayment.PaidOn;
+            this.InvoicedBy = lastPayment.PaidBy;
 
-            foreach (var invoice in invoices)
+            foreach (var payment in payments)
             {
-                invoice.Order = this;
-                this.Invoices.Add(invoice);
+                payment.Order = this;
+                this.Payments.Add(payment);
             }
 
             // compute here
+
+            return this;
+        }
+
+        private Order CalculateTotal()
+        {
+            // calculate here
+            if (this.Discount != null)
+                this.Discount.Amount = 0M;
+
+            if (this.SubTotal != null)
+                this.SubTotal.Amount = 0M;
+
+            if (this.Total != null)
+                this.Total.Amount = 0M;
+
+            foreach (var item in this.Items)
+            {
+                this.Discount += item.Discount;
+                this.SubTotal += item.ExtendedPrice;
+            }
+
+            //TODO: how to compute for Tax
+
+            this.Total = this.Tax + this.ShippingFee + this.SubTotal - this.Discount;
 
             return this;
         }

@@ -50,123 +50,67 @@ namespace AmpedBiz.Service.Host.Controllers
             return _mediator.Send(request ?? new GetOrderStatusLookup.Request());
         }
 
-        //[HttpPost()]
-        //[Route("new")]
-        //public CreateNewOder.Response Process([FromBody]CreateNewOder.Request request)
-        //{
-        //    return _mediator.Send(request ?? new CreateNewOder.Request());
-        //}
+        [HttpPost()]
+        [Route("new")]
+        public CreateNewOrder.Response Process([FromBody]CreateNewOrder.Request request)
+        {
+            return _mediator.Send(request ?? new CreateNewOrder.Request());
+        }
 
-        //[HttpPatch()]
-        //[Route("{id}/new")]
-        //public UpdateNewOder.Response Process([FromUri]Guid id, [FromBody]UpdateNewOder.Request request)
-        //{
-        //    return _mediator.Send(request ?? new UpdateNewOder.Request());
-        //}
+        [HttpPatch()]
+        [Route("{id}/new")]
+        public UpdateNewOrder.Response Process([FromUri]Guid id, [FromBody]UpdateNewOrder.Request request)
+        {
+            return _mediator.Send(request ?? new UpdateNewOrder.Request());
+        }
 
-        ////[HttpPost()]
-        ////[Route("new/page")]
-        ////public GetNewOderPage.Response Process([FromBody]GetNewOderPage.Request request)
-        ////{
-        ////    return _mediator.Send(request ?? new GetNewOderPage.Request());
-        ////}
+        [HttpPost()]
+        [Route("{id}/staged")]
+        public StageOrder.Response Process([FromUri]Guid id, [FromBody]StageOrder.Request request)
+        {
+            return _mediator.Send(request ?? new StageOrder.Request());
+        }
 
-        ////[HttpPost()]
-        ////[Route("active/page")]
-        ////public GetActiveOderPage.Response Process([FromBody]GetActiveOderPage.Request request)
-        ////{
-        ////    return _mediator.Send(request ?? new GetActiveOderPage.Request());
-        ////}
+        [HttpPost()]
+        [Route("{id}/routed")]
+        public RouteOrder.Response Process([FromUri]Guid id, [FromBody]RouteOrder.Request request)
+        {
+            return _mediator.Send(request ?? new RouteOrder.Request());
+        }
 
-        //[HttpPost()]
-        //[Route("{id}/submitted")]
-        //public SubmitOrder.Response Process([FromUri]Guid id, [FromBody]SubmitOrder.Request request)
-        //{
-        //    return _mediator.Send(request ?? new SubmitOrder.Request());
-        //}
+        [HttpPost()]
+        [Route("{id}/invoiced")]
+        public InvoiceOrder.Response Process([FromUri]Guid id, [FromBody]InvoiceOrder.Request request)
+        {
+            return _mediator.Send(request ?? new InvoiceOrder.Request());
+        }
 
-        ////[HttpPost()]
-        ////[Route("submitted/page")]
-        ////public GetSubmittedOderPage.Response Process([FromBody]GetSubmittedOderPage.Request request)
-        ////{
-        ////    return _mediator.Send(request ?? new GetSubmittedOderPage.Request());
-        ////}
+        [HttpPost()]
+        [Route("{id}/paid")]
+        public PayOrder.Response Process([FromUri]Guid id, [FromBody]PayOrder.Request request)
+        {
+            return _mediator.Send(request ?? new PayOrder.Request());
+        }
 
-        //[HttpPost()]
-        //[Route("{id}/approved")]
-        //public ApproveOder.Response Process([FromUri]Guid id, [FromBody]ApproveOder.Request request)
-        //{
-        //    return _mediator.Send(request ?? new ApproveOder.Request());
-        //}
+        [HttpPost()]
+        [Route("{id}/shipped")]
+        public ShipOrder.Response Process([FromUri]Guid id, [FromBody]ShipOrder.Request request)
+        {
+            return _mediator.Send(request ?? new ShipOrder.Request());
+        }
 
-        ////[HttpPost()]
-        ////[Route("approved/page")]
-        ////public GetApprovedOderPage.Response Process([FromBody]GetApprovedOderPage.Request request)
-        ////{
-        ////    return _mediator.Send(request ?? new GetApprovedOderPage.Request());
-        ////}
+        [HttpPost()]
+        [Route("{id}/completed")]
+        public CompleteOrder.Response Process([FromUri]Guid id, [FromBody]CompleteOrder.Request request)
+        {
+            return _mediator.Send(request ?? new CompleteOrder.Request());
+        }
 
-        //[HttpPost()]
-        //[Route("{id}/paid")]
-        //public PayOrder.Response Process([FromUri]Guid id, [FromBody]PayOrder.Request request)
-        //{
-        //    return _mediator.Send(request ?? new PayOrder.Request());
-        //}
-
-        ////[HttpPost()]
-        ////[Route("paid/page")]
-        ////public GetPaidOrderPage.Response Process([FromBody]GetPaidOrderPage.Request request)
-        ////{
-        ////    return _mediator.Send(request ?? new GetPaidOrderPage.Request());
-        ////}
-
-        //[HttpPost()]
-        //[Route("{id}/received")]
-        //public ReceiveOrder.Response Process([FromUri]Guid id, [FromBody]ReceiveOrder.Request request)
-        //{
-        //    return _mediator.Send(request ?? new ReceiveOrder.Request());
-        //}
-
-        //[HttpGet()]
-        //[Route("{id}/receivables")]
-        //public GetOrderReceivableList.Response Process([FromUri]GetOrderReceivableList.Request request)
-        //{
-        //    return _mediator.Send(request ?? new GetOrderReceivableList.Request());
-        //}
-
-        ////[HttpPost()]
-        ////[Route("received/page")]
-        ////public GetPaidOrderPage.Response Process([FromBody]GetPaidOrderPage.Request request)
-        ////{
-        ////    return _mediator.Send(request ?? new GetPaidOrderPage.Request());
-        ////}
-
-        //[HttpPost()]
-        //[Route("{id}/cancelled")]
-        //public CancelOder.Response Process([FromUri]Guid id, [FromBody]CancelOder.Request request)
-        //{
-        //    return _mediator.Send(request ?? new CancelOder.Request());
-        //}
-
-        ////[HttpPost()]
-        ////[Route("cancelled/page")]
-        ////public GetCancelledOderPage.Response Process([FromBody]GetCancelledOderPage.Request request)
-        ////{
-        ////    return _mediator.Send(request ?? new GetCancelledOderPage.Request());
-        ////}
-
-        //[HttpPost()]
-        //[Route("{id}/completed")]
-        //public CompleteOder.Response Process([FromUri]Guid id, [FromBody]CompleteOder.Request request)
-        //{
-        //    return _mediator.Send(request ?? new CompleteOder.Request());
-        //}
-
-        ////[HttpPost()]
-        ////[Route("completed/page")]
-        ////public GetCompletedOderPage.Response Process([FromBody]GetCompletedOderPage.Request request)
-        ////{
-        ////    return _mediator.Send(request ?? new GetCompletedOderPage.Request());
-        ////}
+        [HttpPost()]
+        [Route("{id}/cancelled")]
+        public CancelOrder.Response Process([FromUri]Guid id, [FromBody]CancelOrder.Request request)
+        {
+            return _mediator.Send(request ?? new CancelOrder.Request());
+        }
     }
 }

@@ -3,19 +3,19 @@ using System;
 
 namespace AmpedBiz.Service.Dto
 {
-    public class OrderInvoice
+    public class OrderPayment
     {
         public Guid OrderId { get; set; }
 
-        public virtual DateTime? InvoicedOn { get; set; }
+        public virtual DateTime? PaidOn { get; set; }
 
-        public virtual Lookup<Guid> InvoicedBy { get; set; }
+        public virtual Lookup<Guid> PaidBy { get; set; }
 
-        public virtual DateTime? DueOn { get; set; }
+        public virtual Lookup<string> PaymentType { get; set; }
 
         public virtual decimal TaxAmount { get; set; }
 
-        public virtual decimal ShippingAmount { get; set; }
+        public virtual decimal ShippingFeeAmount { get; set; }
 
         public virtual decimal DiscountAmount { get; set; }
 

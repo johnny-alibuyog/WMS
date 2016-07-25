@@ -10,7 +10,7 @@ namespace AmpedBiz.Service.Orders
 {
     public class CancelOrder
     {
-        public class Request : Dto.OrderCancelledEvent, IRequest<Response> { }
+        public class Request : Dto.Order, IRequest<Response> { }
 
         public class Response : Dto.Order { }
 
@@ -27,9 +27,9 @@ namespace AmpedBiz.Service.Orders
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.Get<Order>(message.OrderId);
+                    var entity = session.Get<Order>(message.Id);
                     if (entity == null)
-                        throw new BusinessException($"Order with id {message.OrderId} does not exists.");
+                        throw new BusinessException($"Order with id {message.Id} does not exists.");
 
                     var cancelledEvent = new OrderCancelledEvent(
                         cancelledBy: session.Load<User>(message.CancelledBy.Id),

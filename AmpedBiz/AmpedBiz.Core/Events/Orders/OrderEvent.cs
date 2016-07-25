@@ -15,7 +15,7 @@ namespace AmpedBiz.Core.Events.Orders
         public OrderEvent(Guid id) : base(id) { }
     }
 
-    public class OrderNewlyCreatedEvent: OrderEvent
+    public class OrderNewlyCreatedEvent : OrderEvent
     {
         public virtual User CreatedBy { get; protected set; }
 
@@ -25,7 +25,11 @@ namespace AmpedBiz.Core.Events.Orders
 
         public virtual Customer Customer { get; protected set; }
 
+        public virtual PricingScheme PricingScheme { get; protected set; }
+
         public virtual Shipper Shipper { get; protected set; }
+
+        public virtual Address ShippingAddress { get; protected set; }
 
         public virtual PaymentType PaymentType { get; protected set; }
 
@@ -35,24 +39,24 @@ namespace AmpedBiz.Core.Events.Orders
 
         public virtual Money ShippingFee { get; protected set; }
 
-        public virtual Money Discount { get; protected set; }
-
         public virtual IEnumerable<OrderItem> Items { get; protected set; }
 
         public OrderNewlyCreatedEvent(Guid? id = null, User createdBy = null, DateTime? createdOn = null, Branch branch = null,
-            Customer customer = null, Shipper shipper = null, PaymentType paymentType = null, decimal? taxRate = null, Money tax = null,
-            Money shippingFee = null, Money discount = null, IEnumerable<OrderItem> items = null) : base(id ?? default(Guid))
+            Customer customer = null, PricingScheme pricingScheme = null, Shipper shipper = null, Address shippingAddress = null, 
+            PaymentType paymentType = null, decimal? taxRate = null, Money tax = null, Money shippingFee = null, 
+            IEnumerable<OrderItem> items = null) : base(id ?? default(Guid))
         {
             this.CreatedBy = createdBy;
             this.CreatedOn = createdOn;
             this.Branch = branch;
             this.Customer = customer;
+            this.PricingScheme = pricingScheme;
             this.Shipper = shipper;
+            this.ShippingAddress = shippingAddress;
             this.PaymentType = paymentType;
             this.TaxRate = taxRate;
             this.Tax = tax;
             this.ShippingFee = shippingFee;
-            this.Discount = discount;
             this.Items = items;
         }
     }
@@ -63,7 +67,7 @@ namespace AmpedBiz.Core.Events.Orders
 
         public virtual User StagedBy { get; protected set; }
 
-        public OrderStagedEvent(Guid? id = null, DateTime? stagedOn = null, User stagedBy =null) : base(id ?? default(Guid))
+        public OrderStagedEvent(Guid? id = null, DateTime? stagedOn = null, User stagedBy = null) : base(id ?? default(Guid))
         {
             this.StagedOn = stagedOn;
             this.StagedBy = stagedBy;
@@ -85,28 +89,37 @@ namespace AmpedBiz.Core.Events.Orders
 
     public class OrderInvoicedEvent : OrderEvent
     {
-        public virtual IEnumerable<OrderInvoice> Invoices { get; protected set; }
+        public virtual DateTime? InvoicedOn { get; protected set; }
 
-        public OrderInvoicedEvent(Guid? id = null, IEnumerable<OrderInvoice> invoices = null) : base(id ?? default(Guid))
+        public virtual User InvoicedBy { get; protected set; }
+
+        public OrderInvoicedEvent(Guid? id = null, DateTime? invoicedOn = null, User invoicedBy = null) : base(id ?? default(Guid))
         {
-            this.Invoices = invoices;
+            this.InvoicedOn = invoicedOn;
+            this.InvoicedBy = invoicedBy;
         }
     }
 
-    // TODO: Clarify if this will be removed
     public class OrderPaidEvent : OrderEvent
     {
-        public virtual DateTime? PaidOn { get; protected set; }
+        public virtual IEnumerable<OrderPayment> Payments { get; protected set; }
 
-        public virtual User PaidTo { get; protected set; }
-
-        public virtual PaymentType PaymentType { get; protected set; }
-
-        public OrderPaidEvent(Guid? id = null, DateTime? paidOn = null, User paidBy = null, PaymentType paymentType = null) : base(id ?? default(Guid))
+        public OrderPaidEvent(Guid? id = null, IEnumerable<OrderPayment> payments = null) : base(id ?? default(Guid))
         {
-            this.PaidOn = paidOn;
-            this.PaidTo = paidBy;
-            this.PaymentType = paymentType;
+            this.Payments = payments;
+        }
+    }
+
+    public class OrderShippedEvent : OrderEvent
+    {
+        public virtual DateTime? ShippedOn { get; protected set; }
+
+        public virtual User ShippedBy { get; protected set; }
+
+        public OrderShippedEvent(Guid? id = null, DateTime? shippedOn = null, User shippedBy = null) : base(id ?? default(Guid))
+        {
+            this.ShippedOn = shippedOn;
+            this.ShippedBy = ShippedBy;
         }
     }
 

@@ -79,13 +79,13 @@ namespace AmpedBiz.Service.Dto.Mappers
 
             ExpressMapper.Mapper.Register<Entity.Order, CreateNewOrder.Response>().Flatten();
 
-            ExpressMapper.Mapper.Register<Entity.OrderInvoice, Dto.Invoice>().Flatten();
+            ExpressMapper.Mapper.Register<Entity.OrderItem, Dto.OrderItem>().Flatten();
+
+            ExpressMapper.Mapper.Register<Entity.OrderPayment, Dto.OrderPayment>().Flatten();
 
             ExpressMapper.Mapper.Register<Entity.Order, InvoiceOrder.Response>().Flatten();
 
-            ExpressMapper.Mapper.Register<Entity.OrderItem, Dto.OrderItem>().Flatten();
-
-            ExpressMapper.Mapper.Register<Entity.OrderItem, Dto.OrderItemPageItem>().Flatten();
+            //ExpressMapper.Mapper.Register<Entity.OrderItem, Dto.OrderItemPageItem>().Flatten();
         }
 
         private void RegisterMapping<TEntity, TDto>()

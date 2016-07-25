@@ -12,7 +12,7 @@ export class PurchaseOrderReceiptCreate {
   private _api: ServiceApi;
   private _controller: DialogController;
   private _notification: NotificationService;
-  private _purchaseOrder: PurchaseOrder;
+  private _purchaseOrderId: string;
 
   public header: string = 'Receipt';
   public canSave: boolean = true;
@@ -30,7 +30,7 @@ export class PurchaseOrderReceiptCreate {
     this.receivablePage.onPage = () => this.initializePage();
   }
 
-  activate(purchaseOrder: PurchaseOrder) {
+  activate(purchaseOrderId: string) {
     /*
     this._purchaseOrder = purchaseOrder;
     this.receivables = this._purchaseOrder.receivables;
@@ -38,11 +38,11 @@ export class PurchaseOrderReceiptCreate {
     */
 
     let requests: [Promise<PurchaseOrderReceivable[]>] = [
-      this._api.purchaseOrders.getReceivables(purchaseOrder.id)
+      this._api.purchaseOrders.getReceivables(purchaseOrderId)
     ];
 
     Promise.all(requests).then((results: [PurchaseOrderReceivable[]]) => {
-      this._purchaseOrder = purchaseOrder;
+      this._purchaseOrderId = purchaseOrderId;
       this.receivables = results[0];
       this.products = this.receivables.map((item) => item.product);
 
@@ -73,11 +73,11 @@ export class PurchaseOrderReceiptCreate {
 
   save() {
     var receivedEvent = <PurchaseOrderReceivedEvent>{
-      purchaseOrderId: this._purchaseOrder.id,
+      purchaseOrderId: this._purchaseOrderId,
       receipts: this.receivables
         .filter(x => x.receivingQuantity > 0)
         .map(x => <PurchaseOrderReceipt>{
-          purchaseOrderId: this._purchaseOrder.id,
+          purchaseOrderId: this._purchaseOrderId,
           batchNumber: this.batchNumber,
           receivedBy: this._api.auth.userAsLookup,
           receivedOn: new Date(),
@@ -90,7 +90,7 @@ export class PurchaseOrderReceiptCreate {
     this._api.purchaseOrders.receive(receivedEvent)
       .then(data => {
         this._notification.success("Purchase order has been received.")
-          .then(response => this._controller.ok(data));
+          .then(response => this._controller.close(true, data));
       })
       .catch(error => {
         this._notification.warning(error);

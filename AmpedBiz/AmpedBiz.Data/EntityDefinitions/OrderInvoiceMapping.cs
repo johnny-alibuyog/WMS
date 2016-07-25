@@ -3,7 +3,7 @@ using FluentNHibernate.Mapping;
 
 namespace AmpedBiz.Data.EntityDefinitions
 {
-    public class OrderInvoiceMapping : ClassMap<OrderInvoice>
+    public class OrderInvoiceMapping : ClassMap<OrderPayment>
     {
         public OrderInvoiceMapping()
         {
@@ -12,24 +12,22 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             References(x => x.Order);
 
-            Map(x => x.DueOn);
-
-            Map(x => x.InvoicedOn);
+            Map(x => x.PaidOn);
 
             Component(x => x.Tax, 
-                MoneyMapping.Map("Tax_", nameof(OrderInvoice)));
+                MoneyMapping.Map("Tax_", nameof(OrderPayment)));
 
-            Component(x => x.Shipping, 
-                MoneyMapping.Map("Shipping_", nameof(OrderInvoice)));
+            Component(x => x.ShippingFee, 
+                MoneyMapping.Map("ShippingFee_", nameof(OrderPayment)));
 
             Component(x => x.Discount, 
-                MoneyMapping.Map("Discount_", nameof(OrderInvoice)));
+                MoneyMapping.Map("Discount_", nameof(OrderPayment)));
 
             Component(x => x.SubTotal, 
-                MoneyMapping.Map("SubTotal_", nameof(OrderInvoice)));
+                MoneyMapping.Map("SubTotal_", nameof(OrderPayment)));
 
             Component(x => x.Total, 
-                MoneyMapping.Map("Total_", nameof(OrderInvoice)));
+                MoneyMapping.Map("Total_", nameof(OrderPayment)));
         }
     }
 }

@@ -3,14 +3,6 @@ using System;
 
 namespace AmpedBiz.Service.Dto
 {
-    public enum OrderItemStatus
-    {
-        Allocated,
-        Invoiced,
-        Shipped,
-        BackOrdered
-    }
-
     public class OrderItem
     {
         public Guid Id { get; set; }
@@ -26,8 +18,6 @@ namespace AmpedBiz.Service.Dto
         public decimal UnitPriceAmount { get; set; }
 
         public decimal ExtendedPriceAmount { get; set; }
-
-        public OrderItemStatus Status { get; set; }
     }
 
     public class OrderItemPageItem

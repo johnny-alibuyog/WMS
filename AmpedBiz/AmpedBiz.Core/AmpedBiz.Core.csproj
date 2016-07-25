@@ -55,7 +55,7 @@
     <Compile Include="Entities\PricingScheme.cs" />
     <Compile Include="Entities\ProductCategory.cs" />
     <Compile Include="Entities\Customer.cs" />
-    <Compile Include="Entities\OrderInvoice.cs" />
+    <Compile Include="Entities\OrderPayment.cs" />
     <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\PaymentType.cs" />

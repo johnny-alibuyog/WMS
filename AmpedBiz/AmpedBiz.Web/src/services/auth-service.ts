@@ -11,12 +11,14 @@ export class AuthService {
   private _httpClient: HttpClientFacade;
   private _notification: NotificationService;
 
+  private readonly AUTH_TOKEN: string = "token:auth-user";
+
   public get user(): User {
-    return <User>JSON.parse(localStorage["token:auth-user"]);
+    return <User>JSON.parse(localStorage[this.AUTH_TOKEN]);
   };
 
   public set user(user: User) {
-    localStorage["token:auth-user"] = JSON.stringify(user);
+    localStorage[this.AUTH_TOKEN] = JSON.stringify(user);
   };
 
   public get userFullname(): string {

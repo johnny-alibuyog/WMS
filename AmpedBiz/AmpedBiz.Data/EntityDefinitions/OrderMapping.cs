@@ -12,23 +12,7 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             References(x => x.Branch);
 
-            Map(x => x.OrderedOn);
-
-            Map(x => x.StagedOn);
-
-            Map(x => x.RoutedOn);
-
-            Map(x => x.InvoicedOn);
-
-            Map(x => x.ShippedOn);
-
-            Map(x => x.PaidOn);
-
-            Map(x => x.CompletedOn);
-
-            Map(x => x.CancelledOn);
-
-            Map(x => x.CancellationReason);
+            References(x => x.Customer);
 
             References(x => x.PaymentType);
 
@@ -53,23 +37,45 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Map(x => x.Status);
 
-            Map(x => x.IsActive);
+            Map(x => x.DueOn);
 
-            References(x => x.Customer);
+            Map(x => x.OrderedOn);
+
+            References(x => x.OrderedBy);
+
+            Map(x => x.CreatedOn);
 
             References(x => x.CreatedBy);
 
+            Map(x => x.StagedOn);
+
             References(x => x.StagedBy);
+
+            Map(x => x.ShippedOn);
+
+            References(x => x.ShippedBy);
+
+            Map(x => x.RoutedOn);
 
             References(x => x.RoutedBy);
 
+            Map(x => x.InvoicedOn);
+
             References(x => x.InvoicedBy);
+
+            Map(x => x.PaidOn);
 
             References(x => x.PaidTo);
 
+            Map(x => x.CompletedOn);
+
             References(x => x.CompletedBy);
 
+            Map(x => x.CancelledOn);
+
             References(x => x.CancelledBy);
+
+            Map(x => x.CancellationReason);
 
             HasMany(x => x.Items)
                 .Cascade.AllDeleteOrphan()
@@ -78,7 +84,7 @@ namespace AmpedBiz.Data.EntityDefinitions
                 .Inverse()
                 .AsBag();
 
-            HasMany(x => x.Invoices)
+            HasMany(x => x.Payments)
                 .Cascade.AllDeleteOrphan()
                 .Not.KeyNullable()
                 .Not.KeyUpdate()

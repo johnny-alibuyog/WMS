@@ -87,11 +87,11 @@ export class OrderPage {
       });
   }
 
-  create() {
+  create(): void {
     this._router.navigateToRoute('order-create');
   }
 
-  edit(item: OrderPageItem) {
+  edit(item: OrderPageItem): void {
     this._router.navigateToRoute('order-create', <Order>{ id: item.id });
   }
 

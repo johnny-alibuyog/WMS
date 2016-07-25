@@ -6,21 +6,19 @@ namespace AmpedBiz.Core.Entities
     {
         public virtual string Name { get; set; }
 
-        public PricingScheme() : this(default(string))
-        {
-        }
+        public PricingScheme() : base(default(string)) { }
 
-        public PricingScheme(string id, string name = null) : base(id)
+        public PricingScheme(string id, string name) : base(id) 
         {
             this.Name = name;
         }
 
-        public static readonly PricingScheme WholeSale = new PricingScheme("WS", "WholeSale");
+        public static readonly PricingScheme BasePrice = new PricingScheme("BP", "Base Price");
 
-        public static readonly PricingScheme SRP = new PricingScheme("SRP", "SRP");
+        public static readonly PricingScheme RetailPrice = new PricingScheme("RP", "Retail Price");
 
-        public static readonly PricingScheme CostPrice = new PricingScheme("CP", "CostPrice");
+        public static readonly PricingScheme WholesalePrice = new PricingScheme("WP", "Wholesale Price");
 
-        public static readonly IEnumerable<PricingScheme> All = new List<PricingScheme>() { WholeSale, SRP, CostPrice };
+        public static readonly IEnumerable<PricingScheme> All = new List<PricingScheme>() { BasePrice, WholesalePrice, RetailPrice };
     }
 }

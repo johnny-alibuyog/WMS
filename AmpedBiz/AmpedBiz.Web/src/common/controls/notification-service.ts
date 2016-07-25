@@ -1,5 +1,5 @@
 import {autoinject, noView} from 'aurelia-framework';
-import {DialogService} from 'aurelia-dialog';
+import {DialogService, DialogResult} from 'aurelia-dialog';
 import {Notification, Alert} from './notification';
 
 @autoinject
@@ -11,6 +11,13 @@ export class NotificationService {
   }
 
   info(message: string): Promise<any> {
+    //TODO: there is an issue currently with aurelia-dialog, 
+    // return implementaion as soon as fix is available
+    // https://github.com/aurelia/dialog/issues/180
+
+    return Promise.resolve(<DialogResult>{ wasCancelled: false, output: null });
+
+    /*
     return this._dialog.open({
       viewModel: Notification,
       model: <Alert>{
@@ -19,9 +26,17 @@ export class NotificationService {
         message: message
       }
     });
+    */
   }
 
   success(message: string): Promise<any> {
+    //TODO: there is an issue currently with aurelia-dialog, 
+    // return implementaion as soon as fix is available
+    // https://github.com/aurelia/dialog/issues/180
+
+    return Promise.resolve(<DialogResult>{ wasCancelled: false, output: null });
+
+    /*
     return this._dialog.open({
       viewModel: Notification,
       model: <Alert>{
@@ -30,9 +45,17 @@ export class NotificationService {
         message: message
       }
     });
+    */
   }
 
   warning(message: string): Promise<any> {
+    //TODO: there is an issue currently with aurelia-dialog, 
+    // return implementaion as soon as fix is available
+    // https://github.com/aurelia/dialog/issues/180
+
+    return Promise.resolve(<DialogResult>{ wasCancelled: false, output: null });
+
+    /*
     return this._dialog.open({
       viewModel: Notification,
       model: <Alert>{
@@ -41,9 +64,17 @@ export class NotificationService {
         message: message
       }
     });
+    */
   }
 
   error(message: string): Promise<any> {
+    //TODO: there is an issue currently with aurelia-dialog, 
+    // return implementaion as soon as fix is available
+    // https://github.com/aurelia/dialog/issues/180
+
+    return Promise.resolve(<DialogResult>{ wasCancelled: false, output: null });
+
+    /*
     return this._dialog.open({
       viewModel: Notification,
       model: <Alert>{
@@ -52,5 +83,6 @@ export class NotificationService {
         message: message
       }
     });
+    */
   }
 }

@@ -144,7 +144,6 @@ namespace AmpedBiz.Data.Seeders
                             taxRate: random.NextDecimal(0.01M, 0.30M),
                             tax: null, // compute this
                             shippingFee: new Money(random.NextDecimal(10M, 10000M)),
-                            discount: null, // compute this from the items discount,
                             items: Enumerable.Range(0, (int)random.NextDecimal(1M, 25M))
                                 .Select(x => RotateProduct())
                                 .Select(x => new OrderItem(

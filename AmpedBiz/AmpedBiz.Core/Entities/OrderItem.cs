@@ -26,6 +26,9 @@ namespace AmpedBiz.Core.Entities
             this.Discount = discount ?? new Money(0.0M);
             this.UnitPrice = unitPrice;
 
+            // discount is not included in the extended price
+            this.ExtendedPrice = new Money((this.Quantity.Value * this.UnitPrice.Amount), this.UnitPrice.Currency); 
+
             //this.Allocate();
         }
 

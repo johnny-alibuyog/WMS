@@ -15,11 +15,8 @@ export class Notification {
     this.alert = alert;
   }
   
-  close() {
-    this._controller.ok({ 
-      wasCancelled: true, 
-      output: this.alert
-    });
+  ok() {
+    this._controller.ok(this.alert);
   }
 }
 

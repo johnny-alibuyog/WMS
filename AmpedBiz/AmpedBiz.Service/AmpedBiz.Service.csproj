@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Branches\CreateBranch.cs" />
     <Compile Include="Branches\GetBranch.cs" />
+    <Compile Include="Branches\GetBranchLookup.cs" />
     <Compile Include="Branches\GetBranchPage.cs" />
     <Compile Include="Branches\GetBranchList.cs" />
     <Compile Include="Branches\UpdateBranch.cs" />
@@ -75,14 +76,13 @@
     <Compile Include="Dto\Customer.cs" />
     <Compile Include="Dto\Contact.cs" />
     <Compile Include="Dto\Inventory.cs" />
-    <Compile Include="Dto\Invoice.cs" />
     <Compile Include="Dto\Mappers\IMapper.cs" />
     <Compile Include="Dto\Mappers\Mapper.cs" />
     <Compile Include="Dto\Measure.cs" />
     <Compile Include="Dto\Money.cs" />
     <Compile Include="Dto\Order.cs" />
     <Compile Include="Dto\OrderEvent.cs" />
-    <Compile Include="Dto\OrderInvoice.cs" />
+    <Compile Include="Dto\OrderPayment.cs" />
     <Compile Include="Dto\OrderItem.cs" />
     <Compile Include="Dto\PaymentType.cs" />
     <Compile Include="Dto\Person.cs" />
@@ -110,10 +110,12 @@
     <Compile Include="Orders\InvoiceOrder.cs" />
     <Compile Include="Orders\PayOrder.cs" />
     <Compile Include="Orders\RouteOrder.cs" />
+    <Compile Include="Orders\ShipOrder.cs" />
     <Compile Include="Orders\StageOrder.cs" />
     <Compile Include="Orders\UpdateNewOrder.cs" />
     <Compile Include="PaymentTypes\GetPaymentTypeLookup.cs" />
     <Compile Include="PaymentTypes\GetPaymentTypePage.cs" />
+    <Compile Include="PricingShemes\GetPricingSchemeLookup.cs" />
     <Compile Include="ProductCategories\CreateProductCategory.cs" />
     <Compile Include="ProductCategories\GetProductCategory.cs" />
     <Compile Include="ProductCategories\GetProductCategoryList.cs" />

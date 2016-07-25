@@ -1,11 +1,9 @@
-﻿using AmpedBiz.Common.CustomTypes;
-using AmpedBiz.Common.Exceptions;
+﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
-using NHibernate.Transform;
 using System;
 using System.Linq;
 

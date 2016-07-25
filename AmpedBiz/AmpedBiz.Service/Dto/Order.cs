@@ -23,9 +23,13 @@ namespace AmpedBiz.Service.Dto
 
         public Lookup<string> Customer { get; set; }
 
+        public Lookup<string> PricingScheme { get; set; }
+
         public Lookup<string> PaymentType { get; set; }
 
         public Lookup<string> Shipper { get; set; }
+
+        public Address ShippingAddress { get; set; }
 
         public decimal? TaxRate { get; set; }
 
@@ -39,7 +43,7 @@ namespace AmpedBiz.Service.Dto
 
         public decimal TotalAmount { get; set; }
 
-        public Dto.OrderStatus Status { get; set; }
+        public OrderStatus Status { get; set; }
 
         public bool IsActive { get; set; } // this should be removed
 
@@ -81,11 +85,11 @@ namespace AmpedBiz.Service.Dto
 
         public string CancellationReason { get; set; }
 
-        public IEnumerable<Dto.OrderItem> Items { get; set; }
+        public IEnumerable<OrderItem> Items { get; set; }
 
-        public IEnumerable<Dto.OrderInvoice> Invoices { get; set; }
+        public IEnumerable<OrderPayment> Payments { get; set; }
 
-        public Dictionary<Dto.OrderStatus, string> AllowedTransitions { get; set; }
+        public Dictionary<OrderStatus, string> AllowedTransitions { get; set; }
     }
 
     public class OrderPageItem

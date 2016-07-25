@@ -1,13 +1,9 @@
 import {Router} from 'aurelia-router';
 import {autoinject} from 'aurelia-framework';
+import {EventAggregator} from 'aurelia-event-aggregator';
 import {DialogService} from 'aurelia-dialog';
-import {Supplier} from '../common/models/supplier';
-import {ProductInventory} from '../common/models/product';
-import {PurchaseOrderPaymentCreate} from './purchase-order-payment-create';
-import {PurchaseOrderReceiptCreate} from './purchase-order-receipt-create';
-import {PurchaseOrder, PurchaseOrderStatus, PurchaseOrderItem, PurchaseOrderPayment, PurchaseOrderReceipt, PurchaseOrderReceivable} from '../common/models/purchase-order';
+import {PurchaseOrder} from '../common/models/purchase-order';
 import {PurchaseOrderNewlyCreatedEvent, PurchaseOrderSubmittedEvent, PurchaseOrderApprovedEvent, PurchaseOrderPaidEvent, PurchaseOrderReceivedEvent, PurchaseOrderCompletedEvent, PurchaseOrderCancelledEvent} from '../common/models/purchase-order-event';
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 import {ServiceApi} from '../services/service-api';
 import {Lookup} from '../common/custom_types/lookup';
 import {NotificationService} from '../common/controls/notification-service';
@@ -18,32 +14,22 @@ export class PurchaseOrderCreate {
   private _router: Router;
   private _dialog: DialogService;
   private _notification: NotificationService;
+  private _eventAggegator: EventAggregator;
 
   public header: string = 'Purchase Order';
   public isEdit: boolean = false;
   public canSave: boolean = true;
-  public purchaseOrder: PurchaseOrder;
-  public selectedItem: PurchaseOrderItem;
-  public selectedPayment: PurchaseOrderPayment;
-  public selectedReceipt: PurchaseOrderReceipt;
-  public products: Lookup<string>[] = [];
+
   public suppliers: Lookup<string>[] = [];
+  public products: Lookup<string>[] = [];
+  public purchaseOrder: PurchaseOrder;
 
-  public itemPage: Pager<PurchaseOrderItem> = new Pager<PurchaseOrderItem>();
-  public paymentPage: Pager<PurchaseOrderPayment> = new Pager<PurchaseOrderPayment>();
-  public receiptPage: Pager<PurchaseOrderReceipt> = new Pager<PurchaseOrderReceipt>();
-  public receivablePage: Pager<PurchaseOrderReceivable> = new Pager<PurchaseOrderReceivable>();
-
-  constructor(api: ServiceApi, router: Router, dialog: DialogService, notification: NotificationService) {
+  constructor(api: ServiceApi, router: Router, dialog: DialogService, notification: NotificationService, eventAggegator: EventAggregator) {
     this._api = api;
     this._router = router;
     this._dialog = dialog;
     this._notification = notification;
-
-    this.itemPage.onPage = () => this.initializeItemPage();
-    this.paymentPage.onPage = () => this.initializePaymentPage();
-    this.receiptPage.onPage = () => this.initializeReceiptPage();
-    this.receivablePage.onPage = () => this.initializeReceivablePage();
+    this._eventAggegator = eventAggegator;
 
     this._api.suppliers.getLookups()
       .then(data => this.suppliers = data);
@@ -77,154 +63,44 @@ export class PurchaseOrderCreate {
     this.purchaseOrder.receipts = this.purchaseOrder.receipts || [];
     this.purchaseOrder.receivables = this.purchaseOrder.receivables || [];
 
-    this.initializeItemPage();
-    this.initializePaymentPage();
-    this.initializeReceiptPage();
-    this.initializeReceivablePage();
-
-    this.getSupplierProducts();
+    this.hydrateSupplierProducts(this.purchaseOrder.supplier);
   }
 
-  close() {
-    this._router.navigateBack();
+  changeSupplier(supplier: Lookup<string>): void {
+    this.products = [];
+    this.purchaseOrder.items = [];
+
+    if (!supplier && !supplier.id) {
+      return;
+    }
+
+    this.hydrateSupplierProducts(supplier);
   }
 
-  save() {
+  hydrateSupplierProducts(supplier: Lookup<string>): void {
+    this._api.suppliers.getProductLookups(this.purchaseOrder.supplier.id)
+      .then(data => this.products = data);
+  }
+
+  addItem(): void {
+    this._eventAggegator.publish('addPurchaseOrderItem');
+  }
+
+  addPayment(): void {
+    this._eventAggegator.publish('addPurchaseOrderPayment');
+  }
+
+  addReceipt(): void {
+    this._eventAggegator.publish('addPurchaseOrderReceipt');
+  }
+
+  save(): void {
     if (this.isEdit) {
       this.updateNew();
     }
     else {
       this.createNew();
     }
-  }
-
-  getSupplierProducts(): void {
-    if (!this.purchaseOrder.supplier && !this.purchaseOrder.supplier.id) {
-      this.products = [];
-      return;
-    }
-
-    this._api.suppliers.getProductLookups(this.purchaseOrder.supplier.id)
-      .then(data => this.products = data);
-  }
-
-  initializePaymentPage(): void {
-    this.paymentPage.count = this.purchaseOrder.payments.length;
-    this.paymentPage.items = this.purchaseOrder.payments.slice(
-      this.paymentPage.start,
-      this.paymentPage.end
-    );
-  }
-
-  initializeReceiptPage(): void {
-    this.receiptPage.count = this.purchaseOrder.receipts.length;
-    this.receiptPage.items = this.purchaseOrder.receipts.slice(
-      this.receiptPage.start,
-      this.receiptPage.end
-    );
-  }
-
-  initializeReceivablePage(): void {
-    this.receivablePage.count = this.purchaseOrder.receivables.length;
-    this.receivablePage.items = this.purchaseOrder.receivables.slice(
-      this.receivablePage.start,
-      this.receivablePage.end
-    );
-  }
-
-  /*
-  addItem(): void {
-    if (!this.purchaseOrder.items)
-      this.purchaseOrder.items = <PurchaseOrderItem[]>[];
-
-    var item = <PurchaseOrderItem>{
-      quantityValue: 0,
-      unitPriceAmountce: 0,
-    };
-
-    this.purchaseOrder.items.push(item);
-    this.selectedItem = item;
-    this.initializeItemPage();
-  }
-
-  editItem(item: PurchaseOrderItem): void {
-    if (this.selectedItem !== item)
-      this.selectedItem = item;
-  }
-
-  deleteItem(item: PurchaseOrderItem): void {
-    var index = this.purchaseOrder.items.indexOf(item);
-    if (index > -1) {
-      this.purchaseOrder.items.splice(index, 1);
-    }
-    this.initializeItemPage();
-  }
-  */
-
-  initializeItem(item: PurchaseOrderItem): void {
-    if (!item.product) {
-      item.quantityValue = 0;
-      item.unitCostAmount = 0;
-      return;
-    }
-    else {
-      this._api.products.getInventory(item.product.id).then(data => {
-        var product = <ProductInventory>data;
-        item.quantityValue = product.targetValue || 1;
-        item.unitCostAmount = product.wholeSalePriceAmount || 0;
-      });
-    }
-  }
-
-  initializeItemPage(): void {
-    this.itemPage.count = this.purchaseOrder.items.length;
-    this.itemPage.items = this.purchaseOrder.items.slice(
-      this.itemPage.start,
-      this.itemPage.end
-    );
-  }
-
-  addItem(): void {
-    if (!this.purchaseOrder.items)
-      this.purchaseOrder.items = <PurchaseOrderItem[]>[];
-
-    var item = <PurchaseOrderItem>{
-      quantityValue: 0,
-      unitPriceAmountce: 0,
-    };
-
-    this.purchaseOrder.items.push(item);
-    this.selectedItem = item;
-    this.initializeItemPage();
-  }
-
-  editItem(item: PurchaseOrderItem): void {
-    if (this.selectedItem !== item)
-      this.selectedItem = item;
-  }
-
-  deleteItem(item: PurchaseOrderItem): void {
-    var index = this.purchaseOrder.items.indexOf(item);
-    if (index > -1) {
-      this.purchaseOrder.items.splice(index, 1);
-    }
-    this.initializeItemPage();
-  }
-
-  addReceipt(): void {
-    this._dialog.open({ viewModel: PurchaseOrderReceiptCreate, model: this.purchaseOrder })
-      .then(response => {
-        if (!response.wasCancelled)
-          this.setPurchaseOrder(<PurchaseOrder>response.output);
-      });
-  }
-
-  addPayment(): void {
-    this._dialog.open({ viewModel: PurchaseOrderPaymentCreate, model: this.purchaseOrder })
-      .then(response => {
-        if (!response.wasCancelled)
-          this.setPurchaseOrder(<PurchaseOrder>response.output);
-      });
   }
 
   createNew(): void {
@@ -292,6 +168,7 @@ export class PurchaseOrderCreate {
       .catch(error => this._notification.warning(error));
   }
 
+  /*
   pay(): void {
     var paidEvent = <PurchaseOrderPaidEvent>{
       purchaseOrderId: this.purchaseOrder.id,
@@ -316,6 +193,7 @@ export class PurchaseOrderCreate {
       .then(data => this.resetAndNoify(data, "Purchase order has been received."))
       .catch(error => this._notification.warning(error));
   }
+  */
 
   complete(): void {
     var completedEvent = <PurchaseOrderCompletedEvent>{

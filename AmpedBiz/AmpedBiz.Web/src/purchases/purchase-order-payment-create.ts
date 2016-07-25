@@ -11,11 +11,11 @@ export class PurchaseOrderPaymentCreate {
   private _api: ServiceApi;
   private _controller: DialogController;
   private _notification: NotificationService;
+  private _purchaseOrderId: string;
 
   public header: string = 'Payment';
   public canSave: boolean = true;
   public payment: PurchaseOrderPayment;
-  public purchaseOrder: PurchaseOrder;
   public paymentTypes: Lookup<string>[] = [];
 
   constructor(api: ServiceApi, controller: DialogController, notification: NotificationService) {
@@ -24,14 +24,14 @@ export class PurchaseOrderPaymentCreate {
     this._notification = notification;
   }
 
-  activate(purchaseOrder: PurchaseOrder) {
+  activate(purchaseOrderId: string) {
     let requests: [Promise<Lookup<string>[]>] = [this._api.paymentTypes.getLookups()];
 
     Promise.all(requests).then((responses: [Lookup<string>[]]) => {
       this.paymentTypes = responses[0];
-      this.purchaseOrder = purchaseOrder;
+      this._purchaseOrderId = purchaseOrderId;
       this.payment = <PurchaseOrderPayment>{
-        purchaseOrderId: this.purchaseOrder.id,
+        purchaseOrderId: purchaseOrderId,
         paidBy: this._api.auth.userAsLookup,
         paidOn: new Date(),
         paymentType: this.paymentTypes[0] || null,
@@ -46,7 +46,7 @@ export class PurchaseOrderPaymentCreate {
   save() {
     this.payment.paidOn = new Date();
     var paidEvent = <PurchaseOrderPaidEvent>{
-      purchaseOrderId: this.purchaseOrder.id,
+      purchaseOrderId: this._purchaseOrderId,
       payments: [this.payment]
     };
 
