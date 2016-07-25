@@ -108,14 +108,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="ReportViewers\CustomerList.aspx" />
     <Content Include="ReportViewers\MainViewer.aspx" />
-    <Content Include="ReportViewers\PriceList.aspx" />
-    <Content Include="ReportViewers\PricelistReportSelector.aspx" />
+    <Content Include="ReportViewers\ucOrderListSelector.ascx" />
+    <Content Include="ReportViewers\ucSupplierList.ascx" />
     <Content Include="ReportViewers\ucCustomerList.ascx" />
     <Content Include="ReportViewers\ucPricelistSelector.ascx" />
     <Content Include="ReportViewers\ucUOMDetails.ascx" />
-    <Content Include="ReportViewers\UOMDetails.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -139,13 +137,6 @@
       <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReportViewers\CustomerList.aspx.cs">
-      <DependentUpon>CustomerList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ReportViewers\CustomerList.aspx.designer.cs">
-      <DependentUpon>CustomerList.aspx</DependentUpon>
-    </Compile>
     <Compile Include="ReportViewers\MainViewer.aspx.cs">
       <DependentUpon>MainViewer.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -153,19 +144,19 @@
     <Compile Include="ReportViewers\MainViewer.aspx.designer.cs">
       <DependentUpon>MainViewer.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ReportViewers\PriceList.aspx.cs">
-      <DependentUpon>PriceList.aspx</DependentUpon>
+    <Compile Include="ReportViewers\ucOrderListSelector.ascx.cs">
+      <DependentUpon>ucOrderListSelector.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ReportViewers\PriceList.aspx.designer.cs">
-      <DependentUpon>PriceList.aspx</DependentUpon>
+    <Compile Include="ReportViewers\ucOrderListSelector.ascx.designer.cs">
+      <DependentUpon>ucOrderListSelector.ascx</DependentUpon>
     </Compile>
-    <Compile Include="ReportViewers\PricelistReportSelector.aspx.cs">
-      <DependentUpon>PricelistReportSelector.aspx</DependentUpon>
+    <Compile Include="ReportViewers\ucSupplierList.ascx.cs">
+      <DependentUpon>ucSupplierList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ReportViewers\PricelistReportSelector.aspx.designer.cs">
-      <DependentUpon>PricelistReportSelector.aspx</DependentUpon>
+    <Compile Include="ReportViewers\ucSupplierList.ascx.designer.cs">
+      <DependentUpon>ucSupplierList.ascx</DependentUpon>
     </Compile>
     <Compile Include="ReportViewers\ucCustomerList.ascx.cs">
       <DependentUpon>ucCustomerList.ascx</DependentUpon>
@@ -188,17 +179,11 @@
     <Compile Include="ReportViewers\ucUOMDetails.ascx.designer.cs">
       <DependentUpon>ucUOMDetails.ascx</DependentUpon>
     </Compile>
-    <Compile Include="ReportViewers\UOMDetails.aspx.cs">
-      <DependentUpon>UOMDetails.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ReportViewers\UOMDetails.aspx.designer.cs">
-      <DependentUpon>UOMDetails.aspx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Reports\CustomerList.rdlc" />
+    <EmbeddedResource Include="Reports\OrderList.rdlc" />
     <EmbeddedResource Include="Reports\PriceList.rdlc" />
     <EmbeddedResource Include="Reports\SupplierList.rdlc" />
     <EmbeddedResource Include="Reports\UOMDetails.rdlc" />

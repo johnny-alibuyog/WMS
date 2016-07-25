@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <title>Reports</title>
     <link href="Assets/css/bootstrap.css" rel="stylesheet" />
 
     <script type="text/javascript" >
@@ -24,12 +24,11 @@
         </h3>
         <div>
             <ul>
-                <li><a onclick="window.open('ReportViewers/UOMDetails.aspx','UOM');return false;" href="ReportViewers/UOMDetails.aspx">Unit of Measurements</a></li>
-                <li><a href="ReportViewers/PriceListReportSelector.aspx">Price List of Products</a></li>
                 <li><a href="#" onclick="showReport('ucpricelistselector.ascx')">Price List</a></li>
                 <li><a href="#" onclick="showReport('ucUOMDetails.ascx')">Unit of Measurements</a></li>
                 <li><a href="#" onclick="showReport('ucCustomerList.ascx')">Customer List</a></li>
-                
+                <li><a href="#" onclick="showReport('ucSupplierList.ascx')">Supplier List</a></li>
+                <li><a href="#" onclick="showReport('ucOrderListSelector.ascx')">Order List</a></li>
             </ul>
         </div>
     </form>

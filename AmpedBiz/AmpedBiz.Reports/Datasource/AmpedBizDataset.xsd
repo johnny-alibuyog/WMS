@@ -81,38 +81,6 @@
               </DbSource>
             </Sources>
           </TableAdapter>
-          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="DataTable1TableAdapter" GeneratorDataComponentClassName="DataTable1TableAdapter" Name="DataTable1" UserDataComponentName="DataTable1TableAdapter">
-            <MainSource>
-              <DbSource ConnectionRef="ampedbizdbConnectionString (Web.config)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="FillOrders" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetOrders" GeneratorSourceName="FillOrders" GetMethodModifier="Public" GetMethodName="GetOrders" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetOrders" UserSourceName="FillOrders">
-                <SelectCommand>
-                  <DbCommand CommandType="Text" ModifiedByUser="true">
-                    <CommandText>SELECT orders.orderid, orders.orderdate, orders.completeddate, orders.cancelreason, orders.canceldate, orders.total_amount, orders.subtotal_amount, orders.tax_amount, orders.taxrate, orders.status, orders.isactive, customers."name", orderitems.orderitemid, products."name" AS EXPR1, orderitems.status AS EXPR2, orderitems.quantity_value, orderitems.quantity_unitid FROM customers INNER JOIN orders ON customers.customerid = orders.customerid, products INNER JOIN orderitems ON products.productid = orderitems.productid</CommandText>
-                    <Parameters />
-                  </DbCommand>
-                </SelectCommand>
-              </DbSource>
-            </MainSource>
-            <Mappings>
-              <Mapping SourceColumn="orderid" DataSetColumn="orderid" />
-              <Mapping SourceColumn="orderdate" DataSetColumn="orderdate" />
-              <Mapping SourceColumn="completeddate" DataSetColumn="completeddate" />
-              <Mapping SourceColumn="cancelreason" DataSetColumn="cancelreason" />
-              <Mapping SourceColumn="canceldate" DataSetColumn="canceldate" />
-              <Mapping SourceColumn="total_amount" DataSetColumn="total_amount" />
-              <Mapping SourceColumn="subtotal_amount" DataSetColumn="subtotal_amount" />
-              <Mapping SourceColumn="tax_amount" DataSetColumn="tax_amount" />
-              <Mapping SourceColumn="taxrate" DataSetColumn="taxrate" />
-              <Mapping SourceColumn="status" DataSetColumn="status" />
-              <Mapping SourceColumn="isactive" DataSetColumn="isactive" />
-              <Mapping SourceColumn="name" DataSetColumn="name" />
-              <Mapping SourceColumn="orderitemid" DataSetColumn="orderitemid" />
-              <Mapping SourceColumn="expr1" DataSetColumn="expr1" />
-              <Mapping SourceColumn="expr2" DataSetColumn="expr2" />
-              <Mapping SourceColumn="quantity_value" DataSetColumn="quantity_value" />
-              <Mapping SourceColumn="quantity_unitid" DataSetColumn="quantity_unitid" />
-            </Mappings>
-            <Sources />
-          </TableAdapter>
           <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="dtSuppliersTableAdapter" GeneratorDataComponentClassName="dtSuppliersTableAdapter" Name="dtSuppliers" UserDataComponentName="dtSuppliersTableAdapter">
             <MainSource>
               <DbSource ConnectionRef="ampedbizdbConnectionString (Web.config)" DbObjectName="&quot;public&quot;.suppliers" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="FillSuppliers" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetSuppliers" GeneratorSourceName="FillSuppliers" GetMethodModifier="Public" GetMethodName="GetSuppliers" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetSuppliers" UserSourceName="FillSuppliers">
@@ -367,6 +335,56 @@ ORDER BY PricingSchemName</CommandText>
               </DbSource>
             </Sources>
           </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="dtOrdersTableAdapter" GeneratorDataComponentClassName="dtOrdersTableAdapter" Name="dtOrders" UserDataComponentName="dtOrdersTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ampedbizdbConnectionString (Web.config)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="FillOrders" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetOrders" GeneratorSourceName="FillOrders" GetMethodModifier="Public" GetMethodName="GetOrders" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetOrders" UserSourceName="FillOrders">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        orders.orderid, orders.orderedon, orders.stagedon, orders.routedon, orders.invoicedon, orders.shippedon, orders.completedon, orders.cancellationreason, orders.total_amount, orders.subtotal_amount, 
+                         orders.discount_amount, orders.shippingfee_amount, orders.tax_amount, orders.taxrate, orders.status, orders.isactive, paymenttypes."name"
+FROM            orders INNER JOIN
+                         paymenttypes ON orders.paymenttypeid = paymenttypes.paymenttypeid</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="orderid" DataSetColumn="orderid" />
+              <Mapping SourceColumn="orderedon" DataSetColumn="orderedon" />
+              <Mapping SourceColumn="stagedon" DataSetColumn="stagedon" />
+              <Mapping SourceColumn="routedon" DataSetColumn="routedon" />
+              <Mapping SourceColumn="invoicedon" DataSetColumn="invoicedon" />
+              <Mapping SourceColumn="shippedon" DataSetColumn="shippedon" />
+              <Mapping SourceColumn="completedon" DataSetColumn="completedon" />
+              <Mapping SourceColumn="cancellationreason" DataSetColumn="cancellationreason" />
+              <Mapping SourceColumn="total_amount" DataSetColumn="total_amount" />
+              <Mapping SourceColumn="subtotal_amount" DataSetColumn="subtotal_amount" />
+              <Mapping SourceColumn="discount_amount" DataSetColumn="discount_amount" />
+              <Mapping SourceColumn="shippingfee_amount" DataSetColumn="shippingfee_amount" />
+              <Mapping SourceColumn="tax_amount" DataSetColumn="tax_amount" />
+              <Mapping SourceColumn="taxrate" DataSetColumn="taxrate" />
+              <Mapping SourceColumn="status" DataSetColumn="status" />
+              <Mapping SourceColumn="isactive" DataSetColumn="isactive" />
+              <Mapping SourceColumn="name" DataSetColumn="name" />
+            </Mappings>
+            <Sources>
+              <DbSource ConnectionRef="ampedbizdbConnectionString (Web.config)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="FillOrdersByStatus" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetOrdersByStatus" GeneratorSourceName="FillOrdersByStatus" GetMethodModifier="Public" GetMethodName="GetOrdersByStatus" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetOrdersByStatus" UserSourceName="FillOrdersByStatus">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        orders.orderid, orders.orderedon, orders.stagedon, orders.routedon, orders.invoicedon, orders.shippedon, orders.completedon, orders.cancellationreason, orders.total_amount, orders.subtotal_amount, 
+                         orders.discount_amount, orders.shippingfee_amount, orders.tax_amount, orders.taxrate, orders.status, orders.isactive, paymenttypes."name"
+FROM            orders INNER JOIN
+                         paymenttypes ON orders.paymenttypeid = paymenttypes.paymenttypeid
+WHERE        (orders.status = :paramStatus)</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="paramStatus" ColumnName="status" DataSourceName="&quot;public&quot;.orders" DataTypeServer="varchar(100)" DbType="AnsiString" Direction="Input" ParameterName="paramStatus" Precision="0" ProviderType="VarChar" Scale="0" Size="100" SourceColumn="status" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </Sources>
+          </TableAdapter>
         </Tables>
         <Sources />
       </DataSource>
@@ -375,7 +393,7 @@ ORDER BY PricingSchemName</CommandText>
   <xs:element name="AmpedBizDataset" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="AmpedBizDataset" msprop:Generator_UserDSName="AmpedBizDataset">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="dtUOM" msprop:Generator_TableClassName="dtUOMDataTable" msprop:Generator_TableVarName="tabledtUOM" msprop:Generator_TablePropName="dtUOM" msprop:Generator_RowDeletingName="dtUOMRowDeleting" msprop:Generator_RowChangingName="dtUOMRowChanging" msprop:Generator_RowEvHandlerName="dtUOMRowChangeEventHandler" msprop:Generator_RowDeletedName="dtUOMRowDeleted" msprop:Generator_UserTableName="dtUOM" msprop:Generator_RowChangedName="dtUOMRowChanged" msprop:Generator_RowEvArgName="dtUOMRowChangeEvent" msprop:Generator_RowClassName="dtUOMRow">
+        <xs:element name="dtUOM" msprop:Generator_TableClassName="dtUOMDataTable" msprop:Generator_TableVarName="tabledtUOM" msprop:Generator_RowChangedName="dtUOMRowChanged" msprop:Generator_TablePropName="dtUOM" msprop:Generator_RowDeletingName="dtUOMRowDeleting" msprop:Generator_RowChangingName="dtUOMRowChanging" msprop:Generator_RowEvHandlerName="dtUOMRowChangeEventHandler" msprop:Generator_RowDeletedName="dtUOMRowDeleted" msprop:Generator_RowClassName="dtUOMRow" msprop:Generator_UserTableName="dtUOM" msprop:Generator_RowEvArgName="dtUOMRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="measurement" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnmeasurement" msprop:Generator_ColumnPropNameInRow="measurement" msprop:Generator_ColumnPropNameInTable="measurementColumn" msprop:Generator_UserColumnName="measurement" minOccurs="0">
@@ -403,7 +421,7 @@ ORDER BY PricingSchemName</CommandText>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="dtProducts" msprop:Generator_TableClassName="dtProductsDataTable" msprop:Generator_TableVarName="tabledtProducts" msprop:Generator_RowChangedName="dtProductsRowChanged" msprop:Generator_TablePropName="dtProducts" msprop:Generator_RowDeletingName="dtProductsRowDeleting" msprop:Generator_RowChangingName="dtProductsRowChanging" msprop:Generator_RowEvHandlerName="dtProductsRowChangeEventHandler" msprop:Generator_RowDeletedName="dtProductsRowDeleted" msprop:Generator_RowClassName="dtProductsRow" msprop:Generator_UserTableName="dtProducts" msprop:Generator_RowEvArgName="dtProductsRowChangeEvent">
+        <xs:element name="dtProducts" msprop:Generator_TableClassName="dtProductsDataTable" msprop:Generator_TableVarName="tabledtProducts" msprop:Generator_TablePropName="dtProducts" msprop:Generator_RowDeletingName="dtProductsRowDeleting" msprop:Generator_RowChangingName="dtProductsRowChanging" msprop:Generator_RowEvHandlerName="dtProductsRowChangeEventHandler" msprop:Generator_RowDeletedName="dtProductsRowDeleted" msprop:Generator_UserTableName="dtProducts" msprop:Generator_RowChangedName="dtProductsRowChanged" msprop:Generator_RowEvArgName="dtProductsRowChangeEvent" msprop:Generator_RowClassName="dtProductsRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="category" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columncategory" msprop:Generator_ColumnPropNameInRow="category" msprop:Generator_ColumnPropNameInTable="categoryColumn" msprop:Generator_UserColumnName="category" minOccurs="0">
@@ -448,66 +466,7 @@ ORDER BY PricingSchemName</CommandText>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="orderid" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnorderid" msprop:Generator_ColumnPropNameInRow="orderid" msprop:Generator_ColumnPropNameInTable="orderidColumn" msprop:Generator_UserColumnName="orderid" type="xs:string" />
-              <xs:element name="orderdate" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnorderdate" msprop:Generator_ColumnPropNameInRow="orderdate" msprop:Generator_ColumnPropNameInTable="orderdateColumn" msprop:Generator_UserColumnName="orderdate" type="xs:dateTime" minOccurs="0" />
-              <xs:element name="completeddate" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columncompleteddate" msprop:Generator_ColumnPropNameInRow="completeddate" msprop:Generator_ColumnPropNameInTable="completeddateColumn" msprop:Generator_UserColumnName="completeddate" type="xs:dateTime" minOccurs="0" />
-              <xs:element name="cancelreason" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columncancelreason" msprop:Generator_ColumnPropNameInRow="cancelreason" msprop:Generator_ColumnPropNameInTable="cancelreasonColumn" msprop:Generator_UserColumnName="cancelreason" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="255" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="canceldate" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columncanceldate" msprop:Generator_ColumnPropNameInRow="canceldate" msprop:Generator_ColumnPropNameInTable="canceldateColumn" msprop:Generator_UserColumnName="canceldate" type="xs:dateTime" minOccurs="0" />
-              <xs:element name="total_amount" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columntotal_amount" msprop:Generator_ColumnPropNameInRow="total_amount" msprop:Generator_ColumnPropNameInTable="total_amountColumn" msprop:Generator_UserColumnName="total_amount" type="xs:decimal" minOccurs="0" />
-              <xs:element name="subtotal_amount" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnsubtotal_amount" msprop:Generator_ColumnPropNameInRow="subtotal_amount" msprop:Generator_ColumnPropNameInTable="subtotal_amountColumn" msprop:Generator_UserColumnName="subtotal_amount" type="xs:decimal" minOccurs="0" />
-              <xs:element name="tax_amount" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columntax_amount" msprop:Generator_ColumnPropNameInRow="tax_amount" msprop:Generator_ColumnPropNameInTable="tax_amountColumn" msprop:Generator_UserColumnName="tax_amount" type="xs:decimal" minOccurs="0" />
-              <xs:element name="taxrate" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columntaxrate" msprop:Generator_ColumnPropNameInRow="taxrate" msprop:Generator_ColumnPropNameInTable="taxrateColumn" msprop:Generator_UserColumnName="taxrate" type="xs:decimal" minOccurs="0" />
-              <xs:element name="status" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnstatus" msprop:Generator_ColumnPropNameInRow="status" msprop:Generator_ColumnPropNameInTable="statusColumn" msprop:Generator_UserColumnName="status" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="100" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="isactive" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnisactive" msprop:Generator_ColumnPropNameInRow="isactive" msprop:Generator_ColumnPropNameInTable="isactiveColumn" msprop:Generator_UserColumnName="isactive" type="xs:boolean" minOccurs="0" />
-              <xs:element name="name" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnname" msprop:Generator_ColumnPropNameInRow="name" msprop:Generator_ColumnPropNameInTable="nameColumn" msprop:Generator_UserColumnName="name" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="255" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="orderitemid" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnorderitemid" msprop:Generator_ColumnPropNameInRow="orderitemid" msprop:Generator_ColumnPropNameInTable="orderitemidColumn" msprop:Generator_UserColumnName="orderitemid" type="xs:string" />
-              <xs:element name="expr1" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnexpr1" msprop:Generator_ColumnPropNameInRow="expr1" msprop:Generator_ColumnPropNameInTable="expr1Column" msprop:Generator_UserColumnName="expr1" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="255" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="expr2" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnexpr2" msprop:Generator_ColumnPropNameInRow="expr2" msprop:Generator_ColumnPropNameInTable="expr2Column" msprop:Generator_UserColumnName="expr2" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="100" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="quantity_value" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnquantity_value" msprop:Generator_ColumnPropNameInRow="quantity_value" msprop:Generator_ColumnPropNameInTable="quantity_valueColumn" msprop:Generator_UserColumnName="quantity_value" type="xs:decimal" minOccurs="0" />
-              <xs:element name="quantity_unitid" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnquantity_unitid" msprop:Generator_ColumnPropNameInRow="quantity_unitid" msprop:Generator_ColumnPropNameInTable="quantity_unitidColumn" msprop:Generator_UserColumnName="quantity_unitid" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="255" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="dtSuppliers" msprop:Generator_TableClassName="dtSuppliersDataTable" msprop:Generator_TableVarName="tabledtSuppliers" msprop:Generator_RowChangedName="dtSuppliersRowChanged" msprop:Generator_TablePropName="dtSuppliers" msprop:Generator_RowDeletingName="dtSuppliersRowDeleting" msprop:Generator_RowChangingName="dtSuppliersRowChanging" msprop:Generator_RowEvHandlerName="dtSuppliersRowChangeEventHandler" msprop:Generator_RowDeletedName="dtSuppliersRowDeleted" msprop:Generator_RowClassName="dtSuppliersRow" msprop:Generator_UserTableName="dtSuppliers" msprop:Generator_RowEvArgName="dtSuppliersRowChangeEvent">
+        <xs:element name="dtSuppliers" msprop:Generator_TableClassName="dtSuppliersDataTable" msprop:Generator_TableVarName="tabledtSuppliers" msprop:Generator_TablePropName="dtSuppliers" msprop:Generator_RowDeletingName="dtSuppliersRowDeleting" msprop:Generator_RowChangingName="dtSuppliersRowChanging" msprop:Generator_RowEvHandlerName="dtSuppliersRowChangeEventHandler" msprop:Generator_RowDeletedName="dtSuppliersRowDeleted" msprop:Generator_UserTableName="dtSuppliers" msprop:Generator_RowChangedName="dtSuppliersRowChanged" msprop:Generator_RowEvArgName="dtSuppliersRowChangeEvent" msprop:Generator_RowClassName="dtSuppliersRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="supplierid" msprop:Generator_ColumnVarNameInTable="columnsupplierid" msprop:Generator_ColumnPropNameInRow="supplierid" msprop:Generator_ColumnPropNameInTable="supplieridColumn" msprop:Generator_UserColumnName="supplierid">
@@ -611,7 +570,7 @@ ORDER BY PricingSchemName</CommandText>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="dtProductCategories" msprop:Generator_TableClassName="dtProductCategoriesDataTable" msprop:Generator_TableVarName="tabledtProductCategories" msprop:Generator_RowChangedName="dtProductCategoriesRowChanged" msprop:Generator_TablePropName="dtProductCategories" msprop:Generator_RowDeletingName="dtProductCategoriesRowDeleting" msprop:Generator_RowChangingName="dtProductCategoriesRowChanging" msprop:Generator_RowEvHandlerName="dtProductCategoriesRowChangeEventHandler" msprop:Generator_RowDeletedName="dtProductCategoriesRowDeleted" msprop:Generator_RowClassName="dtProductCategoriesRow" msprop:Generator_UserTableName="dtProductCategories" msprop:Generator_RowEvArgName="dtProductCategoriesRowChangeEvent">
+        <xs:element name="dtProductCategories" msprop:Generator_TableClassName="dtProductCategoriesDataTable" msprop:Generator_TableVarName="tabledtProductCategories" msprop:Generator_TablePropName="dtProductCategories" msprop:Generator_RowDeletingName="dtProductCategoriesRowDeleting" msprop:Generator_RowChangingName="dtProductCategoriesRowChanging" msprop:Generator_RowEvHandlerName="dtProductCategoriesRowChangeEventHandler" msprop:Generator_RowDeletedName="dtProductCategoriesRowDeleted" msprop:Generator_UserTableName="dtProductCategories" msprop:Generator_RowChangedName="dtProductCategoriesRowChanged" msprop:Generator_RowEvArgName="dtProductCategoriesRowChangeEvent" msprop:Generator_RowClassName="dtProductCategoriesRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="productcategoryid" msprop:Generator_ColumnVarNameInTable="columnproductcategoryid" msprop:Generator_ColumnPropNameInRow="productcategoryid" msprop:Generator_ColumnPropNameInTable="productcategoryidColumn" msprop:Generator_UserColumnName="productcategoryid">
@@ -631,7 +590,7 @@ ORDER BY PricingSchemName</CommandText>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="dtCustomers" msprop:Generator_TableClassName="dtCustomersDataTable" msprop:Generator_TableVarName="tabledtCustomers" msprop:Generator_TablePropName="dtCustomers" msprop:Generator_RowDeletingName="dtCustomersRowDeleting" msprop:Generator_RowChangingName="dtCustomersRowChanging" msprop:Generator_RowEvHandlerName="dtCustomersRowChangeEventHandler" msprop:Generator_RowDeletedName="dtCustomersRowDeleted" msprop:Generator_UserTableName="dtCustomers" msprop:Generator_RowChangedName="dtCustomersRowChanged" msprop:Generator_RowEvArgName="dtCustomersRowChangeEvent" msprop:Generator_RowClassName="dtCustomersRow">
+        <xs:element name="dtCustomers" msprop:Generator_TableClassName="dtCustomersDataTable" msprop:Generator_TableVarName="tabledtCustomers" msprop:Generator_RowChangedName="dtCustomersRowChanged" msprop:Generator_TablePropName="dtCustomers" msprop:Generator_RowDeletingName="dtCustomersRowDeleting" msprop:Generator_RowChangingName="dtCustomersRowChanging" msprop:Generator_RowEvHandlerName="dtCustomersRowChangeEventHandler" msprop:Generator_RowDeletedName="dtCustomersRowDeleted" msprop:Generator_RowClassName="dtCustomersRow" msprop:Generator_UserTableName="dtCustomers" msprop:Generator_RowEvArgName="dtCustomersRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="web" msprop:Generator_ColumnVarNameInTable="columnweb" msprop:Generator_ColumnPropNameInRow="web" msprop:Generator_ColumnPropNameInTable="webColumn" msprop:Generator_UserColumnName="web" minOccurs="0">
@@ -806,6 +765,47 @@ ORDER BY PricingSchemName</CommandText>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="dtOrders" msprop:Generator_TableClassName="dtOrdersDataTable" msprop:Generator_TableVarName="tabledtOrders" msprop:Generator_TablePropName="dtOrders" msprop:Generator_RowDeletingName="dtOrdersRowDeleting" msprop:Generator_RowChangingName="dtOrdersRowChanging" msprop:Generator_RowEvHandlerName="dtOrdersRowChangeEventHandler" msprop:Generator_RowDeletedName="dtOrdersRowDeleted" msprop:Generator_UserTableName="dtOrders" msprop:Generator_RowChangedName="dtOrdersRowChanged" msprop:Generator_RowEvArgName="dtOrdersRowChangeEvent" msprop:Generator_RowClassName="dtOrdersRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="orderid" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnorderid" msprop:Generator_ColumnPropNameInRow="orderid" msprop:Generator_ColumnPropNameInTable="orderidColumn" msprop:Generator_UserColumnName="orderid" type="xs:string" />
+              <xs:element name="orderedon" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnorderedon" msprop:Generator_ColumnPropNameInRow="orderedon" msprop:Generator_ColumnPropNameInTable="orderedonColumn" msprop:Generator_UserColumnName="orderedon" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="stagedon" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnstagedon" msprop:Generator_ColumnPropNameInRow="stagedon" msprop:Generator_ColumnPropNameInTable="stagedonColumn" msprop:Generator_UserColumnName="stagedon" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="routedon" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnroutedon" msprop:Generator_ColumnPropNameInRow="routedon" msprop:Generator_ColumnPropNameInTable="routedonColumn" msprop:Generator_UserColumnName="routedon" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="invoicedon" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columninvoicedon" msprop:Generator_ColumnPropNameInRow="invoicedon" msprop:Generator_ColumnPropNameInTable="invoicedonColumn" msprop:Generator_UserColumnName="invoicedon" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="shippedon" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnshippedon" msprop:Generator_ColumnPropNameInRow="shippedon" msprop:Generator_ColumnPropNameInTable="shippedonColumn" msprop:Generator_UserColumnName="shippedon" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="completedon" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columncompletedon" msprop:Generator_ColumnPropNameInRow="completedon" msprop:Generator_ColumnPropNameInTable="completedonColumn" msprop:Generator_UserColumnName="completedon" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="cancellationreason" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columncancellationreason" msprop:Generator_ColumnPropNameInRow="cancellationreason" msprop:Generator_ColumnPropNameInTable="cancellationreasonColumn" msprop:Generator_UserColumnName="cancellationreason" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="total_amount" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columntotal_amount" msprop:Generator_ColumnPropNameInRow="total_amount" msprop:Generator_ColumnPropNameInTable="total_amountColumn" msprop:Generator_UserColumnName="total_amount" type="xs:decimal" minOccurs="0" />
+              <xs:element name="subtotal_amount" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnsubtotal_amount" msprop:Generator_ColumnPropNameInRow="subtotal_amount" msprop:Generator_ColumnPropNameInTable="subtotal_amountColumn" msprop:Generator_UserColumnName="subtotal_amount" type="xs:decimal" minOccurs="0" />
+              <xs:element name="discount_amount" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columndiscount_amount" msprop:Generator_ColumnPropNameInRow="discount_amount" msprop:Generator_ColumnPropNameInTable="discount_amountColumn" msprop:Generator_UserColumnName="discount_amount" type="xs:decimal" minOccurs="0" />
+              <xs:element name="shippingfee_amount" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnshippingfee_amount" msprop:Generator_ColumnPropNameInRow="shippingfee_amount" msprop:Generator_ColumnPropNameInTable="shippingfee_amountColumn" msprop:Generator_UserColumnName="shippingfee_amount" type="xs:decimal" minOccurs="0" />
+              <xs:element name="tax_amount" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columntax_amount" msprop:Generator_ColumnPropNameInRow="tax_amount" msprop:Generator_ColumnPropNameInTable="tax_amountColumn" msprop:Generator_UserColumnName="tax_amount" type="xs:decimal" minOccurs="0" />
+              <xs:element name="taxrate" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columntaxrate" msprop:Generator_ColumnPropNameInRow="taxrate" msprop:Generator_ColumnPropNameInTable="taxrateColumn" msprop:Generator_UserColumnName="taxrate" type="xs:decimal" minOccurs="0" />
+              <xs:element name="status" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnstatus" msprop:Generator_ColumnPropNameInRow="status" msprop:Generator_ColumnPropNameInTable="statusColumn" msprop:Generator_UserColumnName="status" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="isactive" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnisactive" msprop:Generator_ColumnPropNameInRow="isactive" msprop:Generator_ColumnPropNameInTable="isactiveColumn" msprop:Generator_UserColumnName="isactive" type="xs:boolean" minOccurs="0" />
+              <xs:element name="name" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnname" msprop:Generator_ColumnPropNameInRow="name" msprop:Generator_ColumnPropNameInTable="nameColumn" msprop:Generator_UserColumnName="name" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:choice>
     </xs:complexType>
     <xs:unique name="Constraint1" msdata:PrimaryKey="true">
@@ -815,11 +815,6 @@ ORDER BY PricingSchemName</CommandText>
     <xs:unique name="dtProducts_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
       <xs:selector xpath=".//mstns:dtProducts" />
       <xs:field xpath="mstns:productid" />
-    </xs:unique>
-    <xs:unique name="DataTable1_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
-      <xs:selector xpath=".//mstns:DataTable1" />
-      <xs:field xpath="mstns:orderid" />
-      <xs:field xpath="mstns:orderitemid" />
     </xs:unique>
     <xs:unique name="dtSuppliers_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
       <xs:selector xpath=".//mstns:dtSuppliers" />
@@ -832,6 +827,10 @@ ORDER BY PricingSchemName</CommandText>
     <xs:unique name="dtCustomers_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
       <xs:selector xpath=".//mstns:dtCustomers" />
       <xs:field xpath="mstns:customerid" />
+    </xs:unique>
+    <xs:unique name="dtOrders_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:dtOrders" />
+      <xs:field xpath="mstns:orderid" />
     </xs:unique>
   </xs:element>
 </xs:schema>
