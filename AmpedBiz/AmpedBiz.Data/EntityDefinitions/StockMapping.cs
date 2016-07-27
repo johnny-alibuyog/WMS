@@ -26,6 +26,33 @@ namespace AmpedBiz.Data.EntityDefinitions
             Map(x => x.ExpiresOn);
 
             Map(x => x.Bad);
+
+            DiscriminateSubClassesOnColumn("Movement")
+                .Length(20);
+        }
+    }
+
+    public class ReceivedStockMapping : SubclassMap<ReceivedStock>
+    {
+        public ReceivedStockMapping()
+        {
+            DiscriminatorValue("Received");
+        }
+    }
+
+    public class ReleasedStockMapping : SubclassMap<ReleasedStock>
+    {
+        public ReleasedStockMapping()
+        {
+            DiscriminatorValue("Released");
+        }
+    }
+
+    public class ShrinkedStockMapping : SubclassMap<ShrinkedStock>
+    {
+        public ShrinkedStockMapping()
+        {
+            DiscriminatorValue("Shrinked");
         }
     }
 }

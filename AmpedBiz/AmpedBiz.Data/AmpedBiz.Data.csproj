@@ -132,6 +132,7 @@
     <Compile Include="EntityDefinitions\ShipperMapping.cs" />
     <Compile Include="EntityDefinitions\ShipperValidation.cs" />
     <Compile Include="EntityDefinitions\StockMapping.cs" />
+    <Compile Include="EntityDefinitions\StockValidation.cs" />
     <Compile Include="EntityDefinitions\TenantMapping.cs" />
     <Compile Include="EntityDefinitions\UnitOfMeasureClassMapping.cs" />
     <Compile Include="EntityDefinitions\UnitOfMeasureClassValidation.cs" />
