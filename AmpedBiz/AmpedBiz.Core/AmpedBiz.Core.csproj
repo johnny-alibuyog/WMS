@@ -60,6 +60,7 @@
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\PaymentType.cs" />
     <Compile Include="Entities\PurchaseOrder.cs" />
+    <Compile Include="Entities\ShrinkageCause.cs" />
     <Compile Include="Entities\Stock.cs" />
     <Compile Include="Events\Orders\OrderEvent.cs" />
     <Compile Include="Events\PurchaseOrders\PurchaseOrderEvent.cs" />

@@ -1,0 +1,57 @@
+<template>
+  <require from="common/controls/pager"></require>
+  <require from="common/converters/lookup-to-id-value-converter"></require>
+
+  <!-- list -->
+  <table class="table table-striped table-hover table-condensed">
+
+    <thead>
+      <tr class="row-no-padding">
+        <th class="col-sm-1">Action</th>
+        <th class="col-sm-2">Product</th>
+        <th class="col-sm-2 text-right">Quanity</th>
+        <th class="col-sm-2 text-right">Cost</th>
+        <th class="col-sm-1 text-right">Total</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr repeat.for="item of itemPage.items" click.delegate="editItem(item)">
+        <td>
+          <a href="javascript:undefined" class="text-info" click.delegate="editItem(item)">
+            <i class="fa fa-pencil"></i>
+          </a>
+          <a href="javascript:undefined" class="text-danger" click.delegate="deleteItem(item)">
+            <i class="fa fa-times"></i>
+          </a>
+        </td>
+
+        <!-- read-only mode -->
+        <td if.bind="$parent.selectedItem !== item">${item.product.name}</td>
+        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantityValue}</td>
+        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.unitCostAmount}</td>
+        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantityValue * item.unitCostAmount}</td>
+
+        <!-- edit mode -->
+        <td if.bind="$parent.selectedItem === item">
+          <select class="form-control" value.bind="item.product | lookupToId:$parent.products" change.delegate="initializeItem(item)">
+              <option>Select Product</option>
+              <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
+            </select>
+        </td>
+        <td if.bind="$parent.selectedItem === item" class="text-right">
+          <input class="form-control text-right" type="number" value.bind="item.quantityValue" />
+        </td>
+        <td if.bind="$parent.selectedItem === item" class="text-right">
+          <input class="form-control text-right" type="number" value.bind="item.unitCostAmount" />
+        </td>
+        <td if.bind="$parent.selectedItem === item" class="text-right">${item.quantityValue * item.unitCostAmount}</td>
+      </tr>
+    </tbody>
+
+  </table>
+
+  <!-- pager -->
+  <pager current-page.bind="itemPage.offset" total-items.bind="itemPage.count" change.delegate="itemPage.doPage($event)" />
+
+</template>

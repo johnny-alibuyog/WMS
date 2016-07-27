@@ -53,6 +53,10 @@ namespace AmpedBiz.Data.EntityDefinitions
         public ShrinkedStockMapping()
         {
             DiscriminatorValue("Shrinked");
+
+            //References(x => x.Cause);
+
+            //Map(x => x.Remarks);
         }
     }
 }

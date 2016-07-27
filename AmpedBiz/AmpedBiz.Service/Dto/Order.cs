@@ -11,8 +11,9 @@ namespace AmpedBiz.Service.Dto
         Routed = 3,
         Invoiced = 4,
         Paid = 5,
-        Completed = 6,
-        Cancelled = 7
+        Shipped = 6,
+        Completed = 7,
+        Cancelled = 8
     }
 
     public class Order

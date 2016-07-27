@@ -21,13 +21,16 @@ namespace AmpedBiz.Data.EntityDefinitions
             Define(x => x.ShippingFee)
                 .IsValid();
 
-            Define(x => x.Payment)
+            Define(x => x.Discount)
                 .IsValid();
 
             Define(x => x.SubTotal)
                 .IsValid();
 
             Define(x => x.Total)
+                .IsValid();
+
+            Define(x => x.Payment)
                 .IsValid();
 
             Define(x => x.Status);

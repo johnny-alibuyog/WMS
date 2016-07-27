@@ -37,10 +37,7 @@ namespace AmpedBiz.Service.Orders
                             paidOn: x.PaidOn ?? DateTime.Now,
                             paidBy: session.Load<User>(x.PaidBy.Id),
                             paymentType: session.Load<PaymentType>(x.PaymentType.Id),
-                            tax: new Money(x.TaxAmount, currency),
-                            shippingFee: new Money(x.ShippingFeeAmount, currency),
-                            discount: new Money(x.DiscountAmount, currency),
-                            subTotal: new Money(x.SubTotalAmount, currency)
+                            payment: new Money(x.PaymentAmount, currency)
                         ))
                     );
 

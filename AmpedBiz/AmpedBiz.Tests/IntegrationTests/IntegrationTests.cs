@@ -638,11 +638,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                         PaidOn = DateTime.Now,
                         PaidBy = RandomUser(), 
                         PaymentType = RandomPaymentType(),
-                        TaxAmount = order.TaxAmount,
-                        ShippingFeeAmount = order.ShippingFeeAmount,
-                        DiscountAmount = order.DiscountAmount,
-                        SubTotalAmount = order.SubTotalAmount,
-                        TotalAmount = order.TotalAmount
+                        PaymentAmount = order.TotalAmount
                     }
                 }
             };
@@ -788,10 +784,10 @@ namespace AmpedBiz.Tests.IntegrationTests
             var stagedOrder = this.StageOrder(order1);
             Assert.IsTrue(stagedOrder.Status == Service.Dto.OrderStatus.Staged);
 
-            var routedOrder = this.RouteOrder(stagedOrder);
-            Assert.IsTrue(routedOrder.Status == Service.Dto.OrderStatus.Routed);
+            //var routedOrder = this.RouteOrder(stagedOrder);
+            //Assert.IsTrue(routedOrder.Status == Service.Dto.OrderStatus.Routed);
 
-            var paidOrder = this.PayOrder(routedOrder);
+            var paidOrder = this.PayOrder(stagedOrder);
             Assert.IsTrue(paidOrder.Status == Service.Dto.OrderStatus.Paid);
 
             //invoice from paid
@@ -807,7 +803,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             Assert.IsTrue(invoicedOrder3.Status == Service.Dto.OrderStatus.Invoiced);
 
             //complete all
-            var completeOrder = this.CompleteOrder(invoicedOrder);
+            var completeOrder = this.CompleteOrder(paidOrder);
             Assert.IsTrue(completeOrder.Status == Service.Dto.OrderStatus.Completed);
 
             //todo: implement inventory checking

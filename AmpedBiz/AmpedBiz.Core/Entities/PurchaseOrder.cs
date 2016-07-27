@@ -39,6 +39,8 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Money Total { get; protected set; }
 
+        public virtual Money Discount { get; protected set; }
+        
         public virtual PurchaseOrderStatus Status { get; protected set; }
 
         public virtual DateTime? ExpectedOn { get; protected set; }

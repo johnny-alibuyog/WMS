@@ -46,6 +46,8 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Money Total { get; protected set; }
 
+        public virtual Money Payment { get; protected set; }
+
         public virtual OrderStatus Status { get; protected set; }
 
         public virtual DateTime? DueOn { get; set; }
@@ -143,7 +145,6 @@ namespace AmpedBiz.Core.Entities
         {
             this.InvoicedOn = @event.InvoicedOn ?? this.InvoicedOn;
             this.InvoicedBy = @event.InvoicedBy ?? this.InvoicedBy;
-
             this.Status = OrderStatus.Invoiced;
 
             return this;
@@ -151,7 +152,7 @@ namespace AmpedBiz.Core.Entities
 
         protected internal virtual Order Process(OrderPaidEvent @event)
         {
-            this.SetPayments(@event.Payments);
+            this.AddPayments(@event.Payments);
             this.Status = OrderStatus.Paid;
 
             //no invoice yet?

@@ -38,6 +38,9 @@ namespace AmpedBiz.Core.Services.Orders
                 case OrderStatus.Paid:
                     return new PaidState(target);
 
+                case OrderStatus.Shipped:
+                    return new ShippedState(target);
+
                 case OrderStatus.Completed:
                     return new CompletedState(target);
 
@@ -159,6 +162,7 @@ namespace AmpedBiz.Core.Services.Orders
     {
         public PaidState(Order target) : base(target)
         {
+            this.AllowedTransitions.Add(OrderStatus.Paid, "Pay");
             this.AllowedTransitions.Add(OrderStatus.Shipped, "Ship");
             this.AllowedTransitions.Add(OrderStatus.Cancelled, "Cancel");
         }
@@ -168,6 +172,7 @@ namespace AmpedBiz.Core.Services.Orders
     {
         public ShippedState(Order target) : base(target)
         {
+            this.AllowedTransitions.Add(OrderStatus.Paid, "Pay");
             this.AllowedTransitions.Add(OrderStatus.Completed, "Complete");
         }
     }
