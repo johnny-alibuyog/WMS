@@ -2,12 +2,12 @@ import {autoinject} from 'aurelia-framework';
 import {HttpClientFacade} from './http-client-facade';
 import {PageRequest} from '.././common/models/paging';
 
-@autoinject
+//@autoinject
 export class ServiceBase<TEntity> {
   protected _resouce: string;
   protected _httpClient: HttpClientFacade;
 
-  constructor(resource: string, httpClient: HttpClientFacade) {
+  protected constructor(resource: string, httpClient: HttpClientFacade) {
     this._resouce = resource;
     this._httpClient = httpClient;
   }

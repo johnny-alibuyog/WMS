@@ -8,9 +8,9 @@ import {Lookup} from '.././common/custom_types/lookup';
 export class PaymentTypeService extends ServiceBase<PaymentType> {
   constructor(httpClient: HttpClientFacade) {
     super('payment-types', httpClient);
-  } 
+  }
 
-  getLookups(): Promise<Lookup<string>[]>{
+  getLookups(): Promise<Lookup<string>[]> {
     var url = "payment-type-lookups";
     return this._httpClient.get(url)
       .then(data => <Lookup<string>[]>data);

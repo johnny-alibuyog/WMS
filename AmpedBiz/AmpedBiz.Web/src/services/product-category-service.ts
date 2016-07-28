@@ -7,5 +7,5 @@ import {HttpClientFacade} from './http-client-facade';
 export class ProductCategoryService extends ServiceBase<ProductCategory> {
   constructor(httpClient: HttpClientFacade) {
     super('product-categories', httpClient);
-  } 
+  }
 }

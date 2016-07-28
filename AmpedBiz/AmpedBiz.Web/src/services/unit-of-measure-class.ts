@@ -7,5 +7,5 @@ import {HttpClientFacade} from './http-client-facade';
 export class UnitOfMeasureClassService extends ServiceBase<UnitOfMeasureClass> {
   constructor(httpClient: HttpClientFacade) {
     super('unit-of-measure-classes', httpClient);
-  } 
+  }
 }
