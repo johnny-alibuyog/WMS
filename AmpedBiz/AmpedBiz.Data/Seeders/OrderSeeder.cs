@@ -7,7 +7,7 @@ using AmpedBiz.Core.Entities;
 using AmpedBiz.Common.Extentions;
 using NHibernate;
 using NHibernate.Linq;
-using AmpedBiz.Core.Events.Orders;
+using AmpedBiz.Core.Arguments.Orders;
 
 namespace AmpedBiz.Data.Seeders
 {
@@ -134,17 +134,20 @@ namespace AmpedBiz.Data.Seeders
                     for (int i = 0; i < 153; i++)
                     {
                         var order = new Order(Guid.NewGuid());
-                        var newlyCreatedEvent = new OrderNewlyCreatedEvent(
-                            createdBy: RotateUser(),
-                            createdOn: DateTime.Now,
-                            branch: RotateBranch(),
-                            customer: RotateCustomer(),
-                            shipper: RotateShipper(),
-                            paymentType: RotatePaymentType(),
-                            taxRate: random.NextDecimal(0.01M, 0.30M),
-                            tax: null, // compute this
-                            shippingFee: new Money(random.NextDecimal(10M, 10000M)),
-                            items: Enumerable.Range(0, (int)random.NextDecimal(1M, 25M))
+                        var newlyCreatedEvent = new OrderNewlyCreatedArguments()
+                        {
+                            CreatedBy = RotateUser(),
+                            CreatedOn = DateTime.Now,
+                            OrderedBy = RotateUser(),
+                            OrderedOn = DateTime.Now,
+                            Branch = RotateBranch(),
+                            Customer = RotateCustomer(),
+                            Shipper = RotateShipper(),
+                            PaymentType = RotatePaymentType(),
+                            TaxRate = random.NextDecimal(0.01M, 0.30M),
+                            Tax = null, // compute this
+                            ShippingFee = new Money(random.NextDecimal(10M, 10000M)),
+                            Items = Enumerable.Range(0, (int)random.NextDecimal(1M, 25M))
                                 .Select(x => RotateProduct())
                                 .Select(x => new OrderItem(
                                     product: x,
@@ -152,7 +155,7 @@ namespace AmpedBiz.Data.Seeders
                                     discount: new Money(random.NextDecimal(100M, 500M)),
                                     unitPrice: new Money(random.NextDecimal(1000M, 100000M))
                                 ))
-                        );
+                        };
 
                         order.State.Process(newlyCreatedEvent);
 

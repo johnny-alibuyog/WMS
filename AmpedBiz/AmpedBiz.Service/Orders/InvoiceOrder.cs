@@ -1,7 +1,7 @@
 ﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Events.Orders;
+using AmpedBiz.Core.Arguments.Orders;
 using MediatR;
 using NHibernate;
 using System;
@@ -31,12 +31,13 @@ namespace AmpedBiz.Service.Orders
                     if (entity == null)
                         throw new BusinessException($"Order with id {message.Id} does not exists.");
 
-                    var invoicedEvent = new OrderInvoicedEvent(
-                        invoicedOn: message.InvoicedOn ?? DateTime.Now,
-                        invoicedBy: session.Load<User>(message.InvoicedBy.Id)
-                    );
+                    var invoicedArguments = new OrderInvoicedArguments()
+                    {
+                        InvoicedOn = message.InvoicedOn ?? DateTime.Now,
+                        InvoicedBy = session.Load<User>(message.InvoicedBy.Id)
+                    };
 
-                    entity.State.Process(invoicedEvent);
+                    entity.State.Process(invoicedArguments);
 
                     session.Save(entity);
                     transaction.Commit();

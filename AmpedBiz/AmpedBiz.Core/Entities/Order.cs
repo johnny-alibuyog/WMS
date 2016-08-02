@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Services.Orders;
-using AmpedBiz.Core.Events.Orders;
+using AmpedBiz.Core.Arguments.Orders;
 
 namespace AmpedBiz.Core.Entities
 {
@@ -103,10 +103,12 @@ namespace AmpedBiz.Core.Entities
 
         public Order(Guid id) : base(id) { }
 
-        protected internal virtual Order Process(OrderNewlyCreatedEvent @event)
+        protected internal virtual Order Process(OrderNewlyCreatedArguments @event)
         {
             this.CreatedBy = @event.CreatedBy ?? this.CreatedBy;
             this.CreatedOn = @event.CreatedOn ?? this.CreatedOn;
+            this.OrderedBy = @event.OrderedBy ?? this.OrderedBy;
+            this.OrderedOn = @event.OrderedOn ?? this.OrderedOn;
             this.Branch = @event.Branch ?? this.Branch;
             this.Customer = @event.Customer ?? this.Customer;
             this.Shipper = @event.Shipper ?? this.Shipper;
@@ -122,7 +124,7 @@ namespace AmpedBiz.Core.Entities
             return this;
         }
 
-        protected internal virtual Order Process(OrderStagedEvent @event)
+        protected internal virtual Order Process(OrderStagedArguments @event)
         {
             this.StagedBy = @event.StagedBy ?? this.StagedBy;
             this.StagedOn = @event.StagedOn ?? this.StagedOn;
@@ -131,7 +133,7 @@ namespace AmpedBiz.Core.Entities
             return this;
         }
 
-        protected internal virtual Order Process(OrderRoutedEvent @event)
+        protected internal virtual Order Process(OrderRoutedArguments @event)
         {
             this.RoutedBy = @event.RoutedBy ?? this.RoutedBy;
             this.RoutedOn = @event.RoutedOn ?? this.RoutedOn;
@@ -141,7 +143,7 @@ namespace AmpedBiz.Core.Entities
             //allocate product from inventory
         }
 
-        protected internal virtual Order Process(OrderInvoicedEvent @event)
+        protected internal virtual Order Process(OrderInvoicedArguments @event)
         {
             this.InvoicedOn = @event.InvoicedOn ?? this.InvoicedOn;
             this.InvoicedBy = @event.InvoicedBy ?? this.InvoicedBy;
@@ -150,7 +152,7 @@ namespace AmpedBiz.Core.Entities
             return this;
         }
 
-        protected internal virtual Order Process(OrderPaidEvent @event)
+        protected internal virtual Order Process(OrderPaidArguments @event)
         {
             this.AddPayments(@event.Payments);
             this.Status = OrderStatus.Paid;
@@ -159,7 +161,7 @@ namespace AmpedBiz.Core.Entities
             return this;
         }
 
-        protected internal virtual Order Process(OrderShippedEvent @event)
+        protected internal virtual Order Process(OrderShippedArguments @event)
         {
             this.ShippedOn = @event.ShippedOn;
             this.ShippedBy = @event.ShippedBy;
@@ -168,7 +170,7 @@ namespace AmpedBiz.Core.Entities
             return this;
         }
 
-        protected internal virtual Order Process(OrderCompletedEvent @event)
+        protected internal virtual Order Process(OrderCompletedArguments @event)
         {
             this.CompletedBy = @event.CompletedBy;
             this.CompletedOn = @event.CompletedOn;
@@ -177,7 +179,7 @@ namespace AmpedBiz.Core.Entities
             return this;
         }
 
-        protected internal virtual Order Process(OrderCancelledEvent @event)
+        protected internal virtual Order Process(OrderCancelledArguments @event)
         {
             this.CancelledBy = @event.CancelledBy ?? this.CancelledBy;
             this.CancelledOn = @event.CancelledOn ?? this.CancelledOn;

@@ -4,7 +4,7 @@ using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
-using AmpedBiz.Core.Events.Orders;
+using AmpedBiz.Core.Arguments.Orders;
 
 namespace AmpedBiz.Service.Orders
 {
@@ -29,12 +29,13 @@ namespace AmpedBiz.Service.Orders
                     if (entity == null)
                         throw new BusinessException($"Order with id {message.Id} does not exists.");
 
-                    var stagedEvent = new OrderStagedEvent(
-                        stagedOn: message.StagedOn ?? DateTime.Today,
-                        stagedBy: session.Load<User>(message.StagedBy.Id)
-                    );
+                    var stagedArguments = new OrderStagedArguments()
+                    { 
+                        StagedOn = message.StagedOn ?? DateTime.Today,
+                        StagedBy = session.Load<User>(message.StagedBy.Id)
+                    };
 
-                    entity.State.Process(stagedEvent);
+                    entity.State.Process(stagedArguments);
 
                     session.Save(entity);
                     transaction.Commit();

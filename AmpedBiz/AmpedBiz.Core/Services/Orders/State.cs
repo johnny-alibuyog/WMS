@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Events.Orders;
+using AmpedBiz.Core.Arguments.Orders;
 
 namespace AmpedBiz.Core.Services.Orders
 {
@@ -52,7 +52,7 @@ namespace AmpedBiz.Core.Services.Orders
             }
         }
 
-        public virtual void Process(OrderNewlyCreatedEvent @event)
+        public virtual void Process(OrderNewlyCreatedArguments @event)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.New))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "creation/modification", this.Target.Status));
@@ -60,7 +60,7 @@ namespace AmpedBiz.Core.Services.Orders
             this.Target.Process(@event);
         }
 
-        public virtual void Process(OrderStagedEvent @event)
+        public virtual void Process(OrderStagedArguments @event)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Staged))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "staging", this.Target.Status));
@@ -68,7 +68,7 @@ namespace AmpedBiz.Core.Services.Orders
             this.Target.Process(@event);
         }
 
-        public virtual void Process(OrderRoutedEvent @event)
+        public virtual void Process(OrderRoutedArguments @event)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Routed))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "routing", this.Target.Status));
@@ -76,7 +76,7 @@ namespace AmpedBiz.Core.Services.Orders
             this.Target.Process(@event);
         }
 
-        public virtual void Process(OrderInvoicedEvent @event)
+        public virtual void Process(OrderInvoicedArguments @event)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Invoiced))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "invoicing", this.Target.Status));
@@ -84,7 +84,7 @@ namespace AmpedBiz.Core.Services.Orders
             this.Target.Process(@event);
         }
 
-        public virtual void Process(OrderPaidEvent @event)
+        public virtual void Process(OrderPaidArguments @event)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Paid))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "payment", this.Target.Status));
@@ -92,7 +92,7 @@ namespace AmpedBiz.Core.Services.Orders
             this.Target.Process(@event);
         }
 
-        public virtual void Process(OrderShippedEvent @event)
+        public virtual void Process(OrderShippedArguments @event)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Shipped))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "shipping", this.Target.Status));
@@ -100,7 +100,7 @@ namespace AmpedBiz.Core.Services.Orders
             this.Target.Process(@event);
         }
 
-        public virtual void Process(OrderCompletedEvent @event)
+        public virtual void Process(OrderCompletedArguments @event)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Completed))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "completing", this.Target.Status));
@@ -108,7 +108,7 @@ namespace AmpedBiz.Core.Services.Orders
             this.Target.Process(@event);
         }
 
-        public virtual void Process(OrderCancelledEvent @event)
+        public virtual void Process(OrderCancelledArguments @event)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Cancelled))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "canceling", this.Target.Status));

@@ -1,7 +1,7 @@
 ﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Events.Orders;
+using AmpedBiz.Core.Arguments.Orders;
 using MediatR;
 using NHibernate;
 using System;
@@ -16,9 +16,7 @@ namespace AmpedBiz.Service.Orders
 
         public class Handler : RequestHandlerBase<Request, Response>
         {
-            public Handler(ISessionFactory sessionFactory) : base(sessionFactory)
-            {
-            }
+            public Handler(ISessionFactory sessionFactory) : base(sessionFactory) { }
 
             public override Response Handle(Request message)
             {
@@ -31,13 +29,14 @@ namespace AmpedBiz.Service.Orders
                     if (entity == null)
                         throw new BusinessException($"Order with id {message.Id} does not exists.");
 
-                    var cancelledEvent = new OrderCancelledEvent(
-                        cancelledBy: session.Load<User>(message.CancelledBy.Id),
-                        cancelledOn: message.CancelledOn ?? DateTime.Now,
-                        cancellationReason: message.CancellationReason
-                    );
+                    var cancelledArguments = new OrderCancelledArguments()
+                    {
+                        CancelledBy = session.Load<User>(message.CancelledBy.Id),
+                        CancelledOn = message.CancelledOn ?? DateTime.Now,
+                        CancellationReason = message.CancellationReason
+                    };
 
-                    entity.State.Process(cancelledEvent);
+                    entity.State.Process(cancelledArguments);
 
                     session.Save(entity);
                     transaction.Commit();
