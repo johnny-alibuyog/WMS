@@ -1,5 +1,5 @@
 import {DialogService} from 'aurelia-dialog';
-import {EventAggregator} from 'aurelia-event-aggregator';
+import {EventAggregator, Subscription} from 'aurelia-event-aggregator';
 import {autoinject, bindable, bindingMode, customElement, computedFrom} from 'aurelia-framework'
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 import {Lookup} from '../common/custom_types/lookup';
@@ -15,6 +15,7 @@ export class PurchaseOrderReceiptPage {
   private _dialog: DialogService;
   private _notification: NotificationService;
   private _eventAggregator: EventAggregator;
+  private _subscriptions: Subscription[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public purchaseOrderId: string = '';
@@ -40,7 +41,17 @@ export class PurchaseOrderReceiptPage {
 
     this.receiptPage.onPage = () => this.initializeReceiptPage();
     this.receivablePage.onPage = () => this.initializeReceivablePage();
-    this._eventAggregator.subscribe('addPurchaseOrderReceipt', response => this.addReceipt());
+    
+  }
+
+  attached(): void {
+    this._subscriptions = [
+      this._eventAggregator.subscribe('addPurchaseOrderReceipt', response => this.addReceipt())
+    ];
+  }
+
+  detached(): void {
+    this._subscriptions.forEach(subscription => subscription.dispose());
   }
 
   receiptsChanged() {

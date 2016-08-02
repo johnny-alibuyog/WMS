@@ -22,5 +22,9 @@ export let appConfig = {
     nextText: '>',
     lastText: '>|',
     rotate: true
+  },
+  default: {
+    dateFormat: 'MM/DD/YYYY',
+    numberFormat: '0,0.00'
   }
 }

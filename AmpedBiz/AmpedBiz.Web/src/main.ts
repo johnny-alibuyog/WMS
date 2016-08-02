@@ -6,6 +6,7 @@ export function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
     .developmentLogging()
+    .plugin('common/global-resources')
     .plugin('aurelia-dialog', config => {
       config.useDefaults();
       config.settings.lock = true;

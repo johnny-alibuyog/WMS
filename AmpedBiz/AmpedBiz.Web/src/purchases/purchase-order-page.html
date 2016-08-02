@@ -91,13 +91,13 @@
                     <i class="fa fa-times"></i>
                   </a>
                 </td>
-                <td>${item.createdOn}</td>
+                <td>${item.createdOn | dateFormat}</td>
                 <td>${item.createdBy}</td>
                 <td>${item.status}</td>
                 <td>${item.supplier}</td>
                 <td>${item.submittedBy}</td>
-                <td>${item.paidOn}</td>
-                <td class="text-right">${item.totalAmount}</td>
+                <td>${item.paidOn | dateFormat}</td>
+                <td class="text-right">${item.totalAmount | numberFormat}</td>
               </tr>
             </tbody>
             

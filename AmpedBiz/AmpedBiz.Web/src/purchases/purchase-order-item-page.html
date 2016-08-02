@@ -29,8 +29,8 @@
         <!-- read-only mode -->
         <td if.bind="$parent.selectedItem !== item">${item.product.name}</td>
         <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantityValue}</td>
-        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.unitCostAmount}</td>
-        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantityValue * item.unitCostAmount}</td>
+        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.unitCostAmount | numberFormat}</td>
+        <td if.bind="$parent.selectedItem !== item" class="text-right">${(item.quantityValue * item.unitCostAmount) | numberFormat}</td>
 
         <!-- edit mode -->
         <td if.bind="$parent.selectedItem === item">
@@ -45,7 +45,7 @@
         <td if.bind="$parent.selectedItem === item" class="text-right">
           <input class="form-control text-right" type="number" value.bind="item.unitCostAmount" />
         </td>
-        <td if.bind="$parent.selectedItem === item" class="text-right">${item.quantityValue * item.unitCostAmount}</td>
+        <td if.bind="$parent.selectedItem === item" class="text-right">${(item.quantityValue * item.unitCostAmount) | numberFormat}</td>
       </tr>
     </tbody>
 

@@ -1,5 +1,5 @@
 import {DialogService} from 'aurelia-dialog';
-import {EventAggregator} from 'aurelia-event-aggregator';
+import {EventAggregator, Subscription} from 'aurelia-event-aggregator';
 import {autoinject, bindable, bindingMode, customElement, computedFrom} from 'aurelia-framework'
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 import {Lookup} from '../common/custom_types/lookup';
@@ -16,6 +16,7 @@ export class OrderItemPage {
   private _dialog: DialogService;
   private _notification: NotificationService;
   private _eventAggregator: EventAggregator;
+  private _subscriptions: Subscription[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public purchaseOrderId: string = '';
@@ -43,7 +44,16 @@ export class OrderItemPage {
     this._eventAggregator = eventAggregator;
 
     this.itemPage.onPage = () => this.initializePage();
-    this._eventAggregator.subscribe('addOrderItem', response => this.addItem());
+  }
+
+  attached(): void {
+    this._subscriptions = [
+      this._eventAggregator.subscribe('addOrderItem', response => this.addItem())
+    ];
+  }
+
+  detached(): void {
+    this._subscriptions.forEach(subscription => subscription.dispose());
   }
 
   itemsChanged(): void {
@@ -55,7 +65,7 @@ export class OrderItemPage {
       this.items = [];
     }
 
-    // TODO: not a good idea. refactor soon
+    // TODO: not a good idea. should make batch request. refactor soon
     this.items.forEach(item => {
       this._api.products.getInventory(item.product.id).then(data => {
         if (!this.pricingScheme)

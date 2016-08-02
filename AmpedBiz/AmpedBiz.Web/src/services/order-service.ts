@@ -48,6 +48,8 @@ export class OrderService extends ServiceBase<Order> {
       id: order.id,
       createdBy: this._auth.userAsLookup,
       createdOn: new Date(),
+      orderedBy: this._auth.userAsLookup,
+      orderedOn: order.orderedOn || new Date(),
       branch: order.branch,
       customer: order.customer,
       pricingScheme: order.pricingScheme,
@@ -63,8 +65,8 @@ export class OrderService extends ServiceBase<Order> {
     var url = this._resouce + '/' + order.id + '/new';
     return this._httpClient.patch(url, <Order>{
       id: order.id,
-      createdBy: this._auth.userAsLookup,
-      createdOn: new Date(),
+      orderedBy: this._auth.userAsLookup,
+      orderedOn: order.orderedOn || new Date(),
       branch: order.branch,
       customer: order.customer,
       pricingScheme: order.pricingScheme,

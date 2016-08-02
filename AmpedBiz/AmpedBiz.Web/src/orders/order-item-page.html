@@ -1,6 +1,5 @@
 <template>
   <require from="common/controls/pager"></require>
-  <require from="common/converters/lookup-to-id-value-converter"></require>
 
   <!-- list -->
   <table class="table table-striped table-hover table-condensed">
@@ -68,10 +67,10 @@
         <!-- read-only mode -->
         <td if.bind="$parent.selectedItem !== item">${item.product.name}</td>
         <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantityValue}</td>
-        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.unitPriceAmount}</td>
+        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.unitPriceAmount | numberFormat}</td>
         <td if.bind="$parent.selectedItem !== item" class="text-right">${item.discountRate}</td>
-        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.discountAmount}</td>
-        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.total}</td>
+        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.discountAmount | numberFormat}</td>
+        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.total | numberFormat}</td>
 
         <!-- edit mode -->
         <td if.bind="$parent.selectedItem === item">

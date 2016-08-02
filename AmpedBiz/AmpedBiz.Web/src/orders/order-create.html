@@ -1,9 +1,6 @@
 <template>
   <!--<require from="common/matchers/lookup-matcher"></require>-->
   <require from="common/controls/pager"></require>
-  <require from="common/converters/lookup-id-to-name-value-converter"></require>
-  <require from="common/converters/lookup-to-id-value-converter"></require>
-  <require from="common/converters/lookup-to-name-value-converter"></require>
   <require from="orders/order-item-page"></require>
   <require from="orders/order-payment-page"></require>
 
@@ -117,21 +114,21 @@
                 <div class="form-group">
                   <label class="control-label col-sm-4">Ordered On:</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="Enter Order Date" value.bind="order.orderedOn" />
+                    <input type="date" class="form-control datepicker" placeholder="Enter Order Date" value.bind="order.orderedOn | dateInputFormat" />
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label class="control-label col-sm-4">Created On:</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" value.bind="order.createdOn" disabled />
+                    <input type="text" class="form-control" value.bind="order.createdOn | dateFormat" disabled />
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label class="control-label col-sm-4">Completed On:</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" value.bind="order.completedOn" disabled />
+                    <input type="text" class="form-control" value.bind="order.completedOn | dateFormat" disabled />
                   </div>
                 </div>
 

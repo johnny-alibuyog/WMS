@@ -51,12 +51,12 @@
                     <td class="text-right">${item.receivedQuantity}</td>
 
                     <!-- read-only mode -->
-                    <td if.bind="$parent.selectedItem !== item" class="text-right">${item.expiresOn}</td>
+                    <td if.bind="$parent.selectedItem !== item" class="text-right">${item.expiresOn | dateFormat}</td>
                     <td if.bind="$parent.selectedItem !== item" class="text-right">${item.receivingQuantity}</td>
 
                     <!-- edit mode -->
                     <td if.bind="$parent.selectedItem === item" class="text-right">
-                      <input class="form-control text-right" type="date" value.bind="item.expiresOn" />
+                      <input class="form-control text-right" type="date" value.bind="item.expiresOn | dateInputFormat" />
                     </td>
                     <td if.bind="$parent.selectedItem === item" class="text-right">
                       <input class="form-control text-right" type="number" value.bind="item.receivingQuantity" />

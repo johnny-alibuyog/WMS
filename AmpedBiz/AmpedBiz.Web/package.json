@@ -80,6 +80,8 @@
       "bootstrap": "github:twbs/bootstrap@^3.3.6",
       "fetch": "github:github/fetch@^1.0.0",
       "font-awesome": "npm:font-awesome@4.6.3",
+      "moment": "npm:moment@^2.14.1",
+      "numeral": "npm:numeral@^1.5.3",
       "text": "github:systemjs/plugin-text@^0.0.8"
     },
     "devDependencies": {}

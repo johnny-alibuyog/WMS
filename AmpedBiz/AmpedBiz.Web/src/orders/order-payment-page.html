@@ -14,10 +14,10 @@
 
     <tbody>
       <tr repeat.for="item of paymentPage.items">
-        <td>${item.paidOn}</td>
+        <td>${item.paidOn | dateFormat}</td>
         <td>${item.paidBy.name}</td>
         <td>${item.paymentType.name}</td>
-        <td class="text-right">${item.paymentAmount}</td>
+        <td class="text-right">${item.paymentAmount | numberFormat}</td>
       </tr>
     </tbody>
 

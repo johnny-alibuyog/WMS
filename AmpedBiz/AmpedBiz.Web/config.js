@@ -34,6 +34,8 @@ System.config({
     "bootstrap": "github:twbs/bootstrap@3.3.7",
     "fetch": "github:github/fetch@1.0.0",
     "font-awesome": "npm:font-awesome@4.6.3",
+    "moment": "npm:moment@2.14.1",
+    "numeral": "npm:numeral@1.5.3",
     "text": "github:systemjs/plugin-text@0.0.8",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
@@ -209,6 +211,9 @@ System.config({
     },
     "npm:inherits@2.0.1": {
       "util": "github:jspm/nodelibs-util@0.1.0"
+    },
+    "npm:numeral@1.5.3": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2"
     },
     "npm:process@0.11.6": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
