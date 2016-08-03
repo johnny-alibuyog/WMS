@@ -2549,8 +2549,6 @@ namespace AmpedBiz.Reports.Datasource {
             
             private global::System.Data.DataColumn columnstatus;
             
-            private global::System.Data.DataColumn columnisactive;
-            
             private global::System.Data.DataColumn columnname;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2708,14 +2706,6 @@ namespace AmpedBiz.Reports.Datasource {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn isactiveColumn {
-                get {
-                    return this.columnisactive;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn nameColumn {
                 get {
                     return this.columnname;
@@ -2775,7 +2765,6 @@ namespace AmpedBiz.Reports.Datasource {
                         decimal tax_amount, 
                         decimal taxrate, 
                         string status, 
-                        bool isactive, 
                         string name) {
                 dtOrdersRow rowdtOrdersRow = ((dtOrdersRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
@@ -2794,7 +2783,6 @@ namespace AmpedBiz.Reports.Datasource {
                         tax_amount,
                         taxrate,
                         status,
-                        isactive,
                         name};
                 rowdtOrdersRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdtOrdersRow);
@@ -2840,7 +2828,6 @@ namespace AmpedBiz.Reports.Datasource {
                 this.columntax_amount = base.Columns["tax_amount"];
                 this.columntaxrate = base.Columns["taxrate"];
                 this.columnstatus = base.Columns["status"];
-                this.columnisactive = base.Columns["isactive"];
                 this.columnname = base.Columns["name"];
             }
             
@@ -2877,8 +2864,6 @@ namespace AmpedBiz.Reports.Datasource {
                 base.Columns.Add(this.columntaxrate);
                 this.columnstatus = new global::System.Data.DataColumn("status", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnstatus);
-                this.columnisactive = new global::System.Data.DataColumn("isactive", typeof(bool), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnisactive);
                 this.columnname = new global::System.Data.DataColumn("name", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnname);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
@@ -2902,7 +2887,6 @@ namespace AmpedBiz.Reports.Datasource {
                 this.columntaxrate.ReadOnly = true;
                 this.columnstatus.ReadOnly = true;
                 this.columnstatus.MaxLength = 100;
-                this.columnisactive.ReadOnly = true;
                 this.columnname.ReadOnly = true;
                 this.columnname.MaxLength = 50;
             }
@@ -4750,22 +4734,6 @@ namespace AmpedBiz.Reports.Datasource {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool isactive {
-                get {
-                    try {
-                        return ((bool)(this[this.tabledtOrders.isactiveColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'isactive\' in table \'dtOrders\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tabledtOrders.isactiveColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string name {
                 get {
                     try {
@@ -4946,18 +4914,6 @@ namespace AmpedBiz.Reports.Datasource {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetstatusNull() {
                 this[this.tabledtOrders.statusColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsisactiveNull() {
-                return this.IsNull(this.tabledtOrders.isactiveColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetisactiveNull() {
-                this[this.tabledtOrders.isactiveColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -7161,7 +7117,6 @@ ORDER BY PricingSchemName";
             tableMapping.ColumnMappings.Add("tax_amount", "tax_amount");
             tableMapping.ColumnMappings.Add("taxrate", "taxrate");
             tableMapping.ColumnMappings.Add("status", "status");
-            tableMapping.ColumnMappings.Add("isactive", "isactive");
             tableMapping.ColumnMappings.Add("name", "name");
             this._adapter.TableMappings.Add(tableMapping);
         }
@@ -7180,14 +7135,14 @@ ORDER BY PricingSchemName";
             this._commandCollection[0] = new global::Devart.Data.PostgreSql.PgSqlCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = @"SELECT        orders.orderid, orders.orderedon, orders.stagedon, orders.routedon, orders.invoicedon, orders.shippedon, orders.completedon, orders.cancellationreason, orders.total_amount, orders.subtotal_amount, 
-                         orders.discount_amount, orders.shippingfee_amount, orders.tax_amount, orders.taxrate, orders.status, orders.isactive, paymenttypes.""name""
+                         orders.discount_amount, orders.shippingfee_amount, orders.tax_amount, orders.taxrate, orders.status, paymenttypes.""name""
 FROM            orders INNER JOIN
                          paymenttypes ON orders.paymenttypeid = paymenttypes.paymenttypeid";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::Devart.Data.PostgreSql.PgSqlCommand();
             this._commandCollection[1].Connection = this.Connection;
             this._commandCollection[1].CommandText = @"SELECT        orders.orderid, orders.orderedon, orders.stagedon, orders.routedon, orders.invoicedon, orders.shippedon, orders.completedon, orders.cancellationreason, orders.total_amount, orders.subtotal_amount, 
-                         orders.discount_amount, orders.shippingfee_amount, orders.tax_amount, orders.taxrate, orders.status, orders.isactive, paymenttypes.""name""
+                         orders.discount_amount, orders.shippingfee_amount, orders.tax_amount, orders.taxrate, orders.status, paymenttypes.""name""
 FROM            orders INNER JOIN
                          paymenttypes ON orders.paymenttypeid = paymenttypes.paymenttypeid
 WHERE        (orders.status = :paramStatus)";

@@ -337,11 +337,11 @@ ORDER BY PricingSchemName</CommandText>
           </TableAdapter>
           <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="dtOrdersTableAdapter" GeneratorDataComponentClassName="dtOrdersTableAdapter" Name="dtOrders" UserDataComponentName="dtOrdersTableAdapter">
             <MainSource>
-              <DbSource ConnectionRef="ampedbizdbConnectionString (Web.config)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="FillOrders" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetOrders" GeneratorSourceName="FillOrders" GetMethodModifier="Public" GetMethodName="GetOrders" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetOrders" UserSourceName="FillOrders">
+              <DbSource ConnectionRef="ampedbizdbConnectionString (Web.config)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="FillOrders" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetOrders" GeneratorSourceName="FillOrders" GetMethodModifier="Public" GetMethodName="GetOrders" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetOrders" UserSourceName="FillOrders">
                 <SelectCommand>
                   <DbCommand CommandType="Text" ModifiedByUser="true">
                     <CommandText>SELECT        orders.orderid, orders.orderedon, orders.stagedon, orders.routedon, orders.invoicedon, orders.shippedon, orders.completedon, orders.cancellationreason, orders.total_amount, orders.subtotal_amount, 
-                         orders.discount_amount, orders.shippingfee_amount, orders.tax_amount, orders.taxrate, orders.status, orders.isactive, paymenttypes."name"
+                         orders.discount_amount, orders.shippingfee_amount, orders.tax_amount, orders.taxrate, orders.status, paymenttypes."name"
 FROM            orders INNER JOIN
                          paymenttypes ON orders.paymenttypeid = paymenttypes.paymenttypeid</CommandText>
                     <Parameters />
@@ -365,7 +365,6 @@ FROM            orders INNER JOIN
               <Mapping SourceColumn="tax_amount" DataSetColumn="tax_amount" />
               <Mapping SourceColumn="taxrate" DataSetColumn="taxrate" />
               <Mapping SourceColumn="status" DataSetColumn="status" />
-              <Mapping SourceColumn="isactive" DataSetColumn="isactive" />
               <Mapping SourceColumn="name" DataSetColumn="name" />
             </Mappings>
             <Sources>
@@ -373,7 +372,7 @@ FROM            orders INNER JOIN
                 <SelectCommand>
                   <DbCommand CommandType="Text" ModifiedByUser="true">
                     <CommandText>SELECT        orders.orderid, orders.orderedon, orders.stagedon, orders.routedon, orders.invoicedon, orders.shippedon, orders.completedon, orders.cancellationreason, orders.total_amount, orders.subtotal_amount, 
-                         orders.discount_amount, orders.shippingfee_amount, orders.tax_amount, orders.taxrate, orders.status, orders.isactive, paymenttypes."name"
+                         orders.discount_amount, orders.shippingfee_amount, orders.tax_amount, orders.taxrate, orders.status, paymenttypes."name"
 FROM            orders INNER JOIN
                          paymenttypes ON orders.paymenttypeid = paymenttypes.paymenttypeid
 WHERE        (orders.status = :paramStatus)</CommandText>
@@ -393,7 +392,7 @@ WHERE        (orders.status = :paramStatus)</CommandText>
   <xs:element name="AmpedBizDataset" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="AmpedBizDataset" msprop:Generator_UserDSName="AmpedBizDataset">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="dtUOM" msprop:Generator_TableClassName="dtUOMDataTable" msprop:Generator_TableVarName="tabledtUOM" msprop:Generator_RowChangedName="dtUOMRowChanged" msprop:Generator_TablePropName="dtUOM" msprop:Generator_RowDeletingName="dtUOMRowDeleting" msprop:Generator_RowChangingName="dtUOMRowChanging" msprop:Generator_RowEvHandlerName="dtUOMRowChangeEventHandler" msprop:Generator_RowDeletedName="dtUOMRowDeleted" msprop:Generator_RowClassName="dtUOMRow" msprop:Generator_UserTableName="dtUOM" msprop:Generator_RowEvArgName="dtUOMRowChangeEvent">
+        <xs:element name="dtUOM" msprop:Generator_TableClassName="dtUOMDataTable" msprop:Generator_TableVarName="tabledtUOM" msprop:Generator_TablePropName="dtUOM" msprop:Generator_RowDeletingName="dtUOMRowDeleting" msprop:Generator_RowChangingName="dtUOMRowChanging" msprop:Generator_RowEvHandlerName="dtUOMRowChangeEventHandler" msprop:Generator_RowDeletedName="dtUOMRowDeleted" msprop:Generator_UserTableName="dtUOM" msprop:Generator_RowChangedName="dtUOMRowChanged" msprop:Generator_RowEvArgName="dtUOMRowChangeEvent" msprop:Generator_RowClassName="dtUOMRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="measurement" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnmeasurement" msprop:Generator_ColumnPropNameInRow="measurement" msprop:Generator_ColumnPropNameInTable="measurementColumn" msprop:Generator_UserColumnName="measurement" minOccurs="0">
@@ -421,7 +420,7 @@ WHERE        (orders.status = :paramStatus)</CommandText>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="dtProducts" msprop:Generator_TableClassName="dtProductsDataTable" msprop:Generator_TableVarName="tabledtProducts" msprop:Generator_TablePropName="dtProducts" msprop:Generator_RowDeletingName="dtProductsRowDeleting" msprop:Generator_RowChangingName="dtProductsRowChanging" msprop:Generator_RowEvHandlerName="dtProductsRowChangeEventHandler" msprop:Generator_RowDeletedName="dtProductsRowDeleted" msprop:Generator_UserTableName="dtProducts" msprop:Generator_RowChangedName="dtProductsRowChanged" msprop:Generator_RowEvArgName="dtProductsRowChangeEvent" msprop:Generator_RowClassName="dtProductsRow">
+        <xs:element name="dtProducts" msprop:Generator_TableClassName="dtProductsDataTable" msprop:Generator_TableVarName="tabledtProducts" msprop:Generator_RowChangedName="dtProductsRowChanged" msprop:Generator_TablePropName="dtProducts" msprop:Generator_RowDeletingName="dtProductsRowDeleting" msprop:Generator_RowChangingName="dtProductsRowChanging" msprop:Generator_RowEvHandlerName="dtProductsRowChangeEventHandler" msprop:Generator_RowDeletedName="dtProductsRowDeleted" msprop:Generator_RowClassName="dtProductsRow" msprop:Generator_UserTableName="dtProducts" msprop:Generator_RowEvArgName="dtProductsRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="category" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columncategory" msprop:Generator_ColumnPropNameInRow="category" msprop:Generator_ColumnPropNameInTable="categoryColumn" msprop:Generator_UserColumnName="category" minOccurs="0">
@@ -466,7 +465,7 @@ WHERE        (orders.status = :paramStatus)</CommandText>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="dtSuppliers" msprop:Generator_TableClassName="dtSuppliersDataTable" msprop:Generator_TableVarName="tabledtSuppliers" msprop:Generator_TablePropName="dtSuppliers" msprop:Generator_RowDeletingName="dtSuppliersRowDeleting" msprop:Generator_RowChangingName="dtSuppliersRowChanging" msprop:Generator_RowEvHandlerName="dtSuppliersRowChangeEventHandler" msprop:Generator_RowDeletedName="dtSuppliersRowDeleted" msprop:Generator_UserTableName="dtSuppliers" msprop:Generator_RowChangedName="dtSuppliersRowChanged" msprop:Generator_RowEvArgName="dtSuppliersRowChangeEvent" msprop:Generator_RowClassName="dtSuppliersRow">
+        <xs:element name="dtSuppliers" msprop:Generator_TableClassName="dtSuppliersDataTable" msprop:Generator_TableVarName="tabledtSuppliers" msprop:Generator_RowChangedName="dtSuppliersRowChanged" msprop:Generator_TablePropName="dtSuppliers" msprop:Generator_RowDeletingName="dtSuppliersRowDeleting" msprop:Generator_RowChangingName="dtSuppliersRowChanging" msprop:Generator_RowEvHandlerName="dtSuppliersRowChangeEventHandler" msprop:Generator_RowDeletedName="dtSuppliersRowDeleted" msprop:Generator_RowClassName="dtSuppliersRow" msprop:Generator_UserTableName="dtSuppliers" msprop:Generator_RowEvArgName="dtSuppliersRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="supplierid" msprop:Generator_ColumnVarNameInTable="columnsupplierid" msprop:Generator_ColumnPropNameInRow="supplierid" msprop:Generator_ColumnPropNameInTable="supplieridColumn" msprop:Generator_UserColumnName="supplierid">
@@ -570,7 +569,7 @@ WHERE        (orders.status = :paramStatus)</CommandText>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="dtProductCategories" msprop:Generator_TableClassName="dtProductCategoriesDataTable" msprop:Generator_TableVarName="tabledtProductCategories" msprop:Generator_TablePropName="dtProductCategories" msprop:Generator_RowDeletingName="dtProductCategoriesRowDeleting" msprop:Generator_RowChangingName="dtProductCategoriesRowChanging" msprop:Generator_RowEvHandlerName="dtProductCategoriesRowChangeEventHandler" msprop:Generator_RowDeletedName="dtProductCategoriesRowDeleted" msprop:Generator_UserTableName="dtProductCategories" msprop:Generator_RowChangedName="dtProductCategoriesRowChanged" msprop:Generator_RowEvArgName="dtProductCategoriesRowChangeEvent" msprop:Generator_RowClassName="dtProductCategoriesRow">
+        <xs:element name="dtProductCategories" msprop:Generator_TableClassName="dtProductCategoriesDataTable" msprop:Generator_TableVarName="tabledtProductCategories" msprop:Generator_RowChangedName="dtProductCategoriesRowChanged" msprop:Generator_TablePropName="dtProductCategories" msprop:Generator_RowDeletingName="dtProductCategoriesRowDeleting" msprop:Generator_RowChangingName="dtProductCategoriesRowChanging" msprop:Generator_RowEvHandlerName="dtProductCategoriesRowChangeEventHandler" msprop:Generator_RowDeletedName="dtProductCategoriesRowDeleted" msprop:Generator_RowClassName="dtProductCategoriesRow" msprop:Generator_UserTableName="dtProductCategories" msprop:Generator_RowEvArgName="dtProductCategoriesRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="productcategoryid" msprop:Generator_ColumnVarNameInTable="columnproductcategoryid" msprop:Generator_ColumnPropNameInRow="productcategoryid" msprop:Generator_ColumnPropNameInTable="productcategoryidColumn" msprop:Generator_UserColumnName="productcategoryid">
@@ -590,7 +589,7 @@ WHERE        (orders.status = :paramStatus)</CommandText>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="dtCustomers" msprop:Generator_TableClassName="dtCustomersDataTable" msprop:Generator_TableVarName="tabledtCustomers" msprop:Generator_RowChangedName="dtCustomersRowChanged" msprop:Generator_TablePropName="dtCustomers" msprop:Generator_RowDeletingName="dtCustomersRowDeleting" msprop:Generator_RowChangingName="dtCustomersRowChanging" msprop:Generator_RowEvHandlerName="dtCustomersRowChangeEventHandler" msprop:Generator_RowDeletedName="dtCustomersRowDeleted" msprop:Generator_RowClassName="dtCustomersRow" msprop:Generator_UserTableName="dtCustomers" msprop:Generator_RowEvArgName="dtCustomersRowChangeEvent">
+        <xs:element name="dtCustomers" msprop:Generator_TableClassName="dtCustomersDataTable" msprop:Generator_TableVarName="tabledtCustomers" msprop:Generator_TablePropName="dtCustomers" msprop:Generator_RowDeletingName="dtCustomersRowDeleting" msprop:Generator_RowChangingName="dtCustomersRowChanging" msprop:Generator_RowEvHandlerName="dtCustomersRowChangeEventHandler" msprop:Generator_RowDeletedName="dtCustomersRowDeleted" msprop:Generator_UserTableName="dtCustomers" msprop:Generator_RowChangedName="dtCustomersRowChanged" msprop:Generator_RowEvArgName="dtCustomersRowChangeEvent" msprop:Generator_RowClassName="dtCustomersRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="web" msprop:Generator_ColumnVarNameInTable="columnweb" msprop:Generator_ColumnPropNameInRow="web" msprop:Generator_ColumnPropNameInTable="webColumn" msprop:Generator_UserColumnName="web" minOccurs="0">
@@ -765,7 +764,7 @@ WHERE        (orders.status = :paramStatus)</CommandText>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="dtOrders" msprop:Generator_TableClassName="dtOrdersDataTable" msprop:Generator_TableVarName="tabledtOrders" msprop:Generator_TablePropName="dtOrders" msprop:Generator_RowDeletingName="dtOrdersRowDeleting" msprop:Generator_RowChangingName="dtOrdersRowChanging" msprop:Generator_RowEvHandlerName="dtOrdersRowChangeEventHandler" msprop:Generator_RowDeletedName="dtOrdersRowDeleted" msprop:Generator_UserTableName="dtOrders" msprop:Generator_RowChangedName="dtOrdersRowChanged" msprop:Generator_RowEvArgName="dtOrdersRowChangeEvent" msprop:Generator_RowClassName="dtOrdersRow">
+        <xs:element name="dtOrders" msprop:Generator_TableClassName="dtOrdersDataTable" msprop:Generator_TableVarName="tabledtOrders" msprop:Generator_RowChangedName="dtOrdersRowChanged" msprop:Generator_TablePropName="dtOrders" msprop:Generator_RowDeletingName="dtOrdersRowDeleting" msprop:Generator_RowChangingName="dtOrdersRowChanging" msprop:Generator_RowEvHandlerName="dtOrdersRowChangeEventHandler" msprop:Generator_RowDeletedName="dtOrdersRowDeleted" msprop:Generator_RowClassName="dtOrdersRow" msprop:Generator_UserTableName="dtOrders" msprop:Generator_RowEvArgName="dtOrdersRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="orderid" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnorderid" msprop:Generator_ColumnPropNameInRow="orderid" msprop:Generator_ColumnPropNameInTable="orderidColumn" msprop:Generator_UserColumnName="orderid" type="xs:string" />
@@ -795,7 +794,6 @@ WHERE        (orders.status = :paramStatus)</CommandText>
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="isactive" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnisactive" msprop:Generator_ColumnPropNameInRow="isactive" msprop:Generator_ColumnPropNameInTable="isactiveColumn" msprop:Generator_UserColumnName="isactive" type="xs:boolean" minOccurs="0" />
               <xs:element name="name" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnname" msprop:Generator_ColumnPropNameInRow="name" msprop:Generator_ColumnPropNameInTable="nameColumn" msprop:Generator_UserColumnName="name" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">

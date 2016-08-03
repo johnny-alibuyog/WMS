@@ -10,7 +10,16 @@
 namespace AmpedBiz.Reports.ReportViewers {
     
     
-    public partial class ucOrderListSelector {
+    public partial class ucSupplierList {
+        
+        /// <summary>
+        /// odsSupplier control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ObjectDataSource odsSupplier;
         
         /// <summary>
         /// UpdatePanel1 control.
@@ -31,22 +40,22 @@ namespace AmpedBiz.Reports.ReportViewers {
         protected global::System.Web.UI.WebControls.RadioButton rdoAll;
         
         /// <summary>
-        /// rdoOrder control.
+        /// rdoSupplier control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rdoOrder;
+        protected global::System.Web.UI.WebControls.RadioButton rdoSupplier;
         
         /// <summary>
-        /// ddlOrderStatus control.
+        /// ddlSupplier control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlOrderStatus;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSupplier;
         
         /// <summary>
         /// btnView control.

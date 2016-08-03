@@ -2,8 +2,6 @@
 <h5><u>Display Order List</u></h5>
 <div style="height: 20px; line-height: 20px;"></div>
 
-<asp:ObjectDataSource ID="odsOrder" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="GetOrders" TypeName="AmpedBiz.Reports.Datasource.AmpedBizDatasetTableAdapters.dtOrdersTableAdapter"></asp:ObjectDataSource>
-
 <asp:UpdatePanel ID="UpdatePanel1" runat="server">
     <ContentTemplate>
         <div class="container" style="margin-left: 10px;">
@@ -17,7 +15,16 @@
                     <asp:RadioButton AutoPostBack="true" Checked="false" runat="server" Text="By Status" ID="rdoOrder" GroupName="OrderList" CssClass="radio-inline" />
                 </div>
                 <div class="col-xs-1">
-                    <asp:DropDownList ID="ddlOrderStatus" runat="server" DataSourceID="odsOrder" DataTextField="status" DataValueField="status" CssClass="dropdown"></asp:DropDownList>
+                    <asp:DropDownList ID="ddlOrderStatus" runat="server" CssClass="dropdown">
+                        <asp:ListItem Selected="True" Value="New">New</asp:ListItem>
+                        <asp:ListItem>Staged</asp:ListItem>
+                        <asp:ListItem>Routed</asp:ListItem>
+                        <asp:ListItem>Invoiced</asp:ListItem>
+                        <asp:ListItem>Paid</asp:ListItem>
+                        <asp:ListItem>Shipped</asp:ListItem>
+                        <asp:ListItem>Completed</asp:ListItem>
+                        <asp:ListItem>Cancelled</asp:ListItem>
+                    </asp:DropDownList>
                 </div>
             </div>
 

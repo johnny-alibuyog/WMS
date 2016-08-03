@@ -110,9 +110,9 @@
     <Content Include="Global.asax" />
     <Content Include="ReportViewers\MainViewer.aspx" />
     <Content Include="ReportViewers\ucOrderListSelector.ascx" />
-    <Content Include="ReportViewers\ucSupplierList.ascx" />
     <Content Include="ReportViewers\ucCustomerList.ascx" />
     <Content Include="ReportViewers\ucPricelistSelector.ascx" />
+    <Content Include="ReportViewers\ucSupplierList.ascx" />
     <Content Include="ReportViewers\ucUOMDetails.ascx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -151,13 +151,6 @@
     <Compile Include="ReportViewers\ucOrderListSelector.ascx.designer.cs">
       <DependentUpon>ucOrderListSelector.ascx</DependentUpon>
     </Compile>
-    <Compile Include="ReportViewers\ucSupplierList.ascx.cs">
-      <DependentUpon>ucSupplierList.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ReportViewers\ucSupplierList.ascx.designer.cs">
-      <DependentUpon>ucSupplierList.ascx</DependentUpon>
-    </Compile>
     <Compile Include="ReportViewers\ucCustomerList.ascx.cs">
       <DependentUpon>ucCustomerList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -171,6 +164,13 @@
     </Compile>
     <Compile Include="ReportViewers\ucPricelistSelector.ascx.designer.cs">
       <DependentUpon>ucPricelistSelector.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ReportViewers\ucSupplierList.ascx.cs">
+      <DependentUpon>ucSupplierList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ReportViewers\ucSupplierList.ascx.designer.cs">
+      <DependentUpon>ucSupplierList.ascx</DependentUpon>
     </Compile>
     <Compile Include="ReportViewers\ucUOMDetails.ascx.cs">
       <DependentUpon>ucUOMDetails.ascx</DependentUpon>
@@ -204,6 +204,8 @@
           <DevelopmentServerPort>64038</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:64038/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost:64038/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
