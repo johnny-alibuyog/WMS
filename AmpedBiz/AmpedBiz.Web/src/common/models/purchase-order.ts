@@ -2,6 +2,22 @@ import {Lookup} from '../custom_types/lookup';
 import {ProductInventory} from './product';
 import {Dictionary} from '../custom_types/dictionary';
 
+export const purchaseOrderEvents = {
+  item: {
+    add: 'purchase-order-item-add',
+    added: 'purchase-order-item-added',
+    deleted: 'purchase-order-item-deleted',
+  },
+  payment: {
+    pay: 'purchase-order-pay',
+    paid: 'purchase-order-paid',
+  },
+  receipts: {
+    receive: 'purchase-order-receive',
+    received: 'purchase-order-received',
+  }
+}
+
 export enum PurchaseOrderStatus {
   new = 1,
   submitted = 2,

@@ -1,63 +1,174 @@
 <template>
-  <ai-dialog>
-    
-    <ai-dialog-header>
-      <h3>${header}</h3>
-    </ai-dialog-header>
+  <require from="common/controls/pager"></require>
+  <require from="products/product-order-page"></require>
+  <require from="products/product-purchase-page"></require>
 
-    <ai-dialog-body>
+  <section class="row row-no-padding">
+
+    <div class="col-md-8">
+
       <div class="panel panel-default">
-        <div class="panel-body">
-          <form class="form-horizontal" role="form">
-            <div class="form-group">
-              <label class="control-label col-sm-4">Code:</label>
-              <div class="col-sm-8">
-                <input type="email" class="form-control" placeholder="Enter Code" value.bind="product.code" />
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-sm-4">Name:</label>
-              <div class="col-sm-8">
-                <input type="email" class="form-control" placeholder="Enter Name" value.bind="product.name" />
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-sm-4">Category:</label>
-              <div class="col-sm-8">
-                <input type="email" class="form-control" placeholder="Enter Category" value.bind="product.category" />
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-sm-4">Supplier:</label>
-              <div class="col-sm-8">
-                <input type="email" class="form-control" placeholder="Enter Supplier" value.bind="product.supplier" />
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-sm-4">Standard Cost:</label>
-              <div class="col-sm-8">
-                <input type="email" class="form-control" placeholder="Enter Cost" value.bind="product.standardCost" />
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-sm-4">List Price:</label>
-              <div class="col-sm-8">
-                <input type="email" class="form-control" placeholder="Enter Price" value.bind="product.listPrice" />
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </ai-dialog-body>
 
-    <ai-dialog-footer>
-      <button type="button" class="btn btn-success" click.trigger="save()">
-        <i class="fa fa-check-circle"></i> Save
-      </button>
-      <button type="button" class="btn btn-danger" click.trigger="cancel()">
-        <i class="fa fa-times-circle"></i> Cancel</button>
-    </ai-dialog-footer>
-    
-  </ai-dialog>
-  
+        <!-- heading -->
+        <div class="panel-heading">
+
+          <!-- heading label -->
+          <h4 class="panel-title row-fluid">
+            <span6>&nbsp ${header} &nbsp</span6>
+
+            <!-- transition buttons -->
+            <button type="button" class="btn btn-default" click.trigger="save()">
+              <i class="fa fa-check"></i> Save
+            </button>
+
+            <button type="button" class="btn btn-default" click.trigger="back()">
+              <i class="fa fa-times"></i> Back
+            </button>
+          </h4>
+
+        </div>
+
+        <!-- body -->
+        <div class="panel-body">
+
+          <form class="form-horizontal" role="form">
+
+            <!-- inputs -->
+            <div class="row">
+
+              <!-- left side -->
+              <div class="col-lg-6">
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Code:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="Enter Code" value.bind="product.id" disabled.bind="isEdit" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Name:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="Enter Name" value.bind="product.name" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Description:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="Enter Description" value.bind="product.description" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Category:</label>
+                  <div class="col-sm-8">
+                    <select class="form-control" value.bind="product.category | lookupToId:categories">
+                      <option>Select Category</option>
+                      <option repeat.for="category of categories" model.bind="category.id">${category.name}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Supplier:</label>
+                  <div class="col-sm-8">
+                    <select class="form-control" value.bind="product.supplier | lookupToId:suppliers">
+                      <option>Select Supplier</option>
+                      <option repeat.for="supplier of suppliers" model.bind="supplier.id">${supplier.name}</option>
+                    </select>
+                  </div>
+                </div>
+
+
+              </div>
+
+              <!-- right side -->
+              <div class="col-lg-6">
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Base:</label>
+                  <div class="col-sm-8">
+                    <input type="number" class="form-control text-right" placeholder="Enter Base Price" value.bind="product.basePriceAmount"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Retail:</label>
+                  <div class="col-sm-8">
+                    <input type="number" class="form-control text-right" placeholder="Enter Retail Price" value.bind="product.retailPriceAmount"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Wholesale:</label>
+                  <div class="col-sm-8">
+                    <input type="number" class="form-control text-right" placeholder="Enter Wholesale Price" value.bind="product.wholesalePriceAmount"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Discontinued:</label>
+                  <div class="col-sm-8">
+                    <input type="checkbox" class="form-control" checked.bind="product.discontinued" />
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- tabs -->
+            <div class="row">
+
+              <div class="col-lg-12">
+
+                <ul class="nav nav-tabs">
+                  <li class="active"><a data-toggle="tab" href="#inventoryTab"><span>Inventory</span></a></li>
+                  <li><a data-toggle="tab" href="#orderHistoryTab"><span>Order History</span></a></li>
+                  <li><a data-toggle="tab" href="#purchaseHistoryTab"><span>Purchase History</span></a></li>
+                </ul>
+                <div class="tab-content">
+
+                  <!-- inventory -->
+                  <div id="inventoryTab" class="tab-pane fade in active">
+                    <br />
+                    <h1>Inventory</h1>
+                  </div>
+
+                  <!-- order history -->
+                  <div id="orderHistoryTab" class="tab-pane fade">
+                    <br />
+
+                    <product-order-page product-id.bind="product.id">
+                    </product-order-page>
+                  </div>
+
+                  <!-- purchase history -->
+                  <div id="purchaseHistoryTab" class="tab-pane fade">
+                    <br />
+
+                    <product-purchase-page product-id.bind="product.id">
+                    </product-purchase-page>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
 </template>

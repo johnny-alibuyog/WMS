@@ -83,7 +83,7 @@ export class Index {
         name: 'purchase-order-create',
         moduleId: './purchase-order-create',
         nav: false,
-        title: 'Create Purchases'
+        title: 'Create Purchase'
       }
     ]);
 

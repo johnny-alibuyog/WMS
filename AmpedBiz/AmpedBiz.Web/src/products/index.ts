@@ -8,11 +8,11 @@ export class Index {
     config.title = "Products";
     config.map([
       {
-        route: ['', 'product-list'],
-        name: 'product-list',
-        moduleId: '.././admin/product-list',
+        route: ['', 'product-page'],
+        name: 'product-page',
+        moduleId: './product-page',
         nav: true,
-        title: 'Product List'
+        title: 'Products'
       },
       {
         route: ['inventory-level'],
@@ -41,6 +41,27 @@ export class Index {
         moduleId: './product-discontinued',
         nav: true,
         title: 'Discontinued Products'
+      },
+      {
+        route: ['product-create'],
+        name: 'product-create',
+        moduleId: './product-create',
+        nav: false,
+        title: 'Product'
+      },
+      {
+        route: ['purchase-order-view'],
+        name: 'purchase-order-view',
+        moduleId: '../purchases/purchase-order-create',
+        nav: false,
+        title: 'Purchase Order'
+      },
+      {
+        route: ['order-view'],
+        name: 'order-view',
+        moduleId: '../orders/order-create',
+        nav: false,
+        title: 'Order'
       },
     ]);
     

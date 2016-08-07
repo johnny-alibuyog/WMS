@@ -1,8 +1,8 @@
 import {Router} from 'aurelia-router';
 import {autoinject} from 'aurelia-framework';
-import {EventAggregator} from 'aurelia-event-aggregator';
+import {EventAggregator, Subscription} from 'aurelia-event-aggregator';
 import {DialogService} from 'aurelia-dialog';
-import {PurchaseOrder} from '../common/models/purchase-order';
+import {PurchaseOrder, PurchaseOrderStatus, purchaseOrderEvents} from '../common/models/purchase-order';
 import {PurchaseOrderNewlyCreatedEvent, PurchaseOrderSubmittedEvent, PurchaseOrderApprovedEvent, PurchaseOrderPaidEvent, PurchaseOrderReceivedEvent, PurchaseOrderCompletedEvent, PurchaseOrderCancelledEvent} from '../common/models/purchase-order-event';
 import {ServiceApi} from '../services/service-api';
 import {Lookup} from '../common/custom_types/lookup';
@@ -15,6 +15,7 @@ export class PurchaseOrderCreate {
   private _dialog: DialogService;
   private _notification: NotificationService;
   private _eventAggegator: EventAggregator;
+  private _subscriptions: Subscription[] = [];
 
   public header: string = 'Purchase Order';
   public isEdit: boolean = false;
@@ -22,6 +23,7 @@ export class PurchaseOrderCreate {
 
   public suppliers: Lookup<string>[] = [];
   public products: Lookup<string>[] = [];
+  public statuses: Lookup<PurchaseOrderStatus>[] = [];
   public purchaseOrder: PurchaseOrder;
 
   constructor(api: ServiceApi, router: Router, dialog: DialogService, notification: NotificationService, eventAggegator: EventAggregator) {
@@ -30,25 +32,55 @@ export class PurchaseOrderCreate {
     this._dialog = dialog;
     this._notification = notification;
     this._eventAggegator = eventAggegator;
+  }
+
+  activate(purchaseOrder: PurchaseOrder): void {
+    this._subscriptions = [
+      this._eventAggegator.subscribe(
+        purchaseOrderEvents.payment.paid,
+        data => this.resetAndNoify(data, null)
+      ),
+      this._eventAggegator.subscribe(
+        purchaseOrderEvents.receipts.received,
+        data => this.resetAndNoify(data, null)
+      )
+    ];
+
+    if (purchaseOrder.id) {
+      this.isEdit = true;
+    }
+    else {
+      this.isEdit = false;
+    }
+
+    let requests: [
+      Promise<Lookup<string>[]>,
+      Promise<Lookup<PurchaseOrderStatus>[]>,
+      Promise<PurchaseOrder>] = [
+        this._api.suppliers.getLookups(),
+        this._api.purchaseOrders.getStatusLookup(),
+        this._api.purchaseOrders.get(purchaseOrder.id)
+      ];
+
+    Promise.all(requests)
+      .then(data => {
+        this.suppliers = data[0];
+        this.statuses = data[1];
+        this.purchaseOrder = data[2];
+      })
+      .catch(error =>
+        this._notification.warning(error)
+      );
 
     this._api.suppliers.getLookups()
       .then(data => this.suppliers = data);
   }
 
-  activate(purchaseOrder: PurchaseOrder): void {
-    if (purchaseOrder.id) {
-      this.isEdit = true;
-      this._api.purchaseOrders.get(purchaseOrder.id)
-        .then(data => this.setPurchaseOrder(<PurchaseOrder>data))
-        .catch(error => this._notification.warning(error));
-    }
-    else {
-      this.isEdit = false;
-      this.setPurchaseOrder(<PurchaseOrder>{});
-    }
+  deactivate(): void {
+    this._subscriptions.forEach(subscription => subscription.dispose());
   }
 
-  resetAndNoify(purchaseOrder: PurchaseOrder, notificationMessage: string) {
+  resetAndNoify(purchaseOrder: PurchaseOrder, notificationMessage?: string) {
     this.setPurchaseOrder(purchaseOrder);
 
     if (notificationMessage) {
@@ -83,15 +115,15 @@ export class PurchaseOrderCreate {
   }
 
   addItem(): void {
-    this._eventAggegator.publish('addPurchaseOrderItem');
+    this._eventAggegator.publish(purchaseOrderEvents.item.add);
   }
 
   addPayment(): void {
-    this._eventAggegator.publish('addPurchaseOrderPayment');
+    this._eventAggegator.publish(purchaseOrderEvents.payment.pay);
   }
 
   addReceipt(): void {
-    this._eventAggegator.publish('addPurchaseOrderReceipt');
+    this._eventAggegator.publish(purchaseOrderEvents.receipts.receive);
   }
 
   save(): void {
@@ -218,6 +250,10 @@ export class PurchaseOrderCreate {
     this._api.purchaseOrders.cancel(cancelledEvent)
       .then(data => this.resetAndNoify(data, "Purchase order has been cancelled."))
       .catch(error => this._notification.warning(error));
+  }
+
+  refresh(){
+    this.activate(this.purchaseOrder);
   }
 
   back(): void {

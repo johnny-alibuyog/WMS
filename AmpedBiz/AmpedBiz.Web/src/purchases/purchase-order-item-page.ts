@@ -1,14 +1,15 @@
 import {DialogService} from 'aurelia-dialog';
 import {EventAggregator, Subscription} from 'aurelia-event-aggregator';
-import {autoinject, bindable, bindingMode, customElement, computedFrom} from 'aurelia-framework'
+import {autoinject, bindable, bindingMode, customElement} from 'aurelia-framework'
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 import {Lookup} from '../common/custom_types/lookup';
 import {ServiceApi} from '../services/service-api';
 import {Dictionary} from '../common/custom_types/dictionary';
-import {PurchaseOrderItem} from '../common/models/purchase-order';
+import {PurchaseOrderItem, purchaseOrderEvents} from '../common/models/purchase-order';
 import {NotificationService} from '../common/controls/notification-service';
 
 @autoinject
+@customElement("purchase-order-item-page")
 export class PurchaseOrderItemPage {
 
   private _api: ServiceApi;
@@ -29,7 +30,7 @@ export class PurchaseOrderItemPage {
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public allowedTransitions: Dictionary<string> = {};
 
-  public itemPage: Pager<PurchaseOrderItem> = new Pager<PurchaseOrderItem>();
+  public itemPager: Pager<PurchaseOrderItem> = new Pager<PurchaseOrderItem>();
 
   public selectedItem: PurchaseOrderItem;
 
@@ -39,12 +40,15 @@ export class PurchaseOrderItemPage {
     this._notification = notification;
     this._eventAggregator = eventAggregator;
 
-    this.itemPage.onPage = () => this.initializePage();
+    this.itemPager.onPage = () => this.initializePage();
   }
 
   attached(): void {
     this._subscriptions = [
-      this._eventAggregator.subscribe('addPurchaseOrderItem', response => this.addItem())
+      this._eventAggregator.subscribe(
+        purchaseOrderEvents.item.add,
+        response => this.addItem()
+      )
     ];
   }
 
@@ -73,10 +77,10 @@ export class PurchaseOrderItemPage {
     if (!this.items)
       this.items = [];
 
-    this.itemPage.count = this.items.length;
-    this.itemPage.items = this.items.slice(
-      this.itemPage.start,
-      this.itemPage.end
+    this.itemPager.count = this.items.length;
+    this.itemPager.items = this.items.slice(
+      this.itemPager.start,
+      this.itemPager.end
     );
   }
 
@@ -92,7 +96,7 @@ export class PurchaseOrderItemPage {
     this.items.push(item);
     this.selectedItem = item;
 
-    //this.itemPage.offset = this.itemPage.end;
+    //this.itemPager.offset = this.itemPager.end;
     this.initializePage();
   }
 

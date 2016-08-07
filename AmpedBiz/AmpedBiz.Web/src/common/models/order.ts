@@ -3,6 +3,18 @@ import {ProductInventory} from './product';
 import {Dictionary} from '../custom_types/dictionary';
 import {Address} from './Address';
 
+export const orderEvents = {
+  item: {
+    add: 'order-item-add',
+    added: 'order-item-added',
+    deleted: 'order-item-deleted',
+  },
+  payment: {
+    pay: 'order-pay',
+    paid: 'order-paid',
+  }
+}
+
 export enum OrderStatus {
   new = 1,
   staged = 2,
@@ -51,6 +63,7 @@ export interface Order {
   cancellationReason?: string;
   items?: OrderItem[];
   payments?: OrderPayment[];
+  allowedTransitions?: Dictionary<string>;
 }
 
 export interface OrderPageItem {

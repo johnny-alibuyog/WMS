@@ -1,0 +1,56 @@
+<template>
+  <require from="common/controls/pager"></require>
+
+  <!-- list -->
+  <table class="table table-striped table-hover table-condensed">
+
+    <thead>
+      <tr class="row-no-padding">
+        <th class="col-sm-1">Action</th>
+        <th class="col-md-2" click.delegate="sorter.doSort('purchaseOrderNumber')">
+          <i class="fa fa-fw fa-${sorter.class(sorter['purchaseOrderNumber'])}"></i>Control#
+        </th>
+        <th class="col-md-1" click.delegate="sorter.doSort('createdOn')">
+          <i class="fa fa-fw fa-${sorter.class(sorter['createdOn'])}"></i>CreatedOn
+        </th>
+        <th class="col-md-2" click.delegate="sorter.doSort('supplier')">
+          <i class="fa fa-fw fa-${sorter.class(sorter['supplier'])}"></i>Supplier
+        </th>
+        <th class="col-md-2" click.delegate="sorter.doSort('status')">
+          <i class="fa fa-fw fa-${sorter.class(sorter['status'])}"></i>Status
+        </th>
+        <th class="col-md-1 text-right" click.delegate="sorter.doSort('unitCost')">
+          <i class="fa fa-fw fa-${sorter.class(sorter['unitCost'])}"></i>UnitCost
+        </th>
+        <th class="col-md-1 text-right" click.delegate="sorter.doSort('quantity')">
+          <i class="fa fa-fw fa-${sorter.class(sorter['quantity'])}"></i>Quantiy
+        </th>
+        <th class="col-md-1 text-right" click.delegate="sorter.doSort('received')">
+          <i class="fa fa-fw fa-${sorter.class(sorter['received'])}"></i>Recieved
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr repeat.for="item of pager.items" click.delegate="view(item)">
+        <td>
+          <a href="javascript:undefined" class="text-info" click.delegate="view(item)">
+            <i class="fa fa-search"></i>
+          </a>
+        </td>
+        <td>${item.purchaseOrderNumber}</td>
+        <td>${item.createdOn | dateFormat}</td>
+        <td>${item.supplierName}</td>
+        <td>${item.status}</td>
+        <td class="text-right">${item.unitCostAmount | numberFormat}</td>
+        <td class="text-right">${item.quantityValue | numberFormat:'0,0'}</td>
+        <td class="text-right">${item.receivedValue | numberFormat:'0,0'}</td>
+      </tr>
+    </tbody>
+
+  </table>
+
+  <!-- pager -->
+  <pager current-page.bind="pager.offset" total-items.bind="pager.count" change.delegate="pager.doPage($event)" />
+
+</template>

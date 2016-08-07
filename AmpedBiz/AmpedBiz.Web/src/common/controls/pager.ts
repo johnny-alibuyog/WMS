@@ -45,11 +45,15 @@ export class Pager {
   }
 
   currentPageChanged(): void {
-    this.buildPages();
+    // just to validate if current page is still valid
+    this.selectPage(this.currentPage);
+    //this.buildPages();
   }
 
   totalItemsChanged(): void {
-    this.buildPages();
+    // just to validate if current page is still valid
+    this.selectPage(this.currentPage);
+    //this.buildPages();
   }
 
   calculateTotalPages(): number {

@@ -38,7 +38,7 @@ export class Index {
       {
         route: ['product-page'],
         name: 'product-page',
-        moduleId: './product-page',
+        moduleId: '../products/product-page',
         nav: true,
         title: 'Products'
       },

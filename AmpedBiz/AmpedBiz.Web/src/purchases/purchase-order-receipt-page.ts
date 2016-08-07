@@ -1,15 +1,16 @@
 import {DialogService} from 'aurelia-dialog';
 import {EventAggregator, Subscription} from 'aurelia-event-aggregator';
-import {autoinject, bindable, bindingMode, customElement, computedFrom} from 'aurelia-framework'
+import {autoinject, bindable, bindingMode, customElement} from 'aurelia-framework'
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 import {Lookup} from '../common/custom_types/lookup';
 import {ServiceApi} from '../services/service-api';
 import {Dictionary} from '../common/custom_types/dictionary';
-import {PurchaseOrderReceipt, PurchaseOrderReceivable} from '../common/models/purchase-order';
+import {PurchaseOrderReceipt, PurchaseOrderReceivable, purchaseOrderEvents} from '../common/models/purchase-order';
 import {NotificationService} from '../common/controls/notification-service';
 import {PurchaseOrderReceiptCreate} from './purchase-order-receipt-create';
 
 @autoinject
+@customElement("purchase-order-receipt-page")
 export class PurchaseOrderReceiptPage {
   private _api: ServiceApi;
   private _dialog: DialogService;
@@ -29,9 +30,9 @@ export class PurchaseOrderReceiptPage {
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public allowedTransitions: Dictionary<string> = {};
 
-  public receiptPage: Pager<PurchaseOrderReceipt> = new Pager<PurchaseOrderReceipt>();
+  public receiptPager: Pager<PurchaseOrderReceipt> = new Pager<PurchaseOrderReceipt>();
 
-  public receivablePage: Pager<PurchaseOrderReceivable> = new Pager<PurchaseOrderReceivable>();
+  public receivablePager: Pager<PurchaseOrderReceivable> = new Pager<PurchaseOrderReceivable>();
 
   constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, eventAggregator: EventAggregator) {
     this._api = api;
@@ -39,14 +40,17 @@ export class PurchaseOrderReceiptPage {
     this._notification = notification;
     this._eventAggregator = eventAggregator;
 
-    this.receiptPage.onPage = () => this.initializeReceiptPage();
-    this.receivablePage.onPage = () => this.initializeReceivablePage();
-    
+    this.receiptPager.onPage = () => this.initializeReceiptPage();
+    this.receivablePager.onPage = () => this.initializeReceivablePage();
+
   }
 
   attached(): void {
     this._subscriptions = [
-      this._eventAggregator.subscribe('addPurchaseOrderReceipt', response => this.addReceipt())
+      this._eventAggregator.subscribe(
+        purchaseOrderEvents.receipts.receive,
+        response => this.addReceipt()
+      )
     ];
   }
 
@@ -66,10 +70,10 @@ export class PurchaseOrderReceiptPage {
     if (!this.receipts)
       this.receipts = [];
 
-    this.receiptPage.count = this.receipts.length;
-    this.receiptPage.items = this.receipts.slice(
-      this.receiptPage.start,
-      this.receiptPage.end
+    this.receiptPager.count = this.receipts.length;
+    this.receiptPager.items = this.receipts.slice(
+      this.receiptPager.start,
+      this.receiptPager.end
     );
   }
 
@@ -77,16 +81,18 @@ export class PurchaseOrderReceiptPage {
     if (!this.receivables)
       this.receivables = [];
 
-    this.receivablePage.count = this.receivables.length;
-    this.receivablePage.items = this.receivables.slice(
-      this.receivablePage.start,
-      this.receivablePage.end
+    this.receivablePager.count = this.receivables.length;
+    this.receivablePager.items = this.receivables.slice(
+      this.receivablePager.start,
+      this.receivablePager.end
     );
   }
 
   addReceipt(): void {
     this._dialog.open({ viewModel: PurchaseOrderReceiptCreate, model: this.purchaseOrderId })
-      .then(response => { if (!response.wasCancelled) this._eventAggregator.publish('purchaseOrderReceived'); });
+      .then(response => { if (!response.wasCancelled)
+          this._eventAggregator.publish(purchaseOrderEvents.receipts.received, response.output);
+      });
   }
 
 }

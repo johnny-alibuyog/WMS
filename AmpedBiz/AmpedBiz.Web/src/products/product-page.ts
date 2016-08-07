@@ -1,42 +1,57 @@
+import {Router, RouteConfig, NavigationInstruction} from 'aurelia-router';
 import {autoinject} from 'aurelia-framework';
-import {DialogService} from 'aurelia-dialog';
 import {ProductCreate} from './product-create';
 import {Product, ProductPageItem} from '../common/models/product';
 import {ServiceApi} from '../services/service-api';
+import {Lookup} from '../common/custom_types/lookup';
 import {NotificationService} from '../common/controls/notification-service';
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 
 @autoinject
 export class ProductPage {
   private _api: ServiceApi;
-  private _dialog: DialogService;
+  private _router: Router;
   private _notification: NotificationService;
 
   public filter: Filter;
   public sorter: Sorter;
   public pager: Pager<ProductPageItem>;
 
-  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<ProductPageItem>) {
+  public suppliers: Lookup<string>[] = [];
+  public categories: Lookup<string>[] = [];
+
+  constructor(api: ServiceApi, router: Router, notification: NotificationService) {
     this._api = api;
-    this._dialog = dialog;
+    this._router = router;
     this._notification = notification;
 
-    this.filter = filter;
+    this.filter = new Filter();
     this.filter["name"] = '';
     this.filter.onFilter = () => this.getPage();
 
-    this.sorter = sorter;
+    this.sorter = new Sorter();
     this.sorter["code"] = SortDirection.None;
     this.sorter["name"] = SortDirection.Ascending;
     this.sorter["descirption"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
 
-    this.pager = pager;
+    this.pager = new Pager<ProductPageItem>();
     this.pager.onPage = () => this.getPage();
   }
 
-  activate() {
-    this.getPage();
+  activate(params: any, routeConfig: RouteConfig, $navigationInstruction: NavigationInstruction): any {
+
+    let requests: [Promise<Lookup<string>[]>, Promise<Lookup<string>[]>] = [
+      this._api.suppliers.getLookups(),
+      this._api.purchaseOrders.getStatusLookup()
+    ];
+
+    Promise.all(requests).then((responses: [Lookup<string>[], Lookup<string>[]]) => {
+      this.suppliers = responses[0];
+      this.categories = responses[1];
+
+      this.getPage();
+    });
   }
 
   getPage(): void {
@@ -57,13 +72,15 @@ export class ProductPage {
   }
 
   create() {
-    this._dialog.open({ viewModel: ProductCreate, model: null })
-      .then(response => { if (!response.wasCancelled) this.getPage(); });
+    this._router.navigateToRoute('product-create');
+    //this._dialog.open({ viewModel: ProductCreate, model: null })
+    //  .then(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   edit(item: ProductPageItem) {
-    this._dialog.open({ viewModel: ProductCreate, model: <Product>{ id: item.id } })
-      .then(response => { if (!response.wasCancelled) this.getPage(); });
+    this._router.navigateToRoute('product-create', <Product>{ id: item.id });
+    //this._dialog.open({ viewModel: ProductCreate, model: <Product>{ id: item.id } })
+    //  .then(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   delete(item: ProductPageItem) {

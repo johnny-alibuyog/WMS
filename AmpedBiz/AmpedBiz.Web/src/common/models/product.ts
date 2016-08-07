@@ -18,9 +18,9 @@ export interface ProductPageItem {
   supplierName?: string;
   categoryName?: string;
   image?: string;
-  basePrice?: string;
-  retailPrice?: string;
-  wholeSalePrice?: string;
+  availableValue?: number;
+  basePriceAmount?: number;
+  retailPriceAmount?: number;
   discontinued?: boolean;
 }
 
@@ -34,4 +34,28 @@ export interface ProductInventory {
   retailPriceAmount?: number;
   wholeSalePriceAmount?: number;
   discountAmount?: number;
+}
+
+export interface ProductInventory {
+
+}
+
+export interface ProductPurchasePageItem {
+  id?: string;
+  purchaseOrderNumber?: string;
+  createdOn?: Date;
+  status?: string;
+  supplierName?: string;
+  unitCostAmount?: number;
+  quantityValue?: number;
+  receivedValue?: number;
+}
+
+export interface ProductOrderPageItem {
+  id?: string;
+  orderNumber?: string;
+  createdOn?: Date;
+  status?: string;
+  customerName?: string;
+  quantityValue?: number;
 }

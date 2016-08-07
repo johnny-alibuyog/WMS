@@ -5,11 +5,12 @@ import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from 
 import {Lookup} from '../common/custom_types/lookup';
 import {ServiceApi} from '../services/service-api';
 import {Dictionary} from '../common/custom_types/dictionary';
-import {OrderItem} from '../common/models/order';
+import {OrderItem, orderEvents} from '../common/models/order';
 import {pricingScheme} from '../common/models/pricing-scheme';
 import {NotificationService} from '../common/controls/notification-service';
 
 @autoinject
+@customElement("order-item-page")
 export class OrderItemPage {
 
   private _api: ServiceApi;
@@ -33,7 +34,7 @@ export class OrderItemPage {
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public allowedTransitions: Dictionary<string> = {};
 
-  public itemPage: Pager<OrderItem> = new Pager<OrderItem>();
+  public itemPager: Pager<OrderItem> = new Pager<OrderItem>();
 
   public selectedItem: OrderItem;
 
@@ -43,12 +44,15 @@ export class OrderItemPage {
     this._notification = notification;
     this._eventAggregator = eventAggregator;
 
-    this.itemPage.onPage = () => this.initializePage();
+    this.itemPager.onPage = () => this.initializePage();
   }
 
   attached(): void {
     this._subscriptions = [
-      this._eventAggregator.subscribe('addOrderItem', response => this.addItem())
+      this._eventAggregator.subscribe(
+        orderEvents.item.add, 
+        response => this.addItem()
+      )
     ];
   }
 
@@ -104,10 +108,10 @@ export class OrderItemPage {
       }
     });
 
-    this.itemPage.count = this.items.length;
-    this.itemPage.items = this.items.slice(
-      this.itemPage.start,
-      this.itemPage.end
+    this.itemPager.count = this.items.length;
+    this.itemPager.items = this.items.slice(
+      this.itemPager.start,
+      this.itemPager.end
     );
   }
 

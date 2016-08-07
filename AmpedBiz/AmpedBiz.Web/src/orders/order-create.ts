@@ -1,8 +1,8 @@
 import {Router} from 'aurelia-router';
 import {autoinject} from 'aurelia-framework';
-import {EventAggregator} from 'aurelia-event-aggregator';
-import {DialogService} from 'aurelia-dialog';
-import {Order, OrderStatus} from '../common/models/order';
+import {EventAggregator, Subscription} from 'aurelia-event-aggregator';
+import {Dictionary} from '../common/custom_types/dictionary';
+import {Order, OrderStatus, orderEvents} from '../common/models/order';
 import {ServiceApi} from '../services/service-api';
 import {Lookup} from '../common/custom_types/lookup';
 import {NotificationService} from '../common/controls/notification-service';
@@ -11,9 +11,9 @@ import {NotificationService} from '../common/controls/notification-service';
 export class OrderCreate {
   private _api: ServiceApi;
   private _router: Router;
-  private _dialog: DialogService;
   private _notification: NotificationService;
-  private _eventAggegator: EventAggregator;
+  private _eventAggregator: EventAggregator;
+  private _subscriptions: Subscription[] = [];
 
   public header: string = 'Order';
   public isEdit: boolean = false;
@@ -26,15 +26,27 @@ export class OrderCreate {
   public statuses: Lookup<OrderStatus>[] = [];
   public order: Order;
 
-  constructor(api: ServiceApi, router: Router, dialog: DialogService, notification: NotificationService, eventAggregator: EventAggregator) {
+  constructor(api: ServiceApi, router: Router, notification: NotificationService, eventAggregator: EventAggregator) {
     this._api = api;
     this._router = router;
-    this._dialog = dialog;
     this._notification = notification;
-    this._eventAggegator = eventAggregator;
+    this._eventAggregator = eventAggregator;
+  }
+
+  getInitializedOrder(): Order {
+    let order: Order = { allowedTransitions: <Dictionary<string>>{} };
+    order.allowedTransitions[OrderStatus[OrderStatus.new]] = "Save";
+    return order;
   }
 
   activate(order: Order) {
+    this._subscriptions = [
+      this._eventAggregator.subscribe(
+        orderEvents.payment.paid,
+        data => this.resetAndNoify(data, null)
+      ),
+    ];
+
     if (order.id) {
       this.isEdit = true;
     }
@@ -54,24 +66,27 @@ export class OrderCreate {
         this._api.customers.getLookups(),
         this._api.pricingSchemes.getLookups(),
         this._api.orders.getStatusLookup(),
-        (order.id) ? this._api.orders.get(order.id) : Promise.resolve(<Order>{})
+        this.isEdit
+          ? this._api.orders.get(order.id)
+          : Promise.resolve(this.getInitializedOrder())
       ];
 
-    Promise.all(requests).then((responses: [
-      Lookup<string>[],
-      Lookup<string>[],
-      Lookup<string>[],
-      Lookup<string>[],
-      Lookup<OrderStatus>[],
-      Order
-    ]) => {
-      this.products = responses[0];
-      this.branches = responses[1];
-      this.customers = responses[2];
-      this.pricingSchemes = responses[3];
-      this.statuses = responses[4];
-      this.order = responses[5];
-    });
+    Promise.all(requests)
+      .then(responses => {
+        this.products = responses[0];
+        this.branches = responses[1];
+        this.customers = responses[2];
+        this.pricingSchemes = responses[3];
+        this.statuses = responses[4];
+        this.order = responses[5];
+      })
+      .catch(error => {
+        this._notification.error(error);
+      });
+  }
+
+  deactivate() {
+    this._subscriptions.forEach(subscription => subscription.dispose());
   }
 
   resetAndNoify(order: Order, notificationMessage: string) {
@@ -89,11 +104,11 @@ export class OrderCreate {
   }
 
   addItem(): void {
-    this._eventAggegator.publish('addOrderItem');
+    this._eventAggregator.publish(orderEvents.item.add);
   }
 
   addPayment(): void {
-    this._eventAggegator.publish('addOrderPayment');
+    this._eventAggregator.publish(orderEvents.payment.pay);
   }
 
   save(): void {
@@ -131,7 +146,7 @@ export class OrderCreate {
 
   invoice(): void {
     this._api.orders.invoice(this.order)
-      .then(data => this.resetAndNoify(data, "Order has been updated."))
+      .then(data => this.resetAndNoify(data, "Order has been invoiced."))
       .catch(error => this._notification.warning(error));
   }
 

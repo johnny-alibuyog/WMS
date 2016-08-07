@@ -33,7 +33,7 @@ export class App {
       {
         route: ['purchases'],
         name: 'purchases',
-        moduleId: './Purchases/index',
+        moduleId: './purchases/index',
         nav: true,
         main: true,
         title: 'Purchases'

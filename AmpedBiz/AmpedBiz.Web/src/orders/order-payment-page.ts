@@ -5,11 +5,12 @@ import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from 
 import {Lookup} from '../common/custom_types/lookup';
 import {ServiceApi} from '../services/service-api';
 import {Dictionary} from '../common/custom_types/dictionary';
-import {OrderPayment} from '../common/models/order';
+import {OrderPayment, orderEvents} from '../common/models/order';
 import {NotificationService} from '../common/controls/notification-service';
 import {OrderPaymentCreate} from './order-payment-create';
 
 @autoinject
+@customElement("order-payment-page")
 export class OrderPaymentPage {
 
   private _api: ServiceApi;
@@ -27,7 +28,7 @@ export class OrderPaymentPage {
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public allowedTransitions: Dictionary<string> = {};
 
-  public paymentPage: Pager<OrderPayment> = new Pager<OrderPayment>();
+  public paymentPager: Pager<OrderPayment> = new Pager<OrderPayment>();
 
   public selectedItem: OrderPayment;
 
@@ -37,12 +38,15 @@ export class OrderPaymentPage {
     this._notification = notification;
     this._eventAggregator = eventAggregator;
 
-    this.paymentPage.onPage = () => this.initializePage();
+    this.paymentPager.onPage = () => this.initializePage();
   }
 
   attached(): void {
     this._subscriptions = [
-      this._eventAggregator.subscribe('addOrderPayment', response => this.addPayment())
+      this._eventAggregator.subscribe(
+        orderEvents.payment.pay, 
+        response => this.addPayment()
+      )
     ];
   }
 
@@ -58,10 +62,10 @@ export class OrderPaymentPage {
     if (!this.payments)
       this.payments = [];
 
-    this.paymentPage.count = this.payments.length;
-    this.paymentPage.items = this.payments.slice(
-      this.paymentPage.start,
-      this.paymentPage.end
+    this.paymentPager.count = this.payments.length;
+    this.paymentPager.items = this.payments.slice(
+      this.paymentPager.start,
+      this.paymentPager.end
     );
   }
 
@@ -69,7 +73,7 @@ export class OrderPaymentPage {
     this._dialog.open({ viewModel: OrderPaymentCreate, model: this.orderId })
       .then(response => {
         if (!response.wasCancelled)
-          this._eventAggregator.publish('orderPaid');
+          this._eventAggregator.publish(orderEvents.payment.paid, response.output);
       });
   }
 }

@@ -1,5 +1,6 @@
 import {autoinject} from 'aurelia-framework';
 import {Product, ProductInventory} from '../common/models/product';
+import {PageRequest} from '../common/models/paging';
 import {ServiceBase} from './service-base'
 import {HttpClientFacade} from './http-client-facade';
 import {Lookup} from '../common/custom_types/lookup';
@@ -20,5 +21,15 @@ export class ProductService extends ServiceBase<Product> {
     var url = "product-lookups";
     return this._httpClient.get(url)
       .then(data => <Lookup<string>[]>data);
+  }
+  
+  getOrderPage(page: PageRequest): Promise<any> {
+    var url = this._resouce + '/' + page.filter["id"] +  '/orders/page';
+    return this._httpClient.post(url, page);
+  }
+
+  getPurchasePage(page: PageRequest): Promise<any> {
+    var url = this._resouce + '/' + page.filter["id"] +  '/purchases/page';
+    return this._httpClient.post(url, page);
   }
 }

@@ -5,11 +5,12 @@ import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from 
 import {Lookup} from '../common/custom_types/lookup';
 import {ServiceApi} from '../services/service-api';
 import {Dictionary} from '../common/custom_types/dictionary';
-import {PurchaseOrderPayment} from '../common/models/purchase-order';
+import {PurchaseOrderPayment, purchaseOrderEvents} from '../common/models/purchase-order';
 import {NotificationService} from '../common/controls/notification-service';
 import {PurchaseOrderPaymentCreate} from './purchase-order-payment-create';
 
 @autoinject
+@customElement("purchase-order-payment-page")
 export class PurchaseOrderPaymentPage {
 
   private _api: ServiceApi;
@@ -27,7 +28,7 @@ export class PurchaseOrderPaymentPage {
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public allowedTransitions: Dictionary<string> = {};
 
-  public paymentPage: Pager<PurchaseOrderPayment> = new Pager<PurchaseOrderPayment>();
+  public paymentPager: Pager<PurchaseOrderPayment> = new Pager<PurchaseOrderPayment>();
 
   public selectedItem: PurchaseOrderPayment;
 
@@ -37,12 +38,15 @@ export class PurchaseOrderPaymentPage {
     this._notification = notification;
     this._eventAggregator = eventAggregator;
 
-    this.paymentPage.onPage = () => this.initializePage();
+    this.paymentPager.onPage = () => this.initializePage();
   }
 
   attached(): void {
     this._subscriptions = [
-      this._eventAggregator.subscribe('addPurchaseOrderPayment', response => this.addPayment())
+      this._eventAggregator.subscribe(
+        purchaseOrderEvents.payment.pay, 
+        response => this.addPayment()
+      )
     ];
   }
 
@@ -58,10 +62,10 @@ export class PurchaseOrderPaymentPage {
     if (!this.payments)
       this.payments = [];
 
-    this.paymentPage.count = this.payments.length;
-    this.paymentPage.items = this.payments.slice(
-      this.paymentPage.start,
-      this.paymentPage.end
+    this.paymentPager.count = this.payments.length;
+    this.paymentPager.items = this.payments.slice(
+      this.paymentPager.start,
+      this.paymentPager.end
     );
   }
 
@@ -69,7 +73,7 @@ export class PurchaseOrderPaymentPage {
     this._dialog.open({ viewModel: PurchaseOrderPaymentCreate, model: this.purchaseOrderId })
       .then(response => {
         if (!response.wasCancelled)
-          this._eventAggregator.publish('purchaseOrderPaid');
+          this._eventAggregator.publish(purchaseOrderEvents.payment.paid, response.output);
       });
   }
 }

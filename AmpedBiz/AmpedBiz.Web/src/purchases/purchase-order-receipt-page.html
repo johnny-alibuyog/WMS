@@ -13,7 +13,7 @@
     </thead>
 
     <tbody>
-      <tr repeat.for="item of receivablePage.items">
+      <tr repeat.for="item of receivablePager.items">
         <td>${item.product.name}</td>
         <td class="text-right">${item.orderedQuantity}</td>
         <td class="text-right">${item.receivedQuantity}</td>
@@ -24,6 +24,6 @@
   </table>
 
   <!-- pager -->
-  <pager current-page.bind="receivablePage.offset" total-items.bind="receivablePage.count" change.delegate="receivablePage.doPage($event)"/>
+  <pager current-page.bind="receivablePager.offset" total-items.bind="receivablePager.count" change.delegate="receivablePager.doPage($event)"/>
 
 </template>
