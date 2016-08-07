@@ -22,6 +22,8 @@ namespace AmpedBiz.Core.Entities
 
     public class Order : Entity<Guid, Order>
     {
+        public virtual string OrderNumber { get; set; }
+
         public virtual Branch Branch { get; set; }
 
         public virtual Customer Customer { get; protected set; }
@@ -103,87 +105,88 @@ namespace AmpedBiz.Core.Entities
 
         public Order(Guid id) : base(id) { }
 
-        protected internal virtual Order Process(OrderNewlyCreatedArguments @event)
+        protected internal virtual Order Process(OrderNewlyCreatedArguments args)
         {
-            this.CreatedBy = @event.CreatedBy ?? this.CreatedBy;
-            this.CreatedOn = @event.CreatedOn ?? this.CreatedOn;
-            this.OrderedBy = @event.OrderedBy ?? this.OrderedBy;
-            this.OrderedOn = @event.OrderedOn ?? this.OrderedOn;
-            this.Branch = @event.Branch ?? this.Branch;
-            this.Customer = @event.Customer ?? this.Customer;
-            this.Shipper = @event.Shipper ?? this.Shipper;
-            this.PaymentType = @event.PaymentType ?? this.PaymentType;
-            this.TaxRate = @event.TaxRate ?? this.TaxRate;
-            this.TaxRate = @event.TaxRate ?? this.TaxRate;
-            this.Tax = @event.Tax ?? this.Tax;
-            this.ShippingFee = @event.ShippingFee ?? this.ShippingFee;
-            this.SetItems(@event.Items);
+            this.OrderNumber = args.OrderNumber ?? this.OrderNumber;
+            this.CreatedBy = args.CreatedBy ?? this.CreatedBy;
+            this.CreatedOn = args.CreatedOn ?? this.CreatedOn;
+            this.OrderedBy = args.OrderedBy ?? this.OrderedBy;
+            this.OrderedOn = args.OrderedOn ?? this.OrderedOn;
+            this.Branch = args.Branch ?? this.Branch;
+            this.Customer = args.Customer ?? this.Customer;
+            this.Shipper = args.Shipper ?? this.Shipper;
+            this.PaymentType = args.PaymentType ?? this.PaymentType;
+            this.TaxRate = args.TaxRate ?? this.TaxRate;
+            this.TaxRate = args.TaxRate ?? this.TaxRate;
+            this.Tax = args.Tax ?? this.Tax;
+            this.ShippingFee = args.ShippingFee ?? this.ShippingFee;
+            this.SetItems(args.Items);
             this.CalculateTotal();
             this.Status = OrderStatus.New;
 
             return this;
         }
 
-        protected internal virtual Order Process(OrderStagedArguments @event)
+        protected internal virtual Order Process(OrderStagedArguments args)
         {
-            this.StagedBy = @event.StagedBy ?? this.StagedBy;
-            this.StagedOn = @event.StagedOn ?? this.StagedOn;
+            this.StagedBy = args.StagedBy ?? this.StagedBy;
+            this.StagedOn = args.StagedOn ?? this.StagedOn;
             this.Status = OrderStatus.Staged;
 
             return this;
         }
 
-        protected internal virtual Order Process(OrderRoutedArguments @event)
+        protected internal virtual Order Process(OrderRoutedArguments args)
         {
-            this.RoutedBy = @event.RoutedBy ?? this.RoutedBy;
-            this.RoutedOn = @event.RoutedOn ?? this.RoutedOn;
+            this.RoutedBy = args.RoutedBy ?? this.RoutedBy;
+            this.RoutedOn = args.RoutedOn ?? this.RoutedOn;
             this.Status = OrderStatus.Routed;
 
             return this;
             //allocate product from inventory
         }
 
-        protected internal virtual Order Process(OrderInvoicedArguments @event)
+        protected internal virtual Order Process(OrderInvoicedArguments args)
         {
-            this.InvoicedOn = @event.InvoicedOn ?? this.InvoicedOn;
-            this.InvoicedBy = @event.InvoicedBy ?? this.InvoicedBy;
+            this.InvoicedOn = args.InvoicedOn ?? this.InvoicedOn;
+            this.InvoicedBy = args.InvoicedBy ?? this.InvoicedBy;
             this.Status = OrderStatus.Invoiced;
 
             return this;
         }
 
-        protected internal virtual Order Process(OrderPaidArguments @event)
+        protected internal virtual Order Process(OrderPaidArguments args)
         {
-            this.AddPayments(@event.Payments);
+            this.AddPayments(args.Payments);
             this.Status = OrderStatus.Paid;
 
             //no invoice yet?
             return this;
         }
 
-        protected internal virtual Order Process(OrderShippedArguments @event)
+        protected internal virtual Order Process(OrderShippedArguments args)
         {
-            this.ShippedOn = @event.ShippedOn;
-            this.ShippedBy = @event.ShippedBy;
+            this.ShippedOn = args.ShippedOn;
+            this.ShippedBy = args.ShippedBy;
             this.Status = OrderStatus.Shipped;
 
             return this;
         }
 
-        protected internal virtual Order Process(OrderCompletedArguments @event)
+        protected internal virtual Order Process(OrderCompletedArguments args)
         {
-            this.CompletedBy = @event.CompletedBy;
-            this.CompletedOn = @event.CompletedOn;
+            this.CompletedBy = args.CompletedBy;
+            this.CompletedOn = args.CompletedOn;
             this.Status = OrderStatus.Completed;
 
             return this;
         }
 
-        protected internal virtual Order Process(OrderCancelledArguments @event)
+        protected internal virtual Order Process(OrderCancelledArguments args)
         {
-            this.CancelledBy = @event.CancelledBy ?? this.CancelledBy;
-            this.CancelledOn = @event.CancelledOn ?? this.CancelledOn;
-            this.CancellationReason = @event.CancellationReason ?? this.CancellationReason;
+            this.CancelledBy = args.CancelledBy ?? this.CancelledBy;
+            this.CancelledOn = args.CancelledOn ?? this.CancelledOn;
+            this.CancellationReason = args.CancellationReason ?? this.CancellationReason;
             this.Status = OrderStatus.Cancelled;
 
             return this;

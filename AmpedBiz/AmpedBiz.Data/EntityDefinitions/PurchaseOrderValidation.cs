@@ -9,6 +9,9 @@ namespace AmpedBiz.Data.EntityDefinitions
         {
             Define(x => x.Id);
 
+            Define(x => x.PurchaseOrderNumber)
+                .MaxLength(30);
+
             Define(x => x.PaymentType);
 
             Define(x => x.Supplier);

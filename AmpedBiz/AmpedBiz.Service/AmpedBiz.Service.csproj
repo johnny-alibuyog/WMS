@@ -120,6 +120,7 @@
     <Compile Include="ProductCategories\CreateProductCategory.cs" />
     <Compile Include="ProductCategories\GetProductCategory.cs" />
     <Compile Include="ProductCategories\GetProductCategoryList.cs" />
+    <Compile Include="ProductCategories\GetProductCategoryLookup.cs" />
     <Compile Include="ProductCategories\GetProductCategoryPage.cs" />
     <Compile Include="ProductCategories\UpdateProductCategory.cs" />
     <Compile Include="PaymentTypes\CreatePaymentType.cs" />
@@ -132,7 +133,9 @@
     <Compile Include="Products\GetProductInventoryList.cs" />
     <Compile Include="Products\GetProductList.cs" />
     <Compile Include="Products\GetProductLookup.cs" />
+    <Compile Include="Products\GetProductOrderPage.cs" />
     <Compile Include="Products\GetProductPage.cs" />
+    <Compile Include="Products\GetProductPurchasePage.cs" />
     <Compile Include="Products\UpdateProduct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrderReceivableList.cs" />

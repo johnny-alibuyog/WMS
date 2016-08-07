@@ -17,6 +17,8 @@ namespace AmpedBiz.Core.Envents.PurchaseOrders
 
     public class PurchaseOrderNewlyCreatedEvent : PurchaseOrderEvent
     {
+        public virtual string PurchaseOrderNumber { get; protected set; }
+
         public virtual User CreatedBy { get; protected set; }
 
         public virtual DateTime? CreatedOn { get; protected set; }
@@ -35,10 +37,11 @@ namespace AmpedBiz.Core.Envents.PurchaseOrders
 
         public virtual IEnumerable<PurchaseOrderItem> Items { get; protected set; }
 
-        public PurchaseOrderNewlyCreatedEvent(Guid? id = null, User createdBy = null, DateTime? createdOn = null, 
-            DateTime? expectedOn = null, PaymentType paymentType = null, Shipper shipper = null, Money shippingFee = null, 
-            Money tax = null, Supplier supplier = null, IEnumerable<PurchaseOrderItem> purchaseOrderItems = null)
+        public PurchaseOrderNewlyCreatedEvent(string purchaseOrderNumber = null, Guid? id = null, User createdBy = null, 
+            DateTime? createdOn = null, DateTime? expectedOn = null, PaymentType paymentType = null, Shipper shipper = null, 
+            Money shippingFee = null, Money tax = null, Supplier supplier = null, IEnumerable<PurchaseOrderItem> purchaseOrderItems = null)
         {
+            this.PurchaseOrderNumber = purchaseOrderNumber;
             this.CreatedBy = createdBy;
             this.CreatedOn = createdOn;
             this.ExpectedOn = expectedOn;

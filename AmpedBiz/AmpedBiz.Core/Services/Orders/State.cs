@@ -52,68 +52,76 @@ namespace AmpedBiz.Core.Services.Orders
             }
         }
 
-        public virtual void Process(OrderNewlyCreatedArguments @event)
+        public virtual void Process(OrderNewlyCreatedArguments args)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.New))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "creation/modification", this.Target.Status));
 
-            this.Target.Process(@event);
+            this.Target.Process(args);
         }
 
-        public virtual void Process(OrderStagedArguments @event)
+        public virtual void Process(OrderStagedArguments args)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Staged))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "staging", this.Target.Status));
 
-            this.Target.Process(@event);
+            this.Target.Process(args);
         }
 
-        public virtual void Process(OrderRoutedArguments @event)
+        public virtual void Process(OrderRoutedArguments args)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Routed))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "routing", this.Target.Status));
 
-            this.Target.Process(@event);
+            this.Target.Process(args);
         }
 
-        public virtual void Process(OrderInvoicedArguments @event)
+        public virtual void Process(OrderInvoicedArguments args)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Invoiced))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "invoicing", this.Target.Status));
 
-            this.Target.Process(@event);
+            this.Target.Process(args);
         }
 
-        public virtual void Process(OrderPaidArguments @event)
+        public virtual void Process(OrderPaidArguments args)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Paid))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "payment", this.Target.Status));
 
-            this.Target.Process(@event);
+            this.Target.Process(args);
         }
 
-        public virtual void Process(OrderShippedArguments @event)
+        public virtual void Process(OrderShippedArguments args)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Shipped))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "shipping", this.Target.Status));
 
-            this.Target.Process(@event);
+            this.Target.Process(args);
         }
 
-        public virtual void Process(OrderCompletedArguments @event)
+        public virtual void Process(OrderCompletedArguments arguments)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Completed))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "completing", this.Target.Status));
 
-            this.Target.Process(@event);
+            this.Target.Process(arguments);
         }
 
-        public virtual void Process(OrderCancelledArguments @event)
+        public virtual void Process(OrderCancelledArguments arguments)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Cancelled))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "canceling", this.Target.Status));
 
-            this.Target.Process(@event);
+            this.Target.Process(arguments);
+        }
+    }
+
+    public class Default : State
+    {
+        public Default(Order target) : base(target)
+        {
+            this.AllowedTransitions.Add(OrderStatus.New, "Save");
         }
     }
 

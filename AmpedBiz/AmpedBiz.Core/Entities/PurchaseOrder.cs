@@ -21,6 +21,8 @@ namespace AmpedBiz.Core.Entities
 
     public class PurchaseOrder : Entity<Guid, PurchaseOrder>
     {
+        public virtual string PurchaseOrderNumber { get; set; }
+
         public virtual Tenant Tenant { get; set; }
 
         public virtual PaymentType PaymentType { get; set; }
@@ -94,6 +96,7 @@ namespace AmpedBiz.Core.Entities
 
         protected internal virtual PurchaseOrder Process(PurchaseOrderNewlyCreatedEvent @event)
         {
+            this.PurchaseOrderNumber = @event.PurchaseOrderNumber ?? this.PurchaseOrderNumber;
             this.CreatedBy = @event.CreatedBy ?? this.CreatedBy;
             this.CreatedOn = @event.CreatedOn ?? this.CreatedOn;
             this.ExpectedOn = @event.ExpectedOn ?? this.ExpectedOn;

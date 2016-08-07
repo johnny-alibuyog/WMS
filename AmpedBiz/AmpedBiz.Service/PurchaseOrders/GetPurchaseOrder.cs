@@ -14,6 +14,13 @@ namespace AmpedBiz.Service.PurchaseOrders
         public class Request : IRequest<Response>
         {
             public Guid Id { get; set; }
+
+            public Request() { }
+
+            public Request(Guid id)
+            {
+                this.Id = id;
+            }
         }
 
         public class Response : Dto.PurchaseOrder { }
@@ -25,6 +32,14 @@ namespace AmpedBiz.Service.PurchaseOrders
             public override Response Handle(Request message)
             {
                 var response = new Response();
+
+                if (message.Id == Guid.Empty)
+                {
+                    var entity = new PurchaseOrder();
+                    entity.MapTo(response);
+
+                    return response;
+                }
 
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())

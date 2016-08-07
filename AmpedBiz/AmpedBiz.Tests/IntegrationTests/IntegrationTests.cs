@@ -65,7 +65,7 @@ namespace AmpedBiz.Tests.IntegrationTests
     public class IntegrationTests
     {
         private readonly DummyData dummyData = new DummyData();
-        private readonly Random rnd = new Random();
+        private readonly Random random = new Random();
 
         private ISessionFactory sessionFactory;
         private IAuditProvider auditProvider;
@@ -142,67 +142,67 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         private Lookup<string> RandomRoles()
         {
-            var random = this._roles[this.rnd.Next(0, this._roles.Count - 1)];
+            var random = this._roles[this.random.Next(0, this._roles.Count - 1)];
             return new Lookup<string>(random.Id, random.Name);
         }
 
         private Lookup<Guid> RandomUser()
         {
-            var random = this._users[this.rnd.Next(0, this._users.Count - 1)];
+            var random = this._users[this.random.Next(0, this._users.Count - 1)];
             return new Lookup<Guid>(random.Id, random.Name);
         }
 
         private Lookup<string> RandomBranch()
         {
-            var random = this._branches[this.rnd.Next(0, this._branches.Count - 1)];
+            var random = this._branches[this.random.Next(0, this._branches.Count - 1)];
             return new Lookup<string>(random.Id, random.Name);
         }
 
         private Lookup<string> RandomShipper()
         {
-            var random = this._shippers[this.rnd.Next(0, this._shippers.Count - 1)];
+            var random = this._shippers[this.random.Next(0, this._shippers.Count - 1)];
             return new Lookup<string>(random.Id, random.Name);
         }
 
         private Lookup<string> RandomCustomer()
         {
-            var random = this._customers[this.rnd.Next(0, this._customers.Count - 1)];
+            var random = this._customers[this.random.Next(0, this._customers.Count - 1)];
             return new Lookup<string>(random.Id, random.Name);
         }
 
         private Lookup<string> RandomSupplier()
         {
-            var random = this._suppliers[this.rnd.Next(0, this._suppliers.Count - 1)];
+            var random = this._suppliers[this.random.Next(0, this._suppliers.Count - 1)];
             return new Lookup<string>(random.Id, random.Name);
         }
 
         private Lookup<string> RandomCurrency()
         {
-            var random = this._currencies[this.rnd.Next(0, this._currencies.Count - 1)];
+            var random = this._currencies[this.random.Next(0, this._currencies.Count - 1)];
             return new Lookup<string>(random.Id, random.Name);
         }
 
         private Lookup<string> RandomPaymentType()
         {
-            var random = this._paymentTypes[this.rnd.Next(0, this._paymentTypes.Count - 1)];
+            var random = this._paymentTypes[this.random.Next(0, this._paymentTypes.Count - 1)];
             return new Lookup<string>(random.Id, random.Name);
         }
 
         private Lookup<string> RandomPricingScheme()
         {
-            var random = this._pricingSchemes[this.rnd.Next(0, this._pricingSchemes.Count - 1)];
+            var random = this._pricingSchemes[this.random.Next(0, this._pricingSchemes.Count - 1)];
             return new Lookup<string>(random.Id, random.Name);
         }
 
         private Lookup<string> RandomProductCategory()
         {
-            var random = this._productCategories[this.rnd.Next(0, this._productCategories.Count - 1)];
+            var random = this._productCategories[this.random.Next(0, this._productCategories.Count - 1)];
             return new Lookup<string>(random.Id, random.Name);
         }
 
         private Lookup<string> RandomUnitOfMeasure()
         {
-            var random = this._unitOfMeasures[this.rnd.Next(0, this._unitOfMeasures.Count - 1)];
+            var random = this._unitOfMeasures[this.random.Next(0, this._unitOfMeasures.Count - 1)];
             return new Lookup<string>(random.Id, random.Name);
         }
 
@@ -279,7 +279,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             for (var i = 0; i < count; i++)
             {
                 var custData = this.dummyData.GenerateCustomer();
-                custData.PricingSchemeId = this._pricingSchemes[this.rnd.Next(0, this._pricingSchemes.Count - 1)].Id;
+                custData.PricingSchemeId = this._pricingSchemes[this.random.Next(0, this._pricingSchemes.Count - 1)].Id;
 
                 var request = new CreateCustomer.Request()
                 {
@@ -336,20 +336,19 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             for (var i = 0; i < count; i++)
             {
-                var productData = this.dummyData.GenerateProduct();
-                productData.SupplierId = suppliers[rnd.Next(0, suppliers.Count - 1)].Id;
+                var productData = this.dummyData.GenerateProduct(this.RandomProductCategory(), this.RandomSupplier());
 
                 var request = new CreateProduct.Request()
                 {
                     Id = productData.Id,
                     BasePriceAmount = productData.BasePriceAmount,
-                    CategoryId = this._productCategories[this.rnd.Next(0, this._productCategories.Count - 1)].Id,
+                    Category = productData.Category,
                     Description = productData.Description,
                     Discontinued = productData.Discontinued,
                     Image = productData.Image,
                     Name = productData.Name,
                     RetailPriceAmount = productData.RetailPriceAmount,
-                    SupplierId = productData.SupplierId,
+                    Supplier = productData.Supplier,
                     WholesalePriceAmount = productData.WholesalePriceAmount
                 };
 
@@ -404,7 +403,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     TaxAmount = 0M,
                     PaymentType = RandomPaymentType(),
                 };
-                request.Items = this.CreatePurchaseOrderItems(request, this.rnd.Next(20, 90));
+                request.Items = this.CreatePurchaseOrderItems(request, this.random.Next(20, 90));
 
                 var handler = new CreateNewPurchaseOder.Handler(this.sessionFactory).Handle(request);
 
@@ -426,7 +425,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     //TotalAmount = product.RetailPriceAmount + 1m,
                     PurchaseOrderId = request.PurchaseOrderId,
                     Product = new Lookup<string>(product.Id, product.Name),
-                    QuantityValue = this.rnd.Next(1, 100),
+                    QuantityValue = this.random.Next(1, 100),
                     UnitCostAmount = product.RetailPriceAmount + 1m,
                 });
             }
@@ -554,7 +553,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     PaymentType = RandomPaymentType(),
                 };
 
-                request.Items = this.CreateOrderItems(this.rnd.Next(20, 50));
+                request.Items = this.CreateOrderItems(this.random.Next(20, 50));
                 var handler = new CreateNewOrder.Handler(this.sessionFactory).Handle(request);
 
                 orders.Add(handler as Service.Dto.Order);
@@ -588,7 +587,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             comeAsYouAre:
 
-            var selectedProducts = this.SelectRandomProducts(suppliersId[this.rnd.Next(0, suppliersId.Count - 1)], 10).ToList();
+            var selectedProducts = this.SelectRandomProducts(suppliersId[this.random.Next(0, suppliersId.Count - 1)], 10).ToList();
 
             if (selectedProducts.Count < 1)
                 goto comeAsYouAre;
@@ -602,7 +601,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     ExtendedPriceAmount = 0M,
                     Product = new Lookup<string>(product.Id, product.Name),
                     //UnitOfMeasure = new Lookup<string>(product.Inv)
-                    QuantityValue = this.rnd.Next(1, 100),
+                    QuantityValue = this.random.Next(1, 100),
                     UnitPriceAmount = product.RetailPriceAmount
                 });
             }

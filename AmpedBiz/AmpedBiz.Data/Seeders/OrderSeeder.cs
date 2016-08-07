@@ -136,6 +136,7 @@ namespace AmpedBiz.Data.Seeders
                         var order = new Order(Guid.NewGuid());
                         var newlyCreatedEvent = new OrderNewlyCreatedArguments()
                         {
+                            OrderNumber = random.NextDecimal(10000M, 99999M).ToString(),
                             CreatedBy = RotateUser(),
                             CreatedOn = DateTime.Now,
                             OrderedBy = RotateUser(),

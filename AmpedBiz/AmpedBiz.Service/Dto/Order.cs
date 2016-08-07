@@ -20,6 +20,8 @@ namespace AmpedBiz.Service.Dto
     {
         public Guid Id { get; set; }
 
+        public string OrderNumber { get; set; }
+
         public Lookup<string> Branch { get; set; }
 
         public Lookup<string> Customer { get; set; }

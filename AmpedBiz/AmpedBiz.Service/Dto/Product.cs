@@ -1,4 +1,7 @@
-﻿namespace AmpedBiz.Service.Dto
+﻿using AmpedBiz.Common.CustomTypes;
+using System;
+
+namespace AmpedBiz.Service.Dto
 {
     public class Product
     {
@@ -8,9 +11,9 @@
 
         public string Description { get; set; }
 
-        public string SupplierId { get; set; }
+        public Lookup<string> Supplier { get; set; }
 
-        public string CategoryId { get; set; }
+        public Lookup<string> Category { get; set; }
 
         public string Image { get; set; }
 
@@ -37,11 +40,11 @@
 
         public string Image { get; set; }
 
-        public string BasePrice { get; set; }
+        public decimal BasePriceAmount { get; set; }
 
-        public string RetailPrice { get; set; }
+        public decimal RetailPriceAmount { get; set; }
 
-        public string WholesalePrice { get; set; }
+        public decimal WholesalePriceAmount { get; set; }
 
         public bool Discontinued { get; set; }
     }
@@ -65,5 +68,39 @@
         public decimal? WholeSalePriceAmount { get; set; }
 
         public decimal? DiscountAmount { get; set; }
+    }
+
+    public class ProductOrderPageItem
+    {
+        public Guid Id { get; set; }
+
+        public string OrderNumber { get; set; }
+
+        public DateTime? CreatedOn { get; set; }
+
+        public string Status { get; set; }
+
+        public string CustomerName { get; set; }
+
+        public decimal QuantityValue { get; set; }
+    }
+
+    public class ProductPurchasePageItem
+    {
+        public Guid Id { get; set; }
+
+        public string PurchaseOrderNumber { get; set; }
+
+        public DateTime? CreatedOn { get; set; }
+
+        public string Status { get; set; }
+
+        public string SupplierName { get; set; }
+
+        public decimal? UnitCostAmount { get; set; }
+
+        public decimal? QuantityValue { get; set; }
+
+        public decimal? ReceivedValue { get; set; }
     }
 }

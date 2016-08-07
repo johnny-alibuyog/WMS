@@ -13,6 +13,8 @@ namespace AmpedBiz.Core.Arguments.Orders
 
     public class OrderNewlyCreatedArguments : OrderArguments
     {
+        public virtual string OrderNumber { get; set; }
+
         public virtual User CreatedBy { get; set; }
 
         public virtual DateTime? CreatedOn { get; set; }

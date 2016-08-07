@@ -35,6 +35,13 @@ namespace AmpedBiz.Service.Host.Controllers
             return _mediator.Send(request ?? new GetProductCategoryPage.Request());
         }
 
+        [HttpGet()]
+        [Route("~/product-category-lookups")]
+        public GetProductCategoryLookup.Response Process([FromBody]GetProductCategoryLookup.Request request)
+        {
+            return _mediator.Send(request ?? new GetProductCategoryLookup.Request());
+        }
+
         [HttpPost()]
         [Route("")]
         public CreateProductCategory.Response Process([FromBody]CreateProductCategory.Request request)

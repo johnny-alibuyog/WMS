@@ -41,7 +41,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
                 case PurchaseOrderStatus.Cancelled:
                     return new CancelledState(target);
                 default:
-                    return new NewState(target);
+                    return new Default(target);
             }
         }
 
@@ -99,6 +99,14 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
                 throw new InvalidOperationException(string.Format("You cannot perform cancellation of purchase order on {0} stage.", this.Target.Status));
 
             return this.Target.Process(@event);
+        }
+    }
+
+    public class Default : State
+    {
+        public Default(PurchaseOrder target) : base(target)
+        {
+            this.AllowedTransitions.Add(PurchaseOrderStatus.New, "Save");
         }
     }
 

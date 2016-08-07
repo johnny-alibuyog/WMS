@@ -10,6 +10,8 @@ namespace AmpedBiz.Data.EntityDefinitions
             Id(x => x.Id)
                 .GeneratedBy.GuidComb();
 
+            Map(x => x.OrderNumber);
+
             References(x => x.Branch);
 
             References(x => x.Customer);

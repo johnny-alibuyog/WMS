@@ -21,8 +21,14 @@ namespace AmpedBiz.Service.Orders
 
         public class Handler : RequestHandlerBase<Request, Response>
         {
-            public Handler(ISessionFactory sessionFactory) : base(sessionFactory)
+            public Handler(ISessionFactory sessionFactory) : base(sessionFactory) { }
+
+            private void Hydrate(Response response)
             {
+                var handler = new GetOrder.Handler(this._sessionFactory);
+                var hydrated = handler.Handle(new GetOrder.Request(response.Id));
+
+                hydrated.MapTo(response);
             }
 
             public override Response Handle(Request message)
@@ -41,6 +47,7 @@ namespace AmpedBiz.Service.Orders
 
                     var newlyCreatedArguments = new OrderNewlyCreatedArguments()
                     {
+                        OrderNumber = message.OrderNumber,
                         CreatedBy = (!message?.CreatedBy?.Id.IsNullOrDefault() ?? false)
                             ? session.Load<User>(message.CreatedBy.Id) : null,
                         CreatedOn = message?.CreatedOn ?? DateTime.Now,
@@ -77,8 +84,11 @@ namespace AmpedBiz.Service.Orders
                     session.Save(entity);
                     transaction.Commit();
 
-                    entity.MapTo(response);
+                    response.Id = entity.Id;
+                    //entity.MapTo(response);
                 }
+
+                Hydrate(response);
 
                 return response;
             }

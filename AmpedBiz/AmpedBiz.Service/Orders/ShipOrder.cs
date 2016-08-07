@@ -18,6 +18,14 @@ namespace AmpedBiz.Service.Orders
         {
             public Handler(ISessionFactory sessionFactory) : base(sessionFactory) { }
 
+            private void Hydrate(Response response)
+            {
+                var handler = new GetOrder.Handler(this._sessionFactory);
+                var hydrated = handler.Handle(new GetOrder.Request(response.Id));
+
+                hydrated.MapTo(response);
+            }
+
             public override Response Handle(Request message)
             {
                 var response = new Response();
@@ -42,9 +50,11 @@ namespace AmpedBiz.Service.Orders
                     session.Save(entity);
                     transaction.Commit();
 
-                    //todo: not working when mapped to invoice
-                    entity.MapTo(response);
+                    response.Id = entity.Id;
+                    //entity.MapTo(response);
                 }
+
+                Hydrate(response);
 
                 return response;
             }

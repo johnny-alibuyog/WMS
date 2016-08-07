@@ -113,9 +113,9 @@ namespace AmpedBiz.Service.Products
                             SupplierName = x.Supplier.Name,
                             CategoryName = x.Category.Name,
                             Image = x.Image,
-                            BasePrice = x.BasePrice.ToStringWithSymbol(),
-                            RetailPrice = x.RetailPrice.ToStringWithSymbol(),
-                            WholesalePrice = x.WholeSalePrice.ToStringWithSymbol(),
+                            BasePriceAmount = x.BasePrice.Amount,
+                            RetailPriceAmount = x.RetailPrice.Amount,
+                            WholesalePriceAmount = x.WholeSalePrice.Amount,
                             Discontinued = x.Discontinued
                         })
                         .Skip(message.Pager.SkipCount)
