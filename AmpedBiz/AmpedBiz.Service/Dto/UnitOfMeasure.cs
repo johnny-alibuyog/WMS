@@ -14,7 +14,7 @@ namespace AmpedBiz.Service.Dto
 
         public virtual bool IsBaseUnit { get; set; }
 
-        public virtual decimal? ConvertionFactor { get; set; }
+        public virtual decimal? ConversionFactor { get; set; }
 
         public virtual string UnitOfMeasureClassId { get; set; }
     }
@@ -27,7 +27,7 @@ namespace AmpedBiz.Service.Dto
 
         public virtual bool IsBaseUnit { get; set; }
 
-        public virtual decimal? ConvertionFactor { get; set; }
+        public virtual decimal? ConversionFactor { get; set; }
 
         public virtual string UnitOfMeasureClassName { get; set; }
     }

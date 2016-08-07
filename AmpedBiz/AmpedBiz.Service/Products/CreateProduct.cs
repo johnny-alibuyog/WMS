@@ -31,11 +31,13 @@ namespace AmpedBiz.Service.Products
 
                     var currency = session.Load<Currency>(Currency.PHP.Id); // this should be taken from the tenant
                     var entity = message.MapTo(new Product(message.Id));
-                    entity.BasePrice = new Money(message.BasePriceAmount, currency);
-                    entity.RetailPrice = new Money(message.RetailPriceAmount, currency);
-                    entity.WholeSalePrice = new Money(message.WholesalePriceAmount, currency);
+
                     entity.Supplier = session.Load<Supplier>(message.Supplier.Id);
                     entity.Category = session.Load<ProductCategory>(message.Category.Id);
+
+                    entity.Inventory.BasePrice = new Money(message.Inventory.BasePriceAmount ?? 0M, currency);
+                    entity.Inventory.RetailPrice = new Money(message.Inventory.RetailPriceAmount ?? 0M, currency);
+                    entity.Inventory.WholeSalePrice = new Money(message.Inventory.RetailPriceAmount ?? 0M, currency);
 
                     session.Save(entity);
                     transaction.Commit();

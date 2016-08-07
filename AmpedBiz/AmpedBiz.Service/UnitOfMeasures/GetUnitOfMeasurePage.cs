@@ -64,11 +64,11 @@ namespace AmpedBiz.Service.UnitOfMeasures
                             : query.OrderByDescending(x => x.IsBaseUnit);
                     });
 
-                    message.Sorter.Compose("convertionFactor", direction =>
+                    message.Sorter.Compose("conversionFactor", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.ConvertionFactor)
-                            : query.OrderByDescending(x => x.ConvertionFactor);
+                            ? query.OrderBy(x => x.ConversionFactor)
+                            : query.OrderByDescending(x => x.ConversionFactor);
                     });
 
                     message.Sorter.Compose("unitOfMeasureClassName", direction =>
@@ -84,7 +84,7 @@ namespace AmpedBiz.Service.UnitOfMeasures
                             Id = x.Id,
                             Name = x.Name,
                             IsBaseUnit = x.IsBaseUnit,
-                            ConvertionFactor = x.ConvertionFactor,
+                            ConversionFactor = x.ConversionFactor,
                             UnitOfMeasureClassName = x.UnitOfMeasureClass.Name
                         })
                         .Skip(message.Pager.SkipCount)

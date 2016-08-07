@@ -5,6 +5,7 @@ using MediatR;
 using NHibernate;
 using NHibernate.Linq;
 using System.Linq;
+using NHibernate.Transform;
 
 namespace AmpedBiz.Service.Products
 {
@@ -28,12 +29,19 @@ namespace AmpedBiz.Service.Products
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.Query<Product>()
+                    var query = session.QueryOver<Product>()
                         .Where(x => x.Id == message.Id)
-                        .Fetch(x => x.Supplier)
-                        .Fetch(x => x.Category)
-                        .FirstOrDefault();
+                        .Fetch(x => x.Supplier).Eager
+                        .Fetch(x => x.Category).Eager
+                        .Fetch(x => x.Inventory).Eager
+                        .Fetch(x => x.Inventory.UnitOfMeasure).Eager
+                        .Fetch(x => x.Inventory.UnitOfMeasureBase).Eager
+                        .Fetch(x => x.Inventory.Stocks).Eager
+                        .Fetch(x => x.Inventory.Stocks.First().ModifiedBy).Eager
+                        .TransformUsing(Transformers.DistinctRootEntity)
+                        .FutureValue();
 
+                    var entity = query.Value;
                     if (entity == null)
                         throw new BusinessException($"Product with id {message.Id} does not exists.");
 

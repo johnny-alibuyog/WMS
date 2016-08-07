@@ -30,6 +30,7 @@ namespace AmpedBiz.Service.Dto.Mappers
         private void RegisterProductsMap()
         {
             ExpressMapper.Mapper.Register<Entity.Product, Dto.Product>().Flatten();
+            ExpressMapper.Mapper.Register<Entity.Inventory, Dto.Inventory>().Flatten();
             ExpressMapper.Mapper.Register<Entity.Product, GetProduct.Response>().Flatten();
         }
 

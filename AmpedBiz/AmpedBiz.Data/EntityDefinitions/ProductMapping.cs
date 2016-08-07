@@ -22,17 +22,9 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             References(x => x.Supplier);
 
-            Component(x => x.BasePrice, 
-                MoneyMapping.Map("BasePrice_", nameof(Product)));
-
-            Component(x => x.RetailPrice, 
-                MoneyMapping.Map("RetailPrice_", nameof(Product)));
-
-            Component(x => x.WholeSalePrice, 
-                MoneyMapping.Map("WholeSalePrice_", nameof(Product)));
-
             HasOne(x => x.Inventory)
-                .Cascade.All();
+                .Cascade.All()
+                .Fetch.Join();
         }
     }
 }

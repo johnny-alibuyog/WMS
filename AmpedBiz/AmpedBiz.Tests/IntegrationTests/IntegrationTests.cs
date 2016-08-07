@@ -426,7 +426,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     PurchaseOrderId = request.PurchaseOrderId,
                     Product = new Lookup<string>(product.Id, product.Name),
                     QuantityValue = this.random.Next(1, 100),
-                    UnitCostAmount = product.RetailPriceAmount + 1m,
+                    UnitCostAmount = product.RetailPriceAmount ?? 0M + 1m,
                 });
             }
 
@@ -602,7 +602,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     Product = new Lookup<string>(product.Id, product.Name),
                     //UnitOfMeasure = new Lookup<string>(product.Inv)
                     QuantityValue = this.random.Next(1, 100),
-                    UnitPriceAmount = product.RetailPriceAmount
+                    UnitPriceAmount = product.RetailPriceAmount ?? 0M
                 });
             }
 

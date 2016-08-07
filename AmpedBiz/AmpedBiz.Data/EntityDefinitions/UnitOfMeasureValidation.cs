@@ -15,7 +15,7 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.IsBaseUnit);
 
-            Define(x => x.ConvertionFactor);
+            Define(x => x.ConversionFactor);
 
             Define(x => x.UnitOfMeasureClass);
         }

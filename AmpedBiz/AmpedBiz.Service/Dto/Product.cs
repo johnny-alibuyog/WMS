@@ -15,15 +15,11 @@ namespace AmpedBiz.Service.Dto
 
         public Lookup<string> Category { get; set; }
 
+        public bool Discontinued { get; set; }
+
         public string Image { get; set; }
 
-        public decimal BasePriceAmount { get; set; }
-
-        public decimal RetailPriceAmount { get; set; }
-
-        public decimal WholesalePriceAmount { get; set; }
-
-        public bool Discontinued { get; set; }
+        public Inventory Inventory { get; set; }
     }
 
     public class ProductPageItem
@@ -40,11 +36,11 @@ namespace AmpedBiz.Service.Dto
 
         public string Image { get; set; }
 
-        public decimal BasePriceAmount { get; set; }
+        public decimal? BasePriceAmount { get; set; }
 
-        public decimal RetailPriceAmount { get; set; }
+        public decimal? RetailPriceAmount { get; set; }
 
-        public decimal WholesalePriceAmount { get; set; }
+        public decimal? WholesalePriceAmount { get; set; }
 
         public bool Discontinued { get; set; }
     }

@@ -2,15 +2,21 @@
 
 namespace AmpedBiz.Service.Dto
 {
-    public class GoodStockInventory
+    public class Inventory
     {
-        public virtual string ProductId { get; set; }
+        public virtual string InventoryId { get; set; }
 
         public virtual Lookup<string> UnitOfMeasure { get; set; }
 
         public virtual Lookup<string> UnitOfMeasureBase { get; set; }
 
-        public virtual decimal? ConvertionFactor { get; set; }
+        public virtual decimal? ConversionFactor { get; set; }
+
+        public decimal? BasePriceAmount { get; set; }
+
+        public decimal? RetailPriceAmount { get; set; }
+
+        public decimal? WholesalePriceAmount { get; set; }
 
         public virtual decimal? ReorderLevelValue { get; set; }
 

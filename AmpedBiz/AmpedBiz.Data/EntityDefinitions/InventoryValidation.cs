@@ -16,7 +16,13 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.UnitOfMeasureBase);
 
-            Define(x => x.ConvertionFactor);
+            Define(x => x.ConversionFactor);
+
+            Define(x => x.BasePrice);
+
+            Define(x => x.RetailPrice);
+
+            Define(x => x.WholeSalePrice);
 
             Define(x => x.Received);
 

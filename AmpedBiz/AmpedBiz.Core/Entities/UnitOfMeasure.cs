@@ -8,7 +8,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual bool IsBaseUnit { get; set; }
 
-        public virtual decimal? ConvertionFactor { get; set; }
+        public virtual decimal? ConversionFactor { get; set; }
 
         public virtual UnitOfMeasureClass UnitOfMeasureClass { get; set; }
 
@@ -16,11 +16,11 @@ namespace AmpedBiz.Core.Entities
 
         public UnitOfMeasure() : base(default(string)) { }
 
-        public UnitOfMeasure(string id, string name = null, bool isBaseUnit = false, decimal? convertionFactor = null) : base(id)
+        public UnitOfMeasure(string id, string name = null, bool isBaseUnit = false, decimal? conversionFactor = null) : base(id)
         {
             this.Name = name;
             this.IsBaseUnit = isBaseUnit;
-            this.ConvertionFactor = convertionFactor;
+            this.ConversionFactor = conversionFactor;
         }
 
         public override string ToString()

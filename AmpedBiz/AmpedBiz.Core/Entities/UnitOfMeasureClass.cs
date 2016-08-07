@@ -61,7 +61,7 @@ namespace AmpedBiz.Core.Entities
                 new UnitOfMeasure("ea", "each", true, 1M),
                 new UnitOfMeasure("dz", "dozen", false, 12M),
                 new UnitOfMeasure("cs", "case", false),
-                new UnitOfMeasure("sk", "sock", false),
+                new UnitOfMeasure("sk", "sack", false),
             });
 
         public static UnitOfMeasureClass Weight = new UnitOfMeasureClass("wt", "Weight")

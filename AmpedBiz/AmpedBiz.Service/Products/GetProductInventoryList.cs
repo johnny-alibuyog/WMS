@@ -41,9 +41,9 @@ namespace AmpedBiz.Service.Products
                             UnitOfMeasure = x.Inventory.UnitOfMeasure.Name,
                             TargetValue = x.Inventory.TargetLevel.Value,
                             AvailableValue = x.Inventory.Available.Value,
-                            BasePriceAmount = x.BasePrice.Amount,
-                            RetailPriceAmount = x.RetailPrice.Amount,
-                            WholeSalePriceAmount = x.WholeSalePrice.Amount,
+                            BasePriceAmount = x.Inventory.BasePrice.Amount,
+                            RetailPriceAmount = x.Inventory.RetailPrice.Amount,
+                            WholeSalePriceAmount = x.Inventory.WholeSalePrice.Amount,
                             DiscountAmount = 0M
                         })
                         .ToList();

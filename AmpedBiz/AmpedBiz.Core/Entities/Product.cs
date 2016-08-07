@@ -12,12 +12,6 @@
 
         public virtual string Image { get; set; }
 
-        public virtual Money BasePrice { get; set; }
-
-        public virtual Money RetailPrice { get; set; }
-
-        public virtual Money WholeSalePrice { get; set; }
-
         public virtual bool Discontinued { get; set; }
 
         public virtual Inventory Inventory { get; set; }

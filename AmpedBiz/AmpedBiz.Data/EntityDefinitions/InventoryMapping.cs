@@ -17,7 +17,16 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             References(x => x.UnitOfMeasureBase);
 
-            Map(x => x.ConvertionFactor);
+            Map(x => x.ConversionFactor);
+
+            Component(x => x.BasePrice,
+                MoneyMapping.Map("BasePrice_", nameof(Product)));
+
+            Component(x => x.RetailPrice,
+                MoneyMapping.Map("RetailPrice_", nameof(Product)));
+
+            Component(x => x.WholeSalePrice,
+                MoneyMapping.Map("WholeSalePrice_", nameof(Product)));
 
             Component(x => x.Received,
                 MeasureMapping.Map("Received_", nameof(Inventory)));
@@ -72,54 +81,4 @@ namespace AmpedBiz.Data.EntityDefinitions
                 .AsBag();
         }
     }
-
-    //public class BadStockInventoryMapping : ClassMap<BadStockInventory>
-    //{
-    //    public BadStockInventoryMapping()
-    //    {
-    //        Id(x => x.Id)
-    //            .GeneratedBy.Foreign("Product");
-
-    //        References(x => x.UnitOfMeasure);
-
-    //        References(x => x.UnitOfMeasureBase);
-
-    //        Map(x => x.ConvertionFactor);
-
-    //        Component(x => x.OnHand, MeasureMapping.Map("OnHand_", nameof(BadStockInventory)));
-
-    //        HasOne(x => x.Product).Constrained();
-
-    //        //HasMany(x => x.Shrinkages)
-    //        //    .Cascade.AllDeleteOrphan()
-    //        //    .Not.KeyNullable()
-    //        //    .Not.KeyUpdate()
-    //        //    .Inverse()
-    //        //    .AsBag();
-    //    }
-    //}
-
-    //public class GoodStockInventoryReceivedMapping : ClassMap<GoodStockInventoryReceived>
-    //{
-    //    public GoodStockInventoryReceivedMapping()
-    //    {
-    //        Id(x => x.Id)
-    //            .GeneratedBy
-    //            .GuidComb();
-
-    //        Map(x => x.ExpiryDate);
-
-    //        Map(x => x.ReceivedDate);
-    //    }
-    //}
-
-    //public class BadStockInventoryReceivedMapping : ClassMap<BadStockInventoryReceived>
-    //{
-    //    public BadStockInventoryReceivedMapping()
-    //    {
-    //        Id(x => x.Id)
-    //            .GeneratedBy
-    //            .GuidComb();
-    //    }
-    //}
 }

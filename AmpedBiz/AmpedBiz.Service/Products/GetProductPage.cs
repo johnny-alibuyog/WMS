@@ -86,22 +86,22 @@ namespace AmpedBiz.Service.Products
                     message.Sorter.Compose("basePrice", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.BasePrice.Amount)
-                            : query.OrderByDescending(x => x.BasePrice.Amount);
+                            ? query.OrderBy(x => x.Inventory.BasePrice.Amount)
+                            : query.OrderByDescending(x => x.Inventory.BasePrice.Amount);
                     });
 
                     message.Sorter.Compose("retailPrice", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.RetailPrice.Amount)
-                            : query.OrderByDescending(x => x.RetailPrice.Amount);
+                            ? query.OrderBy(x => x.Inventory.RetailPrice.Amount)
+                            : query.OrderByDescending(x => x.Inventory.RetailPrice.Amount);
                     });
 
                     message.Sorter.Compose("wholeSalePrice", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.WholeSalePrice.Amount)
-                            : query.OrderByDescending(x => x.WholeSalePrice.Amount);
+                            ? query.OrderBy(x => x.Inventory.WholeSalePrice.Amount)
+                            : query.OrderByDescending(x => x.Inventory.WholeSalePrice.Amount);
                     });
 
                     var itemsFuture = query
@@ -113,9 +113,9 @@ namespace AmpedBiz.Service.Products
                             SupplierName = x.Supplier.Name,
                             CategoryName = x.Category.Name,
                             Image = x.Image,
-                            BasePriceAmount = x.BasePrice.Amount,
-                            RetailPriceAmount = x.RetailPrice.Amount,
-                            WholesalePriceAmount = x.WholeSalePrice.Amount,
+                            BasePriceAmount = x.Inventory.BasePrice.Amount,
+                            RetailPriceAmount = x.Inventory.RetailPrice.Amount,
+                            WholesalePriceAmount = x.Inventory.WholeSalePrice.Amount,
                             Discontinued = x.Discontinued
                         })
                         .Skip(message.Pager.SkipCount)
