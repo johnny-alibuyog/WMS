@@ -36,10 +36,6 @@ export interface ProductInventory {
   discountAmount?: number;
 }
 
-export interface ProductInventory {
-
-}
-
 export interface ProductPurchasePageItem {
   id?: string;
   purchaseOrderNumber?: string;

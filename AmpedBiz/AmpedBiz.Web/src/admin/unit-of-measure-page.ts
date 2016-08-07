@@ -33,7 +33,7 @@ export class UnitOfMeasurePage {
     this.sorter["code"] = SortDirection.None;
     this.sorter["name"] = SortDirection.None;
     this.sorter["isBaseUnit"] = SortDirection.None;
-    this.sorter["convertionFactor"] = SortDirection.None;
+    this.sorter["conversionFactor"] = SortDirection.None;
     this.sorter["unitOfMeasureClassName"] = SortDirection.Ascending;
     this.sorter.onSort = () => this.getPage();
 

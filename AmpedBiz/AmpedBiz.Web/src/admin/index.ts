@@ -36,13 +36,6 @@ export class Index {
         title: 'Product Categories'
       },
       {
-        route: ['product-page'],
-        name: 'product-page',
-        moduleId: '../products/product-page',
-        nav: true,
-        title: 'Products'
-      },
-      {
         route: ['supplier-page'],
         name: 'supplier-page',
         moduleId: './supplier-page',

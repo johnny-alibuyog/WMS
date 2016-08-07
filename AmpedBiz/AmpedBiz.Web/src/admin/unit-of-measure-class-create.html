@@ -40,7 +40,7 @@
                     <th class="col-sm-2">Code</th>
                     <th class="col-sm-2">Name</th>
                     <th class="col-sm-2">Base</th>
-                    <th class="col-sm-2">Convertion</th>
+                    <th class="col-sm-2">Conversion</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -58,13 +58,13 @@
                     <td if.bind="$parent.selectedUnit !== item">${item.id}</td>
                     <td if.bind="$parent.selectedUnit !== item">${item.name}</td>
                     <td if.bind="$parent.selectedUnit !== item">${item.isBaseUnit}</td>
-                    <td if.bind="$parent.selectedUnit !== item">${item.convertionFactor}</td>
+                    <td if.bind="$parent.selectedUnit !== item">${item.conversionFactor}</td>
 
                     <!-- edit mode -->
                     <td if.bind="$parent.selectedUnit === item"><input type="text" value.bind="item.id" /></td>
                     <td if.bind="$parent.selectedUnit === item"><input type="text" value.bind="item.name" /></td>
                     <td if.bind="$parent.selectedUnit === item"><input type="checkbox" checked.bind="item.isBaseUnit" /></td>
-                    <td if.bind="$parent.selectedUnit === item"><input class="text-right" type="number" value.bind="item.convertionFactor" /></td>
+                    <td if.bind="$parent.selectedUnit === item"><input class="text-right" type="number" value.bind="item.conversionFactor" /></td>
                   </tr>
                 </tbody>
               </table>

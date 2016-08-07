@@ -50,8 +50,8 @@
               <th class="col-md-2" click.delegate="sorter.doSort('isBaseUnit')">
                 <i class="fa fa-fw fa-${sorter.class(sorter['isBaseUnit'])}"></i>IsBase
               </th>
-              <th class="col-md-2 text-right" click.delegate="sorter.doSort('convertionFactor')">
-                <i class="fa fa-fw fa-${sorter.class(sorter['convertionFactor'])}"></i>Convertion
+              <th class="col-md-2 text-right" click.delegate="sorter.doSort('conversionFactor')">
+                <i class="fa fa-fw fa-${sorter.class(sorter['conversionFactor'])}"></i>Conversion
               </th>
             </tr>
           </thead>
@@ -69,7 +69,7 @@
               <td>${item.unitOfMeasureClassName}</td>
               <td>${item.name}</td>
               <td>${item.isBaseUnit}</td>
-              <td class="text-right">${item.convertionFactor}</td>
+              <td class="text-right">${item.conversionFactor}</td>
             </tr>
           </tbody>
         </table>

@@ -1,5 +1,6 @@
 <template>
   <require from="common/controls/pager"></require>
+  <require from="products/product-inventory"></require>
   <require from="products/product-order-page"></require>
   <require from="products/product-purchase-page"></require>
 
@@ -14,7 +15,7 @@
 
           <!-- heading label -->
           <h4 class="panel-title row-fluid">
-            <span6>&nbsp ${header} &nbsp</span6>
+            <span>&nbsp ${header} &nbsp</span>
 
             <!-- transition buttons -->
             <button type="button" class="btn btn-default" click.trigger="save()">
@@ -60,6 +61,11 @@
                   </div>
                 </div>
 
+              </div>
+
+              <!-- right side -->
+              <div class="col-lg-6">
+
                 <div class="form-group">
                   <label class="control-label col-sm-4">Category:</label>
                   <div class="col-sm-8">
@@ -77,36 +83,6 @@
                       <option>Select Supplier</option>
                       <option repeat.for="supplier of suppliers" model.bind="supplier.id">${supplier.name}</option>
                     </select>
-                  </div>
-                </div>
-
-
-              </div>
-
-              <!-- right side -->
-              <div class="col-lg-6">
-
-                <div class="form-group">
-                  <label class="control-label col-sm-4">Base:</label>
-                  <div class="col-sm-8">
-                    <input type="number" class="form-control text-right" placeholder="Enter Base Price" value.bind="product.basePriceAmount"
-                    />
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label class="control-label col-sm-4">Retail:</label>
-                  <div class="col-sm-8">
-                    <input type="number" class="form-control text-right" placeholder="Enter Retail Price" value.bind="product.retailPriceAmount"
-                    />
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label class="control-label col-sm-4">Wholesale:</label>
-                  <div class="col-sm-8">
-                    <input type="number" class="form-control text-right" placeholder="Enter Wholesale Price" value.bind="product.wholesalePriceAmount"
-                    />
                   </div>
                 </div>
 
@@ -136,7 +112,9 @@
                   <!-- inventory -->
                   <div id="inventoryTab" class="tab-pane fade in active">
                     <br />
-                    <h1>Inventory</h1>
+                    
+                    <product-inventory inventory.bind="inventory">
+                    </product-inventory>
                   </div>
 
                   <!-- order history -->
