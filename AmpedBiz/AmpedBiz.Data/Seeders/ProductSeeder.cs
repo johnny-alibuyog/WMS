@@ -112,16 +112,18 @@ namespace AmpedBiz.Data.Seeders
                         prices.BasePrice = new Money(random.NextDecimal(1.00M, 20000.00M));
                         prices.RetailPrice = new Money(random.NextDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.BasePrice.Amount + 5000M));
                         prices.WholeSalePrice = new Money(random.NextDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.RetailPrice.Amount));
+                        prices.BadStockPrice = new Money(prices.BasePrice.Amount * 0.10M);
 
+                        item.Category = RotateCategory();
+                        item.Supplier = RotateSupplier();
+                        item.Discontinued = RotateDiscontinued();
                         item.Inventory.UnitOfMeasure = UnitOfMeasureClass.Quantity.Units.RandomElement();
                         item.Inventory.UnitOfMeasureBase = RotateUnitOfMeasure();
                         item.Inventory.ConversionFactor = random.Next(1, 24);
                         item.Inventory.BasePrice = prices.BasePrice;
                         item.Inventory.RetailPrice = prices.RetailPrice;
                         item.Inventory.WholeSalePrice = prices.WholeSalePrice;
-                        item.Category = RotateCategory();
-                        item.Supplier = RotateSupplier();
-                        item.Discontinued = RotateDiscontinued();
+                        item.Inventory.BadStockPrice = prices.BadStockPrice;
 
                         item.Inventory.TargetLevel = new Measure(random.NextDecimal(150M, 300M), item.Inventory.UnitOfMeasure);
                         item.Inventory.ReorderLevel = item.Inventory.TargetLevel - new Measure(random.NextDecimal(50M, 100M), item.Inventory.UnitOfMeasure);

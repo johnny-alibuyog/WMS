@@ -5,9 +5,9 @@ namespace AmpedBiz.Core.Entities
 {
     public class Inventory : Entity<string, Inventory>
     {
-        //public virtual Tenant Tenant { get; set; }
+        //public virtual Tenant Tenant { get; protected set; }
 
-        public virtual Product Product { get; set; }
+        public virtual Product Product { get; protected set; }
 
         public virtual UnitOfMeasure UnitOfMeasure { get; set; }
 
@@ -21,39 +21,50 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Money WholeSalePrice { get; set; }
 
-        public virtual Measure Received { get; set; }
+        public virtual Money BadStockPrice { get; set; }
 
-        public virtual Measure OnOrder { get; set; }
+        public virtual Measure BadStock { get; protected set; }
 
-        public virtual Measure OnHand { get; set; } // The number of items that you currently have in stock.
+        public virtual Measure Received { get; protected set; }
 
-        public virtual Measure Allocated { get; set; } // The number of items that have been ordered by customers, but not yet shipped.
+        public virtual Measure OnOrder { get; protected set; }
 
-        public virtual Measure Shipped { get; set; }
+        public virtual Measure OnHand { get; protected set; } // The number of items that you currently have in stock.
 
-        public virtual Measure BackOrdered { get; set; }
+        public virtual Measure Allocated { get; protected set; } // The number of items that have been ordered by customers, but not yet shipped.
 
-        public virtual Measure Available { get; set; } // this.OnHand - this.Allocated
+        public virtual Measure Shipped { get; protected set; }
 
-        public virtual Measure InitialLevel { get; set; }
+        public virtual Measure BackOrdered { get; protected set; }
 
-        public virtual Measure Shrinkage { get; set; } // This is the number of items that have been lost due to damage, spoilage, loss, and so on.
+        public virtual Measure Available { get; protected set; } // this.OnHand - this.Allocated
 
-        public virtual Measure CurrentLevel { get; set; } // this.Available + this.OnOrder - this.BackOrdered
+        public virtual Measure InitialLevel { get; protected set; }
+
+        public virtual Measure Shrinkage { get; protected set; } // This is the number of items that have been lost due to damage, spoilage, loss, and so on.
+
+        public virtual Measure CurrentLevel { get; protected set; } // this.Available + this.OnOrder - this.BackOrdered
 
         public virtual Measure TargetLevel { get; set; } // The number of items that you want to have on hand to accommodate the predicted level of orders.
 
-        public virtual Measure BelowTargetLevel { get; set; } // this.TargetLevel - this.CurrentLevel // The current number of items at which you are below your target level. 
+        public virtual Measure BelowTargetLevel { get; protected set; } // this.TargetLevel - this.CurrentLevel // The current number of items at which you are below your target level. 
 
         public virtual Measure ReorderLevel { get; set; }
 
-        public virtual Measure ReorderQuantity { get; set; }
+        public virtual Measure ReorderQuantity { get; protected set; }
 
         public virtual Measure MinimumReorderQuantity { get; set; }
 
-        public virtual IEnumerable<Stock> Stocks { get; set; } = new Collection<Stock>();
+        public virtual IEnumerable<Stock> Stocks { get; protected set; } = new Collection<Stock>();
 
-        public virtual void Receive(Measure quantity)
+        public virtual void Order(Measure quantity) // purchase order
+        {
+            this.OnOrder += quantity;
+
+            this.Compute();
+        }
+
+        public virtual void Receive(Measure quantity) // purchase order received
         {
             this.OnOrder -= quantity;
             this.OnHand += quantity;
@@ -65,16 +76,6 @@ namespace AmpedBiz.Core.Entities
         public virtual void BackOrder(Measure quantity)
         {
             this.BackOrdered += quantity;
-
-            this.Compute();
-        }
-
-        public virtual void ReceiveBackOrder(Measure quantity)
-        {
-            this.OnOrder -= quantity;
-            this.BackOrdered -= quantity;
-            this.OnHand += quantity;
-            this.Received += quantity;
 
             this.Compute();
         }

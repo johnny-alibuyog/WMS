@@ -6,11 +6,11 @@ namespace AmpedBiz.Service.Dto
 {
     public enum OrderStatus
     {
-        New = 1, //active
-        Staged = 2,
-        Routed = 3,
-        Invoiced = 4,
-        Paid = 5,
+        New = 1,
+        Invoiced = 2,
+        Paid = 3,
+        Staged = 4,
+        Routed = 5,
         Shipped = 6,
         Completed = 7,
         Cancelled = 8

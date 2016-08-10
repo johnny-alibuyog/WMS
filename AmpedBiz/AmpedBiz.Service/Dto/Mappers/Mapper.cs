@@ -4,6 +4,7 @@ using AmpedBiz.Service.Orders;
 using AmpedBiz.Service.Products;
 using AmpedBiz.Service.PurchaseOrders;
 using AmpedBiz.Service.UnitOfMeasureClasses;
+using AmpedBiz.Service.Users;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace AmpedBiz.Service.Dto.Mappers
     {
         public void Initialze()
         {
+            RegisterUserMap();
             RegisterCustomersMap();
             RegisterProductsMap();
             RegisterUnitOfMeasuresMap();
@@ -32,6 +34,11 @@ namespace AmpedBiz.Service.Dto.Mappers
             ExpressMapper.Mapper.Register<Entity.Product, Dto.Product>().Flatten();
             ExpressMapper.Mapper.Register<Entity.Inventory, Dto.Inventory>().Flatten();
             ExpressMapper.Mapper.Register<Entity.Product, GetProduct.Response>().Flatten();
+        }
+
+        private void RegisterUserMap()
+        {
+            ExpressMapper.Mapper.Register<Entity.User, Login.Response>().Flatten();
         }
 
         private void RegisterUnitOfMeasuresMap()

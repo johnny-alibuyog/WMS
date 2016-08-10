@@ -28,6 +28,12 @@ namespace AmpedBiz.Data.EntityDefinitions
             Component(x => x.WholeSalePrice,
                 MoneyMapping.Map("WholeSalePrice_", nameof(Product)));
 
+            Component(x => x.BadStockPrice,
+                MoneyMapping.Map("BadStockPrice_", nameof(Product)));
+
+            Component(x => x.BadStock,
+                MeasureMapping.Map("BadStock_", nameof(Inventory)));
+
             Component(x => x.Received,
                 MeasureMapping.Map("Received_", nameof(Inventory)));
 

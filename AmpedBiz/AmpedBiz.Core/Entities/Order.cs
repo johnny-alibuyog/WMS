@@ -10,11 +10,11 @@ namespace AmpedBiz.Core.Entities
 {
     public enum OrderStatus
     {
-        New = 1, //active
-        Staged = 2,
-        Routed = 3,
-        Invoiced = 4,
-        Paid = 5,
+        New = 1,
+        Invoiced = 2,
+        Paid = 3,
+        Staged = 4,
+        Routed = 5,
         Shipped = 6,
         Completed = 7,
         Cancelled = 8
@@ -127,6 +127,23 @@ namespace AmpedBiz.Core.Entities
             return this;
         }
 
+        protected internal virtual Order Process(OrderInvoicedArguments args)
+        {
+            this.InvoicedOn = args.InvoicedOn ?? this.InvoicedOn;
+            this.InvoicedBy = args.InvoicedBy ?? this.InvoicedBy;
+            this.Status = OrderStatus.Invoiced;
+
+            return this;
+        }
+
+        protected internal virtual Order Process(OrderPaidArguments args)
+        {
+            this.AddPayments(args.Payments);
+            this.Status = OrderStatus.Paid;
+
+            return this;
+        }
+
         protected internal virtual Order Process(OrderStagedArguments args)
         {
             this.StagedBy = args.StagedBy ?? this.StagedBy;
@@ -144,24 +161,6 @@ namespace AmpedBiz.Core.Entities
 
             return this;
             //allocate product from inventory
-        }
-
-        protected internal virtual Order Process(OrderInvoicedArguments args)
-        {
-            this.InvoicedOn = args.InvoicedOn ?? this.InvoicedOn;
-            this.InvoicedBy = args.InvoicedBy ?? this.InvoicedBy;
-            this.Status = OrderStatus.Invoiced;
-
-            return this;
-        }
-
-        protected internal virtual Order Process(OrderPaidArguments args)
-        {
-            this.AddPayments(args.Payments);
-            this.Status = OrderStatus.Paid;
-
-            //no invoice yet?
-            return this;
         }
 
         protected internal virtual Order Process(OrderShippedArguments args)

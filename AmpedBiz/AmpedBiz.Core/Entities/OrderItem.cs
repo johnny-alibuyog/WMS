@@ -16,6 +16,8 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Money ExtendedPrice { get; protected set; }
 
+        public virtual Money TotalPrice { get; protected set; }
+
         public OrderItem() : base(default(Guid)) { }
 
         public OrderItem(Product product, Measure quantity, Money discount, Money unitPrice, Guid? id = null) 
@@ -27,36 +29,23 @@ namespace AmpedBiz.Core.Entities
             this.UnitPrice = unitPrice;
 
             // discount is not included in the extended price
-            this.ExtendedPrice = new Money((this.Quantity.Value * this.UnitPrice.Amount), this.UnitPrice.Currency); 
-
-            //this.Allocate();
-        }
-
-        public virtual void Allocate()
-        {
-            this.ExtendedPrice = new Money((this.UnitPrice.Amount - this.Discount.Amount) * this.Quantity.Value);
-            this.Product.Inventory.Allocated += this.Quantity;
+            this.ExtendedPrice = new Money((this.Quantity.Value * this.UnitPrice.Amount), this.UnitPrice.Currency);
+            this.TotalPrice = this.ExtendedPrice - this.Discount;
         }
 
         public virtual void Invoice()
         {
-            //this.Status = OrderItemStatus.Invoiced;
-
-            this.Product.Inventory.OnOrder += this.Quantity;
+            this.Product.Inventory.Allocate(this.Quantity);
         }
 
         public virtual void Ship()
         {
-            //this.Status = OrderItemStatus.Shipped;
-
-            this.Product.Inventory.Shipped += this.Quantity;
+            this.Product.Inventory.Ship(this.Quantity);
         }
 
         public virtual void BackOrder()
         {
-            //this.Status = OrderItemStatus.BackOrdered;
-
-            this.Product.Inventory.BackOrdered += this.Quantity;
+            this.Product.Inventory.BackOrder(this.Quantity);
         }
     }
 }

@@ -44,6 +44,7 @@ namespace AmpedBiz.Service.Products
                             BasePriceAmount = x.Inventory.BasePrice.Amount,
                             RetailPriceAmount = x.Inventory.RetailPrice.Amount,
                             WholeSalePriceAmount = x.Inventory.WholeSalePrice.Amount,
+                            BadStockPriceAmount = x.Inventory.BadStockPrice.Amount,
                             DiscountAmount = 0M
                         })
                         .ToList();

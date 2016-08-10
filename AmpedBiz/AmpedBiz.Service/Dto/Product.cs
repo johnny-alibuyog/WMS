@@ -20,6 +20,11 @@ namespace AmpedBiz.Service.Dto
         public string Image { get; set; }
 
         public Inventory Inventory { get; set; }
+
+        public Product()
+        {
+            this.Inventory = new Inventory();
+        }
     }
 
     public class ProductPageItem
@@ -57,11 +62,15 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? AvailableValue { get; set; }
 
+        public decimal? BadStockValue { get; set; }
+
         public decimal? BasePriceAmount { get; set; }
 
         public decimal? RetailPriceAmount { get; set; }
 
         public decimal? WholeSalePriceAmount { get; set; }
+
+        public decimal? BadStockPriceAmount { get; set; }
 
         public decimal? DiscountAmount { get; set; }
     }

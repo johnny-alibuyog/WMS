@@ -1,7 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Common.Configurations;
 using AmpedBiz.Core.Arguments.Orders;
+using AmpedBiz.Core.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AmpedBiz.Core.Services.Orders
 {
@@ -60,22 +62,6 @@ namespace AmpedBiz.Core.Services.Orders
             this.Target.Process(args);
         }
 
-        public virtual void Process(OrderStagedArguments args)
-        {
-            if (!this.AllowedTransitions.ContainsKey(OrderStatus.Staged))
-                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "staging", this.Target.Status));
-
-            this.Target.Process(args);
-        }
-
-        public virtual void Process(OrderRoutedArguments args)
-        {
-            if (!this.AllowedTransitions.ContainsKey(OrderStatus.Routed))
-                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "routing", this.Target.Status));
-
-            this.Target.Process(args);
-        }
-
         public virtual void Process(OrderInvoicedArguments args)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Invoiced))
@@ -88,6 +74,22 @@ namespace AmpedBiz.Core.Services.Orders
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Paid))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "payment", this.Target.Status));
+
+            this.Target.Process(args);
+        }
+
+        public virtual void Process(OrderStagedArguments args)
+        {
+            if (!this.AllowedTransitions.ContainsKey(OrderStatus.Staged))
+                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "staging", this.Target.Status));
+
+            this.Target.Process(args);
+        }
+
+        public virtual void Process(OrderRoutedArguments args)
+        {
+            if (!this.AllowedTransitions.ContainsKey(OrderStatus.Routed))
+                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "routing", this.Target.Status));
 
             this.Target.Process(args);
         }
@@ -117,42 +119,11 @@ namespace AmpedBiz.Core.Services.Orders
         }
     }
 
-    public class Default : State
-    {
-        public Default(Order target) : base(target)
-        {
-            this.AllowedTransitions.Add(OrderStatus.New, "Save");
-        }
-    }
-
     public class NewState : State
     {
         public NewState(Order target) : base(target)
         {
-            this.AllowedTransitions.Add(OrderStatus.New, "Save");
-            this.AllowedTransitions.Add(OrderStatus.Staged, "Stage");
-            this.AllowedTransitions.Add(OrderStatus.Routed, "Route");
-            this.AllowedTransitions.Add(OrderStatus.Cancelled, "Cancel");
-        }
-    }
-
-    public class StagedState : State
-    {
-        public StagedState(Order target) : base(target)
-        {
-            this.AllowedTransitions.Add(OrderStatus.Routed, "Route");
-            this.AllowedTransitions.Add(OrderStatus.Invoiced, "Invoice");
-            this.AllowedTransitions.Add(OrderStatus.Cancelled, "Cancel");
-        }
-    }
-
-    public class RoutedState : State
-    {
-        public RoutedState(Order target) : base(target)
-        {
-            this.AllowedTransitions.Add(OrderStatus.Paid, "Pay");
-            this.AllowedTransitions.Add(OrderStatus.Invoiced, "Invoice");
-            this.AllowedTransitions.Add(OrderStatus.Cancelled, "Cancel");
+            this.AllowedTransitions = Stage.Transitions[OrderStatus.New];
         }
     }
 
@@ -160,9 +131,7 @@ namespace AmpedBiz.Core.Services.Orders
     {
         public InvoicedState(Order target) : base(target)
         {
-            this.AllowedTransitions.Add(OrderStatus.Paid, "Pay");
-            this.AllowedTransitions.Add(OrderStatus.Shipped, "Ship");
-            this.AllowedTransitions.Add(OrderStatus.Cancelled, "Cancel");
+            this.AllowedTransitions = Stage.Transitions[OrderStatus.Invoiced];
         }
     }
 
@@ -170,9 +139,23 @@ namespace AmpedBiz.Core.Services.Orders
     {
         public PaidState(Order target) : base(target)
         {
-            this.AllowedTransitions.Add(OrderStatus.Paid, "Pay");
-            this.AllowedTransitions.Add(OrderStatus.Shipped, "Ship");
-            this.AllowedTransitions.Add(OrderStatus.Cancelled, "Cancel");
+            this.AllowedTransitions = Stage.Transitions[OrderStatus.Paid];
+        }
+    }
+
+    public class StagedState : State
+    {
+        public StagedState(Order target) : base(target)
+        {
+            this.AllowedTransitions = Stage.Transitions[OrderStatus.Staged];
+        }
+    }
+
+    public class RoutedState : State
+    {
+        public RoutedState(Order target) : base(target)
+        {
+            this.AllowedTransitions = Stage.Transitions[OrderStatus.Routed];
         }
     }
 
@@ -180,18 +163,55 @@ namespace AmpedBiz.Core.Services.Orders
     {
         public ShippedState(Order target) : base(target)
         {
-            this.AllowedTransitions.Add(OrderStatus.Paid, "Pay");
-            this.AllowedTransitions.Add(OrderStatus.Completed, "Complete");
+            this.AllowedTransitions = Stage.Transitions[OrderStatus.Shipped];
         }
     }
 
     public class CompletedState : State
     {
-        public CompletedState(Order target) : base(target) { }
+        public CompletedState(Order target) : base(target)
+        {
+            this.AllowedTransitions = Stage.Transitions[OrderStatus.Completed];
+        }
     }
 
     public class CancelledState : State
     {
-        public CancelledState(Order target) : base(target) { }
+        public CancelledState(Order target) : base(target)
+        {
+            this.AllowedTransitions = Stage.Transitions[OrderStatus.Cancelled];
+        }
+    }
+
+    public class Stage
+    {
+        public static readonly Dictionary<OrderStatus, Dictionary<OrderStatus, string>> Transitions = GetConfig();
+
+        private static Dictionary<OrderStatus, Dictionary<OrderStatus, string>> GetConfig()
+        {
+            Func<string, OrderStatus> ParseStatus = (value) =>
+            {
+                var result = default(OrderStatus);
+
+                if (!Enum.TryParse<OrderStatus>(value, out result))
+                {
+                    throw new Exception($"{value} is an invalid order status. Please check check your transition configuration.");
+                }
+
+                return result;
+            };
+
+            var stageTransitions = new Dictionary<OrderStatus, Dictionary<OrderStatus, string>>();
+
+            foreach (var item in TransitionConfig.Instance.OrderTransitions)
+            {
+                var stage = ParseStatus(item.Key);
+                var transitions = item.Value.ToDictionary(x => ParseStatus(x.Key), x => x.Value);
+
+                stageTransitions.Add(stage, transitions);
+            }
+
+            return stageTransitions;
+        }
     }
 }

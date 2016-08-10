@@ -143,14 +143,17 @@ namespace AmpedBiz.Tests.IntegrationTests
             {
                 Category = category,
                 Supplier = supplier,
-                BasePriceAmount = basePrice,
-                WholesalePriceAmount = basePrice + 1,
-                RetailPriceAmount = basePrice + 2,
                 Description = "Description_" + this.GenerateRandomString(25),
                 Discontinued = false,
                 Id = "Id_" + this.GenerateRandomString(15),
                 Image = "",
                 Name = "Name_" + this.GenerateRandomString(10),
+                Inventory = new Service.Dto.Inventory()
+                {
+                    BasePriceAmount = basePrice,
+                    WholesalePriceAmount = basePrice + 1,
+                    RetailPriceAmount = basePrice + 2,
+                }
             };
         }
 

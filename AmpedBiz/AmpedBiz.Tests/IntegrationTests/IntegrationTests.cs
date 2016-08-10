@@ -341,15 +341,13 @@ namespace AmpedBiz.Tests.IntegrationTests
                 var request = new CreateProduct.Request()
                 {
                     Id = productData.Id,
-                    BasePriceAmount = productData.BasePriceAmount,
                     Category = productData.Category,
                     Description = productData.Description,
                     Discontinued = productData.Discontinued,
                     Image = productData.Image,
                     Name = productData.Name,
-                    RetailPriceAmount = productData.RetailPriceAmount,
                     Supplier = productData.Supplier,
-                    WholesalePriceAmount = productData.WholesalePriceAmount
+                    Inventory = productData.Inventory,
                 };
 
                 var handler = new CreateProduct.Handler(this.sessionFactory).Handle(request);
@@ -426,7 +424,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     PurchaseOrderId = request.PurchaseOrderId,
                     Product = new Lookup<string>(product.Id, product.Name),
                     QuantityValue = this.random.Next(1, 100),
-                    UnitCostAmount = product.RetailPriceAmount ?? 0M + 1m,
+                    UnitCostAmount = product.Inventory.RetailPriceAmount ?? 0M + 1m,
                 });
             }
 
@@ -602,7 +600,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     Product = new Lookup<string>(product.Id, product.Name),
                     //UnitOfMeasure = new Lookup<string>(product.Inv)
                     QuantityValue = this.random.Next(1, 100),
-                    UnitPriceAmount = product.RetailPriceAmount ?? 0M
+                    UnitPriceAmount = product.Inventory.RetailPriceAmount ?? 0M
                 });
             }
 
