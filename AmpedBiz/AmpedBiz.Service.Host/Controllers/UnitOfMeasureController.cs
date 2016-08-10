@@ -36,6 +36,13 @@ namespace AmpedBiz.Service.Host.Controllers
             return _mediator.Send(request ?? new GetUnitOfMeasurePage.Request());
         }
 
+        [HttpGet()]
+        [Route("~/unit-of-measure-lookups")]
+        public GetUnitOfMeasureLookup.Response Process([FromUri]GetUnitOfMeasureLookup.Request request)
+        {
+            return _mediator.Send(request ?? new GetUnitOfMeasureLookup.Request());
+        }
+
         [HttpPost()]
         [Route("")]
         public CreateUnitOfMeasure.Response Process([FromBody]CreateUnitOfMeasure.Request request)

@@ -80,7 +80,7 @@ namespace AmpedBiz.Tests.IntegrationTests
         private List<PaymentType> _paymentTypes = new List<PaymentType>();
         private List<PricingScheme> _pricingSchemes = new List<PricingScheme>();
         private List<ProductCategory> _productCategories = new List<ProductCategory>();
-        private List<UnitOfMeasureClass> _unitOfMeasures = new List<UnitOfMeasureClass>();
+        private List<UnitOfMeasure> _unitOfMeasures = new List<UnitOfMeasure>();
 
         private Service.Common.Filter filter = new Service.Common.Filter();
         private Service.Common.Pager pager = new Service.Common.Pager() { Offset = 1, Size = 1000 };
@@ -133,7 +133,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                 this._paymentTypes = session.Query<PaymentType>().ToList();
                 this._pricingSchemes = session.Query<PricingScheme>().ToList();
                 this._productCategories = session.Query<ProductCategory>().ToList();
-                this._unitOfMeasures = session.Query<UnitOfMeasureClass>().ToList();
+                this._unitOfMeasures = session.Query<UnitOfMeasure>().ToList();
                 this._suppliers = session.Query<Supplier>().Where(x => x.Products.Count() > 0).ToList();
             }
         }
@@ -347,7 +347,16 @@ namespace AmpedBiz.Tests.IntegrationTests
                     Image = productData.Image,
                     Name = productData.Name,
                     Supplier = productData.Supplier,
-                    Inventory = productData.Inventory,
+                    Inventory = new Service.Dto.Inventory()
+                    {
+                        UnitOfMeasure = this.RandomUnitOfMeasure(),
+                        UnitOfMeasureBase = this.RandomUnitOfMeasure(),
+                        ConversionFactor = 0.30M,
+                        BasePriceAmount = productData.Inventory.BasePriceAmount,
+                        RetailPriceAmount = productData.Inventory.RetailPriceAmount,
+                        WholesalePriceAmount = productData.Inventory.WholesalePriceAmount,
+                        BackOrderedValue = productData.Inventory.BackOrderedValue,
+                    }
                 };
 
                 var handler = new CreateProduct.Handler(this.sessionFactory).Handle(request);
@@ -607,18 +616,18 @@ namespace AmpedBiz.Tests.IntegrationTests
             return orderItems;
         }
 
+        private Service.Dto.Order InvoiceOrder(Service.Dto.Order order)
+        {
+            var request = new InvoiceOrder.Request() { Id = order.Id, InvoicedBy = RandomUser() };
+            var handler = new InvoiceOrder.Handler(this.sessionFactory).Handle(request);
+
+            return handler;
+        }
+
         private Service.Dto.Order StageOrder(Service.Dto.Order order)
         {
             var request = new StageOrder.Request() { Id = order.Id, StagedBy = RandomUser() };
             var response = new StageOrder.Handler(this.sessionFactory).Handle(request);
-
-            return response;
-        }
-
-        private Service.Dto.Order RouteOrder(Service.Dto.Order order)
-        {
-            var request = new RouteOrder.Request() { Id = order.Id, RoutedBy = RandomUser() };
-            var response = new RouteOrder.Handler(this.sessionFactory).Handle(request);
 
             return response;
         }
@@ -633,7 +642,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     new Service.Dto.OrderPayment()
                     {
                         PaidOn = DateTime.Now,
-                        PaidBy = RandomUser(), 
+                        PaidBy = RandomUser(),
                         PaymentType = RandomPaymentType(),
                         PaymentAmount = order.TotalAmount
                     }
@@ -644,12 +653,20 @@ namespace AmpedBiz.Tests.IntegrationTests
             return response;
         }
 
-        private Service.Dto.Order InvoiceOrder(Service.Dto.Order order)
+        private Service.Dto.Order ShipOrder(Service.Dto.Order order)
         {
-            var request = new InvoiceOrder.Request() { Id = order.Id, InvoicedBy = RandomUser() };
-            var handler = new InvoiceOrder.Handler(this.sessionFactory).Handle(request);
+            var request = new ShipOrder.Request() { Id = order.Id, ShippedBy = RandomUser() };
+            var response = new ShipOrder.Handler(this.sessionFactory).Handle(request);
 
-            return handler;
+            return response;
+        }
+
+        private Service.Dto.Order RouteOrder(Service.Dto.Order order)
+        {
+            var request = new RouteOrder.Request() { Id = order.Id, RoutedBy = RandomUser() };
+            var response = new RouteOrder.Handler(this.sessionFactory).Handle(request);
+
+            return response;
         }
 
         private Service.Dto.Order CompleteOrder(Service.Dto.Order order)
@@ -778,29 +795,31 @@ namespace AmpedBiz.Tests.IntegrationTests
                 order3 = newOrders[2],
                 order4 = newOrders[3];
 
-            var stagedOrder = this.StageOrder(order1);
+            // invoice
+            var invoicedOrder = this.InvoiceOrder(order1);
+            Assert.IsTrue(invoicedOrder.Status == Service.Dto.OrderStatus.Invoiced);
+
+            // pay
+            var paidOrder = this.PayOrder(invoicedOrder);
+            Assert.IsTrue(paidOrder.Status == Service.Dto.OrderStatus.Paid);
+
+            // staged
+            var stagedOrder = this.StageOrder(paidOrder);
             Assert.IsTrue(stagedOrder.Status == Service.Dto.OrderStatus.Staged);
 
             //var routedOrder = this.RouteOrder(stagedOrder);
             //Assert.IsTrue(routedOrder.Status == Service.Dto.OrderStatus.Routed);
 
-            var paidOrder = this.PayOrder(stagedOrder);
-            Assert.IsTrue(paidOrder.Status == Service.Dto.OrderStatus.Paid);
+            //invoice from payment
+            var invoicedOrder2 = this.PayOrder(this.InvoiceOrder(order2));
+            Assert.IsTrue(invoicedOrder2.Status == Service.Dto.OrderStatus.Paid);
 
-            //invoice from paid
-            var invoicedOrder = this.InvoiceOrder(paidOrder);
-            Assert.IsTrue(invoicedOrder.Status == Service.Dto.OrderStatus.Invoiced);
-
-            //invoice from staged
-            var invoicedOrder2 = this.InvoiceOrder(this.StageOrder(order2));
-            Assert.IsTrue(invoicedOrder2.Status == Service.Dto.OrderStatus.Invoiced);
-
-            //invoice from routed
-            var invoicedOrder3 = this.InvoiceOrder(this.RouteOrder(order3));
-            Assert.IsTrue(invoicedOrder3.Status == Service.Dto.OrderStatus.Invoiced);
+            //invoice from payment
+            var invoicedOrder3 = this.PayOrder(this.InvoiceOrder(order3));
+            Assert.IsTrue(invoicedOrder3.Status == Service.Dto.OrderStatus.Paid);
 
             //complete all
-            var completeOrder = this.CompleteOrder(paidOrder);
+            var completeOrder = this.CompleteOrder(this.ShipOrder(paidOrder));
             Assert.IsTrue(completeOrder.Status == Service.Dto.OrderStatus.Completed);
 
             //todo: implement inventory checking

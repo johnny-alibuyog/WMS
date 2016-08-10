@@ -7,16 +7,11 @@ using NHibernate.Linq;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AmpedBiz.Service.Products
+namespace AmpedBiz.Service.UnitOfMeasures
 {
-    public class GetProductLookup
+    public class GetUnitOfMeasureLookup
     {
-        public class Request : IRequest<Response>
-        {
-            public string[] Id { get; set; }
-
-            public string SupplierId { get; set; }
-        }
+        public class Request : IRequest<Response> { }
 
         public class Response : List<Lookup<string>>
         {
@@ -37,13 +32,7 @@ namespace AmpedBiz.Service.Products
                 using (var transaction = session.BeginTransaction())
                 {
 
-                    var query = session.Query<Product>();
-
-                    if (!message.Id.IsNullOrEmpty())
-                        query = query.Where(x => message.Id.Contains(x.Id));
-
-                    if (!string.IsNullOrWhiteSpace(message.SupplierId))
-                        query = query.Where(x => x.Supplier.Id == message.SupplierId);
+                    var query = session.Query<UnitOfMeasure>();
 
                     var pairs = query
                         .Select(x => new Lookup<string>()

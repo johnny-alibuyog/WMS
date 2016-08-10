@@ -167,6 +167,7 @@
     <Compile Include="UnitOfMeasures\CreateUnitOfMeasure.cs" />
     <Compile Include="UnitOfMeasures\GetUnitOfMeasure.cs" />
     <Compile Include="UnitOfMeasures\GetUnitOfMeasureList.cs" />
+    <Compile Include="UnitOfMeasures\GetUnitOfMeasureLookup.cs" />
     <Compile Include="UnitOfMeasures\GetUnitOfMeasurePage.cs" />
     <Compile Include="UnitOfMeasures\UpdateUnitOfMeasure.cs" />
     <Compile Include="Users\CreateUser.cs" />

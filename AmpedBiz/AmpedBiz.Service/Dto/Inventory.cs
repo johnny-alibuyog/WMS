@@ -4,7 +4,7 @@ namespace AmpedBiz.Service.Dto
 {
     public class Inventory
     {
-        public virtual string InventoryId { get; set; }
+        public virtual string Id { get; set; }
 
         public virtual Lookup<string> UnitOfMeasure { get; set; }
 

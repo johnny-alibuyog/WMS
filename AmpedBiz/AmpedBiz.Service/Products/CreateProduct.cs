@@ -35,6 +35,9 @@ namespace AmpedBiz.Service.Products
                     entity.Supplier = session.Load<Supplier>(message.Supplier.Id);
                     entity.Category = session.Load<ProductCategory>(message.Category.Id);
 
+                    entity.Inventory.UnitOfMeasure = session.Load<UnitOfMeasure>(message.Inventory.UnitOfMeasure.Id);
+                    entity.Inventory.UnitOfMeasureBase = session.Load<UnitOfMeasure>(message.Inventory.UnitOfMeasureBase.Id);
+                    entity.Inventory.ConversionFactor = message.Inventory.ConversionFactor;
                     entity.Inventory.BasePrice = new Money(message.Inventory.BasePriceAmount ?? 0M, currency);
                     entity.Inventory.RetailPrice = new Money(message.Inventory.RetailPriceAmount ?? 0M, currency);
                     entity.Inventory.WholeSalePrice = new Money(message.Inventory.WholesalePriceAmount ?? 0M, currency);
