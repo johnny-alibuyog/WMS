@@ -52,6 +52,10 @@ export class OrderItemPage {
       this._eventAggregator.subscribe(
         orderEvents.item.add, 
         response => this.addItem()
+      ),
+      this._eventAggregator.subscribe(
+        orderEvents.pricingScheme.changed,
+        response => this.recomputeByPricingScheme()
       )
     ];
   }
@@ -64,21 +68,25 @@ export class OrderItemPage {
     this.initializePage();
   }
 
-  pricingSchemeChanged(): void {
+  recomputeByPricingScheme(): void {
     if (!this.items) {
       this.items = [];
     }
 
     // TODO: not a good idea. should make batch request. refactor soon
     this.items.forEach(item => {
+      this.initializeItem(item);
+      /*
       this._api.products.getInventory(item.product.id).then(data => {
-        if (!this.pricingScheme)
+        if (!this.pricingScheme){
           this.pricingScheme = pricingScheme.wholesalePrice;
+        }
 
         item.quantityValue = 1;
         item.unitPriceAmount = pricingScheme.getPriceAmount(this.pricingScheme, data) || 0;
         this.compute(item);
       });
+      */
     });
   }
 
@@ -90,11 +98,16 @@ export class OrderItemPage {
     }
 
     this._api.products.getInventory(item.product.id).then(data => {
-      if (!this.pricingScheme)
+      if (!this.pricingScheme){
         this.pricingScheme = pricingScheme.wholesalePrice;
+      }
 
-      item.quantityValue = 1;
+      item.quantityValue = (this.pricingScheme.id == pricingScheme.badStockPrice.id)
+        ? data.badStockValue || 1 : data.availableValue || 1;
+
       item.unitPriceAmount = pricingScheme.getPriceAmount(this.pricingScheme, data) || 0;
+
+      this.compute(item);
     });
   }
 

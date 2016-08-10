@@ -34,7 +34,10 @@ export class OrderCreate {
   }
 
   getInitializedOrder(): Order {
-    let order: Order = { allowedTransitions: <Dictionary<string>>{} };
+    let order: Order = {
+      orderedOn: new Date(),
+      allowedTransitions: <Dictionary<string>>{}
+    };
     order.allowedTransitions[OrderStatus[OrderStatus.new]] = "Save";
     return order;
   }
@@ -79,6 +82,12 @@ export class OrderCreate {
         this.pricingSchemes = responses[3];
         this.statuses = responses[4];
         this.order = responses[5];
+
+        if (!this.order.branch) {
+          this.order.branch = this.branches
+            .find(x => x.id == this._api.auth.user.branchId);
+        }
+
       })
       .catch(error => {
         this._notification.error(error);
@@ -109,6 +118,10 @@ export class OrderCreate {
 
   addPayment(): void {
     this._eventAggregator.publish(orderEvents.payment.pay);
+  }
+
+  signalPricingSchemChanged(): void {
+    this._eventAggregator.publish(orderEvents.pricingScheme.changed);
   }
 
   save(): void {

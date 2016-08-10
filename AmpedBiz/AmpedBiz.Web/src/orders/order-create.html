@@ -92,7 +92,7 @@
                 <div class="form-group">
                   <label class="control-label col-sm-4">Pricing Scheme:</label>
                   <div class="col-sm-8">
-                    <select class="form-control" value.bind="order.pricingScheme | lookupToId:pricingSchemes">
+                    <select class="form-control" value.bind="order.pricingScheme | lookupToId:pricingSchemes" change.delegate="signalPricingSchemChanged()">
                       <option>Select Pricing Scheme</option>
                       <option repeat.for="pricingScheme of pricingSchemes" model.bind="pricingScheme.id">${pricingScheme.name}</option>
                     </select>

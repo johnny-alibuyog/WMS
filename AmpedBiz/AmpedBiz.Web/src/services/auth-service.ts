@@ -14,7 +14,7 @@ export class AuthService {
   private readonly AUTH_TOKEN: string = "token:auth-user";
 
   public get user(): User {
-    return <User>JSON.parse(localStorage[this.AUTH_TOKEN]);
+    return <User>JSON.parse(localStorage[this.AUTH_TOKEN] || "{}");
   };
 
   public set user(user: User) {

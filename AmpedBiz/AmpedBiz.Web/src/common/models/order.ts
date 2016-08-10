@@ -4,6 +4,9 @@ import {Dictionary} from '../custom_types/dictionary';
 import {Address} from './Address';
 
 export const orderEvents = {
+  pricingScheme: {
+    changed: 'order-pricing-scheme-changed',
+  },
   item: {
     add: 'order-item-add',
     added: 'order-item-added',
@@ -17,10 +20,10 @@ export const orderEvents = {
 
 export enum OrderStatus {
   new = 1,
-  staged = 2,
-  routed = 3,
-  invoiced = 4,
-  paid = 5,
+  invoiced = 2,
+  paid = 3,
+  staged = 4,
+  routed = 5,
   shipped = 6,
   //delivered = 7,
   completed = 7,

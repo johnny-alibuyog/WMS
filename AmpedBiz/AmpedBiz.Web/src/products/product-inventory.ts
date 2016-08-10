@@ -3,6 +3,8 @@ import {Router} from 'aurelia-router';
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 import {ServiceApi} from '../services/service-api';
 import {Dictionary} from '../common/custom_types/dictionary';
+import {Lookup} from '../common/custom_types/lookup';
+import {Inventory} from '../common/models/inventory';
 
 @autoinject
 @customElement("product-inventory")
@@ -14,10 +16,14 @@ export class ProductInventory {
   public sorter: Sorter;
   //public pager: Pager<ProductOrderPageItem>;
 
+  public unitOfMeasures: Lookup<string>[];
+
   @bindable()
   public productId: string = '';
 
-  
+  @bindable({defaultBindingMode: bindingMode.twoWay})
+  public inventory: Inventory;
+
 
   constructor(api: ServiceApi, router: Router) {
     this._api = api;
@@ -37,6 +43,14 @@ export class ProductInventory {
 
     //this.pager = new Pager<ProductOrderPageItem>();
     //this.pager.onPage = () => this.getPage();
+  }
+
+  attached() {
+    var requests: [Promise<Lookup<string>[]>] = [this._api.unitOfMeasures.getLookups()];
+
+    Promise.all(requests).then(data => {
+      this.unitOfMeasures = data[0];
+    });
   }
 
   productIdChanged(): void {

@@ -12,6 +12,43 @@
       <!-- inputs -->
       <div class="row">
 
+        <!-- left side -->
+        <div class="col-lg-6">
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Base:</label>
+            <div class="col-sm-8">
+              <input type="number" class="form-control text-right" placeholder="Enter Base Price" value.bind="inventory.basePriceAmount"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Retail:</label>
+            <div class="col-sm-8">
+              <input type="number" class="form-control text-right" placeholder="Enter Retail Price" value.bind="inventory.retailPriceAmount"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Wholesale:</label>
+            <div class="col-sm-8">
+              <input type="number" class="form-control text-right" placeholder="Enter Wholesale Price" value.bind="inventory.wholesalePriceAmount"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-4">Bad Stock:</label>
+            <div class="col-sm-8">
+              <input type="number" class="form-control text-right" placeholder="Enter Bad Stock Price" value.bind="inventory.badStockPriceAmount"
+              />
+            </div>
+          </div>
+
+        </div>
+
         <!-- right side -->
         <div class="col-lg-6">
 
@@ -38,36 +75,7 @@
           <div class="form-group">
             <label class="control-label col-sm-4">Conversion:</label>
             <div class="col-sm-8">
-              <input type="number" class="form-control text-right" placeholder="Enter Base Price" value.bind="inventory.conversionFactor | numberFormat"
-              />
-            </div>
-          </div>
-
-        </div>
-
-        <!-- left side -->
-        <div class="col-lg-6">
-
-          <div class="form-group">
-            <label class="control-label col-sm-4">Base:</label>
-            <div class="col-sm-8">
-              <input type="number" class="form-control text-right" placeholder="Enter Base Price" value.bind="inventory.basePriceAmount | numberFormat"
-              />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="control-label col-sm-4">Retail:</label>
-            <div class="col-sm-8">
-              <input type="number" class="form-control text-right" placeholder="Enter Retail Price" value.bind="inventory.retailPriceAmount | numberFormat"
-              />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="control-label col-sm-4">Wholesale:</label>
-            <div class="col-sm-8">
-              <input type="number" class="form-control text-right" placeholder="Enter Wholesale Price" value.bind="inventory.wholesalePriceAmount | numberFormat"
+              <input type="number" class="form-control text-right" placeholder="Enter Base Price" value.bind="inventory.conversionFactor"
               />
             </div>
           </div>
@@ -100,6 +108,81 @@
 
     <!-- body -->
     <div class="panel-body">
+
+      <!-- left side -->
+      <div class="col-lg-6">
+
+        <div class="form-group">
+          <label class="control-label col-sm-4">Received:</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control text-right" value.bind="inventory.receivedValue" disabled
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-4">On Order:</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control text-right" value.bind="inventory.onOrderValue" disabled
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-4">Shipped:</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control text-right" value.bind="inventory.shippedValue" disabled
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-4">Back Ordered:</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control text-right" value.bind="inventory.backOrderedValue" disabled
+            />
+          </div>
+        </div>
+
+      </div>
+
+      <!-- left right -->
+      <div class="col-lg-6">
+
+        <div class="form-group">
+          <label class="control-label col-sm-4">On Hand:</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control text-right" value.bind="inventory.onHandValue" disabled
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-4">Available:</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control text-right" value.bind="inventory.availableValue" disabled
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-4">Below Target Level:</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control text-right" value.bind="inventory.belowTargetLevelValue" disabled
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-4">Total Shrinkage:</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control text-right" value.bind="inventory.shrinkageValue" disabled
+            />
+          </div>
+        </div>
+
+      </div>
+
     </div>
 
   </div>

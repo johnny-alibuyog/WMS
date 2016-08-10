@@ -16,26 +16,25 @@ export interface PricingSchemePageItem {
 let basePrice = <Lookup<string>>{ id: 'BP', name: 'Base Price' };
 let retailPrice = <Lookup<string>>{ id: 'RP', name: 'Retail Price' };
 let wholesalePrice = <Lookup<string>>{ id: 'WP', name: 'Wholesale Price' };
+let badStockPrice = <Lookup<string>>{ id: 'BSP', name: 'Bad Stock Price' };
 
 export let pricingScheme = {
   basePrice: basePrice,
   retailPrice: retailPrice,
   wholesalePrice: wholesalePrice,
+  badStockPrice: badStockPrice,
   getPriceAmount: (pricingScheme: PricingScheme, product: ProductInventory) => {
-    console.log(basePrice);
-
-    if (pricingScheme.id === basePrice.id) {
-      return product.basePriceAmount;
+    switch (pricingScheme.id) {
+      case basePrice.id:
+        return product.basePriceAmount;
+      case retailPrice.id:
+        return product.retailPriceAmount;
+      case wholesalePrice.id:
+        return product.wholeSalePriceAmount;
+      case badStockPrice.id:
+        return product.badStockPriceAmount;
+      default:
+        return 0;
     }
-
-    if (pricingScheme.id === retailPrice.id) {
-      return product.retailPriceAmount;
-    }
-
-    if (pricingScheme.id === wholesalePrice.id) {
-      return product.wholeSalePriceAmount;
-    }
-
-    return 0;
   }
 };

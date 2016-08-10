@@ -19,26 +19,6 @@ export class Index {
         }
       },
       {
-        route: ['staged-page'],
-        name: 'staged-page',
-        moduleId: './order-page',
-        nav: true,
-        title: 'Staged',
-        settings: {
-          status: OrderStatus.staged
-        }
-      },
-      {
-        route: ['routed-page'],
-        name: 'routed-page',
-        moduleId: './order-page',
-        nav: true,
-        title: 'Routed',
-        settings: {
-          status: OrderStatus.routed
-        }
-      },
-      {
         route: ['invoiced-page'],
         name: 'invoiced-page',
         moduleId: './order-page',
@@ -58,6 +38,28 @@ export class Index {
           status: OrderStatus.paid
         }
       },
+      {
+        route: ['staged-page'],
+        name: 'staged-page',
+        moduleId: './order-page',
+        nav: true,
+        title: 'Staged',
+        settings: {
+          status: OrderStatus.staged
+        }
+      },
+      /*
+      {
+        route: ['routed-page'],
+        name: 'routed-page',
+        moduleId: './order-page',
+        nav: true,
+        title: 'Routed',
+        settings: {
+          status: OrderStatus.routed
+        }
+      },
+      */
       {
         route: ['shipped-page'],
         name: 'shipped-page',

@@ -1,3 +1,5 @@
+import {Inventory} from './inventory';
+
 export interface Product {
   id?: string;
   name?: string
@@ -5,10 +7,8 @@ export interface Product {
   supplierId?: string;
   categoryId?: string;
   image?: string;
-  basePriceAmount?: number;
-  retailPriceAmount?: number;
-  wholeSalePriceAmount?: number;
   discontinued?: boolean;
+  inventory?: Inventory;
 }
 
 export interface ProductPageItem {
@@ -30,9 +30,11 @@ export interface ProductInventory {
   unitOfMeasure?: string;
   targetValue?: number;
   availableValue?: number;
+  badStockValue?: number;
   basePriceAmount?: number;
   retailPriceAmount?: number;
   wholeSalePriceAmount?: number;
+  badStockPriceAmount?: number;
   discountAmount?: number;
 }
 

@@ -45,9 +45,9 @@ export class ProductCreate {
 
     Promise.all(requests)
       .then(responses => {
-          this.suppliers = responses[0];
-          this.categories = responses[1];
-          this.product = responses[2];
+        this.suppliers = responses[0];
+        this.categories = responses[1];
+        this.product = responses[2];
       })
       .catch(error => {
         this._notification.error(error);
@@ -59,8 +59,15 @@ export class ProductCreate {
   }
 
   save() {
-    this._api.products.update(this.product)
-      .then(data => this._notification.success("Product has been saved."))
-      .catch(error => this._notification.warning(error));
+    if (this.isEdit) {
+      this._api.products.update(this.product)
+        .then(data => this._notification.success("Product has been saved."))
+        .catch(error => this._notification.warning(error));
+    }
+    else{
+      this._api.products.create(this.product)
+        .then(data => this._notification.success("Product has been saved."))
+        .catch(error => this._notification.warning(error));
+    }
   }
 }
