@@ -12,6 +12,9 @@ export let appConfig = {
   api: {
     baseUrl: 'http://localhost:49242',
   },
+  report: {
+    baseUrl: '',
+  },
   page: <PageConfig>{
     maxSize: 5,
     itemsPerPage: 10,
