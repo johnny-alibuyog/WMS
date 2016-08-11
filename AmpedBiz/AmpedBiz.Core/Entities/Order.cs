@@ -129,6 +129,11 @@ namespace AmpedBiz.Core.Entities
 
         protected internal virtual Order Process(OrderInvoicedArguments args)
         {
+            foreach (var item in this.Items)
+            {
+                item.Invoiced();
+            }
+
             this.InvoicedOn = args.InvoicedOn ?? this.InvoicedOn;
             this.InvoicedBy = args.InvoicedBy ?? this.InvoicedBy;
             this.Status = OrderStatus.Invoiced;
@@ -165,6 +170,11 @@ namespace AmpedBiz.Core.Entities
 
         protected internal virtual Order Process(OrderShippedArguments args)
         {
+            foreach (var item in this.Items)
+            {
+                item.Shiped();
+            }
+
             this.ShippedOn = args.ShippedOn;
             this.ShippedBy = args.ShippedBy;
             this.Status = OrderStatus.Shipped;
@@ -318,5 +328,6 @@ namespace AmpedBiz.Core.Entities
 
             return this;
         }
+
     }
 }

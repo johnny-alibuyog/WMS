@@ -125,9 +125,11 @@ namespace AmpedBiz.Data.Seeders
                         item.Inventory.WholeSalePrice = prices.WholeSalePrice;
                         item.Inventory.BadStockPrice = prices.BadStockPrice;
 
+                        item.Inventory.InitialLevel = new Measure(random.NextDecimal(150M, 300M), item.Inventory.UnitOfMeasure);
                         item.Inventory.TargetLevel = new Measure(random.NextDecimal(150M, 300M), item.Inventory.UnitOfMeasure);
                         item.Inventory.ReorderLevel = item.Inventory.TargetLevel - new Measure(random.NextDecimal(50M, 100M), item.Inventory.UnitOfMeasure);
                         item.Inventory.MinimumReorderQuantity = item.Inventory.TargetLevel - item.Inventory.ReorderLevel;
+                        item.Inventory.Compute();
 
                         session.Save(item);
                     }

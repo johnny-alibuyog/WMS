@@ -60,6 +60,20 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpPost()]
+        [Route("needs-reordering/page")]
+        public GetNeedsReorderingPage.Response Process([FromBody]GetNeedsReorderingPage.Request request)
+        {
+            return _mediator.Send(request ?? new GetNeedsReorderingPage.Request());
+        }
+
+        [HttpPost()]
+        [Route("inventory-level/page")]
+        public GetProductInventoryLevelPage.Response Process([FromBody]GetProductInventoryLevelPage.Request request)
+        {
+            return _mediator.Send(request ?? new GetProductInventoryLevelPage.Request());
+        }
+
+        [HttpPost()]
         [Route("{id}/orders/page")]
         public GetProductOrderPage.Response Process([FromUri]string id, [FromBody]GetProductOrderPage.Request request)
         {

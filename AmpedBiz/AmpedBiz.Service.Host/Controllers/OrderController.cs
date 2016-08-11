@@ -58,6 +58,13 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpPost()]
+        [Route("active-orders/page")]
+        public GetActiveOrderPage.Response Process([FromBody]GetActiveOrderPage.Request request)
+        {
+            return _mediator.Send(request ?? new GetActiveOrderPage.Request());
+        }
+
+        [HttpPost()]
         [Route("new")]
         public CreateNewOrder.Response Process([FromBody]CreateNewOrder.Request request)
         {

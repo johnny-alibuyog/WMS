@@ -40,6 +40,7 @@ namespace AmpedBiz.Service.Products
                     entity.Inventory.RetailPrice = new Money(message.Inventory.RetailPriceAmount ?? 0M, currency);
                     entity.Inventory.WholeSalePrice = new Money(message.Inventory.WholesalePriceAmount ?? 0M, currency);
                     entity.Inventory.BadStockPrice = new Money(message.Inventory.BadStockPriceAmount ?? 0M, currency);
+                    entity.Inventory.Compute();
 
                     transaction.Commit();
                 }

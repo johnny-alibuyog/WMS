@@ -31,5 +31,10 @@ namespace AmpedBiz.Core.Entities
             this.Product = product;
             this.Quantity = quantity;
         }
+
+        protected internal virtual void Received()
+        {
+            this.Product.Inventory.Order(this.Quantity);
+        }
     }
 }

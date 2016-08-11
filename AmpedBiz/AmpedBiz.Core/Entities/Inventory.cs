@@ -39,7 +39,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Measure Available { get; protected set; } // this.OnHand - this.Allocated
 
-        public virtual Measure InitialLevel { get; protected set; }
+        public virtual Measure InitialLevel { get; set; }
 
         public virtual Measure Shrinkage { get; protected set; } // This is the number of items that have been lost due to damage, spoilage, loss, and so on.
 
@@ -104,8 +104,11 @@ namespace AmpedBiz.Core.Entities
             this.Compute();
         }
 
-        private void Compute()
+        public virtual void Compute()
         {
+            if (this.OnHand == null)
+                this.OnHand = this.InitialLevel;
+
             this.Available = this.OnHand - this.Allocated;
             this.CurrentLevel = this.Available + this.OnOrder - this.BackOrdered;
             this.BelowTargetLevel = this.TargetLevel - this.CurrentLevel;

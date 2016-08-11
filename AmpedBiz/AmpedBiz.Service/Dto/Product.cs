@@ -75,6 +75,31 @@ namespace AmpedBiz.Service.Dto
         public decimal? DiscountAmount { get; set; }
     }
 
+    public class ProductInventoryLevelPageItem
+    {
+        public string Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Supplier { get; set; }
+
+        public string UnitOfMeasure { get; set; }
+
+        public virtual decimal? OnHandValue { get; set; }
+
+        public virtual decimal? AllocatedValue { get; set; }
+
+        public virtual decimal? AvailableValue { get; set; }
+
+        public virtual decimal? OnOrderValue { get; set; }
+
+        public virtual decimal? CurrentLevelValue { get; set; }
+
+        public virtual decimal? TargetLevelValue { get; set; }
+
+        public virtual decimal? BelowTargetLevelValue { get; set; }
+    }
+
     public class ProductOrderPageItem
     {
         public Guid Id { get; set; }
@@ -107,5 +132,22 @@ namespace AmpedBiz.Service.Dto
         public decimal? QuantityValue { get; set; }
 
         public decimal? ReceivedValue { get; set; }
+    }
+
+    public class NeedsReorderingPageItem
+    {
+        public string Id { get; set; }
+
+        public string ProductName { get; set; }
+
+        public string CategoryName { get; set; }
+
+        public decimal? AvailableValue { get; set; }
+
+        public decimal? CurrentLevelValue { get; set; }
+
+        public decimal? TargetLevelValue { get; set; }
+
+        public decimal? BelowTargetValue { get; set; }
     }
 }

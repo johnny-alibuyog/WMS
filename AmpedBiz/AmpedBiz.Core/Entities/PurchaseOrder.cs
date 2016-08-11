@@ -123,6 +123,11 @@ namespace AmpedBiz.Core.Entities
 
         protected internal virtual PurchaseOrder Process(PurchaseOrderApprovedEvent @event)
         {
+            foreach (var item in this.Items)
+            {
+                item.Approved();
+            }
+
             this.ApprovedBy = @event.ApprovedBy;
             this.ApprovedOn = @event.ApprovedOn;
             this.Status = PurchaseOrderStatus.Approved;
@@ -242,6 +247,7 @@ namespace AmpedBiz.Core.Entities
             foreach (var receipt in receipts)
             {
                 receipt.PurchaseOrder = this;
+                receipt.Received();
                 this.Receipts.Add(receipt);
             }
 

@@ -27,29 +27,9 @@ namespace AmpedBiz.Core.Entities
             );
         }
 
-        protected internal virtual PurchaseOrderItem Submit()
+        protected internal virtual void Approved()
         {
-            //this.Status = PurchaseOrderItemStatus.Submitted;
-
-            return this;
-        }
-
-        protected internal virtual PurchaseOrderItem Cancel()
-        {
-            //this.Status = PurchaseOrderItemStatus.Cancelled;
-
-            //TODO: should deduct to inventory if necessary
-
-            return this;
-        }
-
-        protected internal virtual PurchaseOrderItem Post()
-        {
-            //this.DateReceived = DateTime.Now;
-            //this.Status = PurchaseOrderItemStatus.Posted;
-
-            //TODO: should add to inventory
-            return this;
+            this.Product.Inventory.Order(this.Quantity);
         }
     }
 }

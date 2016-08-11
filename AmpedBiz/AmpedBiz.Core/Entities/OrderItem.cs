@@ -33,17 +33,17 @@ namespace AmpedBiz.Core.Entities
             this.TotalPrice = this.ExtendedPrice - this.Discount;
         }
 
-        public virtual void Invoice()
+        protected internal virtual void Invoiced()
         {
             this.Product.Inventory.Allocate(this.Quantity);
         }
 
-        public virtual void Ship()
+        protected internal virtual void Shiped()
         {
             this.Product.Inventory.Ship(this.Quantity);
         }
 
-        public virtual void BackOrder()
+        protected internal virtual void BackOrdered()
         {
             this.Product.Inventory.BackOrder(this.Quantity);
         }

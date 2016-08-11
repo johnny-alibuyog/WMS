@@ -102,6 +102,7 @@
     <Compile Include="Orders\CancelOrder.cs" />
     <Compile Include="Orders\CompleteOrder.cs" />
     <Compile Include="Orders\CreateNewOrder.cs" />
+    <Compile Include="Orders\GetActiveOrderPage.cs" />
     <Compile Include="Orders\GetOrder.cs" />
     <Compile Include="Orders\GetOrderList.cs" />
     <Compile Include="Orders\GetOrderPage.cs" />
@@ -128,8 +129,10 @@
     <Compile Include="PaymentTypes\GetPaymentTypeList.cs" />
     <Compile Include="PaymentTypes\UpdatePaymentType.cs" />
     <Compile Include="Products\CreateProduct.cs" />
+    <Compile Include="Products\GetNeedsReorderingPage.cs" />
     <Compile Include="Products\GetProduct.cs" />
     <Compile Include="Products\GetProductInventory.cs" />
+    <Compile Include="Products\GetProductInventoryLevelPage.cs" />
     <Compile Include="Products\GetProductInventoryList.cs" />
     <Compile Include="Products\GetProductList.cs" />
     <Compile Include="Products\GetProductLookup.cs" />
@@ -138,6 +141,7 @@
     <Compile Include="Products\GetProductPurchasePage.cs" />
     <Compile Include="Products\UpdateProduct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PurchaseOrders\GetActivePurchaseOrderPage.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrderReceivableList.cs" />
     <Compile Include="PurchaseOrders\UpdateNewPurchaseOder.cs" />
     <Compile Include="PurchaseOrders\PayPurchaseOrder.cs" />
