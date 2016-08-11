@@ -38,6 +38,19 @@ export interface ProductInventory {
   discountAmount?: number;
 }
 
+export interface ProductInventoryLevelPageItem {
+  id?: string;
+  name?: string;
+  unitOfMeasure?: string;
+  onHandValue?: number;
+  allocatedValue?: number;
+  availableValue?: number;
+  onOrderValue?: number;
+  currentLevelValue?: number;
+  targetLevelValue?: number;
+  belowTargetLevelValue?: number;
+}
+
 export interface ProductPurchasePageItem {
   id?: string;
   purchaseOrderNumber?: string;
@@ -56,4 +69,14 @@ export interface ProductOrderPageItem {
   status?: string;
   customerName?: string;
   quantityValue?: number;
+}
+
+export interface NeedsReorderingPageItem {
+  id?: string;
+  productName?: string;
+  categoryName?: string;
+  availableValue?: number;
+  currentLevelValue?: number;
+  targetLevelValue?: number;
+  belowTargetValue?: number;
 }

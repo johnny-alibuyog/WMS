@@ -1,7 +1,7 @@
 import {Router} from 'aurelia-router';
 import {autoinject} from 'aurelia-framework';
 import {EventAggregator, Subscription} from 'aurelia-event-aggregator';
-import {DialogService} from 'aurelia-dialog';
+import {Dictionary} from '../common/custom_types/dictionary';
 import {PurchaseOrder, PurchaseOrderStatus, purchaseOrderEvents} from '../common/models/purchase-order';
 import {PurchaseOrderNewlyCreatedEvent, PurchaseOrderSubmittedEvent, PurchaseOrderApprovedEvent, PurchaseOrderPaidEvent, PurchaseOrderReceivedEvent, PurchaseOrderCompletedEvent, PurchaseOrderCancelledEvent} from '../common/models/purchase-order-event';
 import {ServiceApi} from '../services/service-api';
@@ -12,7 +12,6 @@ import {NotificationService} from '../common/controls/notification-service';
 export class PurchaseOrderCreate {
   private _api: ServiceApi;
   private _router: Router;
-  private _dialog: DialogService;
   private _notification: NotificationService;
   private _eventAggegator: EventAggregator;
   private _subscriptions: Subscription[] = [];
@@ -26,13 +25,22 @@ export class PurchaseOrderCreate {
   public statuses: Lookup<PurchaseOrderStatus>[] = [];
   public purchaseOrder: PurchaseOrder;
 
-  constructor(api: ServiceApi, router: Router, dialog: DialogService, notification: NotificationService, eventAggegator: EventAggregator) {
+  constructor(api: ServiceApi, router: Router, notification: NotificationService, eventAggegator: EventAggregator) {
     this._api = api;
     this._router = router;
-    this._dialog = dialog;
     this._notification = notification;
     this._eventAggegator = eventAggegator;
   }
+
+  getInitializedOrder(): PurchaseOrder {
+    let purchaseOrder: PurchaseOrder = {
+      createdOn: new Date(),
+      allowedTransitions: <Dictionary<string>>{}
+    };
+    purchaseOrder.allowedTransitions[PurchaseOrderStatus[PurchaseOrderStatus.new]] = "Save";
+    return purchaseOrder;
+  }
+
 
   activate(purchaseOrder: PurchaseOrder): void {
     this._subscriptions = [
@@ -59,7 +67,9 @@ export class PurchaseOrderCreate {
       Promise<PurchaseOrder>] = [
         this._api.suppliers.getLookups(),
         this._api.purchaseOrders.getStatusLookup(),
-        this._api.purchaseOrders.get(purchaseOrder.id)
+        this.isEdit
+          ? this._api.purchaseOrders.get(purchaseOrder.id)
+          : Promise.resolve(this.getInitializedOrder())
       ];
 
     Promise.all(requests)

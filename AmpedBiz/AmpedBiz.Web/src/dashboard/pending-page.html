@@ -1,7 +1,27 @@
 <template>
   <require from="common/controls/pager"></require>
+  <require from="orders/active-order-page"></require>
+  <require from="products/needs-reordering-page"></require>
   
   <section class="au-animate">
+
+    <!-- active orders -->  
+    <div class="container col-md-12">
+      <div class="row">
+        <div class="au-stagger ">
+          <active-order-page></active-order-page>
+        </div>
+      </div>
+      <div class="row">
+        <div class="au-stagger ">
+          <needs-reordering-page></needs-reordering-page>
+        </div>
+      </div>
+    </div>
+  
+  </section>
+
+  <!--
     <div class="container col-md-8">
       <div class="row">
         <div class="au-stagger ">
@@ -70,5 +90,6 @@
         </div>
       </div>
     </div>
+    -->
   </section>
 </template>

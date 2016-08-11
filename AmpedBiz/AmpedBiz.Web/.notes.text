@@ -1,0 +1,8 @@
+
+/* moment */
+jspm install moment
+typings install moment@2.10.5 --save
+
+/* numeral */
+jspm install numeral
+typings install dt~numeraljs --global --save

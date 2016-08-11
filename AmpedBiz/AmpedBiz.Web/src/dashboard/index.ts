@@ -17,14 +17,14 @@ export class Index {
       {
         route: ['new-customer-order'],
         name: 'new-customer-order',
-        moduleId: './new-customer-order',
+        moduleId: '../orders/order-create',
         nav: true,
         title: 'New Customer Order'
       },
       {
         route: ['new-purchase-order'],
         name: 'new-purchase-order',
-        moduleId: './new-purchase-order',
+        moduleId: '../purchases/purchase-order-create',
         nav: true,
         title: 'New Purchase Order'
       }

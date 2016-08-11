@@ -15,9 +15,9 @@ export class Index {
         title: 'Products'
       },
       {
-        route: ['inventory-level'],
-        name: 'inventory-level',
-        moduleId: './inventory-level',
+        route: ['product-inventory-level-page'],
+        name: 'product-inventory-level-page',
+        moduleId: './product-inventory-level-page',
         nav: true,
         title: 'Inventory Level'
       },

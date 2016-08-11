@@ -16,11 +16,20 @@ export class ProductService extends ServiceBase<Product> {
     return this._httpClient.get(url)
       .then(response => <ProductInventory>response);
   }
+  getInventoryLevelPage(page: PageRequest): Promise<any> {
+    var url = this._resouce + '/inventory-level/page';
+    return this._httpClient.post(url, page);
+  }
 
   getLookups(): Promise<Lookup<string>[]>{
     var url = "product-lookups";
     return this._httpClient.get(url)
       .then(data => <Lookup<string>[]>data);
+  }
+  
+  getNeedsReorderingPage(page: PageRequest): Promise<any> {
+    var url = this._resouce + '/needs-reordering/page';
+    return this._httpClient.post(url, page);
   }
   
   getOrderPage(page: PageRequest): Promise<any> {
