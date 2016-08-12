@@ -21,6 +21,11 @@ export class ProductService extends ServiceBase<Product> {
     return this._httpClient.post(url, page);
   }
 
+  getDiscontinuedPage(page: PageRequest): Promise<any> {
+    var url = this._resouce + '/discontinued/page';
+    return this._httpClient.post(url, page);
+  }
+
   getLookups(): Promise<Lookup<string>[]>{
     var url = "product-lookups";
     return this._httpClient.get(url)

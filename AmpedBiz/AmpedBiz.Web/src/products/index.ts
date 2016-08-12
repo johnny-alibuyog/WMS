@@ -15,9 +15,9 @@ export class Index {
         title: 'Products'
       },
       {
-        route: ['product-inventory-level-page'],
-        name: 'product-inventory-level-page',
-        moduleId: './product-inventory-level-page',
+        route: ['inventory-level-page'],
+        name: 'inventory-level-page',
+        moduleId: './inventory-level-page',
         nav: true,
         title: 'Inventory Level'
       },
@@ -36,9 +36,9 @@ export class Index {
         title: 'Purchase History'
       },
       {
-        route: ['product-discontinued'],
-        name: 'product-discontinued',
-        moduleId: './product-discontinued',
+        route: ['discontinued-page'],
+        name: 'discontinued-page',
+        moduleId: './discontinued-page',
         nav: true,
         title: 'Discontinued Products'
       },

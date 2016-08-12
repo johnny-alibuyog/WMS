@@ -24,6 +24,18 @@ export interface ProductPageItem {
   discontinued?: boolean;
 }
 
+export interface DiscontinuedPageItem {
+  id?: string;
+  name?: string
+  description?: string;
+  supplierName?: string;
+  categoryName?: string;
+  image?: string;
+  basePriceAmount?: number;
+  retailPriceAmount?: number;
+  wholesalePriceAmount?: number;
+}
+
 export interface ProductInventory {
   id?: string;
   name?: string;
@@ -38,7 +50,7 @@ export interface ProductInventory {
   discountAmount?: number;
 }
 
-export interface ProductInventoryLevelPageItem {
+export interface InventoryLevelPageItem {
   id?: string;
   name?: string;
   unitOfMeasure?: string;

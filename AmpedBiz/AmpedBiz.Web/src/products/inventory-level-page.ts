@@ -3,7 +3,7 @@ import {Router} from 'aurelia-router';
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 import {ServiceApi} from '../services/service-api';
 import {Dictionary} from '../common/custom_types/dictionary';
-import {ProductInventoryLevelPageItem} from '../common/models/product';
+import {InventoryLevelPageItem} from '../common/models/product';
 
 @autoinject
 export class ProuctInventoryLevelPage {
@@ -12,7 +12,7 @@ export class ProuctInventoryLevelPage {
 
   public filter: Filter;
   public sorter: Sorter;
-  public pager: Pager<ProductInventoryLevelPageItem>;
+  public pager: Pager<InventoryLevelPageItem>;
 
   constructor(api: ServiceApi, router: Router) {
     this._api = api;
@@ -36,7 +36,7 @@ export class ProuctInventoryLevelPage {
     this.sorter["belowTargetLevel"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
 
-    this.pager = new Pager<ProductInventoryLevelPageItem>();
+    this.pager = new Pager<InventoryLevelPageItem>();
     this.pager.onPage = () => this.getPage();
   }
 
@@ -52,13 +52,13 @@ export class ProuctInventoryLevelPage {
         pager: <PagerRequest>this.pager
       })
       .then(data => {
-        var response = <PagerResponse<ProductInventoryLevelPageItem>>data;
+        var response = <PagerResponse<InventoryLevelPageItem>>data;
         this.pager.count = response.count;
         this.pager.items = response.items;
       });
   }
 
-  view(item: ProductInventoryLevelPageItem): void {
+  view(item: InventoryLevelPageItem): void {
     this._router.navigateToRoute("order-view", { id: item.id });
   }
 }
