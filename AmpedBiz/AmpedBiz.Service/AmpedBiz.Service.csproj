@@ -129,6 +129,7 @@
     <Compile Include="PaymentTypes\GetPaymentTypeList.cs" />
     <Compile Include="PaymentTypes\UpdatePaymentType.cs" />
     <Compile Include="Products\CreateProduct.cs" />
+    <Compile Include="Products\GetDiscontinuedPage.cs" />
     <Compile Include="Products\GetNeedsReorderingPage.cs" />
     <Compile Include="Products\GetProduct.cs" />
     <Compile Include="Products\GetProductInventory.cs" />

@@ -50,6 +50,27 @@ namespace AmpedBiz.Service.Dto
         public bool Discontinued { get; set; }
     }
 
+    public class DiscontinuedPageItem
+    {
+        public string Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public string SupplierName { get; set; }
+
+        public string CategoryName { get; set; }
+
+        public string Image { get; set; }
+
+        public decimal? BasePriceAmount { get; set; }
+
+        public decimal? RetailPriceAmount { get; set; }
+
+        public decimal? WholesalePriceAmount { get; set; }
+    }
+
     public class ProductInventory
     {
         public string Id { get; set; }

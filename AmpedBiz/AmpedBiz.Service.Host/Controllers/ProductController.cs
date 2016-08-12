@@ -67,6 +67,13 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpPost()]
+        [Route("discontinued/page")]
+        public GetDiscontinuedPage.Response Process([FromBody]GetDiscontinuedPage.Request request)
+        {
+            return _mediator.Send(request ?? new GetDiscontinuedPage.Request());
+        }
+
+        [HttpPost()]
         [Route("inventory-level/page")]
         public GetProductInventoryLevelPage.Response Process([FromBody]GetProductInventoryLevelPage.Request request)
         {
