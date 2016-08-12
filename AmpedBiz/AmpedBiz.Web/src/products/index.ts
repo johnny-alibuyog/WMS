@@ -22,26 +22,41 @@ export class Index {
         title: 'Inventory Level'
       },
       {
-        route: ['product-order-history'],
-        name: 'product-order-history',
-        moduleId: './product-order-history',
-        nav: true,
-        title: 'Order History'
-      },
-      {
-        route: ['product-purchase-history'],
-        name: 'product-purchase-history',
-        moduleId: '../purchases/po-history',
-        nav: true,
-        title: 'Purchase History'
-      },
-      {
         route: ['discontinued-page'],
         name: 'discontinued-page',
         moduleId: './discontinued-page',
         nav: true,
         title: 'Discontinued Products'
       },
+      {
+        route: ['product-category-page'],
+        name: 'product-category-page',
+        moduleId: './product-category-page',
+        nav: true,
+        title: 'Categories'
+      },
+      {
+        route: ['supplier-page'],
+        name: 'supplier-page',
+        moduleId: './supplier-page',
+        nav: true,
+        title: 'Suppliers'
+      },
+      {
+        route: ['unit-of-measure-page'],
+        name: 'unit-of-measure-page',
+        moduleId: './unit-of-measure-page',
+        nav: true,
+        title: 'Unit of Measures'
+      },
+      {
+        route: ['unit-of-measure-class-page'],
+        name: 'unit-of-measure-class-page',
+        moduleId: './unit-of-measure-class-page',
+        nav: true,
+        title: 'Unit of Measures Class'
+      },
+
       {
         route: ['product-create'],
         name: 'product-create',
@@ -64,7 +79,7 @@ export class Index {
         title: 'Order'
       },
     ]);
-    
+
     this.router = router;
   }
 }

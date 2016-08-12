@@ -1,0 +1,109 @@
+<template>
+  <require from="common/controls/pager"></require>
+
+  <section class="row row-no-padding">
+
+    <div class="col-md-10">
+
+      <div class="panel panel-default">
+
+        <!-- heading -->
+        <div class="panel-heading">
+
+          <!-- heading label -->
+          <h4 class="panel-title row">
+            <span>&nbsp Suppliers &nbsp</span>
+
+            <!-- create new -->
+            <button type="button" class="btn btn-default" click.delegate="create()">
+              <i class="fa fa-plus"></i> Create New
+            </button>
+
+            <!-- search -->
+            <form class="search-form form-horizontal pull-right" role="form" submit.delegate="filter.doFilter()">
+
+              <div class="search-form input">
+                <input type="text" class="form-control" placeholder="Search by code..." value.bind="filter['code']" keyup.delegate="filter.doFilter() & throttle:200"
+                />
+              </div>
+
+              <div class="search-form input">
+                <input type="text" class="form-control" placeholder="Search by name..." value.bind="filter['name']" keyup.delegate="filter.doFilter() & throttle:200"
+                />
+              </div>
+
+              <div class="search-form input">
+                <select class="form-control" value.bind="filter['unitOfMeasureClassId']" change.delegate="filter.doFilter()">
+                  <option value="">All Class</option>
+                  <option repeat.for="class of unitOfMeasureClasses" model.bind="class.id">${class.name}</option>
+                </select>
+              </div>
+
+              <div class="search-form input">
+                <button class="btn btn-default" type="submit">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+
+            </form>
+
+          </h4>
+
+        </div>
+
+        <!-- body -->
+        <div class="panel-body">
+
+          <!-- content -->
+          <table class="table table-striped table-condensed table-hover">
+            <thead>
+              <tr>
+                <th class="col-md-1">Action</th>
+                <th class="col-md-1" click.delegate="sorter.doSort('code')">
+                  <i class="fa fa-fw fa-${sorter.class(sorter['code'])}"></i>Code
+                </th>
+                <th class="col-md-2" click.delegate="sorter.doSort('unitOfMeasureClassName')">
+                  <i class="fa fa-fw fa-${sorter.class(sorter['unitOfMeasureClassName'])}"></i>Class
+                </th>
+                <th class="col-md-4" click.delegate="sorter.doSort('name')">
+                  <i class="fa fa-fw fa-${sorter.class(sorter['name'])}"></i>Name
+                </th>
+                <th class="col-md-2" click.delegate="sorter.doSort('isBaseUnit')">
+                  <i class="fa fa-fw fa-${sorter.class(sorter['isBaseUnit'])}"></i>IsBase
+                </th>
+                <th class="col-md-2 text-right" click.delegate="sorter.doSort('conversionFactor')">
+                  <i class="fa fa-fw fa-${sorter.class(sorter['conversionFactor'])}"></i>Conversion
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr repeat.for="item of pager.items" click.delegate="edit(item)">
+                <td>
+                  <a href="javascript:undefined" class="text-info" click.delegate="edit(item)">
+                    <i class="fa fa-pencil"></i>
+                  </a>
+                  <a href="javascript:undefined" class="text-danger" click.delegate="delete(item)">
+                    <i class="fa fa-times"></i>
+                  </a>
+                </td>
+                <td>${item.id}</td>
+                <td>${item.unitOfMeasureClassName}</td>
+                <td>${item.name}</td>
+                <td>${item.isBaseUnit}</td>
+                <td class="text-right">${item.conversionFactor}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- pager -->
+          <pager current-page.bind="pager.offset" total-items.bind="pager.count" change.delegate="pager.doPage($event)" />
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</template>

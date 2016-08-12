@@ -1,0 +1,61 @@
+﻿{
+  "OrderTransitions": {
+    "New": {
+      "New": "Save",
+      "Invoiced": "Invoice",
+      "Cancelled": "Cancel"
+    },
+    "Invoiced": {
+      "Paid": "Pay",
+      "Cancelled": "Cancel"
+    },
+    "Paid": {
+      "Paid": "Pay",
+      "Staged": "Stage",
+      "Shipped": "Ship",
+      "Cancelled": "Cancel"
+    },
+    "Staged": {
+      "Paid": "Pay",
+      "Shipped": "Ship",
+      "Cancelled": "Cancel"
+    },
+    "Shipped": {
+      "Paid": "Pay",
+      "Completed": "Complete",
+      "Cancelled": "Cancel"
+    },
+    "Completed": {},
+    "Cancelled": {}
+  },
+  "PurchaseOrderTransitions": {
+    "New": {
+      "New": "Save",
+      "Submitted": "Submitt",
+      "Cancelled": "Cancel"
+    },
+    "Submitted": {
+      "New": "Reject",
+      "Approved": "Approve",
+      "Cancelled": "Cancel"
+    },
+    "Approved": {
+      "Paid": "Pay",
+      "Cancelled": "Cancel"
+    },
+    "Paid": {
+      "Paid": "Pay",
+      "Received": "Receive",
+      "Completed": "Complete",
+      "Cancelled": "Cancel"
+    },
+    "Received": {
+      "Paid": "Pay",
+      "Received": "Receive",
+      "Completed": "Complete",
+      "Cancelled": "Cancel"
+    },
+    "Completed": {},
+    "Cancelled": {}
+  }
+}

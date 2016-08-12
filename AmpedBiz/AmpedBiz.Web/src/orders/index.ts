@@ -115,7 +115,14 @@ export class Index {
         moduleId: './order-create',
         nav: false,
         title: 'Create Order'
-      }
+      },
+      {
+        route: ['customer-page'],
+        name: 'customer-page',
+        moduleId: './customer-page',
+        nav: true,
+        title: 'Customers'
+      },
     ]);
     /*
     On-Staging
