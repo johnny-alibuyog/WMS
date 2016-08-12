@@ -1,8 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ucPricelistSelector.ascx.cs" Inherits="AmpedBiz.Reports.ReportViewers.ucPricelistSelector" %>
-
-<h5><u>Display Product Pricelist</u></h5>
-<div style="height: 20px; line-height: 20px;"></div>
-
+<h6 class="page-header" style="margin: 0px 0px 10px 0px;"></h6>
 <asp:ObjectDataSource ID="odsSupplier" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="GetSuppliers" TypeName="AmpedBiz.Reports.Datasource.AmpedBizDatasetTableAdapters.dtSuppliersTableAdapter"></asp:ObjectDataSource>
 
 <asp:ObjectDataSource ID="odsCategory" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="GetCategories" TypeName="AmpedBiz.Reports.Datasource.AmpedBizDatasetTableAdapters.dtProductCategoriesTableAdapter"></asp:ObjectDataSource>

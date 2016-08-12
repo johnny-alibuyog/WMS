@@ -1,7 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ucOrderListSelector.ascx.cs" Inherits="AmpedBiz.Reports.ReportViewers.ucOrderListSelector" %>
-<h5><u>Display Order List</u></h5>
-<div style="height: 20px; line-height: 20px;"></div>
-
+<h6 class="page-header" style="margin: 0px 0px 10px 0px;"></h6>
 <asp:UpdatePanel ID="UpdatePanel1" runat="server">
     <ContentTemplate>
         <div class="container" style="margin-left: 10px;">

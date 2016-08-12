@@ -1,9 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ucCustomerList.ascx.cs" Inherits="AmpedBiz.Reports.ReportViewers.ucCustomerList" %>
-<h5><u>Display Customer List</u></h5>
-<div style="height: 20px; line-height: 20px;"></div>
-
 <asp:ObjectDataSource ID="odsCustomer" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="GetCustomers" TypeName="AmpedBiz.Reports.Datasource.AmpedBizDatasetTableAdapters.dtCustomersTableAdapter"></asp:ObjectDataSource>
-
+<h6 class="page-header" style="margin: 0px 0px 10px 0px;"></h6>
 <asp:UpdatePanel ID="UpdatePanel1" runat="server">
     <ContentTemplate>
         <div class="container" style="margin-left: 10px;">

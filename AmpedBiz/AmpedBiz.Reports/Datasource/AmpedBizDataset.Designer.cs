@@ -458,9 +458,11 @@ namespace AmpedBiz.Reports.Datasource {
             
             private global::System.Data.DataColumn columnName;
             
-            private global::System.Data.DataColumn columnconvertion;
-            
             private global::System.Data.DataColumn columnsymbol;
+            
+            private global::System.Data.DataColumn columnconversionfactor;
+            
+            private global::System.Data.DataColumn columnisbaseunit;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -513,17 +515,25 @@ namespace AmpedBiz.Reports.Datasource {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn convertionColumn {
+            public global::System.Data.DataColumn symbolColumn {
                 get {
-                    return this.columnconvertion;
+                    return this.columnsymbol;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn symbolColumn {
+            public global::System.Data.DataColumn conversionfactorColumn {
                 get {
-                    return this.columnsymbol;
+                    return this.columnconversionfactor;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn isbaseunitColumn {
+                get {
+                    return this.columnisbaseunit;
                 }
             }
             
@@ -564,13 +574,14 @@ namespace AmpedBiz.Reports.Datasource {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dtUOMRow AdddtUOMRow(string measurement, string Name, decimal convertion, string symbol) {
+            public dtUOMRow AdddtUOMRow(string measurement, string Name, string symbol, decimal conversionfactor, bool isbaseunit) {
                 dtUOMRow rowdtUOMRow = ((dtUOMRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         measurement,
                         Name,
-                        convertion,
-                        symbol};
+                        symbol,
+                        conversionfactor,
+                        isbaseunit};
                 rowdtUOMRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdtUOMRow);
                 return rowdtUOMRow;
@@ -602,8 +613,9 @@ namespace AmpedBiz.Reports.Datasource {
             internal void InitVars() {
                 this.columnmeasurement = base.Columns["measurement"];
                 this.columnName = base.Columns["Name"];
-                this.columnconvertion = base.Columns["convertion"];
                 this.columnsymbol = base.Columns["symbol"];
+                this.columnconversionfactor = base.Columns["conversionfactor"];
+                this.columnisbaseunit = base.Columns["isbaseunit"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -613,21 +625,24 @@ namespace AmpedBiz.Reports.Datasource {
                 base.Columns.Add(this.columnmeasurement);
                 this.columnName = new global::System.Data.DataColumn("Name", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnName);
-                this.columnconvertion = new global::System.Data.DataColumn("convertion", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnconvertion);
                 this.columnsymbol = new global::System.Data.DataColumn("symbol", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnsymbol);
+                this.columnconversionfactor = new global::System.Data.DataColumn("conversionfactor", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnconversionfactor);
+                this.columnisbaseunit = new global::System.Data.DataColumn("isbaseunit", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnisbaseunit);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnsymbol}, true));
                 this.columnmeasurement.ReadOnly = true;
                 this.columnmeasurement.MaxLength = 255;
                 this.columnName.ReadOnly = true;
                 this.columnName.MaxLength = 255;
-                this.columnconvertion.ReadOnly = true;
                 this.columnsymbol.AllowDBNull = false;
                 this.columnsymbol.ReadOnly = true;
                 this.columnsymbol.Unique = true;
                 this.columnsymbol.MaxLength = 255;
+                this.columnconversionfactor.ReadOnly = true;
+                this.columnisbaseunit.ReadOnly = true;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -769,15 +784,17 @@ namespace AmpedBiz.Reports.Datasource {
             
             private global::System.Data.DataColumn columnsupplier;
             
-            private global::System.Data.DataColumn columnbaseprice;
-            
-            private global::System.Data.DataColumn columnretailprice;
-            
-            private global::System.Data.DataColumn columnwholeprice;
-            
             private global::System.Data.DataColumn columnproductid;
             
             private global::System.Data.DataColumn columndiscontinued;
+            
+            private global::System.Data.DataColumn columnbaseprice_amount;
+            
+            private global::System.Data.DataColumn columnretailprice_amount;
+            
+            private global::System.Data.DataColumn columnwholesaleprice_amount;
+            
+            private global::System.Data.DataColumn columnunitofmeasureid;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -846,30 +863,6 @@ namespace AmpedBiz.Reports.Datasource {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn basepriceColumn {
-                get {
-                    return this.columnbaseprice;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn retailpriceColumn {
-                get {
-                    return this.columnretailprice;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn wholepriceColumn {
-                get {
-                    return this.columnwholeprice;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn productidColumn {
                 get {
                     return this.columnproductid;
@@ -881,6 +874,38 @@ namespace AmpedBiz.Reports.Datasource {
             public global::System.Data.DataColumn discontinuedColumn {
                 get {
                     return this.columndiscontinued;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn baseprice_amountColumn {
+                get {
+                    return this.columnbaseprice_amount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn retailprice_amountColumn {
+                get {
+                    return this.columnretailprice_amount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn wholesaleprice_amountColumn {
+                get {
+                    return this.columnwholesaleprice_amount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn unitofmeasureidColumn {
+                get {
+                    return this.columnunitofmeasureid;
                 }
             }
             
@@ -921,18 +946,19 @@ namespace AmpedBiz.Reports.Datasource {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dtProductsRow AdddtProductsRow(string category, string Name, string description, string supplier, decimal baseprice, decimal retailprice, decimal wholeprice, string productid, bool discontinued) {
+            public dtProductsRow AdddtProductsRow(string category, string Name, string description, string supplier, string productid, bool discontinued, decimal baseprice_amount, decimal retailprice_amount, decimal wholesaleprice_amount, string unitofmeasureid) {
                 dtProductsRow rowdtProductsRow = ((dtProductsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         category,
                         Name,
                         description,
                         supplier,
-                        baseprice,
-                        retailprice,
-                        wholeprice,
                         productid,
-                        discontinued};
+                        discontinued,
+                        baseprice_amount,
+                        retailprice_amount,
+                        wholesaleprice_amount,
+                        unitofmeasureid};
                 rowdtProductsRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdtProductsRow);
                 return rowdtProductsRow;
@@ -966,11 +992,12 @@ namespace AmpedBiz.Reports.Datasource {
                 this.columnName = base.Columns["Name"];
                 this.columndescription = base.Columns["description"];
                 this.columnsupplier = base.Columns["supplier"];
-                this.columnbaseprice = base.Columns["baseprice"];
-                this.columnretailprice = base.Columns["retailprice"];
-                this.columnwholeprice = base.Columns["wholeprice"];
                 this.columnproductid = base.Columns["productid"];
                 this.columndiscontinued = base.Columns["discontinued"];
+                this.columnbaseprice_amount = base.Columns["baseprice_amount"];
+                this.columnretailprice_amount = base.Columns["retailprice_amount"];
+                this.columnwholesaleprice_amount = base.Columns["wholesaleprice_amount"];
+                this.columnunitofmeasureid = base.Columns["unitofmeasureid"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -984,16 +1011,18 @@ namespace AmpedBiz.Reports.Datasource {
                 base.Columns.Add(this.columndescription);
                 this.columnsupplier = new global::System.Data.DataColumn("supplier", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnsupplier);
-                this.columnbaseprice = new global::System.Data.DataColumn("baseprice", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnbaseprice);
-                this.columnretailprice = new global::System.Data.DataColumn("retailprice", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnretailprice);
-                this.columnwholeprice = new global::System.Data.DataColumn("wholeprice", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnwholeprice);
                 this.columnproductid = new global::System.Data.DataColumn("productid", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnproductid);
                 this.columndiscontinued = new global::System.Data.DataColumn("discontinued", typeof(bool), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columndiscontinued);
+                this.columnbaseprice_amount = new global::System.Data.DataColumn("baseprice_amount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnbaseprice_amount);
+                this.columnretailprice_amount = new global::System.Data.DataColumn("retailprice_amount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnretailprice_amount);
+                this.columnwholesaleprice_amount = new global::System.Data.DataColumn("wholesaleprice_amount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnwholesaleprice_amount);
+                this.columnunitofmeasureid = new global::System.Data.DataColumn("unitofmeasureid", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnunitofmeasureid);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnproductid}, true));
                 this.columncategory.ReadOnly = true;
@@ -1004,14 +1033,17 @@ namespace AmpedBiz.Reports.Datasource {
                 this.columndescription.MaxLength = 255;
                 this.columnsupplier.ReadOnly = true;
                 this.columnsupplier.MaxLength = 150;
-                this.columnbaseprice.ReadOnly = true;
-                this.columnretailprice.ReadOnly = true;
-                this.columnwholeprice.ReadOnly = true;
                 this.columnproductid.AllowDBNull = false;
                 this.columnproductid.ReadOnly = true;
                 this.columnproductid.Unique = true;
                 this.columnproductid.MaxLength = 255;
                 this.columndiscontinued.ReadOnly = true;
+                this.columnbaseprice_amount.ReadOnly = true;
+                this.columnretailprice_amount.ReadOnly = true;
+                this.columnwholesaleprice_amount.ReadOnly = true;
+                this.columnunitofmeasureid.AllowDBNull = false;
+                this.columnunitofmeasureid.ReadOnly = true;
+                this.columnunitofmeasureid.MaxLength = 255;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3063,28 +3095,44 @@ namespace AmpedBiz.Reports.Datasource {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal convertion {
-                get {
-                    try {
-                        return ((decimal)(this[this.tabledtUOM.convertionColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'convertion\' in table \'dtUOM\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tabledtUOM.convertionColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string symbol {
                 get {
                     return ((string)(this[this.tabledtUOM.symbolColumn]));
                 }
                 set {
                     this[this.tabledtUOM.symbolColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal conversionfactor {
+                get {
+                    try {
+                        return ((decimal)(this[this.tabledtUOM.conversionfactorColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'conversionfactor\' in table \'dtUOM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtUOM.conversionfactorColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool isbaseunit {
+                get {
+                    try {
+                        return ((bool)(this[this.tabledtUOM.isbaseunitColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'isbaseunit\' in table \'dtUOM\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtUOM.isbaseunitColumn] = value;
                 }
             }
             
@@ -3114,14 +3162,26 @@ namespace AmpedBiz.Reports.Datasource {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsconvertionNull() {
-                return this.IsNull(this.tabledtUOM.convertionColumn);
+            public bool IsconversionfactorNull() {
+                return this.IsNull(this.tabledtUOM.conversionfactorColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetconvertionNull() {
-                this[this.tabledtUOM.convertionColumn] = global::System.Convert.DBNull;
+            public void SetconversionfactorNull() {
+                this[this.tabledtUOM.conversionfactorColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsisbaseunitNull() {
+                return this.IsNull(this.tabledtUOM.isbaseunitColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetisbaseunitNull() {
+                this[this.tabledtUOM.isbaseunitColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -3205,54 +3265,6 @@ namespace AmpedBiz.Reports.Datasource {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal baseprice {
-                get {
-                    try {
-                        return ((decimal)(this[this.tabledtProducts.basepriceColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'baseprice\' in table \'dtProducts\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tabledtProducts.basepriceColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal retailprice {
-                get {
-                    try {
-                        return ((decimal)(this[this.tabledtProducts.retailpriceColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'retailprice\' in table \'dtProducts\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tabledtProducts.retailpriceColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal wholeprice {
-                get {
-                    try {
-                        return ((decimal)(this[this.tabledtProducts.wholepriceColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'wholeprice\' in table \'dtProducts\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tabledtProducts.wholepriceColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string productid {
                 get {
                     return ((string)(this[this.tabledtProducts.productidColumn]));
@@ -3275,6 +3287,65 @@ namespace AmpedBiz.Reports.Datasource {
                 }
                 set {
                     this[this.tabledtProducts.discontinuedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal baseprice_amount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tabledtProducts.baseprice_amountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'baseprice_amount\' in table \'dtProducts\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtProducts.baseprice_amountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal retailprice_amount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tabledtProducts.retailprice_amountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'retailprice_amount\' in table \'dtProducts\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtProducts.retailprice_amountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal wholesaleprice_amount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tabledtProducts.wholesaleprice_amountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'wholesaleprice_amount\' in table \'dtProducts\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtProducts.wholesaleprice_amountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string unitofmeasureid {
+                get {
+                    return ((string)(this[this.tabledtProducts.unitofmeasureidColumn]));
+                }
+                set {
+                    this[this.tabledtProducts.unitofmeasureidColumn] = value;
                 }
             }
             
@@ -3328,42 +3399,6 @@ namespace AmpedBiz.Reports.Datasource {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsbasepriceNull() {
-                return this.IsNull(this.tabledtProducts.basepriceColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetbasepriceNull() {
-                this[this.tabledtProducts.basepriceColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsretailpriceNull() {
-                return this.IsNull(this.tabledtProducts.retailpriceColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetretailpriceNull() {
-                this[this.tabledtProducts.retailpriceColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IswholepriceNull() {
-                return this.IsNull(this.tabledtProducts.wholepriceColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetwholepriceNull() {
-                this[this.tabledtProducts.wholepriceColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsdiscontinuedNull() {
                 return this.IsNull(this.tabledtProducts.discontinuedColumn);
             }
@@ -3372,6 +3407,42 @@ namespace AmpedBiz.Reports.Datasource {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetdiscontinuedNull() {
                 this[this.tabledtProducts.discontinuedColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool Isbaseprice_amountNull() {
+                return this.IsNull(this.tabledtProducts.baseprice_amountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void Setbaseprice_amountNull() {
+                this[this.tabledtProducts.baseprice_amountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool Isretailprice_amountNull() {
+                return this.IsNull(this.tabledtProducts.retailprice_amountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void Setretailprice_amountNull() {
+                this[this.tabledtProducts.retailprice_amountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool Iswholesaleprice_amountNull() {
+                return this.IsNull(this.tabledtProducts.wholesaleprice_amountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void Setwholesaleprice_amountNull() {
+                this[this.tabledtProducts.wholesaleprice_amountColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -5260,8 +5331,9 @@ namespace AmpedBiz.Reports.Datasource.AmpedBizDatasetTableAdapters {
             tableMapping.DataSetTable = "dtUOM";
             tableMapping.ColumnMappings.Add("measurement", "measurement");
             tableMapping.ColumnMappings.Add("Name", "Name");
-            tableMapping.ColumnMappings.Add("convertion", "convertion");
             tableMapping.ColumnMappings.Add("symbol", "symbol");
+            tableMapping.ColumnMappings.Add("conversionfactor", "conversionfactor");
+            tableMapping.ColumnMappings.Add("isbaseunit", "isbaseunit");
             this._adapter.TableMappings.Add(tableMapping);
         }
         
@@ -5278,7 +5350,9 @@ namespace AmpedBiz.Reports.Datasource.AmpedBizDatasetTableAdapters {
             this._commandCollection = new global::Devart.Data.PostgreSql.PgSqlCommand[1];
             this._commandCollection[0] = new global::Devart.Data.PostgreSql.PgSqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = @"SELECT unitofmeasureclasses.""name"" AS Measurement, unitofmeasures.""name"" AS ""Name"", unitofmeasures.convertionfactor AS Convertion, unitofmeasures.unitofmeasureid AS Symbol FROM unitofmeasureclasses INNER JOIN unitofmeasures ON unitofmeasureclasses.unitofmeasureclassid = unitofmeasures.unitofmeasureclassid";
+            this._commandCollection[0].CommandText = @"SELECT        unitofmeasureclasses.""name"" AS Measurement, unitofmeasures.""name"" AS ""Name"", unitofmeasures.unitofmeasureid AS Symbol, unitofmeasures.conversionfactor, unitofmeasures.isbaseunit
+FROM            unitofmeasureclasses INNER JOIN
+                         unitofmeasures ON unitofmeasureclasses.unitofmeasureclassid = unitofmeasures.unitofmeasureclassid";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -5432,11 +5506,12 @@ namespace AmpedBiz.Reports.Datasource.AmpedBizDatasetTableAdapters {
             tableMapping.ColumnMappings.Add("Name", "Name");
             tableMapping.ColumnMappings.Add("description", "description");
             tableMapping.ColumnMappings.Add("supplier", "supplier");
-            tableMapping.ColumnMappings.Add("baseprice", "baseprice");
-            tableMapping.ColumnMappings.Add("retailprice", "retailprice");
-            tableMapping.ColumnMappings.Add("wholeprice", "wholeprice");
             tableMapping.ColumnMappings.Add("productid", "productid");
             tableMapping.ColumnMappings.Add("discontinued", "discontinued");
+            tableMapping.ColumnMappings.Add("baseprice_amount", "baseprice_amount");
+            tableMapping.ColumnMappings.Add("retailprice_amount", "retailprice_amount");
+            tableMapping.ColumnMappings.Add("wholesaleprice_amount", "wholesaleprice_amount");
+            tableMapping.ColumnMappings.Add("unitofmeasureid", "unitofmeasureid");
             this._adapter.TableMappings.Add(tableMapping);
         }
         
@@ -5453,11 +5528,26 @@ namespace AmpedBiz.Reports.Datasource.AmpedBizDatasetTableAdapters {
             this._commandCollection = new global::Devart.Data.PostgreSql.PgSqlCommand[4];
             this._commandCollection[0] = new global::Devart.Data.PostgreSql.PgSqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = @"SELECT productcategories.""name"" AS Category, products.""name"" AS ""Name"", products.description, suppliers.""name"" AS Supplier, products.baseprice_amount AS BasePrice, products.retailprice_amount AS RetailPrice, products.wholesaleprice_amount AS WholePrice, products.productid, products.discontinued FROM suppliers INNER JOIN products ON suppliers.supplierid = products.supplierid INNER JOIN productcategories ON productcategories.productcategoryid = products.categoryid ORDER BY products.productid";
+            this._commandCollection[0].CommandText = @"SELECT        productcategories.""name"" AS Category, products.""name"" AS ""Name"", products.description, suppliers.""name"" AS Supplier, products.productid, products.discontinued, inventories.baseprice_amount, 
+                         inventories.retailprice_amount, inventories.wholesaleprice_amount, unitofmeasures.unitofmeasureid
+FROM            products INNER JOIN
+                         productcategories ON productcategories.productcategoryid = products.categoryid INNER JOIN
+                         suppliers ON suppliers.supplierid = products.supplierid LEFT OUTER JOIN
+                         inventories ON products.productid = inventories.inventoryid LEFT OUTER JOIN
+                         unitofmeasures ON unitofmeasures.unitofmeasureid = inventories.unitofmeasureid
+ORDER BY products.productid";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::Devart.Data.PostgreSql.PgSqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = @"SELECT productcategories.""name"" AS Category, products.""name"" AS ""Name"", products.description, suppliers.""name"" AS Supplier, products.baseprice_amount AS BasePrice, products.retailprice_amount AS RetailPrice, products.wholesaleprice_amount AS WholePrice, products.productid, products.discontinued, productcategories.productcategoryid, suppliers.supplierid FROM suppliers INNER JOIN products ON suppliers.supplierid = products.supplierid INNER JOIN productcategories ON productcategories.productcategoryid = products.categoryid WHERE (productcategories.productcategoryid = :paramCategory) ORDER BY products.productid";
+            this._commandCollection[1].CommandText = @"SELECT        productcategories.""name"" AS Category, products.""name"" AS ""Name"", products.description, suppliers.""name"" AS Supplier, products.productid, products.discontinued, inventories.baseprice_amount, 
+                         inventories.retailprice_amount, inventories.wholesaleprice_amount, unitofmeasures.unitofmeasureid
+FROM            products INNER JOIN
+                         productcategories ON productcategories.productcategoryid = products.categoryid INNER JOIN
+                         suppliers ON suppliers.supplierid = products.supplierid LEFT OUTER JOIN
+                         inventories ON products.productid = inventories.inventoryid LEFT OUTER JOIN
+                         unitofmeasures ON unitofmeasures.unitofmeasureid = inventories.unitofmeasureid
+WHERE        (productcategories.productcategoryid = :paramCategory)
+ORDER BY products.productid";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
             global::Devart.Data.PostgreSql.PgSqlParameter param = new global::Devart.Data.PostgreSql.PgSqlParameter();
             param.ParameterName = "paramCategory";
@@ -5468,7 +5558,15 @@ namespace AmpedBiz.Reports.Datasource.AmpedBizDatasetTableAdapters {
             this._commandCollection[1].Parameters.Add(param);
             this._commandCollection[2] = new global::Devart.Data.PostgreSql.PgSqlCommand();
             this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = @"SELECT productcategories.""name"" AS Category, products.""name"" AS ""Name"", products.description, suppliers.""name"" AS Supplier, products.baseprice_amount AS BasePrice, products.retailprice_amount AS RetailPrice, products.wholesaleprice_amount AS WholePrice, products.productid, products.discontinued FROM suppliers INNER JOIN products ON suppliers.supplierid = products.supplierid INNER JOIN productcategories ON productcategories.productcategoryid = products.categoryid WHERE (products.discontinued = :paramDiscontinued) ORDER BY products.productid";
+            this._commandCollection[2].CommandText = @"SELECT        productcategories.""name"" AS Category, products.""name"" AS ""Name"", products.description, suppliers.""name"" AS Supplier, products.productid, products.discontinued, inventories.baseprice_amount, 
+                         inventories.retailprice_amount, inventories.wholesaleprice_amount, unitofmeasures.unitofmeasureid
+FROM            products INNER JOIN
+                         productcategories ON productcategories.productcategoryid = products.categoryid INNER JOIN
+                         suppliers ON suppliers.supplierid = products.supplierid LEFT OUTER JOIN
+                         inventories ON products.productid = inventories.inventoryid LEFT OUTER JOIN
+                         unitofmeasures ON unitofmeasures.unitofmeasureid = inventories.unitofmeasureid
+WHERE        (products.discontinued = :paramDiscontinued)
+ORDER BY products.productid";
             this._commandCollection[2].CommandType = global::System.Data.CommandType.Text;
             param = new global::Devart.Data.PostgreSql.PgSqlParameter();
             param.ParameterName = "paramDiscontinued";
@@ -5480,7 +5578,15 @@ namespace AmpedBiz.Reports.Datasource.AmpedBizDatasetTableAdapters {
             this._commandCollection[2].Parameters.Add(param);
             this._commandCollection[3] = new global::Devart.Data.PostgreSql.PgSqlCommand();
             this._commandCollection[3].Connection = this.Connection;
-            this._commandCollection[3].CommandText = @"SELECT productcategories.""name"" AS Category, products.""name"" AS ""Name"", products.description, suppliers.""name"" AS Supplier, products.baseprice_amount AS BasePrice, products.retailprice_amount AS RetailPrice, products.wholesaleprice_amount AS WholePrice, products.productid, products.discontinued, suppliers.supplierid, productcategories.productcategoryid FROM suppliers INNER JOIN products ON suppliers.supplierid = products.supplierid INNER JOIN productcategories ON productcategories.productcategoryid = products.categoryid WHERE (suppliers.supplierid = :paramSupplier) ORDER BY products.productid";
+            this._commandCollection[3].CommandText = @"SELECT        productcategories.""name"" AS Category, products.""name"" AS ""Name"", products.description, suppliers.""name"" AS Supplier, products.productid, products.discontinued, inventories.baseprice_amount, 
+                         inventories.retailprice_amount, inventories.wholesaleprice_amount, unitofmeasures.unitofmeasureid
+FROM            products INNER JOIN
+                         productcategories ON productcategories.productcategoryid = products.categoryid INNER JOIN
+                         suppliers ON suppliers.supplierid = products.supplierid LEFT OUTER JOIN
+                         inventories ON products.productid = inventories.inventoryid LEFT OUTER JOIN
+                         unitofmeasures ON unitofmeasures.unitofmeasureid = inventories.unitofmeasureid
+WHERE        (suppliers.supplierid = :paramSupplier)
+ORDER BY products.productid";
             this._commandCollection[3].CommandType = global::System.Data.CommandType.Text;
             param = new global::Devart.Data.PostgreSql.PgSqlParameter();
             param.ParameterName = "paramSupplier";
