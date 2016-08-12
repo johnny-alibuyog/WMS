@@ -12,8 +12,13 @@ export let appConfig = {
   api: {
     baseUrl: 'http://localhost:49242',
   },
-  report: {
-    baseUrl: '',
+  reportMapping: {
+    baseUrl: 'http://localhost:64038/ReportViewers/MainViewer.aspx?DFD18FD7-9D34-4692-B7F9-7E54BFB4B0EB=',
+    priceList: 'ucpricelistselector.ascx',
+    uom: 'ucUOMDetails.ascx',
+    customerList: 'ucCustomerList.ascx',
+    supplierList: 'ucSupplierList.ascx',
+    orderList:'ucOrderListSelector.ascx'
   },
   page: <PageConfig>{
     maxSize: 5,

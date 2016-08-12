@@ -9,6 +9,7 @@ export class ReportPage {
   private _router: Router;
 
   public header: string = ' Reports';
+  public reportPath: string = '';
 
   constructor(api: ServiceApi, router: Router) {
     this._api = api;
@@ -29,26 +30,10 @@ export class ReportPage {
       this.header = routeConfig.title;
       this.getPage();
     });*/
+    this.reportPath = routeConfig.settings.reportSource;
   }
 
   determineActivationStrategy(): string {
     return activationStrategy.invokeLifecycle;
   }
-/*
-  getPage(): void {
-    this._api.orders
-      .getPage({
-        filter: this.filter,
-        sorter: this.sorter,
-        pager: <PagerRequest>this.pager
-      })
-      .then(data => {
-        var response = <PagerResponse<OrderPageItem>>data;
-        this.pager.count = response.count;
-        this.pager.items = response.items;
-      })
-      .catch(error => {
-        this._notification.error("Error encountered during search!");
-      });
-  }*/
 }

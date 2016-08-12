@@ -1,5 +1,5 @@
 import {Router, RouterConfiguration} from 'aurelia-router'
-import {ReportName} from '../common/models/reports';
+import {appConfig} from '../app-config';
 
 export class Index {
   heading: string = "Report Center";
@@ -15,7 +15,7 @@ export class Index {
         nav: true,
         title: 'Price List',
         settings: {
-          status: ReportName.PriceList
+          reportSource: appConfig.reportMapping.baseUrl + appConfig.reportMapping.priceList
         }
       },
       {
@@ -25,7 +25,7 @@ export class Index {
         nav: true,
         title: 'Unit of Measurements',
         settings: {
-          status: ReportName.UOMList
+          reportSource: appConfig.reportMapping.baseUrl + appConfig.reportMapping.uom
         },
       },
       {
@@ -35,7 +35,7 @@ export class Index {
         nav: true,
         title: 'Customers',
         settings: {
-          status: ReportName.CustomerList
+          reportSource: appConfig.reportMapping.baseUrl + appConfig.reportMapping.customerList
         },
       },
       {
@@ -45,7 +45,7 @@ export class Index {
         nav: true,
         title: 'Suppliers',
         settings: {
-          status: ReportName.SupplierList
+          reportSource: appConfig.reportMapping.baseUrl + appConfig.reportMapping.supplierList
         },
       },
       {
@@ -55,7 +55,7 @@ export class Index {
         nav: true,
         title: 'Orders',
         settings: {
-          status: ReportName.OrderList
+          reportSource: appConfig.reportMapping.baseUrl + appConfig.reportMapping.orderList
         },
       }
     ]);
