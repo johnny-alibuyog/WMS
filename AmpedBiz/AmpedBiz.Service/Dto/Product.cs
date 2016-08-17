@@ -161,6 +161,8 @@ namespace AmpedBiz.Service.Dto
 
         public string ProductName { get; set; }
 
+        public string SupplierName { get; set; }
+
         public string CategoryName { get; set; }
 
         public decimal? AvailableValue { get; set; }

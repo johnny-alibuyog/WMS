@@ -28,19 +28,9 @@ namespace AmpedBiz.Service.Products
                         .Where(x => x.Inventory.BelowTargetLevel.Value > 0M);
 
                     // compose filters
-                    message.Filter.Compose<string>("code", value =>
+                    message.Filter.Compose<string>("supplierId", value =>
                     {
-                        query = query.Where(x => x.Id.ToLower().Contains(value.ToLower()));
-                    });
-
-                    message.Filter.Compose<string>("productName", value =>
-                    {
-                        query = query.Where(x => x.Name.ToLower().Contains(value.ToLower()));
-                    });
-
-                    message.Filter.Compose<string>("categoryName", value =>
-                    {
-                        query = query.Where(x => x.Category.Name.ToLower().Contains(value.ToLower()));
+                        query = query.Where(x => x.Supplier.Id == value);
                     });
 
                     // compose sort
@@ -98,6 +88,7 @@ namespace AmpedBiz.Service.Products
                         {
                             Id = x.Id,
                             ProductName = x.Name,
+                            SupplierName = x.Supplier.Name,
                             CategoryName = x.Category.Name,
                             AvailableValue = x.Inventory.Available.Value,
                             CurrentLevelValue = x.Inventory.CurrentLevel.Value,
