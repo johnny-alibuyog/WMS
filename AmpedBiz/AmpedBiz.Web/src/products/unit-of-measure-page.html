@@ -23,12 +23,12 @@
             <form class="search-form form-horizontal pull-right" role="form" submit.delegate="filter.doFilter()">
 
               <div class="search-form input">
-                <input type="text" class="form-control" placeholder="Search by code..." value.bind="filter['code']" keyup.delegate="filter.doFilter() & throttle:200"
+                <input type="text" class="form-control" placeholder="Search by code..." value.bind="filter['code']" keyup.delegate="filter.doFilter() & debounce:400"
                 />
               </div>
 
               <div class="search-form input">
-                <input type="text" class="form-control" placeholder="Search by name..." value.bind="filter['name']" keyup.delegate="filter.doFilter() & throttle:200"
+                <input type="text" class="form-control" placeholder="Search by name..." value.bind="filter['name']" keyup.delegate="filter.doFilter() & debounce:400"
                 />
               </div>
 

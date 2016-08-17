@@ -14,15 +14,26 @@
           <h4 class="panel-title row">
             <span>&nbsp Needs Reordering &nbsp</span>
 
+            <!-- create purchase order -->
+            <button if.bind="filter['supplierId']" type="button" class="btn btn-default" click.delegate="create()">
+              <i class="fa fa-plus"></i> Purchase from ${filter['supplierId'] | lookupIdToName:suppliers}
+            </button>
+
             <!-- search -->
             <form class="form-horizontal col-md-4 pull-right" role="form" submit.delegate="filter.doFilter()">
               <div class="input-group custom-search-form">
-                <input type="text" class="form-control" placeholder="Search by name..." value.bind="filter['name']" />
+
+                <select class="form-control" value.bind="filter['supplierId']" change.delegate="filter.doFilter()">
+                  <option value="">All Suppliers</option>
+                  <option repeat.for="supplier of suppliers" model.bind="supplier.id">${supplier.name}</option>
+                </select>
+
                 <span class="input-group-btn">
                   <button class="btn btn-default" type="submit">
                     <i class="fa fa-search"></i>
                   </button>
                 </span>
+
               </div>
             </form>
 
@@ -37,12 +48,14 @@
           <table class="table table-striped table-condensed table-hover">
             <thead>
               <tr>
-                <th class="col-md-1">Action</th>
-                <th class="col-md-1" click.delegate="sorter.doSort('code')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['code'])}"></i>Code
+                <th class="col-md-1">
+                  <input type="checkbox" click.delegate="toggleSelectAll()" checked.one-way="forPurchasing.purchaseAllBelowTarget" />
+                  <span click.delegate="sorter.doSort('productName')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['productName'])}"></i>Product
+                  </span>
                 </th>
-                <th class="col-md-1" click.delegate="sorter.doSort('productName')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['productName'])}"></i>Name
+                <th class="col-md-1" click.delegate="sorter.doSort('supplierName')">
+                  <i class="fa fa-fw fa-${sorter.class(sorter['supplierName'])}"></i>Supplier
                 </th>
                 <th class="col-md-1" click.delegate="sorter.doSort('categoryName')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['categoryName'])}"></i>Category
@@ -62,14 +75,10 @@
               </tr>
             </thead>
             <tbody>
-              <tr repeat.for="item of pager.items" click.delegate="edit(item)">
-                <td>
-                  <a href="javascript:undefined" class="text-info" click.delegate="edit(item)">
-                    <i class="fa fa-shopping-basket"></i>
-                  </a>
-                </td>
-                <td>${item.id}</td>
-                <td>${item.productName}</td>
+              <!--<tr repeat.for="item of pager.items" click.delegate="select(item)">-->
+              <tr repeat.for="item of pager.items">
+                <td><input type="checkbox" model.bind="item.id" checked.bind="forPurchasing.selectedProductIds" /> ${item.productName}</td>
+                <td>${item.supplierName}</td>
                 <td>${item.categoryName}</td>
                 <td class="text-right">${item.availableValue | numberFormat:'0,0'}</td>
                 <td class="text-right">${item.currentLevelValue | numberFormat:'0,0'}</td>
@@ -89,4 +98,5 @@
     </div>
 
   </section>
+
 </template>

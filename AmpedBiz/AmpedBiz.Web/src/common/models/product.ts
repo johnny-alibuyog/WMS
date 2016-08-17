@@ -86,9 +86,16 @@ export interface ProductOrderPageItem {
 export interface NeedsReorderingPageItem {
   id?: string;
   productName?: string;
+  supplierName?: string;
   categoryName?: string;
   availableValue?: number;
   currentLevelValue?: number;
   targetLevelValue?: number;
   belowTargetValue?: number;
+}
+
+export interface ForPurchasing {
+  supplierId?: string;
+  selectedProductIds?: string[];
+  purchaseAllBelowTarget?: boolean;
 }

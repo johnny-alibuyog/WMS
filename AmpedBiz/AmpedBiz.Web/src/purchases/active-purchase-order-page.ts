@@ -9,12 +9,12 @@ import {NotificationService} from '../common/controls/notification-service';
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 
 @autoinject
-export class PurchaseOrderPage {
+export class ActivePurchaseOrderPage {
   private _api: ServiceApi;
   private _router: Router;
   private _notification: NotificationService;
 
-  public header: string = 'Purchase Orders';
+  public header: string = 'Active Purchase Orders';
 
   public filter: Filter;
   public sorter: Sorter;
