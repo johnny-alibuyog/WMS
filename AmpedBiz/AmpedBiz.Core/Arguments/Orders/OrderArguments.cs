@@ -6,8 +6,6 @@ namespace AmpedBiz.Core.Arguments.Orders
 {
     public class OrderArguments
     {
-        public virtual Order Order { get; set; }
-
         public virtual string TransitionDescription { get; set; }
     }
 
@@ -31,7 +29,7 @@ namespace AmpedBiz.Core.Arguments.Orders
 
         public virtual Shipper Shipper { get; set; }
 
-        public virtual Address ShippingAddress { get;  set; }
+        public virtual Address ShippingAddress { get; set; }
 
         public virtual PaymentType PaymentType { get; set; }
 

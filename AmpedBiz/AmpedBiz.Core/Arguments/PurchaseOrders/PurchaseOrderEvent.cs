@@ -6,8 +6,6 @@ namespace AmpedBiz.Core.Envents.PurchaseOrders
 {
     public class PurchaseOrderEvent : Event
     {
-        public virtual PurchaseOrder PurchaseOrder { get; set; }
-
         public virtual string TransitionDescription { get; set; }
 
         public PurchaseOrderEvent() : base(default(Guid)) { }

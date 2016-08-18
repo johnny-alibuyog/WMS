@@ -40,9 +40,17 @@ namespace AmpedBiz.Service.Products
                     entity.Inventory.RetailPrice = new Money(message.Inventory.RetailPriceAmount ?? 0M, currency);
                     entity.Inventory.WholeSalePrice = new Money(message.Inventory.WholesalePriceAmount ?? 0M, currency);
                     entity.Inventory.BadStockPrice = new Money(message.Inventory.BadStockPriceAmount ?? 0M, currency);
+
+                    entity.Inventory.InitialLevel = new Measure(message.Inventory.InitialLevelValue ?? 0M, entity.Inventory.UnitOfMeasure);
+                    entity.Inventory.TargetLevel = new Measure(message.Inventory.TargetLevelValue ?? 0M, entity.Inventory.UnitOfMeasure);
+                    entity.Inventory.ReorderLevel = new Measure(message.Inventory.ReorderLevelValue ?? 0M, entity.Inventory.UnitOfMeasure);
+                    entity.Inventory.MinimumReorderQuantity = new Measure(message.Inventory.MinimumReorderQuantityValue ?? 0M, entity.Inventory.UnitOfMeasure);
+
                     entity.Inventory.Compute();
 
                     transaction.Commit();
+
+                    entity.MapTo(response);
                 }
 
                 return response;

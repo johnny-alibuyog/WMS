@@ -77,6 +77,7 @@ namespace AmpedBiz.Service.Orders
                         ShippingFee = new Money(message.ShippingFeeAmount, currency),
                         Items = message.Items
                             .Select(x => new OrderItem(
+                                id: x.Id,
                                 product: session.Get<Product>(x.Product.Id),
                                 discount: new Money(x.DiscountAmount, currency),
                                 unitPrice: new Money(x.UnitPriceAmount, currency),

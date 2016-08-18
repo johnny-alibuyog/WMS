@@ -29,18 +29,26 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             {
                 case PurchaseOrderStatus.New:
                     return new NewState(target);
+
                 case PurchaseOrderStatus.Submitted:
                     return new SubmittedState(target);
+
                 case PurchaseOrderStatus.Approved:
                     return new ApprovedState(target);
+
                 case PurchaseOrderStatus.Paid:
                     return new PaidState(target);
+
                 case PurchaseOrderStatus.Received:
                     return new ReceivedState(target);
+
                 case PurchaseOrderStatus.Completed:
+
                     return new CompletedState(target);
+
                 case PurchaseOrderStatus.Cancelled:
                     return new CancelledState(target);
+
                 default:
                     return new NewState(target);
             }

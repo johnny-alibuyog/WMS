@@ -63,6 +63,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                         tax: new Money(message.TaxAmount, currency),
                         purchaseOrderItems: message.Items
                             .Select(x => new PurchaseOrderItem(
+                                id: x.Id,
                                 product: GetProduct(x.Product.Id),
                                 unitCost: new Money(x.UnitCostAmount, currency),
                                 quantity: new Measure(x.QuantityValue, GetUnitOfMeasure(x.Product.Id))

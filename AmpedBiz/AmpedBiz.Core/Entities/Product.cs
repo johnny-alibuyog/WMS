@@ -25,17 +25,5 @@
         {
             this.Inventory = new Inventory(this);
         }
-
-        //public virtual UOM UnitOfMeasurement { get; set; }
-
-        //public virtual Tenant Tenant { get; set; }
-
-        //public virtual IEnumerable<Inventory> Inventories { get; set; }
-
-        //public virtual IEnumerable<InventoryShrinkage> InventoryShrinkages { get; set; }
-
-        //public virtual IEnumerable<OrderDetail> OrderDetails { get; set; }
-
-        //public virtual IEnumerable<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
     }
 }
