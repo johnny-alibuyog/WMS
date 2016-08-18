@@ -25,7 +25,7 @@ export class ProductCreate {
     this._notification = notification;
   }
 
-  activate(product: Product) {
+  public activate(product: Product): void {
     if (product && product.id) {
       this.header = "Edit Product";
       this.isEdit = true;
@@ -54,20 +54,28 @@ export class ProductCreate {
       });
   }
 
-  back() {
+  public back(): void {
     return this._router.navigateBack();
   }
 
-  save() {
+  public save(): void {
     if (this.isEdit) {
       this._api.products.update(this.product)
-        .then(data => this._notification.success("Product has been saved."))
+        .then(data => this.resetAndNoify(data, "Product has been saved."))
         .catch(error => this._notification.warning(error));
     }
-    else{
+    else {
       this._api.products.create(this.product)
-        .then(data => this._notification.success("Product has been saved."))
+        .then(data => this.resetAndNoify(data, "Product has been saved."))
         .catch(error => this._notification.warning(error));
+    }
+  }
+
+  private resetAndNoify(product: Product, notificationMessage: string) {
+    this.product = product;
+
+    if (notificationMessage) {
+      this._notification.success(notificationMessage);
     }
   }
 }

@@ -1,14 +1,29 @@
+import {User} from '../common/models/user'
 import {ForPurchasing} from '../common/models/product';
 
 export class SessionData {
+  
+  private setValue(key: string, value: any) {
+    sessionStorage[key] = JSON.stringify(value);
+  }
 
-  private readonly FOR_PURCHASING: string = 'products:for-purchasing';
+  private getValue<T>(key: string): T{
+    return <T>JSON.parse(sessionStorage[key] || '{}');
+  }
 
   public set forPurchasing(value: ForPurchasing) { 
-    sessionStorage[this.FOR_PURCHASING] = JSON.stringify(value);
+    this.setValue('products:for-purchasing', value);
   }
 
   public get forPurchasing(): ForPurchasing {
-    return <ForPurchasing>JSON.parse(sessionStorage[this.FOR_PURCHASING] || "{}");
+    return <ForPurchasing>this.getValue('products:for-purchasing');
   }
+
+  public set user(user: User) {
+    this.setValue('auth:current-user', user);
+  };
+
+  public get user(): User {
+    return <User>this.getValue('auth:current-user');
+  };
 }
