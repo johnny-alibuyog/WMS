@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Services.Orders;
 using NHibernate;
 using NHibernate.Linq;
-using AmpedBiz.Core.Arguments.Orders;
+using System;
+using System.Linq;
 
 namespace AmpedBiz.Data.Seeders
 {
@@ -134,7 +131,7 @@ namespace AmpedBiz.Data.Seeders
                     for (int i = 0; i < 153; i++)
                     {
                         var order = new Order(Guid.NewGuid());
-                        var newlyCreatedEvent = new OrderNewlyCreatedArguments()
+                        order.State.Process(new OrderNewlyCreatedVisitor()
                         {
                             OrderNumber = random.NextDecimal(10000M, 99999M).ToString(),
                             CreatedBy = RotateUser(),
@@ -156,9 +153,7 @@ namespace AmpedBiz.Data.Seeders
                                     discount: new Money(random.NextDecimal(100M, 500M)),
                                     unitPrice: new Money(random.NextDecimal(1000M, 100000M))
                                 ))
-                        };
-
-                        order.State.Process(newlyCreatedEvent);
+                        });
 
                         session.Save(order, order.Id);
                     }

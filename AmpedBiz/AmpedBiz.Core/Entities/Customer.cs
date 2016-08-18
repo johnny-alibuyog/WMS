@@ -20,16 +20,12 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Address BillingAddress { get; set; }
 
-        public virtual IEnumerable<Order> Orders { get; set; }
+        public virtual IEnumerable<Order> Orders { get; set; } = new Collection<Order>();
 
-        public virtual IEnumerable<Location> Locations { get; set; }
+        public virtual IEnumerable<Location> Locations { get; set; } = new Collection<Location>();
 
         public Customer() : base(default(string)) { }
 
-        public Customer(string id) : base(id)
-        {
-            this.Orders = new Collection<Order>();
-            this.Locations = new Collection<Location>();
-        }
+        public Customer(string id) : base(id) { }
     }
 }

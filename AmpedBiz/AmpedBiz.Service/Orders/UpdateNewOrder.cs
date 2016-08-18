@@ -1,7 +1,7 @@
 ﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Arguments.Orders;
+using AmpedBiz.Core.Services.Orders;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
@@ -52,7 +52,7 @@ namespace AmpedBiz.Service.Orders
 
                     Func<string, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
 
-                    var newlyCreatedArguments = new OrderNewlyCreatedArguments()
+                    entity.State.Process(new OrderNewlyCreatedVisitor()
                     {
                         CreatedBy = (!message?.CreatedBy?.Id.IsNullOrDefault() ?? false)
                             ? session.Load<User>(message.CreatedBy.Id) : null,
@@ -84,9 +84,7 @@ namespace AmpedBiz.Service.Orders
                                 quantity: new Measure(x.QuantityValue,
                                     session.Get<Product>(x.Product.Id).Inventory.UnitOfMeasure)
                             ))
-                    };
-
-                    entity.State.Process(newlyCreatedArguments);
+                    });
 
                     transaction.Commit();
 

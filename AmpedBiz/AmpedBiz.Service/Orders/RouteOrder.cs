@@ -1,7 +1,7 @@
 ﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Arguments.Orders;
+using AmpedBiz.Core.Services.Orders;
 using MediatR;
 using NHibernate;
 using System;
@@ -37,13 +37,11 @@ namespace AmpedBiz.Service.Orders
                     if (entity == null)
                         throw new BusinessException($"Order with id {message.Id} does not exists.");
 
-                    var routedArguments = new OrderRoutedArguments()
+                    entity.State.Process(new OrderRoutedVisitor()
                     {
                         RoutedOn = message.RoutedOn ?? DateTime.Now,
                         RoutedBy = session.Load<User>(message.RoutedBy.Id)
-                    };
-
-                    entity.State.Process(routedArguments);
+                    });
 
                     session.Save(entity);
                     transaction.Commit();

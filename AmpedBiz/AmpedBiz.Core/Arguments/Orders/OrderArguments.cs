@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AmpedBiz.Core.Arguments.Orders
 {
-    public class OrderArguments
+    public abstract class OrderArguments
     {
         public virtual string TransitionDescription { get; set; }
     }

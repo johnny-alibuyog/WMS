@@ -1,7 +1,7 @@
 ﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Arguments.Orders;
+using AmpedBiz.Core.Services.Orders;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
@@ -44,8 +44,7 @@ namespace AmpedBiz.Service.Orders
 
                     var currency = session.Load<Currency>(Currency.PHP.Id);
                     var entity = message.MapTo(new Order(message.Id));
-
-                    var newlyCreatedArguments = new OrderNewlyCreatedArguments()
+                    entity.State.Process(new OrderNewlyCreatedVisitor()
                     {
                         OrderNumber = message.OrderNumber,
                         CreatedBy = (!message?.CreatedBy?.Id.IsNullOrDefault() ?? false)
@@ -78,9 +77,7 @@ namespace AmpedBiz.Service.Orders
                                 quantity: new Measure(x.QuantityValue,
                                     session.Get<Product>(x.Product.Id).Inventory.UnitOfMeasure)
                             ))
-                    };
-
-                    entity.State.Process(newlyCreatedArguments);
+                    });
 
                     session.Save(entity);
                     transaction.Commit();

@@ -34,7 +34,7 @@ namespace AmpedBiz.Core.Entities
 
         protected internal virtual void Received()
         {
-            this.Product.Inventory.Order(this.Quantity);
+            this.Product.Inventory.Receive(this.Quantity);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Arguments.Orders;
+using AmpedBiz.Core.Services.Orders;
 using MediatR;
 using NHibernate;
 using System;
@@ -40,7 +40,7 @@ namespace AmpedBiz.Service.Orders
                         throw new BusinessException($"Order with id {message.Id} does not exists.");
 
                     var currency = session.Load<Currency>(Currency.PHP.Id);
-                    var paidArguments = new OrderPaidArguments()
+                    var paidArguments = new OrderPaidVisitor()
                     {
                         Payments = message.Payments.Select(x => new OrderPayment(
                             paidOn: x.PaidOn ?? DateTime.Now,
