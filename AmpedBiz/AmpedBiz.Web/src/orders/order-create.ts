@@ -50,13 +50,6 @@ export class OrderCreate {
       ),
     ];
 
-    if (order.id) {
-      this.isEdit = true;
-    }
-    else {
-      this.isEdit = false;
-    }
-
     let requests: [
       Promise<Lookup<string>[]>,
       Promise<Lookup<string>[]>,
@@ -69,7 +62,7 @@ export class OrderCreate {
         this._api.customers.getLookups(),
         this._api.pricingSchemes.getLookups(),
         this._api.orders.getStatusLookup(),
-        this.isEdit
+        order.id
           ? this._api.orders.get(order.id)
           : Promise.resolve(this.getInitializedOrder())
       ];
@@ -81,7 +74,7 @@ export class OrderCreate {
         this.customers = responses[2];
         this.pricingSchemes = responses[3];
         this.statuses = responses[4];
-        this.order = responses[5];
+        this.setOrder(responses[5]);
 
         if (!this.order.branch) {
           this.order.branch = this.branches
@@ -107,6 +100,13 @@ export class OrderCreate {
   }
 
   setOrder(order: Order): void {
+    if (order.id) {
+      this.isEdit = true;
+    }
+    else {
+      this.isEdit = false;
+    }
+
     this.order = order;
     this.order.items = this.order.items || [];
     this.order.payments = this.order.payments || [];

@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Arguments\Products\ProductArguments.cs" />
     <Compile Include="Entities\Address.cs" />
     <Compile Include="Entities\Attachment.cs" />
     <Compile Include="Entities\Branch.cs" />
@@ -64,7 +63,6 @@
     <Compile Include="Entities\PurchaseOrder.cs" />
     <Compile Include="Entities\ShrinkageCause.cs" />
     <Compile Include="Entities\Stock.cs" />
-    <Compile Include="Arguments\PurchaseOrders\PurchaseOrderEvent.cs" />
     <Compile Include="Entities\PurchaseOrderItem.cs" />
     <Compile Include="Entities\PurchaseOrderPayment.cs" />
     <Compile Include="Entities\PurchaseOrderReceipt.cs" />
@@ -116,7 +114,33 @@
     </Compile>
     <Compile Include="Services\Orders\OrderVisitor.cs" />
     <Compile Include="Services\Orders\StateDispatcher.cs" />
-    <Compile Include="Services\PurchaseOrders\State.cs" />
+    <Compile Include="Services\Products\ProductsCreatedVisitor.cs" />
+    <Compile Include="Services\PurchaseOrders\PurchaseOrderApprovedVisitor.cs">
+      <DependentUpon>PurchaseOrderVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\PurchaseOrders\PurchaseOrderCalculateTotalVisitor.cs">
+      <DependentUpon>PurchaseOrderVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\PurchaseOrders\PurchaseOrderCancelledVisitor.cs">
+      <DependentUpon>PurchaseOrderVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\PurchaseOrders\PurchaseOrderCompletedVisitor.cs">
+      <DependentUpon>PurchaseOrderVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\PurchaseOrders\PurchaseOrderNewlyCreatedVisitor.cs">
+      <DependentUpon>PurchaseOrderVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\PurchaseOrders\PurchaseOrderPaidVisitor.cs">
+      <DependentUpon>PurchaseOrderVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\PurchaseOrders\PurchaseOrderReceivedVisitor.cs">
+      <DependentUpon>PurchaseOrderVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\PurchaseOrders\PurchaseOrderSubmittedVisitor.cs">
+      <DependentUpon>PurchaseOrderVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\PurchaseOrders\PurchaseOrderVisitor.cs" />
+    <Compile Include="Services\PurchaseOrders\StateDispatcher.cs" />
     <Compile Include="ValueObject.cs" />
   </ItemGroup>
   <ItemGroup>

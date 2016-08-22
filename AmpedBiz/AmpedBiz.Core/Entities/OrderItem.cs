@@ -10,6 +10,8 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Measure Quantity { get; protected set; }
 
+        public virtual decimal DiscountRate { get; protected set; }
+
         public virtual Money Discount { get; protected set; }
 
         public virtual Money UnitPrice { get; protected set; }
@@ -20,11 +22,12 @@ namespace AmpedBiz.Core.Entities
 
         public OrderItem() : base(default(Guid)) { }
 
-        public OrderItem(Product product, Measure quantity, Money discount, Money unitPrice, Guid? id = null) 
+        public OrderItem(Product product, Measure quantity, decimal discountRate,  Money discount, Money unitPrice, Guid? id = null) 
             : base(id ?? default(Guid))
         {
             this.Product = product;
             this.Quantity = quantity;
+            this.DiscountRate = discountRate;
             this.Discount = discount ?? new Money(0.0M);
             this.UnitPrice = unitPrice;
 

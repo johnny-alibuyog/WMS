@@ -15,14 +15,14 @@
             <div class="form-group">
               <label class="control-label col-sm-4">Paid On:</label>
               <div class="col-sm-8">
-                <input type="date" class="form-control" placeholder="Enter Payment Date" value.bind="payment.paidOn | dateInputFormat" />
+                <input type="date" class="form-control" placeholder="Enter Payment Date" value.bind="payable.paidOn | dateInputFormat" />
               </div>
             </div>
 
             <div class="form-group">
               <label class="control-label col-sm-4">Payment Type:</label>
               <div class="col-sm-8">
-                <select class="form-control" value.bind="payment.paymentType | lookupToId:paymentTypes">
+                <select class="form-control" value.bind="payable.paymentType | lookupToId:paymentTypes">
                   <option>Select Payment Type</option>
                   <option repeat.for="item of paymentTypes" model.bind="item.id">${item.name}</option>
                 </select>
@@ -32,7 +32,7 @@
             <div class="form-group">
               <label class="control-label col-sm-4">Payment Amount:</label>
               <div class="col-sm-8">
-                <input type="number" class="form-control text-right" placeholder="Payment Amount" value.bind="payment.paymentAmount" />
+                <input type="number" class="form-control text-right" placeholder="Payment Amount" value.bind="payable.paymentAmount" />
               </div>
             </div>
 

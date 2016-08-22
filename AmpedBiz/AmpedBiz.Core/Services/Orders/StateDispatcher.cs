@@ -20,73 +20,73 @@ namespace AmpedBiz.Core.Services.Orders
             this.AllowedTransitions = Stage.Transitions[target.Status];
         }
 
-        public virtual void Process(OrderVisitor args)
+        public virtual void Process(OrderVisitor visitor)
         {
-            this.Process((dynamic)args);
+            this.Process((dynamic)visitor);
         }
 
-        private void Process(OrderNewlyCreatedVisitor args)
+        private void Process(OrderNewlyCreatedVisitor visitor)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.New))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "creation/modification", this._target.Status));
 
-            this._target.Accept(args);
+            this._target.Accept(visitor);
         }
 
-        private void Process(OrderInvoicedVisitor args)
+        private void Process(OrderInvoicedVisitor visitor)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Invoiced))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "invoicing", this._target.Status));
 
-            this._target.Accept(args);
+            this._target.Accept(visitor);
         }
 
-        private void Process(OrderPaidVisitor args)
+        private void Process(OrderPaidVisitor visitor)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Paid))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "payment", this._target.Status));
 
-            this._target.Accept(args);
+            this._target.Accept(visitor);
         }
 
-        private void Process(OrderStagedVisitor args)
+        private void Process(OrderStagedVisitor visitor)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Staged))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "staging", this._target.Status));
 
-            this._target.Accept(args);
+            this._target.Accept(visitor);
         }
 
-        private void Process(OrderRoutedVisitor args)
+        private void Process(OrderRoutedVisitor visitor)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Routed))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "routing", this._target.Status));
 
-            this._target.Accept(args);
+            this._target.Accept(visitor);
         }
 
-        private void Process(OrderShippedVisitor args)
+        private void Process(OrderShippedVisitor visitor)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Shipped))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "shipping", this._target.Status));
 
-            this._target.Accept(args);
+            this._target.Accept(visitor);
         }
 
-        private void Process(OrderCompletedVisitor args)
+        private void Process(OrderCompletedVisitor visitor)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Completed))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "completing", this._target.Status));
 
-            this._target.Accept(args);
+            this._target.Accept(visitor);
         }
 
-        private void Process(OrderCancelledVisitor args)
+        private void Process(OrderCancelledVisitor visitor)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Cancelled))
                 throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "canceling", this._target.Status));
 
-            this._target.Accept(args);
+            this._target.Accept(visitor);
         }
     }
 

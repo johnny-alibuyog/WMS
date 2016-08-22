@@ -17,6 +17,8 @@ namespace AmpedBiz.Data.EntityDefinitions
             Component(x => x.Quantity, 
                 MeasureMapping.Map("Quantity_", nameof(OrderItem)));
 
+            Map(x => x.DiscountRate);
+
             Component(x => x.Discount, 
                 MoneyMapping.Map("Discount_", nameof(OrderItem)));
 
@@ -25,6 +27,9 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Component(x => x.ExtendedPrice, 
                 MoneyMapping.Map("ExtendedPrice_", nameof(OrderItem)));
+
+            Component(x => x.TotalPrice,
+                MoneyMapping.Map("TotalPrice_", nameof(OrderItem)));
         }
     }
 }

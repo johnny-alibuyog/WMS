@@ -3,7 +3,6 @@ import {DialogController} from 'aurelia-dialog';
 import {Lookup} from '../common/custom_types/lookup';
 import {ServiceApi} from '../services/service-api';
 import {NotificationService} from '../common/controls/notification-service';
-import {PurchaseOrderReceivedEvent} from '../common/models/purchase-order-event';
 import {PurchaseOrder, PurchaseOrderReceipt, PurchaseOrderReceivable} from '../common/models/purchase-order';
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 
@@ -72,22 +71,21 @@ export class PurchaseOrderReceiptCreate {
   }
 
   save() {
-    var receivedEvent = <PurchaseOrderReceivedEvent>{
-      purchaseOrderId: this._purchaseOrderId,
-      receipts: this.receivables
-        .filter(x => x.receivingQuantity > 0)
-        .map(x => <PurchaseOrderReceipt>{
-          purchaseOrderId: this._purchaseOrderId,
-          batchNumber: this.batchNumber,
-          receivedBy: this._api.auth.userAsLookup,
-          receivedOn: new Date(),
-          product: x.product,
-          expiresOn: x.expiresOn,
-          quantityValue: x.receivingQuantity
-        })
-    };
-
-    this._api.purchaseOrders.receive(receivedEvent)
+    this._api.purchaseOrders
+      .receive(<PurchaseOrder>{
+        id: this._purchaseOrderId,
+        receipts: this.receivables
+          .filter(x => x.receivingQuantity > 0)
+          .map(x => <PurchaseOrderReceipt>{
+            purchaseOrderId: this._purchaseOrderId,
+            batchNumber: this.batchNumber,
+            receivedBy: this._api.auth.userAsLookup,
+            receivedOn: new Date(),
+            product: x.product,
+            expiresOn: x.expiresOn,
+            quantityValue: x.receivingQuantity
+          })
+      })
       .then(data => {
         this._notification.success("Purchase order has been received.")
           .then(response => this._controller.close(true, data));

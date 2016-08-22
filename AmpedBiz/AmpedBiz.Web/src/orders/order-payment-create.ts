@@ -26,7 +26,7 @@ export class OrderPaymentCreate {
   activate(orderId: string): void {
     let requests: [Promise<Lookup<string>[]>, Promise<OrderPayable>] = [
       this._api.paymentTypes.getLookups(),
-      this._api.orders.getPayable(orderId)
+      this._api.orders.getPayables(orderId)
     ];
 
     Promise.all(requests).then((responses: [Lookup<string>[], OrderPayable]) => {
@@ -43,20 +43,18 @@ export class OrderPaymentCreate {
   }
 
   save(): void {
-    var order = <Order>{
-      id: this._orderId,
-      payments: [
-        <OrderPayment>{
-          id: this.payable.orderId,
-          paidOn: new Date(),
-          paidBy: this._api.auth.userAsLookup,
-          paymentType: this.payable.paymentType,
-          paymentAmount: this.payable.paymentAmount
-        }
-      ]
-    };
-
-    this._api.orders.pay(order)
+    this._api.orders
+      .pay(<Order>{
+        id: this._orderId,
+        payments: [
+          <OrderPayment>{
+            paidOn: new Date(),
+            paidBy: this._api.auth.userAsLookup,
+            paymentType: this.payable.paymentType,
+            paymentAmount: this.payable.paymentAmount
+          }
+        ]
+      })
       .then(data => {
         this._notification.success("Purchase order has been paid.")
           .then(response => this._controller.ok(data));

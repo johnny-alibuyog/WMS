@@ -1,7 +1,7 @@
 ﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Envents.PurchaseOrders;
+using AmpedBiz.Core.Services.PurchaseOrders;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
@@ -13,7 +13,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 {
     public class UpdateNewPurchaseOder
     {
-        public class Request : Dto.PurchaseOrderNewlyCreatedEvent, IRequest<Response> { }
+        public class Request : Dto.PurchaseOrder, IRequest<Response> { }
 
         public class Response : Dto.PurchaseOrder { }
 
@@ -36,10 +36,10 @@ namespace AmpedBiz.Service.PurchaseOrders
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.Get<PurchaseOrder>(message.PurchaseOrderId);
+                    var entity = session.Get<PurchaseOrder>(message.Id);
 
                     if (entity == null)
-                        throw new BusinessException($"PurchaseOrder with id {message.PurchaseOrderId} does not exists.");
+                        throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
 
                     var currency = session.Load<Currency>(Currency.PHP.Id); // this should be taken from the tenant
 
@@ -54,28 +54,27 @@ namespace AmpedBiz.Service.PurchaseOrders
 
                     Func<string, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
 
-                    var newlyCreatedEvent = new PurchaseOrderNewlyCreatedEvent(
-                        createdBy: (!message?.CreatedBy?.Id.IsNullOrDefault() ?? false)
+                    entity.State.Process(new PurchaseOrderNewlyCreatedVisitor()
+                    {
+                        CreatedBy = (!message?.CreatedBy?.Id.IsNullOrDefault() ?? false)
                             ? session.Load<User>(message.CreatedBy.Id) : null,
-                        createdOn: message?.CreatedOn ?? DateTime.Now,
-                        expectedOn: message?.ExpectedOn,
-                        paymentType: (!message?.PaymentType?.Id.IsNullOrEmpty() ?? false)
+                        CreatedOn = message?.CreatedOn ?? DateTime.Now,
+                        ExpectedOn = message?.ExpectedOn,
+                        PaymentType = (!message?.PaymentType?.Id.IsNullOrEmpty() ?? false)
                             ? session.Load<PaymentType>(message.PaymentType.Id) : null,
-                        supplier: (!message?.Supplier?.Id.IsNullOrDefault() ?? false)
+                        Supplier = (!message?.Supplier?.Id.IsNullOrDefault() ?? false)
                             ? session.Load<Supplier>(message.Supplier.Id) : null,
-                        shipper: null,
-                        shippingFee: new Money(message.ShippingFeeAmount, currency),
-                        tax: new Money(message.TaxAmount, currency),
-                        purchaseOrderItems: message.Items
+                        Shipper = null,
+                        ShippingFee = new Money(message.ShippingFeeAmount, currency),
+                        Tax = new Money(message.TaxAmount, currency),
+                        Items = message.Items
                             .Select(x => new PurchaseOrderItem(
                                 id: x.Id,
                                 product: GetProduct(x.Product.Id),
                                 unitCost: new Money(x.UnitCostAmount, currency),
                                 quantity: new Measure(x.QuantityValue, GetUnitOfMeasure(x.Product.Id))
                             ))
-                    );
-
-                    entity.State.Process(newlyCreatedEvent);
+                    });
 
                     session.Save(entity);
                     transaction.Commit();

@@ -1,7 +1,7 @@
 ﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Envents.PurchaseOrders;
+using AmpedBiz.Core.Services.PurchaseOrders;
 using MediatR;
 using NHibernate;
 using System;
@@ -10,7 +10,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 {
     public class SubmitPurchaseOrder
     {
-        public class Request : Dto.PurchaseOrderSubmittedEvent, IRequest<Response> { }
+        public class Request : Dto.PurchaseOrder, IRequest<Response> { }
 
         public class Response : Dto.PurchaseOrder { }
 
@@ -33,16 +33,15 @@ namespace AmpedBiz.Service.PurchaseOrders
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.Get<PurchaseOrder>(message.PurchaseOrderId);
+                    var entity = session.Get<PurchaseOrder>(message.Id);
                     if (entity == null)
-                        throw new BusinessException($"PurchaseOrder with id {message.PurchaseOrderId} does not exists.");
+                        throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
 
-                    var submittedEvent = new PurchaseOrderSubmittedEvent(
-                        submittedBy: session.Load<User>(message.SubmittedBy.Id),
-                        submittedOn: message.SubmittedOn ?? DateTime.Now
-                    );
-
-                    entity.State.Process(submittedEvent);
+                    entity.State.Process(new PurchaseOrderSubmittedVisitor()
+                    {
+                        SubmittedBy= session.Load<User>(message.SubmittedBy.Id),
+                        SubmittedOn= message.SubmittedOn ?? DateTime.Now
+                    });
 
                     session.Save(entity);
                     transaction.Commit();

@@ -106,3 +106,19 @@ export interface PurchaseOrderReceivable {
   receivableQuantity?: number;
   receivingQuantity?: number;
 }
+
+export interface PurchaseOrderPayable {
+  id?: string;
+  purchaseOrderId?: string;
+  paidOn?: Date;
+  paidBy?: Lookup<string>;
+  paymentType?: Lookup<string>;
+  taxAmount?: number;
+  shippingFeeAmount?: number;
+  discountAmount?: number;
+  subTotalAmount?: number;
+  totalAmount?: number;
+  balanceAmount?: number;
+  paidAmount?: number;
+  paymentAmount?: number;
+}

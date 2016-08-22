@@ -81,7 +81,6 @@
     <Compile Include="Dto\Measure.cs" />
     <Compile Include="Dto\Money.cs" />
     <Compile Include="Dto\Order.cs" />
-    <Compile Include="Dto\OrderEvent.cs" />
     <Compile Include="Dto\OrderPayment.cs" />
     <Compile Include="Dto\OrderItem.cs" />
     <Compile Include="Dto\PaymentType.cs" />
@@ -90,7 +89,6 @@
     <Compile Include="Dto\ProductCategory.cs" />
     <Compile Include="Dto\PurchaseOrder.cs" />
     <Compile Include="Dto\PurchaseOrderItem.cs" />
-    <Compile Include="Dto\PurchaseOrderEvent.cs" />
     <Compile Include="Dto\PurchaseOrderPayment.cs" />
     <Compile Include="Dto\PurchaseOrderReceipt.cs" />
     <Compile Include="Dto\Role.cs" />
@@ -143,6 +141,7 @@
     <Compile Include="Products\UpdateProduct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PurchaseOrders\GetActivePurchaseOrderPage.cs" />
+    <Compile Include="PurchaseOrders\GetPurchaseOrderPayable.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrderReceivableList.cs" />
     <Compile Include="PurchaseOrders\UpdateNewPurchaseOder.cs" />
     <Compile Include="PurchaseOrders\PayPurchaseOrder.cs" />

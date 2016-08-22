@@ -50,6 +50,13 @@ namespace AmpedBiz.Service.Host.Controllers
             return _mediator.Send(request ?? new GetPurchaseOrderStatusLookup.Request());
         }
 
+        [HttpGet()]
+        [Route("{id}/payables")]
+        public GetPurchaseOrderPayable.Response Process([FromUri]GetPurchaseOrderPayable.Request request)
+        {
+            return _mediator.Send(request ?? new GetPurchaseOrderPayable.Request());
+        }
+
         [HttpPost()]
         [Route("active-orders/page")]
         public GetActivePurchaseOrderPage.Response Process([FromBody]GetActivePurchaseOrderPage.Request request)

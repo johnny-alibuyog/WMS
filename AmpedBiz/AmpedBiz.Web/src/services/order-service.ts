@@ -29,7 +29,7 @@ export class OrderService extends ServiceBase<Order> {
       .then(response => <Lookup<OrderStatus>[]>response);
   }
 
-  getPayable(orderId: string): Promise<OrderPayable> {
+  getPayables(orderId: string): Promise<OrderPayable> {
     var url = this._resouce + '/' + orderId + '/payables';
     return this._httpClient.get(url)
       .then(response => <OrderPayable>response);

@@ -1,7 +1,7 @@
 ﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Envents.PurchaseOrders;
+using AmpedBiz.Core.Services.PurchaseOrders;
 using MediatR;
 using NHibernate;
 using System;
@@ -10,7 +10,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 {
     public class CancelPurchaseOder
     {
-        public class Request : Dto.PurchaseOrderCancelledEvent, IRequest<Response> { }
+        public class Request : Dto.PurchaseOrder, IRequest<Response> { }
 
         public class Response : Dto.PurchaseOrder { }
 
@@ -33,17 +33,16 @@ namespace AmpedBiz.Service.PurchaseOrders
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.Get<PurchaseOrder>(message.PurchaseOrderId);
+                    var entity = session.Get<PurchaseOrder>(message.Id);
                     if (entity == null)
-                        throw new BusinessException($"PurchaseOrder with id {message.PurchaseOrderId} does not exists.");
+                        throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
 
-                    var cancelledEvent = new PurchaseOrderCancelledEvent(
-                        cancelledBy: session.Load<User>(message.CancelledBy.Id),
-                        cancelledOn: message.CancelledOn ?? DateTime.Now,
-                        cancellationReason: message.CancellationReason
-                    );
-
-                    entity.State.Process(cancelledEvent);
+                    entity.State.Process(new PurchaseOrderCancelledVisitor()
+                    { 
+                        CancelledBy = session.Load<User>(message.CancelledBy.Id),
+                        CancelledOn = message.CancelledOn ?? DateTime.Now,
+                        CancellationReason = message.CancellationReason
+                    });
 
                     session.Save(entity);
                     transaction.Commit();

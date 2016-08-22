@@ -3,12 +3,6 @@ using System;
 
 namespace AmpedBiz.Service.Dto
 {
-    public enum PurchaseOrderItemStatus
-    {
-        Submitted = 1,
-        Posted
-    }
-
     public class PurchaseOrderItem
     {
         public Guid Id { get; set; }
@@ -24,7 +18,5 @@ namespace AmpedBiz.Service.Dto
         public decimal ExtendedCostAmount { get; set; }
 
         public DateTime? ReceivedOn { get; set; }
-
-        public PurchaseOrderItemStatus Status { get; set; }
     }
 }

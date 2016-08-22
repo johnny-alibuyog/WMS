@@ -19,6 +19,8 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.Quantity);
 
+            Define(x => x.DiscountRate);
+
             Define(x => x.Discount)
                 .IsValid();
 
@@ -26,6 +28,9 @@ namespace AmpedBiz.Data.EntityDefinitions
                 .IsValid();
 
             Define(x => x.ExtendedPrice)
+                .IsValid();
+
+            Define(x => x.TotalPrice)
                 .IsValid();
         }
     }

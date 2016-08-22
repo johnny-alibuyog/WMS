@@ -3,8 +3,7 @@ import {DialogController} from 'aurelia-dialog';
 import {Lookup} from '../common/custom_types/lookup';
 import {ServiceApi} from '../services/service-api';
 import {NotificationService} from '../common/controls/notification-service';
-import {PurchaseOrder, PurchaseOrderPayment} from '../common/models/purchase-order';
-import {PurchaseOrderPaidEvent} from '../common/models/purchase-order-event';
+import {PurchaseOrder, PurchaseOrderPayment, PurchaseOrderPayable} from '../common/models/purchase-order';
 
 @autoinject
 export class PurchaseOrderPaymentCreate {
@@ -15,7 +14,7 @@ export class PurchaseOrderPaymentCreate {
 
   public header: string = 'Payment';
   public canSave: boolean = true;
-  public payment: PurchaseOrderPayment;
+  public payable: PurchaseOrderPayable;
   public paymentTypes: Lookup<string>[] = [];
 
   constructor(api: ServiceApi, controller: DialogController, notification: NotificationService) {
@@ -25,17 +24,17 @@ export class PurchaseOrderPaymentCreate {
   }
 
   activate(purchaseOrderId: string) {
-    let requests: [Promise<Lookup<string>[]>] = [this._api.paymentTypes.getLookups()];
+    let requests: [Promise<Lookup<string>[]>, Promise<PurchaseOrderPayable>] = [
+      this._api.paymentTypes.getLookups(),
+      this._api.purchaseOrders.getPayables(purchaseOrderId)
+    ];
 
-    Promise.all(requests).then((responses: [Lookup<string>[]]) => {
-      this.paymentTypes = responses[0];
+    Promise.all(requests).then((responses: [Lookup<string>[], PurchaseOrderPayable]) => {
       this._purchaseOrderId = purchaseOrderId;
-      this.payment = <PurchaseOrderPayment>{
-        purchaseOrderId: purchaseOrderId,
-        paidBy: this._api.auth.userAsLookup,
-        paidOn: new Date(),
-        paymentType: this.paymentTypes[0] || null,
-      };
+      this.paymentTypes = responses[0];
+      this.payable = responses[1];
+      this.payable.paidOn = new Date();
+      this.payable.paymentAmount = this.payable.balanceAmount;
     });
   }
 
@@ -44,13 +43,18 @@ export class PurchaseOrderPaymentCreate {
   }
 
   save() {
-    this.payment.paidOn = new Date();
-    var paidEvent = <PurchaseOrderPaidEvent>{
-      purchaseOrderId: this._purchaseOrderId,
-      payments: [this.payment]
-    };
-
-    this._api.purchaseOrders.pay(paidEvent)
+    this._api.purchaseOrders
+      .pay(<PurchaseOrder>{
+        id: this._purchaseOrderId,
+        payments: [
+          <PurchaseOrderPayment>{
+            paidBy: this._api.auth.userAsLookup,
+            paidOn: new Date,
+            paymentAmount: this.payable.paymentAmount,
+            paymentType: this.payable.paymentType,
+          }
+        ]
+      })
       .then(data => {
         this._notification.success("Purchase order has been paid.")
           .then(response => this._controller.ok(data));

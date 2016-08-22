@@ -1,8 +1,7 @@
 import {autoinject} from 'aurelia-framework';
 import {Lookup} from '../common/custom_types/lookup';
 import {PageRequest} from '../common/models/paging';
-import {PurchaseOrder, PurchaseOrderStatus, PurchaseOrderPayment, PurchaseOrderReceivable} from '../common/models/purchase-order';
-import {PurchaseOrderNewlyCreatedEvent, PurchaseOrderSubmittedEvent, PurchaseOrderApprovedEvent, PurchaseOrderPaidEvent, PurchaseOrderReceivedEvent, PurchaseOrderCompletedEvent, PurchaseOrderCancelledEvent} from '../common/models/purchase-order-event';
+import {PurchaseOrder, PurchaseOrderStatus, PurchaseOrderPayment, PurchaseOrderReceivable, PurchaseOrderPayable} from '../common/models/purchase-order';
 import {ServiceBase} from './service-base'
 import {AuthService} from './auth-service';
 import {HttpClientFacade} from './http-client-facade';
@@ -55,48 +54,95 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
       .then(response => <PurchaseOrderReceivable[]>response);
   }
 
-  createNew(event: PurchaseOrderNewlyCreatedEvent): Promise<PurchaseOrder> {
+  getPayables(orderId: string): Promise<PurchaseOrderPayable> {
+    var url = this._resouce + '/' + orderId + '/payables';
+    return this._httpClient.get(url)
+      .then(response => <PurchaseOrderPayable>response);
+  }
+
+  createNew(purchaseOrder: PurchaseOrder): Promise<PurchaseOrder> {
     var url = this._resouce + '/new';
-    return this._httpClient.post(url, event);
+    return this._httpClient.post(url, <PurchaseOrder>{
+      id: purchaseOrder.id,
+      createdBy: this._auth.userAsLookup,
+      createdOn: purchaseOrder.createdOn,
+      expectedOn: purchaseOrder.expectedOn,
+      supplier: purchaseOrder.supplier,
+      items: purchaseOrder.items
+    });
   }
 
-  updateNew(event: PurchaseOrderSubmittedEvent): Promise<PurchaseOrder> {
-    var url = this._resouce + '/' + event.purchaseOrderId + '/new';
-    return this._httpClient.patch(url, event);
+  updateNew(purchaseOrder: PurchaseOrder): Promise<PurchaseOrder> {
+    var url = this._resouce + '/' + purchaseOrder.id + '/new';
+    return this._httpClient.patch(url, <PurchaseOrder>{
+      id: purchaseOrder.id,
+      createdBy: this._auth.userAsLookup,
+      createdOn: purchaseOrder.createdOn,
+      expectedOn: purchaseOrder.expectedOn,
+      supplier: purchaseOrder.supplier,
+      items: purchaseOrder.items
+    });
   }
 
-  submit(event: PurchaseOrderSubmittedEvent): Promise<PurchaseOrder> {
-    var url = this._resouce + '/' + event.purchaseOrderId + '/submitted';
-    return this._httpClient.post(url, event);
+  submit(purchaseOrder: PurchaseOrder): Promise<PurchaseOrder> {
+    var url = this._resouce + '/' + purchaseOrder.id + '/submitted';
+    return this._httpClient.post(url, <PurchaseOrder>{
+      purchaseOrderId: purchaseOrder.id,
+      submittedBy: this._auth.userAsLookup,
+      submittedOn: new Date(),
+    });
   }
 
-  approve(event: PurchaseOrderApprovedEvent): Promise<PurchaseOrder> {
-    var url = this._resouce + '/' + event.purchaseOrderId + '/approved';
-    return this._httpClient.post(url, event);
+  approve(purchaseOrder: PurchaseOrder): Promise<PurchaseOrder> {
+    var url = this._resouce + '/' + purchaseOrder.id + '/approved';
+    return this._httpClient.post(url, <PurchaseOrder>{
+      id: purchaseOrder.id,
+      approvedBy: this._auth.userAsLookup,
+      approvedOn: new Date()
+    });
   }
 
-  reject(event: PurchaseOrderNewlyCreatedEvent): Promise<PurchaseOrder> {
-    var url = this._resouce + '/' + event.purchaseOrderId + '/new';
-    return this._httpClient.patch(url, event);
+  reject(purchaseOrder: PurchaseOrder): Promise<PurchaseOrder> {
+    var url = this._resouce + '/' + purchaseOrder.id + '/new';
+    return this._httpClient.patch(url, <PurchaseOrder>{
+      id: purchaseOrder.id,
+      createdBy: this._auth.userAsLookup,
+      createdOn: purchaseOrder.createdOn,
+    });
   }
 
-  pay(event: PurchaseOrderPaidEvent): Promise<PurchaseOrder> {
-    var url = this._resouce + '/' + event.purchaseOrderId + '/paid';
-    return this._httpClient.post(url, event);
+  pay(purchaseOrder: PurchaseOrder): Promise<PurchaseOrder> {
+    var url = this._resouce + '/' + purchaseOrder.id + '/paid';
+    return this._httpClient.post(url, <PurchaseOrder>{
+      id: purchaseOrder.id,
+      payments: purchaseOrder.payments
+    });
   }
 
-  receive(event: PurchaseOrderReceivedEvent): Promise<PurchaseOrder> {
-    var url = this._resouce + '/' + event.purchaseOrderId + '/received';
-    return this._httpClient.post(url, event);
+  receive(purchaseOrder: PurchaseOrder): Promise<PurchaseOrder> {
+    var url = this._resouce + '/' + purchaseOrder.id + '/received';
+    return this._httpClient.post(url, <PurchaseOrder>{
+      id: purchaseOrder.id,
+      receipts: purchaseOrder.receipts
+    });
   }
 
-  complete(event: PurchaseOrderCompletedEvent): Promise<PurchaseOrder> {
-    var url = this._resouce + '/' + event.purchaseOrderId + '/completed';
-    return this._httpClient.post(url, event);
+  complete(purchaseOrder: PurchaseOrder): Promise<PurchaseOrder> {
+    var url = this._resouce + '/' + purchaseOrder.id + '/completed';
+    return this._httpClient.post(url, <PurchaseOrder>{
+      id: purchaseOrder.id,
+      completedBy: this._auth.userAsLookup,
+      completedOn: new Date()
+    });
   }
 
-  cancel(event: PurchaseOrderCancelledEvent): Promise<PurchaseOrder> {
-    var url = this._resouce + '/' + event.purchaseOrderId + '/cancelled';
-    return this._httpClient.post(url, event);
+  cancel(purchaseOrder: PurchaseOrder): Promise<PurchaseOrder> {
+    var url = this._resouce + '/' + purchaseOrder.id + '/cancelled';
+    return this._httpClient.post(url, <PurchaseOrder>{
+      id: purchaseOrder.id,
+      cancelledBy: this._auth.userAsLookup,
+      cancelledOn: new Date(),
+      cancellationReason: 'Cancellation Reason'
+    });
   }
 }

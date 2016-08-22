@@ -13,6 +13,8 @@ namespace AmpedBiz.Service.Dto
 
         public decimal QuantityValue { get; set; }
 
+        public decimal DiscountRate { get; set; }
+
         public decimal DiscountAmount { get; set; }
 
         public decimal UnitPriceAmount { get; set; }

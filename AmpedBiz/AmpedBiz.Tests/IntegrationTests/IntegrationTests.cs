@@ -430,7 +430,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                 poItems.Add(new Service.Dto.PurchaseOrderItem
                 {
                     //TotalAmount = product.RetailPriceAmount + 1m,
-                    PurchaseOrderId = request.PurchaseOrderId,
+                    PurchaseOrderId = request.Id,
                     Product = new Lookup<string>(product.Id, product.Name),
                     QuantityValue = this.random.Next(1, 100),
                     UnitCostAmount = product.Inventory.RetailPriceAmount ?? 0M + 1m,
@@ -451,7 +451,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         private Service.Dto.PurchaseOrder SubmitPurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
-            var request = new SubmitPurchaseOrder.Request() { PurchaseOrderId = purchaseOrder.Id, SubmittedBy = this.RandomUser() };
+            var request = new SubmitPurchaseOrder.Request() { Id = purchaseOrder.Id, SubmittedBy = this.RandomUser() };
             var order = new SubmitPurchaseOrder.Handler(this.sessionFactory).Handle(request);
 
             return order;
@@ -459,7 +459,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         private Service.Dto.PurchaseOrder ApprovePurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
-            var request = new ApprovePurchaseOder.Request() { PurchaseOrderId = purchaseOrder.Id, ApprovedBy = this.RandomUser() };
+            var request = new ApprovePurchaseOder.Request() { Id = purchaseOrder.Id, ApprovedBy = this.RandomUser() };
             var order = new ApprovePurchaseOder.Handler(this.sessionFactory).Handle(request);
 
             return order;
@@ -470,7 +470,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             var request = new PayPurchaseOrder.Request()
             {
-                PurchaseOrderId = purchaseOrder.Id,
+                Id = purchaseOrder.Id,
                 Payments = new Service.Dto.PurchaseOrderPayment[]
                 {
                     new Service.Dto.PurchaseOrderPayment()
@@ -498,7 +498,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             var request = new ReceivePurchaseOrder.Request()
             {
-                PurchaseOrderId = purchaseOrder.Id,
+                Id = purchaseOrder.Id,
                 Receipts = purchaseOrder.Items
                     .Select(x => new Service.Dto.PurchaseOrderReceipt()
                     {
@@ -518,7 +518,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         private Service.Dto.PurchaseOrder CompletePurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
-            var request = new CompletePurchaseOder.Request() { PurchaseOrderId = purchaseOrder.Id, CompletedBy = this.RandomUser() };
+            var request = new CompletePurchaseOder.Request() { Id = purchaseOrder.Id, CompletedBy = this.RandomUser() };
             var order = new CompletePurchaseOder.Handler(this.sessionFactory).Handle(request);
 
             return order;
@@ -526,7 +526,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         private Service.Dto.PurchaseOrder CancelPurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
-            var request = new CancelPurchaseOder.Request() { PurchaseOrderId = purchaseOrder.Id, CancelledBy = this.RandomUser(), CancellationReason = "Products not needed" };
+            var request = new CancelPurchaseOder.Request() { Id = purchaseOrder.Id, CancelledBy = this.RandomUser(), CancellationReason = "Products not needed" };
             var order = new CancelPurchaseOder.Handler(this.sessionFactory).Handle(request);
 
             return order;

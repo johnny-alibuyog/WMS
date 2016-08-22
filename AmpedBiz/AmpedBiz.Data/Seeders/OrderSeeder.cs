@@ -149,6 +149,7 @@ namespace AmpedBiz.Data.Seeders
                                 .Select(x => RotateProduct())
                                 .Select(x => new OrderItem(
                                     product: x,
+                                    discountRate: random.NextDecimal(0.01M, 0.10M),
                                     quantity: new Measure(random.NextDecimal(1M, 100M), x.Inventory.UnitOfMeasure),
                                     discount: new Money(random.NextDecimal(100M, 500M)),
                                     unitPrice: new Money(random.NextDecimal(1000M, 100000M))

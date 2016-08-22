@@ -42,5 +42,4 @@ namespace AmpedBiz.Service.Dto
 
         public virtual decimal PaymentAmount { get; set; }
     }
-
 }
