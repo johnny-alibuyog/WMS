@@ -45,18 +45,25 @@ namespace AmpedBiz.Service.Orders
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var query = session.QueryOver<Order>()
+                    var entity = session.QueryOver<Order>()
                         .Where(x => x.Id == message.Id)
+                        .Fetch(x => x.Branch).Eager
+                        .Fetch(x => x.Customer).Eager
+                        .Fetch(x => x.PricingScheme).Eager
+                        .Fetch(x => x.PaymentType).Eager
+                        .Fetch(x => x.Shipper).Eager
                         .Fetch(x => x.Tax).Eager
                         .Fetch(x => x.ShippingFee).Eager
                         .Fetch(x => x.Discount).Eager
                         .Fetch(x => x.SubTotal).Eager
                         .Fetch(x => x.Total).Eager
                         .Fetch(x => x.CreatedBy).Eager
+                        .Fetch(x => x.OrderedBy).Eager
                         .Fetch(x => x.RoutedBy).Eager
                         .Fetch(x => x.StagedBy).Eager
                         .Fetch(x => x.InvoicedBy).Eager
                         .Fetch(x => x.PaidTo).Eager
+                        .Fetch(x => x.RoutedBy).Eager
                         .Fetch(x => x.CompletedBy).Eager
                         .Fetch(x => x.CancelledBy).Eager
                         .Fetch(x => x.Items).Eager
@@ -64,10 +71,8 @@ namespace AmpedBiz.Service.Orders
                         .Fetch(x => x.Payments).Eager
                         .Fetch(x => x.Payments.First().PaidBy).Eager
                         .Fetch(x => x.Payments.First().PaymentType).Eager
-                        .TransformUsing(Transformers.DistinctRootEntity)
-                        .FutureValue();
+                        .SingleOrDefault();
 
-                    var entity = query.Value;
                     if (entity == null)
                         throw new BusinessException($"Order with id {message.Id} does not exists.");
 

@@ -35,7 +35,11 @@ namespace AmpedBiz.Service.Orders
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.Get<Order>(message.Id);
+                    var entity = session.Query<Order>()
+                        .Where(x => x.Id == message.Id)
+                        .Fetch(x => x.Items)
+                        .SingleOrDefault();
+
                     if (entity == null)
                         throw new BusinessException($"Order with id {message.Id} does not exists.");
 
@@ -79,11 +83,10 @@ namespace AmpedBiz.Service.Orders
                             .Select(x => new OrderItem(
                                 id: x.Id,
                                 discountRate: x.DiscountRate,
-                                product: session.Get<Product>(x.Product.Id),
+                                product: GetProduct(x.Product.Id),
                                 discount: new Money(x.DiscountAmount, currency),
                                 unitPrice: new Money(x.UnitPriceAmount, currency),
-                                quantity: new Measure(x.QuantityValue,
-                                    session.Get<Product>(x.Product.Id).Inventory.UnitOfMeasure)
+                                quantity: new Measure(x.QuantityValue, GetUnitOfMeasure(x.Product.Id))
                             ))
                     });
 

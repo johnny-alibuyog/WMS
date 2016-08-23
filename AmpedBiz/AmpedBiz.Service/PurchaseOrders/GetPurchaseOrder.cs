@@ -60,6 +60,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                         .Fetch(x => x.SubmittedBy)
                         .Fetch(x => x.ApprovedBy)
                         .Fetch(x => x.PaidBy)
+                        .Fetch(x => x.ReceivedBy)
                         .Fetch(x => x.CompletedBy)
                         .Fetch(x => x.CancelledBy)
                         .ToFuture();

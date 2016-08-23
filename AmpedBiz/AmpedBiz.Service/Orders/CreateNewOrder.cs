@@ -43,7 +43,20 @@ namespace AmpedBiz.Service.Orders
                         throw new BusinessException($"Order with id {message.Id} already exists.");
 
                     var currency = session.Load<Currency>(Currency.PHP.Id);
+
                     var entity = message.MapTo(new Order(message.Id));
+
+                    var productIds = message.Items.Select(x => x.Product.Id);
+
+                    var products = session.Query<Product>()
+                        .Where(x => productIds.Contains(x.Id))
+                        .Fetch(x => x.Inventory)
+                        .ToList();
+
+                    Func<string, Product> GetProduct = (id) => products.First(x => x.Id == id);
+
+                    Func<string, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
+
                     entity.State.Process(new OrderNewlyCreatedVisitor()
                     {
                         OrderNumber = message.OrderNumber,
@@ -72,11 +85,10 @@ namespace AmpedBiz.Service.Orders
                             .Select(x => new OrderItem(
                                 id: x.Id,
                                 discountRate: x.DiscountRate,
-                                product: session.Get<Product>(x.Product.Id),
+                                product: GetProduct(x.Product.Id),
                                 discount: new Money(x.DiscountAmount, currency),
                                 unitPrice: new Money(x.UnitPriceAmount, currency),
-                                quantity: new Measure(x.QuantityValue,
-                                    session.Get<Product>(x.Product.Id).Inventory.UnitOfMeasure)
+                                quantity: new Measure(x.QuantityValue, GetUnitOfMeasure(x.Product.Id))
                             ))
                     });
 
