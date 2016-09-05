@@ -83,6 +83,27 @@ ai-dialog-header {
 }
 
 @media print {
+  * { display: none !important; }
+  .printable { display: block !important; }
+
+  /*
+  body * {
+    visibility: hidden;
+  }
+  .printable, .printable * {
+    visibility: visible;
+  }
+  .printable {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  */
+
+  /*
+  .non-printable { display: none; }
+  .printable { display: block; }
+
   .page-host {
     position: absolute;
     left: 10px;
@@ -92,6 +113,7 @@ ai-dialog-header {
     overflow-y: inherit;
     overflow-x: inherit;
   }
+  */
 }
 
 section {

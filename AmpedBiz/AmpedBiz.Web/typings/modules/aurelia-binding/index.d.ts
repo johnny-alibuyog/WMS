@@ -246,6 +246,16 @@ export interface Binding {
    * Disconnects the binding from a scope.
    */
   unbind(): void;
+
+  /**
+   * Whether the binding is data-bound.
+   */
+  isBound: boolean;
+
+  /**
+   * The binding's source.
+   */
+  source: Scope;
 }
 
 /**
@@ -282,8 +292,10 @@ export interface NameExpression {
 export class Expression {
   /**
    * Evaluates the expression using the provided scope and lookup functions.
+   * @param scope The scope (bindingContext + overrideContext)
+   * @param lookupFunctions Required for BindingBehavior and ValueConverter expressions.
    */
-  evaluate(scope: Scope, lookupFunctions: LookupFunctions): any;
+  evaluate(scope: Scope, lookupFunctions?: LookupFunctions): any;
   /**
    * Assigns a value to the property represented by the expression.
    */
@@ -306,6 +318,8 @@ export class AccessScope extends Expression {
    * The number of hops up the scope tree.
    */
   ancestor: number;
+
+  constructor(name: string, ancestor: number);
 }
 
 /**
@@ -320,6 +334,8 @@ export class AccessMember extends Expression {
    * The object expression.
    */
   object: Expression;
+
+  constructor(name: string, object: Expression);
 }
 
 /**
@@ -327,13 +343,16 @@ export class AccessMember extends Expression {
  */
 export class AccessKeyed extends Expression {
   /**
-   * The property name.
-   */
-  key: Expression;
-  /**
    * The object expression.
    */
   object: Expression;
+
+  /**
+   * The property name.
+   */
+  key: Expression;
+  
+  constructor(object: Expression, key: Expression)
 }
 
 /**
@@ -343,6 +362,10 @@ export class BindingBehavior extends Expression {
   evaluate(scope: Scope, lookupFunctions: LookupFunctions): any;
   assign(scope: Scope, value: any, lookupFunctions: LookupFunctions): void;
   connect(binding: Binding, scope: Scope): void;
+  expression: Expression;
+  name: string;
+  args: Expression[];
+  constructor(expression: Expression, name: string, args: Expression[])
 }
 
 /**
@@ -352,6 +375,57 @@ export class ValueConverter extends Expression {
   evaluate(scope: Scope, lookupFunctions: LookupFunctions): any;
   assign(scope: Scope, value: any, lookupFunctions: LookupFunctions): void;
   connect(binding: Binding, scope: Scope): void;
+  expression: Expression;
+  name: string;
+  args: Expression[];
+  allArgs: Expression[];
+  constructor(expression: Expression, name: string, args: Expression[], allArgs: Expression[])
+}
+
+/**
+ * An expression representing a literal string.
+ */
+export class LiteralString extends Expression {
+  value: string;
+  constructor(value: string);
+}
+
+/**
+ * A binary expression (add, subtract, equals, greater-than, etc).
+ */
+export class Binary extends Expression {
+  operation: string;
+  left: Expression;
+  right: Expression;
+  constructor(operation: string, left: Expression, right: Expression);
+}
+
+/**
+ * A conditional (ternary) expression.
+ */
+export class Conditional extends Expression {
+  condition: Expression;
+  yes: Expression;
+  no: Expression;
+  constructor(condition: Expression, yes: Expression, no: Expression);
+}
+
+/**
+ * A literal primitive (null, undefined, number, boolean).
+ */
+export class LiteralPrimitive extends Expression {
+  value: null|undefined|number|boolean;
+  constructor(value: null|undefined|number|boolean);
+}
+
+/**
+ * An expression representing a call to a member function.
+ */
+export class CallMember extends Expression {
+  object: Expression;
+  name: string;
+  args: Expression[];
+  constructor(object: Expression, name: string, args: Expression[]);
 }
 
 /**

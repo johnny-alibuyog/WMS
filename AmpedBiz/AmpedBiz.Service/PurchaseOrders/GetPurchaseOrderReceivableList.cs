@@ -1,6 +1,4 @@
-﻿using AmpedBiz.Common.CustomTypes;
-using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
@@ -35,6 +33,20 @@ namespace AmpedBiz.Service.PurchaseOrders
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
+                    //var query1 = session.QueryOver<PurchaseOrder>()
+                    //    .Where(x => x.Id == message.Id)
+                    //    .Fetch(x => x.Items).Eager
+                    //    .Fetch(x => x.Items.First().Product).Eager
+                    //    .Fetch(x => x.Items.First().Product.Supplier).Eager
+                    //    .Fetch(x => x.Items.First().Product.Category).Eager
+                    //    .Fetch(x => x.Items.First().Product.Inventory).Eager
+                    //    .Fetch(x => x.Receipts).Eager
+                    //    .Fetch(x => x.Receipts.First().Product).Eager
+                    //    .Fetch(x => x.Receipts.First().Product.Supplier).Eager
+                    //    .Fetch(x => x.Receipts.First().Product.Category).Eager
+                    //    .Fetch(x => x.Receipts.First().Product.Inventory).Eager
+                    //    .FutureValue()
+
                     var query = session.Query<PurchaseOrder>()
                         .Where(x => x.Id == message.Id);
 

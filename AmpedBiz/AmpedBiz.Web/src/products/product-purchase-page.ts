@@ -1,4 +1,5 @@
 import {autoinject, bindable, bindingMode, customElement} from 'aurelia-framework'
+import {buildQueryString} from 'aurelia-path';
 import {Router} from 'aurelia-router';
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 import {ServiceApi} from '../services/service-api';
@@ -64,6 +65,7 @@ export class ProductPurchasePage {
   }
 
   view(item: ProductPurchasePageItem): void {
-    this._router.navigateToRoute("purchase-order-view", { id: item.id });
+    //this._router.navigateToRoute("purchase-order-view", { id: item.id });
+    this._router.navigate("#/purchase-orders/purchase-order-create?" + buildQueryString({ id: item.id }));
   }
 }

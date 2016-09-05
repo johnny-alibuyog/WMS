@@ -124,14 +124,6 @@ export class Index {
         title: 'Customers'
       },
     ]);
-    /*
-    On-Staging
-    On-Route
-    For Invoicing
-    Invoiced
-    Incomplete Payments
-    Completed Orders
-     */
     this.router = router;
   }
 }

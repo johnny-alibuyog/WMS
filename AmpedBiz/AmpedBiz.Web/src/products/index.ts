@@ -56,27 +56,12 @@ export class Index {
         nav: true,
         title: 'Unit of Measures Class'
       },
-
       {
         route: ['product-create'],
         name: 'product-create',
         moduleId: './product-create',
         nav: false,
         title: 'Product'
-      },
-      {
-        route: ['purchase-order-view'],
-        name: 'purchase-order-view',
-        moduleId: '../purchases/purchase-order-create',
-        nav: false,
-        title: 'Purchase Order'
-      },
-      {
-        route: ['order-view'],
-        name: 'order-view',
-        moduleId: '../orders/order-create',
-        nav: false,
-        title: 'Order'
       },
     ]);
 
