@@ -1,0 +1,12 @@
+
+/* moment */
+jspm install moment
+typings install moment@2.10.5 --save
+
+/* numeral */
+jspm install numeral
+typings install dt~numeraljs --global --save
+
+/* jspdf */ https://mrrio.github.io/
+jspm install npm:jspdf
+typings install dt~jspdf --global --save

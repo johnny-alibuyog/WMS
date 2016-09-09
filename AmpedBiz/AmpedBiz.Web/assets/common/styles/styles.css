@@ -83,10 +83,11 @@ ai-dialog-header {
 }
 
 @media print {
+  /*
   * { display: none !important; }
   .printable { display: block !important; }
+  */
 
-  /*
   body * {
     visibility: hidden;
   }
@@ -98,8 +99,15 @@ ai-dialog-header {
     left: 0;
     top: 0;
   }
-  */
-
+ .page-host {
+    position: absolute;
+    left: 10px;
+    right: 0;
+    top: 50px;
+    bottom: 0;
+    overflow-y: inherit;
+    overflow-x: inherit;
+  }
   /*
   .non-printable { display: none; }
   .printable { display: block; }

@@ -2,15 +2,18 @@ import {Router} from 'aurelia-router';
 import {autoinject} from 'aurelia-framework';
 import {EventAggregator, Subscription} from 'aurelia-event-aggregator';
 import {Dictionary} from '../common/custom_types/dictionary';
+import {Lookup} from '../common/custom_types/lookup';
 import {Order, OrderStatus, orderEvents} from '../common/models/order';
 import {ServiceApi} from '../services/service-api';
-import {Lookup} from '../common/custom_types/lookup';
 import {NotificationService} from '../common/controls/notification-service';
+import {Reports} from "../report_center/reports";
+//import {ReportGenerator} from '../common/controls/report-generator';
 
 @autoinject
 export class OrderCreate {
   private _api: ServiceApi;
   private _router: Router;
+  private _reports: Reports;
   private _notification: NotificationService;
   private _eventAggregator: EventAggregator;
   private _subscriptions: Subscription[] = [];
@@ -26,9 +29,10 @@ export class OrderCreate {
   public statuses: Lookup<OrderStatus>[] = [];
   public order: Order;
 
-  constructor(api: ServiceApi, router: Router, notification: NotificationService, eventAggregator: EventAggregator) {
+  constructor(api: ServiceApi, router: Router, reports: Reports, notification: NotificationService, eventAggregator: EventAggregator) {
     this._api = api;
     this._router = router;
+    this._reports = reports;
     this._notification = notification;
     this._eventAggregator = eventAggregator;
   }
@@ -191,5 +195,35 @@ export class OrderCreate {
 
   back(): void {
     this._router.navigateBack();
+  }
+
+  print(): void {
+
+    this._reports.tables();
+    
+    /*
+    this._reports.generate({
+      info: {
+        title: 'awesome Document',
+        author: 'john doe',
+        subject: 'subject of document',
+        keywords: 'keywords for document',
+      },
+      content: [
+        'First paragraph',
+        'Second paragraph, this time a little bit longer',
+        { text: 'Third paragraph, slightly bigger font size', fontSize: 20 },
+        { text: 'Another paragraph using a named style', style: 'header' },
+        { text: ['playing with ', 'inlines'] },
+        { text: ['and ', { text: 'restyling ', bold: true }, 'them'] },
+      ],
+      styles: {
+        header: {
+          fontSize: 30, 
+          bold: true
+        }
+      }
+    });
+    */
   }
 }

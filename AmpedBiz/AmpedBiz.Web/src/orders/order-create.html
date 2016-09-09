@@ -2,6 +2,7 @@
   <require from="common/controls/pager"></require>
   <require from="orders/order-item-page"></require>
   <require from="orders/order-payment-page"></require>
+  
 
   <section class="row row-no-padding">
 
@@ -55,12 +56,16 @@
               <i class="fa fa-times"></i> Back
             </button>
 
+            <button type="button" class="btn btn-default" click.trigger="print()">
+              <i class="fa fa-times"></i> Print
+            </button>
+
           </h4>
 
         </div>
 
         <!-- body -->
-        <div class="panel-body">
+        <div id="pdf" class="panel-body">
 
           <form class="form-horizontal" role="form">
 
@@ -169,7 +174,7 @@
                 <div class="tab-content">
 
                   <!-- items -->
-                  <div id="itemsTab" class="tab-pane fade in active">
+                  <div id="itemsTab" class="tab-pane fade in active printable">
                     <br />
 
                     <order-item-page 

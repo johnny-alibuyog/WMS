@@ -4,6 +4,7 @@ var exporSrvtRoot = 'export/'
 
 module.exports = {
   root: appRoot,
+  js: appRoot + '**/*.js',
   source: appRoot + '**/*.ts',
   html: appRoot + '**/*.html',
   css: appRoot + '**/*.css',
