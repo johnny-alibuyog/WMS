@@ -12,6 +12,8 @@ export function configure(aurelia: Aurelia) {
       config.settings.lock = true;
       config.settings.centerVerticalOnly = true;
       config.settings.startingZIndex = 5;
+    })
+    .plugin('aurelia-validation', config => {
     });
 
   //.plugin('aurelia-computed', config => {

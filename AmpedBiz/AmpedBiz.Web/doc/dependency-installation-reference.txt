@@ -1,3 +1,7 @@
+/* update node and npm */ (run powershell as admin)
+Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
+npm install -g npm-windows-upgrade
+npm-windows-upgrade
 
 /* moment */
 jspm install moment
