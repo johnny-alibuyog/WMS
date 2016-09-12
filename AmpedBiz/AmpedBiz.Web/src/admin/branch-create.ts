@@ -19,12 +19,16 @@ export class BranchCreate {
   public isEdit: boolean = false;
   public canSave: boolean = true;
   public name: string;
-  public branch: Branch = {
-    id: '',
-    name: '',
-    description: '',
-    address: {}
-  };
+  public branch: Branch = this.initializeBranch();
+
+  private initializeBranch(): Branch {
+    return {
+      id: '',
+      name: '',
+      description: '',
+      address: {}
+    };
+  }
 
   constructor(api: ServiceApi, notification: NotificationService, dialogController: DialogController, validationControllerFactory: ValidationControllerFactory) {
     this._api = api;
@@ -33,41 +37,30 @@ export class BranchCreate {
     this._validationController = validationControllerFactory.createForCurrentScope();
     this._validationController.addRenderer(new BootstrapFormRenderer());
 
+    // Validation support for subproperties (#283) is not yet supported. for future enhancement
+    // https://github.com/aurelia/validation/issues/283 
     ValidationRules
-
-      //.ensure((x: Branch) => x.name)
-      .ensure('name')
+      .ensure('branch.name')
         .required()
         .maxLength(150)
-    
-      .ensure((x: Branch) => x.description)
+      .ensure('branch.description')
         .required()
         .maxLength(150)
-    
-      /*
-      .ensure((x: Address) => x.street)
+      .ensure('branch.address.street')
         .maxLength(150)
-
-      .ensure((x: Address) => x.barangay)
-          .maxLength(150)
-
-      .ensure((x: Address) => x.city)
-          .maxLength(150)
-
-      .ensure((x: Address) => x.province)
-          .maxLength(150)
-
-      .ensure((x: Address) => x.region)
-          .maxLength(150)
-
-      .ensure((x: Address) => x.country)
-          .maxLength(150)
-
-      .ensure((x: Address) => x.zipCode)
-          .maxLength(150)        
-      */
-
-      .on(this);
+      .ensure('branch.address.barangay')
+        .maxLength(150)
+      .ensure('branch.address.city')
+        .maxLength(150)
+      .ensure('branch.address.province')
+        .maxLength(150)
+      .ensure('branch.address.region')
+        .maxLength(150)
+      .ensure('branch.address.country')
+        .maxLength(150)
+      .ensure('branch.address.zipCode')
+        .maxLength(150)        
+      .on(this.branch);
   }
 
   public activate(branch: Branch): void {
@@ -81,7 +74,7 @@ export class BranchCreate {
     else {
       this.header = "Create Branch";
       this.isEdit = false;
-      this.branch = <Branch>{};
+      this.branch = this.initializeBranch();
     }
   }
 
