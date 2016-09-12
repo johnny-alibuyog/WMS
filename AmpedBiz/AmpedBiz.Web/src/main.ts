@@ -13,8 +13,7 @@ export function configure(aurelia: Aurelia) {
       config.settings.centerVerticalOnly = true;
       config.settings.startingZIndex = 5;
     })
-    .plugin('aurelia-validation', config => {
-    });
+    .plugin('aurelia-validation');
 
   //.plugin('aurelia-computed', config => {
   //  config.enableLogging = true;

@@ -18,7 +18,13 @@ export class BranchCreate {
   public header: string = 'Create Branch';
   public isEdit: boolean = false;
   public canSave: boolean = true;
-  public branch: Branch;
+  public name: string;
+  public branch: Branch = {
+    id: '',
+    name: '',
+    description: '',
+    address: {}
+  };
 
   constructor(api: ServiceApi, notification: NotificationService, dialogController: DialogController, validationControllerFactory: ValidationControllerFactory) {
     this._api = api;
@@ -29,7 +35,8 @@ export class BranchCreate {
 
     ValidationRules
 
-      .ensure((x: Branch) => x.name)
+      //.ensure((x: Branch) => x.name)
+      .ensure('name')
         .required()
         .maxLength(150)
     
@@ -37,6 +44,7 @@ export class BranchCreate {
         .required()
         .maxLength(150)
     
+      /*
       .ensure((x: Address) => x.street)
         .maxLength(150)
 
@@ -57,8 +65,9 @@ export class BranchCreate {
 
       .ensure((x: Address) => x.zipCode)
           .maxLength(150)        
+      */
 
-      .on(this.branch);
+      .on(this);
   }
 
   public activate(branch: Branch): void {

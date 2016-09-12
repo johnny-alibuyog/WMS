@@ -3,6 +3,9 @@ Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
 npm install -g npm-windows-upgrade
 npm-windows-upgrade
 
+/* update tslint and typescript */
+npm install -g tslint typescript
+
 /* moment */
 jspm install moment
 typings install moment@2.10.5 --save
