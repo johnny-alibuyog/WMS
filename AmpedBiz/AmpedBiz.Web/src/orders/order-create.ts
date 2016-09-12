@@ -6,16 +6,16 @@ import {Lookup} from '../common/custom_types/lookup';
 import {Order, OrderStatus, orderEvents} from '../common/models/order';
 import {ServiceApi} from '../services/service-api';
 import {NotificationService} from '../common/controls/notification-service';
-import {Reports} from "../report_center/reports";
-//import {ReportGenerator} from '../common/controls/report-generator';
+import {InvoiceDetailReport} from './invoice-detail-report';
 
 @autoinject
 export class OrderCreate {
-  private _api: ServiceApi;
-  private _router: Router;
-  private _reports: Reports;
-  private _notification: NotificationService;
-  private _eventAggregator: EventAggregator;
+  private readonly _api: ServiceApi;
+  private readonly _router: Router;
+  private readonly _notification: NotificationService;
+  private readonly _eventAggregator: EventAggregator;
+  private readonly _invoiceDetailReport: InvoiceDetailReport;
+
   private _subscriptions: Subscription[] = [];
 
   public header: string = 'Order';
@@ -29,12 +29,12 @@ export class OrderCreate {
   public statuses: Lookup<OrderStatus>[] = [];
   public order: Order;
 
-  constructor(api: ServiceApi, router: Router, reports: Reports, notification: NotificationService, eventAggregator: EventAggregator) {
+  constructor(api: ServiceApi, router: Router, notification: NotificationService, eventAggregator: EventAggregator, invoiceDetailReport: InvoiceDetailReport) {
     this._api = api;
     this._router = router;
-    this._reports = reports;
     this._notification = notification;
     this._eventAggregator = eventAggregator;
+    this._invoiceDetailReport = invoiceDetailReport;
   }
 
   getInitializedOrder(): Order {
@@ -199,7 +199,7 @@ export class OrderCreate {
 
   print(): void {
 
-    this._reports.tables();
+    this._invoiceDetailReport.show({});
     
     /*
     this._reports.generate({

@@ -1,16 +1,16 @@
 import {autoinject} from 'aurelia-framework';
-import {ReportGenerator} from '../common/controls/report-generator';
+import {ReportBuilder} from '../services/report-builder';
 
 @autoinject
 export class Reports {
-  private readonly _report: ReportGenerator;
+  private readonly _report: ReportBuilder;
 
-  constructor(report: ReportGenerator) {
+  constructor(report: ReportBuilder) {
     this._report = report;
   }
 
   public basic(): void {
-    this._report.generate({
+    this._report.build({
       content: [
         'First paragraph',
         'Another paragraph, this time a little bit longer to make sure, this line will be divided into at least two lines'
@@ -19,7 +19,7 @@ export class Reports {
   }
 
   public styles1(): void {
-    this._report.generate({
+    this._report.build({
       content: [
         {
           text: 'This is a header, using header style',
@@ -64,7 +64,7 @@ export class Reports {
   }
 
   public styles2(): void {
-    this._report.generate({
+    this._report.build({
       content: [
         {
           text: 'This is a header (whole paragraph uses the same header style)\n\n',
@@ -115,7 +115,7 @@ export class Reports {
   }
 
   public styles3(): void {
-    this._report.generate({
+    this._report.build({
       content: [
         {
           text: 'This paragraph uses header style and extends the alignment property',
@@ -143,7 +143,7 @@ export class Reports {
   }
 
   public columns(): void {
-    this._report.generate({
+    this._report.build({
       content: [
         'By default paragraphs are stacked one on top of (or actually - below) another. ',
         'It\'s possible however to split any paragraph (or even the whole document) into columns.\n\n',
@@ -296,7 +296,7 @@ export class Reports {
   }
 
   public tables(): void {
-    this._report.generate({
+    this._report.build({
       content: [
         { text: 'Tables', style: 'header' },
         'Official documentation is in progress, this document is just a glimpse of what is possible with pdfmake and its layout engine.',
@@ -530,7 +530,7 @@ export class Reports {
   }
 
   public list(): void {
-    this._report.generate({
+    this._report.build({
       content: [
         { text: 'Unordered list', style: 'header' },
         {
@@ -865,7 +865,7 @@ export class Reports {
   }
 
   public margin(): void {
-    this._report.generate({
+    this._report.build({
       content: [
         {
           stack: [
@@ -941,7 +941,7 @@ export class Reports {
   }
 
   public images(): void {
-    this._report.generate({
+    this._report.build({
       content: [
         'pdfmake (since it\'s based on pdfkit) supports JPEG and PNG format',
         'If no width/height/fit is provided, image original size will be used',

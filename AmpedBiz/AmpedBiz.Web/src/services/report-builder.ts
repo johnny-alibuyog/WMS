@@ -4,11 +4,15 @@ declare var pdfMake: any;
 declare var vfsfont: any;
 
 // this is a wrapper for pdfMake
-export class ReportGenerator {
-  public generate(definition: DocumentDefinition) {
+export class ReportBuilder {
+  public build(definition: DocumentDefinition) {
     let pdf = pdfMake;
     pdfMake.createPdf(definition).open();
   }
+}
+
+export interface Report<T> {
+  show(data: T): void;
 }
 
 export interface DocumentDefinition {
@@ -43,5 +47,6 @@ export interface TableContent extends Content {
 }
 
 export interface ColumnContent extends Content {
-
+  text?: string | any[];
+  style?: string;
 }

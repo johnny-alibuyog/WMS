@@ -6,9 +6,9 @@ import {NotificationService} from '../common/controls/notification-service';
 
 @autoinject
 export class CustomerCreate {
-  private _api: ServiceApi;
-  private _controller: DialogController;
-  private _notification: NotificationService;
+  private readonly _api: ServiceApi;
+  private readonly _controller: DialogController;
+  private readonly _notification: NotificationService;
 
   public header: string = 'Create Customer';
   public isEdit: boolean = false;
