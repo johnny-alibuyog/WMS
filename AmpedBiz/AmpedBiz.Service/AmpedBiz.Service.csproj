@@ -83,6 +83,7 @@
     <Compile Include="Dto\Order.cs" />
     <Compile Include="Dto\OrderPayment.cs" />
     <Compile Include="Dto\OrderItem.cs" />
+    <Compile Include="Dto\OrderReturn.cs" />
     <Compile Include="Dto\PaymentType.cs" />
     <Compile Include="Dto\Person.cs" />
     <Compile Include="Dto\Product.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="Orders\GetOrderStatusLookup.cs" />
     <Compile Include="Orders\InvoiceOrder.cs" />
     <Compile Include="Orders\PayOrder.cs" />
+    <Compile Include="Orders\ReturnOrder.cs" />
     <Compile Include="Orders\RouteOrder.cs" />
     <Compile Include="Orders\ShipOrder.cs" />
     <Compile Include="Orders\StageOrder.cs" />

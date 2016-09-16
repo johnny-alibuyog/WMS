@@ -114,6 +114,13 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpPost()]
+        [Route("{id}/returned")]
+        public ReturnOrder.Response Process([FromUri]Guid id, [FromBody]ReturnOrder.Request request)
+        {
+            return _mediator.Send(request ?? new ReturnOrder.Request());
+        }
+
+        [HttpPost()]
         [Route("{id}/completed")]
         public CompleteOrder.Response Process([FromUri]Guid id, [FromBody]CompleteOrder.Request request)
         {

@@ -59,6 +59,5 @@ namespace AmpedBiz.Core.Services.Orders
                 target.Payments.Add(payment);
             }
         }
-
     }
 }

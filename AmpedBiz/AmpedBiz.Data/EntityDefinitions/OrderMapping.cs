@@ -86,6 +86,13 @@ namespace AmpedBiz.Data.EntityDefinitions
                 .Inverse()
                 .AsSet();
 
+            HasMany(x => x.Returns)
+                .Cascade.AllDeleteOrphan()
+                .Not.KeyNullable()
+                .Not.KeyUpdate()
+                .Inverse()
+                .AsSet();
+
             HasMany(x => x.Payments)
                 .Cascade.AllDeleteOrphan()
                 .Not.KeyNullable()

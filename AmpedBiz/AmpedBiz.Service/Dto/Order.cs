@@ -90,6 +90,8 @@ namespace AmpedBiz.Service.Dto
 
         public IEnumerable<OrderItem> Items { get; set; }
 
+        public IEnumerable<OrderReturn> Returns { get; set; }
+
         public IEnumerable<OrderPayment> Payments { get; set; }
 
         public Dictionary<OrderStatus, string> AllowedTransitions { get; set; }

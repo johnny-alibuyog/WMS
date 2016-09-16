@@ -80,6 +80,10 @@ namespace AmpedBiz.Core.Entities
 
         public virtual User PaidTo { get; internal protected set; }
 
+        public virtual User ReturnedBy { get; internal protected set; }
+
+        public virtual DateTime? ReturnedOn { get; internal protected set; }
+
         public virtual DateTime? CompletedOn { get; internal protected set; }
 
         public virtual User CompletedBy { get; internal protected set; }
@@ -91,6 +95,8 @@ namespace AmpedBiz.Core.Entities
         public virtual string CancellationReason { get; internal protected set; }
 
         public virtual IEnumerable<OrderItem> Items { get; internal protected set; } = new Collection<OrderItem>();
+
+        public virtual IEnumerable<OrderReturn> Returns { get; internal protected set; } = new Collection<OrderReturn>();
 
         public virtual IEnumerable<OrderPayment> Payments { get; internal protected set; } = new Collection<OrderPayment>();
 

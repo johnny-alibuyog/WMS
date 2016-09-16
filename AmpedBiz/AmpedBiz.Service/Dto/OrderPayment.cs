@@ -5,7 +5,7 @@ namespace AmpedBiz.Service.Dto
 {
     public class OrderPayment
     {
-        public Guid OrderId { get; set; }
+        public virtual Guid OrderId { get; set; }
 
         public virtual DateTime? PaidOn { get; set; }
 
@@ -18,7 +18,7 @@ namespace AmpedBiz.Service.Dto
 
     public class OrderPayable
     {
-        public Guid OrderId { get; set; }
+        public virtual Guid OrderId { get; set; }
 
         public virtual DateTime? PaidOn { get; set; }
 

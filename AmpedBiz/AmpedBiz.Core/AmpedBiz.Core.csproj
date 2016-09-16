@@ -52,6 +52,7 @@
     <Compile Include="Entities\Money.cs" />
     <Compile Include="Entities\Order.cs" />
     <Compile Include="Entities\OrderItem.cs" />
+    <Compile Include="Entities\OrderReturn.cs" />
     <Compile Include="Entities\Person.cs" />
     <Compile Include="Entities\PricingScheme.cs" />
     <Compile Include="Entities\ProductCategory.cs" />
@@ -101,6 +102,9 @@
       <DependentUpon>OrderVisitor.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\Orders\OrderPaidVisitor.cs">
+      <DependentUpon>OrderVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\Orders\OrderReturnVisitor.cs">
       <DependentUpon>OrderVisitor.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\Orders\OrderRoutedVisitor.cs">

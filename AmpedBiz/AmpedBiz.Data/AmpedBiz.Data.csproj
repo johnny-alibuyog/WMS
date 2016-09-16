@@ -118,6 +118,8 @@
     <Compile Include="EntityDefinitions\OrderItemMapping.cs" />
     <Compile Include="EntityDefinitions\OrderItemValidation.cs" />
     <Compile Include="EntityDefinitions\OrderMapping.cs" />
+    <Compile Include="EntityDefinitions\OrderReturnMapping.cs" />
+    <Compile Include="EntityDefinitions\OrderReturnValidation.cs" />
     <Compile Include="EntityDefinitions\OrderValidation.cs" />
     <Compile Include="EntityDefinitions\PricingSchemeMapping.cs" />
     <Compile Include="EntityDefinitions\PricingShemeValidation.cs" />

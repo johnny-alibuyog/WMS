@@ -66,5 +66,10 @@ namespace AmpedBiz.Common.Extentions
             var valueFromNegativeRange = (double)from + random.NextDouble() * ((double)to - (double)from) < 0;
             return valueFromNegativeRange ? decimal.Remainder(randomValue, -from) + from : decimal.Remainder(randomValue, to);
         }
+
+        public static decimal ZeroIfNull(this decimal? value)
+        {
+            return value ?? 0M;
+        }
     }
 }
