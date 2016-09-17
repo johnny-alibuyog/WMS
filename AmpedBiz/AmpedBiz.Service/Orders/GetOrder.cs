@@ -68,6 +68,8 @@ namespace AmpedBiz.Service.Orders
                         .Fetch(x => x.CancelledBy).Eager
                         .Fetch(x => x.Items).Eager
                         .Fetch(x => x.Items.First().Product).Eager
+                        .Fetch(x => x.Returns).Eager
+                        .Fetch(x => x.Returns.First().Product).Eager
                         .Fetch(x => x.Payments).Eager
                         .Fetch(x => x.Payments.First().PaidBy).Eager
                         .Fetch(x => x.Payments.First().PaymentType).Eager

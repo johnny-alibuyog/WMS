@@ -1,0 +1,21 @@
+<template>
+  <ai-dialog>
+
+    <ai-dialog-header>
+      <h3>${report.title}</h3>
+    </ai-dialog-header>
+
+    <ai-dialog-body>
+      <iframe class="report-viewer" src.bind="report.content"></iframe>
+    </ai-dialog-body>
+
+    <!--
+    <ai-dialog-footer>
+      <button click.trigger="close()" class="text-danger">
+        <i class="fa fa-times-circle"></i> Close
+      </button>
+    </ai-dialog-footer>
+    -->
+    
+  </ai-dialog>
+</template>

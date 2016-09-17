@@ -34,7 +34,9 @@ export class OrderService extends ServiceBase<Order> {
   }
 
   getInvoiceDetail(orderId: string): Promise<OrderInvoiceDetail> {
-    return Promise.resolve(<OrderInvoiceDetail>null);
+    var url = this._resouce + '/' + orderId + '/invoice-detail';
+    return this._httpClient.get(url)
+      .then(response => <OrderInvoiceDetail>response);
   }
 
   /*

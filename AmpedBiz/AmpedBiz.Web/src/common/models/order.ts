@@ -15,6 +15,9 @@ export const orderEvents = {
   payment: {
     pay: 'order-pay',
     paid: 'order-paid',
+  },
+  invoiceDetail: {
+    show: "invoice-detail:show"
   }
 }
 

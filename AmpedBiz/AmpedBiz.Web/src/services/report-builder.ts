@@ -1,14 +1,46 @@
 //import {Dictionary} from "../custom_types/dictionary"
+import {autoinject} from 'aurelia-framework';
+import {DialogService} from 'aurelia-dialog';
+import {ReportViewer, ReportModel} from '../common/controls/report-viewer';
 
 declare var pdfMake: any;
 declare var vfsfont: any;
 
 // this is a wrapper for pdfMake
+@autoinject
 export class ReportBuilder {
-  public build(definition: DocumentDefinition) {
-    let pdf = pdfMake;
-    pdfMake.createPdf(definition).open();
+  private readonly _dialog: DialogService;
+
+  constructor(dialog: DialogService) {
+    this._dialog = dialog;
   }
+
+  /*
+  public buildDataUrl(definition: DocumentDefinition): Promise<string> {
+    let pdf = pdfMake;
+    return pdfMake.createPdf(definition).getDataUrl();
+  }
+  */
+
+  public build(config: ReportBuilderConfig) {
+    let pdf = pdfMake;
+    //pdf.createPdf(definition).open();
+
+    pdf.createPdf(config.document).getDataUrl(content => {
+      this._dialog.open({
+        viewModel: ReportViewer,
+        model: <ReportModel>{
+          title: config.title || 'Report',
+          content: content
+        }
+      })
+    });
+  }
+}
+
+export interface ReportBuilderConfig {
+  title?: string;
+  document: DocumentDefinition;
 }
 
 export interface Report<T> {

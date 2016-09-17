@@ -5,6 +5,7 @@ import {Dictionary} from '../common/custom_types/dictionary';
 import {Lookup} from '../common/custom_types/lookup';
 import {Order, OrderStatus, orderEvents} from '../common/models/order';
 import {ServiceApi} from '../services/service-api';
+import {ReportViewer} from '../common/controls/report-viewer';
 import {NotificationService} from '../common/controls/notification-service';
 import {OrderInvoiceDetailReport} from './order-invoice-detail-report';
 
@@ -52,6 +53,10 @@ export class OrderCreate {
         orderEvents.payment.paid,
         data => this.resetAndNoify(data, null)
       ),
+      this._eventAggregator.subscribe(
+        orderEvents.invoiceDetail.show,
+        data => window.open(data, "_blank")
+      )
     ];
 
     let requests: [
@@ -204,33 +209,19 @@ export class OrderCreate {
   }
 
   print(): void {
-    
+    this._api.orders.getInvoiceDetail(this.order.id)
+      .then(data => this._invoiceReport.show(data))
 
-
-    this._invoiceReport.show({});
-    
     /*
-    this._reports.generate({
-      info: {
-        title: 'awesome Document',
-        author: 'john doe',
-        subject: 'subject of document',
-        keywords: 'keywords for document',
-      },
-      content: [
-        'First paragraph',
-        'Second paragraph, this time a little bit longer',
-        { text: 'Third paragraph, slightly bigger font size', fontSize: 20 },
-        { text: 'Another paragraph using a named style', style: 'header' },
-        { text: ['playing with ', 'inlines'] },
-        { text: ['and ', { text: 'restyling ', bold: true }, 'them'] },
-      ],
-      styles: {
-        header: {
-          fontSize: 30, 
-          bold: true
-        }
-      }
+    this._invoiceReport.show(null);
+    */
+
+    /*
+    this._api.orders.getInvoiceDetail(this.order.id).then(data => {
+      this._invoiceReport.buildDataUrl(data)
+        .then(data => this._dialog.open({ viewModel: ReportViewer, model: data }));
+
+      //this._eventAggregator.publish(orderEvents.invoiceDetail.show);
     });
     */
   }
