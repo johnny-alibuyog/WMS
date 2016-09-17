@@ -13,10 +13,16 @@ namespace AmpedBiz.Service.Dto
 
         public virtual Lookup<Guid> ReturnedBy { get; protected set; }
 
-        public virtual decimal QuantityValue { get; protected set; }
+        public decimal QuantityValue { get; set; }
 
-        public virtual decimal UnitPriceAmount { get; protected set; }
+        public decimal DiscountRate { get; set; }
 
-        public virtual decimal TotalPriceAmount { get; protected set; }
+        public decimal DiscountAmount { get; set; }
+
+        public decimal UnitPriceAmount { get; set; }
+
+        public decimal ExtendedPriceAmount { get; set; }
+
+        public decimal TotalPriceAmount { get; set; }
     }
 }

@@ -11,7 +11,8 @@ namespace AmpedBiz.Core.Services.Orders
 
         public override void Visit(Order target)
         {
-            this.AddReturnsTo(target);
+            this.SetReturnsTo(target);
+            target.Accept(new OrderCalculateTotalVisitor());
             target.Status = OrderStatus.Paid;
         }
 
@@ -21,7 +22,7 @@ namespace AmpedBiz.Core.Services.Orders
                 return;
 
             var itemsToInsert = this.Returns.Except(target.Returns).ToList();
-            var itemsToUpdate = target.Returns.Where(x => this.Returns.Contains(x)).ToList();
+            //var itemsToUpdate = target.Returns.Where(x => this.Returns.Contains(x)).ToList();
             var itemsToRemove = target.Returns.Except(this.Returns).ToList();
 
             foreach (var item in itemsToInsert)
@@ -30,12 +31,12 @@ namespace AmpedBiz.Core.Services.Orders
                 target.Returns.Add(item);
             }
 
-            foreach (var item in itemsToUpdate)
-            {
-                var value = this.Returns.Single(x => x == item);
-                item.SerializeWith(value);
-                item.Order = target;
-            }
+            //foreach (var item in itemsToUpdate)
+            //{
+            //    var value = this.Returns.Single(x => x == item);
+            //    item.SerializeWith(value);
+            //    item.Order = target;
+            //}
 
             foreach (var item in itemsToRemove)
             {

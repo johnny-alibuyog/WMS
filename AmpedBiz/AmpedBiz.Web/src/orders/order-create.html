@@ -44,6 +44,10 @@
               <i class="fa fa-check"></i> ${order.allowedTransitions['shipped']}
             </button>
 
+            <button type="button" class="btn btn-default" if.bind="order.allowedTransitions['returned']" click.trigger="returns()">
+              <i class="fa fa-check"></i> ${order.allowedTransitions['returned']}
+            </button>
+
             <button type="button" class="btn btn-default" if.bind="order.allowedTransitions['completed']" click.trigger="complete()">
               <i class="fa fa-check"></i> ${order.allowedTransitions['completed']}
             </button>

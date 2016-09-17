@@ -31,6 +31,8 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.Discount);
 
+            Define(x => x.Returned);
+
             Define(x => x.SubTotal)
                 .NotNullable()
                 .And.IsValid();

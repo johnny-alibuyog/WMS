@@ -68,6 +68,8 @@ namespace AmpedBiz.Service.Orders
                             returnedOn: x.ReturnedOn ?? DateTime.Now,
                             returnedBy: session.Load<User>(x.ReturnedBy.Id),
                             quantity: new Measure(x.QuantityValue, GetUnitOfMeasure(x.Product.Id)),
+                            discountRate: x.DiscountRate,
+                            discount: new Money(x.DiscountAmount, currency),
                             unitPrice: new Money(x.UnitPriceAmount, currency)
                         ))
                     });

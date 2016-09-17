@@ -81,6 +81,7 @@
     <Compile Include="Dto\Measure.cs" />
     <Compile Include="Dto\Money.cs" />
     <Compile Include="Dto\Order.cs" />
+    <Compile Include="Dto\OrderInvoiceDetail.cs" />
     <Compile Include="Dto\OrderPayment.cs" />
     <Compile Include="Dto\OrderItem.cs" />
     <Compile Include="Dto\OrderReturn.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Orders\CreateNewOrder.cs" />
     <Compile Include="Orders\GetActiveOrderPage.cs" />
     <Compile Include="Orders\GetOrder.cs" />
+    <Compile Include="Orders\GetOrderInvoiceDetail.cs" />
     <Compile Include="Orders\GetOrderList.cs" />
     <Compile Include="Orders\GetOrderPage.cs" />
     <Compile Include="Orders\GetOrderPayable.cs" />

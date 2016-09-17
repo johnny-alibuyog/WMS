@@ -26,8 +26,9 @@ export enum OrderStatus {
   routed = 5,
   shipped = 6,
   //delivered = 7,
-  completed = 7,
-  cancelled = 8
+  returned = 7,
+  completed = 8,
+  cancelled = 9
 }
 
 export interface Order {
@@ -90,7 +91,7 @@ export interface OrderItem {
   discountAmount?: number;
   unitPriceAmount?: number;
   extendedPriceAmount?: number;
-  total?: number;
+  totalPriceAmount?: number;
 }
 
 export interface OrderPayment {
@@ -115,4 +116,42 @@ export interface OrderPayable {
   balanceAmount?: number;
   paidAmount?: number;
   paymentAmount?: number;
+}
+
+
+export interface OrderInvoiceDetail {
+  customerName?: string;
+  invoiceNumber?: string;
+  invoicedOn?: Date;
+  invoicedByName?: string;
+  pricingSchemeName?: string;
+  paymentTypeName?: string;
+
+  branchName?: string;
+  orderedOn?: Date;
+  orderedFromName?: string;
+  shippedOn?: Date;
+  shippedByName?: string;
+  shippingAddress?: Address;
+
+  taxAmount?: number;
+  shippingFeeAmount?: number;
+  discountAmount?: number;
+  returnedAmount?: number;
+  subTotalAmount?: number;
+  totalAmount?: number;
+
+  items?: OrderInvoiceDetailItem[];
+}
+
+export class OrderInvoiceDetailItem {
+  id?: string;
+  orderId?: string;
+  product?: Lookup<string>;
+  quantityValue?: number;
+  discountRate?: number;
+  discountAmount?: number;
+  unitPriceAmount?: number;
+  extendedPriceAmount?: number;
+  totalPriceAmount?: number;
 }

@@ -25,3 +25,7 @@ export function formatNumber(value: number, format?: string): string {
 
   return numeral(value).format(format);
 }
+
+export function emptyIfNull(value: string) {
+  return value || '';
+}

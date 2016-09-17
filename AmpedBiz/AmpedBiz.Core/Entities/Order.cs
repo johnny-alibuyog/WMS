@@ -14,8 +14,9 @@ namespace AmpedBiz.Core.Entities
         Staged = 4,
         Routed = 5,
         Shipped = 6,
-        Completed = 7,
-        Cancelled = 8
+        Returned = 7,
+        Completed = 8,
+        Cancelled = 9
     }
 
     public class Order : Entity<Guid, Order>, IAccept<OrderVisitor>
@@ -41,6 +42,8 @@ namespace AmpedBiz.Core.Entities
         public virtual Money ShippingFee { get; internal protected set; }
 
         public virtual Money Discount { get; internal protected set; }
+
+        public virtual Money Returned { get; internal protected set; }
 
         public virtual Money SubTotal { get; internal protected set; }
 

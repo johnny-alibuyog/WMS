@@ -31,6 +31,9 @@ namespace AmpedBiz.Data.EntityDefinitions
             Component(x => x.Discount, 
                 MoneyMapping.Map("Discount_", nameof(Order)));
 
+            Component(x => x.Returned,
+                MoneyMapping.Map("Returned_", nameof(Order)));
+
             Component(x => x.SubTotal, 
                 MoneyMapping.Map("SubTotal_", nameof(Order)));
 

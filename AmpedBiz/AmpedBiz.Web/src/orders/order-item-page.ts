@@ -116,7 +116,7 @@ export class OrderItemPage {
       this.items = [];
 
     this.items.forEach(item => {
-      if (!item.discountRate || !item.discountAmount || !item.total) {
+      if (!item.discountRate || !item.discountAmount || !item.totalPriceAmount) {
         this.compute(item);
       }
     });
@@ -161,6 +161,6 @@ export class OrderItemPage {
     }
     item.extendedPriceAmount = item.unitPriceAmount * item.quantityValue;
     item.discountAmount = item.discountRate * item.extendedPriceAmount;
-    item.total = item.extendedPriceAmount - item.discountAmount;
+    item.totalPriceAmount = item.extendedPriceAmount - item.discountAmount;
   }
 }

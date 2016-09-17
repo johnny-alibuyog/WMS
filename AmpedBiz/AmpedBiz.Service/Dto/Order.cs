@@ -12,8 +12,9 @@ namespace AmpedBiz.Service.Dto
         Staged = 4,
         Routed = 5,
         Shipped = 6,
-        Completed = 7,
-        Cancelled = 8
+        Returned = 7,
+        Completed = 8,
+        Cancelled = 9
     }
 
     public class Order

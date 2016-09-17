@@ -1,9 +1,7 @@
 import {autoinject} from 'aurelia-framework';
 import {Lookup} from '../common/custom_types/lookup';
 import {PageRequest} from '../common/models/paging';
-//import {Order, OrderStatus, OrderPayment, OrderReceivable} from '../common/models/order';
-import {Order, OrderPayable, OrderStatus} from '../common/models/order';
-//import {OrderNewlyCreatedEvent, OrderSubmittedEvent, OrderApprovedEvent, OrderPaidEvent, OrderReceivedEvent, OrderCompletedEvent, OrderCancelledEvent} from '../common/models/purchase-order-event';
+import {Order, OrderPayable, OrderStatus, OrderInvoiceDetail} from '../common/models/order';
 import {ServiceBase} from './service-base'
 import {AuthService} from './auth-service';
 import {HttpClientFacade} from './http-client-facade';
@@ -35,6 +33,10 @@ export class OrderService extends ServiceBase<Order> {
       .then(response => <OrderPayable>response);
   }
 
+  getInvoiceDetail(orderId: string): Promise<OrderInvoiceDetail> {
+    return Promise.resolve(<OrderInvoiceDetail>null);
+  }
+
   /*
     getReceivables(id: string): Promise<OrderReceivable[]> {
       var url = this._resouce + '/' + id + '/receivables';
@@ -42,6 +44,7 @@ export class OrderService extends ServiceBase<Order> {
         .then(response => <OrderReceivable[]>response);
     }
   */
+
   createNew(order: Order): Promise<Order> {
     var url = this._resouce + '/new';
     return this._httpClient.post(url, <Order>{
@@ -119,6 +122,15 @@ export class OrderService extends ServiceBase<Order> {
       id: order.id,
       shippedBy: this._auth.userAsLookup,
       shippedOn: new Date()
+    });
+  }
+
+  returns(order: Order): Promise<Order> {
+    var url = this._resouce + '/' + order.id + '/returned';
+    return this._httpClient.post(url, <Order>{
+      id: order.id,
+      returnedBy: this._auth.userAsLookup,
+      returnedOn: new Date()
     });
   }
 

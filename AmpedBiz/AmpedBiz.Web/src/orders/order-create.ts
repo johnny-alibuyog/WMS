@@ -6,7 +6,7 @@ import {Lookup} from '../common/custom_types/lookup';
 import {Order, OrderStatus, orderEvents} from '../common/models/order';
 import {ServiceApi} from '../services/service-api';
 import {NotificationService} from '../common/controls/notification-service';
-import {InvoiceDetailReport} from './invoice-detail-report';
+import {OrderInvoiceDetailReport} from './order-invoice-detail-report';
 
 @autoinject
 export class OrderCreate {
@@ -14,7 +14,7 @@ export class OrderCreate {
   private readonly _router: Router;
   private readonly _notification: NotificationService;
   private readonly _eventAggregator: EventAggregator;
-  private readonly _invoiceDetailReport: InvoiceDetailReport;
+  private readonly _invoiceReport: OrderInvoiceDetailReport;
 
   private _subscriptions: Subscription[] = [];
 
@@ -29,12 +29,12 @@ export class OrderCreate {
   public statuses: Lookup<OrderStatus>[] = [];
   public order: Order;
 
-  constructor(api: ServiceApi, router: Router, notification: NotificationService, eventAggregator: EventAggregator, invoiceDetailReport: InvoiceDetailReport) {
+  constructor(api: ServiceApi, router: Router, notification: NotificationService, eventAggregator: EventAggregator, invoiceReport: OrderInvoiceDetailReport) {
     this._api = api;
     this._router = router;
     this._notification = notification;
     this._eventAggregator = eventAggregator;
-    this._invoiceDetailReport = invoiceDetailReport;
+    this._invoiceReport = invoiceReport;
   }
 
   getInitializedOrder(): Order {
@@ -181,6 +181,12 @@ export class OrderCreate {
       .catch(error => this._notification.warning(error));
   }
 
+  returns(): void {
+    this._api.orders.returns(this.order)
+      .then(data => this.resetAndNoify(data, "Order items has been retuned."))
+      .catch(error => this._notification.warning(error));
+  }
+
   complete(): void {
     this._api.orders.complete(this.order)
       .then(data => this.resetAndNoify(data, "Order has been completed."))
@@ -198,8 +204,10 @@ export class OrderCreate {
   }
 
   print(): void {
+    
 
-    this._invoiceDetailReport.show({});
+
+    this._invoiceReport.show({});
     
     /*
     this._reports.generate({

@@ -33,34 +33,34 @@ namespace AmpedBiz.Service.PurchaseOrders
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    //var query1 = session.QueryOver<PurchaseOrder>()
-                    //    .Where(x => x.Id == message.Id)
-                    //    .Fetch(x => x.Items).Eager
-                    //    .Fetch(x => x.Items.First().Product).Eager
-                    //    .Fetch(x => x.Items.First().Product.Supplier).Eager
-                    //    .Fetch(x => x.Items.First().Product.Category).Eager
-                    //    .Fetch(x => x.Items.First().Product.Inventory).Eager
-                    //    .Fetch(x => x.Receipts).Eager
-                    //    .Fetch(x => x.Receipts.First().Product).Eager
-                    //    .Fetch(x => x.Receipts.First().Product.Supplier).Eager
-                    //    .Fetch(x => x.Receipts.First().Product.Category).Eager
-                    //    .Fetch(x => x.Receipts.First().Product.Inventory).Eager
-                    //    .FutureValue()
+                    var query = session.QueryOver<PurchaseOrder>()
+                        .Where(x => x.Id == message.Id)
+                        .Fetch(x => x.Items).Eager
+                        .Fetch(x => x.Items.First().Product).Eager
+                        .Fetch(x => x.Items.First().Product.Supplier).Eager
+                        .Fetch(x => x.Items.First().Product.Category).Eager
+                        .Fetch(x => x.Items.First().Product.Inventory).Eager
+                        .Fetch(x => x.Receipts).Eager
+                        .Fetch(x => x.Receipts.First().Product).Eager
+                        .Fetch(x => x.Receipts.First().Product.Supplier).Eager
+                        .Fetch(x => x.Receipts.First().Product.Category).Eager
+                        .Fetch(x => x.Receipts.First().Product.Inventory).Eager
+                        .FutureValue();
 
-                    var query = session.Query<PurchaseOrder>()
-                        .Where(x => x.Id == message.Id);
+                    //var query = session.Query<PurchaseOrder>()
+                    //    .Where(x => x.Id == message.Id);
 
-                    query.FetchMany(x => x.Items)
-                        .ThenFetch(x => x.Product)
-                        .ThenFetch(x => x.Inventory)
-                        .ToFuture();
+                    //query.FetchMany(x => x.Items)
+                    //    .ThenFetch(x => x.Product)
+                    //    .ThenFetch(x => x.Inventory)
+                    //    .ToFuture();
 
-                    query.FetchMany(x => x.Receipts)
-                        .ThenFetch(x => x.Product)
-                        .ThenFetch(x => x.Inventory)
-                        .ToFuture();
+                    //query.FetchMany(x => x.Receipts)
+                    //    .ThenFetch(x => x.Product)
+                    //    .ThenFetch(x => x.Inventory)
+                    //    .ToFuture();
 
-                    var entity = query.ToFutureValue().Value;
+                    var entity = query.Value;
 
                     var dtos = Dto.PurchaseOrderReceivable.Evaluate(entity);
 
@@ -70,7 +70,6 @@ namespace AmpedBiz.Service.PurchaseOrders
                 }
 
                 return response;
-
             }
         }
     }
