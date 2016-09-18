@@ -84,6 +84,8 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.CancellationReason);
 
+            Define(x => x.PricingScheme);
+
             Define(x => x.Payments)
                 .HasValidElements();
 

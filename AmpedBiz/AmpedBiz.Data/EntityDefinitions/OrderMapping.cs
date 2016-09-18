@@ -82,6 +82,8 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Map(x => x.CancellationReason);
 
+            References(x => x.PricingScheme);
+
             HasMany(x => x.Items)
                 .Cascade.AllDeleteOrphan()
                 .Not.KeyNullable()

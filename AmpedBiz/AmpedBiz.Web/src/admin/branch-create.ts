@@ -38,7 +38,9 @@ export class BranchCreate {
     this._validationController.addRenderer(new BootstrapFormRenderer());
 
     // Validation support for subproperties (#283) is not yet supported. for future enhancement
-    // https://github.com/aurelia/validation/issues/283 
+    // https://github.com/aurelia/validation/issues/283
+    //temporarily remove validation rules to enable creation of branch 
+    /*
     ValidationRules
       .ensure('branch.name')
         .required()
@@ -60,7 +62,7 @@ export class BranchCreate {
         .maxLength(150)
       .ensure('branch.address.zipCode')
         .maxLength(150)        
-      .on(this.branch);
+      .on(this.branch);*/
   }
 
   public activate(branch: Branch): void {

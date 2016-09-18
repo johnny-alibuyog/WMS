@@ -29,6 +29,9 @@ namespace AmpedBiz.Service.Customers
                     if (exists)
                         throw new BusinessException($"Customer with id {message.Id} already exists.");
 
+                    if (string.IsNullOrEmpty(message.PricingSchemeId))
+                        message.PricingSchemeId = "RP";
+
                     var entity = message.MapTo<Dto.Customer, Customer>(new Customer(message.Id));
                     var currency = session.Load<Currency>(Currency.PHP.Id);
                     entity.CreditLimit = new Money(message.CreditLimitAmount, currency);

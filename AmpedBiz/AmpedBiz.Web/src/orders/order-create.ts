@@ -144,7 +144,10 @@ export class OrderCreate {
 
   createNew(): void {
     this._api.orders.createNew(this.order)
-      .then(data => this.resetAndNoify(data, "Order has been created."))
+      .then(data => {
+        this._notification.success("Order has been created.");
+        this._router.navigateBack();
+      })
       .catch(error => this._notification.warning(error));
   }
 
@@ -200,7 +203,10 @@ export class OrderCreate {
 
   cancel(): void {
     this._api.orders.cancel(this.order)
-      .then(data => this.resetAndNoify(data, "Order has been cancelled."))
+      .then(data => {
+        this._notification.success("Order has been cancelled.");
+        this._router.navigateBack();
+      })
       .catch(error => this._notification.warning(error));
   }
 
