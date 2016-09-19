@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AmpedBiz.Core.Entities
+﻿namespace AmpedBiz.Core.Entities
 {
     public class Money : ValueObject<Money>
     {
@@ -60,6 +54,19 @@ namespace AmpedBiz.Core.Entities
                 value2 = new Money(0M, currency);
 
             return new Money(value1.Amount - value2.Amount, currency);
+        }
+    }
+
+    public static class MoneyExtention
+    {
+        public static decimal Amount(this Money money, decimal? defaultValue = 0M)
+        {
+            if (money == null)
+            {
+                return defaultValue ?? 0M;
+            }
+
+            return money.Amount;
         }
     }
 }

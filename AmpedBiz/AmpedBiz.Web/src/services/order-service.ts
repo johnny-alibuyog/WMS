@@ -1,7 +1,7 @@
 import {autoinject} from 'aurelia-framework';
 import {Lookup} from '../common/custom_types/lookup';
 import {PageRequest} from '../common/models/paging';
-import {Order, OrderPayable, OrderStatus, OrderInvoiceDetail} from '../common/models/order';
+import {Order, OrderPayable, OrderReturnable, OrderStatus, OrderInvoiceDetail} from '../common/models/order';
 import {ServiceBase} from './service-base'
 import {AuthService} from './auth-service';
 import {HttpClientFacade} from './http-client-facade';
@@ -31,6 +31,12 @@ export class OrderService extends ServiceBase<Order> {
     var url = this._resouce + '/' + orderId + '/payables';
     return this._httpClient.get(url)
       .then(response => <OrderPayable>response);
+  }
+
+  getReturnables(orderId: string): Promise<OrderReturnable> {
+    var url = this._resouce + '/' + orderId + '/returnables';
+    return this._httpClient.get(url)
+      .then(response => <OrderReturnable>response);
   }
 
   getInvoiceDetail(orderId: string): Promise<OrderInvoiceDetail> {
@@ -132,7 +138,8 @@ export class OrderService extends ServiceBase<Order> {
     return this._httpClient.post(url, <Order>{
       id: order.id,
       returnedBy: this._auth.userAsLookup,
-      returnedOn: new Date()
+      returnedOn: new Date(),
+      returns: order.returns
     });
   }
 

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AmpedBiz.Core.Services.Orders
 {
-    public class OrderReturnVisitor : OrderVisitor
+    public class OrderReturnedVisitor : OrderVisitor
     {
         public virtual IEnumerable<OrderReturn> Returns { get; set; }
 

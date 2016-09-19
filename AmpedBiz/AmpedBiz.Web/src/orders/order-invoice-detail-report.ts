@@ -20,207 +20,9 @@ export class OrderInvoiceDetailReport implements Report<OrderInvoiceDetail> {
       data = genDummy();
 
     var document = this.buildDocument(data);
-
     this._reportBuilder.build({ title: 'Invoice', document: document });
-
-    /*
-    let productTableBody: any[] = [
-      [
-        { text: 'Product', style: 'tableHeader' },
-        { text: 'Quantity', style: 'tableHeader', alignment: 'right' },
-        { text: 'Unit Price', style: 'tableHeader', alignment: 'right' },
-        { text: 'Discount', style: 'tableHeader', alignment: 'right' },
-        { text: 'Price', style: 'tableHeader', alignment: 'right' }
-      ],
-    ];
-
-    if (data && data.items && data.items.length > 0) {
-      data.items.forEach(x =>
-        productTableBody.push([
-          { text: x.product && x.product.name || '', style: 'tableData' },
-          { text: formatNumber(x.quantityValue, "0"), style: 'tableData', alignment: 'right' },
-          { text: formatNumber(x.unitPriceAmount), style: 'tableData', alignment: 'right' },
-          { text: formatNumber(x.discountAmount), style: 'tableData', alignment: 'right' },
-          { text: formatNumber(x.totalPriceAmount), style: 'tableData', alignment: 'right' },
-        ])
-      );
-    }
-
-    this._reportBuilder.build({
-      content:
-      [
-        {
-          text: 'Invoice',
-          style: 'title'
-        },
-        {
-          columns:
-          [
-            {
-              style: 'tablePlain',
-              layout: 'noBorders',
-              table:
-              {
-                body:
-                [
-                  [
-                    { text: 'Customer: ', style: 'label' },
-                    { text: emptyIfNull(data.customerName), style: 'value' }
-                  ],
-                  [
-                    { text: 'Invoice Number: ', style: 'label' },
-                    { text: data.invoiceNumber || '', style: 'value' }
-                  ],
-                  [
-                    { text: 'Inviced On: ', style: 'label' },
-                    { text: formatDate(data.invoicedOn), style: 'value' }
-                  ],
-                  [
-                    { text: 'Invoiced By: ', style: 'label' },
-                    { text: data.invoicedByName || '', style: 'value' }
-                  ],
-                  [
-                    { text: 'Payment Type: ', style: 'label' },
-                    { text: data.paymentTypeName || '', style: 'value' }
-                  ],
-                ],
-              }
-            },
-            {
-              style: 'tablePlain',
-              layout: 'noBorders',
-              table:
-              {
-                body:
-                [
-                  [
-                    { text: 'Branch Name: ', style: 'label' },
-                    { text: data.branchName || '', style: 'value' }
-                  ],
-                  [
-                    { text: 'Ordered On: ', style: 'label' },
-                    { text: formatDate(data.orderedOn), style: 'value' }
-                  ],
-                  [
-                    { text: 'Staff: ', style: 'label' },
-                    { text: data.orderedFromName || '', style: 'value' }
-                  ],
-                  [
-                    { text: 'Delivery Address: ', style: 'label' },
-                    { text: data.shippingAddress || '', style: 'value' }
-                  ],
-                ],
-              }
-            },
-          ]
-        },
-        {
-          text: 'Products',
-          style: 'header'
-        },
-        {
-          style: 'tableExample',
-          table: {
-            headerRows: 1,
-            widths: ['*', 'auto', 'auto', 'auto', 'auto'],
-            body: productTableBody
-          },
-          layout: 'lightHorizontalLines'
-        },
-        {
-          columns:
-          [
-            { text: "" },
-            { text: "" },
-            { text: "" },
-            {
-              style: 'tablePlain',
-              layout: 'noBorders',
-              table:
-              {
-                body:
-                [
-                  [
-                    { text: 'Tax: ', style: 'label' },
-                    { text: formatNumber(data.taxAmount), style: 'value', alignment: 'right' }
-                  ],
-                  [
-                    { text: 'Freight: ', style: 'label' },
-                    { text: formatNumber(data.shippingFeeAmount), style: 'value', alignment: 'right' }
-                  ],
-                  [
-                    { text: 'Discount: ', style: 'label' },
-                    { text: formatNumber(data.discountAmount), style: 'value', alignment: 'right' }
-                  ],
-                  [
-                    { text: 'Sub Total: ', style: 'label' },
-                    { text: formatNumber(data.subTotalAmount), style: 'value', alignment: 'right' }
-                  ],
-                  [
-                    { text: 'Total: ', style: 'label' },
-                    { text: formatNumber(data.totalAmount), style: 'value', alignment: 'right' }
-                  ],
-                ],
-              }
-            },
-          ]
-        },
-      ],
-      styles:
-      {
-        title:
-        {
-          fontSize: 28,
-          bold: true,
-          margin: [0, 0, 0, 10]
-        },
-        header:
-        {
-          fontSize: 18,
-          bold: true,
-          margin: [0, 10, 0, 10]
-        },
-        label:
-        {
-          fontSize: 10,
-          alignment: 'right',
-        },
-        value:
-        {
-          fontSize: 10,
-          color: 'gray',
-        },
-        tablePlain:
-        {
-          alignment: 'right',
-          margin: [0, 0, 0, 0]
-        },
-        tableHeader: {
-          bold: true,
-          fontSize: 10,
-          color: 'black'
-        },
-        tableData: {
-          fontSize: 10,
-          color: 'gray'
-        }
-      },
-
-    });
-    */
   }
 
-  /*
-  public buildDataUrl(data: OrderInvoiceDetail): Promise<string> {
-    if (data == null)
-      data = genDummy();
-
-    var document = this.buildDocument(data);
-
-    return this._reportBuilder.buildDataUrl(document);
-  }
-  */
-  
   private buildDocument(data: OrderInvoiceDetail): DocumentDefinition {
     let productTableBody: any[] = [
       [
@@ -301,7 +103,7 @@ export class OrderInvoiceDetailReport implements Report<OrderInvoiceDetail> {
                   ],
                   [
                     { text: 'Staff: ', style: 'label' },
-                    { text: data.orderedFromName || '', style: 'value' }
+                    { text: data.orderedByName || '', style: 'value' }
                   ],
                   [
                     { text: 'Delivery Address: ', style: 'label' },
@@ -387,6 +189,7 @@ export class OrderInvoiceDetailReport implements Report<OrderInvoiceDetail> {
         {
           fontSize: 10,
           color: 'gray',
+          alignment: 'left',
         },
         tablePlain:
         {

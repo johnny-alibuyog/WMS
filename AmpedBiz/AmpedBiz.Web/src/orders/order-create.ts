@@ -38,7 +38,7 @@ export class OrderCreate {
     this._invoiceReport = invoiceReport;
   }
 
-  getInitializedOrder(): Order {
+  public getInitializedOrder(): Order {
     let order: Order = {
       orderedOn: new Date(),
       allowedTransitions: <Dictionary<string>>{}
@@ -47,7 +47,11 @@ export class OrderCreate {
     return order;
   }
 
-  activate(order: Order) {
+  public get isOrderInvoiced(): boolean {
+    return this.order && this.order.status >= OrderStatus.invoiced;
+  }
+
+  public activate(order: Order): void {
     this._subscriptions = [
       this._eventAggregator.subscribe(
         orderEvents.payment.paid,
@@ -96,11 +100,11 @@ export class OrderCreate {
       });
   }
 
-  deactivate() {
+  public deactivate(): void {
     this._subscriptions.forEach(subscription => subscription.dispose());
   }
 
-  resetAndNoify(order: Order, notificationMessage: string) {
+  public resetAndNoify(order: Order, notificationMessage: string): void {
     this.setOrder(order);
 
     if (notificationMessage) {
@@ -108,7 +112,7 @@ export class OrderCreate {
     }
   }
 
-  setOrder(order: Order): void {
+  public setOrder(order: Order): void {
     if (order.id) {
       this.isEdit = true;
     }
@@ -118,22 +122,27 @@ export class OrderCreate {
 
     this.order = order;
     this.order.items = this.order.items || [];
+    this.order.returns = this.order.returns || [];
     this.order.payments = this.order.payments || [];
   }
 
-  addItem(): void {
+  public addItem(): void {
     this._eventAggregator.publish(orderEvents.item.add);
   }
 
-  addPayment(): void {
+  public addReturn(): void {
+    this._eventAggregator.publish(orderEvents.return.add);
+  }
+
+  public addPayment(): void {
     this._eventAggregator.publish(orderEvents.payment.pay);
   }
 
-  signalPricingSchemChanged(): void {
+  public signalPricingSchemChanged(): void {
     this._eventAggregator.publish(orderEvents.pricingScheme.changed);
   }
 
-  save(): void {
+  public save(): void {
     if (this.isEdit) {
       this.updateNew();
     }
@@ -142,7 +151,7 @@ export class OrderCreate {
     }
   }
 
-  createNew(): void {
+  public createNew(): void {
     this._api.orders.createNew(this.order)
       .then(data => {
         this._notification.success("Order has been created.");
@@ -151,28 +160,34 @@ export class OrderCreate {
       .catch(error => this._notification.warning(error));
   }
 
-  updateNew(): void {
+  public updateNew(): void {
     this._api.orders.updateNew(this.order)
       .then(data => this.resetAndNoify(data, "Order has been updated."))
       .catch(error => this._notification.warning(error));
   }
 
-  stage(): void {
+  public stage(): void {
     this._api.orders.stage(this.order)
       .then(data => this.resetAndNoify(data, "Order has been staged."))
       .catch(error => this._notification.warning(error));
   }
 
-  route(): void {
+  public route(): void {
     this._api.orders.route(this.order)
       .then(data => this.resetAndNoify(data, "Order has been routed."))
       .catch(error => this._notification.warning(error));
   }
 
-  invoice(): void {
+  public invoice(): void {
     this._api.orders.invoice(this.order)
       .then(data => this.resetAndNoify(data, "Order has been invoiced."))
+      .then(_ => this.viewInvoice())
       .catch(error => this._notification.warning(error));
+  }
+
+  public viewInvoice(): void {
+    this._api.orders.getInvoiceDetail(this.order.id)
+      .then(data => this._invoiceReport.show(data))
   }
 
   /*
@@ -183,25 +198,25 @@ export class OrderCreate {
     }
   */
 
-  ship(): void {
+  public ship(): void {
     this._api.orders.ship(this.order)
       .then(data => this.resetAndNoify(data, "Order has been shiped."))
       .catch(error => this._notification.warning(error));
   }
 
-  returns(): void {
+  public returns(): void {
     this._api.orders.returns(this.order)
       .then(data => this.resetAndNoify(data, "Order items has been retuned."))
       .catch(error => this._notification.warning(error));
   }
 
-  complete(): void {
+  public complete(): void {
     this._api.orders.complete(this.order)
       .then(data => this.resetAndNoify(data, "Order has been completed."))
       .catch(error => this._notification.warning(error));
   }
 
-  cancel(): void {
+  public cancel(): void {
     this._api.orders.cancel(this.order)
       .then(data => {
         this._notification.success("Order has been cancelled.");
@@ -210,25 +225,7 @@ export class OrderCreate {
       .catch(error => this._notification.warning(error));
   }
 
-  back(): void {
+  public back(): void {
     this._router.navigateBack();
-  }
-
-  print(): void {
-    this._api.orders.getInvoiceDetail(this.order.id)
-      .then(data => this._invoiceReport.show(data))
-
-    /*
-    this._invoiceReport.show(null);
-    */
-
-    /*
-    this._api.orders.getInvoiceDetail(this.order.id).then(data => {
-      this._invoiceReport.buildDataUrl(data)
-        .then(data => this._dialog.open({ viewModel: ReportViewer, model: data }));
-
-      //this._eventAggregator.publish(orderEvents.invoiceDetail.show);
-    });
-    */
   }
 }

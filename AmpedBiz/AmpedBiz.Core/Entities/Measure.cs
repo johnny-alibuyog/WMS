@@ -120,4 +120,17 @@ namespace AmpedBiz.Core.Entities
         //    return new Measure(value1.Value / value2.Value, unit);
         //}
     }
+
+    public static class MeasureExtention
+    {
+        public static decimal Value(this Measure measure, decimal? defaultValue = 0M)
+        {
+            if (measure == null)
+            {
+                return defaultValue ?? 0M;
+            }
+
+            return measure.Value;
+        }
+    }
 }

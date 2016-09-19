@@ -104,7 +104,7 @@
     <Compile Include="Services\Orders\OrderPaidVisitor.cs">
       <DependentUpon>OrderVisitor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Services\Orders\OrderReturnVisitor.cs">
+    <Compile Include="Services\Orders\OrderReturnedVisitor.cs">
       <DependentUpon>OrderVisitor.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\Orders\OrderRoutedVisitor.cs">

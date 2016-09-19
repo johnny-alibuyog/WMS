@@ -76,6 +76,10 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             References(x => x.CompletedBy);
 
+            Map(x => x.ReturnedOn);
+
+            References(x => x.ReturnedBy);
+
             Map(x => x.CancelledOn);
 
             References(x => x.CancelledBy);

@@ -79,6 +79,10 @@ namespace AmpedBiz.Service.Dto
 
         public Lookup<Guid> PaidTo { get; set; }
 
+        public Lookup<Guid> ReturnedBy { get; set; }
+
+        public DateTime? ReturnedOn { get; set; }
+
         public DateTime? CompletedOn { get; set; }
 
         public Lookup<Guid> CompletedBy { get; set; }

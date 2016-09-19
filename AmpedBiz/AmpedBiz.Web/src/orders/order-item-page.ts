@@ -20,7 +20,7 @@ export class OrderItemPage {
   private _subscriptions: Subscription[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
-  public purchaseOrderId: string = '';
+  public orderId: string = '';
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public items: OrderItem[] = [];

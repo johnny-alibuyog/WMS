@@ -1,6 +1,7 @@
 <template>
   <require from="common/controls/pager"></require>
   <require from="orders/order-item-page"></require>
+  <require from="orders/order-return-page"></require>
   <require from="orders/order-payment-page"></require>
   
 
@@ -56,12 +57,12 @@
               <i class="fa fa-check"></i> ${order.allowedTransitions['cancelled']}
             </button>
 
-            <button type="button" class="btn btn-default" click.trigger="back()">
-              <i class="fa fa-times"></i> Back
+            <button type="button" class="btn btn-default" if.bind="isOrderInvoiced" click.trigger="viewInvoice()">
+              <i class="fa fa-check"></i> View Invoice
             </button>
 
-            <button type="button" class="btn btn-default" click.trigger="print()">
-              <i class="fa fa-times"></i> Print
+            <button type="button" class="btn btn-default" click.trigger="back()">
+              <i class="fa fa-times"></i> Back
             </button>
 
           </h4>
@@ -159,8 +160,16 @@
                 <ul class="nav nav-tabs">
                   <li class="active">
                     <a data-toggle="tab" href="#itemsTab">
-                      <span>Purchase Items &nbsp</span>
+                      <span>Order Items &nbsp</span>
                       <button type="button" if.bind="order.allowedTransitions['new']" class="btn btn-default btn-circle" click.delegate="addItem()">
+                        <i class="glyphicon glyphicon-plus"></i>
+                      </button>
+                    </a>
+                  </li>
+                  <li>
+                    <a data-toggle="tab" href="#returnsTab">
+                      <span>Returns &nbsp</span>
+                      <button type="button" if.bind="order.allowedTransitions['returned']" class="btn btn-default btn-circle" click.delegate="addReturn()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
                     </a>
@@ -178,7 +187,7 @@
                 <div class="tab-content">
 
                   <!-- items -->
-                  <div id="itemsTab" class="tab-pane fade in active printable">
+                  <div id="itemsTab" class="tab-pane fade in active">
                     <br />
 
                     <order-item-page 
@@ -188,6 +197,17 @@
                       pricing-scheme.bind="order.pricingScheme"
                       allowed-transitions.bind="order.allowedTransitions">
                     </order-item-page>
+                  </div>
+
+                  <!-- returns -->
+                  <div id="returnsTab" class="tab-pane fade in">
+                    <br />
+
+                    <order-return-page 
+                      returns.bind="order.returns" 
+                      order-id.bind="order.id"
+                      allowed-transitions.bind="order.allowedTransitions">
+                    </order-return-page>
                   </div>
 
                   <!-- payment informations -->

@@ -89,9 +89,15 @@ namespace AmpedBiz.Service.Dto.Mappers
 
             ExpressMapper.Mapper.Register<Entity.OrderItem, Dto.OrderItem>().Flatten();
 
+            ExpressMapper.Mapper.Register<Entity.OrderReturn, Dto.OrderReturn>().Flatten();
+
             ExpressMapper.Mapper.Register<Entity.OrderPayment, Dto.OrderPayment>().Flatten();
 
             ExpressMapper.Mapper.Register<Entity.Order, InvoiceOrder.Response>().Flatten();
+
+            ExpressMapper.Mapper.Register<Entity.Order, GetOrderInvoiceDetail.Response>().Flatten();
+
+            ExpressMapper.Mapper.Register<Entity.OrderItem, Dto.OrderReturnable>().Flatten();
 
             //ExpressMapper.Mapper.Register<Entity.OrderItem, Dto.OrderItemPageItem>().Flatten();
         }

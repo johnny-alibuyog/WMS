@@ -38,14 +38,14 @@ namespace AmpedBiz.Service.Orders
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var productIds = message.Items.Select(x => x.Product.Id);
-
                     var entity = session.QueryOver<Order>()
                         .Where(x => x.Id == message.Id)
-                        .Fetch(x => x.Returns).Eager
                         .Fetch(x => x.Items).Eager
                         .Fetch(x => x.Items.First().Product).Eager
                         .Fetch(x => x.Items.First().Product.Inventory).Eager
+                        .Fetch(x => x.Returns).Eager
+                        .Fetch(x => x.Returns.First().Product).Eager
+                        .Fetch(x => x.Returns.First().Product.Inventory).Eager
                         .SingleOrDefault();
 
                     var products = entity.Items
@@ -61,12 +61,12 @@ namespace AmpedBiz.Service.Orders
 
                     var currency = session.Load<Currency>(Currency.PHP.Id);
 
-                    entity.State.Process(new OrderReturnVisitor()
+                    entity.State.Process(new OrderReturnedVisitor()
                     {
                         Returns = message.Returns.Select(x => new OrderReturn(
                             product: GetProduct(x.Product.Id),
-                            returnedOn: x.ReturnedOn ?? DateTime.Now,
-                            returnedBy: session.Load<User>(x.ReturnedBy.Id),
+                            returnedOn: message.ReturnedOn ?? DateTime.Now,
+                            returnedBy: session.Load<User>(message.ReturnedBy.Id),
                             quantity: new Measure(x.QuantityValue, GetUnitOfMeasure(x.Product.Id)),
                             discountRate: x.DiscountRate,
                             discount: new Money(x.DiscountAmount, currency),

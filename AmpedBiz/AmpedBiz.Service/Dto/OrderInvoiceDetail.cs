@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Common.CustomTypes;
+using AmpedBiz.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,7 +25,7 @@ namespace AmpedBiz.Service.Dto
 
         public virtual DateTime OrderedOn { get; set; }
 
-        public virtual string OrderedFromName { get; set; }
+        public virtual string OrderedByName { get; set; }
 
         public virtual DateTime ShippedOn { get; set; }
 
@@ -48,9 +49,9 @@ namespace AmpedBiz.Service.Dto
 
         internal static IEnumerable<OrderInvoiceDetailItem> EvaluateItems(Core.Entities.Order entity)
         {
-            Func<Core.Entities.OrderItem, IEnumerable<Core.Entities.OrderReturn>, decimal> EvaluateDiscount = (item, returns) => item.Discount.Amount - returns.Sum(o => o.Discount.Amount);
-            Func<Core.Entities.OrderItem, IEnumerable<Core.Entities.OrderReturn>, decimal> EvaluateQuantity = (item, returns) => item.Quantity.Value - returns.Sum(o => o.Quantity.Value);
-            Func<Core.Entities.OrderItem, IEnumerable<Core.Entities.OrderReturn>, decimal> EvaluateExtendedPrice = (item, returns) => item.ExtendedPrice.Amount - returns.Sum(o => o.ExtendedPrice.Amount);
+            Func<Core.Entities.OrderItem, IEnumerable<Core.Entities.OrderReturn>, decimal> EvaluateDiscount = (item, returns) => item.Discount.Amount() - returns.Sum(o => o.Discount?.Amount() ?? 0M);
+            Func<Core.Entities.OrderItem, IEnumerable<Core.Entities.OrderReturn>, decimal> EvaluateQuantity = (item, returns) => item.Quantity.Value() - returns.Sum(o => o.Quantity?.Value() ?? 0M);
+            Func<Core.Entities.OrderItem, IEnumerable<Core.Entities.OrderReturn>, decimal> EvaluateExtendedPrice = (item, returns) => item.ExtendedPrice.Amount() - returns.Sum(o => o.ExtendedPrice?.Amount() ?? 0M);
             Func<Core.Entities.OrderItem, IEnumerable<Core.Entities.OrderReturn>, decimal> EvaluateTotalPrice = (item, returns) => EvaluateExtendedPrice(item, returns) - EvaluateDiscount(item, returns);
 
             return entity.Items

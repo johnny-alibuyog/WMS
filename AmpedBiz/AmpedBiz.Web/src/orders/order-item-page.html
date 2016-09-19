@@ -70,7 +70,7 @@
         <td if.bind="$parent.selectedItem !== item" class="text-right">${item.unitPriceAmount | numberFormat}</td>
         <td if.bind="$parent.selectedItem !== item" class="text-right">${item.discountRate}</td>
         <td if.bind="$parent.selectedItem !== item" class="text-right">${item.discountAmount | numberFormat}</td>
-        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.total | numberFormat}</td>
+        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.totalPriceAmount | numberFormat}</td>
 
         <!-- edit mode -->
         <td if.bind="$parent.selectedItem === item">

@@ -16,6 +16,11 @@ export const orderEvents = {
     pay: 'order-pay',
     paid: 'order-paid',
   },
+  return: {
+    add: 'order-return-add',
+    added: 'order-return-added',
+    deleted: 'order-return-deleted',
+  },
   invoiceDetail: {
     show: "invoice-detail:show"
   }
@@ -69,6 +74,7 @@ export interface Order {
   cancelledBy?: Lookup<string>;
   cancellationReason?: string;
   items?: OrderItem[];
+  returns?: OrderReturn[];
   payments?: OrderPayment[];
   allowedTransitions?: Dictionary<string>;
 }
@@ -87,6 +93,30 @@ export interface OrderPageItem {
 }
 
 export interface OrderItem {
+  id?: string;
+  product?: Lookup<string>;
+  quantityValue?: number;
+  discountRate?: number;
+  discountAmount?: number;
+  unitPriceAmount?: number;
+  extendedPriceAmount?: number;
+  totalPriceAmount?: number;
+}
+
+export interface OrderReturn {
+  id?: string;
+  product?: Lookup<string>;
+  returnedOn?: Date;
+  returnedBy?: Lookup<string>;
+  quantityValue?: number;
+  discountRate?: number;
+  discountAmount?: number;
+  unitPriceAmount?: number;
+  extendedPriceAmount?: number;
+  totalPriceAmount?: number;
+}
+
+export interface OrderReturnable {
   id?: string;
   product?: Lookup<string>;
   quantityValue?: number;
@@ -132,7 +162,7 @@ export interface OrderInvoiceDetail {
 
   branchName?: string;
   orderedOn?: Date;
-  orderedFromName?: string;
+  orderedByName?: string;
   shippedOn?: Date;
   shippedByName?: string;
   shippingAddress?: Address;

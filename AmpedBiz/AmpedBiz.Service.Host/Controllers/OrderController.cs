@@ -58,6 +58,13 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpGet()]
+        [Route("{id}/returnables")]
+        public GetOrderReturnable.Response Process([FromUri]GetOrderReturnable.Request request)
+        {
+            return _mediator.Send(request ?? new GetOrderReturnable.Request());
+        }
+
+        [HttpGet()]
         [Route("{id}/invoice-detail")]
         public GetOrderInvoiceDetail.Response Process([FromUri]GetOrderInvoiceDetail.Request request)
         {

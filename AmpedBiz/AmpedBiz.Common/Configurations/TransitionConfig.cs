@@ -54,6 +54,16 @@ namespace AmpedBiz.Common.Configurations
                 "Shipped", new Dictionary<string, string>()
                 {
                     { "Paid", "Pay" },
+                    { "Returned", "Save" },
+                    { "Completed", "Complete" },
+                    { "Cancelled", "Cancel" },
+                }
+            },
+            {
+                "Returned", new Dictionary<string, string>()
+                {
+                    { "Paid", "Pay" },
+                    { "Returned", "Save" },
                     { "Completed", "Complete" },
                     { "Cancelled", "Cancel" },
                 }

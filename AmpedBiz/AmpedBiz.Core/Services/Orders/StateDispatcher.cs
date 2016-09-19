@@ -73,6 +73,14 @@ namespace AmpedBiz.Core.Services.Orders
             this._target.Accept(visitor);
         }
 
+        private void Process(OrderReturnedVisitor visitor)
+        {
+            if (!this.AllowedTransitions.ContainsKey(OrderStatus.Returned))
+                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "returning", this._target.Status));
+
+            this._target.Accept(visitor);
+        }
+
         private void Process(OrderCompletedVisitor visitor)
         {
             if (!this.AllowedTransitions.ContainsKey(OrderStatus.Completed))
