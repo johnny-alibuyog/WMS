@@ -1,16 +1,15 @@
-﻿using System;
-using System.Linq;
-using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Entities;
 using NHibernate;
 using NHibernate.Linq;
+using System.Linq;
 
-namespace AmpedBiz.Data.Seeders
+namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 {
-    public class PaymentTypeSeeder : ISeeder
+    public class _006_UnitOfMeasureClassSeeder : IDefaultDataSeeder
     {
         private readonly ISessionFactory _sessionFactory;
 
-        public PaymentTypeSeeder(ISessionFactory sessionFactory)
+        public _006_UnitOfMeasureClassSeeder(ISessionFactory sessionFactory)
         {
             _sessionFactory = sessionFactory;
         }
@@ -22,7 +21,7 @@ namespace AmpedBiz.Data.Seeders
 
         public int ExecutionOrder
         {
-            get { return 2; }
+            get { return 7; }
         }
 
         public void Seed()
@@ -30,9 +29,9 @@ namespace AmpedBiz.Data.Seeders
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var entities = session.Query<PaymentType>().ToList();
+                var entities = session.Query<UnitOfMeasureClass>().Cacheable().ToList();
 
-                foreach(var item in PaymentType.All)
+                foreach (var item in UnitOfMeasureClass.All)
                 {
                     if (!entities.Contains(item))
                         session.Save(item);

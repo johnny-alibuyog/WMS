@@ -1,31 +1,17 @@
 ﻿using AmpedBiz.Core.Entities;
 using NHibernate;
 using NHibernate.Linq;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace AmpedBiz.Data.Seeders
+namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 {
-    public class CurrencyDataSeeder : ISeeder
+    public class _001_CurrencySeeder : IDefaultDataSeeder
     {
         private readonly ISessionFactory _sessionFactory;
 
-        public CurrencyDataSeeder(ISessionFactory sessionFactory)
+        public _001_CurrencySeeder(ISessionFactory sessionFactory)
         {
             _sessionFactory = sessionFactory;
-        }
-
-        public bool IsDummyData
-        {
-            get { return false; }
-        }
-
-        public int ExecutionOrder
-        {
-            get { return 1; }
         }
 
         public void Seed()
@@ -33,7 +19,7 @@ namespace AmpedBiz.Data.Seeders
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var entity = session.Query<Currency>().ToList();
+                var entity = session.Query<Currency>().Cacheable().ToList();
                 if (entity.Count == 0)
                 {
                     foreach (var item in Currency.All)

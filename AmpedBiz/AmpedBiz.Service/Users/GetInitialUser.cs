@@ -23,7 +23,7 @@ namespace AmpedBiz.Service.Users
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var roles = session.Query<Role>();
+                    var roles = session.Query<Role>().Cacheable().ToList();
 
                     response.Roles = roles
                         .Select(x => new Dto.Role()

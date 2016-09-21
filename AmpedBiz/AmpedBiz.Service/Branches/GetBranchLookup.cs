@@ -30,10 +30,7 @@ namespace AmpedBiz.Service.Branches
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-
-                    var query = session.Query<Branch>();
-
-                    var pairs = query
+                    var pairs = session.Query<Branch>()
                         .Select(x => new Lookup<string>()
                         {
                             Id = x.Id,

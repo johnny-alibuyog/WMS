@@ -33,7 +33,7 @@ namespace AmpedBiz.Service.ProductCategories
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entites = session.Query<ProductCategory>().ToList();
+                    var entites = session.Query<ProductCategory>().Cacheable().ToList();
                     var dtos = entites.MapTo(default(List<Dto.ProductCategory>));
 
                     response = new Response(dtos);

@@ -26,7 +26,7 @@ namespace AmpedBiz.Core.Entities
 
         public static readonly ProductCategory Medecine = new ProductCategory("M", "Medicine");
 
-        public static readonly IEnumerable<ProductCategory> All = new List<ProductCategory>()
+        public static readonly IEnumerable<ProductCategory> All = new []
         {
             ProductCategory.Food,
             ProductCategory.Drinks,

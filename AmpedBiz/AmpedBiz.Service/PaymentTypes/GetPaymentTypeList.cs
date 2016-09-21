@@ -33,7 +33,7 @@ namespace AmpedBiz.Service.PaymentTypes
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entites = session.Query<PaymentType>().ToList();
+                    var entites = session.Query<PaymentType>().Cacheable().ToList();
                     var dtos = entites.MapTo(default(List<Dto.PaymentType>));
 
                     response = new Response(dtos);

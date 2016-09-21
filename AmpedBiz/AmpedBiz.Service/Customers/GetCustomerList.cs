@@ -33,7 +33,7 @@ namespace AmpedBiz.Service.Customers
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entites = session.Query<Customer>().ToList();
+                    var entites = session.Query<Customer>().Cacheable().ToList();
                     var dtos = entites.MapTo(default(List<Dto.Customer>));
 
                     response = new Response(dtos);

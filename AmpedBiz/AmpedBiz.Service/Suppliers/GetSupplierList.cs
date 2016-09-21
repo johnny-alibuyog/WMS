@@ -33,7 +33,7 @@ namespace AmpedBiz.Service.Suppliers
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entities = session.Query<Supplier>().ToList();
+                    var entities = session.Query<Supplier>().Cacheable().ToList();
                     var dtos = entities.MapTo(default(List<Dto.Supplier>));
 
                     response = new Response(dtos);

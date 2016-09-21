@@ -2,28 +2,17 @@
 using NHibernate;
 using NHibernate.Linq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
-namespace AmpedBiz.Data.Seeders
+namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 {
-    public class DefaultUserSeeder : ISeeder
+    public class _011_DefaultUserSeeder : IDefaultDataSeeder
     {
         private readonly ISessionFactory _sessionFactory;
 
-        public DefaultUserSeeder(ISessionFactory sessionFactory)
+        public _011_DefaultUserSeeder(ISessionFactory sessionFactory)
         {
             _sessionFactory = sessionFactory;
-        }
-
-        public bool IsDummyData
-        {
-            get { return false; }
-        }
-
-        public int ExecutionOrder
-        {
-            get { return 11; }
         }
 
         public void Seed()
@@ -54,9 +43,9 @@ namespace AmpedBiz.Data.Seeders
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var entities = session.Query<User>().ToList();
-                var roles = session.Query<Role>().ToList();
-                var branch = session.Query<Branch>().FirstOrDefault();
+                var entities = session.Query<User>().Cacheable().ToList();
+                var roles = session.Query<Role>().Cacheable().ToList();
+                var branch = session.Query<Branch>().Cacheable().ToList().FirstOrDefault();
 
                 if (!entities.Contains(item))
                 {

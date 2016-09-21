@@ -110,11 +110,11 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         private void SetupDefaultSeeders()
         {
-            var seeders = (from t in AppDomain.CurrentDomain.GetAssemblies()
-                                       .FirstOrDefault(a => a.FullName.Contains("AmpedBiz.Data")).GetTypes()
-                           where t.GetInterfaces().Contains(typeof(ISeeder))
-                           select Activator.CreateInstance(t, this.sessionFactory) as ISeeder)
-                                       .Where(h => !h.IsDummyData);
+            var seeders = (
+                from t in AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("AmpedBiz.Data")).GetTypes()
+                where t.GetInterfaces().Contains(typeof(IDefaultDataSeeder))
+                select Activator.CreateInstance(t, this.sessionFactory) as IDefaultDataSeeder
+            );
 
             foreach (var seeder in seeders)
             {
@@ -124,16 +124,16 @@ namespace AmpedBiz.Tests.IntegrationTests
             //load data
             using (var session = this.sessionFactory.OpenSession())
             {
-                this._roles = session.Query<Role>().ToList();
-                this._users = session.Query<User>().ToList();
-                this._branches = session.Query<Branch>().ToList();
-                this._shippers = session.Query<Shipper>().ToList();
-                this._customers = session.Query<Customer>().ToList();
-                this._currencies = session.Query<Currency>().ToList();
-                this._paymentTypes = session.Query<PaymentType>().ToList();
-                this._pricingSchemes = session.Query<PricingScheme>().ToList();
-                this._productCategories = session.Query<ProductCategory>().ToList();
-                this._unitOfMeasures = session.Query<UnitOfMeasure>().ToList();
+                this._roles = session.Query<Role>().Cacheable().ToList();
+                this._users = session.Query<User>().Cacheable().ToList();
+                this._branches = session.Query<Branch>().Cacheable().ToList();
+                this._shippers = session.Query<Shipper>().Cacheable().ToList();
+                this._customers = session.Query<Customer>().Cacheable().ToList();
+                this._currencies = session.Query<Currency>().Cacheable().ToList();
+                this._paymentTypes = session.Query<PaymentType>().Cacheable().ToList();
+                this._pricingSchemes = session.Query<PricingScheme>().Cacheable().ToList();
+                this._productCategories = session.Query<ProductCategory>().Cacheable().ToList();
+                this._unitOfMeasures = session.Query<UnitOfMeasure>().Cacheable().ToList();
                 this._suppliers = session.Query<Supplier>().Where(x => x.Products.Count() > 0).ToList();
             }
         }
@@ -331,7 +331,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             using (var session = this.sessionFactory.OpenSession())
             {
-                suppliers = session.Query<Supplier>().ToList();
+                suppliers = session.Query<Supplier>().Cacheable().ToList();
             }
 
             for (var i = 0; i < count; i++)
@@ -545,8 +545,8 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             using (var session = this.sessionFactory.OpenSession())
             {
-                users = session.Query<User>().ToList();
-                branches = session.Query<Branch>().ToList();
+                users = session.Query<User>().Cacheable().ToList();
+                branches = session.Query<Branch>().Cacheable().ToList();
             }
 
             for (var i = 0; i < count; i++)

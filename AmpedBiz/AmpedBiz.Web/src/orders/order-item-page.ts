@@ -47,7 +47,7 @@ export class OrderItemPage {
     this.itemPager.onPage = () => this.initializePage();
   }
 
-  attached(): void {
+  public attached(): void {
     this._subscriptions = [
       this._eventAggregator.subscribe(
         orderEvents.item.add, 
@@ -60,15 +60,15 @@ export class OrderItemPage {
     ];
   }
 
-  detached(): void {
+  public detached(): void {
     this._subscriptions.forEach(subscription => subscription.dispose());
   }
 
-  itemsChanged(): void {
+  public itemsChanged(): void {
     this.initializePage();
   }
 
-  recomputeByPricingScheme(): void {
+  public recomputeByPricingScheme(): void {
     if (!this.items) {
       this.items = [];
     }
@@ -90,7 +90,7 @@ export class OrderItemPage {
     });
   }
 
-  initializeItem(item: OrderItem): void {
+  public initializeItem(item: OrderItem): void {
     if (!item.product) {
       item.quantityValue = 0;
       item.unitPriceAmount = 0;
@@ -111,7 +111,7 @@ export class OrderItemPage {
     });
   }
 
-  initializePage(): void {
+  public initializePage(): void {
     if (!this.items)
       this.items = [];
 
@@ -128,7 +128,7 @@ export class OrderItemPage {
     );
   }
 
-  addItem(): void {
+  public addItem(): void {
     if (!this.items)
       this.items = <OrderItem[]>[];
 
@@ -142,12 +142,12 @@ export class OrderItemPage {
     this.initializePage();
   }
 
-  editItem(item: OrderItem): void {
+  public editItem(item: OrderItem): void {
     if (this.selectedItem !== item)
       this.selectedItem = item;
   }
 
-  deleteItem(item: OrderItem): void {
+  public deleteItem(item: OrderItem): void {
     var index = this.items.indexOf(item);
     if (index > -1) {
       this.items.splice(index, 1);
@@ -155,7 +155,7 @@ export class OrderItemPage {
     this.initializePage();
   }
 
-  compute(item: OrderItem): void {
+  public compute(item: OrderItem): void {
     if (!item.discountRate) {
       item.discountRate = 0;
     }

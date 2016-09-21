@@ -1,31 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Entities;
 using NHibernate;
 using NHibernate.Linq;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace AmpedBiz.Data.Seeders
+namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 {
-    public class BranchSeeder : ISeeder
+    public class _005_BranchSeeder : IDummyDataSeeder
     {
         private readonly ISessionFactory _sessionFactory;
 
-        public BranchSeeder(ISessionFactory sessionFactory)
+        public _005_BranchSeeder(ISessionFactory sessionFactory)
         {
             _sessionFactory = sessionFactory;
-        }
-
-        public bool IsDummyData
-        {
-            get { return true; }
-        }
-
-        public int ExecutionOrder
-        {
-            get { return 10; }
         }
 
         public void Seed()
@@ -56,7 +43,7 @@ namespace AmpedBiz.Data.Seeders
             {
                 //session.SetBatchSize(100);
 
-                var entity = session.Query<Branch>().ToList();
+                var entity = session.Query<Branch>().Cacheable().ToList();
                 if (entity.Count == 0)
                 {
                     foreach (var item in data)

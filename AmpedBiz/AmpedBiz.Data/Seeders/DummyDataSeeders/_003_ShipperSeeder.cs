@@ -4,27 +4,17 @@ using AmpedBiz.Core.Entities;
 using NHibernate;
 using NHibernate.Linq;
 
-namespace AmpedBiz.Data.Seeders
+namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 {
-    public class ShipperSeeder : ISeeder
+    public class _003_ShipperSeeder : IDummyDataSeeder
     {
         private readonly ISessionFactory _sessionFactory;
 
-        public ShipperSeeder(ISessionFactory sessionFactory)
+        public _003_ShipperSeeder(ISessionFactory sessionFactory)
         {
             _sessionFactory = sessionFactory;
         }
-
-        public bool IsDummyData
-        {
-            get { return true; }
-        }
-
-        public int ExecutionOrder
-        {
-            get { return 24; }
-        }
-
+        
         public void Seed()
         {
             var data = new List<Shipper>();
@@ -60,7 +50,7 @@ namespace AmpedBiz.Data.Seeders
             {
                 //session.SetBatchSize(100);
 
-                var entities = session.Query<Shipper>().ToList();
+                var entities = session.Query<Shipper>().Cacheable().ToList();
                 if (entities.Count == 0)
                 {
                     foreach (var item in data)

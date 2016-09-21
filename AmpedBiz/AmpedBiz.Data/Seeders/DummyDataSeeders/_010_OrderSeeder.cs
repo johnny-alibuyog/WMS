@@ -6,27 +6,17 @@ using NHibernate.Linq;
 using System;
 using System.Linq;
 
-namespace AmpedBiz.Data.Seeders
+namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 {
-    public class OrderSeeder : ISeeder
+    public class _010_OrderSeeder : IDummyDataSeeder
     {
         private readonly ISessionFactory _sessionFactory;
 
-        public OrderSeeder(ISessionFactory sessionFactory)
+        public _010_OrderSeeder(ISessionFactory sessionFactory)
         {
             _sessionFactory = sessionFactory;
         }
-
-        public bool IsDummyData
-        {
-            get { return true; }
-        }
-
-        public int ExecutionOrder
-        {
-            get { return 25; }
-        }
-
+        
         public void Seed()
         {
             using (var session = _sessionFactory.OpenSession())
@@ -34,7 +24,10 @@ namespace AmpedBiz.Data.Seeders
             {
                 //session.SetBatchSize(100);
                 var productIndex = 0;
-                var products = session.Query<Product>().ToList();
+                var products = session.Query<Product>()
+                    .Fetch(x => x.Inventory)
+                    .Cacheable()
+                    .ToList();
 
                 Func<Product> RotateProduct = () =>
                 {
@@ -49,7 +42,7 @@ namespace AmpedBiz.Data.Seeders
                 };
 
                 var paymentTypeIndex = 0;
-                var paymentTypes = session.Query<PaymentType>().ToList();
+                var paymentTypes = session.Query<PaymentType>().Cacheable().ToList();
 
                 Func<PaymentType> RotatePaymentType = () =>
                 {
@@ -64,7 +57,7 @@ namespace AmpedBiz.Data.Seeders
                 };
 
                 var shipperIndex = 0;
-                var shippers = session.Query<Shipper>().ToList();
+                var shippers = session.Query<Shipper>().Cacheable().ToList();
 
                 Func<Shipper> RotateShipper = () =>
                 {
@@ -79,7 +72,7 @@ namespace AmpedBiz.Data.Seeders
                 };
 
                 var customerIndex = 0;
-                var customers = session.Query<Customer>().ToList();
+                var customers = session.Query<Customer>().Cacheable().ToList();
 
                 Func<Customer> RotateCustomer = () =>
                 {
@@ -94,7 +87,7 @@ namespace AmpedBiz.Data.Seeders
                 };
 
                 var branchIndex = 0;
-                var branches = session.Query<Branch>().ToList();
+                var branches = session.Query<Branch>().Cacheable().ToList();
 
                 Func<Branch> RotateBranch = () =>
                 {
@@ -109,7 +102,7 @@ namespace AmpedBiz.Data.Seeders
                 };
 
                 var userIndex = 0;
-                var users = session.Query<User>().ToList();
+                var users = session.Query<User>().Cacheable().ToList();
 
                 Func<User> RotateUser = () =>
                 {
@@ -124,6 +117,7 @@ namespace AmpedBiz.Data.Seeders
                 };
 
                 var random = new Random();
+                var currency = session.Load<Currency>(Currency.PHP.Id);
 
                 var entity = session.Query<Order>().ToList();
                 if (entity.Count == 0)
@@ -144,15 +138,15 @@ namespace AmpedBiz.Data.Seeders
                             PaymentType = RotatePaymentType(),
                             TaxRate = random.NextDecimal(0.01M, 0.30M),
                             Tax = null, // compute this
-                            ShippingFee = new Money(random.NextDecimal(10M, 10000M)),
+                            ShippingFee = new Money(random.NextDecimal(10M, 10000M), currency),
                             Items = Enumerable.Range(0, (int)random.NextDecimal(1M, 25M))
                                 .Select(x => RotateProduct())
                                 .Select(x => new OrderItem(
                                     product: x,
                                     discountRate: random.NextDecimal(0.01M, 0.10M),
                                     quantity: new Measure(random.NextDecimal(1M, 100M), x.Inventory.UnitOfMeasure),
-                                    discount: new Money(random.NextDecimal(100M, 500M)),
-                                    unitPrice: new Money(random.NextDecimal(1000M, 100000M))
+                                    discount: new Money(random.NextDecimal(100M, 500M), currency),
+                                    unitPrice: new Money(random.NextDecimal(1000M, 100000M), currency)
                                 ))
                         });
 

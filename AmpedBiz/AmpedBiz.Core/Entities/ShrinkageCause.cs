@@ -27,9 +27,15 @@ namespace AmpedBiz.Core.Entities
 
         public static ShrinkageCause AdministrativeError = new ShrinkageCause("AE", "Administrative Error");
 
-        public static IEnumerable<ShrinkageCause> All = new ShrinkageCause[]
+        public static IEnumerable<ShrinkageCause> All = new []
         {
-            Damaged, Expired, Shoplifting, VendorFraud, EmployeeTheft, UnknownReason, AdministrativeError
+            ShrinkageCause.Damaged,
+            ShrinkageCause.Expired,
+            ShrinkageCause.Shoplifting,
+            ShrinkageCause.VendorFraud,
+            ShrinkageCause.EmployeeTheft,
+            ShrinkageCause.UnknownReason,
+            ShrinkageCause.AdministrativeError
         };
     }
 }

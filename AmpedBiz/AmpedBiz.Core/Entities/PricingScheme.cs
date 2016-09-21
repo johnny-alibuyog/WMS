@@ -21,6 +21,12 @@ namespace AmpedBiz.Core.Entities
 
         public static readonly PricingScheme BadStockPrice = new PricingScheme("BSP", "Bad Stock Price");
 
-        public static readonly IEnumerable<PricingScheme> All = new List<PricingScheme>() { BasePrice, WholesalePrice, RetailPrice, BadStockPrice };
+        public static readonly IEnumerable<PricingScheme> All = new [] 
+        {
+            PricingScheme.BasePrice,
+            PricingScheme.WholesalePrice,
+            PricingScheme.RetailPrice,
+            PricingScheme.BadStockPrice
+        };
     }
 }

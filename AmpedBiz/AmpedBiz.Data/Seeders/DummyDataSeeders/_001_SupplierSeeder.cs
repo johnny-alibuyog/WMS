@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Entities;
 using NHibernate;
 using NHibernate.Linq;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace AmpedBiz.Data.Seeders
+namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 {
-    public class SupplierSeeder : ISeeder
+    public class _001_SupplierSeeder : IDummyDataSeeder
     {
         private readonly ISessionFactory _sessionFactory;
 
-        public SupplierSeeder(ISessionFactory sessionFactory)
+        public _001_SupplierSeeder(ISessionFactory sessionFactory)
         {
             _sessionFactory = sessionFactory;
         }
@@ -63,7 +60,7 @@ namespace AmpedBiz.Data.Seeders
             {
                 //session.SetBatchSize(100);
 
-                var entities = session.Query<Supplier>().ToList();
+                var entities = session.Query<Supplier>().Cacheable().ToList();
                 if (entities.Count == 0)
                 {
                     foreach (var item in data)

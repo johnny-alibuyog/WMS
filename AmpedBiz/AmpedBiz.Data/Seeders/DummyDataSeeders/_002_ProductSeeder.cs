@@ -7,25 +7,15 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 
-namespace AmpedBiz.Data.Seeders
+namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 {
-    public class ProductSeeder : ISeeder
+    public class _002_ProductSeeder : IDummyDataSeeder
     {
         private readonly ISessionFactory _sessionFactory;
 
-        public ProductSeeder(ISessionFactory sessionFactory)
+        public _002_ProductSeeder(ISessionFactory sessionFactory)
         {
             _sessionFactory = sessionFactory;
-        }
-
-        public bool IsDummyData
-        {
-            get { return true; }
-        }
-
-        public int ExecutionOrder
-        {
-            get { return 11; }
         }
 
         public void Seed()
@@ -47,11 +37,11 @@ namespace AmpedBiz.Data.Seeders
             {
                 //session.SetBatchSize(100);
 
-                var entity = session.Query<Product>().ToList();
+                var entity = session.Query<Product>().Cacheable().ToList();
                 if (entity.Count == 0)
                 {
                     var unitOfMeasureIndex = 0;
-                    var unitOfMeasures = session.Query<UnitOfMeasure>().ToList();
+                    var unitOfMeasures = session.Query<UnitOfMeasure>().Cacheable().ToList();
 
                     Func<UnitOfMeasure> RotateUnitOfMeasure = () =>
                     {
@@ -66,7 +56,7 @@ namespace AmpedBiz.Data.Seeders
                     };
 
                     var supplierIndex = 0;
-                    var suppliers = session.Query<Supplier>().ToList();
+                    var suppliers = session.Query<Supplier>().Cacheable().ToList();
 
                     Func<Supplier> RotateSupplier = () =>
                     {
@@ -81,7 +71,7 @@ namespace AmpedBiz.Data.Seeders
                     };
 
                     var categoryIndex = 0;
-                    var categories = session.Query<ProductCategory>().ToList();
+                    var categories = session.Query<ProductCategory>().Cacheable().ToList();
 
                     Func<ProductCategory> RotateCategory = () =>
                     {
@@ -104,20 +94,22 @@ namespace AmpedBiz.Data.Seeders
                         return result;
                     };
 
+                    var currency = session.Load<Currency>(Currency.PHP.Id);
+
                     var random = new Random();
 
                     foreach (var item in data)
                     {
                         dynamic prices = new ExpandoObject();
-                        prices.BasePrice = new Money(random.NextDecimal(1.00M, 20000.00M));
-                        prices.RetailPrice = new Money(random.NextDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.BasePrice.Amount + 5000M));
-                        prices.WholeSalePrice = new Money(random.NextDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.RetailPrice.Amount));
-                        prices.BadStockPrice = new Money(prices.BasePrice.Amount * 0.10M);
+                        prices.BasePrice = new Money(random.NextDecimal(1.00M, 20000.00M), currency);
+                        prices.RetailPrice = new Money(random.NextDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.BasePrice.Amount + 5000M), currency);
+                        prices.WholeSalePrice = new Money(random.NextDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.RetailPrice.Amount), currency);
+                        prices.BadStockPrice = new Money(prices.BasePrice.Amount * 0.10M, currency);
 
                         item.Category = RotateCategory();
                         item.Supplier = RotateSupplier();
                         item.Discontinued = RotateDiscontinued();
-                        item.Inventory.UnitOfMeasure = UnitOfMeasureClass.Quantity.Units.RandomElement();
+                        item.Inventory.UnitOfMeasure = RotateUnitOfMeasure(); // UnitOfMeasureClass.Quantity.Units.RandomElement();
                         item.Inventory.UnitOfMeasureBase = RotateUnitOfMeasure();
                         item.Inventory.ConversionFactor = random.Next(1, 24);
                         item.Inventory.BasePrice = prices.BasePrice;

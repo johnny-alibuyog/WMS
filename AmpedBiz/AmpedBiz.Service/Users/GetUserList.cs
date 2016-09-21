@@ -33,7 +33,7 @@ namespace AmpedBiz.Service.Users
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entities = session.Query<User>().ToList();
+                    var entities = session.Query<User>().Cacheable().ToList();
 
                     var result = entities
                         .Select(x => new Dto.User()

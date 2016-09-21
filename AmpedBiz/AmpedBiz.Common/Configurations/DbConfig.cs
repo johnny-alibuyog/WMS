@@ -13,6 +13,7 @@ namespace AmpedBiz.Common.Configurations
         public virtual string Name { get; set; }
         public virtual string Username { get; set; }
         public virtual string Password { get; set; }
+        public virtual short BatchSize { get; set; }
         public virtual bool UseDummyData { get; set; }
         public virtual bool RecreateDb { get; set; }
 
@@ -23,6 +24,7 @@ namespace AmpedBiz.Common.Configurations
             this.Name = "ampedbizdb";
             this.Username = "postgres";
             this.Password = "postgres";
+            this.BatchSize = 50;
             this.UseDummyData = true;
             this.RecreateDb = true;
         }

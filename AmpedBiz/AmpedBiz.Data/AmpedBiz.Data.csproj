@@ -59,6 +59,10 @@
       <HintPath>..\packages\NHibernate.Validator.1.3.2.4000\lib\Net35\NHibernate.Validator.Specific.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Npgsql, Version=3.1.7.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Npgsql.3.1.7\lib\net451\Npgsql.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -77,6 +81,7 @@
     <Compile Include="Configurations\AuditEventListener.cs">
       <DependentUpon>EventListenerConfiguration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Configurations\BatcherConfiguration.cs" />
     <Compile Include="Configurations\CacheConfiguration.cs" />
     <Compile Include="Configurations\ConventionMessageInterpolator.cs">
       <DependentUpon>ValidatorConfiguration.cs</DependentUpon>
@@ -86,6 +91,12 @@
       <DependentUpon>AuditEventListener.cs</DependentUpon>
     </Compile>
     <Compile Include="Configurations\IndexForeignKeyConfiguration.cs" />
+    <Compile Include="Configurations\PostgresBatcher.cs">
+      <DependentUpon>BatcherConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configurations\PostgresBatcherFactory.cs">
+      <DependentUpon>BatcherConfiguration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Configurations\SchemaConfiguration.cs" />
     <Compile Include="Configurations\SessionContextConfiguration.cs" />
     <Compile Include="Configurations\ValidationEventListener.cs">
@@ -131,6 +142,12 @@
     <Compile Include="EntityDefinitions\PurchaseOrderReceiptMapping.cs" />
     <Compile Include="EntityDefinitions\PurchaseOrderReceiptValidation.cs" />
     <Compile Include="EntityDefinitions\PurchaseOrderValidation.cs" />
+    <Compile Include="EntityDefinitions\ReturnItemMapping.cs" />
+    <Compile Include="EntityDefinitions\ReturnItemValidation.cs" />
+    <Compile Include="EntityDefinitions\ReturnMapping.cs" />
+    <Compile Include="EntityDefinitions\ReturnReasonMapping.cs" />
+    <Compile Include="EntityDefinitions\ReturnReasonValidation.cs" />
+    <Compile Include="EntityDefinitions\ReturnValidation.cs" />
     <Compile Include="EntityDefinitions\ShipperMapping.cs" />
     <Compile Include="EntityDefinitions\ShipperValidation.cs" />
     <Compile Include="EntityDefinitions\StockMapping.cs" />
@@ -140,21 +157,24 @@
     <Compile Include="EntityDefinitions\UnitOfMeasureClassValidation.cs" />
     <Compile Include="EntityDefinitions\UnitOfMeasureMapping.cs" />
     <Compile Include="EntityDefinitions\UnitOfMeasureValidation.cs" />
-    <Compile Include="Seeders\BranchSeeder.cs" />
-    <Compile Include="Seeders\CurrencySeeder.cs" />
-    <Compile Include="Seeders\CustomerSeeder.cs" />
-    <Compile Include="Seeders\DefaultUserSeeder.cs" />
+    <Compile Include="Seeders\DummyDataSeeders\_005_BranchSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_001_CurrencySeeder.cs" />
+    <Compile Include="Seeders\DummyDataSeeders\_004_CustomerSeeder.cs" />
+    <Compile Include="Seeders\IDefaultDataSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_000_ReturnReasonSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_011_DefaultUserSeeder.cs" />
+    <Compile Include="Seeders\IDummyDataSeeder.cs" />
     <Compile Include="Seeders\ISeeder.cs" />
-    <Compile Include="Seeders\OrderSeeder.cs" />
-    <Compile Include="Seeders\PaymentTypeSeeder.cs" />
-    <Compile Include="Seeders\PricingSchemeSeeder.cs" />
-    <Compile Include="Seeders\ProductCategorySeeder.cs" />
-    <Compile Include="Seeders\ProductSeeder.cs" />
-    <Compile Include="Seeders\RoleSeeder.cs" />
-    <Compile Include="Seeders\ShipperSeeder.cs" />
-    <Compile Include="Seeders\SupplierSeeder.cs" />
-    <Compile Include="Seeders\UnitOfMeasureClassSeeder.cs" />
-    <Compile Include="Seeders\UserSeeder.cs" />
+    <Compile Include="Seeders\DummyDataSeeders\_010_OrderSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_002_PaymentTypeSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_003_PricingSchemeSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_004_ProductCategorySeeder.cs" />
+    <Compile Include="Seeders\DummyDataSeeders\_002_ProductSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_005_RoleSeeder.cs" />
+    <Compile Include="Seeders\DummyDataSeeders\_003_ShipperSeeder.cs" />
+    <Compile Include="Seeders\DummyDataSeeders\_001_SupplierSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_006_UnitOfMeasureClassSeeder.cs" />
+    <Compile Include="Seeders\DummyDataSeeders\_000_UserSeeder.cs" />
     <Compile Include="EntityDefinitions\AddressMapping.cs" />
     <Compile Include="EntityDefinitions\AddressValidation.cs" />
     <Compile Include="EntityDefinitions\BranchMapping.cs" />
@@ -206,6 +226,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Properties\CustomValidatorMessages.resx" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

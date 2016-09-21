@@ -36,7 +36,7 @@ namespace AmpedBiz.Service.Users
                         .SingleOrDefault();
 
                     //var entity = query.Value;
-                    var roles = session.Query<Role>().ToList();
+                    var roles = session.Query<Role>().Cacheable().ToList();
 
                     response.Id = entity.Id;
                     response.Username = entity.Username;

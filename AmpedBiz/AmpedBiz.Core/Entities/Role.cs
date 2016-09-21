@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace AmpedBiz.Core.Entities
 {
@@ -25,6 +21,12 @@ namespace AmpedBiz.Core.Entities
 
         public static readonly Role Warehouse = new Role("W", "Warehouse");
 
-        public static IEnumerable<Role> All = new Role[] { Admin, Encoder, Sales, Warehouse };
+        public static IEnumerable<Role> All = new [] 
+        {
+            Role.Admin,
+            Role.Encoder,
+            Role.Sales,
+            Role.Warehouse
+        };
     }
 }

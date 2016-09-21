@@ -33,7 +33,7 @@ namespace AmpedBiz.Service.UnitOfMeasureClasses
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entites = session.Query<UnitOfMeasureClass>().Fetch(x => x.Units).ToList();
+                    var entites = session.Query<UnitOfMeasureClass>().Fetch(x => x.Units).Cacheable().ToList();
                     var dtos = entites.MapTo(default(List<Dto.UnitOfMeasureClass>));
 
                     response = new Response(dtos);

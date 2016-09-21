@@ -31,10 +31,7 @@ namespace AmpedBiz.Service.UnitOfMeasures
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-
-                    var query = session.Query<UnitOfMeasure>();
-
-                    var pairs = query
+                    var pairs = session.Query<UnitOfMeasure>()
                         .Select(x => new Lookup<string>()
                         {
                             Id = x.Id,

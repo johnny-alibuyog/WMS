@@ -99,7 +99,13 @@ namespace AmpedBiz.Core.Entities
                 new UnitOfMeasure("hm", "hectometer", false, (100M)),
             });
 
-        public static readonly IEnumerable<UnitOfMeasureClass> All = new Collection<UnitOfMeasureClass>() { Quantity, Weight, Volume, Length };
+        public static readonly IEnumerable<UnitOfMeasureClass> All = new [] 
+        {
+            UnitOfMeasureClass.Quantity,
+            UnitOfMeasureClass.Weight,
+            UnitOfMeasureClass.Volume,
+            UnitOfMeasureClass.Length
+        };
     }
 
     /*

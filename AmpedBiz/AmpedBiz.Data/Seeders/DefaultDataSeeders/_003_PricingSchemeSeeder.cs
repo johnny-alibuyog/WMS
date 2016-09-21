@@ -1,27 +1,17 @@
-﻿using System.Linq;
-using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Entities;
 using NHibernate;
 using NHibernate.Linq;
+using System.Linq;
 
-namespace AmpedBiz.Data.Seeders
+namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 {
-    public class PricingSchemeSeeder : ISeeder
+    public class _003_PricingSchemeSeeder : IDefaultDataSeeder
     {
         private readonly ISessionFactory _sessionFactory;
 
-        public PricingSchemeSeeder(ISessionFactory sessionFactory)
+        public _003_PricingSchemeSeeder(ISessionFactory sessionFactory)
         {
             _sessionFactory = sessionFactory;
-        }
-
-        public bool IsDummyData
-        {
-            get { return false; }
-        }
-
-        public int ExecutionOrder
-        {
-            get { return 3; }
         }
 
         public void Seed()
@@ -29,7 +19,7 @@ namespace AmpedBiz.Data.Seeders
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var entities = session.Query<PricingScheme>().ToList();
+                var entities = session.Query<PricingScheme>().Cacheable().ToList();
 
                 foreach (var item in PricingScheme.All)
                 {

@@ -62,6 +62,9 @@
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\PaymentType.cs" />
     <Compile Include="Entities\PurchaseOrder.cs" />
+    <Compile Include="Entities\Return.cs" />
+    <Compile Include="Entities\ReturnItem.cs" />
+    <Compile Include="Entities\ReturnReason.cs" />
     <Compile Include="Entities\ShrinkageCause.cs" />
     <Compile Include="Entities\Stock.cs" />
     <Compile Include="Entities\PurchaseOrderItem.cs" />
@@ -145,6 +148,10 @@
     </Compile>
     <Compile Include="Services\PurchaseOrders\PurchaseOrderVisitor.cs" />
     <Compile Include="Services\PurchaseOrders\StateDispatcher.cs" />
+    <Compile Include="Services\Returns\ReturnCreateVisitor.cs">
+      <DependentUpon>ReturnVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\Returns\ReturnVisitor.cs" />
     <Compile Include="ValueObject.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +160,7 @@
       <Name>AmpedBiz.Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
