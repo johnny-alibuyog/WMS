@@ -1,5 +1,5 @@
-﻿using AmpedBiz.Core.Entities;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,19 +8,19 @@ namespace AmpedBiz.Core.Services.Returns
 {
     public class ReturnCreateVisitor : ReturnVisitor
     {
-        public virtual Branch Branch { get; internal protected set; }
+        public virtual Branch Branch  { get; set; }
 
-        public virtual Customer Customer { get; internal protected set; }
+        public virtual Customer Customer  { get; set; }
 
-        public virtual User ReturnedBy { get; internal protected set; }
+        public virtual User ReturnedBy  { get; set; }
 
-        public virtual DateTime? ReturnedOn { get; internal protected set; }
+        public virtual DateTime? ReturnedOn  { get; set; }
 
-        public virtual ReturnReason Reason { get; internal protected set; }
+        public virtual ReturnReason Reason  { get; set; }
 
-        public virtual string Remarks { get; internal protected set; }
+        public virtual string Remarks  { get; set; }
 
-        public virtual IEnumerable<ReturnItem> Items { get; internal protected set; }
+        public virtual IEnumerable<ReturnItem> Items  { get; set; }
 
         public override void Visit(Return target)
         {
@@ -32,6 +32,7 @@ namespace AmpedBiz.Core.Services.Returns
             target.ReturnedOn = this.ReturnedOn;
             target.Reason = this.Reason;
             target.Remarks = this.Remarks;
+            target.Accept(new ReturnCalculateTotalVisitor());
         }
 
         private void SetItemsTo(Return target)

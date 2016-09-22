@@ -1,0 +1,118 @@
+﻿using AmpedBiz.Core.Entities;
+using AmpedBiz.Service.Common;
+using MediatR;
+using NHibernate;
+using NHibernate.Linq;
+using System.Linq;
+
+namespace AmpedBiz.Service.Returns
+{
+    public class GetReturnPage
+    {
+        public class Request : PageRequest, IRequest<Response> { }
+
+        public class Response : PageResponse<Dto.ReturnPageItem> { }
+
+        public class Handler : RequestHandlerBase<Request, Response>
+        {
+            public Handler(ISessionFactory sessionFactory) : base(sessionFactory) { }
+
+            public override Response Handle(Request message)
+            {
+                var response = new Response();
+
+                using (var session = _sessionFactory.OpenSession())
+                using (var transaction = session.BeginTransaction())
+                {
+                    var query = session.Query<Return>();
+
+                    // compose filters
+                    message.Filter.Compose<string>("branchId", value =>
+                    {
+                        query = query.Where(x => x.Branch.Id == value);
+                    });
+
+                    message.Filter.Compose<string>("customerId", value =>
+                    {
+                        query = query.Where(x => x.Customer.Id == value);
+                    });
+
+                    message.Filter.Compose<string>("reasonId", value =>
+                    {
+                        query = query.Where(x => x.Reason.Id == value);
+                    });
+
+                    // compose sort
+                    message.Sorter.Compose("branch", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.Branch.Name)
+                            : query.OrderByDescending(x => x.Branch.Name);
+                    });
+
+                    message.Sorter.Compose("customer", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.Customer.Name)
+                            : query.OrderByDescending(x => x.Customer.Name);
+                    });
+
+                    message.Sorter.Compose("returnedBy", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.ReturnedBy.Name)
+                            : query.OrderByDescending(x => x.ReturnedBy.Name);
+                    });
+
+                    message.Sorter.Compose("returnedOn", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.ReturnedOn)
+                            : query.OrderByDescending(x => x.ReturnedOn);
+                    });
+
+                    message.Sorter.Compose("reason", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.Reason.Name)
+                            : query.OrderByDescending(x => x.Reason.Name);
+                    });
+
+                    message.Sorter.Compose("totalAmount", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.Total.Amount)
+                            : query.OrderByDescending(x => x.Total.Amount);
+                    });
+
+                    var itemsFuture = query
+                        .Select(x => new Dto.ReturnPageItem()
+                        {
+                            Id = x.Id,
+                            BranchName = x.Branch.Name,
+                            CustomerName = x.Customer.Name,
+                            ReturnedByName = x.ReturnedBy.Name,
+                            ReturnedOn = x.ReturnedOn,
+                            ReasonName = x.Reason.Name,
+                            Remarks = x.Remarks,
+                            TotalAmount = x.Total.Amount
+                        })
+                        .Skip(message.Pager.SkipCount)
+                        .Take(message.Pager.Size)
+                        .ToFuture();
+
+                    var countFuture = query
+                        .ToFutureValue(x => x.Count());
+
+                    response = new Response()
+                    {
+                        Count = countFuture.Value,
+                        Items = itemsFuture.ToList()
+                    };
+                }
+
+                return response;
+            }
+        }
+    }
+}

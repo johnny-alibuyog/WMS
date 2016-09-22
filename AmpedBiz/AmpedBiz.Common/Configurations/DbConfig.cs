@@ -9,12 +9,19 @@ namespace AmpedBiz.Common.Configurations
         public static DbConfig Instance = Create();
 
         public virtual int Port { get; set; }
+
         public virtual string Host { get; set; }
+
         public virtual string Name { get; set; }
+
         public virtual string Username { get; set; }
+
         public virtual string Password { get; set; }
+
         public virtual short BatchSize { get; set; }
+
         public virtual bool UseDummyData { get; set; }
+
         public virtual bool RecreateDb { get; set; }
 
         public DbConfig()

@@ -8,7 +8,7 @@ namespace AmpedBiz.Core.Entities
 
         public ReturnReason() : base(default(string)) { }
 
-        public ReturnReason(string id, string name) : base(id) 
+        public ReturnReason(string id, string name = null) : base(id) 
         {
             this.Name = name;
         }

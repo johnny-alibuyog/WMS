@@ -148,6 +148,9 @@
     </Compile>
     <Compile Include="Services\PurchaseOrders\PurchaseOrderVisitor.cs" />
     <Compile Include="Services\PurchaseOrders\StateDispatcher.cs" />
+    <Compile Include="Services\Returns\ReturnCalculateTotalVisitor.cs">
+      <DependentUpon>ReturnVisitor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Services\Returns\ReturnCreateVisitor.cs">
       <DependentUpon>ReturnVisitor.cs</DependentUpon>
     </Compile>

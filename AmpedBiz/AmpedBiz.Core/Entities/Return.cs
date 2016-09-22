@@ -20,6 +20,8 @@ namespace AmpedBiz.Core.Entities
 
         public virtual string Remarks { get; internal protected set; }
 
+        public virtual Money Total { get; internal protected set; }
+
         public virtual IEnumerable<ReturnItem> Items { get; internal protected set; } = new Collection<ReturnItem>();
 
         public Return() : base(default(Guid)) { }

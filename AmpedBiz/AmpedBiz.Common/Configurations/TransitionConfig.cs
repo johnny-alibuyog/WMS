@@ -131,7 +131,7 @@ namespace AmpedBiz.Common.Configurations
         {
             this.Provider = new JsonFileConfigurationProvider<TransitionConfig>()
             {
-                JsonConfigurationFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "transition.config.json"),
+                JsonConfigurationFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "transitions.config.json"),
             };
 
             return this.Provider;
