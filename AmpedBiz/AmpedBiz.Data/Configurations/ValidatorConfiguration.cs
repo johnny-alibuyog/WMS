@@ -25,8 +25,8 @@ namespace AmpedBiz.Data.Configurations
         private static ValidatorEngine GetValidatorEngine()
         {
             var configuration = GetConfiguration();
-            SessionProvider.Validator.Configure(configuration);
-            return SessionProvider.Validator;
+            SessionFactoryProvider.Validator.Configure(configuration);
+            return SessionFactoryProvider.Validator;
         }
 
         private static FluentConfiguration GetConfiguration()

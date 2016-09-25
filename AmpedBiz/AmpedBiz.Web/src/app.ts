@@ -47,6 +47,14 @@ export class App {
         title: 'Orders'
       },
       {
+        route: ['returns'],
+        name: 'returns',
+        moduleId: './returns/index',
+        nav: true,
+        main: true,
+        title: 'Returns'
+      },
+      {
         route: ['routes'],
         name: 'routes',
         moduleId: './routes/index',

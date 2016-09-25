@@ -23,9 +23,9 @@
             <form class="search-form form-horizontal pull-right" role="form" submit.delegate="filter.doFilter()">
               
               <div class="search-form input">
-                <select class="form-control" value.bind="filter['status']" change.delegate="filter.doFilter()">
-                  <option value="">All Status</option>
-                  <option repeat.for="item of statuses" model.bind="item.id">${item.name}</option>
+                <select class="form-control" value.bind="filter['branch']" change.delegate="filter.doFilter()">
+                  <option value="">All Branches</option>
+                  <option repeat.for="item of branches" model.bind="item.id">${item.name}</option>
                 </select>
               </div>
 
@@ -33,6 +33,13 @@
                 <select class="form-control" value.bind="filter['customer']" change.delegate="filter.doFilter()">
                   <option value="">All Customers</option>
                   <option repeat.for="item of customers" model.bind="item.id">${item.name}</option>
+                </select>
+              </div>
+
+              <div class="search-form input">
+                <select class="form-control" value.bind="filter['returnReason']" change.delegate="filter.doFilter()">
+                  <option value="">All Reasons</option>
+                  <option repeat.for="item of returnReasons" model.bind="item.id">${item.name}</option>
                 </select>
               </div>
               
@@ -57,54 +64,39 @@
             <thead>
               <tr>
                 <th class="col-md-1">Action</th>
-                <th class="col-md-1" click.delegate="sorter.doSort('orderdOn')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['orderdOn'])}"></i>OrderedOn
-                </th>
-                <th class="col-md-2" click.delegate="sorter.doSort('createdBy')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['createdBy'])}"></i>CreatedBy
+                <th class="col-md-1" click.delegate="sorter.doSort('branch')">
+                  <i class="fa fa-fw fa-${sorter.class(sorter['branch'])}"></i>Branch
                 </th>
                 <th class="col-md-2" click.delegate="sorter.doSort('customer')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['customer'])}"></i>Customer
                 </th>
-                <th class="col-md-1" click.delegate="sorter.doSort('status')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['status'])}"></i>Status
+                <th class="col-md-2" click.delegate="sorter.doSort('returnedBy')">
+                  <i class="fa fa-fw fa-${sorter.class(sorter['returnedBy'])}"></i>Staff
                 </th>
-                <th class="col-md-1" click.delegate="sorter.doSort('paidOn')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['paidOn'])}"></i>PaidOn
+                <th class="col-md-1" click.delegate="sorter.doSort('returnedOn')">
+                  <i class="fa fa-fw fa-${sorter.class(sorter['returnedOn'])}"></i>Date
                 </th>
-                <th class="col-md-1 text-right" click.delegate="sorter.doSort('taxAmount')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['taxAmount'])}"></i>Tax
-                </th>
-                <th class="col-md-1 text-right" click.delegate="sorter.doSort('shippingFeeAmount')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['shippingFeeAmount'])}"></i>Shipping
-                </th>
-                <th class="col-md-1 text-right" click.delegate="sorter.doSort('subTotalAmount')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['subTotalAmount'])}"></i>SubTotal
+                <th class="col-md-1" click.delegate="sorter.doSort('returnReason')">
+                  <i class="fa fa-fw fa-${sorter.class(sorter['returnReason'])}"></i>Reason
                 </th>
                 <th class="col-md-1 text-right" click.delegate="sorter.doSort('totalAmount')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['totalAmount'])}"></i>Total
+                  <i class="fa fa-fw fa-${sorter.class(sorter['totalAmount'])}"></i>Amount
                 </th>
               </tr>
             </thead>
 
             <tbody>
-              <tr repeat.for="item of pager.items" click.delegate="edit(item)">
+              <tr repeat.for="item of pager.items" click.delegate="show(item)">
                 <td>
-                  <a href="javascript:undefined" class="text-info" click.delegate="edit(item)">
-                    <i class="fa fa-pencil"></i>
-                  </a>
-                  <a href="javascript:undefined" class="text-danger" click.delegate="delete(item)">
-                    <i class="fa fa-times"></i>
+                  <a href="javascript:undefined" class="text-info" click.delegate="show(item)">
+                    <i class="fa cart-arrow-down"></i>
                   </a>
                 </td>
-                <td>${item.orderedOn | dateFormat}</td>
-                <td>${item.createdBy}</td>
-                <td>${item.customer}</td>
-                <td>${item.status}</td>
-                <td>${item.paidOn | dateFormat}</td>
-                <td class="text-right">${item.taxAmount | numberFormat}</td>
-                <td class="text-right">${item.shippingFeeAmount | numberFormat}</td>
-                <td class="text-right">${item.subTotalAmount | numberFormat}</td>
+                <td>${item.branchName}</td>
+                <td>${item.customerName}</td>
+                <td>${item.returnedByName}</td>
+                <td>${item.returnedOn | dateFormat}</td>
+                <td>${item.reasonName}</td>
                 <td class="text-right">${item.totalAmount | numberFormat}</td>
               </tr>
             </tbody>

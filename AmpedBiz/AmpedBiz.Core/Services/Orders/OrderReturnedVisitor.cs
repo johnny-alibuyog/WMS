@@ -13,7 +13,7 @@ namespace AmpedBiz.Core.Services.Orders
         {
             this.SetReturnsTo(target);
             target.Accept(new OrderCalculateTotalVisitor());
-            target.Status = OrderStatus.Paid;
+            target.Status = OrderStatus.Returned;
         }
 
         private void SetReturnsTo(Order target)

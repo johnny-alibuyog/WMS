@@ -180,12 +180,12 @@ export class OrderCreate {
 
   public invoice(): void {
     this._api.orders.invoice(this.order)
-      .then(data => this.resetAndNoify(data, "Order has been invoiced."))
-      .then(_ => this.viewInvoice())
+      .then(data => this.resetAndNoify(data, null))
+      .then(_ => this.showInvoice())
       .catch(error => this._notification.warning(error));
   }
 
-  public viewInvoice(): void {
+  public showInvoice(): void {
     this._api.orders.getInvoiceDetail(this.order.id)
       .then(data => this._invoiceReport.show(data))
   }

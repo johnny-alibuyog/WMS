@@ -96,7 +96,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             new Mapper().Initialze();
 
             this.auditProvider = new AuditProvider();
-            this.sessionFactory = new SessionProvider(new ValidatorEngine(), this.auditProvider).SessionFactory;
+            this.sessionFactory = new SessionFactoryProvider(new ValidatorEngine(), this.auditProvider).GetSessionFactory();
 
             this.SetupDefaultSeeders();
         }

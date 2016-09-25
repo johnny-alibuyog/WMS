@@ -45,26 +45,24 @@ namespace AmpedBiz.Common.Extentions
             );
         }
 
-        //public static decimal NextDecimal(this Random random, decimal min, decimal max)
-        //{
-        //    return (random.NextDecimal() * Math.Abs(max - min)) + min;
-        //}
-
-        public static decimal NextDecimal(this Random random, decimal from, decimal to)
+        public static decimal NextDecimal(this Random random, decimal min, decimal max)
         {
-            var fromScale = new System.Data.SqlTypes.SqlDecimal(from).Scale;
-            var toScale = new System.Data.SqlTypes.SqlDecimal(to).Scale;
+            if (min == max)
+                return min;
 
-            var scale = (byte)(fromScale + toScale);
+            var minScale = new System.Data.SqlTypes.SqlDecimal(min).Scale;
+            var maxScale = new System.Data.SqlTypes.SqlDecimal(max).Scale;
+
+            var scale = (byte)(minScale + maxScale);
             if (scale > 28)
                 scale = 28;
 
             var randomValue = new decimal(random.Next(), random.Next(), random.Next(), false, scale);
-            if (Math.Sign(from) == Math.Sign(to) || from == 0 || to == 0)
-                return decimal.Remainder(randomValue, to - from) + from;
+            if (Math.Sign(min) == Math.Sign(max) || min == 0 || max == 0)
+                return decimal.Remainder(randomValue, max - min) + min;
 
-            var valueFromNegativeRange = (double)from + random.NextDouble() * ((double)to - (double)from) < 0;
-            return valueFromNegativeRange ? decimal.Remainder(randomValue, -from) + from : decimal.Remainder(randomValue, to);
+            var valueFromNegativeRange = (double)min + random.NextDouble() * ((double)max - (double)min) < 0;
+            return valueFromNegativeRange ? decimal.Remainder(randomValue, -min) + min : decimal.Remainder(randomValue, max);
         }
 
         public static decimal ZeroIfNull(this decimal? value)

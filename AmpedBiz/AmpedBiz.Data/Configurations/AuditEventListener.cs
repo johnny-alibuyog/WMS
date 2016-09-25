@@ -15,7 +15,7 @@ namespace AmpedBiz.Data.Configurations
 
         public void OnPostInsert(PostInsertEvent @event)
         {
-            var auditProvider = SessionProvider.AuditProvider;
+            var auditProvider = SessionFactoryProvider.AuditProvider;
             var session = @event.Session.GetSession(EntityMode.Poco);
 
             var entity = @event.Entity as IAuditable;
@@ -32,7 +32,7 @@ namespace AmpedBiz.Data.Configurations
 
         public void OnPostUpdate(PostUpdateEvent @event)
         {
-            var auditProvider = SessionProvider.AuditProvider;
+            var auditProvider = SessionFactoryProvider.AuditProvider;
             var session = @event.Session.GetSession(EntityMode.Poco);
 
             var entity = @event.Entity as IAuditable;

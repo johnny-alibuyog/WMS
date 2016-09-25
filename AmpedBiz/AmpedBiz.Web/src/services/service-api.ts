@@ -7,6 +7,8 @@ import {PricingSchemeService} from './pricing-scheme-service';
 import {ProductCategoryService} from './product-category-service';
 import {ProductService} from './product-service';
 import {PurchaseOrderService} from './purchase-order-service';
+import {ReturnReasonService} from './return-reason-service';
+import {ReturnService} from './return-service';
 import {OrderService} from './order-service';
 import {SupplierService} from './supplier-service';
 import {UserService} from './user-service';
@@ -23,6 +25,8 @@ export class ServiceApi {
   private _productCategories: ProductCategoryService;
   private _products: ProductService;
   private _purchaseOrders: PurchaseOrderService;
+  private _returnReasons: ReturnReasonService;
+  private _returns: ReturnService;
   private _orders: OrderService;
   private _suppliers: SupplierService;
   private _users: UserService;
@@ -61,6 +65,14 @@ export class ServiceApi {
     return this._purchaseOrders;
   }
 
+  public get returnReasons(): ReturnReasonService{
+    return this._returnReasons;
+  }
+
+  public get returns(): ReturnService{
+    return this._returns;
+  }
+
   public get orders(): OrderService {
     return this._orders;
   }
@@ -83,8 +95,10 @@ export class ServiceApi {
 
   constructor(auth: AuthService, branches: BranchService, customers: CustomerService, paymentTypes: PaymentTypeService,
     pricingSchemes: PricingSchemeService, products: ProductService, productCategories: ProductCategoryService,
-    purchaseOrders: PurchaseOrderService, orders: OrderService, suppliers: SupplierService, users: UserService,
-    unitOfMeasures: UnitOfMeasureService, unitOfMeasureClasses: UnitOfMeasureClassService) {
+    purchaseOrders: PurchaseOrderService, returnReasons: ReturnReasonService, returns: ReturnService,
+    orders: OrderService, suppliers: SupplierService, users: UserService, unitOfMeasures: UnitOfMeasureService, 
+    unitOfMeasureClasses: UnitOfMeasureClassService) {
+      
     this._auth = auth;
     this._branches = branches;
     this._customers = customers;
@@ -93,6 +107,8 @@ export class ServiceApi {
     this._productCategories = productCategories;
     this._products = products;
     this._purchaseOrders = purchaseOrders;
+    this._returnReasons = returnReasons;
+    this._returns = returns;
     this._orders = orders;
     this._suppliers = suppliers;
     this._users = users;

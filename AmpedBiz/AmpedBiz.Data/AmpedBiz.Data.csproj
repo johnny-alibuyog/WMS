@@ -160,6 +160,7 @@
     <Compile Include="Seeders\DummyDataSeeders\_005_BranchSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_001_CurrencySeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_004_CustomerSeeder.cs" />
+    <Compile Include="Seeders\DummyDataSeeders\_012_ReturnSeeder.cs" />
     <Compile Include="Seeders\IDefaultDataSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_000_ReturnReasonSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_011_DefaultUserSeeder.cs" />
@@ -203,9 +204,11 @@
     <Compile Include="EntityDefinitions\UserRoleMapping.cs" />
     <Compile Include="EntityDefinitions\UserRoleValidation.cs" />
     <Compile Include="EntityDefinitions\UserValidation.cs" />
-    <Compile Include="ISessionProvider.cs" />
+    <Compile Include="ISessionFactoryProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SessionProvider.cs" />
+    <Compile Include="Seeders\Utils.cs" />
+    <Compile Include="SessionFactoryExtention.cs" />
+    <Compile Include="SessionFactoryProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

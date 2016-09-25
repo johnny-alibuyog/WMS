@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using AmpedBiz.Common.Configurations;
+﻿using AmpedBiz.Common.Configurations;
 using AmpedBiz.Data.Configurations;
 using AmpedBiz.Data.Conventions;
 using AmpedBiz.Data.EntityDefinitions;
@@ -9,62 +7,27 @@ using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Conventions.Helpers;
 using NHibernate;
 using NHibernate.Bytecode;
-using NHibernate.Context;
 using NHibernate.Validator.Engine;
 
 namespace AmpedBiz.Data
 {
-    public class SessionProvider : ISessionProvider
+    public class SessionFactoryProvider : ISessionFactoryProvider
     {
-        private readonly ISessionFactory _sessionFactory;
-        private static ValidatorEngine _validator;
-        private static IAuditProvider _auditProvider;
+        internal static ValidatorEngine Validator { get; private set; }
 
-        internal static ValidatorEngine Validator
+        internal static IAuditProvider AuditProvider { get; private set; }
+
+        internal static ISessionFactory SessionFactory { get; private set; }
+
+        public virtual ISessionFactory GetSessionFactory() => SessionFactoryProvider.SessionFactory;
+
+        public SessionFactoryProvider(ValidatorEngine validator, IAuditProvider auditProvider)
         {
-            get { return _validator; }
-            private set { _validator = value; }
-        }
+            SessionFactoryProvider.Validator = validator;
 
-        internal static IAuditProvider AuditProvider
-        {
-            get { return _auditProvider; }
-            private set { _auditProvider = value; }
-        }
+            SessionFactoryProvider.AuditProvider = auditProvider;
 
-        public virtual ISessionFactory SessionFactory
-        {
-            get { return _sessionFactory; }
-        }
-
-        public virtual ISession GetSharedSession()
-        {
-            if (CurrentSessionContext.HasBind(_sessionFactory) != true)
-            {
-                CurrentSessionContext.Bind(_sessionFactory.OpenSession());
-            }
-
-            if (_sessionFactory.GetCurrentSession().IsConnected == false ||
-                _sessionFactory.GetCurrentSession().IsOpen == false)
-            {
-                CurrentSessionContext.Unbind(_sessionFactory);
-                CurrentSessionContext.Bind(_sessionFactory.OpenSession());
-            }
-
-            return _sessionFactory.GetCurrentSession();
-        }
-
-        public virtual ISession ReleaseSharedSession()
-        {
-            return CurrentSessionContext.Unbind(_sessionFactory);
-        }
-
-        public SessionProvider(ValidatorEngine validator, IAuditProvider auditProvider)
-        {
-            _validator = validator;
-            _auditProvider = auditProvider;
-
-            _sessionFactory = Fluently.Configure()
+            SessionFactoryProvider.SessionFactory = Fluently.Configure()
                 .Database(PostgreSQLConfiguration.PostgreSQL82
                     .ConnectionString(x => x
                         .Host(DbConfig.Instance.Host)
@@ -94,8 +57,9 @@ namespace AmpedBiz.Data
                 .ExposeConfiguration(IndexForeignKeyConfiguration.Configure)
                 .ExposeConfiguration(SchemaConfiguration.Configure)
                 .ExposeConfiguration(SessionContextConfiguration.Configure)
-                //.ExposeConfiguration(x => x.SetProperty("adonet.batch_size", "15"))
                 .BuildSessionFactory();
         }
     }
+
+   
 }

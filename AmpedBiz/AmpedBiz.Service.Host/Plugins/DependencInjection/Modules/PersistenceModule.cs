@@ -1,12 +1,10 @@
-﻿using System;
-using AmpedBiz.Common.Configurations;
-using AmpedBiz.Data;
+﻿using AmpedBiz.Data;
 using AmpedBiz.Data.Configurations;
 using AmpedBiz.Data.Seeders;
 using AmpedBiz.Service.Host.Plugins.Providers;
-using AmpedBiz.Service.Host.Properties;
 using Autofac;
 using NHibernate.Validator.Engine;
+using System;
 
 namespace AmpedBiz.Service.Host.Plugins.DependencInjection.Modules
 {
@@ -21,11 +19,11 @@ namespace AmpedBiz.Service.Host.Plugins.DependencInjection.Modules
                 .AsSelf()
                 .SingleInstance();
 
-            builder.RegisterType<SessionProvider>()
-                .As<ISessionProvider>()
+            builder.RegisterType<SessionFactoryProvider>()
+                .As<ISessionFactoryProvider>()
                 .SingleInstance();
 
-            builder.Register(context => context.Resolve<ISessionProvider>().SessionFactory)
+            builder.Register(context => context.Resolve<ISessionFactoryProvider>().GetSessionFactory())
                 .SingleInstance();
 
             builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())

@@ -9,7 +9,7 @@ namespace AmpedBiz.Data.Configurations
     {
         private void PerformValidation(object entity)
         {
-            var validator = SessionProvider.Validator;
+            var validator = SessionFactoryProvider.Validator;
             var invalidValues = validator.Validate(entity);
             if (invalidValues.Count() > 0)
             {

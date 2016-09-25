@@ -22,6 +22,9 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Map(x => x.Remarks);
 
+            Component(x => x.Total, 
+                MoneyMapping.Map("Total_", nameof(Return)));
+
             HasMany(x => x.Items)
                 .Cascade.AllDeleteOrphan()
                 .Not.KeyNullable()

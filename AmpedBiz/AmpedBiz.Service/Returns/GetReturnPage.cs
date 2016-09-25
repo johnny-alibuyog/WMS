@@ -27,19 +27,19 @@ namespace AmpedBiz.Service.Returns
                     var query = session.Query<Return>();
 
                     // compose filters
-                    message.Filter.Compose<string>("branchId", value =>
+                    message.Filter.Compose<string>("reason", value =>
+                    {
+                        query = query.Where(x => x.Reason.Id == value);
+                    });
+
+                    message.Filter.Compose<string>("branch", value =>
                     {
                         query = query.Where(x => x.Branch.Id == value);
                     });
 
-                    message.Filter.Compose<string>("customerId", value =>
+                    message.Filter.Compose<string>("customer", value =>
                     {
                         query = query.Where(x => x.Customer.Id == value);
-                    });
-
-                    message.Filter.Compose<string>("reasonId", value =>
-                    {
-                        query = query.Where(x => x.Reason.Id == value);
                     });
 
                     // compose sort
@@ -60,8 +60,12 @@ namespace AmpedBiz.Service.Returns
                     message.Sorter.Compose("returnedBy", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.ReturnedBy.Name)
-                            : query.OrderByDescending(x => x.ReturnedBy.Name);
+                            ? query
+                                .OrderBy(x => x.ReturnedBy.Person.FirstName)
+                                .OrderBy(x => x.ReturnedBy.Person.LastName)
+                            : query
+                                .OrderByDescending(x => x.ReturnedBy.Person.FirstName)
+                                .OrderByDescending(x => x.ReturnedBy.Person.LastName);
                     });
 
                     message.Sorter.Compose("returnedOn", direction =>
@@ -71,7 +75,7 @@ namespace AmpedBiz.Service.Returns
                             : query.OrderByDescending(x => x.ReturnedOn);
                     });
 
-                    message.Sorter.Compose("reason", direction =>
+                    message.Sorter.Compose("returnReason", direction =>
                     {
                         query = direction == SortDirection.Ascending
                             ? query.OrderBy(x => x.Reason.Name)
@@ -91,7 +95,9 @@ namespace AmpedBiz.Service.Returns
                             Id = x.Id,
                             BranchName = x.Branch.Name,
                             CustomerName = x.Customer.Name,
-                            ReturnedByName = x.ReturnedBy.Name,
+                            ReturnedByName = 
+                                x.ReturnedBy.Person.FirstName + " " + 
+                                x.ReturnedBy.Person.LastName,
                             ReturnedOn = x.ReturnedOn,
                             ReasonName = x.Reason.Name,
                             Remarks = x.Remarks,
