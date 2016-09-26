@@ -34,7 +34,7 @@ namespace AmpedBiz.Service.Returns
 
                     message.Filter.Compose<string>("branch", value =>
                     {
-                        query = query.Where(x => x.Branch.Id == value);
+                        query = query.Where(x => x.Branch.Id.ToString() == value);
                     });
 
                     message.Filter.Compose<string>("customer", value =>

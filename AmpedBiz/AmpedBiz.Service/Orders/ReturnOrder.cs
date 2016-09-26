@@ -55,9 +55,9 @@ namespace AmpedBiz.Service.Orders
                     if (entity == null)
                         throw new BusinessException($"Order with id {message.Id} does not exists.");
 
-                    Func<string, Product> GetProduct = (id) => products.First(x => x.Id == id);
+                    Func<Guid, Product> GetProduct = (id) => products.First(x => x.Id == id);
 
-                    Func<string, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
+                    Func<Guid, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
 
                     var currency = session.Load<Currency>(Currency.PHP.Id);
 

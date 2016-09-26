@@ -4,6 +4,7 @@ using MediatR;
 using NHibernate;
 using NHibernate.Linq;
 using System.Linq;
+using System;
 
 namespace AmpedBiz.Service.Products
 {
@@ -11,7 +12,7 @@ namespace AmpedBiz.Service.Products
     {
         public class Request : IRequest<Response>
         {
-            public string ProductId { get; set; }
+            public Guid ProductId { get; set; }
         }
 
         public class Response : Dto.ProductInventory { }

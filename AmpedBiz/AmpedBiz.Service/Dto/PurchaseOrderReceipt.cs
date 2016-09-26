@@ -16,7 +16,7 @@ namespace AmpedBiz.Service.Dto
 
         public DateTime? ExpiresOn { get; set; }
 
-        public Lookup<string> Product { get; set; }
+        public Lookup<Guid> Product { get; set; }
 
         public decimal QuantityValue { get; set; }
     }
@@ -25,7 +25,7 @@ namespace AmpedBiz.Service.Dto
     {
         public Guid PurchaseOrderId { get; set; }
 
-        public Lookup<string> Product { get; set; }
+        public Lookup<Guid> Product { get; set; }
 
         public DateTime? ExpiresOn { get; set; }
 
@@ -46,7 +46,7 @@ namespace AmpedBiz.Service.Dto
                     (item, receipts) => new Dto.PurchaseOrderReceivable()
                     {
                         PurchaseOrderId = purchaseOrder.Id,
-                        Product = new Lookup<string>(
+                        Product = new Lookup<Guid>(
                             item.Product.Id,
                             item.Product.Name
                         ),

@@ -6,6 +6,7 @@ using NHibernate;
 using NHibernate.Linq;
 using System.Linq;
 using NHibernate.Transform;
+using System;
 
 namespace AmpedBiz.Service.Products
 {
@@ -13,7 +14,7 @@ namespace AmpedBiz.Service.Products
     {
         public class Request : IRequest<Response>
         {
-            public string Id { get; set; }
+            public Guid Id { get; set; }
         }
 
         public class Response : Dto.Product { }

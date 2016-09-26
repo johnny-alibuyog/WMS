@@ -50,7 +50,7 @@ namespace AmpedBiz.Service.Users
 
                     message.Filter.Compose<string>("branchId", value =>
                     {
-                        query = query.Where(x => x.Branch.Id == value);
+                        query = query.Where(x => x.Branch.Id.ToString() == value);
                     });
 
                     // compose sort

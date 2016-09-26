@@ -9,7 +9,7 @@ namespace AmpedBiz.Service.Dto
 
         public Guid PurchaseOrderId { get; set; }
 
-        public Lookup<string> Product { get; set; }
+        public Lookup<Guid> Product { get; set; }
 
         public decimal QuantityValue { get; set; }
 

@@ -45,9 +45,9 @@ namespace AmpedBiz.Service.PurchaseOrders
                         .Fetch(x => x.Inventory)
                         .ToList();
 
-                    Func<string, Product> GetProduct = (id) => products.First(x => x.Id == id);
+                    Func<Guid, Product> GetProduct = (id) => products.First(x => x.Id == id);
 
-                    Func<string, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
+                    Func<Guid, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
 
                     entity.State.Process(new PurchaseOrderNewlyCreatedVisitor()
                     { 

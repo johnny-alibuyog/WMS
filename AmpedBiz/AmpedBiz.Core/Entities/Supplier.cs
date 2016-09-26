@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Supplier : Entity<string, Supplier>
+    public class Supplier : Entity<Guid, Supplier>
     {
         public virtual string Name { get; set; }
 
@@ -13,9 +14,9 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<Product> Products { get; protected set; }
 
-        public Supplier() : base(default(string)) { }
+        public Supplier() : base(default(Guid)) { }
 
-        public Supplier(string id) : base(id)
+        public Supplier(Guid id) : base(id)
         {
             this.Products = new Collection<Product>();
         }

@@ -7,7 +7,7 @@ namespace AmpedBiz.Service.Dto
     {
         public virtual Guid OrderId { get; set; }
 
-        public Lookup<string> Product { get; set; }
+        public Lookup<Guid> Product { get; set; }
 
         public virtual DateTime? ReturnedOn { get; protected set; }
 
@@ -30,7 +30,7 @@ namespace AmpedBiz.Service.Dto
     {
         public virtual Guid OrderId { get; set; }
 
-        public Lookup<string> Product { get; set; }
+        public Lookup<Guid> Product { get; set; }
 
         public decimal QuantityValue { get; set; }
 

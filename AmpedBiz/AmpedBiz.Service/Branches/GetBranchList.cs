@@ -5,6 +5,7 @@ using NHibernate;
 using NHibernate.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace AmpedBiz.Service.Branches
 {
@@ -12,7 +13,7 @@ namespace AmpedBiz.Service.Branches
     {
         public class Request : IRequest<Response>
         {
-            public string[] Ids { get; set; }
+            public Guid[] Ids { get; set; }
 
             public string Name { get; set; }
 

@@ -1,8 +1,10 @@
-﻿namespace AmpedBiz.Service.Dto
+﻿using System;
+
+namespace AmpedBiz.Service.Dto
 {
     public class Branch
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 

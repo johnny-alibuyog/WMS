@@ -37,7 +37,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 
                     message.Filter.Compose<string>("supplier", value =>
                     {
-                        query = query.Where(x => x.Supplier.Id == value);
+                        query = query.Where(x => x.Supplier.Id.ToString() == value);
                     });
 
                     // compose sort

@@ -5,6 +5,7 @@ using NHibernate;
 using NHibernate.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace AmpedBiz.Service.Products
 {
@@ -12,9 +13,9 @@ namespace AmpedBiz.Service.Products
     {
         public class Request : IRequest<Response>
         {
-            public string[] Id { get; set; }
+            public Guid[] Id { get; set; }
 
-            public string SupplierId { get; set; }
+            public Guid SupplierId { get; set; }
         }
 
         public class Response : List<Dto.Product>
@@ -39,8 +40,8 @@ namespace AmpedBiz.Service.Products
 
                     if (!message.Id.IsNullOrEmpty())
                         query = query.Where(x => message.Id.Contains(x.Id));
-
-                    if (!string.IsNullOrWhiteSpace(message.SupplierId))
+                    
+                    if (message.SupplierId != null)
                         query = query.Where(x => x.Supplier.Id == message.SupplierId);
 
                     var entities = query.ToList();

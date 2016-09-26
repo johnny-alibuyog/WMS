@@ -30,9 +30,9 @@ namespace AmpedBiz.Service.Returns
 
                     var products = session.Query<Product>().Cacheable().ToList();
 
-                    Func<string, Product> GetProduct = (id) => products.First(x => x.Id == id);
+                    Func<Guid, Product> GetProduct = (id) => products.First(x => x.Id == id);
 
-                    Func<string, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
+                    Func<Guid, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
 
                     var entity = new Return();
 

@@ -152,10 +152,10 @@ namespace AmpedBiz.Tests.IntegrationTests
             return new Lookup<Guid>(random.Id, random.Name);
         }
 
-        private Lookup<string> RandomBranch()
+        private Lookup<Guid> RandomBranch()
         {
             var random = this._branches[this.random.Next(0, this._branches.Count - 1)];
-            return new Lookup<string>(random.Id, random.Name);
+            return new Lookup<Guid>(random.Id, random.Name);
         }
 
         private Lookup<string> RandomShipper()
@@ -170,10 +170,10 @@ namespace AmpedBiz.Tests.IntegrationTests
             return new Lookup<string>(random.Id, random.Name);
         }
 
-        private Lookup<string> RandomSupplier()
+        private Lookup<Guid> RandomSupplier()
         {
             var random = this._suppliers[this.random.Next(0, this._suppliers.Count - 1)];
-            return new Lookup<string>(random.Id, random.Name);
+            return new Lookup<Guid>(random.Id, random.Name);
         }
 
         private Lookup<string> RandomCurrency()
@@ -367,7 +367,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             return products;
         }
 
-        private IEnumerable<Service.Dto.Product> SelectRandomProducts(string supplierId, int count = 12)
+        private IEnumerable<Service.Dto.Product> SelectRandomProducts(Guid supplierId, int count = 12)
         {
             var request = new GetProductList.Request() { SupplierId = supplierId };
             var response = new GetProductList.Handler(this.sessionFactory).Handle(request);
@@ -431,7 +431,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                 {
                     //TotalAmount = product.RetailPriceAmount + 1m,
                     PurchaseOrderId = request.Id,
-                    Product = new Lookup<string>(product.Id, product.Name),
+                    Product = new Lookup<Guid>(product.Id, product.Name),
                     QuantityValue = this.random.Next(1, 100),
                     UnitCostAmount = product.Inventory.RetailPriceAmount ?? 0M + 1m,
                 });
@@ -573,7 +573,7 @@ namespace AmpedBiz.Tests.IntegrationTests
         {
             var orderItems = new List<Service.Dto.OrderItem>();
 
-            var suppliersId = new List<string>();
+            var suppliersId = new List<Guid>();
 
             using (var session = this.sessionFactory.OpenSession())
             {
@@ -606,7 +606,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                 orderItems.Add(new Service.Dto.OrderItem()
                 {
                     ExtendedPriceAmount = 0M,
-                    Product = new Lookup<string>(product.Id, product.Name),
+                    Product = new Lookup<Guid>(product.Id, product.Name),
                     //UnitOfMeasure = new Lookup<string>(product.Inv)
                     QuantityValue = this.random.Next(1, 100),
                     UnitPriceAmount = product.Inventory.RetailPriceAmount ?? 0M

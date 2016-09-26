@@ -23,7 +23,7 @@ namespace AmpedBiz.Service.Dto
 
         public string OrderNumber { get; set; }
 
-        public Lookup<string> Branch { get; set; }
+        public Lookup<Guid> Branch { get; set; }
 
         public Lookup<string> Customer { get; set; }
 

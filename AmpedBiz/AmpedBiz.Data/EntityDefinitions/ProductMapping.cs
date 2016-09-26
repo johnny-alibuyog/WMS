@@ -8,7 +8,7 @@ namespace AmpedBiz.Data.EntityDefinitions
         public ProductMapping()
         {
             Id(x => x.Id)
-                .GeneratedBy.Assigned();
+                .GeneratedBy.GuidComb();
 
             Map(x => x.Name);
 

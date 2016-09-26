@@ -62,7 +62,7 @@ namespace AmpedBiz.Service.Branches
                     var itemsFuture = query
                         .Select(x => new Dto.BranchPageItem()
                         {
-                            Id = x.Id,
+                            Id = x.Id.ToString(),
                             Name = x.Name,
                             Description = x.Description
                         })

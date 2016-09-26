@@ -1,6 +1,8 @@
-﻿namespace AmpedBiz.Core.Entities
+﻿using System;
+
+namespace AmpedBiz.Core.Entities
 {
-    public class Product : Entity<string, Product>
+    public class Product : Entity<Guid, Product>
     {
         public virtual string Name { get; set; }
 
@@ -16,12 +18,12 @@
 
         public virtual Inventory Inventory { get; set; }
 
-        public Product() : base(default(string))
+        public Product() : base(default(Guid))
         {
             this.Inventory = new Inventory(this);
         }
 
-        public Product(string id) : base(id)
+        public Product(Guid id) : base(id)
         {
             this.Inventory = new Inventory(this);
         }

@@ -28,7 +28,7 @@ namespace AmpedBiz.Service.Products
 
                     // compose query
                     var query = session.Query<PurchaseOrderItem>()
-                        .Where(x => x.Product.Id == productId)
+                        .Where(x => x.Product.Id.ToString() == productId)
                         .Select(x => new Dto.ProductPurchasePageItem()
                         {
                             Id = x.PurchaseOrder.Id,

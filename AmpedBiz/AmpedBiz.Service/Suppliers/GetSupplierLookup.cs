@@ -6,6 +6,7 @@ using NHibernate;
 using NHibernate.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace AmpedBiz.Service.Suppliers
 {
@@ -13,14 +14,14 @@ namespace AmpedBiz.Service.Suppliers
     {
         public class Request : IRequest<Response>
         {
-            public string[] Id { get; set; }
+            public Guid[] Id { get; set; }
         }
 
-        public class Response : List<Lookup<string>>
+        public class Response : List<Lookup<Guid>>
         {
             public Response() { }
 
-            public Response(IList<Lookup<string>> items) : base(items) { }
+            public Response(IList<Lookup<Guid>> items) : base(items) { }
         }
 
         public class Handler : RequestHandlerBase<Request, Response>
@@ -35,7 +36,7 @@ namespace AmpedBiz.Service.Suppliers
                 using (var transaction = session.BeginTransaction())
                 {
                     var pairs = session.Query<Supplier>()
-                        .Select(x => new Lookup<string>()
+                        .Select(x => new Lookup<Guid>()
                         {
                             Id = x.Id,
                             Name = x.Name

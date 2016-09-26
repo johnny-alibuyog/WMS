@@ -4,7 +4,6 @@
   "Name": "RH9Ump7O6tMEbv9IQwMUpA==",
   "Username": "hJGpfBVaZbafhK4FXm3leg==",
   "Password": "hJGpfBVaZbafhK4FXm3leg==",
-  "BatchSize": 50,
-  "UseDummyData": true,
+  "UseDummyData": false,
   "RecreateDb": true
 }

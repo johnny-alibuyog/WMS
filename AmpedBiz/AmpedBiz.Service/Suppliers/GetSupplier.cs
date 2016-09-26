@@ -1,4 +1,5 @@
-﻿using AmpedBiz.Common.Exceptions;
+﻿using System;
+using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using MediatR;
@@ -10,7 +11,7 @@ namespace AmpedBiz.Service.Suppliers
     {
         public class Request : IRequest<Response>
         {
-            public string Id { get; set; }
+            public Guid Id { get; set; }
         }
 
         public class Response : Dto.Supplier { }

@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Inventory : Entity<string, Inventory>
+    public class Inventory : Entity<Guid, Inventory>
     {
         //public virtual Tenant Tenant { get; protected set; }
 
@@ -128,9 +129,9 @@ namespace AmpedBiz.Core.Entities
             }
         }
 
-        public Inventory() : base(default(string)) { }
+        public Inventory() : base(default(Guid)) { }
 
-        public Inventory(Product product, string id = null) : base(id)
+        public Inventory(Product product, Guid id = default(Guid)) : base(id)
         {
             this.Product = product;
         }

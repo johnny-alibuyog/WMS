@@ -2,7 +2,7 @@
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Branch : Entity<string, Branch>
+    public class Branch : Entity<Guid, Branch>
     {
         public virtual Tenant Tenant { get; set; }
 
@@ -12,8 +12,8 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Address Address { get; set; }
 
-        public Branch() : base(default(string)) { }
+        public Branch() : base(default(Guid)) { }
 
-        public Branch(string id) : base(id) { }
+        public Branch(Guid id) : base(id) { }
     }
 }

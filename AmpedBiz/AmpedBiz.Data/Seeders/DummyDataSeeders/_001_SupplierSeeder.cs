@@ -31,7 +31,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
             for (int i = 0; i < 36; i++)
             {
-                data.Add(new Supplier($"supplier{i}")
+                data.Add(new Supplier()
                 {
                     Name = $"Supplier {i}",
                     Address = new Address()

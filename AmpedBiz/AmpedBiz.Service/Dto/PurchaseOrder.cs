@@ -25,7 +25,7 @@ namespace AmpedBiz.Service.Dto
 
         public Lookup<string> Shipper { get; set; }
 
-        public Lookup<string> Supplier { get; set; }
+        public Lookup<Guid> Supplier { get; set; }
 
         public decimal TaxAmount { get; set; }
 

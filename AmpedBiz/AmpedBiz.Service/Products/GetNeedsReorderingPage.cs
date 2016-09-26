@@ -30,7 +30,7 @@ namespace AmpedBiz.Service.Products
                     // compose filters
                     message.Filter.Compose<string>("supplierId", value =>
                     {
-                        query = query.Where(x => x.Supplier.Id == value);
+                        query = query.Where(x => x.Supplier.Id.ToString() == value);
                     });
 
                     // compose sort
@@ -86,7 +86,7 @@ namespace AmpedBiz.Service.Products
                     var itemsFuture = query
                         .Select(x => new Dto.NeedsReorderingPageItem()
                         {
-                            Id = x.Id,
+                            Id = x.Id.ToString(),
                             ProductName = x.Name,
                             SupplierName = x.Supplier.Name,
                             CategoryName = x.Category.Name,

@@ -1,10 +1,11 @@
-﻿using AmpedBiz.Common.CustomTypes;
+﻿using System;
+using AmpedBiz.Common.CustomTypes;
 
 namespace AmpedBiz.Service.Dto
 {
     public class Supplier
     {
-        public virtual string Id { get; set; }
+        public virtual Guid Id { get; set; }
 
         public virtual string Name { get; set; }
 

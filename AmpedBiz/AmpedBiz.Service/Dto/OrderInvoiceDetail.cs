@@ -62,7 +62,7 @@ namespace AmpedBiz.Service.Dto
                     {
                         Id = item.Id,
                         OrderId = item.Order.Id,
-                        Product = new Lookup<string>(
+                        Product = new Lookup<Guid>(
                             item.Product.Id,
                             item.Product.Name
                         ),
@@ -84,7 +84,7 @@ namespace AmpedBiz.Service.Dto
 
         public Guid OrderId { get; set; }
 
-        public Lookup<string> Product { get; set; }
+        public Lookup<Guid> Product { get; set; }
 
         public decimal QuantityValue { get; set; }
 

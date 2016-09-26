@@ -54,9 +54,9 @@ namespace AmpedBiz.Service.Orders
                         .Cacheable()
                         .ToList();
 
-                    Func<string, Product> GetProduct = (id) => products.First(x => x.Id == id);
+                    Func<Guid, Product> GetProduct = (id) => products.First(x => x.Id == id);
 
-                    Func<string, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
+                    Func<Guid, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
 
                     entity.State.Process(new OrderNewlyCreatedVisitor()
                     {
@@ -67,7 +67,7 @@ namespace AmpedBiz.Service.Orders
                         OrderedBy = (!message?.CreatedBy?.Id.IsNullOrDefault() ?? false)
                             ? session.Load<User>(message.CreatedBy.Id) : null,
                         OrderedOn = message?.CreatedOn ?? DateTime.Now,
-                        Branch = (!message?.Branch?.Id.IsNullOrEmpty() ?? false)
+                        Branch = (!message?.Branch?.Id.IsNullOrDefault() ?? false)
                             ? session.Load<Branch>(message.Branch.Id) : null,
                         Customer = (!message?.Customer?.Id.IsNullOrEmpty() ?? false)
                             ? session.Load<Customer>(message.Customer.Id) : null,

@@ -7,9 +7,7 @@ namespace AmpedBiz.Data.EntityDefinitions
     {
         public SupplierValidation()
         {
-            Define(x => x.Id)
-                .NotNullableAndNotEmpty()
-                .And.MaxLength(30);
+            Define(x => x.Id);
 
             Define(x => x.Name)
                 .NotNullableAndNotEmpty()

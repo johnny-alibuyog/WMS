@@ -459,9 +459,9 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                       .Select(x => x.Product)
                       .ToList();
 
-                    Func<string, Product> GetProduct = (id) => products.First(x => x.Id == id);
+                    Func<Guid, Product> GetProduct = (id) => products.First(x => x.Id == id);
 
-                    Func<string, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
+                    Func<Guid, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
 
                     var currency = session.Load<Currency>(Currency.PHP.Id);
 

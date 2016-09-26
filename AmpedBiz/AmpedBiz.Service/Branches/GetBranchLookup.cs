@@ -5,6 +5,7 @@ using NHibernate;
 using NHibernate.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace AmpedBiz.Service.Branches
 {
@@ -12,11 +13,11 @@ namespace AmpedBiz.Service.Branches
     {
         public class Request : IRequest<Response> { }
 
-        public class Response : List<Lookup<string>>
+        public class Response : List<Lookup<Guid>>
         {
             public Response() { }
 
-            public Response(IList<Lookup<string>> items) : base(items) { }
+            public Response(IList<Lookup<Guid>> items) : base(items) { }
         }
 
         public class Handler : RequestHandlerBase<Request, Response>
@@ -31,7 +32,7 @@ namespace AmpedBiz.Service.Branches
                 using (var transaction = session.BeginTransaction())
                 {
                     var pairs = session.Query<Branch>()
-                        .Select(x => new Lookup<string>()
+                        .Select(x => new Lookup<Guid>()
                         {
                             Id = x.Id,
                             Name = x.Name

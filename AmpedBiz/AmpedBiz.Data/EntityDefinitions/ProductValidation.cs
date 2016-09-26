@@ -7,8 +7,7 @@ namespace AmpedBiz.Data.EntityDefinitions
     {
         public ProductValidation()
         {
-            Define(x => x.Id)
-                .NotNullableAndNotEmpty();
+            Define(x => x.Id);
 
             Define(x => x.Name)
                 .NotNullableAndNotEmpty()

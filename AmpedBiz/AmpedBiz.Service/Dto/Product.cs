@@ -5,13 +5,13 @@ namespace AmpedBiz.Service.Dto
 {
     public class Product
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 
         public string Description { get; set; }
 
-        public Lookup<string> Supplier { get; set; }
+        public Lookup<Guid> Supplier { get; set; }
 
         public Lookup<string> Category { get; set; }
 
@@ -73,7 +73,7 @@ namespace AmpedBiz.Service.Dto
 
     public class ProductInventory
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 

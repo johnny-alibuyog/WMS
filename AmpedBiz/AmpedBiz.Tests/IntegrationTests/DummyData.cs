@@ -74,7 +74,6 @@ namespace AmpedBiz.Tests.IntegrationTests
             {
                 Address = this.GenerateAddress(),
                 Description = "Description_" + Guid.NewGuid().ToString(),
-                Id = "Id_" + this.GenerateRandomString(10),
                 Name = "Name_" + this.GenerateRandomString(25)
             };
         }
@@ -129,14 +128,13 @@ namespace AmpedBiz.Tests.IntegrationTests
         {
             return new Service.Dto.Supplier()
             {
-                Id = "Id_" + this.GenerateRandomString(15),
                 Address = this.GenerateAddress(),
                 Contact = this.GenerateContact(),
                 Name = "Name_" + this.GenerateRandomString(25)
             };
         }
 
-        public Service.Dto.Product GenerateProduct(Lookup<string> category, Lookup<string> supplier)
+        public Service.Dto.Product GenerateProduct(Lookup<string> category, Lookup<Guid> supplier)
         {
             var basePrice = (decimal)random.Next(10, 100) / 100;
             return new Service.Dto.Product()
@@ -145,7 +143,6 @@ namespace AmpedBiz.Tests.IntegrationTests
                 Supplier = supplier,
                 Description = "Description_" + this.GenerateRandomString(25),
                 Discontinued = false,
-                Id = "Id_" + this.GenerateRandomString(15),
                 Image = "",
                 Name = "Name_" + this.GenerateRandomString(10),
                 Inventory = new Service.Dto.Inventory()

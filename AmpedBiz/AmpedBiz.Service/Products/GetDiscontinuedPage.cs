@@ -87,7 +87,7 @@ namespace AmpedBiz.Service.Products
                     var itemsFuture = query
                         .Select(x => new Dto.DiscontinuedPageItem()
                         {
-                            Id = x.Id,
+                            Id = x.Id.ToString(),
                             Name = x.Name,
                             Description = x.Description,
                             SupplierName = x.Supplier.Name,

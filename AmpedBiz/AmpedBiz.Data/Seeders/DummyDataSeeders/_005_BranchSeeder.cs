@@ -21,7 +21,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
             for (int i = 0; i < 153; i++)
             {
-                data.Add(new Branch($"branch{i}")
+                data.Add(new Branch()
                 {
                     Name = $"Branch {i}",
                     Description = $"Description {i}",

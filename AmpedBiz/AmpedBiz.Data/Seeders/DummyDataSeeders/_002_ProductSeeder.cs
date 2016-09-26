@@ -24,7 +24,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
             for (int i = 0; i < 580; i++)
             {
-                data.Add(new Product($"product{i}")
+                data.Add(new Product()
                 {
                     Name = $"Product {i}",
                     Description = $"Description {i}",

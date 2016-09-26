@@ -9,7 +9,7 @@ namespace AmpedBiz.Service.Dto
 
         public Guid ReturnId { get; set; }
 
-        public Lookup<string> Product { get; set; }
+        public Lookup<Guid> Product { get; set; }
 
         public Lookup<string> ReturnReason { get; set; }
 

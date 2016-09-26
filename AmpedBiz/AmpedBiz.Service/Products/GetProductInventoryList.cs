@@ -4,6 +4,7 @@ using NHibernate;
 using NHibernate.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace AmpedBiz.Service.Products
 {
@@ -11,7 +12,7 @@ namespace AmpedBiz.Service.Products
     {
         public class Request : IRequest<Response>
         {
-            public string SupplierId { get; set; }
+            public Guid SupplierId { get; set; }
         }
 
         public class Response : List<Dto.ProductInventory>

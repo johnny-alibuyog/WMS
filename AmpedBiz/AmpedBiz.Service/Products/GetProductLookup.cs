@@ -6,6 +6,7 @@ using NHibernate;
 using NHibernate.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace AmpedBiz.Service.Products
 {
@@ -13,16 +14,16 @@ namespace AmpedBiz.Service.Products
     {
         public class Request : IRequest<Response>
         {
-            public string[] Id { get; set; }
+            public Guid[] Id { get; set; }
 
-            public string SupplierId { get; set; }
+            public Guid SupplierId { get; set; }
         }
 
-        public class Response : List<Lookup<string>>
+        public class Response : List<Lookup<Guid>>
         {
             public Response() { }
 
-            public Response(IList<Lookup<string>> items) : base(items) { }
+            public Response(IList<Lookup<Guid>> items) : base(items) { }
         }
 
         public class Handler : RequestHandlerBase<Request, Response>
@@ -42,11 +43,11 @@ namespace AmpedBiz.Service.Products
                     if (!message.Id.IsNullOrEmpty())
                         query = query.Where(x => message.Id.Contains(x.Id));
 
-                    if (!string.IsNullOrWhiteSpace(message.SupplierId))
+                    if (message.SupplierId != null)
                         query = query.Where(x => x.Supplier.Id == message.SupplierId);
 
                     var pairs = query
-                        .Select(x => new Lookup<string>()
+                        .Select(x => new Lookup<Guid>()
                         {
                             Id = x.Id,
                             Name = x.Name

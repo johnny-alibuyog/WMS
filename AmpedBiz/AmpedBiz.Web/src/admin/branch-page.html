@@ -45,9 +45,6 @@
                 <th class="col-md-1">
                   Action
                 </th>
-                <th class="col-md-1" click.delegate="sorter.doSort('code')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['code'])}"></i>Code
-                </th>
                 <th class="col-md-2" click.delegate="sorter.doSort('name')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['name'])}"></i>Name
                 </th>
@@ -57,7 +54,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr repeat.for="item of pager.items" click.delegate="edit(item)">
+              <tr repeat.for="item of pager.items">
                 <td>
                   <a href="javascript:undefined" class="text-info" click.delegate="edit(item)">
                     <i class="fa fa-pencil"></i>
@@ -66,7 +63,6 @@
                     <i class="fa fa-times"></i>
                   </a>
                 </td>
-                <td>${item.id}</td>
                 <td>${item.name}</td>
                 <td>${item.description}</td>
               </tr>
