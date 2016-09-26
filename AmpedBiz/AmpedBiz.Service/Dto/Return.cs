@@ -8,7 +8,7 @@ namespace AmpedBiz.Service.Dto
     {
         public virtual Guid Id { get; set; }
 
-        public virtual Lookup<string> Branch { get; set; }
+        public virtual Lookup<Guid> Branch { get; set; }
 
         public virtual Lookup<string> Customer { get; set; }
 

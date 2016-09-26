@@ -17,7 +17,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var entity = session.Get<Branch>("main_branch_001");
+                var entity = session.Get<Branch>(Branch.SupperBranch.Id);
                 if (entity == null)
                 {
                     entity = Branch.SupperBranch;

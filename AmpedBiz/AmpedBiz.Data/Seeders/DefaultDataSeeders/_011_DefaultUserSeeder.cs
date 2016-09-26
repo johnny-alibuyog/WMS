@@ -28,6 +28,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
                 if (user == null)
                 {
+                    user = User.SupperUser;
                     user.Branch = branch;
                     user.UserRoles = roles
                         .Select(x => new UserRole()

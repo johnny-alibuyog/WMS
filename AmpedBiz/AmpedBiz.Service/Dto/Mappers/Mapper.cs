@@ -1,8 +1,10 @@
 ﻿using AmpedBiz.Common.Extentions;
+using AmpedBiz.Service.Branches;
 using AmpedBiz.Service.Customers;
 using AmpedBiz.Service.Orders;
 using AmpedBiz.Service.Products;
 using AmpedBiz.Service.PurchaseOrders;
+using AmpedBiz.Service.Returns;
 using AmpedBiz.Service.UnitOfMeasureClasses;
 using AmpedBiz.Service.Users;
 using System;
@@ -16,12 +18,24 @@ namespace AmpedBiz.Service.Dto.Mappers
     {
         public void Initialze()
         {
+
             RegisterUserMap();
             RegisterCustomersMap();
             RegisterProductsMap();
             RegisterUnitOfMeasuresMap();
             RegisterPurchaseOrderMap();
             RegisterOrderMap();
+            RegisterReturnMap();
+        }
+
+        private void RegisterBranchMap()
+        {
+            //ExpressMapper.Mapper.Register<Entity.Branch, GetBranch.Response>().Flatten();
+        }
+
+        private void RegisterUserMap()
+        {
+            ExpressMapper.Mapper.Register<Entity.User, Login.Response>().Flatten();
         }
 
         private void RegisterCustomersMap()
@@ -34,11 +48,6 @@ namespace AmpedBiz.Service.Dto.Mappers
             ExpressMapper.Mapper.Register<Entity.Product, Dto.Product>().Flatten();
             ExpressMapper.Mapper.Register<Entity.Inventory, Dto.Inventory>().Flatten();
             ExpressMapper.Mapper.Register<Entity.Product, GetProduct.Response>().Flatten();
-        }
-
-        private void RegisterUserMap()
-        {
-            ExpressMapper.Mapper.Register<Entity.User, Login.Response>().Flatten();
         }
 
         private void RegisterUnitOfMeasuresMap()
@@ -100,6 +109,15 @@ namespace AmpedBiz.Service.Dto.Mappers
             ExpressMapper.Mapper.Register<Entity.OrderItem, Dto.OrderReturnable>().Flatten();
 
             //ExpressMapper.Mapper.Register<Entity.OrderItem, Dto.OrderItemPageItem>().Flatten();
+        }
+
+        private void RegisterReturnMap()
+        {
+            ExpressMapper.Mapper.Register<Entity.Return, GetReturn.Response>().Flatten();
+
+            ExpressMapper.Mapper.Register<Entity.Return, Dto.Return>().Flatten();
+
+            ExpressMapper.Mapper.Register<Entity.ReturnItem, Dto.ReturnItem>().Flatten();
         }
 
         private void RegisterMapping<TEntity, TDto>()
