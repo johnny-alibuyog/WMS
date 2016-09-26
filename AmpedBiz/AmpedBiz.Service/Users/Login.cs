@@ -30,6 +30,9 @@ namespace AmpedBiz.Service.Users
                             x.Username == message.Username &&
                             x.Password == message.Password
                         )
+                        .Fetch(x => x.Branch)
+                        .FetchMany(x => x.UserRoles)
+                        .ThenFetch(x => x.Role)
                         .FirstOrDefault();
 
                     if (user == null)

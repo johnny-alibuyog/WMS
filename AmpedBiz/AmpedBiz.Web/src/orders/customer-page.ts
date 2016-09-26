@@ -12,6 +12,8 @@ export class CustomerPage {
   private _dialog: DialogService;
   private _notification: NotificationService;
 
+  public header: string = ' Customers';
+
   public filter: Filter;
   public sorter: Sorter;
   public pager: Pager<CustomerPageItem>;
@@ -35,11 +37,11 @@ export class CustomerPage {
     this.pager.onPage = () => this.getPage();
   }
 
-  activate() {
+  public activate(): void {
     this.getPage();
   }
 
-  getPage() {
+  private getPage(): void {
     this._api.customers
       .getPage({
         filter: this.filter,
@@ -56,17 +58,17 @@ export class CustomerPage {
       });
   }
 
-  create() {
+  public create(): void {
     this._dialog.open({ viewModel: CustomerCreate, model: null })
       .then(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
-  edit(item: CustomerPageItem) {
+  public edit(item: CustomerPageItem): void {
     this._dialog.open({ viewModel: CustomerCreate, model: <Customer>{ id: item.id } })
       .then(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
-  delete(item: any) {
+  public delete(item: any): void {
     /*
     var index = this.mockData.indexOf(item);
     if (index > -1) {

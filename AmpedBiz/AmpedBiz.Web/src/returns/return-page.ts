@@ -18,9 +18,9 @@ export class ReturnPage {
   public filter: Filter;
   public sorter: Sorter;
   public pager: Pager<ReturnPageItem>;
+  public reasons: Lookup<string>[];
   public branches: Lookup<string>[];
   public customers: Lookup<string>[];
-  public returnReasons: Lookup<string>[];
 
   constructor(api: ServiceApi, router: Router, notification: NotificationService) {
     this._api = api;
@@ -28,9 +28,9 @@ export class ReturnPage {
     this._notification = notification;
 
     this.filter = new Filter();
+    this.filter["reason"] = null;
     this.filter["branch"] = null;
     this.filter["customer"] = null;
-    this.filter["returnReason"] = null;
     this.filter.onFilter = () => this.getPage();
 
     this.sorter = new Sorter();
@@ -38,7 +38,7 @@ export class ReturnPage {
     this.sorter["customer"] = SortDirection.Ascending;
     this.sorter["returnedBy"] = SortDirection.None;
     this.sorter["returnedOn"] = SortDirection.None;
-    this.sorter["returnReason"] = SortDirection.None;
+    this.sorter["reason"] = SortDirection.None;
     this.sorter["totalAmount"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
 
@@ -49,15 +49,15 @@ export class ReturnPage {
   activate(params: any, routeConfig: RouteConfig, $navigationInstruction: NavigationInstruction): any {
 
     let requests: [Promise<Lookup<string>[]>, Promise<Lookup<string>[]>, Promise<Lookup<string>[]>] = [
+      this._api.returnReasons.getLookups(),
       this._api.branches.getLookups(),
       this._api.customers.getLookups(),
-      this._api.returnReasons.getLookups(),
     ];
 
     Promise.all(requests).then((responses: [Lookup<string>[], Lookup<string>[], Lookup<string>[]]) => {
-      this.branches = responses[0];
-      this.customers = responses[1];
-      this.returnReasons = responses[2];
+      this.reasons = responses[0];
+      this.branches = responses[1];
+      this.customers = responses[2];
 
       this.getPage();
     });

@@ -69,8 +69,25 @@ export class OrderReturnPage {
     this._subscriptions.forEach(subscription => subscription.dispose());
   }
 
-  public returnsChanged(): void {
+  private returnsChanged(): void {
     this.initializePage();
+  }
+
+  private initializePage(): void {
+    if (!this.returns)
+      this.returns = [];
+
+    this.returns.forEach(_return => {
+      if (!_return.discountRate || !_return.discountAmount || !_return.totalPriceAmount) {
+        this.compute(_return);
+      }
+    });
+
+    this.returnPager.count = this.returns.length;
+    this.returnPager.items = this.returns.slice(
+      this.returnPager.start,
+      this.returnPager.end
+    );
   }
 
   public initializeItem(_return: OrderReturn): void {
@@ -95,24 +112,7 @@ export class OrderReturnPage {
     _return.extendedPriceAmount = returnable.extendedPriceAmount;
     _return.totalPriceAmount = returnable.totalPriceAmount;
   }
-
-  public initializePage(): void {
-    if (!this.returns)
-      this.returns = [];
-
-    this.returns.forEach(_return => {
-      if (!_return.discountRate || !_return.discountAmount || !_return.totalPriceAmount) {
-        this.compute(_return);
-      }
-    });
-
-    this.returnPager.count = this.returns.length;
-    this.returnPager.items = this.returns.slice(
-      this.returnPager.start,
-      this.returnPager.end
-    );
-  }
-
+  
   public addItem(): void {
     if (!this.returns)
       this.returns = <OrderReturn[]>[];

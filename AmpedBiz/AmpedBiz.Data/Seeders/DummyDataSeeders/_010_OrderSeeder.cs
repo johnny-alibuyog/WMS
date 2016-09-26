@@ -14,27 +14,28 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 {
     public class _010_OrderSeeder : IDummyDataSeeder
     {
-        private readonly Random _random;
+        private readonly Utils _utils; 
         private readonly ISessionFactory _sessionFactory;
 
         public _010_OrderSeeder(ISessionFactory sessionFactory)
         {
-            _random = new Random();
+            _utils = new Utils(new Random(), sessionFactory);
             _sessionFactory = sessionFactory;
         }
 
         public void Seed()
         {
-            var maxRecord = 6;
+            var min = 1;
+            var max = 6;
 
-            CreateNewOrders(_random.Next(maxRecord));
-            CreateInvoiceOrders(_random.Next(maxRecord));
-            CreatePaidOrders(_random.Next(maxRecord));
-            CreateStageOrders(_random.Next(maxRecord));
-            CreateShippedOrders(_random.Next(maxRecord));
-            CreateReturnedOrders(_random.Next(maxRecord));
-            CreateCompletedOrders(_random.Next(maxRecord));
-            CreateCancelledOrders(_random.Next(maxRecord));
+            CreateNewOrders(_utils.RandomInt(min, max));
+            CreateInvoiceOrders(_utils.RandomInt(min, max));
+            CreatePaidOrders(_utils.RandomInt(min, max));
+            CreateStageOrders(_utils.RandomInt(min, max));
+            CreateShippedOrders(_utils.RandomInt(min, max));
+            CreateReturnedOrders(_utils.RandomInt(min, max));
+            CreateCompletedOrders(_utils.RandomInt(min, max));
+            CreateCancelledOrders(_utils.RandomInt(min, max));
         }
 
         public void CreateNewOrders(int count)
@@ -308,7 +309,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     var entity = new Order(Guid.NewGuid());
                     entity.State.Process(new OrderNewlyCreatedVisitor()
                     {
-                        OrderNumber = _utils.NextDecimal(10000M, 99999M).ToString(),
+                        OrderNumber = _utils.RandomDecimal(10000M, 99999M).ToString(),
                         CreatedBy = _utils.Random<User>(),
                         CreatedOn = DateTime.Now,
                         OrderedBy = _utils.Random<User>(),
@@ -317,17 +318,17 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         Customer = _utils.Random<Customer>(),
                         Shipper = _utils.Random<Shipper>(),
                         PaymentType = _utils.Random<PaymentType>(),
-                        TaxRate = _utils.NextDecimal(0.01M, 0.30M),
+                        TaxRate = _utils.RandomDecimal(0.01M, 0.30M),
                         Tax = null, // compute this
-                        ShippingFee = new Money(_utils.NextDecimal(10M, 10000M), currency),
-                        Items = Enumerable.Range(0, _utils.Next(1, 50))
+                        ShippingFee = new Money(_utils.RandomDecimal(10M, 10000M), currency),
+                        Items = Enumerable.Range(0, _utils.RandomInt(1, 50))
                             .Select(x => _utils.RandomProduct()).Distinct()
                             .Select(x => new OrderItem(
                                 product: x,
-                                discountRate: _utils.NextDecimal(0.01M, 0.10M),
-                                quantity: new Measure(_utils.NextDecimal(1M, 100M), x.Inventory.UnitOfMeasure),
-                                discount: new Money(_utils.NextDecimal(100M, 500M), currency),
-                                unitPrice: new Money(_utils.NextDecimal(1000M, 100000M), currency)
+                                discountRate: _utils.RandomDecimal(0.01M, 0.10M),
+                                quantity: new Measure(_utils.RandomDecimal(1M, 100M), x.Inventory.UnitOfMeasure),
+                                discount: new Money(_utils.RandomDecimal(100M, 500M), currency),
+                                unitPrice: new Money(_utils.RandomDecimal(1000M, 100000M), currency)
                             ))
                     });
 
@@ -380,12 +381,12 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     entity.State.Process(new OrderPaidVisitor()
                     {
                         Payments = Enumerable
-                            .Range(0, _utils.Next(1, 5))
+                            .Range(0, _utils.RandomInt(1, 5))
                             .Select(x => new OrderPayment(
                                 paidOn: DateTime.Now,
                                 paidBy: _utils.Random<User>(),
                                 paymentType: _utils.Random<PaymentType>(),
-                                payment: new Money(_utils.NextDecimal(1M, entity.Total.Amount), currency)
+                                payment: new Money(_utils.RandomDecimal(1M, entity.Total.Amount), currency)
                             ))
                     });
                     session.Update(entity);
@@ -468,13 +469,13 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     entity.State.Process(new OrderReturnedVisitor()
                     {
                         Returns = entity.Items
-                            .Take(_utils.Next(1, entity.Items.Count()))
+                            .Take(_utils.RandomInt(1, entity.Items.Count()))
                             .Select(x => new OrderReturn(
                                 product: x.Product,
                                 returnedOn: DateTime.Now,
                                 returnedBy: _utils.Random<User>(),
                                 quantity: new Measure(
-                                    value: _utils.NextDecimal(1M, x.Quantity.Value),
+                                    value: _utils.RandomDecimal(1M, x.Quantity.Value),
                                     unit: x.Quantity.Unit
                                 ),
                                 discountRate: x.DiscountRate,

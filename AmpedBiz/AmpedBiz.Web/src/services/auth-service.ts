@@ -31,13 +31,32 @@ export class AuthService {
   }
 
   public get userAsLookup(): Lookup<string> {
-    if (!this.isAuthenticated){
-      return  null;
+    if (!this.isAuthenticated) {
+      return null;
+    }
+
+    if (!this.user) {
+      return null;
     }
 
     return <Lookup<string>>{
       id: this.user.id,
       name: this.userFullname
+    };
+  }
+
+  public get userBranchAsLookup(): Lookup<string> {
+    if (!this.isAuthenticated) {
+      return null;
+    }
+
+    if (!this.user || !this.user.branch) {
+      return null;
+    }
+
+    return <Lookup<string>>{
+      id: this.user.branch.id,
+      name: this.user.branch.name
     };
   }
 

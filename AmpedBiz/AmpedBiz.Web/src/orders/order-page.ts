@@ -49,7 +49,7 @@ export class OrderPage {
     this.pager.onPage = () => this.getPage();
   }
 
-  activate(params: any, routeConfig: RouteConfig, $navigationInstruction: NavigationInstruction): any {
+  public activate(params: any, routeConfig: RouteConfig, $navigationInstruction: NavigationInstruction): any {
 
     let requests: [Promise<Lookup<string>[]>, Promise<Lookup<OrderStatus>[]>] = [
       this._api.customers.getLookups(),
@@ -66,11 +66,11 @@ export class OrderPage {
     });
   }
 
-  determineActivationStrategy(): string {
+  public determineActivationStrategy(): string {
     return activationStrategy.invokeLifecycle;
   }
 
-  getPage(): void {
+  private getPage(): void {
     this._api.orders
       .getPage({
         filter: this.filter,
@@ -87,15 +87,15 @@ export class OrderPage {
       });
   }
 
-  create(): void {
+  public create(): void {
     this._router.navigateToRoute('order-create');
   }
 
-  edit(item: OrderPageItem): void {
+  public edit(item: OrderPageItem): void {
     this._router.navigateToRoute('order-create', <Order>{ id: item.id });
   }
 
-  delete(item: OrderPageItem) {
+  public delete(item: OrderPageItem) {
     /*
     var index = this.mockData.indexOf(item);
     if (index > -1) {

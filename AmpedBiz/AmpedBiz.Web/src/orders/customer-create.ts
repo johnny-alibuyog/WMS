@@ -21,7 +21,7 @@ export class CustomerCreate {
     this._notification = notification;
   }
 
-  activate(customer: Customer) {
+  public activate(customer: Customer): void {
     if (customer) {
       this.header = "Edit Customer";
       this.isEdit = true;
@@ -36,11 +36,11 @@ export class CustomerCreate {
     }
   }
 
-  cancel() {
+  public cancel(): void {
     this._controller.cancel({ wasCancelled: true, output: null });
   }
 
-  save() {
+  public save(): void {
     if (this.isEdit) {
 
       this._api.customers.update(this.customer)

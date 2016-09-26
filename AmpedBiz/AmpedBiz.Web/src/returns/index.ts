@@ -1,5 +1,4 @@
 import {Router, RouterConfiguration} from 'aurelia-router'
-import {OrderStatus} from '../common/models/order';
 
 export class Index {
   heading: string = "Returns";
@@ -14,6 +13,13 @@ export class Index {
         moduleId: './return-page',
         nav: true,
         title: 'Returns',
+      },
+      {
+        route: ['return-create'],
+        name: 'return-create',
+        moduleId: './return-create',
+        nav: false,
+        title: 'Create Return'
       },
     ]);
     this.router = router;

@@ -41,7 +41,7 @@ export class OrderPaymentPage {
     this.paymentPager.onPage = () => this.initializePage();
   }
 
-  attached(): void {
+  public attached(): void {
     this._subscriptions = [
       this._eventAggregator.subscribe(
         orderEvents.payment.pay, 
@@ -50,15 +50,15 @@ export class OrderPaymentPage {
     ];
   }
 
-  detached(): void {
+  public detached(): void {
     this._subscriptions.forEach(subscription => subscription.dispose());
   }
 
-  paymentsChanged(): void {
+  public paymentsChanged(): void {
     this.initializePage();
   }
 
-  initializePage(): void {
+  private initializePage(): void {
     if (!this.payments)
       this.payments = [];
 
@@ -69,7 +69,7 @@ export class OrderPaymentPage {
     );
   }
 
-  addPayment(): void {
+  private addPayment(): void {
     this._dialog.open({ viewModel: OrderPaymentCreate, model: this.orderId })
       .then(response => {
         if (!response.wasCancelled)

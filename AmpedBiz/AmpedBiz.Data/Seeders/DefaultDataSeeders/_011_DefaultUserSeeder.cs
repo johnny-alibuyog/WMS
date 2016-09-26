@@ -8,10 +8,12 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 {
     public class _011_DefaultUserSeeder : IDefaultDataSeeder
     {
+        private readonly Utils _utils;
         private readonly ISessionFactory _sessionFactory;
 
         public _011_DefaultUserSeeder(ISessionFactory sessionFactory)
         {
+            _utils = new Utils(new Random(), sessionFactory);
             _sessionFactory = sessionFactory;
         }
 
@@ -45,7 +47,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             {
                 var entities = session.Query<User>().Cacheable().ToList();
                 var roles = session.Query<Role>().Cacheable().ToList();
-                var branch = session.Query<Branch>().Cacheable().ToList().FirstOrDefault();
+                var branch = session.Get<Branch>("main_branch_001");
 
                 if (!entities.Contains(item))
                 {

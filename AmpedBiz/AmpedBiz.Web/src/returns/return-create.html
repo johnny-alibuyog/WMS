@@ -1,2 +1,120 @@
 <template>
+  <require from="common/controls/pager"></require>
+  <require from="returns/return-item-page"></require>
+
+  <section class="row row-no-padding">
+
+    <div class="col-md-8">
+
+      <div class="panel panel-default">
+
+        <!-- heading -->
+        <div class="panel-heading">
+
+          <!-- heading label -->
+          <h4 class="panel-title row-fluid">
+            <span6>&nbsp ${header} &nbsp</span6>
+
+            <button type="button" class="btn btn-default" if.bind="!isEdit" click.trigger="save()">
+              <i class="fa fa-check"></i> Save
+            </button>
+
+            <button type="button" class="btn btn-default" click.trigger="back()">
+              <i class="fa fa-times"></i> Back
+            </button>
+
+          </h4>
+
+        </div>
+
+        <!-- body -->
+        <div id="pdf" class="panel-body">
+
+          <form class="form-horizontal" role="form">
+
+            <!-- inputs -->
+            <div class="row">
+
+              <!-- left side -->
+              <div class="col-lg-6">
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Customer:</label>
+                  <div class="col-sm-8">
+                    <select class="form-control" value.bind="_return.customer | lookupToId:customers">
+                      <option>Select Customer</option>
+                      <option repeat.for="customer of customers" model.bind="customer.id">${customer.name}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Reason:</label>
+                  <div class="col-sm-8">
+                    <select class="form-control" value.bind="_return.reason | lookupToId:returnReasons">
+                      <option>Select Pricing Scheme</option>
+                      <option repeat.for="reason of returnReasons" model.bind="reason.id">${reason.name}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Remarks:</label>
+                  <div class="col-sm-8">
+                    <textarea class="form-control" rows="4" value.bind="_return.remarks" />
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- right side -->
+              <div class="col-lg-6 form-group">
+
+              </div>
+
+            </div>
+
+            <!-- tabs -->
+            <div class="row">
+
+              <div class="col-lg-12">
+
+                <ul class="nav nav-tabs">
+                  <li class="active">
+                    <a data-toggle="tab" href="#itemsTab">
+                      <span>Return Items &nbsp</span>
+                      <button type="button" if.bind="!isEdit" class="btn btn-default btn-circle" click.delegate="addItem()">
+                        <i class="glyphicon glyphicon-plus"></i>
+                      </button>
+                    </a>
+                  </li>
+                </ul>
+
+                <div class="tab-content">
+                  HEY!!!!
+
+                  <!-- items -->
+                  <div id="itemsTab" class="tab-pane fade in active">
+                    <br />
+
+                    <return-item-page products.bind="products" items.bind="_return.items" return-id.bind="_return.id">
+                    </return-item-page>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
 </template>

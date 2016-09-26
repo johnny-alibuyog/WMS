@@ -46,22 +46,22 @@ namespace AmpedBiz.Data.Seeders
             return _product[randomIndex];
         }
 
-        public int Next()
+        public int RandomInt()
         {
             return _random.Next();
         }
 
-        public int Next(int max)
+        public int RandomInt(int max)
         {
             return _random.Next(max);
         }
 
-        public int Next(int min, int max)
+        public int RandomInt(int min, int max)
         {
             return _random.Next(min, max);
         }
 
-        public decimal NextDecimal(decimal min, decimal max)
+        public decimal RandomDecimal(decimal min, decimal max)
         {
             return _random.NextDecimal(min, max);
         }

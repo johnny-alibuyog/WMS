@@ -19,6 +19,8 @@ namespace AmpedBiz.Service.Dto
 
         public virtual Address Address { get; set; }
 
+        public virtual Branch Branch { get; set; }
+
         public virtual Guid BranchId { get; set; }
 
         public virtual List<Role> Roles { get; set; }

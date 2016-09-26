@@ -44,19 +44,19 @@ export class ActiveOrderPage {
     this.pager.onPage = () => this.getPage();
   }
 
-  activate(): void {
+  public activate(): void {
     this.getPage();
   }
 
-  attached() {
+  public attached(): void {
     this.getPage();
   }
 
-  determineActivationStrategy(): string {
+  public determineActivationStrategy(): string {
     return activationStrategy.invokeLifecycle;
   }
 
-  getPage(): void {
+  private getPage(): void {
     this._api.orders
       .getPage({
         filter: this.filter,
@@ -73,11 +73,11 @@ export class ActiveOrderPage {
       });
   }
 
-  edit(item: OrderPageItem): void {
+  public edit(item: OrderPageItem): void {
     this._router.navigateToRoute('order-create', <Order>{ id: item.id });
   }
 
-  delete(item: OrderPageItem) {
+  public delete(item: OrderPageItem): void {
     /*
     var index = this.mockData.indexOf(item);
     if (index > -1) {

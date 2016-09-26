@@ -7,11 +7,11 @@ using System.Linq;
 
 namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 {
-    public class _000_UserSeeder : IDummyDataSeeder
+    public class _005_UserSeeder : IDummyDataSeeder
     {
         private readonly ISessionFactory _sessionFactory;
 
-        public _000_UserSeeder(ISessionFactory sessionFactory)
+        public _005_UserSeeder(ISessionFactory sessionFactory)
         {
             _sessionFactory = sessionFactory;
         }

@@ -37,9 +37,9 @@
               </div>
 
               <div class="search-form input">
-                <select class="form-control" value.bind="filter['returnReason']" change.delegate="filter.doFilter()">
+                <select class="form-control" value.bind="filter['reason']" change.delegate="filter.doFilter()">
                   <option value="">All Reasons</option>
-                  <option repeat.for="item of returnReasons" model.bind="item.id">${item.name}</option>
+                  <option repeat.for="item of reasons" model.bind="item.id">${item.name}</option>
                 </select>
               </div>
               
@@ -76,8 +76,8 @@
                 <th class="col-md-1" click.delegate="sorter.doSort('returnedOn')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['returnedOn'])}"></i>Date
                 </th>
-                <th class="col-md-1" click.delegate="sorter.doSort('returnReason')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['returnReason'])}"></i>Reason
+                <th class="col-md-1" click.delegate="sorter.doSort('reason')">
+                  <i class="fa fa-fw fa-${sorter.class(sorter['reason'])}"></i>Reason
                 </th>
                 <th class="col-md-1 text-right" click.delegate="sorter.doSort('totalAmount')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['totalAmount'])}"></i>Amount

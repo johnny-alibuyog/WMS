@@ -33,19 +33,19 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         Branch = _utils.Random<Branch>(),
                         Customer = _utils.Random<Customer>(),
                         ReturnedBy = _utils.Random<User>(),
-                        ReturnedOn = DateTime.Now.AddDays(_utils.Next(-36, -1)),
+                        ReturnedOn = DateTime.Now.AddDays(_utils.RandomInt(-36, -1)),
                         Reason = _utils.Random<ReturnReason>(),
                         Remarks = "Some Remarks",
-                        Items = Enumerable.Range(0, _utils.Next(1, 50))
+                        Items = Enumerable.Range(0, _utils.RandomInt(1, 50))
                             .Select(x => _utils.RandomProduct()).Distinct()
                             .Select(x => new ReturnItem(
                                 product: x,
                                 quantity: new Measure(
-                                    value: _utils.NextDecimal(1M, 100M), 
+                                    value: _utils.RandomDecimal(1M, 100M), 
                                     unit: x.Inventory.UnitOfMeasure
                                 ),
                                 unitPrice: new Money(
-                                    amount: _utils.NextDecimal(1000M, 100000M), 
+                                    amount: _utils.RandomDecimal(1000M, 100000M), 
                                     currency: currency
                                 )
                             ))

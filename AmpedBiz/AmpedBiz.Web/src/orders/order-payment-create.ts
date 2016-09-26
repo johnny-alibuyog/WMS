@@ -23,7 +23,7 @@ export class OrderPaymentCreate {
     this._notification = notification;
   }
 
-  activate(orderId: string): void {
+  public activate(orderId: string): void {
     let requests: [Promise<Lookup<string>[]>, Promise<OrderPayable>] = [
       this._api.paymentTypes.getLookups(),
       this._api.orders.getPayables(orderId)
@@ -38,11 +38,11 @@ export class OrderPaymentCreate {
     });
   }
 
-  cancel(): void {
+  public cancel(): void {
     this._controller.cancel();
   }
 
-  save(): void {
+  public save(): void {
     this._api.orders
       .pay(<Order>{
         id: this._orderId,
