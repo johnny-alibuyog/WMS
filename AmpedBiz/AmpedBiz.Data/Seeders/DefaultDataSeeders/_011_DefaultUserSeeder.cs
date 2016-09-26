@@ -19,48 +19,25 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
         public void Seed()
         {
-            var item = new User(new Guid("{CA42947A-0BA3-4FC8-86E0-A635014B6B11}"))
-            {
-                Username = "supper_user",
-                Password = "123!@#qweASD",
-                Person = new Person()
-                {
-                    FirstName = "Supper",
-                    MiddleName = "Power",
-                    LastName = "User",
-                    BirthDate = new DateTime(1999, 1, 1)
-                },
-                Address = new Address()
-                {
-                    Street = "Ocean Street",
-                    Barangay = "Virginia Summer Ville, Mayamot",
-                    City = "Antipolo City",
-                    Province = "Rizal",
-                    Region = "NCR",
-                    Country = "Philippines",
-                    ZipCode = "1870"
-                },
-            };
-
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var entities = session.Query<User>().Cacheable().ToList();
+                var user = session.Get<User>(User.SupperUser.Id);
+                var branch = session.Get<Branch>(Branch.SupperBranch.Id);
                 var roles = session.Query<Role>().Cacheable().ToList();
-                var branch = session.Get<Branch>("main_branch_001");
 
-                if (!entities.Contains(item))
+                if (user == null)
                 {
-                    item.Branch = branch;
-                    item.UserRoles = roles
+                    user.Branch = branch;
+                    user.UserRoles = roles
                         .Select(x => new UserRole()
                         {
                             Role = x,
-                            User = item
+                            User = user
                         })
                         .ToList();
 
-                    session.Save(item);
+                    session.Save(user);
                 }
 
                 transaction.Commit();

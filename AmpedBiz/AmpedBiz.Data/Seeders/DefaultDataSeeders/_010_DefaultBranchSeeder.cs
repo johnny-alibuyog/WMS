@@ -1,8 +1,5 @@
 ﻿using AmpedBiz.Core.Entities;
 using NHibernate;
-using NHibernate.Linq;
-using System;
-using System.Linq;
 
 namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 {
@@ -23,24 +20,10 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 var entity = session.Get<Branch>("main_branch_001");
                 if (entity == null)
                 {
-                    entity = new Branch("main_branch_001")
-                    {
-                        Name = "Main Branch",
-                        Description = "Description",
-                        Address = new Address()
-                        {
-                            Street = "Main Street",
-                            Barangay = "Main Barangay",
-                            City = "Main City",
-                            Province = "Main Province",
-                            Region = "Main Region",
-                            Country = "Main Country",
-                            ZipCode = "Main Zip Code"
-                        }
-                    };
+                    entity = Branch.SupperBranch;
+                    session.Save(entity);
                 }
 
-                session.Save(entity);
                 transaction.Commit();
             }
         }
