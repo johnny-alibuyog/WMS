@@ -27,11 +27,6 @@ namespace AmpedBiz.Service.Returns
                     var query = session.Query<Return>();
 
                     // compose filters
-                    message.Filter.Compose<string>("reason", value =>
-                    {
-                        query = query.Where(x => x.Reason.Id == value);
-                    });
-
                     message.Filter.Compose<string>("branch", value =>
                     {
                         query = query.Where(x => x.Branch.Id.ToString() == value);
@@ -75,13 +70,6 @@ namespace AmpedBiz.Service.Returns
                             : query.OrderByDescending(x => x.ReturnedOn);
                     });
 
-                    message.Sorter.Compose("returnReason", direction =>
-                    {
-                        query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Reason.Name)
-                            : query.OrderByDescending(x => x.Reason.Name);
-                    });
-
                     message.Sorter.Compose("totalAmount", direction =>
                     {
                         query = direction == SortDirection.Ascending
@@ -99,7 +87,6 @@ namespace AmpedBiz.Service.Returns
                                 x.ReturnedBy.Person.FirstName + " " + 
                                 x.ReturnedBy.Person.LastName,
                             ReturnedOn = x.ReturnedOn,
-                            ReasonName = x.Reason.Name,
                             Remarks = x.Remarks,
                             TotalAmount = x.Total.Amount
                         })

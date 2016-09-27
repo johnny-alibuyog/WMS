@@ -16,8 +16,6 @@ namespace AmpedBiz.Core.Entities
 
         public virtual DateTime? ReturnedOn { get; internal protected set; }
 
-        public virtual ReturnReason Reason { get; internal protected set; }
-
         public virtual string Remarks { get; internal protected set; }
 
         public virtual Money Total { get; internal protected set; }

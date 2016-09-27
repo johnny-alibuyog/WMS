@@ -42,11 +42,11 @@ namespace AmpedBiz.Service.Returns
                         Customer = session.Load<Customer>(message.Customer.Id),
                         ReturnedBy = session.Load<User>(message.ReturnedBy.Id),
                         ReturnedOn = message.ReturnedOn ?? new DateTime(),
-                        Reason = session.Load<ReturnReason>(message.Reason.Id),
                         Remarks = message.Remarks,
                         Items = message.Items
                             .Select(x => new ReturnItem(
                                 product: GetProduct(x.Product.Id),
+                                returnReason: session.Load<ReturnReason>(x.ReturnReason.Id),
                                 quantity: new Measure(x.QuantityValue, GetUnitOfMeasure(x.Product.Id)),
                                 unitPrice: new Money(x.UnitPriceAmount, currency)
                             ))

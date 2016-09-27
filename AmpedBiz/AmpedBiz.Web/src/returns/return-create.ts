@@ -3,6 +3,7 @@ import {autoinject} from 'aurelia-framework';
 import {EventAggregator, Subscription} from 'aurelia-event-aggregator';
 import {Lookup} from '../common/custom_types/lookup';
 import {Return, returnEvents} from '../common/models/return';
+import {ProductInventory} from '../common/models/product';
 import {ServiceApi} from '../services/service-api';
 import {NotificationService} from '../common/controls/notification-service';
 
@@ -19,9 +20,7 @@ export class ReturnCreate {
   public isEdit: boolean = false;
   public canSave: boolean = true;
 
-  public products: Lookup<string>[] = [];
   public customers: Lookup<string>[] = [];
-  public returnReasons: Lookup<string>[] = [];
   public _return: Return;
 
   constructor(api: ServiceApi, router: Router, notification: NotificationService, eventAggregator: EventAggregator) {
@@ -42,12 +41,8 @@ export class ReturnCreate {
   public activate(_return: Return): void {
     let requests: [
       Promise<Lookup<string>[]>,
-      Promise<Lookup<string>[]>,
-      Promise<Lookup<string>[]>,
       Promise<Return>] = [
-        this._api.products.getLookups(),
         this._api.customers.getLookups(),
-        this._api.returnReasons.getLookups(),
         _return.id
           ? this._api.returns.get(_return.id)
           : Promise.resolve(this.getInitializedReturn())
@@ -55,10 +50,8 @@ export class ReturnCreate {
 
     Promise.all(requests)
       .then(responses => {
-        this.products = responses[0];
-        this.customers = responses[1];
-        this.returnReasons = responses[2];
-        this.setReturn(responses[3]);
+        this.customers = responses[0];
+        this.setReturn(responses[1]);
       })
       .catch(error => {
         this._notification.error(error);

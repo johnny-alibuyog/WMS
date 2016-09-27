@@ -17,10 +17,19 @@ export interface Return {
   customer?: Lookup<string>;
   returnedBy?: Lookup<string>;
   returnedOn?: Date;
-  reason?: Lookup<string>;
   remarks?: string;
   totalAmount?: number;
   items?: ReturnItem[];
+}
+
+export interface ReturnPageItem {
+  id?: string;
+  branchName?: string;
+  customerName?: string;
+  returnedByName?: string;
+  returnedOn?: Date;
+  remarks?: string;
+  totalAmount?: number;
 }
 
 export interface ReturnItem {
@@ -34,35 +43,6 @@ export interface ReturnItem {
   totalPriceAmount?: number;
 }
 
-export interface ReturnPageItem {
-  id?: string;
-  branchName?: string;
-  customerName?: string;
-  returnedByName?: string;
-  returnedOn?: Date;
-  reasonName?: string;
-  remarks?: string;
-  totalAmount?: number;
-}
-
-export interface ReturnByCustomerPageItem {
-  id?: string;
-  branchName?: string;
-  customerName?: string;
-  returnedByName?: string;
-  returnedOn?: Date;
-  reasonName?: string;
-  remarks?: string;
-  totalAmount?: number;
-}
-
-export interface ReturnByProductPageItem {
-  id?: string;
-  productName?: string;
-  quantityValue?: number;
-  totalAmount?: number;
-}
-
 export interface ReturnItemPageItem {
   id?: string;
   returnId?: string;
@@ -72,4 +52,21 @@ export interface ReturnItemPageItem {
   unitPriceAmount?: string;
   extendedPriceAmount?: string;
   totalPriceAmount?: string;
+}
+
+export interface ReturnByCustomerPageItem {
+  id?: string;
+  branchName?: string;
+  customerName?: string;
+  returnedByName?: string;
+  returnedOn?: Date;
+  remarks?: string;
+  totalAmount?: number;
+}
+
+export interface ReturnByProductPageItem {
+  id?: string;
+  productName?: string;
+  quantityValue?: number;
+  totalAmount?: number;
 }

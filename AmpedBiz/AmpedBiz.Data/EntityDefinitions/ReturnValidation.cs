@@ -20,9 +20,6 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.ReturnedOn);
 
-            Define(x => x.Reason)
-                .NotNullable();
-
             Define(x => x.Remarks)
                 .MaxLength(500);
 

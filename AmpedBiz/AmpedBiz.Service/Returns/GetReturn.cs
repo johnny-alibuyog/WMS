@@ -48,10 +48,10 @@ namespace AmpedBiz.Service.Returns
                         .Fetch(x => x.Branch).Eager
                         .Fetch(x => x.Customer).Eager
                         .Fetch(x => x.ReturnedBy).Eager
-                        .Fetch(x => x.Reason).Eager
                         .Fetch(x => x.Items).Eager
                         .Fetch(x => x.Items.First().Product).Eager
                         .Fetch(x => x.Items.First().Product.Inventory).Eager
+                        .Fetch(x => x.Items.First().ReturnReason).Eager
                         .SingleOrDefault();
 
                     if (entity == null)

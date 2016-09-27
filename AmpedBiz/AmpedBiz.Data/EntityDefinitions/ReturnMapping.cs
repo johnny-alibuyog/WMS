@@ -18,8 +18,6 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Map(x => x.ReturnedOn);
 
-            References(x => x.Reason);
-
             Map(x => x.Remarks);
 
             Component(x => x.Total, 

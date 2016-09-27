@@ -17,8 +17,6 @@ namespace AmpedBiz.Service.Dto
 
         public decimal UnitPriceAmount { get; set; }
 
-        public decimal ExtendedPriceAmount { get; set; }
-
         public decimal TotalPriceAmount { get; set; }
     }
 
@@ -35,8 +33,6 @@ namespace AmpedBiz.Service.Dto
         public decimal QuantityValue { get; set; }
 
         public decimal UnitPriceAmount { get; set; }
-
-        public decimal ExtendedPriceAmount { get; set; }
 
         public decimal TotalPriceAmount { get; set; }
     }

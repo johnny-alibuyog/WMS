@@ -49,16 +49,6 @@
                 </div>
 
                 <div class="form-group">
-                  <label class="control-label col-sm-4">Reason:</label>
-                  <div class="col-sm-8">
-                    <select class="form-control" value.bind="_return.reason | lookupToId:returnReasons">
-                      <option>Select Pricing Scheme</option>
-                      <option repeat.for="reason of returnReasons" model.bind="reason.id">${reason.name}</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="form-group">
                   <label class="control-label col-sm-4">Remarks:</label>
                   <div class="col-sm-8">
                     <textarea class="form-control" rows="4" value.bind="_return.remarks"></textarea>
@@ -94,12 +84,10 @@
 
                   <!-- items -->
                   <div id="itemsTab" class="tab-pane fade in active">
-                    <br /> HEY!!!!
+                    <br />
 
-                    <!--
-                    <return-item-page products.bind="products" items.bind="_return.items" return-id.bind="_return.id">
+                    <return-item-page items.bind="_return.items" return-id.bind="_return.id">
                     </return-item-page>
-                    -->
                   </div>
 
                 </div>

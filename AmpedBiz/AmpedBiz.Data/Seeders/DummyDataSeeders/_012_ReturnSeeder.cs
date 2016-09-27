@@ -34,12 +34,12 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         Customer = _utils.Random<Customer>(),
                         ReturnedBy = _utils.Random<User>(),
                         ReturnedOn = DateTime.Now.AddDays(_utils.RandomInt(-36, -1)),
-                        Reason = _utils.Random<ReturnReason>(),
                         Remarks = "Some Remarks",
                         Items = Enumerable.Range(0, _utils.RandomInt(1, 50))
                             .Select(x => _utils.RandomProduct()).Distinct()
                             .Select(x => new ReturnItem(
                                 product: x,
+                                returnReason: _utils.Random<ReturnReason>(),
                                 quantity: new Measure(
                                     value: _utils.RandomDecimal(1M, 100M), 
                                     unit: x.Inventory.UnitOfMeasure

@@ -15,6 +15,9 @@ namespace AmpedBiz.Data.EntityDefinitions
             Define(x => x.Return)
                 .NotNullable();
 
+            Define(x => x.ReturnReason)
+                .NotNullable();
+
             Define(x => x.Quantity)
                 .IsValid();
 

@@ -2,9 +2,9 @@
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 
 namespace AmpedBiz.Service.Products
 {
@@ -12,6 +12,8 @@ namespace AmpedBiz.Service.Products
     {
         public class Request : IRequest<Response>
         {
+            public Guid[] ProductIds { get; set; }
+
             public Guid SupplierId { get; set; }
         }
 
@@ -33,8 +35,19 @@ namespace AmpedBiz.Service.Products
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var dtos = session.Query<Product>()
-                        .Where(x => x.Supplier.Id == message.SupplierId)
+                    var query = session.Query<Product>();
+
+                    if (message.ProductIds != null && message.ProductIds.Any())
+                    {
+                        query = query.Where(x => message.ProductIds.Contains(x.Id));
+                    }
+
+                    if (message.SupplierId != Guid.Empty)
+                    {
+                        query = query.Where(x => x.Supplier.Id == message.SupplierId);
+                    }
+
+                    var dtos = query
                         .Select(x => new Dto.ProductInventory()
                         {
                             Id = x.Id,

@@ -16,8 +16,6 @@ namespace AmpedBiz.Service.Dto
 
         public virtual DateTime? ReturnedOn { get; set; }
 
-        public virtual Lookup<string> Reason { get; set; }
-
         public virtual string Remarks { get; set; }
 
         public virtual decimal TotalAmount { get; set; }
@@ -36,8 +34,6 @@ namespace AmpedBiz.Service.Dto
         public virtual string ReturnedByName { get; set; }
 
         public virtual DateTime? ReturnedOn { get; set; }
-
-        public virtual string ReasonName { get; set; }
 
         public virtual string Remarks { get; set; }
 

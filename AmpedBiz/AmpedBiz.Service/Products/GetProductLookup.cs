@@ -43,7 +43,7 @@ namespace AmpedBiz.Service.Products
                     if (!message.Id.IsNullOrEmpty())
                         query = query.Where(x => message.Id.Contains(x.Id));
 
-                    if (message.SupplierId != null)
+                    if (message.SupplierId != Guid.Empty)
                         query = query.Where(x => x.Supplier.Id == message.SupplierId);
 
                     var pairs = query

@@ -14,6 +14,8 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             References(x => x.Return);
 
+            References(x => x.ReturnReason);
+
             Component(x => x.Quantity,
                 MeasureMapping.Map("Quantity_", nameof(OrderItem)));
 

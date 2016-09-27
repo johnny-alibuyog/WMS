@@ -39,6 +39,13 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpGet()]
+        [Route("~/product-inventories")]
+        public GetProductInventoryList.Response Process([FromUri]GetProductInventoryList.Request request)
+        {
+            return _mediator.Send(request ?? new GetProductInventoryList.Request());
+        }
+
+        [HttpGet()]
         [Route("~/product-lookups")]
         public GetProductLookup.Response Process([FromUri]GetProductLookup.Request request)
         {
