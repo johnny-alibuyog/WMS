@@ -50,7 +50,6 @@ namespace AmpedBiz.Service.Orders
                     var products = session.Query<Product>()
                         .Where(x => productIds.Contains(x.Id))
                         .Fetch(x => x.Inventory)
-                        .Cacheable()
                         .ToList();
 
                     Func<Guid, Product> GetProduct = (id) => products.First(x => x.Id == id);

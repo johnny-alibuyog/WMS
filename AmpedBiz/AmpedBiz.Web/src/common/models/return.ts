@@ -54,19 +54,21 @@ export interface ReturnItemPageItem {
   totalPriceAmount?: string;
 }
 
-export interface ReturnByCustomerPageItem {
+export interface ReturnsByCustomerPageItem {
   id?: string;
-  branchName?: string;
   customerName?: string;
-  returnedByName?: string;
-  returnedOn?: Date;
-  remarks?: string;
   totalAmount?: number;
 }
 
-export interface ReturnByProductPageItem {
+export interface ReturnsByProductPageItem {
   id?: string;
   productName?: string;
   quantityValue?: number;
+  totalAmount?: number;
+}
+
+export interface ReturnsByReasonPageItem {
+  id?: string;
+  returnReasonName?: string;
   totalAmount?: number;
 }

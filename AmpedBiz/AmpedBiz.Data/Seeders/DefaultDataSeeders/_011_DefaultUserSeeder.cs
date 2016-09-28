@@ -38,7 +38,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                         })
                         .ToList();
 
-                    session.Save(user);
+                    session.Save(user, user.Id);
                 }
 
                 transaction.Commit();

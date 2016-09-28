@@ -39,4 +39,33 @@ namespace AmpedBiz.Service.Dto
 
         public virtual decimal TotalAmount { get; set; }
     }
+
+    public class ReturnsByCustomerPageItem
+    {
+        public virtual string Id { get; set; }
+
+        public virtual string CustomerName { get; set; }
+
+        public virtual decimal TotalAmount { get; set; }
+    }
+
+    public class ReturnsByProductPageItem
+    {
+        public virtual Guid Id { get; set; }
+
+        public virtual string ProductName { get; set; }
+
+        public virtual decimal QuantityValue { get; set; }
+
+        public virtual decimal TotalAmount { get; set; }
+    }
+
+    public class ReturnsByReasonPageItem
+    {
+        public virtual string Id { get; set; }
+
+        public virtual string ReturnReasonName { get; set; }
+
+        public virtual decimal TotalAmount { get; set; }
+    }
 }

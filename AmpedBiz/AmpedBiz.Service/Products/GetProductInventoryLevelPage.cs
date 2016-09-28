@@ -128,7 +128,7 @@ namespace AmpedBiz.Service.Products
                     var itemsFuture = query
                         .Select(x => new Dto.ProductInventoryLevelPageItem()
                         {
-                            Id = x.Id.ToString(),
+                            Id = x.Id,
                             Name = x.Name,
                             Supplier = x.Supplier.Name,
                             UnitOfMeasure = x.Inventory.UnitOfMeasure.Name,

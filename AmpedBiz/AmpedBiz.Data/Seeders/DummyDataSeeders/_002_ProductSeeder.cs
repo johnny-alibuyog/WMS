@@ -11,10 +11,12 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 {
     public class _002_ProductSeeder : IDummyDataSeeder
     {
+        private readonly Utils _utils;
         private readonly ISessionFactory _sessionFactory;
 
         public _002_ProductSeeder(ISessionFactory sessionFactory)
         {
+            _utils = new Utils(new Random(), sessionFactory);
             _sessionFactory = sessionFactory;
         }
 
@@ -32,94 +34,38 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                 });
             }
 
-            using (var session = _sessionFactory.OpenSession())
+            using (var session = _sessionFactory.RetrieveSharedSession())
             using (var transaction = session.BeginTransaction())
             {
                 //session.SetBatchSize(100);
 
-                var entity = session.Query<Product>().Cacheable().ToList();
-                if (entity.Count == 0)
+                var exists = session.Query<Product>().Any();
+                if (!exists)
                 {
-                    var unitOfMeasureIndex = 0;
-                    var unitOfMeasures = session.Query<UnitOfMeasure>().Cacheable().ToList();
-
-                    Func<UnitOfMeasure> RotateUnitOfMeasure = () =>
-                    {
-                        var result = unitOfMeasures[unitOfMeasureIndex];
-
-                        if (unitOfMeasureIndex < unitOfMeasures.Count - 1)
-                            unitOfMeasureIndex++;
-                        else
-                            unitOfMeasureIndex = 0;
-
-                        return result;
-                    };
-
-                    var supplierIndex = 0;
-                    var suppliers = session.Query<Supplier>().Cacheable().ToList();
-
-                    Func<Supplier> RotateSupplier = () =>
-                    {
-                        var result = suppliers[supplierIndex];
-
-                        if (supplierIndex < suppliers.Count - 1)
-                            supplierIndex++;
-                        else
-                            supplierIndex = 0;
-
-                        return result;
-                    };
-
-                    var categoryIndex = 0;
-                    var categories = session.Query<ProductCategory>().Cacheable().ToList();
-
-                    Func<ProductCategory> RotateCategory = () =>
-                    {
-                        var result = categories[categoryIndex];
-
-                        if (categoryIndex < categories.Count - 1)
-                            categoryIndex++;
-                        else
-                            categoryIndex = 0;
-
-                        return result;
-                    };
-
-                    var discontinued = default(bool);
-
-                    Func<bool> RotateDiscontinued = () =>
-                    {
-                        var result = !discontinued;
-                        discontinued = result;
-                        return result;
-                    };
-
                     var currency = session.Load<Currency>(Currency.PHP.Id);
-
-                    var random = new Random();
 
                     foreach (var item in data)
                     {
                         dynamic prices = new ExpandoObject();
-                        prices.BasePrice = new Money(random.NextDecimal(1.00M, 20000.00M), currency);
-                        prices.RetailPrice = new Money(random.NextDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.BasePrice.Amount + 5000M), currency);
-                        prices.WholeSalePrice = new Money(random.NextDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.RetailPrice.Amount), currency);
+                        prices.BasePrice = new Money(_utils.RandomDecimal(1.00M, 20000.00M), currency);
+                        prices.RetailPrice = new Money(_utils.RandomDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.BasePrice.Amount + 5000M), currency);
+                        prices.WholeSalePrice = new Money(_utils.RandomDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.RetailPrice.Amount), currency);
                         prices.BadStockPrice = new Money(prices.BasePrice.Amount * 0.10M, currency);
 
-                        item.Category = RotateCategory();
-                        item.Supplier = RotateSupplier();
-                        item.Discontinued = RotateDiscontinued();
-                        item.Inventory.UnitOfMeasure = RotateUnitOfMeasure(); // UnitOfMeasureClass.Quantity.Units.RandomElement();
-                        item.Inventory.UnitOfMeasureBase = RotateUnitOfMeasure();
-                        item.Inventory.ConversionFactor = random.Next(1, 24);
+                        item.Category = _utils.Random<ProductCategory>();
+                        item.Supplier = _utils.Random<Supplier>();
+                        item.Discontinued = _utils.RandomBoolean();
+                        item.Inventory.UnitOfMeasure = _utils.Random<UnitOfMeasure>();
+                        item.Inventory.UnitOfMeasureBase = _utils.Random<UnitOfMeasure>();
+                        item.Inventory.ConversionFactor = _utils.RandomInteger(1, 24);
                         item.Inventory.BasePrice = prices.BasePrice;
                         item.Inventory.RetailPrice = prices.RetailPrice;
                         item.Inventory.WholeSalePrice = prices.WholeSalePrice;
                         item.Inventory.BadStockPrice = prices.BadStockPrice;
 
-                        item.Inventory.InitialLevel = new Measure(random.NextDecimal(150M, 300M), item.Inventory.UnitOfMeasure);
-                        item.Inventory.TargetLevel = new Measure(random.NextDecimal(150M, 300M), item.Inventory.UnitOfMeasure);
-                        item.Inventory.ReorderLevel = item.Inventory.TargetLevel - new Measure(random.NextDecimal(50M, 100M), item.Inventory.UnitOfMeasure);
+                        item.Inventory.InitialLevel = new Measure(_utils.RandomDecimal(150M, 300M), item.Inventory.UnitOfMeasure);
+                        item.Inventory.TargetLevel = new Measure(_utils.RandomDecimal(150M, 300M), item.Inventory.UnitOfMeasure);
+                        item.Inventory.ReorderLevel = item.Inventory.TargetLevel - new Measure(_utils.RandomDecimal(50M, 100M), item.Inventory.UnitOfMeasure);
                         item.Inventory.MinimumReorderQuantity = item.Inventory.TargetLevel - item.Inventory.ReorderLevel;
                         item.Inventory.Compute();
 
@@ -128,6 +74,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                 }
 
                 transaction.Commit();
+
+                _sessionFactory.ReleaseSharedSession();
             }
         }
     }

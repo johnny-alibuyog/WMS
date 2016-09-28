@@ -33,9 +33,9 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         Branch = _utils.Random<Branch>(),
                         Customer = _utils.Random<Customer>(),
                         ReturnedBy = _utils.Random<User>(),
-                        ReturnedOn = DateTime.Now.AddDays(_utils.RandomInt(-36, -1)),
+                        ReturnedOn = DateTime.Now.AddDays(_utils.RandomInteger(-36, -1)),
                         Remarks = "Some Remarks",
-                        Items = Enumerable.Range(0, _utils.RandomInt(1, 50))
+                        Items = Enumerable.Range(0, _utils.RandomInteger(1, 50))
                             .Select(x => _utils.RandomProduct()).Distinct()
                             .Select(x => new ReturnItem(
                                 product: x,

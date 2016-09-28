@@ -6,5 +6,5 @@
   "Password": "hJGpfBVaZbafhK4FXm3leg==",
   "BatchSize": 50,
   "UseDummyData": true,
-  "RecreateDb": false
+  "RecreateDb": true
 }

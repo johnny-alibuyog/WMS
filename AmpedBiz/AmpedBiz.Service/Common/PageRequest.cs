@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AmpedBiz.Common.Extentions;
+using System.ComponentModel;
 
 namespace AmpedBiz.Service.Common
 {
@@ -46,8 +47,16 @@ namespace AmpedBiz.Service.Common
             if (value is string && string.IsNullOrWhiteSpace(value as string))
                 return;
 
-            Func<object, TValue> ToType = (val) => typeof(TValue).IsEnum
-                ? EnumExtention.Parse<TValue>(val) : (TValue)val;
+            Func<object, TValue> ToType = (val) =>
+            {
+                if (typeof(TValue).IsEnum)
+                    return EnumExtention.Parse<TValue>(val);
+
+                return (TValue)TypeDescriptor.GetConverter(typeof(TValue))
+                    .ConvertFromInvariantString(val.ToString());
+
+                //return (TValue)val;
+            }; 
 
             action(ToType(value));
         }

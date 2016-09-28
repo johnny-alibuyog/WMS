@@ -175,6 +175,9 @@
     <Compile Include="Returns\GetReturn.cs" />
     <Compile Include="Returns\GetReturnList.cs" />
     <Compile Include="Returns\GetReturnPage.cs" />
+    <Compile Include="Returns\GetReturnsByCustomerPage.cs" />
+    <Compile Include="Returns\GetReturnsByProductPage.cs" />
+    <Compile Include="Returns\GetReturnsByReasonPage.cs" />
     <Compile Include="Suppliers\CreateSupplier.cs" />
     <Compile Include="Suppliers\GetSupplier.cs" />
     <Compile Include="Suppliers\GetSupplierLookup.cs" />

@@ -3,7 +3,7 @@
 
   <section class="row row-no-padding">
     
-    <div class="col-md-10">
+    <div class="col-md-6">
 
       <div class="panel panel-default">
 
@@ -14,27 +14,8 @@
           <h4 class="panel-title row">
             <span>&nbsp ${header} &nbsp</span>
 
-            <!-- create new -->
-            <button type="button" class="btn btn-default" click.delegate="create()">
-              <i class="fa fa-plus"></i> Create New
-            </button>
-
             <!-- search -->
             <form class="search-form form-horizontal pull-right" role="form" submit.delegate="filter.doFilter()">
-              
-              <div class="search-form input">
-                <select class="form-control" value.bind="filter['branch']" change.delegate="filter.doFilter()">
-                  <option value="">All Branches</option>
-                  <option repeat.for="item of branches" model.bind="item.id">${item.name}</option>
-                </select>
-              </div>
-
-              <div class="search-form input">
-                <select class="form-control" value.bind="filter['customer']" change.delegate="filter.doFilter()">
-                  <option value="">All Customers</option>
-                  <option repeat.for="item of customers" model.bind="item.id">${item.name}</option>
-                </select>
-              </div>
 
               <div class="search-form input">
                 <select class="form-control" value.bind="filter['returnReason']" change.delegate="filter.doFilter()">
@@ -64,19 +45,7 @@
             <thead>
               <tr>
                 <th class="col-md-1">Action</th>
-                <th class="col-md-1" click.delegate="sorter.doSort('branch')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['branch'])}"></i>Branch
-                </th>
-                <th class="col-md-2" click.delegate="sorter.doSort('customer')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['customer'])}"></i>Customer
-                </th>
-                <th class="col-md-2" click.delegate="sorter.doSort('returnedBy')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['returnedBy'])}"></i>Staff
-                </th>
-                <th class="col-md-1" click.delegate="sorter.doSort('returnedOn')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['returnedOn'])}"></i>Date
-                </th>
-                <th class="col-md-1" click.delegate="sorter.doSort('returnReason')">
+                <th class="col-md-2" click.delegate="sorter.doSort('returnReason')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['returnReason'])}"></i>Reason
                 </th>
                 <th class="col-md-1 text-right" click.delegate="sorter.doSort('totalAmount')">
@@ -89,14 +58,10 @@
               <tr repeat.for="item of pager.items" click.delegate="show(item)">
                 <td>
                   <a href="javascript:undefined" class="text-info" click.delegate="show(item)">
-                    <i class="fa cart-arrow-down"></i>
+                    <i class="fa fa-search"></i>
                   </a>
                 </td>
-                <td>${item.branchName}</td>
-                <td>${item.customerName}</td>
-                <td>${item.returnedByName}</td>
-                <td>${item.returnedOn | dateFormat}</td>
-                <td>${item.reasonName}</td>
+                <td>${item.returnReasonName}</td>
                 <td class="text-right">${item.totalAmount | numberFormat}</td>
               </tr>
             </tbody>

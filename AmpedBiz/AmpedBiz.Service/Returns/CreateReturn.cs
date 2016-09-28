@@ -26,9 +26,14 @@ namespace AmpedBiz.Service.Returns
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
+                    var productIds = message.Items.Select(x => x.Product.Id);
+
                     var currency = session.Load<Currency>(Currency.PHP.Id);
 
-                    var products = session.Query<Product>().Cacheable().ToList();
+                    var products = session.Query<Product>()
+                        .Where(x => productIds.Contains(x.Id))
+                        .Fetch(x => x.Inventory)
+                        .ToList();
 
                     Func<Guid, Product> GetProduct = (id) => products.First(x => x.Id == id);
 

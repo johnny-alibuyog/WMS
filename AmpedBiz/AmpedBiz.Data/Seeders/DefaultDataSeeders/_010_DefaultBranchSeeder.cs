@@ -21,7 +21,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 if (entity == null)
                 {
                     entity = Branch.SupperBranch;
-                    session.Save(entity);
+                    session.Save(entity, entity.Id);
                 }
 
                 transaction.Commit();
