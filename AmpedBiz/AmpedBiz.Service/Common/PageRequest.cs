@@ -91,7 +91,7 @@ namespace AmpedBiz.Service.Common
             this.Offset = 1;
         }
 
-        public virtual bool IsPageable()
+        public virtual bool IsPaged()
         {
             if (this.Size <= 0)
                 return false;
@@ -100,6 +100,12 @@ namespace AmpedBiz.Service.Common
                 return false;
 
             return true;
+        }
+
+        public virtual void RetrieveAll(int count)
+        {
+            this.Offset = 1;
+            this.Size = count;
         }
     }
 }

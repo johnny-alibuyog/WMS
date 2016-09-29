@@ -70,12 +70,12 @@ namespace AmpedBiz.Service.Orders
                             ? session.Load<Branch>(message.Branch.Id) : null,
                         Customer = (!message?.Customer?.Id.IsNullOrEmpty() ?? false)
                             ? session.Load<Customer>(message.Customer.Id) : null,
-                        PricingScheme = (!message?.PricingScheme?.Id.IsNullOrEmpty() ?? false)
-                            ? session.Load<PricingScheme>(message.PricingScheme.Id) : null,
                         Shipper = (!message?.Shipper?.Id.IsNullOrEmpty() ?? false)
                             ? session.Load<Shipper>(message.Shipper.Id) : null,
                         ShippingAddress = (message.ShippingAddress != null)
                             ? message.ShippingAddress.MapTo<Dto.Address, Address>() : null,
+                        PricingScheme = (!message?.PricingScheme?.Id.IsNullOrEmpty() ?? false)
+                            ? session.Load<PricingScheme>(message.PricingScheme.Id) : null,
                         PaymentType = (!message?.PaymentType?.Id.IsNullOrEmpty() ?? false)
                             ? session.Load<PaymentType>(message.PaymentType.Id) : null,
                         TaxRate = message.TaxRate,

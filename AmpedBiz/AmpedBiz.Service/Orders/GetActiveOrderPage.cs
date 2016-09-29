@@ -48,7 +48,6 @@ namespace AmpedBiz.Service.Orders
                                 .ThenByDescending(x => x.CreatedBy.Person.LastName);
                     });
 
-
                     message.Sorter.Compose("customer", direction =>
                     {
                         query = direction == SortDirection.Ascending

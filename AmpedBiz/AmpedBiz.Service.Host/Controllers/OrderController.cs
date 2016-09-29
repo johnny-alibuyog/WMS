@@ -36,6 +36,13 @@ namespace AmpedBiz.Service.Host.Controllers
             return _mediator.Send(request ?? new GetOrderPage.Request());
         }
 
+        [HttpPost()]
+        [Route("report/page")]
+        public GetOrderReportPage.Response Process([FromBody]GetOrderReportPage.Request request)
+        {
+            return _mediator.Send(request ?? new GetOrderReportPage.Request());
+        }
+
         [HttpGet()]
         [Route("statuses")]
         public GetOrderStatusList.Response Process([FromBody]GetOrderStatusList.Request request)

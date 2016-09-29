@@ -124,4 +124,23 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? TotalAmount { get; set; }
     }
+
+    public class OrderReportPageItem
+    {
+        public Guid Id { get; set; }
+
+        public string BranchName { get; set; }
+
+        public string CustomerName { get; set; }
+
+        public string PricingSchemeName { get; set; }
+
+        public DateTime? OrderedOn { get; set; }
+
+        public string OrderedByName { get; set; }
+
+        public OrderStatus Status { get; set; }
+
+        public decimal TotalAmount { get; set; }
+    }
 }

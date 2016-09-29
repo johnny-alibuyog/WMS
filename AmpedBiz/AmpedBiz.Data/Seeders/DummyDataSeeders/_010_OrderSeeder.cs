@@ -317,6 +317,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         Branch = _utils.Random<Branch>(),
                         Customer = _utils.Random<Customer>(),
                         Shipper = _utils.Random<Shipper>(),
+                        ShippingAddress = null,
+                        PricingScheme = _utils.Random<PricingScheme>(),
                         PaymentType = _utils.Random<PaymentType>(),
                         TaxRate = _utils.RandomDecimal(0.01M, 0.30M),
                         Tax = null, // compute this

@@ -151,7 +151,6 @@ export interface OrderPayable {
   paymentAmount?: number;
 }
 
-
 export interface OrderInvoiceDetail {
   customerName?: string;
   invoiceNumber?: string;
@@ -187,4 +186,15 @@ export class OrderInvoiceDetailItem {
   unitPriceAmount?: number;
   extendedPriceAmount?: number;
   totalPriceAmount?: number;
+}
+
+export class OrderReportPageItem {
+  id?: string;
+  branchName?: string;
+  customerName?: string;
+  pricingSchemeName?: string;
+  orderedOn?: Date;
+  orderedByName?: string;
+  status?: OrderStatus;
+  totalAmount?: number;
 }

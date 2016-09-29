@@ -109,6 +109,7 @@
     <Compile Include="Orders\GetOrder.cs" />
     <Compile Include="Orders\GetOrderInvoiceDetail.cs" />
     <Compile Include="Orders\GetOrderList.cs" />
+    <Compile Include="Orders\GetOrderReportPage.cs" />
     <Compile Include="Orders\GetOrderPage.cs" />
     <Compile Include="Orders\GetOrderPayable.cs" />
     <Compile Include="Orders\GetOrderReturnable.cs" />

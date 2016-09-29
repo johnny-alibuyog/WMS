@@ -57,9 +57,16 @@ export class Index {
         settings: {
           reportSource: appConfig.reportMapping.baseUrl + appConfig.reportMapping.orderList
         },
+      },
+      {
+        route: ['order-report-page'],
+        name: 'order-report-page',
+        moduleId: '../orders/order-report-page',
+        nav: true,
+        title: 'Orders Reports',
       }
     ]);
-    
+
     this.router = router;
   }
 }
