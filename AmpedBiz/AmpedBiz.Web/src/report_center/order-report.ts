@@ -23,6 +23,7 @@ export interface OrderReportModelItem {
   totalAmount?: number;
 }
 
+
 @autoinject
 export class OrderReport implements Report<OrderReportModel> {
   private readonly _reportBuilder: ReportBuilder;

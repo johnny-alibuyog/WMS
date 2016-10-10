@@ -23,10 +23,9 @@ export class ReportBuilder {
   */
 
   public build(config: ReportBuilderConfig) {
-    let pdf = pdfMake;
-    //pdf.createPdf(definition).open();
+    //pdfMake.createPdf(definition).open();
 
-    pdf.createPdf(config.document).getDataUrl(content => {
+    pdfMake.createPdf(config.document).getDataUrl(content => {
       this._dialog.open({
         viewModel: ReportViewer,
         model: <ReportModel>{
@@ -35,6 +34,17 @@ export class ReportBuilder {
         }
       })
     });
+    
+    /*
+    try {
+      pdfMake.createPdf(config.document)
+        .getDataUrl(data => win.location.href = data);
+    }
+    catch (ex) {
+      win.close();
+      throw ex;
+    }
+    */
   }
 }
 

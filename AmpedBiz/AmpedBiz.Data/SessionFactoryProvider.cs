@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Common.Configurations;
+using AmpedBiz.Core;
 using AmpedBiz.Data.Configurations;
 using AmpedBiz.Data.Conventions;
 using AmpedBiz.Data.EntityDefinitions;
@@ -45,7 +46,7 @@ namespace AmpedBiz.Data
                 )
                 .Mappings(x => x
                     .FluentMappings.AddFromAssemblyOf<UserMapping>()
-                    .Conventions.AddFromAssemblyOf<_CustomJoinedSubclassConvention>()
+                    .Conventions.AddFromAssemblyOf<CustomJoinedSubclassConvention>()
                     .Conventions.Setup(o => o.Add(AutoImport.Never()))
                     .ExportTo(DbConfig.Instance.GetWorkingPath("Mappings"))
                 )

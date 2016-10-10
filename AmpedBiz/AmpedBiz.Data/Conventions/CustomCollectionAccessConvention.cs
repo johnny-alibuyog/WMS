@@ -36,6 +36,5 @@ namespace AmpedBiz.Data.Conventions
 
             return backingField != null;
         }
-
     }
 }

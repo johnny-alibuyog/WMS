@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NHibernate.Validator.Engine;
+using System;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using NHibernate.Validator.Engine;
 
 namespace AmpedBiz.Data.Configurations
 {

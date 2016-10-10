@@ -7,11 +7,11 @@ namespace AmpedBiz.Data.Conventions
 {
     // Note: underscore was included to make this class on top of the naming order as it affects
     //       the ussage sequence
-    public class _CustomJoinedSubclassConvention : IJoinedSubclassConvention
+    public class CustomJoinedSubclassConvention : IJoinedSubclassConvention
     {
         private readonly PluralizationService _pluralizationService;
 
-        public _CustomJoinedSubclassConvention()
+        public CustomJoinedSubclassConvention()
         {
             _pluralizationService = PluralizationService.CreateService(new CultureInfo("en-US"));
         }

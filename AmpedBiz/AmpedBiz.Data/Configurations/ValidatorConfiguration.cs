@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using AmpedBiz.Data.EntityDefinitions;
-using AmpedBiz.Core;
+﻿using AmpedBiz.Data.EntityDefinitions;
 using NHibernate.Cfg;
 using NHibernate.Validator.Cfg;
 using NHibernate.Validator.Cfg.Loquacious;
 using NHibernate.Validator.Engine;
+using System.Reflection;
 
 namespace AmpedBiz.Data.Configurations
 {

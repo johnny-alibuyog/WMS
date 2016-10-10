@@ -1,13 +1,23 @@
 import {Router, RouteConfig, NavigationInstruction, activationStrategy} from 'aurelia-router';
 import {autoinject} from 'aurelia-framework';
-import {OrderCreate} from './order-create';
 import {OrderReport, OrderReportModel, OrderReportModelItem} from './order-report';
-import {Order, OrderReportPageItem, OrderStatus} from '../common/models/order';
+import {Order, OrderStatus} from '../common/models/order';
 import {Supplier} from '../common/models/supplier';
 import {ServiceApi} from '../services/service-api';
 import {Lookup} from '../common/custom_types/lookup';
 import {NotificationService} from '../common/controls/notification-service';
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
+
+export class OrderReportPageItem {
+  id?: string;
+  branchName?: string;
+  customerName?: string;
+  pricingSchemeName?: string;
+  orderedOn?: Date;
+  orderedByName?: string;
+  status?: OrderStatus;
+  totalAmount?: number;
+}
 
 @autoinject
 export class OrderReportPage {
@@ -63,6 +73,7 @@ export class OrderReportPage {
       Promise<Lookup<string>[]>,
       Promise<Lookup<OrderStatus>[]>,
       Promise<Lookup<string>[]>] = [
+
         this._api.pricingSchemes.getLookups(),
         this._api.customers.getLookups(),
         this._api.orders.getStatusLookup(),

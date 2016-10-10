@@ -54,7 +54,7 @@
     <Compile Include="Exceptions\BusinessException.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />
     <Compile Include="Exceptions\ValidationExceptionBuilder.cs" />
-    <Compile Include="Exceptions\IValidationExceptionBuilder.cs" />
+    <Compile Include="Exceptions\IExceptionBuilder.cs" />
     <Compile Include="Exceptions\InvalidField.cs" />
     <Compile Include="Extentions\DateTimeExtention.cs" />
     <Compile Include="Extentions\EnumerableExtention.cs" />

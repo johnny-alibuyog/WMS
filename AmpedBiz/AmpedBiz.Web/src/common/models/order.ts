@@ -187,14 +187,3 @@ export class OrderInvoiceDetailItem {
   extendedPriceAmount?: number;
   totalPriceAmount?: number;
 }
-
-export class OrderReportPageItem {
-  id?: string;
-  branchName?: string;
-  customerName?: string;
-  pricingSchemeName?: string;
-  orderedOn?: Date;
-  orderedByName?: string;
-  status?: OrderStatus;
-  totalAmount?: number;
-}

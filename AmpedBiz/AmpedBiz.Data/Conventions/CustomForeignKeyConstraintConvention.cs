@@ -14,7 +14,6 @@ namespace AmpedBiz.Data.Conventions
             _pluralizationService = PluralizationService.CreateService(new CultureInfo("en-US"));
         }
 
-
         public void Apply(IOneToManyCollectionInstance instance)
         {
             instance.Key.ForeignKey(string.Format("FK_{0}_{1}", instance.Member.Name, instance.EntityType.Name));

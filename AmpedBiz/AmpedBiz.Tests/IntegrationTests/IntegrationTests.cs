@@ -1,7 +1,7 @@
 ﻿using AmpedBiz.Common.CustomTypes;
+using AmpedBiz.Core;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Data;
-using AmpedBiz.Data.Configurations;
 using AmpedBiz.Data.Seeders;
 using AmpedBiz.Service.Branches;
 using AmpedBiz.Service.Customers;

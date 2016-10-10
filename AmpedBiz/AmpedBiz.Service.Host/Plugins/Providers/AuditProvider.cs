@@ -1,4 +1,4 @@
-﻿using AmpedBiz.Data.Configurations;
+﻿using AmpedBiz.Core;
 
 namespace AmpedBiz.Service.Host.Plugins.Providers
 {

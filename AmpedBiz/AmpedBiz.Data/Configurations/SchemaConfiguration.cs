@@ -1,9 +1,8 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using AmpedBiz.Common.Configurations;
+﻿using AmpedBiz.Common.Configurations;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
+using System.Diagnostics;
+using System.IO;
 
 namespace AmpedBiz.Data.Configurations
 {

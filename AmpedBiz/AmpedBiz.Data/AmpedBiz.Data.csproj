@@ -87,9 +87,6 @@
       <DependentUpon>ValidatorConfiguration.cs</DependentUpon>
     </Compile>
     <Compile Include="Configurations\EventListenerConfiguration.cs" />
-    <Compile Include="Configurations\IAuditProvider.cs">
-      <DependentUpon>AuditEventListener.cs</DependentUpon>
-    </Compile>
     <Compile Include="Configurations\IndexForeignKeyConfiguration.cs" />
     <Compile Include="Configurations\PostgresBatcher.cs">
       <DependentUpon>BatcherConfiguration.cs</DependentUpon>
@@ -117,7 +114,7 @@
     <Compile Include="Conventions\CustomTableNameConvention.cs" />
     <Compile Include="Conventions\DateTimeOffsetConvention.cs" />
     <Compile Include="Conventions\EnumConvention.cs" />
-    <Compile Include="Conventions\_CustomJoinedSubclassConvention.cs" />
+    <Compile Include="Conventions\CustomJoinedSubclassConvention.cs" />
     <Compile Include="CustomTypes\JsonType.cs" />
     <Compile Include="CustomTypes\XmlType.cs" />
     <Compile Include="EntityDefinitions\InventoryMapping.cs" />
