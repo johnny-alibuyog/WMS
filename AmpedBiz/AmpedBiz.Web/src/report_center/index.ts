@@ -59,9 +59,16 @@ export class Index {
         },
       },
       {
+        route: ['product-report-page'],
+        name: 'product-report-page',
+        moduleId: './product-report-page',
+        nav: true,
+        title: 'Products Reports',
+      },
+      {
         route: ['order-report-page'],
         name: 'order-report-page',
-        moduleId: '../orders/order-report-page',
+        moduleId: './order-report-page',
         nav: true,
         title: 'Orders Reports',
       }

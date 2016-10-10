@@ -1,28 +1,14 @@
-import {Router, RouteConfig, NavigationInstruction, activationStrategy} from 'aurelia-router';
 import {autoinject} from 'aurelia-framework';
 import {OrderReport, OrderReportModel, OrderReportModelItem} from './order-report';
-import {Order, OrderStatus} from '../common/models/order';
-import {Supplier} from '../common/models/supplier';
+import {OrderStatus, OrderReportPageItem} from '../common/models/order';
 import {ServiceApi} from '../services/service-api';
 import {Lookup} from '../common/custom_types/lookup';
 import {NotificationService} from '../common/controls/notification-service';
 import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
 
-export class OrderReportPageItem {
-  id?: string;
-  branchName?: string;
-  customerName?: string;
-  pricingSchemeName?: string;
-  orderedOn?: Date;
-  orderedByName?: string;
-  status?: OrderStatus;
-  totalAmount?: number;
-}
-
 @autoinject
 export class OrderReportPage {
   private _api: ServiceApi;
-  private _router: Router;
   private _report: OrderReport;
   private _notification: NotificationService;
 
@@ -37,9 +23,8 @@ export class OrderReportPage {
   public statuses: Lookup<OrderStatus>[];
   public branches: Lookup<string>[];
 
-  constructor(api: ServiceApi, router: Router, report: OrderReport, notification: NotificationService) {
+  constructor(api: ServiceApi, report: OrderReport, notification: NotificationService) {
     this._api = api;
-    this._router = router;
     this._report = report;
     this._notification = notification;
 
@@ -66,7 +51,7 @@ export class OrderReportPage {
     this.pager.onPage = () => this.getPage();
   }
 
-  public activate(params: any, routeConfig: RouteConfig, $navigationInstruction: NavigationInstruction): any {
+  public activate(): void {
 
     let requests: [
       Promise<Lookup<string>[]>,
@@ -90,7 +75,6 @@ export class OrderReportPage {
       this.customers = responses[1];
       this.statuses = responses[2];
       this.branches = responses[3];
-      this.header = routeConfig.title;
 
       this.getPage();
     });

@@ -99,3 +99,17 @@ export interface ForPurchasing {
   selectedProductIds?: string[];
   purchaseAllBelowTarget?: boolean;
 }
+
+export class ProductReportPageItem {
+  id?: string;
+  productName?: string;
+  categoryName?: string;
+  supplierName?: string;
+  onHandValue?: number;
+  basePriceAmount?: number;
+  retailPriceAmount?: number;
+  wholesalePriceAmount?: number;
+  totalBasePriceAmount?: number;
+  totalRetailPriceAmount?: number;
+  totalWholesalePriceAmount?: number;
+}

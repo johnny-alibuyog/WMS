@@ -54,7 +54,6 @@ namespace AmpedBiz.Service.Orders
                         query = query.Where(x => x.OrderedOn >= value);
                     });
 
-
                     message.Filter.Compose<DateTime>("toDate", value =>
                     {
                         query = query.Where(x => x.OrderedOn <= value);

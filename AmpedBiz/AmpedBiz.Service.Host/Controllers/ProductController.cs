@@ -102,6 +102,13 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpPost()]
+        [Route("report/page")]
+        public GetProductReportPage.Response Process([FromBody]GetProductReportPage.Request request)
+        {
+            return _mediator.Send(request ?? new GetProductReportPage.Request());
+        }
+
+        [HttpPost()]
         [Route("")]
         public CreateProduct.Response Process([FromBody]CreateProduct.Request request)
         {

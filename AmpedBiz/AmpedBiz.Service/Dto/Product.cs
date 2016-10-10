@@ -173,4 +173,29 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? BelowTargetValue { get; set; }
     }
+
+    public class ProductReportPageItem
+    {
+        public Guid Id { get; set; }
+
+        public string ProductName { get; set; }
+
+        public string CategoryName { get; set; }
+
+        public string SupplierName { get; set; }
+
+        public decimal? OnHandValue { get; set; }
+
+        public decimal? BasePriceAmount { get; set; }
+
+        public decimal? RetailPriceAmount { get; set; }
+
+        public decimal? WholesalePriceAmount { get; set; }
+
+        public decimal? TotalBasePriceAmount { get; set; }
+
+        public decimal? TotalRetailPriceAmount { get; set; }
+
+        public decimal? TotalWholesalePriceAmount { get; set; }
+    }
 }

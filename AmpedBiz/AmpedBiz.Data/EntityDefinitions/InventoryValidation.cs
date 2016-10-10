@@ -22,7 +22,7 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.RetailPrice);
 
-            Define(x => x.WholeSalePrice);
+            Define(x => x.WholesalePrice);
 
             Define(x => x.BadStockPrice);
 

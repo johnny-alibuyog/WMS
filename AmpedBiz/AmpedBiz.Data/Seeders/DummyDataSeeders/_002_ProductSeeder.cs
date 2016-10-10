@@ -49,7 +49,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         dynamic prices = new ExpandoObject();
                         prices.BasePrice = new Money(_utils.RandomDecimal(1.00M, 20000.00M), currency);
                         prices.RetailPrice = new Money(_utils.RandomDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.BasePrice.Amount + 5000M), currency);
-                        prices.WholeSalePrice = new Money(_utils.RandomDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.RetailPrice.Amount), currency);
+                        prices.WholesalePrice = new Money(_utils.RandomDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.RetailPrice.Amount), currency);
                         prices.BadStockPrice = new Money(prices.BasePrice.Amount * 0.10M, currency);
 
                         item.Category = _utils.Random<ProductCategory>();
@@ -60,7 +60,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         item.Inventory.ConversionFactor = _utils.RandomInteger(1, 24);
                         item.Inventory.BasePrice = prices.BasePrice;
                         item.Inventory.RetailPrice = prices.RetailPrice;
-                        item.Inventory.WholeSalePrice = prices.WholeSalePrice;
+                        item.Inventory.WholesalePrice = prices.WholesalePrice;
                         item.Inventory.BadStockPrice = prices.BadStockPrice;
 
                         item.Inventory.InitialLevel = new Measure(_utils.RandomDecimal(150M, 300M), item.Inventory.UnitOfMeasure);

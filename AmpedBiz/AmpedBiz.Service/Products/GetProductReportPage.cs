@@ -3,15 +3,16 @@ using AmpedBiz.Service.Common;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
+using System;
 using System.Linq;
 
 namespace AmpedBiz.Service.Products
 {
-    public class GetDiscontinuedPage
+    public class GetProductReportPage
     {
         public class Request : PageRequest, IRequest<Response> { }
 
-        public class Response : PageResponse<Dto.DiscontinuedPageItem> { }
+        public class Response : PageResponse<Dto.ProductReportPageItem> { }
 
         public class Handler : RequestHandlerBase<Request, Response>
         {
@@ -24,91 +25,106 @@ namespace AmpedBiz.Service.Products
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var query = session.Query<Product>()
-                        .Where(x => x.Discontinued);
+                    var query = session.Query<Product>();
 
-                    // compose sort
-                    message.Sorter.Compose("code", direction =>
+                    // compose filter
+                    message.Filter.Compose<Guid>("productId", value =>
                     {
-                        query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Id)
-                            : query.OrderByDescending(x => x.Id);
+                        query = query.Where(x => x.Id == value);
                     });
 
-                    message.Sorter.Compose("name", direction =>
+                    message.Filter.Compose<string>("categoryId", value =>
+                    {
+                        query = query.Where(x => x.Category.Id == value);
+                    });
+
+                    message.Filter.Compose<Guid>("supplierId", value =>
+                    {
+                        query = query.Where(x => x.Supplier.Id == value);
+                    });
+
+                    // compose order
+                    message.Sorter.Compose("productName", direction =>
                     {
                         query = direction == SortDirection.Ascending
                             ? query.OrderBy(x => x.Name)
                             : query.OrderByDescending(x => x.Name);
                     });
 
-                    message.Sorter.Compose("description", direction =>
-                    {
-                        query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Description)
-                            : query.OrderByDescending(x => x.Description);
-                    });
-
-                    message.Sorter.Compose("supplier", direction =>
-                    {
-                        query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Supplier.Name)
-                            : query.OrderByDescending(x => x.Supplier.Name);
-                    });
-
-                    message.Sorter.Compose("category", direction =>
+                    message.Sorter.Compose("categoryName", direction =>
                     {
                         query = direction == SortDirection.Ascending
                             ? query.OrderBy(x => x.Category.Name)
                             : query.OrderByDescending(x => x.Category.Name);
                     });
 
-                    message.Sorter.Compose("basePrice", direction =>
+                    message.Sorter.Compose("supplierName", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.Supplier.Name)
+                            : query.OrderByDescending(x => x.Supplier.Name);
+                    });
+
+                    message.Sorter.Compose("onHandValue", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.Inventory.OnHand.Value)
+                            : query.OrderByDescending(x => x.Inventory.OnHand.Value);
+                    });
+
+                    message.Sorter.Compose("basePriceAmount", direction =>
                     {
                         query = direction == SortDirection.Ascending
                             ? query.OrderBy(x => x.Inventory.BasePrice.Amount)
                             : query.OrderByDescending(x => x.Inventory.BasePrice.Amount);
                     });
 
-                    message.Sorter.Compose("retailPrice", direction =>
+                    message.Sorter.Compose("retailPriceAmount", direction =>
                     {
                         query = direction == SortDirection.Ascending
                             ? query.OrderBy(x => x.Inventory.RetailPrice.Amount)
                             : query.OrderByDescending(x => x.Inventory.RetailPrice.Amount);
                     });
 
-                    message.Sorter.Compose("wholeSalePrice", direction =>
+                    message.Sorter.Compose("wholesalePriceAmount", direction =>
                     {
                         query = direction == SortDirection.Ascending
                             ? query.OrderBy(x => x.Inventory.WholesalePrice.Amount)
                             : query.OrderByDescending(x => x.Inventory.WholesalePrice.Amount);
                     });
 
+                    var countFuture = query
+                        .ToFutureValue(x => x.Count());
+
+                    if (message.Pager.IsPaged() != true)
+                        message.Pager.RetrieveAll(countFuture.Value);
+
                     var itemsFuture = query
-                        .Select(x => new Dto.DiscontinuedPageItem()
+                        .Select(x => new Dto.ProductReportPageItem()
                         {
-                            Id = x.Id.ToString(),
-                            Name = x.Name,
-                            Description = x.Description,
-                            SupplierName = x.Supplier.Name,
+                            Id = x.Id,
+                            ProductName = x.Name,
                             CategoryName = x.Category.Name,
-                            Image = x.Image,
+                            SupplierName = x.Supplier.Name,
+                            OnHandValue = x.Inventory.OnHand.Value,
                             BasePriceAmount = x.Inventory.BasePrice.Amount,
                             RetailPriceAmount = x.Inventory.RetailPrice.Amount,
                             WholesalePriceAmount = x.Inventory.WholesalePrice.Amount,
+                            TotalBasePriceAmount = x.Inventory.OnHand.Value * x.Inventory.BasePrice.Amount,
+                            TotalRetailPriceAmount = x.Inventory.OnHand.Value * x.Inventory.RetailPrice.Amount,
+                            TotalWholesalePriceAmount = x.Inventory.OnHand.Value * x.Inventory.WholesalePrice.Amount
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)
                         .ToFuture();
-
-                    var countFuture = query
-                        .ToFutureValue(x => x.Count());
 
                     response = new Response()
                     {
                         Count = countFuture.Value,
                         Items = itemsFuture.ToList()
                     };
+
+                    transaction.Commit();
                 }
 
                 return response;

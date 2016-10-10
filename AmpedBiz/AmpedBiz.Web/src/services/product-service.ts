@@ -1,6 +1,6 @@
 import {autoinject, buildQueryString} from 'aurelia-framework';
-import {Product, ProductInventory} from '../common/models/product';
-import {PageRequest} from '../common/models/paging';
+import {Product, ProductInventory, ProductReportPageItem} from '../common/models/product';
+import {PageRequest, PagerResponse} from '../common/models/paging';
 import {ServiceBase} from './service-base'
 import {HttpClientFacade} from './http-client-facade';
 import {Lookup} from '../common/custom_types/lookup';
@@ -54,5 +54,11 @@ export class ProductService extends ServiceBase<Product> {
   getPurchasePage(page: PageRequest): Promise<any> {
     var url = this._resouce + '/' + page.filter["id"] + '/purchases/page';
     return this._httpClient.post(url, page);
+  }
+
+  getProductReportPage(page: PageRequest): Promise<PagerResponse<ProductReportPageItem>> {
+    var url = this._resouce + '/report/page';
+    return this._httpClient.post(url, page)
+      .then(response => <PagerResponse<ProductReportPageItem>>response);
   }
 }

@@ -20,7 +20,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Money RetailPrice { get; set; }
 
-        public virtual Money WholeSalePrice { get; set; }
+        public virtual Money WholesalePrice { get; set; }
 
         public virtual Money BadStockPrice { get; set; }
 

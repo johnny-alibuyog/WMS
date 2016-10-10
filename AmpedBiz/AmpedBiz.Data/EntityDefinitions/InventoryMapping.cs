@@ -25,7 +25,7 @@ namespace AmpedBiz.Data.EntityDefinitions
             Component(x => x.RetailPrice,
                 MoneyMapping.Map("RetailPrice_", nameof(Product)));
 
-            Component(x => x.WholeSalePrice,
+            Component(x => x.WholesalePrice,
                 MoneyMapping.Map("WholeSalePrice_", nameof(Product)));
 
             Component(x => x.BadStockPrice,

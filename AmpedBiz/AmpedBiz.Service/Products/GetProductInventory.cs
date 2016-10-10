@@ -40,7 +40,7 @@ namespace AmpedBiz.Service.Products
                             BadStockValue = x.Inventory.BadStock.Value,
                             BasePriceAmount = x.Inventory.BasePrice.Amount,
                             RetailPriceAmount = x.Inventory.RetailPrice.Amount,
-                            WholeSalePriceAmount = x.Inventory.WholeSalePrice.Amount,
+                            WholeSalePriceAmount = x.Inventory.WholesalePrice.Amount,
                             BadStockPriceAmount = x.Inventory.BadStockPrice.Amount,
                             DiscountAmount = 0M
                         })
