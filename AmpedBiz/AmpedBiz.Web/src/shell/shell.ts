@@ -1,15 +1,9 @@
 import {autoinject} from 'aurelia-framework';
-import {AuthService} from './services/auth-service';
 import {Router, RouterConfiguration} from 'aurelia-router'
 
 @autoinject
 export class App {
-  public auth: AuthService;
   public router: Router;
-
-  constructor(auth: AuthService) {
-    this.auth = auth;
-  }
 
   configureRouter(config: RouterConfiguration, router: Router) {
     config.title = 'Nicon Sales';
@@ -17,7 +11,7 @@ export class App {
       {
         route: ['dashboard'],
         name: 'dashboard',
-        moduleId: './dashboard/index',
+        moduleId: '../dashboard/index',
         nav: true,
         main: true,
         title: 'Dashboard'
@@ -25,7 +19,7 @@ export class App {
       {
         route: ['products'],
         name: 'products',
-        moduleId: './products/index',
+        moduleId: '../products/index',
         nav: true,
         main: true,
         title: 'Products'
@@ -33,7 +27,7 @@ export class App {
       {
         route: ['purchases'],
         name: 'purchases',
-        moduleId: './purchases/index',
+        moduleId: '../purchases/index',
         nav: true,
         main: true,
         title: 'Purchases'
@@ -41,7 +35,7 @@ export class App {
       {
         route: ['orders'],
         name: 'orders',
-        moduleId: './orders/index',
+        moduleId: '../orders/index',
         nav: true,
         main: true,
         title: 'Orders'
@@ -49,7 +43,7 @@ export class App {
       {
         route: ['returns'],
         name: 'returns',
-        moduleId: './returns/index',
+        moduleId: '../returns/index',
         nav: true,
         main: true,
         title: 'Returns'
@@ -57,7 +51,7 @@ export class App {
       {
         route: ['routes'],
         name: 'routes',
-        moduleId: './routes/index',
+        moduleId: '../routes/index',
         nav: true,
         main: true,
         title: 'Routes'
@@ -65,7 +59,7 @@ export class App {
       {
         route: ['report_center'],
         name: 'report_center',
-        moduleId: './report_center/index',
+        moduleId: '../report_center/index',
         nav: true,
         main: true,
         title: 'Report Center'
@@ -73,7 +67,7 @@ export class App {
       {
         route: ['admin'],
         name: 'admin',
-        moduleId: './admin/index',
+        moduleId: '../admin/index',
         nav: true,
         main: true,
         title: 'Admin'
