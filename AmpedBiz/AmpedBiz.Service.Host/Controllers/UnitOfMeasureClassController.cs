@@ -1,6 +1,6 @@
-﻿using System.Web.Http;
-using AmpedBiz.Service.UnitOfMeasureClasses;
+﻿using AmpedBiz.Service.UnitOfMeasureClasses;
 using MediatR;
+using System.Web.Http;
 
 namespace AmpedBiz.Service.Host.Controllers
 {
@@ -33,6 +33,20 @@ namespace AmpedBiz.Service.Host.Controllers
         public GetUnitOfMeasureClassPage.Response Process([FromBody]GetUnitOfMeasureClassPage.Request request)
         {
             return _mediator.Send(request ?? new GetUnitOfMeasureClassPage.Request());
+        }
+
+        [HttpGet()]
+        [Route("~/unit-of-measure-class-lookups")]
+        public GetUnitOfMeasureLookup.Response Process([FromUri]GetUnitOfMeasureLookup.Request request)
+        {
+            return _mediator.Send(request ?? new GetUnitOfMeasureLookup.Request());
+        }
+
+        [HttpPost()]
+        [Route("report/page")]
+        public GetUnitOfMeasureClassReportPage.Response Process([FromBody]GetUnitOfMeasureClassReportPage.Request request)
+        {
+            return _mediator.Send(request ?? new GetUnitOfMeasureClassReportPage.Request());
         }
 
         [HttpPost()]

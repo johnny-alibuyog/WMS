@@ -59,6 +59,13 @@ export class Index {
         },
       },
       {
+        route: ['order-report-page'],
+        name: 'order-report-page',
+        moduleId: './order-report-page',
+        nav: true,
+        title: 'Orders Reports',
+      },
+      {
         route: ['product-report-page'],
         name: 'product-report-page',
         moduleId: './product-report-page',
@@ -66,11 +73,11 @@ export class Index {
         title: 'Products Reports',
       },
       {
-        route: ['order-report-page'],
-        name: 'order-report-page',
-        moduleId: './order-report-page',
+        route: ['unit-of-measure-class-report-page'],
+        name: 'unit-of-measure-class-report-page',
+        moduleId: './unit-of-measure-class-report-page',
         nav: true,
-        title: 'Orders Reports',
+        title: 'Unit of Measure Reports',
       }
     ]);
 

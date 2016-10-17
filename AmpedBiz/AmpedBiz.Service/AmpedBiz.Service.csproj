@@ -190,6 +190,8 @@
     <Compile Include="UnitOfMeasureClasses\GetUnitOfMeasureClass.cs" />
     <Compile Include="UnitOfMeasureClasses\GetUnitOfMeasureClassPage.cs" />
     <Compile Include="UnitOfMeasureClasses\GetUnitOfMeasureClassList.cs" />
+    <Compile Include="UnitOfMeasureClasses\GetUnitOfMeasureClassReportPage.cs" />
+    <Compile Include="UnitOfMeasureClasses\GetUnitOfMeasureClassLookup.cs" />
     <Compile Include="UnitOfMeasureClasses\UpdateUnitOfMeasureClass.cs" />
     <Compile Include="UnitOfMeasures\CreateUnitOfMeasure.cs" />
     <Compile Include="UnitOfMeasures\GetUnitOfMeasure.cs" />
