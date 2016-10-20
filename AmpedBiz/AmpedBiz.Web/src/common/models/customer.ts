@@ -15,3 +15,12 @@ export interface CustomerPageItem {
   description?: string;
   address?: Address;
 }
+
+export interface CustomerReportPageItem {
+  id?: string;
+  name?: string;
+  creditLimitAmount?: number;
+  contact?: Contact;
+  officeAddress?: Address;
+  billingAddress?: Address;
+}

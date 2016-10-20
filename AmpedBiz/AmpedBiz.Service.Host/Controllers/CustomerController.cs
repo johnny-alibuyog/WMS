@@ -1,10 +1,5 @@
 ﻿using AmpedBiz.Service.Customers;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace AmpedBiz.Service.Host.Controllers
@@ -39,6 +34,14 @@ namespace AmpedBiz.Service.Host.Controllers
         {
             return _mediator.Send(request ?? new GetCustomerPage.Request());
         }
+
+        [HttpPost()]
+        [Route("report/page")]
+        public GetCustomerReportPage.Response Process([FromBody]GetCustomerReportPage.Request request)
+        {
+            return _mediator.Send(request ?? new GetCustomerReportPage.Request());
+        }
+
         [HttpGet()]
         [Route("~/customer-lookups")]
         public GetCustomerLookup.Response Process([FromBody]GetCustomerLookup.Request request)

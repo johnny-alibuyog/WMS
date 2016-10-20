@@ -32,7 +32,7 @@ namespace AmpedBiz.Service.Customers
                     if (string.IsNullOrEmpty(message.PricingSchemeId))
                         message.PricingSchemeId = "RP";
 
-                    var entity = message.MapTo<Dto.Customer, Customer>(new Customer(message.Id));
+                    var entity = message.MapTo(new Customer(message.Id));
                     var currency = session.Load<Currency>(Currency.PHP.Id);
                     entity.CreditLimit = new Money(message.CreditLimitAmount, currency);
                     entity.PricingScheme = session.Load<PricingScheme>(message.PricingSchemeId);

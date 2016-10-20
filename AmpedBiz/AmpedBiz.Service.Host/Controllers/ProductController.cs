@@ -1,10 +1,5 @@
 ﻿using AmpedBiz.Service.Products;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace AmpedBiz.Service.Host.Controllers
@@ -17,10 +12,6 @@ namespace AmpedBiz.Service.Host.Controllers
         public ProductController(IMediator mediator)
         {
             _mediator = mediator;
-        }
-
-        public ProductController()
-        {
         }
 
         [HttpGet()]

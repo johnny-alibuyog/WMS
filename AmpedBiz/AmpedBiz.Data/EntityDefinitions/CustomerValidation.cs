@@ -14,9 +14,17 @@ namespace AmpedBiz.Data.EntityDefinitions
                 .NotNullableAndNotEmpty()
                 .And.MaxLength(255);
 
-            Define(x => x.CreditLimit);
+            Define(x => x.PricingScheme)
+                .IsValid();
 
-            Define(x => x.PricingScheme);
+            Define(x => x.OfficeAddress)
+                .IsValid();
+
+            Define(x => x.BillingAddress)
+                .IsValid();
+
+            Define(x => x.CreditLimit)
+                .IsValid();
         }
     }
 }

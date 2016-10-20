@@ -8,6 +8,7 @@ export class Index {
   configureRouter(config: RouterConfiguration, router: Router) {
     config.title = "Report Center";
     config.map([
+      /*
       {
         route: ['', 'price-list-page'],
         name: 'price-list-page',
@@ -57,6 +58,14 @@ export class Index {
         settings: {
           reportSource: appConfig.reportMapping.baseUrl + appConfig.reportMapping.orderList
         },
+      },
+      */
+      {
+        route: ['', 'customer-report-page'],
+        name: 'customer-report-page',
+        moduleId: './customer-report-page',
+        nav: true,
+        title: 'Customer Reports',
       },
       {
         route: ['order-report-page'],

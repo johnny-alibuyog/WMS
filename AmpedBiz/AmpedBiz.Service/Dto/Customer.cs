@@ -1,6 +1,4 @@
-﻿using AmpedBiz.Core.Entities;
-
-namespace AmpedBiz.Service.Dto
+﻿namespace AmpedBiz.Service.Dto
 {
     public class Customer
     {
@@ -28,6 +26,21 @@ namespace AmpedBiz.Service.Dto
         public string CreditLimitAmount { get; set; }
 
         public string PricingSchemeName { get; set; }
+
+        public Contact Contact { get; set; }
+
+        public Address OfficeAddress { get; set; }
+
+        public Address BillingAddress { get; set; }
+    }
+
+    public class CustomerReportPageItem
+    {
+        public string Id { get; set; }
+
+        public string Name { get; set; }
+
+        public decimal CreditLimitAmount { get; set; }
 
         public Contact Contact { get; set; }
 
