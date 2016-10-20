@@ -1,5 +1,4 @@
-﻿using AmpedBiz.Core;
-using AmpedBiz.Data;
+﻿using AmpedBiz.Data;
 using AmpedBiz.Data.Seeders;
 using AmpedBiz.Service.Host.Plugins.Providers;
 using Autofac;

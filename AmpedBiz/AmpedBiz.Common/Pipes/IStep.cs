@@ -1,8 +1,8 @@
 ﻿namespace AmpedBiz.Common.Pipes
 {
-    public interface IFilter<T>
+    public interface IStep<T>
     {
         T Execute(T input);
-        void Register(IFilter<T> filter);
+        void Register(IStep<T> step);
     }
 }

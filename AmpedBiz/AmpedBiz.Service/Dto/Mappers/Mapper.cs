@@ -18,7 +18,6 @@ namespace AmpedBiz.Service.Dto.Mappers
     {
         public void Initialze()
         {
-
             RegisterUserMap();
             RegisterCustomersMap();
             RegisterProductsMap();

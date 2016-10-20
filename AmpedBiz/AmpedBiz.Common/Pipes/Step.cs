@@ -1,8 +1,8 @@
 ﻿namespace AmpedBiz.Common.Pipes
 {
-    public abstract class Filter<T> : IFilter<T>
+    public abstract class Step<T> : IStep<T>
     {
-        private IFilter<T> _next;
+        private IStep<T> _next;
 
         protected abstract T Process(T input);
 
@@ -16,13 +16,13 @@
             return result;
         }
 
-        public void Register(IFilter<T> filter)
+        public void Register(IStep<T> step)
         {
             if (_next == null)
-                _next = filter;
+                _next = step;
 
             else
-                _next.Register(filter);
+                _next.Register(step);
         }
     }
 }

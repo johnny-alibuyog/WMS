@@ -66,9 +66,9 @@
     <Compile Include="Extentions\StringExtention.cs" />
     <Compile Include="Extentions\StringFormatter.cs" />
     <Compile Include="Extentions\TypeExtentions.cs" />
-    <Compile Include="Pipes\Filter.cs" />
-    <Compile Include="Pipes\IFilter.cs" />
-    <Compile Include="Pipes\IFilterChain.cs" />
+    <Compile Include="Pipes\Step.cs" />
+    <Compile Include="Pipes\IStep.cs" />
+    <Compile Include="Pipes\IPipeline.cs" />
     <Compile Include="Pipes\Pipeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

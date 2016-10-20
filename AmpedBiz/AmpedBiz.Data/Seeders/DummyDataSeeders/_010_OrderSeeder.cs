@@ -278,7 +278,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         }
     }
 
-    internal abstract class ActionPipe : Filter<IEnumerable<Order>>
+    internal abstract class ActionStep : Step<IEnumerable<Order>>
     {
         protected readonly Utils _utils = new Utils(new Random(), SessionFactoryProvider.SessionFactory);
         protected readonly ISessionFactory _sessionFactory = SessionFactoryProvider.SessionFactory;
@@ -286,7 +286,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         protected abstract override IEnumerable<Order> Process(IEnumerable<Order> input);
     }
 
-    internal class NewAction : ActionPipe
+    internal class NewAction : ActionStep
     {
         public virtual int Count { get; set; }
 
@@ -348,7 +348,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         }
     }
 
-    internal class InvoiceAction : ActionPipe
+    internal class InvoiceAction : ActionStep
     {
         protected override IEnumerable<Order> Process(IEnumerable<Order> input)
         {
@@ -372,7 +372,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         }
     }
 
-    internal class PayAction : ActionPipe
+    internal class PayAction : ActionStep
     {
         protected override IEnumerable<Order> Process(IEnumerable<Order> input)
         {
@@ -403,7 +403,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         }
     }
 
-    internal class StageAction : ActionPipe
+    internal class StageAction : ActionStep
     {
         protected override IEnumerable<Order> Process(IEnumerable<Order> input)
         {
@@ -427,7 +427,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         }
     }
 
-    internal class ShipAction : ActionPipe
+    internal class ShipAction : ActionStep
     {
         protected override IEnumerable<Order> Process(IEnumerable<Order> input)
         {
@@ -451,7 +451,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         }
     }
 
-    internal class ReturnAction : ActionPipe
+    internal class ReturnAction : ActionStep
     {
         protected override IEnumerable<Order> Process(IEnumerable<Order> input)
         {
@@ -496,7 +496,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         }
     }
 
-    internal class CompleteAction : ActionPipe
+    internal class CompleteAction : ActionStep
     {
         protected override IEnumerable<Order> Process(IEnumerable<Order> input)
         {
@@ -521,7 +521,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         }
     }
 
-    internal class CancelAction : ActionPipe
+    internal class CancelAction : ActionStep
     {
         protected override IEnumerable<Order> Process(IEnumerable<Order> input)
         {

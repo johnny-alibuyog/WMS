@@ -69,6 +69,7 @@
     <Compile Include="Customers\GetCustomerPage.cs" />
     <Compile Include="Customers\GetCustomer.cs" />
     <Compile Include="Customers\GetCustomerList.cs" />
+    <Compile Include="Customers\GetCustomerReports.cs" />
     <Compile Include="Customers\UpdateCustomer.cs" />
     <Compile Include="Dto\Address.cs" />
     <Compile Include="Dto\Branch.cs" />

@@ -154,6 +154,7 @@
     <Compile Include="EntityDefinitions\UnitOfMeasureClassValidation.cs" />
     <Compile Include="EntityDefinitions\UnitOfMeasureMapping.cs" />
     <Compile Include="EntityDefinitions\UnitOfMeasureValidation.cs" />
+    <Compile Include="IAuditProvider.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_010_DefaultBranchSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_000_BranchSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_001_CurrencySeeder.cs" />
