@@ -30,7 +30,7 @@ namespace AmpedBiz.Service.Host.App_Start
 
             var dummyDataSeeders = config.DependencyResolver
                 .GetServices(typeof(IDummyDataSeeder)).Cast<IDummyDataSeeder>()
-                .Where(x => DbConfig.Instance.UseDummyData)
+                .Where(x => DatabaseConfig.Instance.UseDummyData)
                 .OrderBy(x => x.GetType().Name)
                 .Cast<ISeeder>();
 

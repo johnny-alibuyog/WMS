@@ -31,7 +31,7 @@ namespace AmpedBiz.Service.Users
                 {
                     var entity = session.QueryOver<User>()
                         .Where(x => x.Id == message.Id)
-                        .Left.JoinQueryOver(x => x.UserRoles)
+                        .Left.JoinQueryOver(x => x.Roles)
                         .TransformUsing(Transformers.DistinctRootEntity)
                         .SingleOrDefault();
 
@@ -49,8 +49,8 @@ namespace AmpedBiz.Service.Users
                         {
                             Id = x.Id,
                             Name = x.Name,
-                            Assigned = entity.UserRoles
-                                .Select(y => y.Role.Id)
+                            Assigned = entity.Roles
+                                .Select(o => o.Id)
                                 .Contains(x.Id)
                         })
                         .ToList();

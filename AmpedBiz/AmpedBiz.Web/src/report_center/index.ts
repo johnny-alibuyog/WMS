@@ -68,6 +68,13 @@ export class Index {
         title: 'Customer Reports',
       },
       {
+        route: ['supplier-report-page'],
+        name: 'supplier-report-page',
+        moduleId: './supplier-report-page',
+        nav: true,
+        title: 'Supplier Reports',
+      },
+      {
         route: ['order-report-page'],
         name: 'order-report-page',
         moduleId: './order-report-page',

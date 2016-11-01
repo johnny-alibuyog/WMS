@@ -1,4 +1,6 @@
 import {Router, RouterConfiguration} from 'aurelia-router'
+import {AuthSettings} from '../services/auth-service';
+import {role} from '../common/models/role';
 
 export class Index {
   heading: string = "Admin";
@@ -12,21 +14,50 @@ export class Index {
         name: 'branch-page',
         moduleId: './branch-page',
         nav: true,
-        title: 'Branches'
+        title: 'Branches',
+        settings: {
+          auth: <AuthSettings>{
+            roles: role.unknownRole
+          }
+        },
       },
       {
         route: ['payment-type-page'],
         name: 'payment-type-page',
         moduleId: './payment-type-page',
         nav: true,
-        title: 'Payment Types'
+        title: 'Payment Types',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.encoder,
+              role.manager,
+              role.sales,
+              role.supperAdmin,
+              role.warehouse
+            ]
+          }
+        },
       },
       {
         route: ['user-page'],
         name: 'user-page',
         moduleId: './user-page',
         nav: true,
-        title: 'Users'
+        title: 'Users',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.encoder,
+              role.manager,
+              role.sales,
+              role.supperAdmin,
+              role.warehouse
+            ]
+          }
+        },
       },
     ]);
     

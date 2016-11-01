@@ -1,12 +1,16 @@
 import {autoinject} from 'aurelia-framework';
-import {Router, RouterConfiguration} from 'aurelia-router'
+import {NavigationInstruction, Next, PipelineStep, Redirect, Router, RouterConfiguration} from 'aurelia-router';
+import {AuthService, AuthSettings} from '../services/auth-service';
+import {role} from '../common/models/role';
+import {NotificationService} from '../common/controls/notification-service';
 
 @autoinject
-export class App {
+export class Shell {
   public router: Router;
 
   configureRouter(config: RouterConfiguration, router: Router) {
     config.title = 'Nicon Sales';
+    config.addPipelineStep('authorize', AuthorizeStep);
     config.map([
       {
         route: ['dashboard'],
@@ -14,7 +18,7 @@ export class App {
         moduleId: '../dashboard/index',
         nav: true,
         main: true,
-        title: 'Dashboard'
+        title: 'Dashboard',
       },
       {
         route: ['products'],
@@ -22,7 +26,12 @@ export class App {
         moduleId: '../products/index',
         nav: true,
         main: true,
-        title: 'Products'
+        title: 'Products',
+        settings: {
+          auth: <AuthSettings>{
+            roles: role.unknownRole
+          }
+        },
       },
       {
         route: ['purchases'],
@@ -79,5 +88,39 @@ export class App {
     ]);
 
     this.router = router;
+  }
+}
+
+@autoinject
+class AuthorizeStep implements PipelineStep {
+  private readonly _auth: AuthService;
+  private readonly _notification: NotificationService;
+
+  constructor(auth: AuthService, notification: NotificationService) {
+    this._auth = auth;
+    this._notification = notification;
+  }
+
+  public run(navigationInstruction: NavigationInstruction, next: Next): Promise<any> {
+    let allInstructions = navigationInstruction.getAllInstructions();
+    let currentInstruction =  allInstructions[allInstructions.length - 1];
+    let instructionConfig = currentInstruction.config;
+    let authSettings = <AuthSettings>instructionConfig.settings.auth;
+
+    if (authSettings) {
+      if (!this._auth.isAuthenticated()) {
+        this._auth.logout();
+        return next.cancel();
+      }
+
+      if (authSettings.roles) {
+        if (!this._auth.isAuthorized(authSettings.roles)) {
+          this._notification.warning(`You are not authorized for ${instructionConfig.title}`);
+          return next.cancel();
+        }
+      }
+    }
+
+    return next();
   }
 }

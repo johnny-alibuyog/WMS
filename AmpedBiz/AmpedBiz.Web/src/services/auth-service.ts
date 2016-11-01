@@ -1,8 +1,15 @@
 import {autoinject, Aurelia} from 'aurelia-framework';
-import {User} from '../common/models/user'
+import {User} from '../common/models/user';
+import {Role, role} from '../common/models/role';
 import {Lookup} from '../common/custom_types/lookup';
 import {HttpClientFacade} from './http-client-facade';
 import {NotificationService} from '../common/controls/notification-service';
+
+
+export interface AuthSettings {
+  authorize?: boolean;
+  roles?: Role | Role[];
+}
 
 @autoinject
 export class AuthService {
@@ -11,10 +18,10 @@ export class AuthService {
   private _httpClient: HttpClientFacade;
   private _notification: NotificationService;
 
-  private readonly AUTH_TOKEN: string = "token:auth-user";
+  private readonly AUTH_TOKEN: string = 'token:auth-user';
 
   public get user(): User {
-    return <User>JSON.parse(localStorage[this.AUTH_TOKEN] || "{}");
+    return <User>JSON.parse(localStorage[this.AUTH_TOKEN] || '{}');
   };
 
   public set user(user: User) {
@@ -67,7 +74,36 @@ export class AuthService {
   }
 
   public isAuthenticated(): boolean {
-    return this.user != null && this.user.id != null;
+    if (this.user == null) {
+      return false;
+    }
+
+    if (this.user.id == null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  public isAuthorized(params: Role | Role[]): boolean {
+    if (!this.isAuthenticated()) {
+      return false;
+    }
+
+    if (!this.user.roles) {
+      return false;
+    }
+
+    var roles = (params instanceof Array)
+      ? <Role[]>params : [<Role>params];
+
+    for (var i = 0; i < roles.length; i++) {
+      if (this.user.roles.find(x => x.id == roles[i].id)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   public login(user: User): Promise<any> {
@@ -75,7 +111,7 @@ export class AuthService {
     return this._httpClient.send({ url: url, method: 'POST', data: user })
       .then(data => {
         this.user = <User>data;
-        this._app.setRoot('app')
+        this._app.setRoot('shell/shell')
       })
       .catch(error => {
         this._notification.warning(error)

@@ -50,6 +50,13 @@ namespace AmpedBiz.Service.Host.Controllers
             return _mediator.Send(request ?? new GetSupplierPage.Request());
         }
 
+        [HttpPost()]
+        [Route("report/page")]
+        public GetSupplierReportPage.Response Process([FromBody]GetSupplierReportPage.Request request)
+        {
+            return _mediator.Send(request ?? new GetSupplierReportPage.Request());
+        }
+
         [HttpGet()]
         [Route("~/supplier-lookups")]
         public GetSupplierLookup.Response Process([FromBody]GetSupplierLookup.Request request)

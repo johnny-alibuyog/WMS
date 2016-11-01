@@ -17,7 +17,11 @@ namespace AmpedBiz.Core.Entities
 
         public static readonly Role Encoder = new Role("E", "Encoder");
 
+        public static readonly Role Manger = new Role("M", "Manager");
+
         public static readonly Role Sales = new Role("S", "Sales");
+
+        public static readonly Role SuperAdmin = new Role("SA", "Supper Admin");
 
         public static readonly Role Warehouse = new Role("W", "Warehouse");
 
@@ -25,7 +29,9 @@ namespace AmpedBiz.Core.Entities
         {
             Role.Admin,
             Role.Encoder,
+            Role.Manger,
             Role.Sales,
+            Role.SuperAdmin,
             Role.Warehouse
         };
     }

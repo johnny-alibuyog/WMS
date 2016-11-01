@@ -5,6 +5,7 @@ export function configure(config: FrameworkConfiguration) {
     'common/converters/age-value-conveter',
     'common/converters/date-format-value-converter',
     'common/converters/date-input-format-value-converter',
+    'common/converters/instruction-filter-vaule-converter',
     'common/converters/lookup-id-to-name-value-converter',
     'common/converters/lookup-to-id-value-converter',
     'common/converters/lookup-to-name-value-converter',

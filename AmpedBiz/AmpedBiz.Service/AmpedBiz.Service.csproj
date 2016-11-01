@@ -186,6 +186,7 @@
     <Compile Include="Suppliers\GetSupplierLookup.cs" />
     <Compile Include="Suppliers\GetSupplierPage.cs" />
     <Compile Include="Suppliers\GetSupplierList.cs" />
+    <Compile Include="Suppliers\GetSupplierReportPage.cs" />
     <Compile Include="Suppliers\UpdateSupplier.cs" />
     <Compile Include="UnitOfMeasureClasses\CreateUnitOfMeasureClass.cs" />
     <Compile Include="UnitOfMeasureClasses\GetUnitOfMeasureClass.cs" />

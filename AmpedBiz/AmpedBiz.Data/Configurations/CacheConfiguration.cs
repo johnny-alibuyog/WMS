@@ -8,7 +8,7 @@ namespace AmpedBiz.Data.Configurations
     {
         private const string RegionName = "hourly";
 
-        public static void Configure(this Configuration config)
+        public static void Configure(Configuration config)
         {
             config
                 .SetProperty(Environment.UseSecondLevelCache, "true")

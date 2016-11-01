@@ -49,7 +49,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configurations\DbConfig.cs" />
+    <Compile Include="Configurations\AuthConfig.cs" />
+    <Compile Include="Configurations\DatabaseConfig.cs" />
     <Compile Include="Configurations\TransitionConfig.cs" />
     <Compile Include="Exceptions\BusinessException.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />

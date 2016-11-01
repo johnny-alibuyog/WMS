@@ -5,7 +5,7 @@ namespace AmpedBiz.Data.Configurations
 {
     internal static class EventListenerConfiguration
     {
-        public static void Configure(this Configuration configuration)
+        public static void Configure(Configuration configuration)
         {
             // Validation Interceptors
             configuration.AppendListeners(ListenerType.PreInsert, new IPreInsertEventListener[] { new ValidationEventListener(), });

@@ -9,7 +9,7 @@ namespace AmpedBiz.Data.Configurations
 {
     internal static class ValidatorConfiguration
     {
-        public static void Configure(this Configuration configuration)
+        public static void Configure(Configuration configuration)
         {
             var validatorEngine = GetValidatorEngine();
             new ValidatorSharedEngineProvider(validatorEngine).UseMe();

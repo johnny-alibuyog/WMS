@@ -1,4 +1,5 @@
 ﻿{
+  "Database": "MySql",
   "Port": 5432,
   "Host": "localhost",
   "Name": "RH9Ump7O6tMEbv9IQwMUpA==",
@@ -6,5 +7,5 @@
   "Password": "hJGpfBVaZbafhK4FXm3leg==",
   "BatchSize": 50,
   "UseDummyData": true,
-  "RecreateDb": false
+  "RecreateDb": true
 }

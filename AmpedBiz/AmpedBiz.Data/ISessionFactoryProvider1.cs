@@ -2,7 +2,7 @@
 
 namespace AmpedBiz.Data
 {
-    public interface ISessionFactoryProvider
+    public interface ISessionFactoryProvider1
     {
         ISessionFactory GetSessionFactory();
     }

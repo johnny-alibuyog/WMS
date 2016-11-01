@@ -4,13 +4,22 @@ using Westwind.Utilities.Configuration;
 
 namespace AmpedBiz.Common.Configurations
 {
-    public class DbConfig : AppConfiguration
+    public enum DatabaseProvider
     {
-        public static DbConfig Instance = Create();
+        MsSql,
+        MySql,
+        Postgres
+    }
+
+    public class DatabaseConfig : AppConfiguration
+    {
+        public static DatabaseConfig Instance = Create();
+
+        public virtual DatabaseProvider Database { get; set; }
 
         public virtual int Port { get; set; }
 
-        public virtual string Host { get; set; }
+        public virtual string HostServer { get; set; }
 
         public virtual string Name { get; set; }
 
@@ -24,29 +33,31 @@ namespace AmpedBiz.Common.Configurations
 
         public virtual bool RecreateDb { get; set; }
 
-        public DbConfig()
+        public DatabaseConfig()
         {
-            this.Port = 5432;
-            this.Host = "localhost";
+            this.Database = DatabaseProvider.MySql;
+            this.Port = 3306;
+            this.HostServer = "localhost";
             this.Name = "ampedbizdb";
-            this.Username = "postgres";
-            this.Password = "postgres";
+            this.Username = "root";
+            this.Password = "mysql";
             this.BatchSize = 50;
             this.UseDummyData = true;
             this.RecreateDb = true;
         }
 
-        private static DbConfig Create()
+        private static DatabaseConfig Create()
         {
-            var config = new DbConfig();
+            var config = new DatabaseConfig();
             config.Initialize();
+            config.Write();
 
             return config;
         }
 
         protected override IConfigurationProvider OnCreateDefaultProvider(string sectionName, object configData)
         {
-            this.Provider = new JsonFileConfigurationProvider<DbConfig>()
+            this.Provider = new JsonFileConfigurationProvider<DatabaseConfig>()
             {
                 EncryptionKey = "seekrit123",
                 PropertiesToEncrypt = "Name,Username,Password",

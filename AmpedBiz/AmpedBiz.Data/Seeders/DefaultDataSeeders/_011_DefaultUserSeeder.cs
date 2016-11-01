@@ -30,13 +30,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 {
                     user = User.SupperUser;
                     user.Branch = branch;
-                    user.UserRoles = roles
-                        .Select(x => new UserRole()
-                        {
-                            Role = x,
-                            User = user
-                        })
-                        .ToList();
+                    user.Roles = roles;
 
                     session.Save(user, user.Id);
                 }

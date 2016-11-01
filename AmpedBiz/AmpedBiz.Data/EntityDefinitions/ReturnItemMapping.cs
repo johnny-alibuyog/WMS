@@ -17,13 +17,13 @@ namespace AmpedBiz.Data.EntityDefinitions
             References(x => x.ReturnReason);
 
             Component(x => x.Quantity,
-                MeasureMapping.Map("Quantity_", nameof(OrderItem)));
+                MeasureMapping.Map("Quantity_", nameof(ReturnItem)));
 
             Component(x => x.UnitPrice,
-                MoneyMapping.Map("UnitPrice_", nameof(OrderItem)));
+                MoneyMapping.Map("UnitPrice_", nameof(ReturnItem)));
 
             Component(x => x.TotalPrice,
-                MoneyMapping.Map("TotalPrice_", nameof(OrderItem)));
+                MoneyMapping.Map("TotalPrice_", nameof(ReturnItem)));
         }
     }
 }

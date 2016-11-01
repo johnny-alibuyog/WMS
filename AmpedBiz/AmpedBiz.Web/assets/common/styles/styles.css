@@ -3,7 +3,9 @@ body {
 }
 
 input[type=checkbox] {
-  width:34px;  
+  position: relative!important;
+  margin-left: 0p!important;
+  /*width:34px;*/  
 }
 
 .report-viewer {

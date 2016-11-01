@@ -20,12 +20,10 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             References(x => x.Branch);
 
-            HasMany(x => x.UserRoles)
-                .Cascade.AllDeleteOrphan()
-                .Not.KeyNullable()
-                .Not.KeyUpdate()
-                .Inverse()
-                .AsBag();
+            HasManyToMany(x => x.Roles)
+               .Table("UsersRoles")
+               .Cascade.All()
+               .AsSet();
 
             //UseUnionSubclassForInheritanceMapping();
         }

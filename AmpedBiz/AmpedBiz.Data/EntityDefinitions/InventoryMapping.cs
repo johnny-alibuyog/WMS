@@ -20,16 +20,16 @@ namespace AmpedBiz.Data.EntityDefinitions
             Map(x => x.ConversionFactor);
 
             Component(x => x.BasePrice,
-                MoneyMapping.Map("BasePrice_", nameof(Product)));
+                MoneyMapping.Map("BasePrice_", nameof(Inventory)));
 
             Component(x => x.RetailPrice,
-                MoneyMapping.Map("RetailPrice_", nameof(Product)));
+                MoneyMapping.Map("RetailPrice_", nameof(Inventory)));
 
             Component(x => x.WholesalePrice,
-                MoneyMapping.Map("WholeSalePrice_", nameof(Product)));
+                MoneyMapping.Map("WholeSalePrice_", nameof(Inventory)));
 
             Component(x => x.BadStockPrice,
-                MoneyMapping.Map("BadStockPrice_", nameof(Product)));
+                MoneyMapping.Map("BadStockPrice_", nameof(Inventory)));
 
             Component(x => x.BadStock,
                 MeasureMapping.Map("BadStock_", nameof(Inventory)));

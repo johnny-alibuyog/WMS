@@ -59,10 +59,6 @@
       <HintPath>..\packages\NHibernate.Validator.1.3.2.4000\lib\Net35\NHibernate.Validator.Specific.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Npgsql, Version=3.1.8.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Npgsql.3.1.8\lib\net451\Npgsql.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -86,14 +82,10 @@
     <Compile Include="Configurations\ConventionMessageInterpolator.cs">
       <DependentUpon>ValidatorConfiguration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Configurations\DatabaseConfiguration.cs" />
     <Compile Include="Configurations\EventListenerConfiguration.cs" />
     <Compile Include="Configurations\IndexForeignKeyConfiguration.cs" />
-    <Compile Include="Configurations\PostgresBatcher.cs">
-      <DependentUpon>BatcherConfiguration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Configurations\PostgresBatcherFactory.cs">
-      <DependentUpon>BatcherConfiguration.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Configurations\MappingDefinitionConfiguration.cs" />
     <Compile Include="Configurations\SchemaConfiguration.cs" />
     <Compile Include="Configurations\SessionContextConfiguration.cs" />
     <Compile Include="Configurations\ValidationEventListener.cs">
@@ -155,6 +147,7 @@
     <Compile Include="EntityDefinitions\UnitOfMeasureMapping.cs" />
     <Compile Include="EntityDefinitions\UnitOfMeasureValidation.cs" />
     <Compile Include="IAuditProvider.cs" />
+    <Compile Include="ISessionFactoryProvider.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_010_DefaultBranchSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_000_BranchSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_001_CurrencySeeder.cs" />
@@ -200,10 +193,7 @@
     <Compile Include="EntityDefinitions\SupplierMapping.cs" />
     <Compile Include="EntityDefinitions\SupplierValidation.cs" />
     <Compile Include="EntityDefinitions\UserMapping.cs" />
-    <Compile Include="EntityDefinitions\UserRoleMapping.cs" />
-    <Compile Include="EntityDefinitions\UserRoleValidation.cs" />
     <Compile Include="EntityDefinitions\UserValidation.cs" />
-    <Compile Include="ISessionFactoryProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seeders\Utils.cs" />
     <Compile Include="SessionFactoryExtention.cs" />

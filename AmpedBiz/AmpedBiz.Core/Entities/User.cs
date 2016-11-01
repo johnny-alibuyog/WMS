@@ -19,7 +19,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Branch Branch { get; set; }
 
-        public virtual IEnumerable<UserRole> UserRoles { get; set; } = new Collection<UserRole>();
+        public virtual IEnumerable<Role> Roles { get; set; } = new Collection<Role>();
         
         public virtual string Name
         {
@@ -32,28 +32,21 @@ namespace AmpedBiz.Core.Entities
 
         public virtual void SetRoles(IEnumerable<Role> items)
         {
-            var existingRoles = this.UserRoles
-                .Select(x => x.Role)
-                .ToList();
 
-            var rolesToAdd = items.Except(existingRoles).ToList();
+            var rolesToAdd = items.Except(this.Roles).ToList();
 
-            var rolesToRemove = existingRoles.Except(items).ToList();
+            var rolesToRemove = this.Roles.Except(items).ToList();
 
             foreach (var role in rolesToRemove)
             {
-                var item = this.UserRoles.FirstOrDefault(x => x.Role == role);
-                item.User = null;
-                item.Role = null;
-                this.UserRoles.Remove(item);
+                var item = this.Roles.FirstOrDefault(x => x == role);
+                this.Roles.Remove(item);
             }
 
             foreach (var role in rolesToAdd)
             {
-                var item = new UserRole();
-                item.User = this;
-                item.Role = role;
-                this.UserRoles.Add(item);
+                var item = new Role();
+                this.Roles.Add(item);
             }
         }
 

@@ -1,6 +1,5 @@
 1. Reset password of superuser in postgresql. This is done by following instruction from postgres_dev_login_credential_recovery. txt
    
-
 2. Set the superuser password.
 
    Open postgresql admin (Password is now blank.). 
@@ -8,6 +7,7 @@
    Execute postgres_alter_superuser_password.sql
    
 3. Reset content of C:\Program Files\PostgreSQL\9.5\data\pg_hba.conf to orig value (md5)
+
 4. Create ampbiz db.
    Login to postgresql admin. Password is postgresql
    Execute create_db.sql in query tool.

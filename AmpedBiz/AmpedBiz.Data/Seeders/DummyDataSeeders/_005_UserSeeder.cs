@@ -57,13 +57,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     foreach (var item in data)
                     {
                         item.Branch = branch;
-                        item.UserRoles = roles
-                            .Select(x => new UserRole()
-                            {
-                                Role = x,
-                                User = item
-                            })
-                            .ToList();
+                        item.Roles = roles;
 
                         session.Save(item);
                     }

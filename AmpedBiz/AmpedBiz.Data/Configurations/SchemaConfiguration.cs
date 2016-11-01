@@ -8,9 +8,9 @@ namespace AmpedBiz.Data.Configurations
 {
     internal static class SchemaConfiguration
     {
-        public static void Configure(this Configuration config)
+        public static void Configure(Configuration config)
         {
-            if (DbConfig.Instance.RecreateDb)
+            if (DatabaseConfig.Instance.RecreateDb)
                 RecreateDatabase(config);   /// WARNING: Do not use in production
             else
                 UpdateDatabase(config);     /// NOTE: Applies in production
@@ -20,7 +20,7 @@ namespace AmpedBiz.Data.Configurations
         {
             //new SchemaExport(config).Create(true, true);
 
-            var schemaPath = Path.Combine(DbConfig.Instance.GetWorkingPath("Schemas"), "schema.sql");
+            var schemaPath = Path.Combine(DatabaseConfig.Instance.GetWorkingPath("Schemas"), "schema.sql");
 
             new SchemaExport(config)
                 .SetOutputFile(schemaPath)

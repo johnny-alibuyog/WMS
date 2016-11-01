@@ -1,11 +1,11 @@
-﻿using System;
+﻿using NHibernate;
+using NHibernate.AdoNet;
+using Npgsql;
+using System;
 using System.Collections;
 using System.Data;
 using System.Diagnostics;
 using System.Text;
-using NHibernate.AdoNet;
-using Npgsql;
-using NHibernate;
 
 namespace AmpedBiz.Data.Configurations
 {

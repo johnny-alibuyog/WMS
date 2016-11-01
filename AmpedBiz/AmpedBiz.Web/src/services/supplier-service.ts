@@ -1,6 +1,7 @@
 import {autoinject} from 'aurelia-framework';
-import {Supplier} from '../common/models/supplier'
+import {Supplier, SupplierReportPageItem} from '../common/models/supplier'
 import {ProductInventory} from '../common/models/product';
+import {PageRequest, PagerResponse} from '../common/models/paging';
 import {ServiceBase} from './service-base'
 import {HttpClientFacade} from './http-client-facade';
 import {Lookup} from '.././common/custom_types/lookup';
@@ -27,5 +28,11 @@ export class SupplierService extends ServiceBase<Supplier> {
     var url = "supplier-lookups";
     return this._httpClient.get(url)
       .then(data => <Lookup<string>[]>data);
+  }
+
+  getSupplierReportPage(page: PageRequest): Promise<PagerResponse<SupplierReportPageItem>> {
+    var url = this._resouce + '/report/page';
+    return this._httpClient.post(url, page)
+      .then(response => <PagerResponse<SupplierReportPageItem>>response);
   }
 }

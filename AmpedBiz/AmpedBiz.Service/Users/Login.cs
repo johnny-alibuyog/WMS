@@ -25,15 +25,14 @@ namespace AmpedBiz.Service.Users
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var user = session.Query<User>()
-                        .Where(x => 
+                    var user = session.QueryOver<User>()
+                        .Where(x =>
                             x.Username == message.Username &&
                             x.Password == message.Password
                         )
-                        .Fetch(x => x.Branch)
-                        .FetchMany(x => x.UserRoles)
-                        .ThenFetch(x => x.Role)
-                        .FirstOrDefault();
+                        .Fetch(x => x.Branch).Eager
+                        .Fetch(x => x.Roles).Eager
+                        .SingleOrDefault();
 
                     if (user == null)
                         throw new BusinessException("Invalid username or password!");

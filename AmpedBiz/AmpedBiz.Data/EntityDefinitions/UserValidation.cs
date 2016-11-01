@@ -26,7 +26,7 @@ namespace AmpedBiz.Data.EntityDefinitions
             Define(x => x.Branch)
                 .IsValid();
 
-            Define(x => x.UserRoles)
+            Define(x => x.Roles)
                 .HasValidElements();
         }
     }

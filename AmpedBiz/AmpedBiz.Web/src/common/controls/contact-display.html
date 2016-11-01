@@ -1,3 +1,7 @@
 <template bindable="contact">
-  Email: ${contact.email}, Landline: ${contact.landline}, Fax: ${contact.fax}, Mobile: ${contact.mobile}, Web: ${contact.web}
+  <span if.bind="contact.email">Email: ${contact.email}<br/></span>
+  <span if.bind="contact.landline">Landline: ${contact.landline}<br/></span>
+  <span if.bind="contact.fax">Fax: ${contact.fax}<br/></span>
+  <span if.bind="contact.mobile">Mobile: ${contact.mobile}<br/></span>
+  <span if.bind="contact.web">Web: ${contact.web}<br/></span>
 </template>

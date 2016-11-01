@@ -1,0 +1,11 @@
+﻿{
+  "Database": "Postgres",
+  "Port": 5432,
+  "Host": "localhost",
+  "Name": "RH9Ump7O6tMEbv9IQwMUpA==",
+  "Username": "hJGpfBVaZbafhK4FXm3leg==",
+  "Password": "hJGpfBVaZbafhK4FXm3leg==",
+  "BatchSize": 50,
+  "UseDummyData": true,
+  "RecreateDb": true
+}

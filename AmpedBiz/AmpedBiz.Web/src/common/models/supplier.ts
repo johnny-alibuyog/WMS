@@ -14,3 +14,10 @@ export interface SupplierPageItem {
   address?: Address;
   contact?: Contact;
 }
+
+export interface SupplierReportPageItem {
+  id?: string;
+  name?: string;
+  contact?: Contact;
+  address?: Address;
+}

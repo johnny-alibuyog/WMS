@@ -1,6 +1,6 @@
-import {appConfig} from '../app-config';
 import * as moment from 'moment';
 import * as numeral from 'numeral';
+import {appConfig} from '../app-config';
 import {Address} from '../common/models/address';
 import {Contact} from '../common/models/contact';
 
@@ -29,6 +29,9 @@ export function formatNumber(value: number, format?: string): string {
 }
 
 export function addressAsTring(value: Address): string {
+  if (value == null)
+    return '';
+
   let result = '';
   result += value.street ? `${value.street} ` : '';
   result += value.barangay ? `${value.barangay} ` : '';
@@ -36,18 +39,21 @@ export function addressAsTring(value: Address): string {
   result += value.city ? `${value.city} ` : '';
   result += value.country ? `${value.country} ` : '';
   result += value.zipCode ? `${value.zipCode} ` : '';
-  return result; 
+  return result;
 }
 
-export function contactAsString(value: Contact): string{
+export function contactAsString(value: Contact): string {
+  if (value == null)
+    return '';
+
   let result = '';
   result += value.email ? `Email: ${value.email}\n` : '';
   result += value.landline ? `Landline: ${value.landline}\n` : '';
   result += value.fax ? `Fax: ${value.fax}\n` : '';
   result += value.mobile ? `Mobile: ${value.mobile}\n` : '';
   result += value.web ? `Web: ${value.web}\n` : '';
-  return result; 
-} 
+  return result;
+}
 
 export function emptyIfNull(value: string) {
   return value || '';
