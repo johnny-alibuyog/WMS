@@ -1,0 +1,11 @@
+﻿{
+  "Database": "Postgres",
+  "Port": 5432,
+  "Host": "localhost",
+  "Name": "ampedbizdb",
+  "Username": "postgres",
+  "Password": "hJGpfBVaZbafhK4FXm3leg==",
+  "BatchSize": 50,
+  "UseDummyData": true,
+  "RecreateDb": true
+}

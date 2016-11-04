@@ -1,3 +1,0 @@
-choco install mysql -y
-choco install mysql.workbench -y
-choco install mysql-connector -y

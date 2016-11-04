@@ -56,7 +56,7 @@ namespace AmpedBiz.Service.Suppliers
                     var itemsFuture = query
                         .Select(x => new Dto.SupplierPageItem()
                         {
-                            Id = x.Id.ToString(),
+                            Id = x.Id,
                             Name = x.Name,
                             Address = x.Address.MapTo(default(Dto.Address)),
                             Contact = x.Contact.MapTo(default(Dto.Contact)),

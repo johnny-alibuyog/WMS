@@ -1,0 +1,11 @@
+﻿{
+  "Database": "MySql",
+  "Port": 3306,
+  "HostServer": "mysql5005.mywindowshosting.com",
+  "Name": "db_a123b7_ampbiz",
+  "Username": "a123b7_ampbiz",
+  "Password": "6jPbwQtZ8N52WRJ5rEWv2g==",
+  "BatchSize": 50,
+  "UseDummyData": true,
+  "RecreateDb": true
+}

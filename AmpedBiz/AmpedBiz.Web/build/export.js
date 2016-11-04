@@ -5,6 +5,7 @@ module.exports = {
   'list': [
     'index.html',
     'config.js',
+    'assets/**',
     'favicon.ico',
     'LICENSE',
     'jspm_packages/system.js',

@@ -15,7 +15,7 @@ namespace AmpedBiz.Service.Dto
 
     public class SupplierPageItem
     {
-        public virtual string Id { get; set; }
+        public virtual Guid Id { get; set; }
 
         public virtual string Name { get; set; }
 

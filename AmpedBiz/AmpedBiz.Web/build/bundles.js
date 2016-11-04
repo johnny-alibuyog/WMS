@@ -2,6 +2,7 @@ module.exports = {
   "bundles": {
     "dist/app-build": {
       "includes": [
+        //"*",
         "[**/*.js]",
         "**/*.html!text",
         "**/*.css!text"
@@ -28,10 +29,13 @@ module.exports = {
         "aurelia-loader-default",
         "aurelia-history-browser",
         "aurelia-logging-console",
+        "aurelia-validation",
         "bootstrap",
         "bootstrap/css/bootstrap.css!text",
         "fetch",
-        "jquery"
+        "moment",
+        "numeral",
+        /*"jquery"*/
       ],
       "options": {
         "inject": true,

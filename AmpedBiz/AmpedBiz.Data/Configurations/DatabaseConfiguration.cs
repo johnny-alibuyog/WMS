@@ -71,5 +71,21 @@ namespace AmpedBiz.Data.Configurations
                 .FormatSql()
                 .ShowSql();
         }
+
+        private static IPersistenceConfigurer ConfigureSqlLite()
+        {
+            return MySQLConfiguration.Standard
+                .ConnectionString(x => x
+                    .Server(DatabaseConfig.Instance.HostServer)
+                    .Database(DatabaseConfig.Instance.Name)
+                    .Username(DatabaseConfig.Instance.Username)
+                    .Password(DatabaseConfig.Instance.Password)
+                )
+                .QuerySubstitutions("true 1, false 0, yes y, no n")
+                .DefaultSchema(DatabaseConfig.Instance.Name)
+                .AdoNetBatchSize(1)
+                .FormatSql()
+                .ShowSql();
+        }
     }
 }

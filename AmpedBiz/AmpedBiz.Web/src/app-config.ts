@@ -1,24 +1,14 @@
 // https://auth0.com/blog/2015/08/05/creating-your-first-aurelia-app-from-authentication-to-calling-an-api/
-/*
-var appConfig = {
-  serviceApiUrl: 'http://localhost:49242',
-}
-
-export default appConfig;
-*/
 import {PageConfig} from './common/controls/pager';
+
+var apiHosts = {
+  'localhost': 'http://localhost:49242',
+  'ampbiz.gear.host': 'http://ampbiz-api.gear.host', 
+};
 
 export let appConfig = {
   api: {
-    baseUrl: 'http://localhost:49242',
-  },
-  reportMapping: {
-    baseUrl: 'http://localhost:64038/ReportViewers/MainViewer.aspx?DFD18FD7-9D34-4692-B7F9-7E54BFB4B0EB=',
-    priceList: 'ucpricelistselector.ascx',
-    uom: 'ucUOMDetails.ascx',
-    customerList: 'ucCustomerList.ascx',
-    supplierList: 'ucSupplierList.ascx',
-    orderList:'ucOrderListSelector.ascx'
+    baseUrl: apiHosts[window.location.hostname],
   },
   page: <PageConfig>{
     maxSize: 5,

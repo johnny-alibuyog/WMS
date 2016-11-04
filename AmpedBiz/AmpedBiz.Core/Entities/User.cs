@@ -45,8 +45,7 @@ namespace AmpedBiz.Core.Entities
 
             foreach (var role in rolesToAdd)
             {
-                var item = new Role();
-                this.Roles.Add(item);
+                this.Roles.Add(role);
             }
         }
 

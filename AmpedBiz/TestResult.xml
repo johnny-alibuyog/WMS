@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-run id="2" testcasecount="4" result="Failed" total="4" passed="2" failed="2" inconclusive="0" skipped="0" asserts="28" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2016-11-02 11:17:00Z" end-time="2016-11-02 11:17:17Z" duration="17.578397">
+  <command-line><![CDATA["C:/tinda/trunk/ampedbiz/tools/NUnit.ConsoleRunner/tools/nunit3-console.exe" "C:/tinda/trunk/ampedbiz/AmpedBiz.Tests/bin/Release/AmpedBiz.Tests.dll"]]></command-line>
+  <test-suite type="Assembly" id="0-1007" name="AmpedBiz.Tests.dll" fullname="C:\tinda\trunk\ampedbiz\AmpedBiz.Tests\bin\Release\AmpedBiz.Tests.dll" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2016-11-02 11:17:00Z" end-time="2016-11-02 11:17:17Z" duration="17.513423" total="4" passed="2" failed="2" inconclusive="0" skipped="0" asserts="28">
+    <environment framework-version="3.5.0.0" clr-version="4.0.30319.42000" os-version="Microsoft Windows NT 10.0.14393.0" platform="Win32NT" cwd="C:\tinda\trunk\ampedbiz" machine-name="VBOX-WIN-10" user="rdit" user-domain="VBOX-WIN-10" culture="en-US" uiculture="en-US" os-architecture="x64" />
+    <settings>
+      <setting name="DisposeRunners" value="True" />
+      <setting name="WorkDirectory" value="C:\tinda\trunk\ampedbiz" />
+      <setting name="ImageRuntimeVersion" value="4.0.30319" />
+      <setting name="ImageTargetFrameworkName" value=".NETFramework,Version=v4.6.1" />
+      <setting name="ImageRequiresX86" value="False" />
+      <setting name="ImageRequiresDefaultAppDomainAssemblyResolver" value="False" />
+      <setting name="NumberOfTestWorkers" value="3" />
+    </settings>
+    <properties>
+      <property name="_PID" value="8844" />
+      <property name="_APPDOMAIN" value="test-domain-" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="TestSuite" id="0-1008" name="AmpedBiz" fullname="AmpedBiz" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2016-11-02 11:17:00Z" end-time="2016-11-02 11:17:17Z" duration="17.485502" total="4" passed="2" failed="2" inconclusive="0" skipped="0" asserts="28">
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="0-1009" name="Tests" fullname="AmpedBiz.Tests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2016-11-02 11:17:00Z" end-time="2016-11-02 11:17:17Z" duration="17.481572" total="4" passed="2" failed="2" inconclusive="0" skipped="0" asserts="28">
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="0-1011" name="IntegrationTests" fullname="AmpedBiz.Tests.IntegrationTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2016-11-02 11:17:00Z" end-time="2016-11-02 11:17:17Z" duration="17.334001" total="3" passed="1" failed="2" inconclusive="0" skipped="0" asserts="0">
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="0-1002" name="IntegrationTests" fullname="AmpedBiz.Tests.IntegrationTests.IntegrationTests" classname="AmpedBiz.Tests.IntegrationTests.IntegrationTests" runstate="Runnable" testcasecount="2" result="Failed" label="Error" site="SetUp" start-time="2016-11-02 11:17:00Z" end-time="2016-11-02 11:17:17Z" duration="17.252448" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+            <failure>
+              <message><![CDATA[FluentNHibernate.Cfg.FluentConfigurationException : An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.
+
+
+  ----> FluentNHibernate.Cfg.FluentConfigurationException : An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.
+
+
+  ----> NHibernate.HibernateException : Table 'roles' already exists
+  ----> MySql.Data.MySqlClient.MySqlException : Table 'roles' already exists]]></message>
+              <stack-trace><![CDATA[   at FluentNHibernate.Cfg.FluentConfiguration.BuildSessionFactory()
+   at AmpedBiz.Data.SessionFactoryProvider.GetSessionFactory() in C:\tinda\trunk\ampedbiz\AmpedBiz.Data\SessionFactoryProvider.cs:line 24
+   at AmpedBiz.Tests.IntegrationTests.IntegrationTests.SetupTest() in C:\tinda\trunk\ampedbiz\AmpedBiz.Tests\IntegrationTests\IntegrationTests.cs:line 95
+--FluentConfigurationException
+   at FluentNHibernate.Cfg.FluentConfiguration.BuildConfiguration()
+   at FluentNHibernate.Cfg.FluentConfiguration.BuildSessionFactory()
+--HibernateException
+   at NHibernate.Tool.hbm2ddl.SchemaExport.Execute(Action`1 scriptAction, Boolean execute, Boolean justDrop, TextWriter exportOutput)
+   at AmpedBiz.Data.Configurations.SchemaConfiguration.RecreateDatabase(Configuration config) in C:\tinda\trunk\ampedbiz\AmpedBiz.Data\Configurations\SchemaConfiguration.cs:line 29
+   at FluentNHibernate.Cfg.FluentConfiguration.BuildConfiguration()
+--MySqlException
+   at MySql.Data.MySqlClient.MySqlStream.ReadPacket()
+   at MySql.Data.MySqlClient.NativeDriver.GetResult(Int32& affectedRow, Int64& insertedId)
+   at MySql.Data.MySqlClient.Driver.NextResult(Int32 statementId, Boolean force)
+   at MySql.Data.MySqlClient.MySqlDataReader.NextResult()
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteReader(CommandBehavior behavior)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteNonQuery()
+   at NHibernate.Tool.hbm2ddl.SchemaExport.ExecuteSql(IDbCommand cmd, String sql)
+   at NHibernate.Tool.hbm2ddl.SchemaExport.Execute(Action`1 scriptAction, Boolean execute, Boolean throwOnError, TextWriter exportOutput, IDbCommand statement, String sql)
+   at NHibernate.Tool.hbm2ddl.SchemaExport.Execute(Action`1 scriptAction, Boolean execute, Boolean justDrop, IDbConnection connection, TextWriter exportOutput)
+   at NHibernate.Tool.hbm2ddl.SchemaExport.Execute(Action`1 scriptAction, Boolean execute, Boolean justDrop, TextWriter exportOutput)]]></stack-trace>
+            </failure>
+            <test-case id="0-1003" name="CommonScenarioTests" fullname="AmpedBiz.Tests.IntegrationTests.IntegrationTests.CommonScenarioTests" methodname="CommonScenarioTests" classname="AmpedBiz.Tests.IntegrationTests.IntegrationTests" runstate="Runnable" seed="1535612468" result="Failed" label="Error" site="Parent" start-time="0001-01-01 00:00:00Z" end-time="0001-01-01 00:00:00Z" duration="0.000000" asserts="0">
+              <failure>
+                <message><![CDATA[OneTimeSetUp: FluentNHibernate.Cfg.FluentConfigurationException : An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.
+
+
+  ----> FluentNHibernate.Cfg.FluentConfigurationException : An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.
+
+
+  ----> NHibernate.HibernateException : Table 'roles' already exists
+  ----> MySql.Data.MySqlClient.MySqlException : Table 'roles' already exists]]></message>
+              </failure>
+            </test-case>
+            <test-case id="0-1004" name="Testing" fullname="AmpedBiz.Tests.IntegrationTests.IntegrationTests.Testing" methodname="Testing" classname="AmpedBiz.Tests.IntegrationTests.IntegrationTests" runstate="Runnable" seed="1092770828" result="Failed" label="Error" site="Parent" start-time="0001-01-01 00:00:00Z" end-time="0001-01-01 00:00:00Z" duration="0.000000" asserts="0">
+              <failure>
+                <message><![CDATA[OneTimeSetUp: FluentNHibernate.Cfg.FluentConfigurationException : An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.
+
+
+  ----> FluentNHibernate.Cfg.FluentConfigurationException : An invalid or incomplete configuration was used while creating a SessionFactory. Check PotentialReasons collection, and InnerException for more detail.
+
+
+  ----> NHibernate.HibernateException : Table 'roles' already exists
+  ----> MySql.Data.MySqlClient.MySqlException : Table 'roles' already exists]]></message>
+              </failure>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="0-1005" name="OrderTest" fullname="AmpedBiz.Tests.IntegrationTests.OrderTest" classname="AmpedBiz.Tests.IntegrationTests.OrderTest" runstate="Runnable" testcasecount="1" result="Passed" start-time="2016-11-02 11:17:17Z" end-time="2016-11-02 11:17:17Z" duration="0.061667" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <test-case id="0-1006" name="Test" fullname="AmpedBiz.Tests.IntegrationTests.OrderTest.Test" methodname="Test" classname="AmpedBiz.Tests.IntegrationTests.OrderTest" runstate="Runnable" seed="871683472" result="Passed" start-time="2016-11-02 11:17:17Z" end-time="2016-11-02 11:17:17Z" duration="0.057816" asserts="0" />
+          </test-suite>
+        </test-suite>
+        <test-suite type="TestSuite" id="0-1010" name="UnitTests" fullname="AmpedBiz.Tests.UnitTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2016-11-02 11:17:00Z" end-time="2016-11-02 11:17:17Z" duration="17.474628" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="28">
+          <test-suite type="TestFixture" id="0-1000" name="MappingTest" fullname="AmpedBiz.Tests.UnitTests.MappingTest" classname="AmpedBiz.Tests.UnitTests.MappingTest" runstate="Runnable" testcasecount="1" result="Passed" start-time="2016-11-02 11:17:17Z" end-time="2016-11-02 11:17:17Z" duration="0.137714" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="28">
+            <test-case id="0-1001" name="ShouldMapAddress" fullname="AmpedBiz.Tests.UnitTests.MappingTest.ShouldMapAddress" methodname="ShouldMapAddress" classname="AmpedBiz.Tests.UnitTests.MappingTest" runstate="Runnable" seed="1520194070" result="Passed" start-time="2016-11-02 11:17:17Z" end-time="2016-11-02 11:17:17Z" duration="0.116315" asserts="28" />
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

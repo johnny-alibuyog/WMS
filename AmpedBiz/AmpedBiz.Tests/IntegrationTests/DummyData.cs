@@ -1,10 +1,8 @@
-﻿using System;
+﻿using AmpedBiz.Common.CustomTypes;
+using AmpedBiz.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AmpedBiz.Core.Entities;
-using AmpedBiz.Common.CustomTypes;
 
 namespace AmpedBiz.Tests.IntegrationTests
 {

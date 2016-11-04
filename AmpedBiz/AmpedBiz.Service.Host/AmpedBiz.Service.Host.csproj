@@ -236,6 +236,19 @@
     <Compile Include="Plugins\Providers\AuditProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="database.config.json" />
+    <Content Include="database.local.mysql.config.json">
+      <DependentUpon>database.config.json</DependentUpon>
+    </Content>
+    <Content Include="database.local.postgres.config.json">
+      <DependentUpon>database.config.json</DependentUpon>
+    </Content>
+    <Content Include="database.staging.gear.host.config.json">
+      <DependentUpon>database.config.json</DependentUpon>
+    </Content>
+    <Content Include="database.staging.mywindowshosting.config.json">
+      <DependentUpon>database.config.json</DependentUpon>
+    </Content>
     <Content Include="Global.asax" />
     <Content Include="index.html" />
     <Content Include="Web.config" />
@@ -264,12 +277,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="database.mysql.config.json" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="database.postgres.config.json" />
-    <None Include="Properties\PublishProfiles\AmpedBiz.Service.Host.IIS.pubxml" />
+    <None Include="Properties\PublishProfiles\ampbiz-api.mywindowshosting.pubxml" />
+    <None Include="Properties\PublishProfiles\ampbiz-api.localhost.pubxml" />
+    <None Include="Properties\PublishProfiles\ampbiz-api.gear.host.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

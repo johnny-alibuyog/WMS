@@ -35,15 +35,60 @@ namespace AmpedBiz.Common.Configurations
 
         public DatabaseConfig()
         {
+            // gear.host
             this.Database = DatabaseProvider.MySql;
             this.Port = 3306;
-            this.HostServer = "localhost";
-            this.Name = "ampedbizdb";
-            this.Username = "root";
-            this.Password = "mysql";
+            this.HostServer = "mysql3.gear.host";
+            this.Name = "ampbizdb";
+            this.Username = "ampbizdb";
+            this.Password = "123!@#qwe";
             this.BatchSize = 50;
             this.UseDummyData = true;
             this.RecreateDb = true;
+
+            // staging.gear.host
+            //this.Database = DatabaseProvider.MySql;
+            //this.Port = 3306;
+            //this.HostServer = "mysql3.gear.host";
+            //this.Name = "ampbizdb";
+            //this.Username = "ampbizdb";
+            //this.Password = "123!@#qwe";
+            //this.BatchSize = 50;
+            //this.UseDummyData = true;
+            //this.RecreateDb = true;
+
+            // staging.mywindowshosting
+            //this.Database = DatabaseProvider.MySql;
+            //this.Port = 3306;
+            //this.HostServer = "mysql5005.mywindowshosting.com";
+            //this.Name = "db_a123b7_ampbiz";
+            //this.Username = "a123b7_ampbiz";
+            //this.Password = "123!@#qwe";
+            //this.BatchSize = 50;
+            //this.UseDummyData = true;
+            //this.RecreateDb = true;
+
+            // local.mysql
+            //this.Database = DatabaseProvider.MySql;
+            //this.Port = 3306;
+            //this.HostServer = "localhost";
+            //this.Name = "ampedbizdb";
+            //this.Username = "root";
+            //this.Password = "mysql";
+            //this.BatchSize = 50;
+            //this.UseDummyData = true;
+            //this.RecreateDb = true;
+
+            // local.postgres
+            //this.Database = DatabaseProvider.MySql;
+            //this.Port = 3306;
+            //this.HostServer = "localhost";
+            //this.Name = "ampedbizdb";
+            //this.Username = "postgres";
+            //this.Password = "postgres";
+            //this.BatchSize = 50;
+            //this.UseDummyData = true;
+            //this.RecreateDb = true;
         }
 
         private static DatabaseConfig Create()
@@ -60,7 +105,7 @@ namespace AmpedBiz.Common.Configurations
             this.Provider = new JsonFileConfigurationProvider<DatabaseConfig>()
             {
                 EncryptionKey = "seekrit123",
-                PropertiesToEncrypt = "Name,Username,Password",
+                PropertiesToEncrypt = "Password",
                 JsonConfigurationFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "database.config.json"),
             };
 

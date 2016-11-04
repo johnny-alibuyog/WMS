@@ -15,6 +15,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Core", "AmpedBiz.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Tests", "AmpedBiz.Tests\AmpedBiz.Tests.csproj", "{067456C0-086C-46A8-B37F-1405717B7BFC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{70BE7ED3-4A64-47C4-96DB-9B96FA08846D}"
+	ProjectSection(SolutionItems) = preProject
+		ampbiz-api.publishsettings.xml = ampbiz-api.publishsettings.xml
+		ampbiz.publishsettings.xml = ampbiz.publishsettings.xml
+		build.cake = build.cake
+		build.ps1 = build.ps1
+		cake.config = cake.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

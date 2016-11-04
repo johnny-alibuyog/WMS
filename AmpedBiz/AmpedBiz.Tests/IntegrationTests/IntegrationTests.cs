@@ -1,5 +1,4 @@
 ﻿using AmpedBiz.Common.CustomTypes;
-using AmpedBiz.Core;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Data;
 using AmpedBiz.Data.Seeders;
@@ -11,6 +10,7 @@ using AmpedBiz.Service.Orders;
 using AmpedBiz.Service.Products;
 using AmpedBiz.Service.PurchaseOrders;
 using AmpedBiz.Service.Suppliers;
+using AmpedBiz.Service.Tests.Configurations.Database;
 using AmpedBiz.Service.Users;
 using NHibernate;
 using NHibernate.Linq;
@@ -68,7 +68,6 @@ namespace AmpedBiz.Tests.IntegrationTests
         private readonly Random random = new Random();
 
         private ISessionFactory sessionFactory;
-        private IAuditProvider auditProvider;
 
         private List<Role> _roles = new List<Role>();
         private List<User> _users = new List<User>();
@@ -86,25 +85,26 @@ namespace AmpedBiz.Tests.IntegrationTests
         private Service.Common.Pager pager = new Service.Common.Pager() { Offset = 1, Size = 1000 };
         private Service.Common.Sorter sorter = new Service.Common.Sorter() { };
 
-        public IntegrationTests()
-        {
-        }
+        public IntegrationTests() { }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetupTest()
         {
             new Mapper().Initialze();
 
-            this.auditProvider = new AuditProvider();
-            this.sessionFactory = new SessionFactoryProvider(new ValidatorEngine(), this.auditProvider).GetSessionFactory();
+            this.sessionFactory = new SessionFactoryProvider(
+                    validator: new ValidatorEngine(),
+                    auditProvider: new AuditProvider()
+                )
+                .WithBatcher(BatcherConfiguration.Configure)
+                .GetSessionFactory();
 
             this.SetupDefaultSeeders();
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TeardownTest()
         {
-            this.auditProvider = null;
             this.sessionFactory = null;
         }
 
@@ -113,6 +113,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             var seeders = (
                 from t in AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("AmpedBiz.Data")).GetTypes()
                 where t.GetInterfaces().Contains(typeof(IDefaultDataSeeder))
+                orderby t.Name
                 select Activator.CreateInstance(t, this.sessionFactory) as IDefaultDataSeeder
             );
 
@@ -269,6 +270,13 @@ namespace AmpedBiz.Tests.IntegrationTests
                 users.Add(handler as Service.Dto.User);
             }
 
+            using (var session = sessionFactory.OpenSession())
+            using (var transaction = session.BeginTransaction())
+            {
+                this._users = session.Query<User>().ToList();
+                transaction.Commit();
+            }
+
             return users;
         }
 
@@ -297,6 +305,13 @@ namespace AmpedBiz.Tests.IntegrationTests
                 customers.Add(handler as Service.Dto.Customer);
             }
 
+            using (var session = sessionFactory.OpenSession())
+            using (var transaction = session.BeginTransaction())
+            {
+                this._customers = session.Query<Customer>().ToList();
+                transaction.Commit();
+            }
+
             return customers;
         }
 
@@ -319,6 +334,13 @@ namespace AmpedBiz.Tests.IntegrationTests
                 var handler = new CreateSupplier.Handler(this.sessionFactory).Handle(request);
 
                 suppliers.Add(handler as Service.Dto.Supplier);
+            }
+
+            using (var session = sessionFactory.OpenSession())
+            using (var transaction = session.BeginTransaction())
+            {
+                this._suppliers = session.Query<Supplier>().ToList();
+                transaction.Commit();
             }
 
             return suppliers;
@@ -363,6 +385,17 @@ namespace AmpedBiz.Tests.IntegrationTests
 
                 products.Add(handler as Service.Dto.Product);
             }
+
+            //using (var session = sessionFactory.OpenSession())
+            //using (var transaction = session.BeginTransaction())
+            //{
+            //    var ids = products.Select(x => x.Id);
+            //    var fromDb = session.Query<Product>()
+            //        .Where(x => ids.Contains(x.Id))
+            //        .ToList();
+
+            //    this._products.Concat(fromDb);
+            //}
 
             return products;
         }
@@ -684,13 +717,11 @@ namespace AmpedBiz.Tests.IntegrationTests
         {
             //-----Create Users -----
             var users = this.CreateUsers(5);
-
             CollectionAssert.IsNotEmpty(users);
             CollectionAssert.AllItemsAreNotNull(users);
 
             //-----Create Customers-----
             var customers = this.CreateCustomers(10);
-
             CollectionAssert.IsNotEmpty(customers);
             CollectionAssert.AllItemsAreNotNull(customers);
 
@@ -705,7 +736,6 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             //Create Products
             var products = this.CreateProducts(20);
-
             CollectionAssert.IsNotEmpty(products);
             CollectionAssert.AllItemsAreNotNull(products);
 

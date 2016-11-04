@@ -24,7 +24,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         {
             var data = new List<Product>();
 
-            for (int i = 0; i < 580; i++)
+            for (int i = 0; i < 150; i++)
             {
                 data.Add(new Product()
                 {
@@ -37,7 +37,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
             using (var session = _sessionFactory.RetrieveSharedSession())
             using (var transaction = session.BeginTransaction())
             {
-                //session.SetBatchSize(100);
+                session.SetBatchSize(100);
 
                 var exists = session.Query<Product>().Any();
                 if (!exists)
