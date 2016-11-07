@@ -38,7 +38,7 @@ namespace AmpedBiz.Common.Configurations
             // gear.host
             this.Database = DatabaseProvider.MySql;
             this.Port = 3306;
-            this.HostServer = "mysql3.gear.host";
+            this.HostServer = "mysql2.gear.host";
             this.Name = "ampbizdb";
             this.Username = "ampbizdb";
             this.Password = "123!@#qwe";

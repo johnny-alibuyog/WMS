@@ -114,7 +114,7 @@ Task("Deploy")
         DeployWebsite(new DeploySettings()
         {
             SourcePath = "./AmpedBiz.Service.Host/obj/Release/Package/AmpedBiz.Service.Host.zip",
-			PublishUrl = "https://publish.gear.host:8172/msdeploy.axd",
+			PublishUrl = "publish.gear.host",
 			SiteName = "ampbiz-api",
             Username = "$ampbiz-api",
             Password = "ZHPsTLr8JReX0G8g0TwPm06AfGfpm4cX2t4kPh0ofAl5LTg3xiGn1B9FLSwM"

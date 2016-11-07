@@ -280,6 +280,8 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Properties\PublishProfiles\ampbiz-api - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\ampbiz-api - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\ampbiz-api.mywindowshosting.pubxml" />
     <None Include="Properties\PublishProfiles\ampbiz-api.localhost.pubxml" />
     <None Include="Properties\PublishProfiles\ampbiz-api.gear.host.pubxml" />

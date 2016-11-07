@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Data", "AmpedBiz.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Service", "AmpedBiz.Service\AmpedBiz.Service.csproj", "{83FA9462-8A6F-417B-8575-5B1CA054DBCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Service.Host", "AmpedBiz.Service.Host\AmpedBiz.Service.Host.csproj", "{EEC4D7F9-9FD5-41D1-900F-565057FE61FE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Core", "AmpedBiz.Core\AmpedBiz.Core.csproj", "{884D49EA-500B-4AD5-995A-22E48558B1F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Tests", "AmpedBiz.Tests\AmpedBiz.Tests.csproj", "{067456C0-086C-46A8-B37F-1405717B7BFC}"
@@ -22,7 +20,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		build.cake = build.cake
 		build.ps1 = build.ps1
 		cake.config = cake.config
+		deploy.cmd = deploy.cmd
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Service.Host", "AmpedBiz.Service.Host\AmpedBiz.Service.Host.csproj", "{EEC4D7F9-9FD5-41D1-900F-565057FE61FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,10 +43,6 @@ Global
 		{83FA9462-8A6F-417B-8575-5B1CA054DBCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83FA9462-8A6F-417B-8575-5B1CA054DBCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83FA9462-8A6F-417B-8575-5B1CA054DBCF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EEC4D7F9-9FD5-41D1-900F-565057FE61FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EEC4D7F9-9FD5-41D1-900F-565057FE61FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EEC4D7F9-9FD5-41D1-900F-565057FE61FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EEC4D7F9-9FD5-41D1-900F-565057FE61FE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{884D49EA-500B-4AD5-995A-22E48558B1F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{884D49EA-500B-4AD5-995A-22E48558B1F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{884D49EA-500B-4AD5-995A-22E48558B1F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -54,6 +51,10 @@ Global
 		{067456C0-086C-46A8-B37F-1405717B7BFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{067456C0-086C-46A8-B37F-1405717B7BFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{067456C0-086C-46A8-B37F-1405717B7BFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEC4D7F9-9FD5-41D1-900F-565057FE61FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEC4D7F9-9FD5-41D1-900F-565057FE61FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEC4D7F9-9FD5-41D1-900F-565057FE61FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEC4D7F9-9FD5-41D1-900F-565057FE61FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

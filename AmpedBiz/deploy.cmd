@@ -1,0 +1,1 @@
+msbuild ./AmpedBiz.Service.Host/AmpedBiz.Service.Host.proj /t:ampbiz-api.gear.host
