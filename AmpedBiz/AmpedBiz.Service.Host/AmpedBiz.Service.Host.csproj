@@ -236,18 +236,18 @@
     <Compile Include="Plugins\Providers\AuditProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="database.config.json" />
+    <Content Include="database.ref.config.json" />
     <Content Include="database.local.mysql.config.json">
-      <DependentUpon>database.config.json</DependentUpon>
+      <DependentUpon>database.ref.config.json</DependentUpon>
     </Content>
     <Content Include="database.local.postgres.config.json">
-      <DependentUpon>database.config.json</DependentUpon>
+      <DependentUpon>database.ref.config.json</DependentUpon>
     </Content>
     <Content Include="database.staging.gear.host.config.json">
-      <DependentUpon>database.config.json</DependentUpon>
+      <DependentUpon>database.ref.config.json</DependentUpon>
     </Content>
     <Content Include="database.staging.mywindowshosting.config.json">
-      <DependentUpon>database.config.json</DependentUpon>
+      <DependentUpon>database.ref.config.json</DependentUpon>
     </Content>
     <Content Include="Global.asax" />
     <Content Include="index.html" />

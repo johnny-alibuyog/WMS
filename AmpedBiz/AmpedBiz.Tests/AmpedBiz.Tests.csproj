@@ -102,6 +102,7 @@
     <Compile Include="Configurations\Database\PostgresBatcherFactory.cs">
       <DependentUpon>BatcherConfiguration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Configurations\AuditProvider.cs" />
     <Compile Include="IntegrationTests\DummyData.cs" />
     <Compile Include="IntegrationTests\IntegrationTests.cs" />
     <Compile Include="IntegrationTests\OrderTest.cs" />

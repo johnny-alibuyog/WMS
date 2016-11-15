@@ -17,7 +17,14 @@ export class Index {
         title: 'Branches',
         settings: {
           auth: <AuthSettings>{
-            roles: role.unknownRole
+            roles: [
+              role.admin,
+              role.encoder,
+              role.manager,
+              role.sales,
+              role.supperAdmin,
+              role.warehouse
+            ]
           }
         },
       },

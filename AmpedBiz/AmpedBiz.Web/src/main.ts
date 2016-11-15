@@ -9,7 +9,7 @@ export function configure(aurelia: Aurelia) {
     .plugin('common/global-resources')
     .plugin('aurelia-dialog', config => {
       config.useDefaults();
-      config.settings.lock = true;
+      config.settings.lock = false;
       config.settings.centerVerticalOnly = true;
       config.settings.startingZIndex = 5;
     })

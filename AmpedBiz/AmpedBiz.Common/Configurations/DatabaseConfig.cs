@@ -35,17 +35,6 @@ namespace AmpedBiz.Common.Configurations
 
         public DatabaseConfig()
         {
-            // gear.host
-            this.Database = DatabaseProvider.MySql;
-            this.Port = 3306;
-            this.HostServer = "mysql2.gear.host";
-            this.Name = "ampbizdb";
-            this.Username = "ampbizdb";
-            this.Password = "123!@#qwe";
-            this.BatchSize = 50;
-            this.UseDummyData = true;
-            this.RecreateDb = true;
-
             // staging.gear.host
             //this.Database = DatabaseProvider.MySql;
             //this.Port = 3306;
@@ -74,21 +63,21 @@ namespace AmpedBiz.Common.Configurations
             //this.HostServer = "localhost";
             //this.Name = "ampedbizdb";
             //this.Username = "root";
-            //this.Password = "mysql";
+            //this.Password = "123!@#qwe";
             //this.BatchSize = 50;
             //this.UseDummyData = true;
             //this.RecreateDb = true;
 
             // local.postgres
-            //this.Database = DatabaseProvider.MySql;
-            //this.Port = 3306;
-            //this.HostServer = "localhost";
-            //this.Name = "ampedbizdb";
-            //this.Username = "postgres";
-            //this.Password = "postgres";
-            //this.BatchSize = 50;
-            //this.UseDummyData = true;
-            //this.RecreateDb = true;
+            this.Database = DatabaseProvider.Postgres;
+            this.Port = 5432;
+            this.HostServer = "localhost";
+            this.Name = "ampedbizdb";
+            this.Username = "postgres";
+            this.Password = "123!@#qwe";
+            this.BatchSize = 50;
+            this.UseDummyData = false;
+            this.RecreateDb = true;
         }
 
         private static DatabaseConfig Create()

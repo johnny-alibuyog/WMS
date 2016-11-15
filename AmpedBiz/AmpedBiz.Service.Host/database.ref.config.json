@@ -4,7 +4,7 @@
   "Host": "localhost",
   "Name": "ampedbizdb",
   "Username": "root",
-  "Password": "hJGpfBVaZbafhK4FXm3leg==",
+  "Password": "hJGpfBVaZbafhK4FXm3leg",
   "BatchSize": 50,
   "UseDummyData": true,
   "RecreateDb": true
