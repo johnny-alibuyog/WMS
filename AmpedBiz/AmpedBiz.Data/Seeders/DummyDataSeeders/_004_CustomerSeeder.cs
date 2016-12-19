@@ -21,7 +21,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var data = Enumerable.Range(1, 153)
+                var data = Enumerable.Range(1, 6)
                     .Select((x, i) => new Customer($"customer{i}")
                     {
                         Name = $"Customer {i}",

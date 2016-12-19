@@ -2,6 +2,9 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <UseMsdeployExe>true</UseMsdeployExe>
+  </PropertyGroup>
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>
@@ -41,7 +44,27 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <IncludeIisSettings>false</IncludeIisSettings>
+    <DeployEncryptKey>Encryption password is used only if any deployment setting is marked as secure</DeployEncryptKey>
   </PropertyGroup>
+  <PropertyGroup>
+    <CopyAllFilesToSingleFolderForPackageDependsOn>
+      CustomCollectFiles;
+      $(CopyAllFilesToSingleFolderForPackageDependsOn);
+    </CopyAllFilesToSingleFolderForPackageDependsOn>
+    <CopyAllFilesToSingleFolderForMsdeployDependsOn>
+      CustomCollectFiles;
+      $(CopyAllFilesToSingleFolderForMsdeployDependsOn);
+    </CopyAllFilesToSingleFolderForMsdeployDependsOn>
+  </PropertyGroup>
+  <Target Name="CustomCollectFiles">
+    <ItemGroup>
+      <_CustomFiles Include="..\.settings\DatabaseConfigs\database.config.json" />
+      <FilesForPackagingFromProject Include="%(_CustomFiles.Identity)">
+        <DestinationRelativePath>%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+  </Target>
   <ItemGroup>
     <Reference Include="Autofac, Version=4.1.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.4.1.1\lib\net45\Autofac.dll</HintPath>
@@ -236,19 +259,6 @@
     <Compile Include="Plugins\Providers\AuditProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="database.ref.config.json" />
-    <Content Include="database.local.mysql.config.json">
-      <DependentUpon>database.ref.config.json</DependentUpon>
-    </Content>
-    <Content Include="database.local.postgres.config.json">
-      <DependentUpon>database.ref.config.json</DependentUpon>
-    </Content>
-    <Content Include="database.staging.gear.host.config.json">
-      <DependentUpon>database.ref.config.json</DependentUpon>
-    </Content>
-    <Content Include="database.staging.mywindowshosting.config.json">
-      <DependentUpon>database.ref.config.json</DependentUpon>
-    </Content>
     <Content Include="Global.asax" />
     <Content Include="index.html" />
     <Content Include="Web.config" />
@@ -280,11 +290,9 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Properties\PublishProfiles\ampbiz-api - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\ampbiz-api - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\ampbiz-api.mywindowshosting.pubxml" />
+    <None Include="Properties\PublishProfiles\ampbiz-api.staging.mywindowshosting.pubxml" />
     <None Include="Properties\PublishProfiles\ampbiz-api.localhost.pubxml" />
-    <None Include="Properties\PublishProfiles\ampbiz-api.gear.host.pubxml" />
+    <None Include="Properties\PublishProfiles\ampbiz-api.staging.gear.host.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -315,9 +323,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>49561</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:49242</IISUrl>
-          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>http://localhost:49242/</IISAppRootUrl>
+          <IISUrl>http://localhost:49561/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

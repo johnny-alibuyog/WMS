@@ -13,17 +13,37 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Core", "AmpedBiz.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Tests", "AmpedBiz.Tests\AmpedBiz.Tests.csproj", "{067456C0-086C-46A8-B37F-1405717B7BFC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{70BE7ED3-4A64-47C4-96DB-9B96FA08846D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{70BE7ED3-4A64-47C4-96DB-9B96FA08846D}"
 	ProjectSection(SolutionItems) = preProject
-		ampbiz-api.publishsettings.xml = ampbiz-api.publishsettings.xml
-		ampbiz.publishsettings.xml = ampbiz.publishsettings.xml
 		build.cake = build.cake
 		build.ps1 = build.ps1
 		cake.config = cake.config
-		deploy.cmd = deploy.cmd
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Service.Host", "AmpedBiz.Service.Host\AmpedBiz.Service.Host.csproj", "{EEC4D7F9-9FD5-41D1-900F-565057FE61FE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishSettings", "PublishSettings", "{1325C04C-6DA2-4D55-93A3-CF871C1F138E}"
+	ProjectSection(SolutionItems) = preProject
+		.settings\PublishSettings\ampbiz-api.publishsettings.xml = .settings\PublishSettings\ampbiz-api.publishsettings.xml
+		.settings\PublishSettings\ampbiz.publishsettings.xml = .settings\PublishSettings\ampbiz.publishsettings.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".settings", ".settings", "{41FDA416-8041-40EE-A524-003221C39330}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseConfigs", "DatabaseConfigs", "{BC11990C-B580-4CBB-BF7D-A247CE0DCE04}"
+	ProjectSection(SolutionItems) = preProject
+		.settings\DatabaseConfigs\database.config.json = .settings\DatabaseConfigs\database.config.json
+		.settings\DatabaseConfigs\database.local.mysql.config.json = .settings\DatabaseConfigs\database.local.mysql.config.json
+		.settings\DatabaseConfigs\database.local.postgres.config.json = .settings\DatabaseConfigs\database.local.postgres.config.json
+		.settings\DatabaseConfigs\database.ref.config.json = .settings\DatabaseConfigs\database.ref.config.json
+		.settings\DatabaseConfigs\database.staging.gear.host.config.json = .settings\DatabaseConfigs\database.staging.gear.host.config.json
+		.settings\DatabaseConfigs\database.staging.mywindowshosting.config.json = .settings\DatabaseConfigs\database.staging.mywindowshosting.config.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{4C23DA51-9C04-482F-8CF6-1185208A30B0}"
+	ProjectSection(SolutionItems) = preProject
+		deploy.gear.host.ps1 = deploy.gear.host.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,5 +78,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1325C04C-6DA2-4D55-93A3-CF871C1F138E} = {41FDA416-8041-40EE-A524-003221C39330}
+		{BC11990C-B580-4CBB-BF7D-A247CE0DCE04} = {41FDA416-8041-40EE-A524-003221C39330}
 	EndGlobalSection
 EndGlobal

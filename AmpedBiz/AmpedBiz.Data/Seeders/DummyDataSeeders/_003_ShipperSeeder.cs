@@ -19,7 +19,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         {
             var data = new List<Shipper>();
 
-            for (int i = 0; i < 36; i++)
+            for (int i = 0; i < 6; i++)
             {
                 data.Add(new Shipper($"shipper{i}")
                 {

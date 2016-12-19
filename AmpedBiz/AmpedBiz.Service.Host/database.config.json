@@ -1,0 +1,11 @@
+﻿{
+  "Database": "MySql",
+  "Port": 3306,
+  "HostServer": "mysql4.gear.host",
+  "Name": "ampbizdb",
+  "Username": "ampbizdb",
+  "Password": "6jPbwQtZ8N52WRJ5rEWv2g==",
+  "BatchSize": 50,
+  "UseDummyData": true,
+  "RecreateDb": true
+}

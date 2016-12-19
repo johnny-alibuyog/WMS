@@ -19,7 +19,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         {
             var data = new List<Branch>();
 
-            for (int i = 0; i < 153; i++)
+            for (int i = 0; i < 2; i++)
             {
                 data.Add(new Branch()
                 {
