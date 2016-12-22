@@ -40,11 +40,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseConfigs", "Database
 		.settings\DatabaseConfigs\database.staging.mywindowshosting.config.json = .settings\DatabaseConfigs\database.staging.mywindowshosting.config.json
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{4C23DA51-9C04-482F-8CF6-1185208A30B0}"
-	ProjectSection(SolutionItems) = preProject
-		deploy.gear.host.ps1 = deploy.gear.host.ps1
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

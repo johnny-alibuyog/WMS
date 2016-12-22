@@ -22,10 +22,13 @@ namespace AmpedBiz.Data.Configurations
 
             var schemaPath = Path.Combine(DatabaseConfig.Instance.GetWorkingPath("Schemas"), "schema.sql");
 
+            //new SchemaExport(config)
+            //    .SetOutputFile(schemaPath)
+            //    .Create(true, true);
+
             new SchemaExport(config)
                 .SetOutputFile(schemaPath)
                 .Create(x => Debug.WriteLine(x), true);
-                //.Create(true, true);
         }
 
         private static void UpdateDatabase(Configuration config)

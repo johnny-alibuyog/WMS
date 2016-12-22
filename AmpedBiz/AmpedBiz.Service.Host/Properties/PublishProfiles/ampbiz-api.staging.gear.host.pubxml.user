@@ -6,7 +6,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA/GkKU0HGz0GptJ4iA/wueAAAAAACAAAAAAAQZgAAAAEAACAAAACIGbVsFYm/ZG0dD+7e8QygLgAcuAPSb8hcKo42dpHPowAAAAAOgAAAAAIAACAAAADejEy6l00PlzR+WSz2SnaTDOg3Swu4WzYMd+2tqHH/z4AAAACWTge889syNVXi1Cq7G0XHTvTeap0GSaVj+yMhoU4oPC09tB+3Jpb17X1LHoGtS0MYTFibGm3Tj0VfAobCdrTiYF7sVRa++RBgjolfH0kWIJIE1DLF/l8bCP5iAv+xJEDb8jsKchWCaHGaDStpAWu+hR12pWcyaHzX2xvZZPNSr0AAAACk/NvJ/lElDnXxvM64rgKSCEbZ4oH2IX4HNX8NoHlkCzBisTALo6/n3/Th0i2Tz6I9CTq7+OnIkf/gy5QUXbA7</EncryptedPassword>
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAu1Ks16OVXkKlbkJn71jRmAAAAAACAAAAAAADZgAAwAAAABAAAADlQp9Y+rc/XElw0/+tdalXAAAAAASAAACgAAAAEAAAAI16CZcI8mCc6W2HdezqdZyAAAAAuMqAITacFgtOXZ54qXmLJRl+zs+MiwKe/obuZbd/tszKqxIbQpeWOlA7FKwBkE2V3dIx0zIwpTA7bGlX3OLXi/+b8zqvoDHVXMe0oRHN1wHMywvCwyv96fakkMw3OCSWfuUmGnOKvm6NrHdI2bfMXFnjxwE23pVFgj+IYfXewfsUAAAApKgQMRDnpyLqJUvZj49sDKGeT7M=</EncryptedPassword>
     <_PublishTargetUrl>ftp://ftp.mywindowshosting.com/api.ampbiz</_PublishTargetUrl>
   </PropertyGroup>
 </Project>

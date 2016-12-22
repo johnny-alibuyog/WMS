@@ -1,4 +1,11 @@
-$env:publish_profile="ampbiz-api.staging.gear.host.pubxml"
-$env:database_config="database.staging.gear.host.config.json"
+"=============================================="
+" Deploying Service API "
+"=============================================="
+.\deploy.gear.host.service.host.ps1
+""
 
-.\build.ps1 -target Deploy
+"=============================================="
+" Deploying Web Application "
+"=============================================="
+.\deploy.gear.host.web.ps1
+""

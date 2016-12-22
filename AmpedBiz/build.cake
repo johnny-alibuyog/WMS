@@ -1,16 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // TOOLS
 ///////////////////////////////////////////////////////////////////////////////
-//#addin "Cake.WebDeploy"
-//#addin "Cake.MsDeploy"
 #tool "nuget:?package=NUnit.ConsoleRunner"
 
-
-//using Cake.MsDeploy;
-//using Cake.MsDeploy.Providers;
 using System.Diagnostics;
 using System.IO;
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -27,6 +21,8 @@ var args = new
 ///////////////////////////////////////////////////////////////////////////////
 var env = new
 {
+	Username = EnvironmentVariable("username"),
+	Password = EnvironmentVariable("password"),
 	PublishProfile = EnvironmentVariable("publish_profile"),
 	DatabaseConfig = EnvironmentVariable("database_config")
 };
@@ -91,10 +87,15 @@ Task("Restore")
     }
 });
 
+Task("Prepare Config")
+    .Description("Builds all the different parts of the project.")
+    .Does(() => CopyFile("./.settings/DatabaseConfigs/" + env.DatabaseConfig, "./.settings/DatabaseConfigs/database.config.json"));
+
 Task("Build")
     .Description("Builds all the different parts of the project.")
     .IsDependentOn("Clean")
     .IsDependentOn("Restore")
+	.IsDependentOn("Prepare Config")
     .Does(() =>
 {
     // Build all solutions.
@@ -102,16 +103,14 @@ Task("Build")
     {
         Information("Building {0}", solution);
 
-		//You need to include the 'DeployOnBuild' property to create the publish zip
         MSBuild(solution, settings =>
             settings.SetPlatformTarget(PlatformTarget.MSIL)
+				.SetVerbosity(Verbosity.Minimal)
                 .WithProperty("TreatWarningsAsErrors", "true")
                 .WithTarget("Build")
                 .SetConfiguration(args.BuildConfiguration));
 
 
-        Information("Building Conifiguration");
-		CopyFile("./.settings/DatabaseConfigs/" + env.DatabaseConfig, "./.settings/DatabaseConfigs/database.config.json");
     }
 });
 
@@ -138,8 +137,11 @@ Task("Deploy")
 
         MSBuild(solution, settings =>
             settings.SetPlatformTarget(PlatformTarget.MSIL)
-				.WithProperty("PackageAsSingleFile", "true")
+				.SetVerbosity(Verbosity.Minimal)
 				.WithProperty("PublishProfile", env.PublishProfile)
+                .WithProperty("UserName", env.Username)
+                .WithProperty("Password", env.Password)
+				.WithProperty("PackageAsSingleFile", "true")
 				.WithProperty("WebPublishMethod", "Package")
 				.WithProperty("DeployOnBuild", "true") 
 				.WithProperty("DeployTarget", "MSDeployPublish")
