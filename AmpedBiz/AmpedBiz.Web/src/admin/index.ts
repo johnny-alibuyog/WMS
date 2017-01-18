@@ -22,7 +22,7 @@ export class Index {
               role.encoder,
               role.manager,
               role.sales,
-              role.supperAdmin,
+              role.superAdmin,
               role.warehouse
             ]
           }
@@ -41,7 +41,7 @@ export class Index {
               role.encoder,
               role.manager,
               role.sales,
-              role.supperAdmin,
+              role.superAdmin,
               role.warehouse
             ]
           }
@@ -60,7 +60,7 @@ export class Index {
               role.encoder,
               role.manager,
               role.sales,
-              role.supperAdmin,
+              role.superAdmin,
               role.warehouse
             ]
           }

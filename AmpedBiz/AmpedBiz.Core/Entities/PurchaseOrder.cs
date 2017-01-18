@@ -1,10 +1,8 @@
-﻿using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Core.Services;
 using AmpedBiz.Core.Services.PurchaseOrders;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using AmpedBiz.Core.Services;
 
 namespace AmpedBiz.Core.Entities
 {

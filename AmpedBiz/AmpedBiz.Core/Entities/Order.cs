@@ -19,6 +19,13 @@ namespace AmpedBiz.Core.Entities
         Cancelled = 9
     }
 
+    public enum OrderStatusActions
+    {
+        Items = 1,
+        Payments = 2,
+        Returns = 3
+    }
+
     public class Order : Entity<Guid, Order>, IAccept<OrderVisitor>
     {
         public virtual string OrderNumber  { get; set; }

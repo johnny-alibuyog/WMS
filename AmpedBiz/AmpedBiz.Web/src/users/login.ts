@@ -38,7 +38,7 @@ export class Login {
 
   activate() {
     this.user = {
-      username: 'supper_user',
+      username: 'super_user',
       password: '123!@#qweASD'
     };
   }

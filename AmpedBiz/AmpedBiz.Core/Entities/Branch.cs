@@ -16,19 +16,19 @@ namespace AmpedBiz.Core.Entities
 
         public Branch(Guid id) : base(id) { }
 
-        public static Branch SupperBranch = new Branch(new Guid("406A71D8-4DFD-4D34-821E-A5E52E144E50"))
+        public static Branch SuperBranch = new Branch(new Guid("406A71D8-4DFD-4D34-821E-A5E52E144E50"))
         {
-            Name = "Supper Branch",
-            Description = "Supper Description",
+            Name = "Super Branch",
+            Description = "Super Description",
             Address = new Address()
             {
-                Street = "Supper Street",
-                Barangay = "Supper Barangay",
-                City = "Supper City",
-                Province = "Supper Province",
-                Region = "Supper Region",
-                Country = "Supper Country",
-                ZipCode = "Supper Zip Code"
+                Street = "Super Street",
+                Barangay = "Super Barangay",
+                City = "Super City",
+                Province = "Super Province",
+                Region = "Super Region",
+                Country = "Super Country",
+                ZipCode = "Super Zip Code"
             }
         };
     }

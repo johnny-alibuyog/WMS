@@ -21,7 +21,7 @@ namespace AmpedBiz.Core.Entities
 
         public static readonly Role Sales = new Role("S", "Sales");
 
-        public static readonly Role SuperAdmin = new Role("SA", "Supper Admin");
+        public static readonly Role SuperAdmin = new Role("SA", "Super Admin");
 
         public static readonly Role Warehouse = new Role("W", "Warehouse");
 

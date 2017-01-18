@@ -24,7 +24,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
             {
                 var currency = session.Load<Currency>(Currency.PHP.Id);
 
-                Enumerable.Range(0, 13).ToList().ForEach(_ =>
+                Enumerable.Range(0, 2).ToList().ForEach(_ =>
                 {
                     var entity = new Return();
 

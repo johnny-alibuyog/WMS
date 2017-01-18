@@ -17,10 +17,10 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var entity = session.Get<Branch>(Branch.SupperBranch.Id);
+                var entity = session.Get<Branch>(Branch.SuperBranch.Id);
                 if (entity == null)
                 {
-                    entity = Branch.SupperBranch;
+                    entity = Branch.SuperBranch;
                     session.Save(entity, entity.Id);
                 }
 

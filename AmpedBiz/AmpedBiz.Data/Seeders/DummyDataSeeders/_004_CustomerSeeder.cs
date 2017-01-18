@@ -1,7 +1,6 @@
 ﻿using AmpedBiz.Core.Entities;
 using NHibernate;
 using NHibernate.Linq;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
@@ -21,7 +20,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var data = Enumerable.Range(1, 6)
+                var data = Enumerable.Range(1, 2)
                     .Select((x, i) => new Customer($"customer{i}")
                     {
                         Name = $"Customer {i}",

@@ -26,7 +26,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         public void Seed()
         {
             var min = 1;
-            var max = 6;
+            var max = 3;
 
             CreateNewOrders(_utils.RandomInteger(min, max));
             CreateInvoiceOrders(_utils.RandomInteger(min, max));

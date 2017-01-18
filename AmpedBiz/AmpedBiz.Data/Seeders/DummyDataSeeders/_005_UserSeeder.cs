@@ -20,7 +20,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         {
             var data = new List<User>();
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 2; i++)
             {
                 data.Add(new User() //new User($"user{i}")
                 {

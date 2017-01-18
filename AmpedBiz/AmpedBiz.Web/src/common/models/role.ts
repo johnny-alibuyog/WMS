@@ -21,9 +21,9 @@ export const role = {
     id: 'S',
     name: 'Sales'
   },
-  supperAdmin: <Role>{
+  superAdmin: <Role>{
     id: 'SA',
-    name: 'Supper Admin'
+    name: 'Super Admin'
   },
   warehouse: <Role>{
     id: 'W',
@@ -38,7 +38,7 @@ export const role = {
     this.encoder,
     this.manager,
     this.sales,
-    this.supperAdmin,
+    this.superAdmin,
     this.warehouse,
   ]
 }

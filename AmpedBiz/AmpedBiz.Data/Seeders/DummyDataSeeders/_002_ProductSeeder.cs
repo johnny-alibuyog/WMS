@@ -1,5 +1,4 @@
-﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Entities;
 using NHibernate;
 using NHibernate.Linq;
 using System;
@@ -11,12 +10,10 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 {
     public class _002_ProductSeeder : IDummyDataSeeder
     {
-        private readonly Utils _utils;
         private readonly ISessionFactory _sessionFactory;
 
         public _002_ProductSeeder(ISessionFactory sessionFactory)
         {
-            _utils = new Utils(new Random(), sessionFactory);
             _sessionFactory = sessionFactory;
         }
 
@@ -24,7 +21,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         {
             var data = new List<Product>();
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 5; i++)
             {
                 data.Add(new Product()
                 {
@@ -39,6 +36,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
             {
                 session.SetBatchSize(100);
 
+                var _utils = new Utils(new Random(), _sessionFactory);
                 var exists = session.Query<Product>().Any();
                 if (!exists)
                 {

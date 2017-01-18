@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Configurations\AuthConfig.cs" />
     <Compile Include="Configurations\DatabaseConfig.cs" />
+    <Compile Include="Configurations\StateConfig.cs" />
     <Compile Include="Configurations\TransitionConfig.cs" />
     <Compile Include="Exceptions\BusinessException.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />

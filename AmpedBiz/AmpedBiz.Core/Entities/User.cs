@@ -49,13 +49,13 @@ namespace AmpedBiz.Core.Entities
             }
         }
 
-        public static User SupperUser = new User(new Guid("{CA42947A-0BA3-4FC8-86E0-A635014B6B11}"))
+        public static User SuperUser = new User(new Guid("{CA42947A-0BA3-4FC8-86E0-A635014B6B11}"))
         {
-            Username = "supper_user",
+            Username = "super_user",
             Password = "123!@#qweASD",
             Person = new Person()
             {
-                FirstName = "Supper",
+                FirstName = "Super",
                 MiddleName = "Power",
                 LastName = "User",
                 BirthDate = new DateTime(1999, 1, 1)

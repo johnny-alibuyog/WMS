@@ -22,13 +22,13 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var user = session.Get<User>(User.SupperUser.Id);
-                var branch = session.Get<Branch>(Branch.SupperBranch.Id);
+                var user = session.Get<User>(User.SuperUser.Id);
+                var branch = session.Get<Branch>(Branch.SuperBranch.Id);
                 var roles = session.Query<Role>().Cacheable().ToList();
 
                 if (user == null)
                 {
-                    user = User.SupperUser;
+                    user = User.SuperUser;
                     user.Branch = branch;
                     user.Roles = roles;
 
