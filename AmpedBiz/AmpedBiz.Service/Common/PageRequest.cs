@@ -50,7 +50,7 @@ namespace AmpedBiz.Service.Common
             Func<object, TValue> ToType = (val) =>
             {
                 if (typeof(TValue).IsEnum)
-                    return EnumExtention.Parse<TValue>(val);
+                    return EnumExtention.As<TValue>(val);
 
                 return (TValue)TypeDescriptor.GetConverter(typeof(TValue))
                     .ConvertFromInvariantString(val.ToString());

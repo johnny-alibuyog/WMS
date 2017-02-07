@@ -1,3 +1,4 @@
+/*
 import {autoinject} from 'aurelia-framework';
 import {DialogController} from 'aurelia-dialog';
 import {Lookup} from '../common/custom_types/lookup';
@@ -64,3 +65,4 @@ export class OrderPaymentCreate {
       });
   }
 }
+*/

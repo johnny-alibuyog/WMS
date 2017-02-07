@@ -1,11 +1,11 @@
 ﻿{
-  "Database": "Postgres",
-  "Port": 5432,
-  "HostServer": "localhost",
-  "Name": "ampedbizdb",
-  "Username": "postgres",
+  "Database": "MsSql",
+  "Port": 3306,
+  "HostServer": "PHMADJALIBUYOG2",
+  "Name": "ampbizdb",
+  "Username": "ampbizdb",
   "Password": "6jPbwQtZ8N52WRJ5rEWv2g==",
   "BatchSize": 50,
-  "UseDummyData": false,
+  "UseDummyData": true,
   "RecreateDb": true
 }

@@ -61,7 +61,7 @@ namespace AmpedBiz.Service.Orders
 
                     var currency = session.Load<Currency>(Currency.PHP.Id);
 
-                    entity.State.Process(new OrderReturnedVisitor()
+                    entity.State.Process(new OrderUpdateReturnsVisitor()
                     {
                         Returns = message.Returns.Select(x => new OrderReturn(
                             product: GetProduct(x.Product.Id),

@@ -10,16 +10,14 @@ namespace AmpedBiz.Core.Entities
     {
         New = 1,
         Invoiced = 2,
-        Paid = 3,
-        Staged = 4,
-        Routed = 5,
-        Shipped = 6,
-        Returned = 7,
-        Completed = 8,
-        Cancelled = 9
+        Staged = 3,
+        Routed = 4,
+        Shipped = 5,
+        Completed = 6,
+        Cancelled = 7
     }
 
-    public enum OrderStatusActions
+    public enum OrderAggregate
     {
         Items = 1,
         Payments = 2,

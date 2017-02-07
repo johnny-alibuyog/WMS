@@ -3,7 +3,7 @@
   <require from="orders/order-item-page"></require>
   <require from="orders/order-return-page"></require>
   <require from="orders/order-payment-page"></require>
-  
+  <require from="orders/state-verification-value-converter"></require>
 
   <section class="row row-no-padding">
 
@@ -19,42 +19,32 @@
             <span6>&nbsp ${header} &nbsp</span6>
 
             <!-- transition buttons -->
-            <button type="button" class="btn btn-default" if.bind="order.allowedTransitions['new']" click.trigger="save()">
-              <i class="fa fa-check"></i> ${order.allowedTransitions['new']}
+            <button type="button" class="btn btn-default" if.bind="order.stage.allowedModifications | canModify" click.trigger="save()">
+              <i class="fa fa-check"></i> Save
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="order.allowedTransitions['staged']" click.trigger="stage()">
-              <i class="fa fa-check"></i> ${order.allowedTransitions['staged']}
+            <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'staged'" click.trigger="stage()">
+              <i class="fa fa-check"></i> Stage
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="order.allowedTransitions['routed']" click.trigger="approve()">
-              <i class="fa fa-check"></i> ${order.allowedTransitions['routed']}
+            <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'routed'" click.trigger="approve()">
+              <i class="fa fa-check"></i> Approve
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="order.allowedTransitions['invoiced']" click.trigger="invoice()">
-              <i class="fa fa-check"></i> ${order.allowedTransitions['invoiced']}
+            <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'invoiced'" click.trigger="invoice()">
+              <i class="fa fa-check"></i> Invoice
             </button>
 
-            <!--
-            <button type="button" class="btn btn-default" if.bind="order.allowedTransitions['paid']" click.trigger="recieve()">
-              <i class="fa fa-check"></i> ${order.allowedTransitions['paid']}
-            </button>
-            -->
-
-            <button type="button" class="btn btn-default" if.bind="order.allowedTransitions['shipped']" click.trigger="ship()">
-              <i class="fa fa-check"></i> ${order.allowedTransitions['shipped']}
+            <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'shipped'" click.trigger="ship()">
+              <i class="fa fa-check"></i> Ship
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="order.allowedTransitions['returned']" click.trigger="returns()">
-              <i class="fa fa-check"></i> ${order.allowedTransitions['returned']}
+            <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'completed'" click.trigger="complete()">
+              <i class="fa fa-check"></i> Complete
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="order.allowedTransitions['completed']" click.trigger="complete()">
-              <i class="fa fa-check"></i> ${order.allowedTransitions['completed']}
-            </button>
-
-            <button type="button" class="btn btn-default" if.bind="order.allowedTransitions['cancelled']" click.trigger="cancel()">
-              <i class="fa fa-check"></i> ${order.allowedTransitions['cancelled']}
+            <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'cancelled'" click.trigger="cancel()">
+              <i class="fa fa-check"></i> Cancel
             </button>
 
             <button type="button" class="btn btn-default" if.bind="isOrderInvoiced" click.trigger="showInvoice()">
@@ -161,7 +151,7 @@
                   <li class="active">
                     <a data-toggle="tab" href="#itemsTab">
                       <span>Order Items &nbsp</span>
-                      <button type="button" if.bind="order.allowedTransitions['new']" class="btn btn-default btn-circle" click.delegate="addItem()">
+                      <button type="button" disabled.bind="order.stage.allowedModifications | isModificationDisallowedTo: 'items'" class="btn btn-default btn-circle" click.trigger="addItem()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
                     </a>
@@ -169,7 +159,7 @@
                   <li>
                     <a data-toggle="tab" href="#returnsTab">
                       <span>Returns &nbsp</span>
-                      <button type="button" if.bind="order.allowedTransitions['returned']" class="btn btn-default btn-circle" click.delegate="addReturn()">
+                      <button type="button" disabled.bind="order.stage.allowedModifications | isModificationDisallowedTo: 'returns'" class="btn btn-default btn-circle" click.trigger="addReturn()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
                     </a>
@@ -177,7 +167,7 @@
                   <li>
                     <a data-toggle="tab" href="#paymentsTab">
                       <span>Payments &nbsp</span>
-                      <button type="button" if.bind="order.allowedTransitions['paid']" class="btn btn-default btn-circle" click.delegate="addPayment()">
+                      <button type="button" disabled.bind="order.stage.allowedModifications | isModificationDisallowedTo: 'payments'" class="btn btn-default btn-circle" click.trigger="addPayment()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
                     </a>
@@ -195,7 +185,7 @@
                       items.bind="order.items" 
                       order-id.bind="order.id"
                       pricing-scheme.bind="order.pricingScheme"
-                      allowed-transitions.bind="order.allowedTransitions">
+                      allowed-transitions.bind="stageEvaluator.allowedTransitions">
                     </order-item-page>
                   </div>
 
@@ -206,7 +196,7 @@
                     <order-return-page 
                       returns.bind="order.returns" 
                       order-id.bind="order.id"
-                      allowed-transitions.bind="order.allowedTransitions">
+                      allowed-transitions.bind="stageEvaluator.allowedTransitions">
                     </order-return-page>
                   </div>
 
@@ -215,9 +205,10 @@
                     <br />
 
                     <order-payment-page 
+                      payment-types.bind="paymentTypes"
                       payments.bind="order.payments" 
                       order-id.bind="order.id" 
-                      allowed-transitions.bind="order.allowedTransitions">
+                      allowed-transitions.bind="stageEvaluator.allowedTransitions">
                     </order-payment-page>
                   </div>
 

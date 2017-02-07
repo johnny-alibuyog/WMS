@@ -1,7 +1,7 @@
 ﻿{
-  "Database": "MySql",
+  "Database": "MsSql",
   "Port": 3306,
-  "HostServer": "mysql4.gear.host",
+  "HostServer": "PHMADJALIBUYOG2",
   "Name": "ampbizdb",
   "Username": "ampbizdb",
   "Password": "6jPbwQtZ8N52WRJ5rEWv2g==",

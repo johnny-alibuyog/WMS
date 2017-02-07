@@ -33,6 +33,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseConfigs", "DatabaseConfigs", "{BC11990C-B580-4CBB-BF7D-A247CE0DCE04}"
 	ProjectSection(SolutionItems) = preProject
 		.settings\DatabaseConfigs\database.config.json = .settings\DatabaseConfigs\database.config.json
+		.settings\DatabaseConfigs\database.local.mssql.config.json = .settings\DatabaseConfigs\database.local.mssql.config.json
 		.settings\DatabaseConfigs\database.local.mysql.config.json = .settings\DatabaseConfigs\database.local.mysql.config.json
 		.settings\DatabaseConfigs\database.local.postgres.config.json = .settings\DatabaseConfigs\database.local.postgres.config.json
 		.settings\DatabaseConfigs\database.ref.config.json = .settings\DatabaseConfigs\database.ref.config.json

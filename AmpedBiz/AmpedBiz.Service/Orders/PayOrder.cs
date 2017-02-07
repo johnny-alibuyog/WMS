@@ -45,7 +45,7 @@ namespace AmpedBiz.Service.Orders
 
                     var currency = session.Load<Currency>(Currency.PHP.Id);
 
-                    entity.State.Process(new OrderPaidVisitor()
+                    entity.State.Process(new OrderUpdatePaymentVisitor()
                     {
                         Payments = message.Payments.Select(x => new OrderPayment(
                             paidOn: x.PaidOn ?? DateTime.Now,

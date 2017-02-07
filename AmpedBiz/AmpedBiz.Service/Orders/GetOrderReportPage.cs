@@ -132,7 +132,7 @@ namespace AmpedBiz.Service.Orders
                             OrderedByName = 
                                 x.OrderedBy.Person.FirstName + " " +
                                 x.OrderedBy.Person.LastName,
-                            Status = x.Status.Parse<Dto.OrderStatus>(),
+                            Status = x.Status.As<Dto.OrderStatus>(),
                             TotalAmount = x.Total.Amount
                         })
                         .Skip(message.Pager.SkipCount)

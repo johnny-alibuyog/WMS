@@ -56,7 +56,7 @@ namespace AmpedBiz.Service.Orders
 
                     Func<Guid, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
 
-                    entity.State.Process(new OrderNewlyCreatedVisitor()
+                    entity.State.Process(new OrderSaveVisitor()
                     {
                         CreatedBy = (!message?.CreatedBy?.Id.IsNullOrDefault() ?? false)
                             ? session.Load<User>(message.CreatedBy.Id) : null,

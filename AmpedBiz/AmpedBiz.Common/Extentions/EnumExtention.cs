@@ -17,7 +17,7 @@ namespace AmpedBiz.Common.Extentions
                 .ToList();
         }
 
-        public static TEnum Parse<TEnum>(this object value) //where TEnum : struct, IConvertible
+        public static TEnum As<TEnum>(this object value) //where TEnum : struct, IConvertible
         {
             if (!typeof(TEnum).IsEnum)
                 throw new ArgumentException("TEnum must be an enumerated type");
@@ -28,9 +28,15 @@ namespace AmpedBiz.Common.Extentions
             if (string.IsNullOrWhiteSpace(value.ToString()))
                 return default(TEnum);
 
-            var result = (TEnum)Enum.Parse(typeof(TEnum), value.ToString(), true);
-
-            return result;
+            try
+            {
+                var result = (TEnum)Enum.Parse(typeof(TEnum), value.ToString(), true);
+                return result;
+            }
+            catch 
+            {
+                throw new Exception($"{value} is an invalid {typeof(TEnum).Name}. Please check check your status configuration.");
+            }
         }
     }
 }

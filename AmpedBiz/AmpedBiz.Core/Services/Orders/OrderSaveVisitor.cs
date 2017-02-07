@@ -1,12 +1,10 @@
-﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AmpedBiz.Core.Services.Orders
 {
-    public class OrderNewlyCreatedVisitor : OrderVisitor
+    public class OrderSaveVisitor : OrderVisitor
     {
         public virtual string OrderNumber { get; set; }
 
@@ -38,9 +36,22 @@ namespace AmpedBiz.Core.Services.Orders
 
         public virtual IEnumerable<OrderItem> Items { get; set; }
 
+        public virtual IEnumerable<OrderPayment> Payments { get; set; }
+
+        public virtual IEnumerable<OrderReturn> Returns { get; set; }
+
         public override void Visit(Order target)
         {
-            this.SetItemsTo(target);
+            if (target.State.Stage.IsModificationAllowedTo(OrderAggregate.Items))
+                target.Accept(new OrderUpdateItemsVisitor(this.Items));
+
+            if (target.State.Stage.IsModificationAllowedTo(OrderAggregate.Payments))
+                target.Accept(new OrderUpdatePaymentVisitor(this.Payments));
+
+            if (target.State.Stage.IsModificationAllowedTo(OrderAggregate.Returns))
+                target.Accept(new OrderUpdateReturnsVisitor(this.Returns));
+
+            target.Accept(new OrderCalculateTotalVisitor());
 
             target.OrderNumber = this.OrderNumber ?? target.OrderNumber;
             target.CreatedBy = this.CreatedBy ?? target.CreatedBy;
@@ -57,37 +68,6 @@ namespace AmpedBiz.Core.Services.Orders
             target.TaxRate = this.TaxRate ?? target.TaxRate;
             target.Tax = this.Tax ?? target.Tax;
             target.ShippingFee = this.ShippingFee ?? target.ShippingFee;
-            target.Accept(new OrderCalculateTotalVisitor());
-            target.Status = OrderStatus.New;
-        }
-
-        private void SetItemsTo(Order target)
-        {
-            if (this.Items.IsNullOrEmpty())
-                return;
-
-            var itemsToInsert = this.Items.Except(target.Items).ToList();
-            var itemsToUpdate = target.Items.Where(x => this.Items.Contains(x)).ToList();
-            var itemsToRemove = target.Items.Except(this.Items).ToList();
-
-            foreach (var item in itemsToInsert)
-            {
-                item.Order = target;
-                target.Items.Add(item);
-            }
-
-            foreach (var item in itemsToUpdate)
-            {
-                var value = this.Items.Single(x => x == item);
-                item.SerializeWith(value);
-                item.Order = target;
-            }
-
-            foreach (var item in itemsToRemove)
-            {
-                item.Order = null;
-                target.Items.Remove(item);
-            }
         }
     }
 }

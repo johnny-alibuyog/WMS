@@ -88,12 +88,10 @@ namespace AmpedBiz.Service.Dto.Mappers
         private void RegisterOrderMap()
         {
             ExpressMapper.Mapper.Register<Entity.Order, GetOrder.Response>()
-                .Member(x => x.AllowedTransitions, x => x.State.AllowedTransitions
-                    .ToDictionary(o => ExpressMapper.Mapper.Map<Entity.OrderStatus, Dto.OrderStatus>(o.Key), y => y.Value)
-                )
-                .Flatten();
+                .Member(x => x.Stage, x => x.State.Stage).Flatten();
 
-            ExpressMapper.Mapper.Register<Entity.Order, CreateNewOrder.Response>().Flatten();
+            ExpressMapper.Mapper.Register<Entity.Order, SaveOrder.Response>()
+                .Member(x => x.Stage, x => x.State.Stage).Flatten();
 
             ExpressMapper.Mapper.Register<Entity.OrderItem, Dto.OrderItem>().Flatten();
 

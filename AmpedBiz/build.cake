@@ -89,7 +89,13 @@ Task("Restore")
 
 Task("Prepare Config")
     .Description("Builds all the different parts of the project.")
-    .Does(() => CopyFile("./.settings/DatabaseConfigs/" + env.DatabaseConfig, "./.settings/DatabaseConfigs/database.config.json"));
+    .Does(() => 
+{
+	if (!string.IsNullOrWhiteSpace(env.DatabaseConfig))
+	{
+		CopyFile("./.settings/DatabaseConfigs/" + env.DatabaseConfig, "./.settings/DatabaseConfigs/database.config.json");
+	}
+});
 
 Task("Build")
     .Description("Builds all the different parts of the project.")
@@ -114,7 +120,7 @@ Task("Build")
     }
 });
 
-Task("Run-Unit-Tests")
+Task("Run-Tests")
     .IsDependentOn("Build")
     .Does(() =>
 {
@@ -127,7 +133,7 @@ Task("Run-Unit-Tests")
 
 Task("Deploy")
     .Description("Deploy website")
-    .IsDependentOn("Run-Unit-Tests")
+    .IsDependentOn("Run-Tests")
     .Does(() =>
 {
 	// Build all solutions.

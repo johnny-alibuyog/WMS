@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Common.CustomTypes;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Service.Dto
 {
@@ -8,13 +9,18 @@ namespace AmpedBiz.Service.Dto
     {
         New = 1,
         Invoiced = 2,
-        Paid = 3,
-        Staged = 4,
-        Routed = 5,
-        Shipped = 6,
-        Returned = 7,
-        Completed = 8,
-        Cancelled = 9
+        Staged = 3,
+        Routed = 4,
+        Shipped = 5,
+        Completed = 6,
+        Cancelled = 7
+    }
+
+    public enum OrderAggregate
+    {
+        Items = 1,
+        Payments = 2,
+        Returns = 3
     }
 
     public class Order
@@ -93,13 +99,15 @@ namespace AmpedBiz.Service.Dto
 
         public string CancellationReason { get; set; }
 
-        public IEnumerable<OrderItem> Items { get; set; }
+        public IEnumerable<OrderItem> Items { get; set; } = new Collection<OrderItem>();
 
-        public IEnumerable<OrderReturn> Returns { get; set; }
+        public IEnumerable<OrderReturn> Returns { get; set; } = new Collection<OrderReturn>();
 
-        public IEnumerable<OrderPayment> Payments { get; set; }
+        public IEnumerable<OrderPayment> Payments { get; set; } = new Collection<OrderPayment>();
 
         public Dictionary<OrderStatus, string> AllowedTransitions { get; set; }
+
+        public StageDefenition<OrderStatus, OrderAggregate> Stage { get; set; }
     }
 
     public class OrderPageItem

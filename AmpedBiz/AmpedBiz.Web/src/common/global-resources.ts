@@ -14,6 +14,6 @@ export function configure(config: FrameworkConfiguration) {
     'common/converters/object-values-value-converter',
     'common/converters/relative-date-value-converter',
     'common/converters/sort-value-converter',
-    'common/converters/to-id-value-converter'
+    'common/converters/to-id-value-converter',
   ]);
 }

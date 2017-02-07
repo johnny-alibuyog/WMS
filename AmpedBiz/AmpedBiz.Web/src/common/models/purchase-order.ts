@@ -1,4 +1,5 @@
 import {Lookup} from '../custom_types/lookup';
+import {StageDefinition} from './stage-definition';
 import {ProductInventory} from './product';
 import {Dictionary} from '../custom_types/dictionary';
 
@@ -28,6 +29,12 @@ export enum PurchaseOrderStatus {
   cancelled = 7
 }
 
+export enum PurchaseOrderAggregate {
+  items = 1,
+  payments = 2,
+  receipts = 3
+}
+
 export interface PurchaseOrder {
   id?: string;
   user?: Lookup<string>;
@@ -55,6 +62,7 @@ export interface PurchaseOrder {
   receipts?: PurchaseOrderReceipt[];
   receivables?: PurchaseOrderReceivable[];
   allowedTransitions?: Dictionary<string>;
+  stage?: StageDefinition<PurchaseOrderStatus, PurchaseOrderAggregate>;
 }
 
 export interface PurchaseOrderPageItem {

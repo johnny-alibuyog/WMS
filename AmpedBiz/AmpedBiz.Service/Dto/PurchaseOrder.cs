@@ -15,6 +15,13 @@ namespace AmpedBiz.Service.Dto
         Cancelled = 7
     }
 
+    public enum PurchaseOrderAggregate
+    {
+        Items = 1,
+        Payments = 2,
+        Receipts = 3
+    }
+
     public class PurchaseOrder
     {
         public Guid Id { get; set; }
@@ -76,6 +83,8 @@ namespace AmpedBiz.Service.Dto
         public IEnumerable<PurchaseOrderReceivable> Receivables { get; set; }
 
         public Dictionary<PurchaseOrderStatus, string> AllowedTransitions { get; set; }
+
+        public StageDefenition<PurchaseOrderStatus, PurchaseOrderAggregate> Stage { get; set; }
     }
 
     public class PurchaseOrderPageItem

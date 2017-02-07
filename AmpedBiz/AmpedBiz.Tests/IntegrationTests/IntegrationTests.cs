@@ -584,7 +584,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             for (var i = 0; i < count; i++)
             {
-                var request = new CreateNewOrder.Request()
+                var request = new SaveOrder.Request()
                 {
                     CreatedBy = RandomUser(),
                     Branch = RandomBranch(),
@@ -594,7 +594,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                 };
 
                 request.Items = this.CreateOrderItems(this.random.Next(20, 50));
-                var handler = new CreateNewOrder.Handler(this.sessionFactory).Handle(request);
+                var handler = new SaveOrder.Handler(this.sessionFactory).Handle(request);
 
                 orders.Add(handler as Service.Dto.Order);
             }
@@ -667,7 +667,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         private Service.Dto.Order PayOrder(Service.Dto.Order order)
         {
-            var request = new PayOrder.Request()
+            var request = new SaveOrder.Request()
             {
                 Id = order.Id,
                 Payments = new Service.Dto.OrderPayment[]
@@ -681,7 +681,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     }
                 }
             };
-            var response = new PayOrder.Handler(this.sessionFactory).Handle(request);
+            var response = new SaveOrder.Handler(this.sessionFactory).Handle(request);
 
             return response;
         }
@@ -831,7 +831,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             // pay
             var paidOrder = this.PayOrder(invoicedOrder);
-            Assert.IsTrue(paidOrder.Status == Service.Dto.OrderStatus.Paid);
+            Assert.IsTrue(paidOrder.Payments.Any());
 
             // staged
             var stagedOrder = this.StageOrder(paidOrder);
@@ -842,11 +842,11 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             //invoice from payment
             var invoicedOrder2 = this.PayOrder(this.InvoiceOrder(order2));
-            Assert.IsTrue(invoicedOrder2.Status == Service.Dto.OrderStatus.Paid);
+            Assert.IsTrue(invoicedOrder2.Payments.Any());
 
             //invoice from payment
             var invoicedOrder3 = this.PayOrder(this.InvoiceOrder(order3));
-            Assert.IsTrue(invoicedOrder3.Status == Service.Dto.OrderStatus.Paid);
+            Assert.IsTrue(invoicedOrder3.Payments.Any());
 
             //complete all
             var completeOrder = this.CompleteOrder(this.ShipOrder(paidOrder));

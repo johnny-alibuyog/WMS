@@ -29,16 +29,6 @@ export class Index {
         }
       },
       {
-        route: ['paid-page'],
-        name: 'paid-page',
-        moduleId: './order-page',
-        nav: true,
-        title: 'Paid',
-        settings: {
-          status: OrderStatus.paid
-        }
-      },
-      {
         route: ['staged-page'],
         name: 'staged-page',
         moduleId: './order-page',

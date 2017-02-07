@@ -1,13 +1,13 @@
-import {DialogService} from 'aurelia-dialog';
-import {EventAggregator, Subscription} from 'aurelia-event-aggregator';
-import {autoinject, bindable, bindingMode, customElement, computedFrom} from 'aurelia-framework'
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
-import {Lookup} from '../common/custom_types/lookup';
-import {ServiceApi} from '../services/service-api';
-import {Dictionary} from '../common/custom_types/dictionary';
-import {OrderReturn, OrderReturnable, orderEvents} from '../common/models/order';
-import {pricingScheme} from '../common/models/pricing-scheme';
-import {NotificationService} from '../common/controls/notification-service';
+import { DialogService } from 'aurelia-dialog';
+import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
+import { autoinject, bindable, bindingMode, customElement, computedFrom } from 'aurelia-framework'
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
+import { Lookup } from '../common/custom_types/lookup';
+import { ServiceApi } from '../services/service-api';
+import { Dictionary } from '../common/custom_types/dictionary';
+import { OrderReturn, OrderReturnable, orderEvents } from '../common/models/order';
+import { pricingScheme } from '../common/models/pricing-scheme';
+import { NotificationService } from '../common/controls/notification-service';
 
 @autoinject
 @customElement("order-return-page")
@@ -45,15 +45,6 @@ export class OrderReturnPage {
     this.returnPager.onPage = () => this.initializePage();
   }
 
-  public attached(): void {
-    this._subscriptions = [
-      this._eventAggregator.subscribe(
-        orderEvents.return.add,
-        response => this.addItem()
-      ),
-    ];
-  }
-
   public orderIdChanged(): void {
     let requests: [Promise<OrderReturnable[]>] = [
       this.orderId ? this._api.orders.getReturnables(this.orderId) : Promise.resolve([])
@@ -63,6 +54,15 @@ export class OrderReturnPage {
       this.returnables = responses[0];
       this.products = this.returnables.map(x => x.product);
     });
+  }
+
+  public attached(): void {
+    this._subscriptions = [
+      this._eventAggregator.subscribe(
+        orderEvents.return.add,
+        response => this.addItem()
+      ),
+    ];
   }
 
   public detached(): void {
@@ -92,6 +92,8 @@ export class OrderReturnPage {
 
   public initializeItem(_return: OrderReturn): void {
     if (!_return.product) {
+      _return.returnedOn = new Date();
+      _return.returnedBy = this._api.auth.userAsLookup;
       _return.quantityValue = 0;
       _return.discountRate = 0;
       _return.discountAmount = 0;
@@ -112,7 +114,7 @@ export class OrderReturnPage {
     _return.extendedPriceAmount = returnable.extendedPriceAmount;
     _return.totalPriceAmount = returnable.totalPriceAmount;
   }
-  
+
   public addItem(): void {
     if (!this.returns)
       this.returns = <OrderReturn[]>[];

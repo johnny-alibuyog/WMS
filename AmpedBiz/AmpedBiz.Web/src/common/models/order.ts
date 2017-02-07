@@ -1,7 +1,8 @@
-import {Lookup} from '../custom_types/lookup';
-import {ProductInventory} from './product';
-import {Dictionary} from '../custom_types/dictionary';
-import {Address} from './Address';
+import { Lookup } from '../custom_types/lookup';
+import { StageDefinition } from './stage-definition';
+import { ProductInventory } from './product';
+import { Dictionary } from '../custom_types/dictionary';
+import { Address } from './Address';
 
 export const orderEvents = {
   pricingScheme: {
@@ -13,8 +14,9 @@ export const orderEvents = {
     deleted: 'order-item-deleted',
   },
   payment: {
-    pay: 'order-pay',
-    paid: 'order-paid',
+    add: 'order-payment-add',
+    added: 'order-payment-added',
+    deleted: 'order-payment-deleted',
   },
   return: {
     add: 'order-return-add',
@@ -29,14 +31,17 @@ export const orderEvents = {
 export enum OrderStatus {
   new = 1,
   invoiced = 2,
-  paid = 3,
-  staged = 4,
-  routed = 5,
-  shipped = 6,
-  //delivered = 7,
-  returned = 7,
-  completed = 8,
-  cancelled = 9
+  staged = 3,
+  routed = 4,
+  shipped = 5,
+  completed = 6,
+  cancelled = 7
+}
+
+export enum OrderAggregate {
+  items = 1,
+  payments = 2,
+  returns = 3
 }
 
 export interface Order {
@@ -76,7 +81,7 @@ export interface Order {
   items?: OrderItem[];
   returns?: OrderReturn[];
   payments?: OrderPayment[];
-  allowedTransitions?: Dictionary<string>;
+  stage?: StageDefinition<OrderStatus, OrderAggregate>;
 }
 
 export interface OrderPageItem {

@@ -17,7 +17,7 @@
     </thead>
 
     <tbody>
-      <tr repeat.for="item of itemPager.items" click.delegate="editItem(item)">
+      <tr repeat.for="item of itemPager.items">
         <td>
           <a href="javascript:undefined" class="text-info" click.delegate="editItem(item)">
             <i class="fa fa-pencil"></i>
@@ -26,44 +26,7 @@
             <i class="fa fa-times"></i>
           </a>
         </td>
-
-        <!--
-        <td>
-          <div class="row">
-            <div class="col-xs-12">
-              <select class="form-control input-xs" value.bind="item.product | lookupToId:$parent.products" change.delegate="initializeItem(item)">
-                <option>Select Product</option>
-                <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
-              </select>
-            </div>
-          </div>
-        </td>
-
-        <td class="text-right">
-          <div class="row">
-            <div class="col-xs-12 pull-right">
-              <input class="form-control input-xs text-right" type="number" value.bind="item.quantityValue" />
-            </div>
-          </div>
-        </td>
-
-        <td class="text-right">
-          <div class="row">
-            <div class="col-xs-12 pull-right">
-              <input class="form-control input-xs text-right" type="number" value.bind="item.unitPriceAmount" />
-            </div>
-          </div>
-        </td>
-
-        <td class="text-right">
-          <div class="row">
-            <div class="col-xs-12 pull-right">
-              <input class="form-control input-xs text-right" type="number" value.bind="item.total" disabled />
-            </div>
-          </div>
-        </td>
-        -->
-
+        
         <!-- read-only mode -->
         <td if.bind="$parent.selectedItem !== item">${item.product.name}</td>
         <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantityValue}</td>

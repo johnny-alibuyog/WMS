@@ -1,13 +1,12 @@
-import {DialogService} from 'aurelia-dialog';
-import {EventAggregator, Subscription} from 'aurelia-event-aggregator';
-import {autoinject, bindable, bindingMode, customElement, computedFrom} from 'aurelia-framework'
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
-import {Lookup} from '../common/custom_types/lookup';
-import {ServiceApi} from '../services/service-api';
-import {Dictionary} from '../common/custom_types/dictionary';
-import {OrderPayment, orderEvents} from '../common/models/order';
-import {NotificationService} from '../common/controls/notification-service';
-import {OrderPaymentCreate} from './order-payment-create';
+import { DialogService } from 'aurelia-dialog';
+import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
+import { autoinject, bindable, bindingMode, customElement, computedFrom } from 'aurelia-framework'
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
+import { Lookup } from '../common/custom_types/lookup';
+import { ServiceApi } from '../services/service-api';
+import { Dictionary } from '../common/custom_types/dictionary';
+import { OrderPayment, OrderPayable, orderEvents } from '../common/models/order';
+import { NotificationService } from '../common/controls/notification-service';
 
 @autoinject
 @customElement("order-payment-page")
@@ -26,7 +25,12 @@ export class OrderPaymentPage {
   public payments: OrderPayment[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
+  public paymentTypes: Lookup<string>[] = [];
+
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
   public allowedTransitions: Dictionary<string> = {};
+
+  public payable: OrderPayable;
 
   public paymentPager: Pager<OrderPayment> = new Pager<OrderPayment>();
 
@@ -41,11 +45,25 @@ export class OrderPaymentPage {
     this.paymentPager.onPage = () => this.initializePage();
   }
 
+
+  public orderIdChanged(): void {
+
+    let requests: [Promise<OrderPayable>] = [
+      this.orderId
+        ? this._api.orders.getPayables(this.orderId)
+        : Promise.resolve(<OrderPayable>{})
+    ];
+
+    Promise.all(requests).then((responses: [OrderPayable]) => {
+      this.payable = responses[1];
+    });
+  }
+
   public attached(): void {
     this._subscriptions = [
       this._eventAggregator.subscribe(
-        orderEvents.payment.pay, 
-        response => this.addPayment()
+        orderEvents.payment.add,
+        response => this.addItem()
       )
     ];
   }
@@ -69,11 +87,32 @@ export class OrderPaymentPage {
     );
   }
 
-  private addPayment(): void {
-    this._dialog.open({ viewModel: OrderPaymentCreate, model: this.orderId })
-      .then(response => {
-        if (!response.wasCancelled)
-          this._eventAggregator.publish(orderEvents.payment.paid, response.output);
-      });
+  private addItem(): void {
+    if (!this.payments)
+      this.payments = <OrderPayment[]>[];
+
+    var _payment = <OrderPayment>{
+      paidOn: new Date(),
+      paidBy: this._api.auth.userAsLookup,
+      paymentType: this.paymentTypes && this.paymentTypes.length > 0 ? this.paymentTypes[0] : null,
+      paymentAmount: this.payable && this.payable.balanceAmount || 0,
+    };
+
+    this.payments.push(_payment);
+    this.selectedItem = _payment;
+    this.initializePage();
+  }
+
+  public editItem(_payment: OrderPayment): void {
+    if (this.selectedItem !== _payment)
+      this.selectedItem = _payment;
+  }
+
+  public deleteItem(_payment: OrderPayment): void {
+    var index = this.payments.indexOf(_payment);
+    if (index > -1) {
+      this.payments.splice(index, 1);
+    }
+    this.initializePage();
   }
 }

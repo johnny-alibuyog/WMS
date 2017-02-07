@@ -59,6 +59,7 @@ export class OrderService extends ServiceBase<Order> {
     }
   */
 
+  /*
   createNew(order: Order): Promise<Order> {
     var url = this._resouce + '/new';
     return this._httpClient.post(url, <Order>{
@@ -94,6 +95,50 @@ export class OrderService extends ServiceBase<Order> {
       items: order.items
     });
   }
+  */
+
+  save(order: Order): Promise<Order> {
+    if (order.id) {
+      var url = this._resouce + '/' + order.id;
+      return this._httpClient.put(url, <Order>{
+        id: order.id,
+        createdBy: this._auth.userAsLookup,
+        createdOn: new Date(),
+        orderedBy: this._auth.userAsLookup,
+        orderedOn: order.orderedOn || new Date(),
+        branch: order.branch,
+        customer: order.customer,
+        pricingScheme: order.pricingScheme,
+        shipper: order.shipper,
+        shippingAddress: order.shippingAddress,
+        taxRate: order.taxRate,
+        shippingFeeAmount: order.shippingFeeAmount,
+        items: order.items,
+        payments: order.payments,
+        returns: order.returns
+      });
+    }
+    else {
+      var url = this._resouce;
+      return this._httpClient.post(url, <Order>{
+        id: order.id,
+        createdBy: this._auth.userAsLookup,
+        createdOn: new Date(),
+        orderedBy: this._auth.userAsLookup,
+        orderedOn: order.orderedOn || new Date(),
+        branch: order.branch,
+        customer: order.customer,
+        pricingScheme: order.pricingScheme,
+        shipper: order.shipper,
+        shippingAddress: order.shippingAddress,
+        taxRate: order.taxRate,
+        shippingFeeAmount: order.shippingFeeAmount,
+         items: order.items,
+        payments: order.payments,
+        returns: order.returns
+     });
+    }
+  }
 
   stage(order: Order): Promise<Order> {
     var url = this._resouce + '/' + order.id + '/staged';
@@ -122,30 +167,12 @@ export class OrderService extends ServiceBase<Order> {
     });
   }
 
-  pay(order: Order): Promise<Order> {
-    var url = this._resouce + '/' + order.id + '/paid';
-    return this._httpClient.post(url, <Order>{
-      id: order.id,
-      payments: order.payments
-    });
-  }
-
   ship(order: Order): Promise<Order> {
     var url = this._resouce + '/' + order.id + '/shipped';
     return this._httpClient.post(url, <Order>{
       id: order.id,
       shippedBy: this._auth.userAsLookup,
       shippedOn: new Date()
-    });
-  }
-
-  returns(order: Order): Promise<Order> {
-    var url = this._resouce + '/' + order.id + '/returned';
-    return this._httpClient.post(url, <Order>{
-      id: order.id,
-      returnedBy: this._auth.userAsLookup,
-      returnedOn: new Date(),
-      returns: order.returns
     });
   }
 

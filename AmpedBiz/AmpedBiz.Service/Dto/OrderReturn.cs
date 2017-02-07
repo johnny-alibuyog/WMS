@@ -9,9 +9,9 @@ namespace AmpedBiz.Service.Dto
 
         public Lookup<Guid> Product { get; set; }
 
-        public virtual DateTime? ReturnedOn { get; protected set; }
+        public virtual DateTime? ReturnedOn { get; set; }
 
-        public virtual Lookup<Guid> ReturnedBy { get; protected set; }
+        public virtual Lookup<Guid> ReturnedBy { get; set; }
 
         public decimal QuantityValue { get; set; }
 

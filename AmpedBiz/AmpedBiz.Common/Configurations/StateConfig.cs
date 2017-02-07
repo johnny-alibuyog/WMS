@@ -19,14 +19,13 @@ namespace AmpedBiz.Common.Configurations
             {
                 Order.Status.New, new Definition()
                 {
-                    Modifications = new string[]
+                    AllowedModifications = new string[]
                     {
                         Order.Aggregates.Items,
                         Order.Aggregates.Payments,
                     },
-                    Transitions = new string[]
+                    AllowedTransitions = new string[]
                     {
-                        Order.Status.New,
                         Order.Status.Invoiced,
                         Order.Status.Cancelled,
                     }
@@ -35,29 +34,13 @@ namespace AmpedBiz.Common.Configurations
             {
                 Order.Status.Invoiced,  new Definition()
                 {
-                    Modifications = new string[]
+                    AllowedModifications = new string[]
                     {
                         Order.Aggregates.Payments,
                     },
-                    Transitions = new string[]
+                    AllowedTransitions = new string[]
                     {
-                        Order.Status.Paid,
-                        Order.Status.Cancelled,
-                    }
-                }
-            },
-            {
-                Order.Status.Paid, new Definition()
-                {
-                    Modifications = new string[]
-                    {
-                        Order.Aggregates.Items,
-                    },
-                    Transitions =  new string[]
-                    {
-                        Order.Status.Paid,
                         Order.Status.Staged,
-                        Order.Status.Shipped,
                         Order.Status.Cancelled,
                     }
                 }
@@ -65,13 +48,12 @@ namespace AmpedBiz.Common.Configurations
             {
                 Order.Status.Staged,  new Definition()
                 {
-                    Modifications = new string[]
+                    AllowedModifications = new string[]
                     {
                         Order.Aggregates.Payments,
                     },
-                    Transitions = new string[]
+                    AllowedTransitions = new string[]
                     {
-                        Order.Status.Paid,
                         Order.Status.Shipped,
                         Order.Status.Cancelled,
                     }
@@ -80,32 +62,13 @@ namespace AmpedBiz.Common.Configurations
             {
                 Order.Status.Shipped,  new Definition()
                 {
-                    Modifications = new string[]
+                    AllowedModifications = new string[]
                     {
                         Order.Aggregates.Payments,
                         Order.Aggregates.Returns,
                     },
-                    Transitions = new string[]
+                    AllowedTransitions = new string[]
                     {
-                        Order.Status.Paid,
-                        Order.Status.Returned,
-                        Order.Status.Completed,
-                        Order.Status.Cancelled,
-                    }
-                }
-            },
-            {
-                Order.Status.Returned,  new Definition()
-                {
-                    Modifications = new string[]
-                    {
-                        Order.Aggregates.Payments,
-                        Order.Aggregates.Returns,
-                    },
-                    Transitions = new string[]
-                    {
-                        Order.Status.Paid,
-                        Order.Status.Returned,
                         Order.Status.Completed,
                         Order.Status.Cancelled,
                     }
@@ -114,11 +77,11 @@ namespace AmpedBiz.Common.Configurations
             {
                 Order.Status.Completed,  new Definition()
                 {
-                    Modifications = new string[]
+                    AllowedModifications = new string[]
                     {
 
                     },
-                    Transitions = new string[]
+                    AllowedTransitions = new string[]
                     {
 
                     }
@@ -127,11 +90,11 @@ namespace AmpedBiz.Common.Configurations
             {
                 Order.Status.Cancelled,  new Definition()
                 {
-                    Modifications = new string[]
+                    AllowedModifications = new string[]
                     {
 
                     },
-                    Transitions = new string[]
+                    AllowedTransitions = new string[]
                     {
 
                     }
@@ -144,12 +107,12 @@ namespace AmpedBiz.Common.Configurations
             {
                 PurchaseOrder.Status.New, new Definition()
                 {
-                    Modifications = new string[]
+                    AllowedModifications = new string[]
                     {
                         PurchaseOrder.Aggregates.Items,
                         PurchaseOrder.Aggregates.Payments,
                     },
-                    Transitions = new string[]
+                    AllowedTransitions = new string[]
                     {
                         PurchaseOrder.Status.New,
                         PurchaseOrder.Status.Submitted,
@@ -160,11 +123,11 @@ namespace AmpedBiz.Common.Configurations
             {
                 PurchaseOrder.Status.Submitted, new Definition()
                 {
-                    Modifications = new string[]
+                    AllowedModifications = new string[]
                     {
                         PurchaseOrder.Aggregates.Payments,
                     },
-                    Transitions = new string[]
+                    AllowedTransitions = new string[]
                     {
                         PurchaseOrder.Status.New,
                         PurchaseOrder.Status.Approved,
@@ -175,12 +138,12 @@ namespace AmpedBiz.Common.Configurations
             {
                 PurchaseOrder.Status.Approved, new Definition()
                 {
-                    Modifications = new string[]
+                    AllowedModifications = new string[]
                     {
                         PurchaseOrder.Aggregates.Payments,
                         PurchaseOrder.Aggregates.Receipts,
                     },
-                    Transitions = new string[]
+                    AllowedTransitions = new string[]
                     {
                         PurchaseOrder.Status.Paid,
                         PurchaseOrder.Status.Cancelled,
@@ -190,12 +153,12 @@ namespace AmpedBiz.Common.Configurations
             {
                 PurchaseOrder.Status.Paid, new Definition()
                 {
-                    Modifications = new string[]
+                    AllowedModifications = new string[]
                     {
                         PurchaseOrder.Aggregates.Payments,
                         PurchaseOrder.Aggregates.Receipts,
                     },
-                    Transitions = new string[]
+                    AllowedTransitions = new string[]
                     {
                         PurchaseOrder.Status.Paid,
                         PurchaseOrder.Status.Received,
@@ -207,12 +170,12 @@ namespace AmpedBiz.Common.Configurations
             {
                 PurchaseOrder.Status.Received, new Definition()
                 {
-                    Modifications = new string[]
+                    AllowedModifications = new string[]
                     {
                         PurchaseOrder.Aggregates.Payments,
                         PurchaseOrder.Aggregates.Receipts,
                     },
-                    Transitions = new string[]
+                    AllowedTransitions = new string[]
                     {
                         PurchaseOrder.Status.Paid,
                         PurchaseOrder.Status.Received,
@@ -224,11 +187,11 @@ namespace AmpedBiz.Common.Configurations
             {
                 PurchaseOrder.Status.Completed, new Definition()
                 {
-                    Modifications = new string[]
+                    AllowedModifications = new string[]
                     {
 
                     },
-                    Transitions = new string[]
+                    AllowedTransitions = new string[]
                     {
 
                     }
@@ -237,11 +200,11 @@ namespace AmpedBiz.Common.Configurations
             {
                 PurchaseOrder.Status.Cancelled, new Definition()
                 {
-                    Modifications = new string[]
+                    AllowedModifications = new string[]
                     {
 
                     },
-                    Transitions = new string[]
+                    AllowedTransitions = new string[]
                     {
 
                     }
@@ -251,7 +214,7 @@ namespace AmpedBiz.Common.Configurations
 
         protected override IConfigurationProvider OnCreateDefaultProvider(string sectionName, object configData)
         {
-            this.Provider = new JsonFileConfigurationProvider<TransitionConfig>()
+            this.Provider = new JsonFileConfigurationProvider<StateConfig>()
             {
                 JsonConfigurationFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "state.config.json"),
             };
@@ -262,9 +225,9 @@ namespace AmpedBiz.Common.Configurations
 
     public class Definition
     {
-        public string[] Transitions { get; set; }
+        public string[] AllowedTransitions { get; set; }
 
-        public string[] Modifications { get; set; }
+        public string[] AllowedModifications { get; set; }
     }
 
     internal static class Order
@@ -275,15 +238,11 @@ namespace AmpedBiz.Common.Configurations
 
             public static string Invoiced = "Invoiced";
 
-            public static string Paid = "Paid";
-
             public static string Staged = "Staged";
 
             public static string Routed = "Routed";
 
             public static string Shipped = "Shipped";
-
-            public static string Returned = "Returned";
 
             public static string Completed = "Completed";
 

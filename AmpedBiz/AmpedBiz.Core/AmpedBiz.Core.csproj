@@ -100,16 +100,10 @@
     <Compile Include="Services\Orders\OrderInvoicedVisitor.cs">
       <DependentUpon>OrderVisitor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Services\Orders\OrderNewlyCreatedVisitor.cs">
-      <DependentUpon>OrderVisitor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Services\Orders\OrderPaidVisitor.cs">
-      <DependentUpon>OrderVisitor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Services\Orders\OrderReturnedVisitor.cs">
-      <DependentUpon>OrderVisitor.cs</DependentUpon>
-    </Compile>
     <Compile Include="Services\Orders\OrderRoutedVisitor.cs">
+      <DependentUpon>OrderVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\Orders\OrderSaveVisitor.cs">
       <DependentUpon>OrderVisitor.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\Orders\OrderShippedVisitor.cs">
@@ -117,6 +111,15 @@
     </Compile>
     <Compile Include="Services\Orders\OrderStagedVisitor.cs">
       <DependentUpon>OrderVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\Orders\OrderUpdateItemsVisitor.cs">
+      <DependentUpon>OrderSaveVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\Orders\OrderUpdatePaymentVisitor.cs">
+      <DependentUpon>OrderSaveVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\Orders\OrderUpdateReturnsVisitor.cs">
+      <DependentUpon>OrderSaveVisitor.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\Orders\OrderVisitor.cs" />
     <Compile Include="Services\Orders\StateDispatcher.cs" />
@@ -154,6 +157,7 @@
       <DependentUpon>ReturnVisitor.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\Returns\ReturnVisitor.cs" />
+    <Compile Include="Entities\StageDefinition.cs" />
     <Compile Include="ValueObject.cs" />
   </ItemGroup>
   <ItemGroup>

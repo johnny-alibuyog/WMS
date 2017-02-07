@@ -17,6 +17,13 @@ namespace AmpedBiz.Core.Entities
         Cancelled = 7
     }
 
+    public enum PurchaseOrderAggregate
+    {
+        Items = 1,
+        Payments = 2,
+        Receipts = 3
+    }
+
     public class PurchaseOrder : Entity<Guid, PurchaseOrder>, IAccept<PurchaseOrderVisitor>
     {
         public virtual string PurchaseOrderNumber { get;  internal protected set; }

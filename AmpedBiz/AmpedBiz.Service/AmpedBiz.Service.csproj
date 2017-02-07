@@ -98,6 +98,7 @@
     <Compile Include="Dto\ReturnItem.cs" />
     <Compile Include="Dto\ReturnReason.cs" />
     <Compile Include="Dto\Role.cs" />
+    <Compile Include="Dto\StageDefinition.cs" />
     <Compile Include="Dto\Supplier.cs" />
     <Compile Include="Dto\UnitOfMeasure.cs" />
     <Compile Include="Dto\UnitOfMeasureClass.cs" />
@@ -105,7 +106,7 @@
     <Compile Include="Dto\UserRole.cs" />
     <Compile Include="Orders\CancelOrder.cs" />
     <Compile Include="Orders\CompleteOrder.cs" />
-    <Compile Include="Orders\CreateNewOrder.cs" />
+    <Compile Include="Orders\SaveOrder.cs" />
     <Compile Include="Orders\GetActiveOrderPage.cs" />
     <Compile Include="Orders\GetOrder.cs" />
     <Compile Include="Orders\GetOrderInvoiceDetail.cs" />
@@ -117,12 +118,9 @@
     <Compile Include="Orders\GetOrderStatusList.cs" />
     <Compile Include="Orders\GetOrderStatusLookup.cs" />
     <Compile Include="Orders\InvoiceOrder.cs" />
-    <Compile Include="Orders\PayOrder.cs" />
-    <Compile Include="Orders\ReturnOrder.cs" />
     <Compile Include="Orders\RouteOrder.cs" />
     <Compile Include="Orders\ShipOrder.cs" />
     <Compile Include="Orders\StageOrder.cs" />
-    <Compile Include="Orders\UpdateNewOrder.cs" />
     <Compile Include="PaymentTypes\GetPaymentTypeLookup.cs" />
     <Compile Include="PaymentTypes\GetPaymentTypePage.cs" />
     <Compile Include="PricingShemes\GetPricingSchemeLookup.cs" />
