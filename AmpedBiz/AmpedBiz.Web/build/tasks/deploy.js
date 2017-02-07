@@ -2,33 +2,16 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var ftp = require('vinyl-ftp');
 
-var target = gutil.env.target || 'gear_host';
-
-var sites = {
-  gear_host: {
-    host: 'ftp.gear.host',
-    user: 'ampbiz',
-    password: 'MAreadN32YRklLC2ayTv8uDk4bNgr2kjeqCvvC9cb5hMfmLxaAG09SKytifP',
-    folder: '/site/wwwroot',
-  },
-  some_other_site: {
-    host: 'ftp.gear.host',
-    user: 'ampbiz',
-    password: 'MAreadN32YRklLC2ayTv8uDk4bNgr2kjeqCvvC9cb5hMfmLxaAG09SKytifP',
-    folder: '/site/wwwroot',
-  },
-};
-
 var config = {
   options: {
-    host: sites[target].host,
-    user: sites[target].user,
-    password: sites[target].password,
+    host: gutil.env.host,
+    user: gutil.env.username,
+    password: gutil.env.password,
     parallel: 10,
     log: gutil.log
   },
   localFolder: ['export/**'],
-  remoteFolder: sites[target].folder,
+  remoteFolder: gutil.env.folder,
 };
 
 /**
