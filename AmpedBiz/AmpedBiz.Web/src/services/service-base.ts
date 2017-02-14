@@ -1,6 +1,6 @@
-import {autoinject} from 'aurelia-framework';
-import {HttpClientFacade} from './http-client-facade';
-import {PageRequest} from '../common/models/paging';
+import { autoinject } from 'aurelia-framework';
+import { HttpClientFacade } from './http-client-facade';
+import { PageRequest } from '../common/models/paging';
 
 //@autoinject
 export class ServiceBase<TEntity> {
@@ -12,34 +12,34 @@ export class ServiceBase<TEntity> {
     this._httpClient = httpClient;
   }
 
-  get(id: string): Promise<TEntity> {
+  public get(id: string): Promise<TEntity> {
     var url = this._resouce + '/' + id;
     return this._httpClient.get(url)
       .then(data => <TEntity>data);
   }
 
-  getList(): Promise<TEntity[]> {
+  public getList(): Promise<TEntity[]> {
     var url = this._resouce;
     return this._httpClient.get(url)
       .then(data => <TEntity[]>data);
   }
 
-  getPage(page: PageRequest): Promise<any> {
+  public getPage(page: PageRequest): Promise<any> {
     var url = this._resouce + '/page';
     return this._httpClient.post(url, page);
   }
 
-  create(entity: TEntity): Promise<any> {
+  public create(entity: TEntity): Promise<any> {
     var url = this._resouce;
     return this._httpClient.post(url, entity);
   }
 
-  update(entity: TEntity): Promise<any> {
+  public update(entity: TEntity): Promise<any> {
     var url = this._resouce;
     return this._httpClient.put(url, entity);
   }
 
-  delete(id: any, entity?: TEntity): Promise<any> {
+  public delete(id: any, entity?: TEntity): Promise<any> {
     var url = this._resouce + "/" + id;
     return this._httpClient.delete(url, entity);
   }

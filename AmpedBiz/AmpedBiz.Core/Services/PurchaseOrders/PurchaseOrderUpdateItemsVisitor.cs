@@ -3,18 +3,18 @@ using AmpedBiz.Core.Entities;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AmpedBiz.Core.Services.Orders
+namespace AmpedBiz.Core.Services.PurchaseOrders
 {
-    public class OrderUpdateItemsVisitor : OrderVisitor
+    public class PurchaseOrderUpdateItemsVisitor : PurchaseOrderVisitor
     {
-        public virtual IEnumerable<OrderItem> Items { get; set; }
+        public virtual IEnumerable<PurchaseOrderItem> Items { get; set; }
 
-        public OrderUpdateItemsVisitor(IEnumerable<OrderItem> items)
+        public PurchaseOrderUpdateItemsVisitor(IEnumerable<PurchaseOrderItem> items)
         {
             this.Items = items;
         }
 
-        public override void Visit(Order target)
+        public override void Visit(PurchaseOrder target)
         {
             if (this.Items.IsNullOrEmpty())
                 return;
@@ -25,7 +25,7 @@ namespace AmpedBiz.Core.Services.Orders
 
             foreach (var item in itemsToInsert)
             {
-                item.Order = target;
+                item.PurchaseOrder = target;
                 target.Items.Add(item);
             }
 
@@ -33,12 +33,12 @@ namespace AmpedBiz.Core.Services.Orders
             {
                 var value = this.Items.Single(x => x == item);
                 item.SerializeWith(value);
-                item.Order = target;
+                item.PurchaseOrder = target;
             }
 
             foreach (var item in itemsToRemove)
             {
-                item.Order = null;
+                item.PurchaseOrder = null;
                 target.Items.Remove(item);
             }
         }

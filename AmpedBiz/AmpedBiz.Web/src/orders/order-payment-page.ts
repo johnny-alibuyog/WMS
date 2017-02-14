@@ -27,9 +27,6 @@ export class OrderPaymentPage {
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public paymentTypes: Lookup<string>[] = [];
 
-  @bindable({ defaultBindingMode: bindingMode.twoWay })
-  public allowedTransitions: Dictionary<string> = {};
-
   public payable: OrderPayable;
 
   public paymentPager: Pager<OrderPayment> = new Pager<OrderPayment>();
@@ -44,7 +41,6 @@ export class OrderPaymentPage {
 
     this.paymentPager.onPage = () => this.initializePage();
   }
-
 
   public orderIdChanged(): void {
 

@@ -39,26 +39,6 @@ export class Index {
         }
       },
       {
-        route: ['paid-page'],
-        name: 'paid-page',
-        moduleId: './purchase-order-page',
-        nav: true,
-        title: 'Paid',
-        settings: {
-          status: PurchaseOrderStatus.paid
-        }
-      },
-      {
-        route: ['received-page'],
-        name: 'received-page',
-        moduleId: './purchase-order-page',
-        nav: true,
-        title: 'Received',
-        settings: {
-          status: PurchaseOrderStatus.received
-        }
-      },
-      {
         route: ['completed-page'],
         name: 'completed-page',
         moduleId: './purchase-order-page',

@@ -62,6 +62,7 @@ namespace AmpedBiz.Service.Orders
                             .Fetch(x => x.Payments.First().PaidBy).Eager
                             .Fetch(x => x.Payments.First().PaymentType).Eager
                             .Fetch(x => x.Returns).Eager
+                            .Fetch(x => x.Returns.First().ReturnedBy).Eager
                             .Fetch(x => x.Returns.First().Product).Eager
                             .Fetch(x => x.Returns.First().Product.Inventory).Eager
                             .SingleOrDefault();
@@ -87,7 +88,7 @@ namespace AmpedBiz.Service.Orders
 
                     Func<Guid, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
 
-                    entity.State.Process(new OrderSaveVisitor()
+                    entity.Accept(new OrderSaveVisitor()
                     {
                         OrderNumber = message.OrderNumber,
                         CreatedBy = (!message?.CreatedBy?.Id.IsNullOrDefault() ?? false)

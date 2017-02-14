@@ -48,7 +48,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                         .ThenFetch(x => x.UnitOfMeasure)
                         .ToList();
 
-                    entity.State.Process(new PurchaseOrderReceivedVisitor()
+                    entity.State.Process(new PurchaseOrderUpdateReceiptsVisitor()
                     {
                         Receipts = message.Receipts.Select(x => new PurchaseOrderReceipt(
                             batchNumber: x.BatchNumber,

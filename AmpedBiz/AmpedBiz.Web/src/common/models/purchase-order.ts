@@ -10,23 +10,26 @@ export const purchaseOrderEvents = {
     deleted: 'purchase-order-item-deleted',
   },
   payment: {
-    pay: 'purchase-order-pay',
-    paid: 'purchase-order-paid',
+    add: 'purchase-order-payment-add',
+    added: 'purchase-order-payment-added',
+    deleted: 'purchase-order-payment-deleted',
   },
   receipts: {
-    receive: 'purchase-order-receive',
-    received: 'purchase-order-received',
-  }
+    receive: 'purchase-order-receipts-receive',
+    received: 'purchase-order-receipts-received',
+  },
+  receivings: {
+    add: 'purchase-order-receivings-add',
+    added: 'purchase-order-receivings-added',
+  },
 }
 
 export enum PurchaseOrderStatus {
   new = 1,
   submitted = 2,
   approved = 3,
-  paid = 4,
-  received = 5,
-  completed = 6,
-  cancelled = 7
+  completed = 4,
+  cancelled = 5
 }
 
 export enum PurchaseOrderAggregate {
@@ -61,7 +64,6 @@ export interface PurchaseOrder {
   payments?: PurchaseOrderPayment[];
   receipts?: PurchaseOrderReceipt[];
   receivables?: PurchaseOrderReceivable[];
-  allowedTransitions?: Dictionary<string>;
   stage?: StageDefinition<PurchaseOrderStatus, PurchaseOrderAggregate>;
 }
 
@@ -108,11 +110,18 @@ export interface PurchaseOrderReceipt {
 export interface PurchaseOrderReceivable {
   purchaseOrderId?: string;
   product?: Lookup<string>;
-  expiresOn?: Date;
   orderedQuantity?: number;
   receivedQuantity?: number;
   receivableQuantity?: number;
-  receivingQuantity?: number;
+  receiving: ReceivingDetails;
+}
+
+export interface ReceivingDetails {
+  batchNumber?: string;
+  receivedBy?: Lookup<string>;
+  receivedOn?: Date;
+  expiresOn?: Date;
+  quantity?: number;
 }
 
 export interface PurchaseOrderPayable {

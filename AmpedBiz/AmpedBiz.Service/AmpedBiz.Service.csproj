@@ -152,11 +152,9 @@
     <Compile Include="PurchaseOrders\GetActivePurchaseOrderPage.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrderPayable.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrderReceivableList.cs" />
-    <Compile Include="PurchaseOrders\UpdateNewPurchaseOder.cs" />
-    <Compile Include="PurchaseOrders\PayPurchaseOrder.cs" />
     <Compile Include="PurchaseOrders\ApprovePurchaseOder.cs" />
     <Compile Include="PurchaseOrders\CompletePurchaseOder.cs" />
-    <Compile Include="PurchaseOrders\CreateNewPurchaseOder.cs" />
+    <Compile Include="PurchaseOrders\SavePurchaseOrder.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrder.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrderList.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrderPage.cs" />
@@ -164,7 +162,6 @@
     <Compile Include="PurchaseOrders\GetPurchaseOrderStatusList.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrderStatusLookup.cs" />
     <Compile Include="PurchaseOrders\SubmitPurchaseOrder.cs" />
-    <Compile Include="PurchaseOrders\ReceivePurchaseOrder.cs" />
     <Compile Include="RequestHandlerBase.cs" />
     <Compile Include="ReturnReasons\CreateReturnReason.cs" />
     <Compile Include="ReturnReasons\GetReturnReason.cs" />

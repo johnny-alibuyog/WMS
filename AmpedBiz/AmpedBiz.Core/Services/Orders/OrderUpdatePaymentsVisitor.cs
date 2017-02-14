@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace AmpedBiz.Core.Services.Orders
 {
-    public class OrderUpdatePaymentVisitor : OrderVisitor
+    public class OrderUpdatePaymentsVisitor : OrderVisitor
     {
         public virtual IEnumerable<OrderPayment> Payments { get; set; }
 
-        public OrderUpdatePaymentVisitor(IEnumerable<OrderPayment> payments)
+        public OrderUpdatePaymentsVisitor(IEnumerable<OrderPayment> payments)
         {
             this.Payments = payments;
         }
@@ -46,9 +46,6 @@ namespace AmpedBiz.Core.Services.Orders
 
             target.PaidOn = lastPayment.PaidOn;
             target.PaidTo = lastPayment.PaidBy;
-
-            //this.AddPaymentsTo(target);
-            //target.Status = OrderStatus.Paid;
         }
 
         //private void SetPaymentsTo(Order target)

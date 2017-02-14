@@ -36,7 +36,7 @@
                 </thead>
 
                 <tbody>
-                  <tr repeat.for="item of receivablePage.items">
+                  <tr repeat.for="item of receivablePage.items" click.delegate="editItem(item)">
                     <td>
                       <a href="javascript:undefined" class="text-info" click.delegate="editItem(item)">
                         <i class="fa fa-pencil"></i>
@@ -77,8 +77,8 @@
     </ai-dialog-body>
 
     <ai-dialog-footer>
-      <button type="button" class="btn btn-success" click.trigger="add()" disabled.bind="!canAdd">
-        <i class="fa fa-check-circle"></i> Add
+      <button type="button" class="btn btn-success" click.trigger="receive()" disabled.bind="!canSave">
+        <i class="fa fa-check-circle"></i> Receive
       </button>
       <button type="button" class="btn btn-danger" click.trigger="cancel()">
         <i class="fa fa-times-circle"></i> Cancel</button>

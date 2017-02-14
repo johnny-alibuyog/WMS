@@ -70,12 +70,10 @@ namespace AmpedBiz.Service.Dto.Mappers
         private void RegisterPurchaseOrderMap()
         {
             ExpressMapper.Mapper.Register<Entity.PurchaseOrder, GetPurchaseOrder.Response>()
-                .Member(x => x.AllowedTransitions, x => x.State.AllowedTransitions
-                    .ToDictionary(o => ExpressMapper.Mapper.Map<Entity.PurchaseOrderStatus, Dto.PurchaseOrderStatus>(o.Key), y => y.Value)
-                )
-            .Flatten();
+                .Member(x => x.Stage, x => x.State.Stage).Flatten();
 
-            ExpressMapper.Mapper.Register<Entity.PurchaseOrder, CreateNewPurchaseOder.Response>().Flatten();
+            ExpressMapper.Mapper.Register<Entity.PurchaseOrder, SavePurchaseOrder.Response>().Flatten()
+                .Member(x => x.Stage, x => x.State.Stage).Flatten();
 
             ExpressMapper.Mapper.Register<Entity.PurchaseOrderItem, Dto.PurchaseOrderItem>().Flatten();
 

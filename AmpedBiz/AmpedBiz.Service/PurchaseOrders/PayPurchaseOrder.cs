@@ -40,7 +40,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 
                     var currency = session.Load<Currency>(Currency.PHP.Id); //TODO: this should be taken from tenant
 
-                    entity.State.Process(new PurchaseOrderPaidVisitor()
+                    entity.State.Process(new PurchaseOrderUpdatePaymentsVisitor()
                     {
                         Payments = message.Payments.Select(x => new PurchaseOrderPayment(
                             paidOn: x.PaidOn ?? DateTime.Now,

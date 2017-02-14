@@ -5,10 +5,11 @@
   <require from="purchases/purchase-order-item-page"></require>
   <require from="purchases/purchase-order-payment-page"></require>
   <require from="purchases/purchase-order-receipt-page"></require>
+  <require from="purchases/state-verification-value-converter"></require>
 
   <section class="row row-no-padding">
 
-    <div class="col-md-8">
+    <div class="col-md-11">
 
       <div class="panel panel-default">
 
@@ -20,36 +21,24 @@
             <span6>&nbsp ${header} &nbsp</span6>
 
             <!-- transition buttons -->
-            <button type="button" class="btn btn-default" if.bind="purchaseOrder.allowedTransitions['new']" click.trigger="save()">
-              <i class="fa fa-check"></i> ${purchaseOrder.allowedTransitions['new']}
+            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedModifications | canModify" click.trigger="save()">
+              <i class="fa fa-check"></i> Save
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="purchaseOrder.allowedTransitions['submitted']" click.trigger="submit()">
-              <i class="fa fa-check"></i> ${purchaseOrder.allowedTransitions['submitted']}
+            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'submitted'" click.trigger="submit()">
+              <i class="fa fa-check"></i> Submit
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="purchaseOrder.allowedTransitions['approved']" click.trigger="approve()">
-              <i class="fa fa-check"></i> ${purchaseOrder.allowedTransitions['approved']}
+            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'approved'" click.trigger="approve()">
+              <i class="fa fa-check"></i> Approve
             </button>
 
-            <!--
-            <button type="button" class="btn btn-default" if.bind="purchaseOrder.allowedTransitions['paid']" click.trigger="pay()">
-              <i class="fa fa-check"></i> ${purchaseOrder.allowedTransitions['paid']}
-            </button>
-            -->
-
-            <!--
-            <button type="button" class="btn btn-default" if.bind="purchaseOrder.allowedTransitions['received']" click.trigger="recieve()">
-              <i class="fa fa-check"></i> ${purchaseOrder.allowedTransitions['received']}
-            </button>
-            -->
-
-            <button type="button" class="btn btn-default" if.bind="purchaseOrder.allowedTransitions['completed']" click.trigger="complete()">
-              <i class="fa fa-check"></i> ${purchaseOrder.allowedTransitions['completed']}
+            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'completed'" click.trigger="complete()">
+              <i class="fa fa-check"></i> Complete
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="purchaseOrder.allowedTransitions['cancelled']" click.trigger="cancel()">
-              <i class="fa fa-check"></i> ${purchaseOrder.allowedTransitions['cancelled']}
+            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'cancelled'" click.trigger="cancel()">
+              <i class="fa fa-check"></i> Cancel
             </button>
 
             <button type="button" class="btn btn-default" click.trigger="refresh()">
@@ -157,7 +146,7 @@
                   <li class="active">
                     <a data-toggle="tab" href="#itemsTab">
                       <span>Purchase Items &nbsp</span>
-                      <button type="button" if.bind="purchaseOrder.allowedTransitions['new']" class="btn btn-default btn-circle" click.delegate="addItem()">
+                      <button type="button" disabled.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo: 'items'" class="btn btn-default btn-circle" click.trigger="addItem()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
                     </a>
@@ -165,7 +154,7 @@
                   <li>
                     <a data-toggle="tab" href="#paymentsTab">
                       <span>Payments &nbsp</span>
-                      <button type="button" if.bind="purchaseOrder.allowedTransitions['paid']" class="btn btn-default btn-circle" click.delegate="addPayment()">
+                      <button type="button" disabled.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo: 'payments'" class="btn btn-default btn-circle" click.trigger="addPayment()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
                     </a>
@@ -173,7 +162,7 @@
                   <li>
                     <a data-toggle="tab" href="#receiptsTab">
                       <span>Inventory Recieving&nbsp</span>
-                      <button type="button" if.bind="purchaseOrder.allowedTransitions['received']" class="btn btn-default btn-circle" click.delegate="addReceipt()">
+                      <button type="button" disabled.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo: 'receipts'" class="btn btn-default btn-circle" click.trigger="addReceivings()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
                     </a>
@@ -189,8 +178,7 @@
                     <purchase-order-item-page 
                       products.bind="products" 
                       items.bind="purchaseOrder.items" 
-                      purchase-order-id.bind="purchaseOrder.id"
-                      allowed-transitions.bind="purchaseOrder.allowedTransitions">
+                      purchase-order-id.bind="purchaseOrder.id">
                     </purchase-order-item-page>
                   </div>
 
@@ -200,10 +188,9 @@
 
                     <purchase-order-payment-page 
                       payments.bind="purchaseOrder.payments" 
-                      purchase-order-id.bind="purchaseOrder.id" 
-                      allowed-transitions.bind="purchaseOrder.allowedTransitions">
+                      payment-types.bind="paymentTypes" 
+                      purchase-order-id.bind="purchaseOrder.id">
                     </purchase-order-payment-page>
-
                   </div>
 
                   <!-- inventory recieving -->
@@ -213,10 +200,8 @@
                     <purchase-order-receipt-page 
                       receipts.bind="purchaseOrder.receipts"
                       receivables.bind="purchaseOrder.receivables" 
-                      purchase-order-id.bind="purchaseOrder.id" 
-                      allowed-transitions.bind="purchaseOrder.allowedTransitions">
+                      purchase-order-id.bind="purchaseOrder.id">
                     </purchase-order-receipt-page>
-
                   </div>
 
                 </div>

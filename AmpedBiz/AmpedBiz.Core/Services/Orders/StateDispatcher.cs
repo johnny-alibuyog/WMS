@@ -1,9 +1,8 @@
 ﻿using AmpedBiz.Common.Configurations;
-using AmpedBiz.Core.Entities;
 using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AmpedBiz.Core.Services.Orders
 {
@@ -15,31 +14,15 @@ namespace AmpedBiz.Core.Services.Orders
 
         public virtual StageDefenition<OrderStatus, OrderAggregate> Stage { get; protected set; }
 
-        //public virtual OrderStatus[] AllowedTransitions { get; protected set; }
-
-        //public virtual OrderAggregate[] AllowedModifications { get; protected set; }
-
-        //public virtual Definition<OrderStatus, OrderAggregate> StateDefinition { get; protected set; }
-
         public StateDispatcher(Order target)
         {
             this._target = target;
             this.Stage = StageDefinitionConfigReader.Values[target.Status];
-            //this.AllowedTransitions = Orders.Stage.Values[target.Status].AllowedTransitions;
-            //this.AllowedModifications = Orders.Stage.Values[target.Status].AllowedModifications;
         }
 
         public virtual void Process(OrderVisitor visitor)
         {
             this.Process((dynamic)visitor);
-        }
-
-        private void Process(OrderSaveVisitor visitor)
-        {
-            if (!this.Stage.IsModificationAllowed())
-                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "creation/modification", this._target.Status));
-
-            this._target.Accept(visitor);
         }
 
         private void Process(OrderInvoicedVisitor visitor)
@@ -89,8 +72,6 @@ namespace AmpedBiz.Core.Services.Orders
 
             this._target.Accept(visitor);
         }
-
-
     }
 
     public class StageDefinitionConfigReader
@@ -113,38 +94,6 @@ namespace AmpedBiz.Core.Services.Orders
             }
 
             return stageDefinitions;
-        }
-    }
-
-    public class StageOld
-    {
-        public static readonly Dictionary<OrderStatus, Dictionary<OrderStatus, string>> Transitions = GetConfig();
-
-        private static Dictionary<OrderStatus, Dictionary<OrderStatus, string>> GetConfig()
-        {
-            Func<string, OrderStatus> ParseStatus = (value) =>
-            {
-                var result = default(OrderStatus);
-
-                if (!Enum.TryParse<OrderStatus>(value, out result))
-                {
-                    throw new Exception($"{value} is an invalid order status. Please check check your transition configuration.");
-                }
-
-                return result;
-            };
-
-            var stageTransitions = new Dictionary<OrderStatus, Dictionary<OrderStatus, string>>();
-
-            foreach (var item in TransitionConfig.Instance.OrderTransitions)
-            {
-                var stage = ParseStatus(item.Key);
-                var transitions = item.Value.ToDictionary(x => ParseStatus(x.Key), x => x.Value);
-
-                stageTransitions.Add(stage, transitions);
-            }
-
-            return stageTransitions;
         }
     }
 }

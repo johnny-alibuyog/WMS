@@ -68,7 +68,7 @@ export class PurchaseOrderItemPage {
     }
 
     this._api.products.getInventory(item.product.id).then(data => {
-      item.quantityValue = data.targetValue || 1;
+      item.quantityValue = 0;
       item.unitCostAmount = data.basePriceAmount || 0;
     });
   }
@@ -96,7 +96,6 @@ export class PurchaseOrderItemPage {
     this.items.push(item);
     this.selectedItem = item;
 
-    //this.itemPager.offset = this.itemPager.end;
     this.initializePage();
   }
 

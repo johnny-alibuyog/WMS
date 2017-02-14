@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Common.CustomTypes;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Service.Dto
 {
@@ -9,10 +10,8 @@ namespace AmpedBiz.Service.Dto
         New = 1,
         Submitted = 2,
         Approved = 3,
-        Paid = 4,
-        Received = 5,
-        Completed = 6,
-        Cancelled = 7
+        Completed = 4,
+        Cancelled = 5
     }
 
     public enum PurchaseOrderAggregate
@@ -74,13 +73,13 @@ namespace AmpedBiz.Service.Dto
 
         public string CancellationReason { get; set; }
 
-        public IEnumerable<PurchaseOrderItem> Items { get; set; }
+        public IEnumerable<PurchaseOrderItem> Items { get; set; } = new Collection<PurchaseOrderItem>();
 
-        public IEnumerable<PurchaseOrderPayment> Payments { get; set; }
+        public IEnumerable<PurchaseOrderPayment> Payments { get; set; } = new Collection<PurchaseOrderPayment>();
 
-        public IEnumerable<PurchaseOrderReceipt> Receipts { get; set; }
+        public IEnumerable<PurchaseOrderReceipt> Receipts { get; set; } = new Collection<PurchaseOrderReceipt>();
 
-        public IEnumerable<PurchaseOrderReceivable> Receivables { get; set; }
+        public IEnumerable<PurchaseOrderReceivable> Receivables { get; set; } = new Collection<PurchaseOrderReceivable>();
 
         public Dictionary<PurchaseOrderStatus, string> AllowedTransitions { get; set; }
 

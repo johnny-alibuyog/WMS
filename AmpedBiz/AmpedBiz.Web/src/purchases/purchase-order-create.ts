@@ -1,11 +1,12 @@
-import {Router} from 'aurelia-router';
-import {autoinject} from 'aurelia-framework';
-import {EventAggregator, Subscription} from 'aurelia-event-aggregator';
-import {Dictionary} from '../common/custom_types/dictionary';
-import {PurchaseOrder, PurchaseOrderStatus, purchaseOrderEvents} from '../common/models/purchase-order';
-import {ServiceApi} from '../services/service-api';
-import {Lookup} from '../common/custom_types/lookup';
-import {NotificationService} from '../common/controls/notification-service';
+import { Router } from 'aurelia-router';
+import { autoinject } from 'aurelia-framework';
+import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
+import { Dictionary } from '../common/custom_types/dictionary';
+import { Lookup } from '../common/custom_types/lookup';
+import { StageDefinition } from '../common/models/stage-definition';
+import { PurchaseOrder, PurchaseOrderStatus, PurchaseOrderAggregate, PurchaseOrderReceivable, purchaseOrderEvents, } from '../common/models/purchase-order';
+import { ServiceApi } from '../services/service-api';
+import { NotificationService } from '../common/controls/notification-service';
 
 @autoinject
 export class PurchaseOrderCreate {
@@ -19,6 +20,7 @@ export class PurchaseOrderCreate {
   public isEdit: boolean = false;
   public canSave: boolean = true;
 
+  public paymentTypes: Lookup<string>[] = [];
   public suppliers: Lookup<string>[] = [];
   public products: Lookup<string>[] = [];
   public statuses: Lookup<PurchaseOrderStatus>[] = [];
@@ -31,51 +33,49 @@ export class PurchaseOrderCreate {
     this._eventAggegator = eventAggegator;
   }
 
-  getInitializedOrder(): PurchaseOrder {
-    let purchaseOrder: PurchaseOrder = {
+  getInitializedPurchaseOrder(): PurchaseOrder {
+    return <PurchaseOrder>{
       createdOn: new Date(),
-      allowedTransitions: <Dictionary<string>>{}
+      stage: <StageDefinition<PurchaseOrderStatus, PurchaseOrderAggregate>>{
+        allowedTransitions: [],
+        allowedModifications: [
+          PurchaseOrderAggregate.items,
+        ]
+      }
     };
-    purchaseOrder.allowedTransitions[PurchaseOrderStatus[PurchaseOrderStatus.new]] = "Save";
-    return purchaseOrder;
   }
-
 
   activate(purchaseOrder: PurchaseOrder): void {
     this._subscriptions = [
       this._eventAggegator.subscribe(
-        purchaseOrderEvents.payment.paid,
-        data => this.resetAndNoify(data, null)
-      ),
-      this._eventAggegator.subscribe(
-        purchaseOrderEvents.receipts.received,
-        data => this.resetAndNoify(data, null)
+        purchaseOrderEvents.receivings.added,
+        data => this.addedReceivings(data)
       )
     ];
 
     let requests: [
       Promise<Lookup<string>[]>,
+      Promise<Lookup<string>[]>,
       Promise<Lookup<PurchaseOrderStatus>[]>,
       Promise<PurchaseOrder>] = [
+        this._api.paymentTypes.getLookups(),
         this._api.suppliers.getLookups(),
         this._api.purchaseOrders.getStatusLookup(),
         purchaseOrder.id
           ? this._api.purchaseOrders.get(purchaseOrder.id)
-          : Promise.resolve(this.getInitializedOrder())
+          : Promise.resolve(this.getInitializedPurchaseOrder())
       ];
 
     Promise.all(requests)
       .then(data => {
-        this.suppliers = data[0];
-        this.statuses = data[1];
-        this.setPurchaseOrder(data[2]);
+        this.paymentTypes = data[0];
+        this.suppliers = data[1];
+        this.statuses = data[2];
+        this.setPurchaseOrder(data[3]);
       })
       .catch(error =>
         this._notification.warning(error)
       );
-
-    this._api.suppliers.getLookups()
-      .then(data => this.suppliers = data);
   }
 
   deactivate(): void {
@@ -132,31 +132,27 @@ export class PurchaseOrderCreate {
   }
 
   addPayment(): void {
-    this._eventAggegator.publish(purchaseOrderEvents.payment.pay);
+    this._eventAggegator.publish(purchaseOrderEvents.payment.add);
   }
 
   addReceipt(): void {
     this._eventAggegator.publish(purchaseOrderEvents.receipts.receive);
   }
 
+  addReceivings(): void {
+    this._eventAggegator.publish(purchaseOrderEvents.receivings.add);
+  }
+
+  addedReceivings(receivables: PurchaseOrderReceivable[]): void {
+    this.purchaseOrder.receivables.forEach(item => {
+      var value = receivables.find(x => x.product.id == item.product.id);
+      item.receiving = value.receiving;
+    });
+  }
+
   save(): void {
-    if (this.isEdit) {
-      this.updateNew();
-    }
-    else {
-      this.createNew();
-    }
-  }
-
-  createNew(): void {
-    this._api.purchaseOrders.createNew(this.purchaseOrder)
-      .then(data => this.resetAndNoify(data, "Purchase order has been created."))
-      .catch(error => this._notification.warning(error));
-  }
-
-  updateNew(): void {
-    this._api.purchaseOrders.updateNew(this.purchaseOrder)
-      .then(data => this.resetAndNoify(data, "Purchase order has been updated."))
+    this._api.purchaseOrders.save(this.purchaseOrder)
+      .then(data => this.resetAndNoify(data, "Purchas eOrder has been saved."))
       .catch(error => this._notification.warning(error));
   }
 

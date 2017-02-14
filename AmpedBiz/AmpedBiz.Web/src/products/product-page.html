@@ -66,7 +66,7 @@
             </thead>
             <tbody>
               <tr repeat.for="item of pager.items">
-                <td>
+                <td click.delegate="edit(item)">
                   <a href="javascript:undefined" class="text-info" click.delegate="edit(item)">
                     <i class="fa fa-pencil"></i>
                   </a>

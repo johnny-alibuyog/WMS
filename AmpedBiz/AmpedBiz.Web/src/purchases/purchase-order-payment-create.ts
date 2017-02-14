@@ -1,9 +1,10 @@
-import {autoinject} from 'aurelia-framework';
-import {DialogController} from 'aurelia-dialog';
-import {Lookup} from '../common/custom_types/lookup';
-import {ServiceApi} from '../services/service-api';
-import {NotificationService} from '../common/controls/notification-service';
-import {PurchaseOrder, PurchaseOrderPayment, PurchaseOrderPayable} from '../common/models/purchase-order';
+/*
+import { autoinject } from 'aurelia-framework';
+import { DialogController } from 'aurelia-dialog';
+import { Lookup } from '../common/custom_types/lookup';
+import { ServiceApi } from '../services/service-api';
+import { NotificationService } from '../common/controls/notification-service';
+import { PurchaseOrder, PurchaseOrderPayment, PurchaseOrderPayable } from '../common/models/purchase-order';
 
 @autoinject
 export class PurchaseOrderPaymentCreate {
@@ -64,3 +65,4 @@ export class PurchaseOrderPaymentCreate {
       });
   }
 }
+*/

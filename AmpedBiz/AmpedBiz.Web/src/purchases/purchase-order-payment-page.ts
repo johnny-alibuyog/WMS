@@ -1,13 +1,12 @@
-import {DialogService} from 'aurelia-dialog';
-import {EventAggregator, Subscription} from 'aurelia-event-aggregator';
-import {autoinject, bindable, bindingMode, customElement, computedFrom} from 'aurelia-framework'
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
-import {Lookup} from '../common/custom_types/lookup';
-import {ServiceApi} from '../services/service-api';
-import {Dictionary} from '../common/custom_types/dictionary';
-import {PurchaseOrderPayment, purchaseOrderEvents} from '../common/models/purchase-order';
-import {NotificationService} from '../common/controls/notification-service';
-import {PurchaseOrderPaymentCreate} from './purchase-order-payment-create';
+import { DialogService } from 'aurelia-dialog';
+import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
+import { autoinject, bindable, bindingMode, customElement, computedFrom } from 'aurelia-framework'
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
+import { Lookup } from '../common/custom_types/lookup';
+import { ServiceApi } from '../services/service-api';
+import { Dictionary } from '../common/custom_types/dictionary';
+import { PurchaseOrderPayment, PurchaseOrderPayable, purchaseOrderEvents } from '../common/models/purchase-order';
+import { NotificationService } from '../common/controls/notification-service';
 
 @autoinject
 @customElement("purchase-order-payment-page")
@@ -26,7 +25,9 @@ export class PurchaseOrderPaymentPage {
   public payments: PurchaseOrderPayment[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
-  public allowedTransitions: Dictionary<string> = {};
+  public paymentTypes: Lookup<string>[] = [];
+
+  public payable: PurchaseOrderPayable;
 
   public paymentPager: Pager<PurchaseOrderPayment> = new Pager<PurchaseOrderPayment>();
 
@@ -41,24 +42,37 @@ export class PurchaseOrderPaymentPage {
     this.paymentPager.onPage = () => this.initializePage();
   }
 
-  attached(): void {
+  public purchaseOrderIdChanged(): void {
+
+    let requests: [Promise<PurchaseOrderPayable>] = [
+      this.purchaseOrderId
+        ? this._api.purchaseOrders.getPayables(this.purchaseOrderId)
+        : Promise.resolve(<PurchaseOrderPayable>{})
+    ];
+
+    Promise.all(requests).then((responses: [PurchaseOrderPayable]) => {
+      this.payable = responses[1];
+    });
+  }
+
+  public attached(): void {
     this._subscriptions = [
       this._eventAggregator.subscribe(
-        purchaseOrderEvents.payment.pay, 
-        response => this.addPayment()
+        purchaseOrderEvents.payment.add,
+        response => this.addItem()
       )
     ];
   }
 
-  detached(): void {
+  public detached(): void {
     this._subscriptions.forEach(subscription => subscription.dispose());
   }
 
-  paymentsChanged(): void {
+  public paymentsChanged(): void {
     this.initializePage();
   }
 
-  initializePage(): void {
+  private initializePage(): void {
     if (!this.payments)
       this.payments = [];
 
@@ -69,11 +83,32 @@ export class PurchaseOrderPaymentPage {
     );
   }
 
-  addPayment(): void {
-    this._dialog.open({ viewModel: PurchaseOrderPaymentCreate, model: this.purchaseOrderId })
-      .then(response => {
-        if (!response.wasCancelled)
-          this._eventAggregator.publish(purchaseOrderEvents.payment.paid, response.output);
-      });
+  private addItem(): void {
+    if (!this.payments)
+      this.payments = <PurchaseOrderPayment[]>[];
+
+    var _payment = <PurchaseOrderPayment>{
+      paidOn: new Date(),
+      paidBy: this._api.auth.userAsLookup,
+      paymentType: this.paymentTypes && this.paymentTypes.length > 0 ? this.paymentTypes[0] : null,
+      paymentAmount: this.payable && this.payable.balanceAmount || 0,
+    };
+
+    this.payments.push(_payment);
+    this.selectedItem = _payment;
+    this.initializePage();
+  }
+
+  public editItem(_payment: PurchaseOrderPayment): void {
+    if (this.selectedItem !== _payment)
+      this.selectedItem = _payment;
+  }
+
+  public deleteItem(_payment: PurchaseOrderPayment): void {
+    var index = this.payments.indexOf(_payment);
+    if (index > -1) {
+      this.payments.splice(index, 1);
+    }
+    this.initializePage();
   }
 }

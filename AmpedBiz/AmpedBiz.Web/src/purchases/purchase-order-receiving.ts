@@ -7,7 +7,7 @@ import { PurchaseOrder, PurchaseOrderReceipt, PurchaseOrderReceivable, Receiving
 import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
 
 @autoinject
-export class PurchaseOrderReceiptCreate {
+export class PurchaseOrderReceiving {
   private _api: ServiceApi;
   private _controller: DialogController;
   private _notification: NotificationService;
@@ -28,24 +28,14 @@ export class PurchaseOrderReceiptCreate {
     this.receivablePage.onPage = () => this.initializePage();
   }
 
-  /*
-  activate(purchaseOrderId: string) {
-
-    let requests: [Promise<PurchaseOrderReceivable[]>] = [
-      this._api.purchaseOrders.getReceivables(purchaseOrderId)
-    ];
-
-    Promise.all(requests).then((results: [PurchaseOrderReceivable[]]) => {
-      this._purchaseOrderId = purchaseOrderId;
-      this.receivables = results[0];
-      this.initializePage();
-    });
-  }
-  */
-
   activate(receivables: PurchaseOrderReceivable[]) {
+    if (!receivables || receivables.length == 0) {
+      return;
+    }
+
     this.receivables = <PurchaseOrderReceivable[]>JSON.parse(JSON.stringify(receivables)); // deep copy
     this.receivables.forEach(item => this.resetItem(item));
+    this.selectedItem = this.receivables[0];
     this.initializePage();
   }
 
@@ -54,8 +44,9 @@ export class PurchaseOrderReceiptCreate {
   }
 
   editItem(item: PurchaseOrderReceivable): void {
-    if (this.selectedItem !== item)
+    if (this.selectedItem !== item) {
       this.selectedItem = item;
+    }
   }
 
   resetItem(item: PurchaseOrderReceivable): void {

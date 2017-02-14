@@ -313,7 +313,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                 Enumerable.Range(0, this.Count - 1).ToList().ForEach(_ =>
                 {
                     var entity = new Order(Guid.NewGuid());
-                    entity.State.Process(new OrderSaveVisitor()
+                    entity.Accept(new OrderSaveVisitor()
                     {
                         OrderNumber = _utils.RandomDecimal(10000M, 99999M).ToString(),
                         CreatedBy = _utils.Random<User>(),
@@ -388,7 +388,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                 foreach (var entity in input)
                 {
                     var currency = session.Load<Currency>(Currency.PHP.Id);
-                    entity.State.Process(new OrderSaveVisitor()
+                    entity.Accept(new OrderSaveVisitor()
                     {
                         Payments = Enumerable
                             .Range(0, _utils.RandomInteger(1, 5))
@@ -476,7 +476,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
                     var currency = session.Load<Currency>(Currency.PHP.Id);
 
-                    entity.State.Process(new OrderSaveVisitor()
+                    entity.Accept(new OrderSaveVisitor()
                     {
                         Returns = entity.Items
                             .Take(_utils.RandomInteger(1, entity.Items.Count()))

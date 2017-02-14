@@ -1,10 +1,10 @@
-import {autoinject} from 'aurelia-framework';
-import {Lookup} from '../common/custom_types/lookup';
-import {PageRequest, PagerResponse} from '../common/models/paging';
-import {Order, OrderPayable, OrderReturnable, OrderStatus, OrderInvoiceDetail, OrderReportPageItem} from '../common/models/order';
-import {ServiceBase} from './service-base'
-import {AuthService} from './auth-service';
-import {HttpClientFacade} from './http-client-facade';
+import { autoinject } from 'aurelia-framework';
+import { Lookup } from '../common/custom_types/lookup';
+import { PageRequest, PagerResponse } from '../common/models/paging';
+import { Order, OrderPayable, OrderReturnable, OrderStatus, OrderInvoiceDetail, OrderReportPageItem } from '../common/models/order';
+import { ServiceBase } from './service-base'
+import { AuthService } from './auth-service';
+import { HttpClientFacade } from './http-client-facade';
 
 @autoinject
 export class OrderService extends ServiceBase<Order> {
@@ -59,44 +59,6 @@ export class OrderService extends ServiceBase<Order> {
     }
   */
 
-  /*
-  createNew(order: Order): Promise<Order> {
-    var url = this._resouce + '/new';
-    return this._httpClient.post(url, <Order>{
-      id: order.id,
-      createdBy: this._auth.userAsLookup,
-      createdOn: new Date(),
-      orderedBy: this._auth.userAsLookup,
-      orderedOn: order.orderedOn || new Date(),
-      branch: order.branch,
-      customer: order.customer,
-      pricingScheme: order.pricingScheme,
-      shipper: order.shipper,
-      shippingAddress: order.shippingAddress,
-      taxRate: order.taxRate,
-      shippingFeeAmount: order.shippingFeeAmount,
-      items: order.items
-    });
-  }
-
-  updateNew(order: Order): Promise<Order> {
-    var url = this._resouce + '/' + order.id + '/new';
-    return this._httpClient.patch(url, <Order>{
-      id: order.id,
-      orderedBy: this._auth.userAsLookup,
-      orderedOn: order.orderedOn || new Date(),
-      branch: order.branch,
-      customer: order.customer,
-      pricingScheme: order.pricingScheme,
-      shipper: order.shipper,
-      shippingAddress: order.shippingAddress,
-      taxRate: order.taxRate,
-      shippingFeeAmount: order.shippingFeeAmount,
-      items: order.items
-    });
-  }
-  */
-
   save(order: Order): Promise<Order> {
     if (order.id) {
       var url = this._resouce + '/' + order.id;
@@ -133,10 +95,10 @@ export class OrderService extends ServiceBase<Order> {
         shippingAddress: order.shippingAddress,
         taxRate: order.taxRate,
         shippingFeeAmount: order.shippingFeeAmount,
-         items: order.items,
+        items: order.items,
         payments: order.payments,
         returns: order.returns
-     });
+      });
     }
   }
 

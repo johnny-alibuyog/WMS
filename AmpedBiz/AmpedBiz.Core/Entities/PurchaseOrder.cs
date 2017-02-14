@@ -11,10 +11,8 @@ namespace AmpedBiz.Core.Entities
         New = 1,
         Submitted = 2,
         Approved = 3,
-        Paid = 4,
-        Received = 5,
-        Completed = 6,
-        Cancelled = 7
+        Completed = 4,
+        Cancelled = 5
     }
 
     public enum PurchaseOrderAggregate

@@ -1,13 +1,13 @@
-import {DialogService} from 'aurelia-dialog';
-import {EventAggregator, Subscription} from 'aurelia-event-aggregator';
-import {autoinject, bindable, bindingMode, customElement} from 'aurelia-framework'
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
-import {Lookup} from '../common/custom_types/lookup';
-import {ServiceApi} from '../services/service-api';
-import {Dictionary} from '../common/custom_types/dictionary';
-import {PurchaseOrderReceipt, PurchaseOrderReceivable, purchaseOrderEvents} from '../common/models/purchase-order';
-import {NotificationService} from '../common/controls/notification-service';
-import {PurchaseOrderReceiptCreate} from './purchase-order-receipt-create';
+import { DialogService } from 'aurelia-dialog';
+import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
+import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
+import { Lookup } from '../common/custom_types/lookup';
+import { ServiceApi } from '../services/service-api';
+import { Dictionary } from '../common/custom_types/dictionary';
+import { PurchaseOrderReceipt, PurchaseOrderReceivable, purchaseOrderEvents } from '../common/models/purchase-order';
+import { NotificationService } from '../common/controls/notification-service';
+import { PurchaseOrderReceiving } from './purchase-order-receiving';
 
 @autoinject
 @customElement("purchase-order-receipt-page")
@@ -48,7 +48,7 @@ export class PurchaseOrderReceiptPage {
   attached(): void {
     this._subscriptions = [
       this._eventAggregator.subscribe(
-        purchaseOrderEvents.receipts.receive,
+        purchaseOrderEvents.receivings.add,
         response => this.addReceipt()
       )
     ];
@@ -89,10 +89,11 @@ export class PurchaseOrderReceiptPage {
   }
 
   addReceipt(): void {
-    this._dialog.open({ viewModel: PurchaseOrderReceiptCreate, model: this.purchaseOrderId })
-      .then(response => { if (!response.wasCancelled)
-          this._eventAggregator.publish(purchaseOrderEvents.receipts.received, response.output);
+    this._dialog
+      .open({ viewModel: PurchaseOrderReceiving, model: this.receivables })
+      .then(response => {
+        if (!response.wasCancelled)
+          this._eventAggregator.publish(purchaseOrderEvents.receivings.added, response.output);
       });
   }
-
 }

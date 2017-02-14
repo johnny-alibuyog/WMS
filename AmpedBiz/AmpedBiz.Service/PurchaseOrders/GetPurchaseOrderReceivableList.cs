@@ -1,7 +1,6 @@
 ﻿using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
-using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;

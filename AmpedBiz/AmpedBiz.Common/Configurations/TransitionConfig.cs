@@ -82,7 +82,7 @@ namespace AmpedBiz.Common.Configurations
                 "New", new Dictionary<string, string>()
                 {
                     { "New", "Save" },
-                    { "Submitted", "Submitt" },
+                    { "Submitted", "Submit" },
                     { "Cancelled", "Cancel" },
                 }
             },

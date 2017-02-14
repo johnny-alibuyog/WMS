@@ -66,6 +66,6 @@ export class ProductPurchasePage {
 
   view(item: ProductPurchasePageItem): void {
     //this._router.navigateToRoute("purchase-order-view", { id: item.id });
-    this._router.navigate("#/purchase-orders/purchase-order-create?" + buildQueryString({ id: item.id }));
+    this._router.navigate("#/purchases/purchase-order-create?" + buildQueryString({ id: item.id }));
   }
 }

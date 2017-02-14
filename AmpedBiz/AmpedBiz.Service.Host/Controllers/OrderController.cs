@@ -120,26 +120,12 @@ namespace AmpedBiz.Service.Host.Controllers
             return _mediator.Send(request ?? new InvoiceOrder.Request());
         }
 
-        //[HttpPost()]
-        //[Route("{id}/paid")]
-        //public PayOrder.Response Process([FromUri]Guid id, [FromBody]PayOrder.Request request)
-        //{
-        //    return _mediator.Send(request ?? new PayOrder.Request());
-        //}
-
         [HttpPost()]
         [Route("{id}/shipped")]
         public ShipOrder.Response Process([FromUri]Guid id, [FromBody]ShipOrder.Request request)
         {
             return _mediator.Send(request ?? new ShipOrder.Request());
         }
-
-        //[HttpPost()]
-        //[Route("{id}/returned")]
-        //public ReturnOrder.Response Process([FromUri]Guid id, [FromBody]ReturnOrder.Request request)
-        //{
-        //    return _mediator.Send(request ?? new ReturnOrder.Request());
-        //}
 
         [HttpPost()]
         [Route("{id}/completed")]

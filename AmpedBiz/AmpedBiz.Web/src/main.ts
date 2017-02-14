@@ -19,6 +19,7 @@ export function configure(aurelia: Aurelia) {
   //  config.enableLogging = true;
   //})
   //.plugin('aurelia-validation', config => {
+  //  https://gist.run/?id=381fdb1a4b0865a4c25026187db865ce&sha=6b1e99aab075f2314eb94edb0368218f4d1a6f29
   //});
 
   //Uncomment the line below to enable animation.

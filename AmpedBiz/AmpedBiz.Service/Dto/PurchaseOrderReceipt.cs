@@ -6,6 +6,8 @@ namespace AmpedBiz.Service.Dto
 {
     public class PurchaseOrderReceipt
     {
+        public Guid Id { get; set; }
+        
         public Guid PurchaseOrderId { get; set; }
 
         public string BatchNumber { get; set; }
@@ -33,9 +35,15 @@ namespace AmpedBiz.Service.Dto
 
         public decimal ReceivedQuantity { get; set; }
 
+        public decimal ReceivableQuantity { get; set; }
+
         public decimal ReceivingQuantity { get; set; }
 
-        public decimal ReceivableQuantity { get; set; }
+        public DateTime? ReceivingDoneOn { get; set; }
+
+        public Lookup<Guid> ReceivingDoneBy { get; set; }
+
+        public string ReceivingBatchNumber { get; set; }
 
         public static PurchaseOrderReceivable[] Evaluate(Core.Entities.PurchaseOrder purchaseOrder)
         {
@@ -52,8 +60,8 @@ namespace AmpedBiz.Service.Dto
                         ),
                         OrderedQuantity = item.Quantity.Value,
                         ReceivedQuantity = receipts.Sum(x => x.Quantity.Value),
-                        ReceivingQuantity = item.Quantity.Value - receipts.Sum(x => x.Quantity.Value),
                         ReceivableQuantity = item.Quantity.Value - receipts.Sum(x => x.Quantity.Value),
+                        ReceivingQuantity = item.Quantity.Value - receipts.Sum(x => x.Quantity.Value),
                     }
                 )
                 .ToArray();

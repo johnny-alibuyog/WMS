@@ -1,8 +1,13 @@
+﻿///////////////////////////////////////////////////////////////////////////////
+// ADDINS & TOOLS
 ///////////////////////////////////////////////////////////////////////////////
-// TOOLS
-///////////////////////////////////////////////////////////////////////////////
+//#addin "Cake.IISExpress"
+#addin "Cake.FileHelpers"
+#tool "nuget:?package=OpenCover"
+#tool "nuget:?package=ReportGenerator"
 #tool "nuget:?package=NUnit.ConsoleRunner"
 
+//using Cake.IISExpress;
 using System.Diagnostics;
 using System.IO;
 
@@ -33,10 +38,11 @@ var env = new
 ///////////////////////////////////////////////////////////////////////////////
 var gbl = new 
 {
-	Solutions = GetFiles("./**/*.sln"),
-	SolutionPaths = GetFiles("./**/*.sln").Select(solution => solution.GetDirectory()),
+	Solutions = GetFiles("./**/AmpedBiz.sln"),
+	SolutionPaths = GetFiles("./**/AmpedBiz.sln").Select(solution => solution.GetDirectory()),
     //BuildResultDirRelative = Directory("./.build-output"), //+ Directory("v" + semVersion) + Directory("bin");
 	BuildResultDir = System.IO.Path.GetFullPath(Directory("./.build-output").ToString()),
+	//IisExpressProcess = (IAdvProcess)null;
 };
 
 
@@ -52,6 +58,21 @@ Setup((context) =>
 
 Teardown((context) =>
 {
+	//if (gbl.IisExpressProcess == null)
+    //{
+    //    return;
+    //}
+	//
+    //try
+    //{
+    //    gbl.IisExpressProcess.Kill();
+    //}
+    //finally
+    //{
+    //    gbl.IisExpressProcess.Dispose();
+    //    Context.Log.Information("Disposed IIS Express process");
+	//}
+
     // Executed AFTER the last task.
     Information("Finished running tasks.");
 });
@@ -109,31 +130,87 @@ Task("Build")
     {
         Information("Building {0}", solution);
 
-        MSBuild(solution, settings =>
-            settings.SetPlatformTarget(PlatformTarget.MSIL)
-				.SetVerbosity(Verbosity.Minimal)
-                .WithProperty("TreatWarningsAsErrors", "true")
-                .WithTarget("Build")
-                .SetConfiguration(args.BuildConfiguration));
-
-
+        MSBuild(solution, settings => settings
+			.SetPlatformTarget(PlatformTarget.MSIL)
+			.SetVerbosity(Verbosity.Minimal)
+            .WithProperty("TreatWarningsAsErrors", "true")
+            .WithTarget("Build")
+            .SetConfiguration(args.BuildConfiguration)
+		);
     }
 });
 
-Task("Run-Tests")
+Task("Run-Test")
     .IsDependentOn("Build")
     .Does(() =>
 {
+	
     foreach(var path in gbl.SolutionPaths)
     {
-		NUnit3(path + "/**/bin/" + args.BuildConfiguration + "/*Tests.dll");
+		var test = new 
+		{
+			AssemblyPath = path + "/**/bin/" + args.BuildConfiguration + "/*Test*.dll",
+			ResultFile = "./result.xml",
+			CoverageOutput = ".coverage"
+		};
+ 
+		//var testFile = path + "/**/bin/" + args.BuildConfiguration + "/*Tests.dll";
+		//var testResultFile = "./result.xml";
+
+		OpenCover(context => 
+			context.NUnit3(test.AssemblyPath),
+			new FilePath(test.ResultFile),
+			new OpenCoverSettings()
+				.WithFilter("+[AmpedBiz.*]*")
+				.WithFilter("-[AmpedBiz.Test*]*")
+		);
+
+		ReportGenerator(test.ResultFile, test.CoverageOutput);
+
+		//NUnit3(path + "/**/bin/" + args.BuildConfiguration + "/*Tests.dll");
         //MSTest(path + "/**/bin/" + args.BuildConfiguration + "/*Tests.dll");
     }
 });
 
+//Task("Run-App-Service.Host")
+//    .IsDependentOn("Build")
+//    .Does(context =>
+//{
+//	var appPath = Argument<string>("sitePath", @".\AmpedBiz.Service.Host");
+//	var portNumber = Argument<int?>("portNumber", 49561);
+//
+//    var settings = new AppPathBasedIISExpressSettings(appPath)
+//    {
+//        PortNumber  = portNumber,
+//    };
+//
+//    Verbose("AppPathBasedIISExpressSettings.AppPath: {0}", settings.AppPath);
+//    Verbose("AppPathBasedIISExpressSettings.PortNumber: {0}", settings.PortNumber);
+//
+//    iisExpressProcess = StartIISExpress(settings);
+//
+//    iisExpressProcess.Exited += (sender, args1) =>
+//    {
+//        Information("IIS Express exited with code: {0}", args1.ExitCode);
+//    };
+//
+//    iisExpressProcess.OutputDataReceived += (sender, args1) =>
+//    {
+//        if (args1.Output != null)
+//        {
+//            Information("IIS Express output: {0}", args1.Output);
+//        }
+//    };
+//
+//    iisExpressProcess.ErrorDataReceived += (sender, args1) => 
+//	{ 
+//		Error("IIS Express error: {0}", args1.Output); 
+//	};
+//});
+
 Task("Deploy")
     .Description("Deploy website")
-    .IsDependentOn("Run-Tests")
+    .IsDependentOn("Run-Test")
     .Does(() =>
 {
 	// Build all solutions.

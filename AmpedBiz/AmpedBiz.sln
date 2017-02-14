@@ -13,11 +13,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Core", "AmpedBiz.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Tests", "AmpedBiz.Tests\AmpedBiz.Tests.csproj", "{067456C0-086C-46A8-B37F-1405717B7BFC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{70BE7ED3-4A64-47C4-96DB-9B96FA08846D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".tasks", ".tasks", "{70BE7ED3-4A64-47C4-96DB-9B96FA08846D}"
 	ProjectSection(SolutionItems) = preProject
 		build.cake = build.cake
 		build.ps1 = build.ps1
 		cake.config = cake.config
+		deploy-gear.host.ps1 = deploy-gear.host.ps1
+		deploy-gear.host.service.host.ps1 = deploy-gear.host.service.host.ps1
+		deploy-gear.host.web.ps1 = deploy-gear.host.web.ps1
+		run-test.ps1 = run-test.ps1
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Service.Host", "AmpedBiz.Service.Host\AmpedBiz.Service.Host.csproj", "{EEC4D7F9-9FD5-41D1-900F-565057FE61FE}"

@@ -75,21 +75,21 @@ namespace AmpedBiz.Data.EntityDefinitions
                 .Not.KeyNullable()
                 .Not.KeyUpdate()
                 .Inverse()
-                .AsBag();
+                .AsSet();
 
             HasMany(x => x.Payments)
                 .Cascade.AllDeleteOrphan()
                 .Not.KeyNullable()
                 .Not.KeyUpdate()
                 .Inverse()
-                .AsBag();
+                .AsSet();
 
             HasMany(x => x.Receipts)
                 .Cascade.AllDeleteOrphan()
                 .Not.KeyNullable()
                 .Not.KeyUpdate()
                 .Inverse()
-                .AsBag();
+                .AsSet();
         }
     }
 }

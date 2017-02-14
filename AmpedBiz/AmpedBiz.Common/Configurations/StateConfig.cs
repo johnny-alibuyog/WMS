@@ -145,40 +145,6 @@ namespace AmpedBiz.Common.Configurations
                     },
                     AllowedTransitions = new string[]
                     {
-                        PurchaseOrder.Status.Paid,
-                        PurchaseOrder.Status.Cancelled,
-                    }
-                }
-            },
-            {
-                PurchaseOrder.Status.Paid, new Definition()
-                {
-                    AllowedModifications = new string[]
-                    {
-                        PurchaseOrder.Aggregates.Payments,
-                        PurchaseOrder.Aggregates.Receipts,
-                    },
-                    AllowedTransitions = new string[]
-                    {
-                        PurchaseOrder.Status.Paid,
-                        PurchaseOrder.Status.Received,
-                        PurchaseOrder.Status.Completed,
-                        PurchaseOrder.Status.Cancelled,
-                    }
-                }
-            },
-            {
-                PurchaseOrder.Status.Received, new Definition()
-                {
-                    AllowedModifications = new string[]
-                    {
-                        PurchaseOrder.Aggregates.Payments,
-                        PurchaseOrder.Aggregates.Receipts,
-                    },
-                    AllowedTransitions = new string[]
-                    {
-                        PurchaseOrder.Status.Paid,
-                        PurchaseOrder.Status.Received,
                         PurchaseOrder.Status.Completed,
                         PurchaseOrder.Status.Cancelled,
                     }
@@ -268,10 +234,6 @@ namespace AmpedBiz.Common.Configurations
             public static string Submitted = "Submitted";
 
             public static string Approved = "Approved";
-
-            public static string Paid = "Paid";
-
-            public static string Received = "Received";
 
             public static string Completed = "Completed";
 
