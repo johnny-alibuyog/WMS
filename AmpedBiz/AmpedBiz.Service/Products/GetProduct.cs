@@ -39,7 +39,6 @@ namespace AmpedBiz.Service.Products
                         .Fetch(x => x.Inventory.UnitOfMeasureBase).Eager
                         .Fetch(x => x.Inventory.Stocks).Eager
                         .Fetch(x => x.Inventory.Stocks.First().ModifiedBy).Eager
-                        .TransformUsing(Transformers.DistinctRootEntity)
                         .FutureValue();
 
                     var entity = query.Value;

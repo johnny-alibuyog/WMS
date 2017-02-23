@@ -18,6 +18,9 @@ namespace AmpedBiz.Data.Configurations
                 case DatabaseProvider.Postgres:
                     return ConfigurePostgres();
 
+                case DatabaseProvider.InMemory:
+                    return ConfigureInMemory();
+
                 default:
                     return ConfigureMsSql();
             }
@@ -81,6 +84,17 @@ namespace AmpedBiz.Data.Configurations
                     .Username(DatabaseConfig.Instance.Username)
                     .Password(DatabaseConfig.Instance.Password)
                 )
+                .QuerySubstitutions("true 1, false 0, yes y, no n")
+                .DefaultSchema(DatabaseConfig.Instance.Name)
+                .AdoNetBatchSize(1)
+                .FormatSql()
+                .ShowSql();
+        }
+
+
+        private static IPersistenceConfigurer ConfigureInMemory()
+        {
+            return SQLiteConfiguration.Standard.InMemory()
                 .QuerySubstitutions("true 1, false 0, yes y, no n")
                 .DefaultSchema(DatabaseConfig.Instance.Name)
                 .AdoNetBatchSize(1)

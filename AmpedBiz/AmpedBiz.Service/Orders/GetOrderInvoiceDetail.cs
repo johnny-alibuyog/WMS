@@ -2,6 +2,7 @@
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
+using NHibernate.Transform;
 using System;
 using System.Linq;
 

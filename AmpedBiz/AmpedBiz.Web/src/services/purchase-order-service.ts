@@ -15,6 +15,7 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
     this._auth = auth;
   }
 
+  /*
   public get(id: string): Promise<PurchaseOrder> {
     /// Override get to compute for the receivables
     return super.get(id).then(data => {
@@ -38,6 +39,7 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
       return data;
     });
   }
+  */
 
   public getStatusList(): Promise<PurchaseOrderStatus[]> {
     var url = this._resouce + '/statuses';
@@ -84,9 +86,6 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
   }
 
   public save(purchaseOrder: PurchaseOrder): Promise<PurchaseOrder> {
-    var newReceipts = this.generateNewReceiptsFrom(purchaseOrder.receivables);
-    newReceipts.forEach(newReceipt => purchaseOrder.receipts.push(newReceipt));
-
     if (purchaseOrder.id) {
       var url = this._resouce + '/' + purchaseOrder.id;
       return this._httpClient
@@ -171,7 +170,7 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
     });
   }
 
-  private computeReceivablesFrom(purchaseOrder: PurchaseOrder): PurchaseOrderReceivable[] {
+  public computeReceivablesFrom(purchaseOrder: PurchaseOrder): PurchaseOrderReceivable[] {
     return purchaseOrder.items.map(item => <PurchaseOrderReceivable>{
       purchaseOrderId: purchaseOrder.id,
       product: <Lookup<string>>{
@@ -192,7 +191,7 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
     });
   }
 
-  private generateNewReceiptsFrom(receivables: PurchaseOrderReceivable[]): PurchaseOrderReceipt[] {
+  public generateNewReceiptsFrom(receivables: PurchaseOrderReceivable[]): PurchaseOrderReceipt[] {
     return receivables
       .filter(x =>
         x.receiving &&

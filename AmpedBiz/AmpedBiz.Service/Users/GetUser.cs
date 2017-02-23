@@ -31,8 +31,7 @@ namespace AmpedBiz.Service.Users
                 {
                     var entity = session.QueryOver<User>()
                         .Where(x => x.Id == message.Id)
-                        .Left.JoinQueryOver(x => x.Roles)
-                        .TransformUsing(Transformers.DistinctRootEntity)
+                        .Fetch(x => x.Roles).Eager
                         .SingleOrDefault();
 
                     //var entity = query.Value;

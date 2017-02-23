@@ -132,6 +132,24 @@ export interface OrderReturnable {
   totalPriceAmount?: number;
 }
 
+
+export interface PurchaseOrderReceivable {
+  purchaseOrderId?: string;
+  product?: Lookup<string>;
+  orderedQuantity?: number;
+  receivedQuantity?: number;
+  receivableQuantity?: number;
+  receiving: ReceivingDetails;
+}
+
+export interface ReceivingDetails {
+  batchNumber?: string;
+  receivedBy?: Lookup<string>;
+  receivedOn?: Date;
+  expiresOn?: Date;
+  quantity?: number;
+}
+
 export interface OrderPayment {
   id?: string;
   paidOn?: Date;

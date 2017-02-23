@@ -2,6 +2,7 @@
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
+using NHibernate.Transform;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,7 @@ namespace AmpedBiz.Service.Returns
                         .Fetch(x => x.Items.First().Product).Eager
                         .Fetch(x => x.Items.First().Product.Inventory).Eager
                         .Fetch(x => x.Items.First().ReturnReason).Eager
+                        .TransformUsing(Transformers.DistinctRootEntity)
                         .List();
 
                     var dtos = entites.MapTo(default(List<Dto.Return>));

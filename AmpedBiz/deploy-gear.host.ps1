@@ -1,11 +1,11 @@
 "=============================================="
 " Deploying Service API "
 "=============================================="
-.\deploy.gear.host.service.host.ps1
+.\deploy-gear.host.service.host.ps1
 ""
 
 "=============================================="
 " Deploying Web Application "
 "=============================================="
-.\deploy.gear.host.web.ps1
+.\deploy-gear.host.web.ps1
 ""

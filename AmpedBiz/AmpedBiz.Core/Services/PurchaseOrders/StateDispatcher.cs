@@ -85,38 +85,4 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             return stageDefinitions;
         }
     }
-
-
-    public class StageOld
-    {
-        public static readonly Dictionary<PurchaseOrderStatus, Dictionary<PurchaseOrderStatus, string>> Transitions = GetConfig();
-
-        private static Dictionary<PurchaseOrderStatus, Dictionary<PurchaseOrderStatus, string>> GetConfig()
-        {
-            Func<string, PurchaseOrderStatus> ParseStatus = (value) =>
-            {
-                var result = default(PurchaseOrderStatus);
-
-                if (!Enum.TryParse<PurchaseOrderStatus>(value, out result))
-                {
-                    throw new Exception($"{value} is an invalid order status. Please check check your transition configuration.");
-                }
-
-                return result;
-            };
-
-            var stageTransitions = new Dictionary<PurchaseOrderStatus, Dictionary<PurchaseOrderStatus, string>>();
-
-            foreach (var item in TransitionConfig.Instance.PurchaseOrderTransitions)
-            {
-                var stage = ParseStatus(item.Key);
-                var transitions = item.Value.ToDictionary(x => ParseStatus(x.Key), x => x.Value);
-
-                stageTransitions.Add(stage, transitions);
-            }
-
-            return stageTransitions;
-        }
-    }
-
 }

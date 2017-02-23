@@ -102,7 +102,7 @@ export class PurchaseOrderCreate {
     this.purchaseOrder.items = this.purchaseOrder.items || [];
     this.purchaseOrder.payments = this.purchaseOrder.payments || [];
     this.purchaseOrder.receipts = this.purchaseOrder.receipts || [];
-    this.purchaseOrder.receivables = this.purchaseOrder.receivables || [];
+    this.purchaseOrder.receivables = this._api.purchaseOrders.computeReceivablesFrom(this.purchaseOrder);
 
     this.hydrateSupplierProducts(this.purchaseOrder.supplier);
   }
@@ -151,6 +151,10 @@ export class PurchaseOrderCreate {
   }
 
   save(): void {
+    // generate new receipts from receivables >> receiving items
+    var newReceipts = this._api.purchaseOrders.generateNewReceiptsFrom(this.purchaseOrder.receivables);
+    newReceipts.forEach(newReceipt => this.purchaseOrder.receipts.push(newReceipt));
+
     this._api.purchaseOrders.save(this.purchaseOrder)
       .then(data => this.resetAndNoify(data, "Purchas eOrder has been saved."))
       .catch(error => this._notification.warning(error));

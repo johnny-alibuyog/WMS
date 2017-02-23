@@ -8,7 +8,8 @@ namespace AmpedBiz.Common.Configurations
     {
         MsSql,
         MySql,
-        Postgres
+        Postgres,
+        InMemory
     }
 
     public class DatabaseConfig : AppConfiguration

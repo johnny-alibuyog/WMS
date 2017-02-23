@@ -2,6 +2,7 @@
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
+using NHibernate.Transform;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,6 +58,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                         .Fetch(x => x.Receipts).Eager
                         .Fetch(x => x.Receipts.First().Product).Eager
                         .Fetch(x => x.Receipts.First().Product.Inventory).Eager
+                        .TransformUsing(Transformers.DistinctRootEntity)
                         .List();
 
                     var dtos = entites.MapTo(default(List<Dto.PurchaseOrder>));

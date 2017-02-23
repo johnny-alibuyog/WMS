@@ -160,7 +160,7 @@ Task("Run-Test")
 		OpenCover(context => 
 			context.NUnit3(test.AssemblyPath),
 			new FilePath(test.ResultFile),
-			new OpenCoverSettings()
+			new OpenCoverSettings() { ReturnTargetCodeOffset = 0 }
 				.WithFilter("+[AmpedBiz.*]*")
 				.WithFilter("-[AmpedBiz.Test*]*")
 		);

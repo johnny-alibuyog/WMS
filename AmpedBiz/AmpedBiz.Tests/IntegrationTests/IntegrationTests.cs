@@ -479,7 +479,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             var request = new GetPurchaseOrderList.Request() { };
             var purchaseOrders = new GetPurchaseOrderList.Handler(this.sessionFactory).Handle(request);
 
-            return purchaseOrders.Where(po => po.Status == Service.Dto.PurchaseOrderStatus.New).Take(count);
+            return purchaseOrders.ToList().Where(po => po.Status == Service.Dto.PurchaseOrderStatus.New).Take(count);
         }
 
         private Service.Dto.PurchaseOrder SubmitPurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
@@ -760,7 +760,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             //Create Purchase Order(s) - Assert Status, it should be NEW orders
             var actual = purchaseOrders.Count(p => p.Status == Service.Dto.PurchaseOrderStatus.New);
-            //Assert.AreEqual(expected, expected);
+            Assert.AreEqual(expected, expected);
 
             //Get list of created purchaseorders
             var purchaseOrderList = this.GetPurchaseOrders(Service.Dto.PurchaseOrderStatus.New, 2);

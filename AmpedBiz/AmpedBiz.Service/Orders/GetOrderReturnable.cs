@@ -3,6 +3,7 @@ using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
+using NHibernate.Transform;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,7 @@ namespace AmpedBiz.Service.Orders
                         .Where(x => x.Order.Id == message.Id)
                         .Fetch(x => x.Product).Eager
                         .Fetch(x => x.Product.Inventory).Eager
+                        .TransformUsing(Transformers.DistinctRootEntity)
                         .List();
 
                     if (orderItems == null || !orderItems.Any())

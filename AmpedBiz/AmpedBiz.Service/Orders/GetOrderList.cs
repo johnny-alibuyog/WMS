@@ -2,6 +2,7 @@
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
+using NHibernate.Transform;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,6 +61,7 @@ namespace AmpedBiz.Service.Orders
                         .Fetch(x => x.Payments).Eager
                         .Fetch(x => x.Payments.First().PaidBy).Eager
                         .Fetch(x => x.Payments.First().PaymentType).Eager
+                        .TransformUsing(Transformers.DistinctRootEntity)
                         .List();
 
                     var dtos = entites.MapTo(default(List<Dto.Order>));
