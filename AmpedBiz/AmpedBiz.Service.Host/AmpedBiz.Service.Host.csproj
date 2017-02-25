@@ -300,9 +300,11 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Properties\PublishProfiles\ampbiz-api.staging.mywindowshosting.pubxml" />
-    <None Include="Properties\PublishProfiles\ampbiz-api.localhost.pubxml" />
-    <None Include="Properties\PublishProfiles\ampbiz-api.staging.gear.host.pubxml" />
+    <None Include="Properties\PublishProfiles\staging-gear.host-ftp.pubxml" />
+    <None Include="Properties\PublishProfiles\staging-gear.host-web.deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\staging-mywindowshosting.pubxml" />
+    <None Include="Properties\PublishProfiles\dev-localhost.pubxml" />
+    <None Include="Properties\PublishProfiles\staging-gear.host.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
