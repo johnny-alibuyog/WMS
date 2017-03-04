@@ -1,9 +1,9 @@
-import {autoinject} from 'aurelia-framework';
-import {UnitOfMeasureClass} from '../common/models/unit-of-measure-class'
-import {PageRequest, PagerResponse} from '../common/models/paging';
-import {ServiceBase} from './service-base'
-import {HttpClientFacade} from './http-client-facade';
-import {Lookup} from '../common/custom_types/lookup';
+import { autoinject } from 'aurelia-framework';
+import { UnitOfMeasureClass } from '../common/models/unit-of-measure-class'
+import { PageRequest, PagerResponse } from '../common/models/paging';
+import { ServiceBase } from './service-base'
+import { HttpClientFacade } from './http-client-facade';
+import { Lookup } from '../common/custom_types/lookup';
 
 @autoinject
 export class UnitOfMeasureClassService extends ServiceBase<UnitOfMeasureClass> {
@@ -11,7 +11,7 @@ export class UnitOfMeasureClassService extends ServiceBase<UnitOfMeasureClass> {
     super('unit-of-measure-classes', httpClient);
   }
 
-  getLookups(): Promise<Lookup<string>[]>{
+  getLookups(): Promise<Lookup<string>[]> {
     var url = "unit-of-measure-class-lookups";
     return this._httpClient.get(url)
       .then(data => <Lookup<string>[]>data);

@@ -1,7 +1,7 @@
 //import {Dictionary} from "../custom_types/dictionary"
-import {autoinject} from 'aurelia-framework';
-import {DialogService} from 'aurelia-dialog';
-import {ReportViewer, ReportModel} from '../common/controls/report-viewer';
+import { autoinject } from 'aurelia-framework';
+import { DialogService } from 'aurelia-dialog';
+import { ReportViewer, ReportModel } from '../common/controls/report-viewer';
 
 declare var pdfMake: any;
 declare var vfsfont: any;
@@ -34,7 +34,7 @@ export class ReportBuilder {
         }
       })
     });
-    
+
     /*
     try {
       pdfMake.createPdf(config.document)

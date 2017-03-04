@@ -1,4 +1,4 @@
-import {customAttribute, autoinject} from "aurelia-framework";
+import { customAttribute, autoinject } from "aurelia-framework";
 
 @autoinject
 @customAttribute('on-enter')

@@ -46,36 +46,6 @@ namespace AmpedBiz.Service.Dto
         public virtual decimal TotalAmount { get; set; }
 
         public virtual IEnumerable<OrderInvoiceDetailItem> Items { get; set; } = new Collection<OrderInvoiceDetailItem>();
-
-        internal static IEnumerable<OrderInvoiceDetailItem> EvaluateItems(Core.Entities.Order entity)
-        {
-            Func<Core.Entities.OrderItem, IEnumerable<Core.Entities.OrderReturn>, decimal> EvaluateDiscount = (item, returns) => item.Discount.Amount() - returns.Sum(o => o.Discount?.Amount() ?? 0M);
-            Func<Core.Entities.OrderItem, IEnumerable<Core.Entities.OrderReturn>, decimal> EvaluateQuantity = (item, returns) => item.Quantity.Value() - returns.Sum(o => o.Quantity?.Value() ?? 0M);
-            Func<Core.Entities.OrderItem, IEnumerable<Core.Entities.OrderReturn>, decimal> EvaluateExtendedPrice = (item, returns) => item.ExtendedPrice.Amount() - returns.Sum(o => o.ExtendedPrice?.Amount() ?? 0M);
-            Func<Core.Entities.OrderItem, IEnumerable<Core.Entities.OrderReturn>, decimal> EvaluateTotalPrice = (item, returns) => EvaluateExtendedPrice(item, returns) - EvaluateDiscount(item, returns);
-
-            return entity.Items
-                .GroupJoin(entity.Returns,
-                    (x) => x.Product,
-                    (x) => x.Product,
-                    (item, returns) => new OrderInvoiceDetailItem()
-                    {
-                        Id = item.Id,
-                        OrderId = item.Order.Id,
-                        Product = new Lookup<Guid>(
-                            item.Product.Id,
-                            item.Product.Name
-                        ),
-                        UnitPriceAmount = item.UnitPrice.Amount,
-                        DiscountRate = item.DiscountRate,
-                        DiscountAmount = EvaluateDiscount(item, returns),
-                        QuantityValue = EvaluateQuantity(item, returns),
-                        ExtendedPriceAmount = EvaluateExtendedPrice(item, returns),
-                        TotalPriceAmount = EvaluateTotalPrice(item, returns)
-                    }
-                )
-                .ToList();
-        }
     }
 
     public class OrderInvoiceDetailItem

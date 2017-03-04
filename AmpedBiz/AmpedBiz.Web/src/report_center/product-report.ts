@@ -1,6 +1,6 @@
-import {autoinject} from 'aurelia-framework';
-import {formatDate, formatNumber, emptyIfNull} from '../services/formaters';
-import {ReportBuilder, Report, DocumentDefinition} from '../services/report-builder';
+import { autoinject } from 'aurelia-framework';
+import { formatDate, formatNumber, emptyIfNull } from '../services/formaters';
+import { ReportBuilder, Report, DocumentDefinition } from '../services/report-builder';
 
 export interface ProductReportModel {
   productName?: string;

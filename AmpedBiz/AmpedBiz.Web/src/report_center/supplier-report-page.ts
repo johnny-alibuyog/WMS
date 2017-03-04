@@ -1,9 +1,9 @@
-import {autoinject} from 'aurelia-framework';
-import {SupplierReport, SupplierReportModel, SupplierReportModelItem} from './supplier-report';
-import {SupplierReportPageItem} from '../common/models/supplier';
-import {ServiceApi} from '../services/service-api';
-import {NotificationService} from '../common/controls/notification-service';
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
+import { autoinject } from 'aurelia-framework';
+import { SupplierReport, SupplierReportModel, SupplierReportModelItem } from './supplier-report';
+import { SupplierReportPageItem } from '../common/models/supplier';
+import { ServiceApi } from '../services/service-api';
+import { NotificationService } from '../common/controls/notification-service';
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
 
 @autoinject
 export class SupplierReportPage {

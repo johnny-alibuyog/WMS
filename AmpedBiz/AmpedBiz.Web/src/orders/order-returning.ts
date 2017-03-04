@@ -1,3 +1,4 @@
+/*
 import { DialogService } from 'aurelia-dialog';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { autoinject, bindable, bindingMode, customElement, computedFrom } from 'aurelia-framework'
@@ -24,9 +25,6 @@ export class OrderReturnPage {
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public returns: OrderReturn[] = [];
-
-  @bindable({ defaultBindingMode: bindingMode.twoWay })
-  public allowedTransitions: Dictionary<string> = {};
 
   public returnables: OrderReturnable[] = [];
 
@@ -117,7 +115,7 @@ export class OrderReturnPage {
 
   public addItem(): void {
     if (!this.returns)
-      this.returns = <OrderReturn[]>[];
+      this.returns = [];
 
     var _return = <OrderReturn>{
       quantityValue: 0,
@@ -151,3 +149,4 @@ export class OrderReturnPage {
     _return.totalPriceAmount = _return.extendedPriceAmount - _return.discountAmount;
   }
 }
+*/

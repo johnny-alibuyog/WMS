@@ -1,9 +1,9 @@
-import {autoinject, buildQueryString} from 'aurelia-framework';
-import {Product, ProductInventory, ProductReportPageItem} from '../common/models/product';
-import {PageRequest, PagerResponse} from '../common/models/paging';
-import {ServiceBase} from './service-base'
-import {HttpClientFacade} from './http-client-facade';
-import {Lookup} from '../common/custom_types/lookup';
+import { autoinject, buildQueryString } from 'aurelia-framework';
+import { Product, ProductInventory, ProductReportPageItem } from '../common/models/product';
+import { PageRequest, PagerResponse } from '../common/models/paging';
+import { ServiceBase } from './service-base'
+import { HttpClientFacade } from './http-client-facade';
+import { Lookup } from '../common/custom_types/lookup';
 
 @autoinject
 export class ProductService extends ServiceBase<Product> {

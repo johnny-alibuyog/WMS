@@ -1,10 +1,10 @@
-import {autoinject} from 'aurelia-framework';
-import {Supplier, SupplierReportPageItem} from '../common/models/supplier'
-import {ProductInventory} from '../common/models/product';
-import {PageRequest, PagerResponse} from '../common/models/paging';
-import {ServiceBase} from './service-base'
-import {HttpClientFacade} from './http-client-facade';
-import {Lookup} from '.././common/custom_types/lookup';
+import { autoinject } from 'aurelia-framework';
+import { Supplier, SupplierReportPageItem } from '../common/models/supplier'
+import { ProductInventory } from '../common/models/product';
+import { PageRequest, PagerResponse } from '../common/models/paging';
+import { ServiceBase } from './service-base'
+import { HttpClientFacade } from './http-client-facade';
+import { Lookup } from '.././common/custom_types/lookup';
 
 @autoinject
 export class SupplierService extends ServiceBase<Supplier> {
@@ -18,13 +18,13 @@ export class SupplierService extends ServiceBase<Supplier> {
       .then(response => <ProductInventory[]>response);
   }
 
-  getProductLookups(supplierId: string): Promise<Lookup<string>[]>  {
+  getProductLookups(supplierId: string): Promise<Lookup<string>[]> {
     var url = this._resouce + '/' + supplierId + '/product-lookups';
     return this._httpClient.get(url)
       .then(data => <Lookup<string>[]>data);
   }
 
-  getLookups(): Promise<Lookup<string>[]>{
+  getLookups(): Promise<Lookup<string>[]> {
     var url = "supplier-lookups";
     return this._httpClient.get(url)
       .then(data => <Lookup<string>[]>data);

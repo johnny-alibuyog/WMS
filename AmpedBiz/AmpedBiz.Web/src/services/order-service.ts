@@ -1,7 +1,7 @@
 import { autoinject } from 'aurelia-framework';
 import { Lookup } from '../common/custom_types/lookup';
 import { PageRequest, PagerResponse } from '../common/models/paging';
-import { Order, OrderPayable, OrderReturnable, OrderStatus, OrderInvoiceDetail, OrderReportPageItem } from '../common/models/order';
+import { Order, OrderPayable, OrderReturnable, OrderReturning, OrderReturn, OrderStatus, OrderInvoiceDetail, OrderReportPageItem } from '../common/models/order';
 import { ServiceBase } from './service-base'
 import { AuthService } from './auth-service';
 import { HttpClientFacade } from './http-client-facade';
@@ -15,51 +15,43 @@ export class OrderService extends ServiceBase<Order> {
     this._auth = auth;
   }
 
-  getStatusList(): Promise<OrderStatus[]> {
+  public getStatusList(): Promise<OrderStatus[]> {
     var url = this._resouce + '/statuses';
     return this._httpClient.get(url)
       .then(response => <OrderStatus[]>response);
   }
 
-  getStatusLookup(): Promise<Lookup<OrderStatus>[]> {
+  public getStatusLookup(): Promise<Lookup<OrderStatus>[]> {
     var url = this._resouce + '/status-lookups';
     return this._httpClient.get(url)
       .then(response => <Lookup<OrderStatus>[]>response);
   }
 
-  getPayables(orderId: string): Promise<OrderPayable> {
+  public getPayables(orderId: string): Promise<OrderPayable> {
     var url = this._resouce + '/' + orderId + '/payables';
     return this._httpClient.get(url)
       .then(response => <OrderPayable>response);
   }
 
-  getReturnables(orderId: string): Promise<OrderReturnable> {
+  public getReturnables(orderId: string): Promise<OrderReturnable[]> {
     var url = this._resouce + '/' + orderId + '/returnables';
     return this._httpClient.get(url)
-      .then(response => <OrderReturnable>response);
+      .then(response => <OrderReturnable[]>response);
   }
 
-  getInvoiceDetail(orderId: string): Promise<OrderInvoiceDetail> {
+  public getInvoiceDetail(orderId: string): Promise<OrderInvoiceDetail> {
     var url = this._resouce + '/' + orderId + '/invoice-detail';
     return this._httpClient.get(url)
       .then(response => <OrderInvoiceDetail>response);
   }
 
-  getOrderReportPage(page: PageRequest): Promise<PagerResponse<OrderReportPageItem>> {
+  public getOrderReportPage(page: PageRequest): Promise<PagerResponse<OrderReportPageItem>> {
     var url = this._resouce + '/report/page';
     return this._httpClient.post(url, page)
       .then(response => <PagerResponse<OrderReportPageItem>>response);
   }
 
-  /*
-    getReceivables(id: string): Promise<OrderReceivable[]> {
-      var url = this._resouce + '/' + id + '/receivables';
-      return this._httpClient.get(url)
-        .then(response => <OrderReceivable[]>response);
-    }
-  */
-
-  save(order: Order): Promise<Order> {
+  public save(order: Order): Promise<Order> {
     if (order.id) {
       var url = this._resouce + '/' + order.id;
       return this._httpClient.put(url, <Order>{
@@ -102,7 +94,7 @@ export class OrderService extends ServiceBase<Order> {
     }
   }
 
-  stage(order: Order): Promise<Order> {
+  public stage(order: Order): Promise<Order> {
     var url = this._resouce + '/' + order.id + '/staged';
     return this._httpClient.post(url, <Order>{
       id: order.id,
@@ -111,7 +103,7 @@ export class OrderService extends ServiceBase<Order> {
     });
   }
 
-  route(order: Order): Promise<Order> {
+  public route(order: Order): Promise<Order> {
     var url = this._resouce + '/' + order.id + '/routed';
     return this._httpClient.post(url, <Order>{
       id: order.id,
@@ -120,7 +112,7 @@ export class OrderService extends ServiceBase<Order> {
     });
   }
 
-  invoice(order: Order): Promise<Order> {
+  public invoice(order: Order): Promise<Order> {
     var url = this._resouce + '/' + order.id + '/invoiced';
     return this._httpClient.post(url, <Order>{
       id: order.id,
@@ -129,7 +121,7 @@ export class OrderService extends ServiceBase<Order> {
     });
   }
 
-  ship(order: Order): Promise<Order> {
+  public ship(order: Order): Promise<Order> {
     var url = this._resouce + '/' + order.id + '/shipped';
     return this._httpClient.post(url, <Order>{
       id: order.id,
@@ -138,7 +130,7 @@ export class OrderService extends ServiceBase<Order> {
     });
   }
 
-  complete(order: Order): Promise<Order> {
+  public complete(order: Order): Promise<Order> {
     var url = this._resouce + '/' + order.id + '/completed';
     return this._httpClient.post(url, <Order>{
       id: order.id,
@@ -147,7 +139,7 @@ export class OrderService extends ServiceBase<Order> {
     });
   }
 
-  cancel(order: Order): Promise<Order> {
+  public cancel(order: Order): Promise<Order> {
     var url = this._resouce + '/' + order.id + '/cancelled';
     return this._httpClient.post(url, <Order>{
       id: order.id,
@@ -156,5 +148,57 @@ export class OrderService extends ServiceBase<Order> {
     });
   }
 
-  
+  public computeReturnablesFrom(order: Order): OrderReturnable[] {
+    var products = order.items.map(x => x.product);
+
+    return products.map(product => {
+      var returnable = <OrderReturnable>{
+        orderId: order.id,
+        product: <Lookup<string>>{
+          id: product.id,
+          name: product.name
+        },
+        discountRate: order.items.find(x => x.product.id == product.id).discountRate,
+        discountAmount: order.items.find(x => x.product.id == product.id).discountAmount,
+        unitPriceAmount: order.items.find(x => x.product.id == product.id).unitPriceAmount,
+        extendedPriceAmount: order.items.find(x => x.product.id == product.id).extendedPriceAmount,
+        totalPriceAmount: order.items.find(x => x.product.id == product.id).totalPriceAmount,
+        orderedQuantity: order.items
+          .filter(item => item.product.id == product.id)
+          .reduce((prevVal, item) => prevVal + item.quantityValue, 0),
+        returnedQuantity: order.returns
+          .filter(receipt => receipt.product.id == product.id)
+          .reduce((prevVal, receipt) => prevVal + receipt.quantityValue, 0),
+        returning: <OrderReturning>{
+          returnedBy: this._auth.userAsLookup,
+          returnedOn: new Date(),
+          quantity: 0
+        }
+      };
+
+      returnable.returnableQuantity = returnable.orderedQuantity > returnable.returnedQuantity
+        ? returnable.orderedQuantity - returnable.returnedQuantity : 0;
+
+      return returnable;
+    });
+  }
+
+  public generateNewReturnsFrom(order: Order): OrderReturn[] {
+    return order.returnables
+      .filter(x =>
+        x.returning &&
+        x.returning.reason &&
+        x.returning.quantity  > 0 &&
+        x.returning.amount > 0
+      )
+      .map(x => <OrderReturn>{
+        orderId: x.orderId,
+        product: x.product,
+        reason: x.returning.reason,
+        returnedBy: this._auth.userAsLookup,
+        returnedOn: new Date(),
+        quantityValue: x.returning.quantity,
+        returnedAmount: x.returning.amount
+      });
+  }
 }

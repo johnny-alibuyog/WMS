@@ -5,7 +5,7 @@ export class LookupIdToNameValueConverter {
     }
 
     var item = items.find(x => x.id === id);
-    if (!item){
+    if (!item) {
       return id;
     }
 
@@ -18,7 +18,7 @@ export class LookupIdToNameValueConverter {
     }
 
     var item = items.find(x => x.name === name);
-    if (!item){
+    if (!item) {
       return name;
     }
 

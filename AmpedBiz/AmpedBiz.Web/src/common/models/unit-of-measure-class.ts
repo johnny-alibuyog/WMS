@@ -1,4 +1,4 @@
-import {UnitOfMeasure} from './unit-of-measure';
+import { UnitOfMeasure } from './unit-of-measure';
 
 export interface UnitOfMeasureClass {
   id?: string;

@@ -1,4 +1,4 @@
-import {ValidationRenderer, RenderInstruction, ValidationError} from 'aurelia-validation';
+import { ValidationRenderer, RenderInstruction, ValidationError } from 'aurelia-validation';
 
 export class BootstrapFormRenderer {
   render(instruction: RenderInstruction) {

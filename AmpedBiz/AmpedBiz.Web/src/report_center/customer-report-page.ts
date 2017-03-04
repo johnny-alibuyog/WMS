@@ -1,9 +1,9 @@
-import {autoinject} from 'aurelia-framework';
-import {CustomerReport, CustomerReportModel, CustomerReportModelItem} from './customer-report';
-import {CustomerReportPageItem} from '../common/models/customer';
-import {ServiceApi} from '../services/service-api';
-import {NotificationService} from '../common/controls/notification-service';
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
+import { autoinject } from 'aurelia-framework';
+import { CustomerReport, CustomerReportModel, CustomerReportModelItem } from './customer-report';
+import { CustomerReportPageItem } from '../common/models/customer';
+import { ServiceApi } from '../services/service-api';
+import { NotificationService } from '../common/controls/notification-service';
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
 
 @autoinject
 export class CustomerReportPage {

@@ -1,5 +1,5 @@
-import {Router, RouterConfiguration} from 'aurelia-router'
-import {appConfig} from '../app-config';
+import { Router, RouterConfiguration } from 'aurelia-router'
+import { appConfig } from '../app-config';
 
 export class Index {
   heading: string = "Report Center";

@@ -1,6 +1,6 @@
-import {autoinject, bindable, bindingMode, customElement, computedFrom} from 'aurelia-framework'
-import {LogManager} from 'aurelia-framework';
-import {appConfig} from '../../app-config';
+import { autoinject, bindable, bindingMode, customElement, computedFrom } from 'aurelia-framework'
+import { LogManager } from 'aurelia-framework';
+import { appConfig } from '../../app-config';
 const logger = LogManager.getLogger('pager');
 
 @autoinject

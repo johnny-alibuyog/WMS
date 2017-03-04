@@ -7,4 +7,3 @@ export interface ProductCategoryPageItem {
   id?: string;
   name?: string;
 }
-

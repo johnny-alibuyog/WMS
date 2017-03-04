@@ -1,7 +1,7 @@
-import {Router, RouteConfig, NavigationInstruction, activationStrategy} from 'aurelia-router';
-import {autoinject} from 'aurelia-framework';
-import {ReportName} from '../common/models/reports';
-import {ServiceApi} from '../services/service-api';
+import { Router, RouteConfig, NavigationInstruction, activationStrategy } from 'aurelia-router';
+import { autoinject } from 'aurelia-framework';
+import { ReportName } from '../common/models/reports';
+import { ServiceApi } from '../services/service-api';
 
 @autoinject
 export class ReportPage {

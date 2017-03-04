@@ -70,6 +70,14 @@ ai-dialog-header {
    width: auto !important;
 }
 
+.vertical-middle {
+  vertical-align: middle !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
 .splash {
   text-align: center;
   margin: 10% 0 0 0;

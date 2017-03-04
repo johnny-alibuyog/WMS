@@ -1,4 +1,4 @@
-import {autoinject, customAttribute} from 'aurelia-framework';
+import { autoinject, customAttribute } from 'aurelia-framework';
 
 
 @customAttribute('datepicker')

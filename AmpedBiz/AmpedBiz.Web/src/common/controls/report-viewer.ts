@@ -1,6 +1,6 @@
-import {inject} from 'aurelia-dependency-injection';
-import {autoinject, bindable} from 'aurelia-framework';
-import {DialogController} from 'aurelia-dialog';
+import { inject } from 'aurelia-dependency-injection';
+import { autoinject, bindable } from 'aurelia-framework';
+import { DialogController } from 'aurelia-dialog';
 
 export interface ReportModel {
   title: string;

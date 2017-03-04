@@ -1,4 +1,4 @@
-import {Inventory} from './inventory';
+import { Inventory } from './inventory';
 
 export interface Product {
   id?: string;

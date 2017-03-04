@@ -51,6 +51,7 @@
     "object.assign": "^4.0.3",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.2.1",
+    "standard": "^8.6.0",
     "systemjs": "0.19.31",
     "tslint": "^3.11.0",
     "typescript": "^1.9.0-dev.20160622-1.0",

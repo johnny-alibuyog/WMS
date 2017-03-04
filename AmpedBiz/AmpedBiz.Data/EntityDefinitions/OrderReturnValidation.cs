@@ -17,20 +17,19 @@ namespace AmpedBiz.Data.EntityDefinitions
                 .NotNullable()
                 .And.IsValid();
 
+            Define(x => x.Reason)
+                .NotNullable()
+                .And.IsValid();
+
+            Define(x => x.ReturnedBy)
+                .NotNullable()
+                .And.IsValid();
+
+            Define(x => x.ReturnedOn);
+
             Define(x => x.Quantity);
 
-            Define(x => x.DiscountRate);
-
-            Define(x => x.Discount)
-                .IsValid();
-
-            Define(x => x.UnitPrice)
-                .IsValid();
-
-            Define(x => x.ExtendedPrice)
-                .IsValid();
-
-            Define(x => x.TotalPrice)
+            Define(x => x.Returned)
                 .IsValid();
         }
     }

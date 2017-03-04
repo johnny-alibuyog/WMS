@@ -1,9 +1,9 @@
-import {User} from '../common/models/user'
-import {autoinject} from 'aurelia-framework';
+import { User } from '../common/models/user'
+import { autoinject } from 'aurelia-framework';
 //import {Validation, ValidationGroup} from 'aurelia-validation';
-import {AuthService} from '../services/auth-service';
-import {NotificationService} from '../common/controls/notification-service';
-import {Pager} from '../common/controls/pager';
+import { AuthService } from '../services/auth-service';
+import { NotificationService } from '../common/controls/notification-service';
+import { Pager } from '../common/controls/pager';
 
 @autoinject
 export class Login {
@@ -12,7 +12,7 @@ export class Login {
   private _notification: NotificationService;
 
   public user: User;
-  
+
   //constructor(userService: AuthService, validation: Validation) {
   constructor(userService: AuthService) {
     this._auth = userService;

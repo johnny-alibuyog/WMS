@@ -1,14 +1,14 @@
-import {DialogService} from 'aurelia-dialog';
-import {EventAggregator, Subscription} from 'aurelia-event-aggregator';
-import {autoinject, bindable, bindingMode, customElement, computedFrom} from 'aurelia-framework'
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
-import {Lookup} from '../common/custom_types/lookup';
-import {ServiceApi} from '../services/service-api';
-import {Dictionary} from '../common/custom_types/dictionary';
-import {ReturnItem, returnEvents} from '../common/models/return';
-import {pricingScheme} from '../common/models/pricing-scheme';
-import {NotificationService} from '../common/controls/notification-service';
-import {ProductInventory} from '../common/models/product';
+import { DialogService } from 'aurelia-dialog';
+import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
+import { autoinject, bindable, bindingMode, customElement, computedFrom } from 'aurelia-framework'
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
+import { Lookup } from '../common/custom_types/lookup';
+import { ServiceApi } from '../services/service-api';
+import { Dictionary } from '../common/custom_types/dictionary';
+import { ReturnItem, returnEvents } from '../common/models/return';
+import { pricingScheme } from '../common/models/pricing-scheme';
+import { NotificationService } from '../common/controls/notification-service';
+import { ProductInventory } from '../common/models/product';
 
 @autoinject
 @customElement("return-item-page")
@@ -135,7 +135,7 @@ export class ReturnItemPage {
 
   public addItem(): void {
     if (!this.items)
-      this.items = <ReturnItem[]>[];
+      this.items = [];
 
     var item = <ReturnItem>{
       quantityValue: 0,

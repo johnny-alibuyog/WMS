@@ -1,9 +1,9 @@
-import {autoinject, Aurelia} from 'aurelia-framework';
-import {User} from '../common/models/user';
-import {Role, role} from '../common/models/role';
-import {Lookup} from '../common/custom_types/lookup';
-import {HttpClientFacade} from './http-client-facade';
-import {NotificationService} from '../common/controls/notification-service';
+import { autoinject, Aurelia } from 'aurelia-framework';
+import { User } from '../common/models/user';
+import { Role, role } from '../common/models/role';
+import { Lookup } from '../common/custom_types/lookup';
+import { HttpClientFacade } from './http-client-facade';
+import { NotificationService } from '../common/controls/notification-service';
 
 
 export interface AuthSettings {

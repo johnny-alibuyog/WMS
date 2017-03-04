@@ -35,9 +35,9 @@
         <!-- edit mode -->
         <td if.bind="$parent.selectedItem === item">
           <select class="form-control" value.bind="item.product | lookupToId:$parent.products" change.delegate="initializeItem(item)">
-              <option>Select Product</option>
-              <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
-            </select>
+            <option>Select Product</option>
+            <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
+          </select>
         </td>
         <td if.bind="$parent.selectedItem === item" class="text-right">
           <input class="form-control text-right" type="number" value.bind="item.quantityValue" />

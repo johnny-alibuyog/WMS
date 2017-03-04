@@ -1,6 +1,6 @@
-import {autoinject, noView} from 'aurelia-framework';
-import {DialogService, DialogResult} from 'aurelia-dialog';
-import {Notification, Alert} from './notification';
+import { autoinject, noView } from 'aurelia-framework';
+import { DialogService, DialogResult } from 'aurelia-dialog';
+import { Notification, Alert } from './notification';
 
 @autoinject
 export class NotificationService {

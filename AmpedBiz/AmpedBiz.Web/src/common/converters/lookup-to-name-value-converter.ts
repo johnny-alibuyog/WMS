@@ -4,7 +4,7 @@ export class LookupToNameValueConverter {
   toView(item, items) {
     return item ? item.name : null;
   }
-  
+
   fromView(name, items) {
     return items.find(x => x.name === name);
   }

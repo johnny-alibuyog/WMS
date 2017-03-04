@@ -85,7 +85,7 @@ export class OrderPaymentPage {
 
   private addItem(): void {
     if (!this.payments)
-      this.payments = <OrderPayment[]>[];
+      this.payments = [];
 
     var _payment = <OrderPayment>{
       paidOn: new Date(),

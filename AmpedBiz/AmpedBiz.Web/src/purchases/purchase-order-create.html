@@ -162,7 +162,7 @@
                   <li>
                     <a data-toggle="tab" href="#receiptsTab">
                       <span>Inventory Recieving&nbsp</span>
-                      <button type="button" disabled.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo: 'receipts'" class="btn btn-default btn-circle" click.trigger="addReceivings()">
+                      <button type="button" disabled.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo: 'receipts'" class="btn btn-default btn-circle" click.trigger="addReceipt()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
                     </a>
@@ -176,8 +176,8 @@
                     <br />
 
                     <purchase-order-item-page 
-                      products.bind="products" 
                       items.bind="purchaseOrder.items" 
+                      products.bind="products" 
                       purchase-order-id.bind="purchaseOrder.id">
                     </purchase-order-item-page>
                   </div>
@@ -198,6 +198,7 @@
                     <br />
 
                     <purchase-order-receipt-page 
+                      products.bind="products" 
                       receipts.bind="purchaseOrder.receipts"
                       receivables.bind="purchaseOrder.receivables" 
                       purchase-order-id.bind="purchaseOrder.id">

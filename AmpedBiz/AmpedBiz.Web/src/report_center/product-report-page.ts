@@ -1,10 +1,10 @@
-import {autoinject} from 'aurelia-framework';
-import {ProductReport, ProductReportModel, ProductReportModelItem} from './product-report';
-import {ProductReportPageItem} from '../common/models/product';
-import {ServiceApi} from '../services/service-api';
-import {Lookup} from '../common/custom_types/lookup';
-import {NotificationService} from '../common/controls/notification-service';
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
+import { autoinject } from 'aurelia-framework';
+import { ProductReport, ProductReportModel, ProductReportModelItem } from './product-report';
+import { ProductReportPageItem } from '../common/models/product';
+import { ServiceApi } from '../services/service-api';
+import { Lookup } from '../common/custom_types/lookup';
+import { NotificationService } from '../common/controls/notification-service';
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
 
 @autoinject
 export class ProductReportPage {

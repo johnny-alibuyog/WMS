@@ -1,4 +1,4 @@
-import {Lookup} from '../custom_types/lookup';
+import { Lookup } from '../custom_types/lookup';
 
 export interface Inventory {
   id?: string;

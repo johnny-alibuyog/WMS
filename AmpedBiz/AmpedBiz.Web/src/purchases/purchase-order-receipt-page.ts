@@ -5,9 +5,8 @@ import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } fro
 import { Lookup } from '../common/custom_types/lookup';
 import { ServiceApi } from '../services/service-api';
 import { Dictionary } from '../common/custom_types/dictionary';
-import { PurchaseOrderReceipt, PurchaseOrderReceivable, purchaseOrderEvents } from '../common/models/purchase-order';
+import { PurchaseOrderReceipt, PurchaseOrderReceivable, PurchaseOrderReceiving, purchaseOrderEvents } from '../common/models/purchase-order';
 import { NotificationService } from '../common/controls/notification-service';
-import { PurchaseOrderReceiving } from './purchase-order-receiving';
 
 @autoinject
 @customElement("purchase-order-receipt-page")
@@ -28,11 +27,13 @@ export class PurchaseOrderReceiptPage {
   public receivables: PurchaseOrderReceivable[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
-  public allowedTransitions: Dictionary<string> = {};
+  public products: Lookup<string>[] = [];
 
   public receiptPager: Pager<PurchaseOrderReceipt> = new Pager<PurchaseOrderReceipt>();
 
   public receivablePager: Pager<PurchaseOrderReceivable> = new Pager<PurchaseOrderReceivable>();
+
+  public selectedItem: PurchaseOrderReceivable;
 
   constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, eventAggregator: EventAggregator) {
     this._api = api;
@@ -42,14 +43,13 @@ export class PurchaseOrderReceiptPage {
 
     this.receiptPager.onPage = () => this.initializeReceiptPage();
     this.receivablePager.onPage = () => this.initializeReceivablePage();
-
   }
 
   attached(): void {
     this._subscriptions = [
       this._eventAggregator.subscribe(
-        purchaseOrderEvents.receivings.add,
-        response => this.addReceipt()
+        purchaseOrderEvents.receipts.add,
+        response => this.addItem()
       )
     ];
   }
@@ -88,12 +88,52 @@ export class PurchaseOrderReceiptPage {
     );
   }
 
-  addReceipt(): void {
-    this._dialog
-      .open({ viewModel: PurchaseOrderReceiving, model: this.receivables })
-      .then(response => {
-        if (!response.wasCancelled)
-          this._eventAggregator.publish(purchaseOrderEvents.receivings.added, response.output);
-      });
+  private addItem(): void {
+    if (!this.receivables)
+      this.receivables = [];
+
+    var _receivable = <PurchaseOrderReceivable>{
+      purchaseOrderId: this.purchaseOrderId,
+      product: null,
+      orderedQuantity: 0,
+      receivedQuantity: 0,
+      receivableQuantity: 0,
+      receiving: <PurchaseOrderReceiving>{
+        batchNumber: null,
+        receivedBy: this._api.auth.userAsLookup,
+        receivedOn: new Date(),
+        expiresOn: null,
+        quantity: 0
+      }
+    };
+
+    this.receivables.push(_receivable);
+    this.selectedItem = _receivable;
+    this.initializeReceiptPage();
+    this.initializeReceivablePage();
+  }
+
+  public editItem(_receivable: PurchaseOrderReceivable): void {
+    if (this.selectedItem !== _receivable)
+      this.selectedItem = _receivable;
+  }
+
+  public deleteItem(_receivable: PurchaseOrderReceivable): void {
+    if (_receivable.orderedQuantity > 0) {
+      this._notification.error("You cannot delete receipt item that has already been ordered.");
+      return;
+    }
+
+    if (_receivable.receivedQuantity > 0) {
+      this._notification.error("You cannot delete receipt item that has already been received.");
+      return;
+    }
+
+    var index = this.receivables.indexOf(_receivable);
+    if (index > -1) {
+      this.receivables.splice(index, 1);
+    }
+    this.initializeReceiptPage();
+    this.initializeReceivablePage();
   }
 }

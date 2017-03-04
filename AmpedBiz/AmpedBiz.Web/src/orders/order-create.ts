@@ -28,6 +28,7 @@ export class OrderCreate {
   public customers: Lookup<string>[] = [];
   public paymentTypes: Lookup<string>[] = [];
   public pricingSchemes: Lookup<string>[] = [];
+  public returnReasons: Lookup<string>[] = [];
   public statuses: Lookup<OrderStatus>[] = [];
   public payable: OrderPayable;
   public order: Order;
@@ -71,6 +72,7 @@ export class OrderCreate {
       Promise<Lookup<string>[]>,
       Promise<Lookup<string>[]>,
       Promise<Lookup<string>[]>,
+      Promise<Lookup<string>[]>,
       Promise<Lookup<OrderStatus>[]>,
       Promise<OrderPayable>,
       Promise<Order>] = [
@@ -79,6 +81,7 @@ export class OrderCreate {
         this._api.customers.getLookups(),
         this._api.paymentTypes.getLookups(),
         this._api.pricingSchemes.getLookups(),
+        this._api.returnReasons.getLookups(),
         this._api.orders.getStatusLookup(),
         order.id
           ? this._api.orders.getPayables(order.id)
@@ -95,9 +98,10 @@ export class OrderCreate {
         this.customers = responses[2];
         this.paymentTypes = responses[3];
         this.pricingSchemes = responses[4];
-        this.statuses = responses[5];
-        this.payable = responses[6];
-        this.setOrder(responses[7]);
+        this.returnReasons = responses[5];
+        this.statuses = responses[6];
+        this.payable = responses[7];
+        this.setOrder(responses[8]);
 
         if (!this.order.branch) {
           this.order.branch = this.branches
@@ -126,8 +130,9 @@ export class OrderCreate {
     order.items = order.items || [];
     order.returns = order.returns || [];
     order.payments = order.payments || [];
+    order.returnables = this._api.orders.computeReturnablesFrom(order);
 
-    this.order = order;
+    this.order = order; 
   }
 
   public addItem(): void {
@@ -147,6 +152,10 @@ export class OrderCreate {
   }
 
   public save(): void {
+    // generate new returns from returnables >> returning items
+    var newReturns = this._api.orders.generateNewReturnsFrom(this.order);
+    newReturns.forEach(newReturn => this.order.returns.push(newReturn));
+
     this._api.orders.save(this.order)
       .then(data => this.resetAndNoify(data, "Order has been saved."))
       .catch(error => this._notification.warning(error));

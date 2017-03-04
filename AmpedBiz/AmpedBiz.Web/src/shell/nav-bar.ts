@@ -1,6 +1,6 @@
-import {autoinject, bindable, bindingMode} from 'aurelia-framework';
-import {Router} from 'aurelia-router';
-import {AuthService} from '../services/auth-service';
+import { autoinject, bindable, bindingMode } from 'aurelia-framework';
+import { Router } from 'aurelia-router';
+import { AuthService } from '../services/auth-service';
 
 @autoinject
 export class NavBar {
@@ -13,7 +13,7 @@ export class NavBar {
     this._auth = auth;
   }
 
-  public logout() : void {
+  public logout(): void {
     this._auth.logout();
   }
 }

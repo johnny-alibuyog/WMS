@@ -1,8 +1,8 @@
-import {autoinject} from 'aurelia-framework';
-import {formatDate, formatNumber, emptyIfNull, contactAsString, addressAsTring} from '../services/formaters';
-import {ReportBuilder, Report, DocumentDefinition} from '../services/report-builder';
-import {Address} from '../common/models/address';
-import {Contact} from '../common/models/contact';
+import { autoinject } from 'aurelia-framework';
+import { formatDate, formatNumber, emptyIfNull, contactAsString, addressAsTring } from '../services/formaters';
+import { ReportBuilder, Report, DocumentDefinition } from '../services/report-builder';
+import { Address } from '../common/models/address';
+import { Contact } from '../common/models/contact';
 
 export interface SupplierReportModel {
   items: SupplierReportModelItem[];

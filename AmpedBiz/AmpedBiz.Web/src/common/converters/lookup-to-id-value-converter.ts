@@ -4,7 +4,7 @@ export class LookupToIdValueConverter {
   toView(item, items) {
     return item ? item.id : null;
   }
-  
+
   fromView(id, items) {
     return items.find(x => x.id === id);
   }

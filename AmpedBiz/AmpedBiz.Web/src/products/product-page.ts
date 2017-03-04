@@ -1,11 +1,11 @@
-import {Router, RouteConfig, NavigationInstruction} from 'aurelia-router';
-import {autoinject} from 'aurelia-framework';
-import {ProductCreate} from './product-create';
-import {Product, ProductPageItem} from '../common/models/product';
-import {ServiceApi} from '../services/service-api';
-import {Lookup} from '../common/custom_types/lookup';
-import {NotificationService} from '../common/controls/notification-service';
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
+import { Router, RouteConfig, NavigationInstruction } from 'aurelia-router';
+import { autoinject } from 'aurelia-framework';
+import { ProductCreate } from './product-create';
+import { Product, ProductPageItem } from '../common/models/product';
+import { ServiceApi } from '../services/service-api';
+import { Lookup } from '../common/custom_types/lookup';
+import { NotificationService } from '../common/controls/notification-service';
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
 
 @autoinject
 export class ProductPage {
@@ -43,7 +43,7 @@ export class ProductPage {
 
     let requests: [Promise<Lookup<string>[]>, Promise<Lookup<string>[]>] = [
       this._api.suppliers.getLookups(),
-      this._api.purchaseOrders.getStatusLookup()
+      this._api.productCategories.getLookups(),
     ];
 
     Promise.all(requests).then((responses: [Lookup<string>[], Lookup<string>[]]) => {

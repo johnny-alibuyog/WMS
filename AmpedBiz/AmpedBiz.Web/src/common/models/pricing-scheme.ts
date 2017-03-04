@@ -1,5 +1,5 @@
-import {Lookup} from '../custom_types/lookup';
-import {ProductInventory} from './product';
+import { Lookup } from '../custom_types/lookup';
+import { ProductInventory } from './product';
 
 export interface PricingScheme {
   id?: string;

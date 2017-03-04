@@ -1,10 +1,10 @@
-import {autoinject, bindable, bindingMode, customElement} from 'aurelia-framework'
-import {Router} from 'aurelia-router';
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
-import {ServiceApi} from '../services/service-api';
-import {Dictionary} from '../common/custom_types/dictionary';
-import {Lookup} from '../common/custom_types/lookup';
-import {Inventory} from '../common/models/inventory';
+import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
+import { Router } from 'aurelia-router';
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
+import { ServiceApi } from '../services/service-api';
+import { Dictionary } from '../common/custom_types/dictionary';
+import { Lookup } from '../common/custom_types/lookup';
+import { Inventory } from '../common/models/inventory';
 
 @autoinject
 @customElement("product-inventory")
@@ -21,7 +21,7 @@ export class ProductInventory {
   @bindable()
   public productId: string = '';
 
-  @bindable({defaultBindingMode: bindingMode.twoWay})
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
   public inventory: Inventory;
 
 

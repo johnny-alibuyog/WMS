@@ -1,8 +1,8 @@
-import {autoinject} from 'aurelia-framework';
-import {NavigationInstruction, Next, PipelineStep, Redirect, Router, RouterConfiguration} from 'aurelia-router';
-import {AuthService, AuthSettings} from '../services/auth-service';
-import {role} from '../common/models/role';
-import {NotificationService} from '../common/controls/notification-service';
+import { autoinject } from 'aurelia-framework';
+import { NavigationInstruction, Next, PipelineStep, Redirect, Router, RouterConfiguration } from 'aurelia-router';
+import { AuthService, AuthSettings } from '../services/auth-service';
+import { role } from '../common/models/role';
+import { NotificationService } from '../common/controls/notification-service';
 
 @autoinject
 export class Shell {
@@ -103,7 +103,7 @@ class AuthorizeStep implements PipelineStep {
 
   public run(navigationInstruction: NavigationInstruction, next: Next): Promise<any> {
     let allInstructions = navigationInstruction.getAllInstructions();
-    let currentInstruction =  allInstructions[allInstructions.length - 1];
+    let currentInstruction = allInstructions[allInstructions.length - 1];
     let instructionConfig = currentInstruction.config;
     let authSettings = <AuthSettings>instructionConfig.settings.auth;
 

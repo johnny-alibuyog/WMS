@@ -2,8 +2,8 @@ import * as moment from 'moment';
 
 export class SortValueConverter {
   toView(array, propertyName, comparison = 'ordinalIgnoreCase', direction = 'ascending') {
-    var directionFactor = direction === 'ascending' ? 1 : -1,
-        comparer = this[comparison + 'Comparison'];
+    var directionFactor = direction === 'ascending' ? 1 : -1;
+    var comparer = this[comparison + 'Comparison'];
     if (propertyName === undefined)
       return array.sort((a, b) => comparer(a, b) * directionFactor);
     return array.sort((a, b) => comparer(a[propertyName], b[propertyName]) * directionFactor);
@@ -19,9 +19,9 @@ export class SortValueConverter {
     a = a.toString().toLowerCase();
     b = b.toString().toLowerCase();
     if (a < b)
-        return -1;
+      return -1;
     if (a > b)
-        return 1;
+      return 1;
     return 0;
   }
 
@@ -35,9 +35,9 @@ export class SortValueConverter {
     a = a.toString();
     b = b.toString();
     if (a < b)
-        return -1;
+      return -1;
     if (a > b)
-        return 1;
+      return 1;
     return 0;
   }
 

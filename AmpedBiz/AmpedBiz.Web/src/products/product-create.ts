@@ -1,9 +1,9 @@
-import {Router} from 'aurelia-router';
-import {autoinject} from 'aurelia-framework';
-import {Product} from '../common/models/product';
-import {Lookup} from '../common/custom_types/lookup';
-import {ServiceApi} from '../services/service-api';
-import {NotificationService} from '../common/controls/notification-service';
+import { Router } from 'aurelia-router';
+import { autoinject } from 'aurelia-framework';
+import { Product } from '../common/models/product';
+import { Lookup } from '../common/custom_types/lookup';
+import { ServiceApi } from '../services/service-api';
+import { NotificationService } from '../common/controls/notification-service';
 
 @autoinject
 export class ProductCreate {

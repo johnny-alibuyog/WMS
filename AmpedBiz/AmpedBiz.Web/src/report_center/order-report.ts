@@ -1,7 +1,7 @@
-import {autoinject} from 'aurelia-framework';
-import {formatDate, formatNumber, emptyIfNull} from '../services/formaters';
-import {ReportBuilder, Report, DocumentDefinition} from '../services/report-builder';
-import {OrderStatus} from '../common/models/order';
+import { autoinject } from 'aurelia-framework';
+import { formatDate, formatNumber, emptyIfNull } from '../services/formaters';
+import { ReportBuilder, Report, DocumentDefinition } from '../services/report-builder';
+import { OrderStatus } from '../common/models/order';
 
 export interface OrderReportModel {
   branchName?: string;

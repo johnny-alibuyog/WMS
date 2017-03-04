@@ -1,8 +1,8 @@
 import * as moment from 'moment';
 import * as numeral from 'numeral';
-import {appConfig} from '../app-config';
-import {Address} from '../common/models/address';
-import {Contact} from '../common/models/contact';
+import { appConfig } from '../app-config';
+import { Address } from '../common/models/address';
+import { Contact } from '../common/models/contact';
 
 export function formatDate(value: Date, format?: string): string {
   if (value == null) {

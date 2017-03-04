@@ -482,15 +482,17 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                             .Take(_utils.RandomInteger(1, entity.Items.Count()))
                             .Select(x => new OrderReturn(
                                 product: x.Product,
+                                reason: _utils.Random<ReturnReason>(),
                                 returnedOn: DateTime.Now,
                                 returnedBy: _utils.Random<User>(),
                                 quantity: new Measure(
                                     value: _utils.RandomDecimal(1M, x.Quantity.Value),
                                     unit: x.Quantity.Unit
                                 ),
-                                discountRate: x.DiscountRate,
-                                discount: x.Discount,
-                                unitPrice: x.UnitPrice
+                                returned: new Money(
+                                    amount: _utils.RandomDecimal(1M, x.TotalPrice.Amount),
+                                    currency: x.TotalPrice.Currency
+                                )
                             ))
                     });
                 }

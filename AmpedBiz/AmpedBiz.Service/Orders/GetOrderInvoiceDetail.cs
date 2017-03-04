@@ -2,7 +2,6 @@
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
-using NHibernate.Transform;
 using System;
 using System.Linq;
 
@@ -40,7 +39,6 @@ namespace AmpedBiz.Service.Orders
 
                     var entity = query.Value;
                     entity.MapTo(response);
-                    response.Items = Dto.OrderInvoiceDetail.EvaluateItems(entity);
 
                     transaction.Commit();
                 }

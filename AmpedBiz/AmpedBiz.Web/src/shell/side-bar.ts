@@ -1,5 +1,5 @@
-import {bindable, bindingMode} from 'aurelia-framework';
-import {Router} from 'aurelia-router';
+import { bindable, bindingMode } from 'aurelia-framework';
+import { Router } from 'aurelia-router';
 
 export class SideBar {
   @bindable({ defaultBindingMode: bindingMode.twoWay })

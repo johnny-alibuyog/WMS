@@ -1,6 +1,6 @@
-import {Router, RouterConfiguration} from 'aurelia-router'
-import {AuthSettings} from '../services/auth-service';
-import {role} from '../common/models/role';
+import { Router, RouterConfiguration } from 'aurelia-router'
+import { AuthSettings } from '../services/auth-service';
+import { role } from '../common/models/role';
 
 export class Index {
   heading: string = "Admin";
@@ -67,7 +67,7 @@ export class Index {
         },
       },
     ]);
-    
+
     this.router = router;
   }
 }

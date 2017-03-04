@@ -1,12 +1,12 @@
-import {Router, RouteConfig, NavigationInstruction} from 'aurelia-router';
-import {autoinject, BindingEngine, Disposable} from 'aurelia-framework';
-import {ProductCreate} from './product-create';
-import {Product, NeedsReorderingPageItem, ForPurchasing} from '../common/models/product';
-import {ServiceApi} from '../services/service-api';
-import {SessionData} from '../services/session-data';
-import {Lookup} from '../common/custom_types/lookup';
-import {NotificationService} from '../common/controls/notification-service';
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
+import { Router, RouteConfig, NavigationInstruction } from 'aurelia-router';
+import { autoinject, BindingEngine, Disposable } from 'aurelia-framework';
+import { ProductCreate } from './product-create';
+import { Product, NeedsReorderingPageItem, ForPurchasing } from '../common/models/product';
+import { ServiceApi } from '../services/service-api';
+import { SessionData } from '../services/session-data';
+import { Lookup } from '../common/custom_types/lookup';
+import { NotificationService } from '../common/controls/notification-service';
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
 
 @autoinject
 export class NeedsReorderingPage {
@@ -136,6 +136,11 @@ export class NeedsReorderingPage {
     this.forPurchasing.purchaseAllBelowTarget = selectAll;
     return true;
   }
+
+
+  //public edit(item: NeedsReorderingPageItem): void {
+  //  this._router.navigateToRoute('product-create', <Product>{ id: item.id });
+  //}
 
   private computeSelectAll(changeRecords: any) {
     if (changeRecords[0].removed.length > 0) {

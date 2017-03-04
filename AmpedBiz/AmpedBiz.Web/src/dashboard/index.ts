@@ -1,4 +1,4 @@
-import {Router, RouterConfiguration} from 'aurelia-router'
+import { Router, RouterConfiguration } from 'aurelia-router'
 
 export class Index {
   heading: string = "Dashboard";
@@ -29,7 +29,7 @@ export class Index {
         title: 'New Purchase Order'
       }
     ]);
-    
+
     this.router = router;
   }
 }

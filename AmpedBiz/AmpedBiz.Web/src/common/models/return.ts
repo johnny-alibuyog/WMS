@@ -1,7 +1,7 @@
-import {Lookup} from '../custom_types/lookup';
-import {ProductInventory} from './product';
-import {Dictionary} from '../custom_types/dictionary';
-import {Address} from './Address';
+import { Lookup } from '../custom_types/lookup';
+import { ProductInventory } from './product';
+import { Dictionary } from '../custom_types/dictionary';
+import { Address } from './Address';
 
 export const returnEvents = {
   item: {

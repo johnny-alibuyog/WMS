@@ -63,6 +63,7 @@ namespace AmpedBiz.Service.Orders
                             .Fetch(x => x.Payments.First().PaidBy).Eager
                             .Fetch(x => x.Payments.First().PaymentType).Eager
                             .Fetch(x => x.Returns).Eager
+                            .Fetch(x => x.Returns.First().Reason).Eager
                             .Fetch(x => x.Returns.First().ReturnedBy).Eager
                             .Fetch(x => x.Returns.First().Product).Eager
                             .Fetch(x => x.Returns.First().Product.Inventory).Eager
@@ -129,12 +130,11 @@ namespace AmpedBiz.Service.Orders
                         )),
                         Returns = message.Returns.Select(x => new OrderReturn(
                             product: GetProduct(x.Product.Id),
+                            reason: session.Load<ReturnReason>(x.Reason.Id),
                             returnedOn: message.ReturnedOn ?? DateTime.Now,
                             returnedBy: session.Load<User>(x.ReturnedBy.Id),
                             quantity: new Measure(x.QuantityValue, GetUnitOfMeasure(x.Product.Id)),
-                            discountRate: x.DiscountRate,
-                            discount: new Money(x.DiscountAmount, currency),
-                            unitPrice: new Money(x.UnitPriceAmount, currency)
+                            returned: new Money(x.ReturnedAmount, currency)
                         ))
                     });
 

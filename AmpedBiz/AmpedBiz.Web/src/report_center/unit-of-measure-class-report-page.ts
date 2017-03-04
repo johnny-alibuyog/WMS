@@ -1,11 +1,11 @@
-import {autoinject} from 'aurelia-framework';
-import {UnitOfMeasureClassReport, UnitOfMeasureClassReportModel, UnitOfMeasureClassReportModelItem} from './unit-of-measure-class-report';
-import {UnitOfMeasureClass} from '../common/models/unit-of-measure-class';
-import {UnitOfMeasure} from '../common/models/unit-of-measure';
-import {ServiceApi} from '../services/service-api';
-import {Lookup} from '../common/custom_types/lookup';
-import {NotificationService} from '../common/controls/notification-service';
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
+import { autoinject } from 'aurelia-framework';
+import { UnitOfMeasureClassReport, UnitOfMeasureClassReportModel, UnitOfMeasureClassReportModelItem } from './unit-of-measure-class-report';
+import { UnitOfMeasureClass } from '../common/models/unit-of-measure-class';
+import { UnitOfMeasure } from '../common/models/unit-of-measure';
+import { ServiceApi } from '../services/service-api';
+import { Lookup } from '../common/custom_types/lookup';
+import { NotificationService } from '../common/controls/notification-service';
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
 
 @autoinject
 export class UnitOfMeasureClassReportPage {
@@ -37,7 +37,7 @@ export class UnitOfMeasureClassReportPage {
   }
 
   public activate(): void {
-      this.getPage();
+    this.getPage();
   }
 
   public generateReport(): void {

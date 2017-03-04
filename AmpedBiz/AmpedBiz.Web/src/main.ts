@@ -1,6 +1,6 @@
 import 'bootstrap';
-import {Aurelia} from 'aurelia-framework';
-import {AuthService} from './services/auth-service';
+import { Aurelia } from 'aurelia-framework';
+import { AuthService } from './services/auth-service';
 
 export function configure(aurelia: Aurelia) {
   aurelia.use

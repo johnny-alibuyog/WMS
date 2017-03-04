@@ -1,17 +1,17 @@
-import {User} from '../common/models/user'
-import {ForPurchasing} from '../common/models/product';
+import { User } from '../common/models/user'
+import { ForPurchasing } from '../common/models/product';
 
 export class SessionData {
-  
+
   private setValue(key: string, value: any) {
     sessionStorage[key] = JSON.stringify(value);
   }
 
-  private getValue<T>(key: string): T{
+  private getValue<T>(key: string): T {
     return <T>JSON.parse(sessionStorage[key] || '{}');
   }
 
-  public set forPurchasing(value: ForPurchasing) { 
+  public set forPurchasing(value: ForPurchasing) {
     this.setValue('products:for-purchasing', value);
   }
 

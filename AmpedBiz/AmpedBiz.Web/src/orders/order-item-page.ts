@@ -1,13 +1,13 @@
-import {DialogService} from 'aurelia-dialog';
-import {EventAggregator, Subscription} from 'aurelia-event-aggregator';
-import {autoinject, bindable, bindingMode, customElement, computedFrom} from 'aurelia-framework'
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
-import {Lookup} from '../common/custom_types/lookup';
-import {ServiceApi} from '../services/service-api';
-import {Dictionary} from '../common/custom_types/dictionary';
-import {OrderItem, orderEvents} from '../common/models/order';
-import {pricingScheme} from '../common/models/pricing-scheme';
-import {NotificationService} from '../common/controls/notification-service';
+import { DialogService } from 'aurelia-dialog';
+import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
+import { autoinject, bindable, bindingMode, customElement, computedFrom } from 'aurelia-framework'
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
+import { Lookup } from '../common/custom_types/lookup';
+import { ServiceApi } from '../services/service-api';
+import { Dictionary } from '../common/custom_types/dictionary';
+import { OrderItem, orderEvents } from '../common/models/order';
+import { pricingScheme } from '../common/models/pricing-scheme';
+import { NotificationService } from '../common/controls/notification-service';
 
 @autoinject
 @customElement("order-item-page")
@@ -31,9 +31,6 @@ export class OrderItemPage {
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public products: Lookup<string>[] = [];
 
-  @bindable({ defaultBindingMode: bindingMode.twoWay })
-  public allowedTransitions: Dictionary<string> = {};
-
   public itemPager: Pager<OrderItem> = new Pager<OrderItem>();
 
   public selectedItem: OrderItem;
@@ -50,7 +47,7 @@ export class OrderItemPage {
   public attached(): void {
     this._subscriptions = [
       this._eventAggregator.subscribe(
-        orderEvents.item.add, 
+        orderEvents.item.add,
         response => this.addItem()
       ),
       this._eventAggregator.subscribe(
@@ -98,7 +95,7 @@ export class OrderItemPage {
     }
 
     this._api.products.getInventory(item.product.id).then(data => {
-      if (!this.pricingScheme){
+      if (!this.pricingScheme) {
         this.pricingScheme = pricingScheme.wholesalePrice;
       }
 
@@ -130,7 +127,7 @@ export class OrderItemPage {
 
   public addItem(): void {
     if (!this.items)
-      this.items = <OrderItem[]>[];
+      this.items = [];
 
     var item = <OrderItem>{
       quantityValue: 0,

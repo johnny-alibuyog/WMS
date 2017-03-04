@@ -81,6 +81,7 @@ export interface Order {
   items?: OrderItem[];
   returns?: OrderReturn[];
   payments?: OrderPayment[];
+  returnables?: OrderReturnable[];
   stage?: StageDefinition<OrderStatus, OrderAggregate>;
 }
 
@@ -111,43 +112,33 @@ export interface OrderItem {
 export interface OrderReturn {
   id?: string;
   product?: Lookup<string>;
+  reason?: Lookup<string>;
   returnedOn?: Date;
   returnedBy?: Lookup<string>;
   quantityValue?: number;
-  discountRate?: number;
-  discountAmount?: number;
-  unitPriceAmount?: number;
-  extendedPriceAmount?: number;
-  totalPriceAmount?: number;
+  returnedAmount?: number;
 }
 
 export interface OrderReturnable {
-  id?: string;
+  orderId?: string;
   product?: Lookup<string>;
-  quantityValue?: number;
   discountRate?: number;
   discountAmount?: number;
   unitPriceAmount?: number;
   extendedPriceAmount?: number;
   totalPriceAmount?: number;
-}
-
-
-export interface PurchaseOrderReceivable {
-  purchaseOrderId?: string;
-  product?: Lookup<string>;
   orderedQuantity?: number;
-  receivedQuantity?: number;
-  receivableQuantity?: number;
-  receiving: ReceivingDetails;
+  returnedQuantity?: number;
+  returnableQuantity?: number;
+  returning: OrderReturning;
 }
 
-export interface ReceivingDetails {
-  batchNumber?: string;
-  receivedBy?: Lookup<string>;
-  receivedOn?: Date;
-  expiresOn?: Date;
+export interface OrderReturning {
+  reason?: Lookup<string>;
+  returnedOn?: Date;
+  returnedBy?: Lookup<string>;
   quantity?: number;
+  amount?: number;
 }
 
 export interface OrderPayment {

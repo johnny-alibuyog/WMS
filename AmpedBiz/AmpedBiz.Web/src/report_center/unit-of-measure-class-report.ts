@@ -1,7 +1,7 @@
-import {autoinject} from 'aurelia-framework';
-import {formatDate, formatNumber, emptyIfNull} from '../services/formaters';
-import {ReportBuilder, Report, DocumentDefinition} from '../services/report-builder';
-import {UnitOfMeasureClass} from '../common/models/unit-of-measure-class';
+import { autoinject } from 'aurelia-framework';
+import { formatDate, formatNumber, emptyIfNull } from '../services/formaters';
+import { ReportBuilder, Report, DocumentDefinition } from '../services/report-builder';
+import { UnitOfMeasureClass } from '../common/models/unit-of-measure-class';
 
 export interface UnitOfMeasureClassReportModel {
   items: UnitOfMeasureClassReportModelItem[];

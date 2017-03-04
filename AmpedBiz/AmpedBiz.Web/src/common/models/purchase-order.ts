@@ -1,7 +1,7 @@
-import {Lookup} from '../custom_types/lookup';
-import {StageDefinition} from './stage-definition';
-import {ProductInventory} from './product';
-import {Dictionary} from '../custom_types/dictionary';
+import { Lookup } from '../custom_types/lookup';
+import { StageDefinition } from './stage-definition';
+import { ProductInventory } from './product';
+import { Dictionary } from '../custom_types/dictionary';
 
 export const purchaseOrderEvents = {
   item: {
@@ -15,12 +15,11 @@ export const purchaseOrderEvents = {
     deleted: 'purchase-order-payment-deleted',
   },
   receipts: {
-    receive: 'purchase-order-receipts-receive',
-    received: 'purchase-order-receipts-received',
-  },
-  receivings: {
-    add: 'purchase-order-receivings-add',
-    added: 'purchase-order-receivings-added',
+    add: 'purchase-order-receipt-add',
+    added: 'purchase-order-receipt-added',
+    deleted: 'purchase-order-receipt-deleted',
+    receive: 'purchase-order-receipt-receive',
+    received: 'purchase-order-receipt-received',
   },
 }
 
@@ -113,10 +112,10 @@ export interface PurchaseOrderReceivable {
   orderedQuantity?: number;
   receivedQuantity?: number;
   receivableQuantity?: number;
-  receiving: ReceivingDetails;
+  receiving: PurchaseOrderReceiving;
 }
 
-export interface ReceivingDetails {
+export interface PurchaseOrderReceiving {
   batchNumber?: string;
   receivedBy?: Lookup<string>;
   receivedOn?: Date;

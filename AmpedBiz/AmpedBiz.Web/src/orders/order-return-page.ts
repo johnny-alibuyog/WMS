@@ -5,7 +5,7 @@ import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } fro
 import { Lookup } from '../common/custom_types/lookup';
 import { ServiceApi } from '../services/service-api';
 import { Dictionary } from '../common/custom_types/dictionary';
-import { OrderReturn, OrderReturnable, orderEvents } from '../common/models/order';
+import { OrderReturn, OrderReturnable, OrderReturning, orderEvents } from '../common/models/order';
 import { pricingScheme } from '../common/models/pricing-scheme';
 import { NotificationService } from '../common/controls/notification-service';
 
@@ -26,15 +26,18 @@ export class OrderReturnPage {
   public returns: OrderReturn[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
-  public allowedTransitions: Dictionary<string> = {};
-
   public returnables: OrderReturnable[] = [];
+
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
+  public reasons: Lookup<string>[] = [];
 
   public products: Lookup<string>[] = [];
 
   public returnPager: Pager<OrderReturn> = new Pager<OrderReturn>();
 
-  public selectedItem: OrderReturn;
+  public returnablePager: Pager<OrderReturnable> = new Pager<OrderReturnable>();
+
+  public selectedItem: OrderReturnable;
 
   constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, eventAggregator: EventAggregator) {
     this._api = api;
@@ -42,18 +45,8 @@ export class OrderReturnPage {
     this._notification = notification;
     this._eventAggregator = eventAggregator;
 
-    this.returnPager.onPage = () => this.initializePage();
-  }
-
-  public orderIdChanged(): void {
-    let requests: [Promise<OrderReturnable[]>] = [
-      this.orderId ? this._api.orders.getReturnables(this.orderId) : Promise.resolve([])
-    ];
-
-    Promise.all(requests).then(responses => {
-      this.returnables = responses[0];
-      this.products = this.returnables.map(x => x.product);
-    });
+    this.returnPager.onPage = () => this.initializeReturnablePage();
+    this.returnablePager.onPage = () => this.initializeReturnablePage();
   }
 
   public attached(): void {
@@ -69,19 +62,40 @@ export class OrderReturnPage {
     this._subscriptions.forEach(subscription => subscription.dispose());
   }
 
-  private returnsChanged(): void {
-    this.initializePage();
+  public reasonsChanged(newValue: Lookup<string>[], oldValue: Lookup<string>[]): void {
+    console.log(newValue);
   }
 
-  private initializePage(): void {
+  public returnsChanged(newValue: OrderReturn[], oldValue: OrderReturn[]): void {
+    this.initializeReturnPage();
+  }
+
+  public returnablesChanged(newValue: OrderReturnable[], oldValue: OrderReturnable[]): void {
+    if ((!oldValue || oldValue.length == 0) && (newValue && newValue.length > 0)) {
+
+      /*
+      this._referenceReturnables = this.returnables;
+      this.returnables = [];
+
+      // Display only those items with returns. If product is to be returned, add it using the add button;
+      this.returnables = this._referenceReturnables
+        .filter(x => x.returnedQuantity > 0)
+        .map(x => Object.assign(<OrderReturnable>{}, x));
+      */
+
+      // You can return items that are returnable.
+      this.products = newValue
+        .filter(x => x.returnableQuantity > 0)
+        .map(x => x.product);
+
+    }
+
+    this.initializeReturnablePage();
+  }
+
+  private initializeReturnPage(): void {
     if (!this.returns)
       this.returns = [];
-
-    this.returns.forEach(_return => {
-      if (!_return.discountRate || !_return.discountAmount || !_return.totalPriceAmount) {
-        this.compute(_return);
-      }
-    });
 
     this.returnPager.count = this.returns.length;
     this.returnPager.items = this.returns.slice(
@@ -90,64 +104,110 @@ export class OrderReturnPage {
     );
   }
 
-  public initializeItem(_return: OrderReturn): void {
-    if (!_return.product) {
-      _return.returnedOn = new Date();
-      _return.returnedBy = this._api.auth.userAsLookup;
-      _return.quantityValue = 0;
-      _return.discountRate = 0;
-      _return.discountAmount = 0;
-      _return.unitPriceAmount = 0;
-      _return.extendedPriceAmount = 0;
-      _return.totalPriceAmount = 0;
-      return;
-    }
+  private initializeReturnablePage(): void {
+    if (!this.returnables)
+      this.returnables = [];
 
-    let returnable = this.returnables.find(x => x.product.id == _return.product.id);
-    _return.product = returnable.product;
-    _return.returnedOn = new Date();
-    _return.returnedBy = this._api.auth.userAsLookup;
-    _return.quantityValue = returnable.quantityValue;
-    _return.discountRate = returnable.discountRate;
-    _return.discountAmount = returnable.discountAmount;
-    _return.unitPriceAmount = returnable.unitPriceAmount;
-    _return.extendedPriceAmount = returnable.extendedPriceAmount;
-    _return.totalPriceAmount = returnable.totalPriceAmount;
+    this.returnablePager.count = this.returnables.length;
+    this.returnablePager.items = this.returnables.slice(
+      this.returnablePager.start,
+      this.returnablePager.end
+    );
+  }
+
+  public initializeItem(returnable: OrderReturnable): void {
+    let reference = this.returnables.find(x =>
+      returnable.product &&
+      returnable.product.id == x.product.id
+    );
+
+    returnable.orderId = this.orderId;
+    returnable.product = reference && reference.product || null;
+    returnable.discountRate = reference && reference.discountRate || 0;
+    returnable.discountAmount = reference && reference.discountAmount || 0;
+    returnable.unitPriceAmount = reference && reference.unitPriceAmount || 0;
+    returnable.extendedPriceAmount = reference && reference.extendedPriceAmount || 0;
+    returnable.totalPriceAmount = reference && reference.totalPriceAmount || 0;
+    returnable.orderedQuantity = reference && reference.orderedQuantity || 0;
+    returnable.returnedQuantity = reference && reference.returnedQuantity || 0;
+    returnable.returnableQuantity = reference && reference.returnableQuantity || 0;
+    returnable.returning.reason = reference && reference.returning && reference.returning.reason || null;
+    returnable.returning.returnedOn = reference && reference.returning && reference.returning.returnedOn || new Date();
+    returnable.returning.returnedBy = reference && reference.returning && reference.returning.returnedBy || this._api.auth.userAsLookup;
+    returnable.returning.quantity = reference && reference.returning && reference.returning.quantity || 0;
+    returnable.returning.amount = reference && reference.returning && reference.returning.amount || 0;
+
+    /*
+    if (!_returnable.pro duct ;
+      let reference = this._referenceReturnables.find(x => x.product.id == _returnable.product
+      
+      .id);
+      var destination = <OrderR
+      
+      eturnable>{};
+      _returnable = Object.assign(_returnable, source);
+      var source = {
+
+      };
+
+      Object.assign(<OrderReturnable>{}, reference);
+      Object.assign(<OrderReturning>{}, reference.returning);
+    }
+    else {
+      Object.assign(_returnable, this._returnableDefault);
+    }
+    */
   }
 
   public addItem(): void {
-    if (!this.returns)
-      this.returns = <OrderReturn[]>[];
+    if (!this.returnables)
+      this.returnables = [];
 
-    var _return = <OrderReturn>{
-      quantityValue: 0,
-      unitPriceAmountce: 0,
+    var _returnable = <OrderReturnable>{
+      orderId: this.orderId,
+      product: null,
+      discountRate: 0,
+      discountAmount: 0,
+      unitPriceAmount: 0,
+      extendedPriceAmount: 0,
+      totalPriceAmount: 0,
+      orderedQuantity: 0,
+      returnedQuantity: 0,
+      returnableQuantity: 0,
+      returning: <OrderReturning>{
+        reason: null,
+        returnedOn: new Date(),
+        returnedBy: this._api.auth.userAsLookup,
+        quantity: 0,
+        amount: 0
+      }
     };
 
-    this.returns.push(_return);
-    this.selectedItem = _return;
-    this.initializePage();
+    this.returnables.push(_returnable);
+    this.selectedItem = _returnable;
+    this.initializeReturnablePage();
   }
 
-  public editItem(_return: OrderReturn): void {
-    if (this.selectedItem !== _return)
-      this.selectedItem = _return;
+  public editItem(_returnable: OrderReturnable): void {
+    if (this.selectedItem !== _returnable)
+      this.selectedItem = _returnable;
   }
 
-  public deleteItem(_return: OrderReturn): void {
-    var index = this.returns.indexOf(_return);
+  public deleteItem(_returnable: OrderReturnable): void {
+    if (_returnable.returnedQuantity > 0) {
+      this._notification.error("You cannot delete return that has already been processed.");
+      return;
+    }
+
+    var index = this.returnables.indexOf(_returnable);
     if (index > -1) {
-      this.returns.splice(index, 1);
+      this.returnables.splice(index, 1);
     }
-    this.initializePage();
+    this.initializeReturnablePage();
   }
 
-  public compute(_return: OrderReturn): void {
-    if (!_return.discountRate) {
-      _return.discountRate = 0;
-    }
-    _return.extendedPriceAmount = _return.unitPriceAmount * _return.quantityValue;
-    _return.discountAmount = _return.discountRate * _return.extendedPriceAmount;
-    _return.totalPriceAmount = _return.extendedPriceAmount - _return.discountAmount;
+  public compute(item: OrderReturnable): void {
+    var unitPrice = item.totalPriceAmount / item.orderedQuantity;
+    item.returning.amount = unitPrice * item.returning.quantity;
   }
 }

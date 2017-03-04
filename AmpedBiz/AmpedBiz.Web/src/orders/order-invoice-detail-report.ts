@@ -1,10 +1,10 @@
-import {autoinject} from 'aurelia-framework';
-import {ReportBuilder, Report, DocumentDefinition} from '../services/report-builder';
-import {Lookup} from '../common/custom_types/lookup';
-import {Address} from '../common/models/Address';
-import {OrderItem} from '../common/models/order';
-import {OrderInvoiceDetail} from '../common/models/order';
-import {formatDate, formatNumber, emptyIfNull} from '../services/formaters';
+import { autoinject } from 'aurelia-framework';
+import { ReportBuilder, Report, DocumentDefinition } from '../services/report-builder';
+import { Lookup } from '../common/custom_types/lookup';
+import { Address } from '../common/models/Address';
+import { OrderItem } from '../common/models/order';
+import { OrderInvoiceDetail } from '../common/models/order';
+import { formatDate, formatNumber, emptyIfNull } from '../services/formaters';
 import * as moment from 'moment';
 
 @autoinject
@@ -159,6 +159,10 @@ export class OrderInvoiceDetailReport implements Report<OrderInvoiceDetail> {
                   [
                     { text: 'Total: ', style: 'label' },
                     { text: formatNumber(data.totalAmount), style: 'value', alignment: 'right' }
+                  ],
+                  [
+                    { text: 'Returned: ', style: 'label' },
+                    { text: formatNumber(data.returnedAmount), style: 'value', alignment: 'right' }
                   ],
                 ],
               }

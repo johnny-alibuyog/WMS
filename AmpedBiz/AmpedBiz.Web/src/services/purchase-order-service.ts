@@ -1,7 +1,7 @@
 import { autoinject } from 'aurelia-framework';
 import { Lookup } from '../common/custom_types/lookup';
 import { PageRequest } from '../common/models/paging';
-import { PurchaseOrder, PurchaseOrderStatus, PurchaseOrderPayment, PurchaseOrderReceipt, PurchaseOrderReceivable, ReceivingDetails, PurchaseOrderPayable } from '../common/models/purchase-order';
+import { PurchaseOrder, PurchaseOrderStatus, PurchaseOrderPayment, PurchaseOrderReceipt, PurchaseOrderReceivable, PurchaseOrderReceiving, PurchaseOrderPayable } from '../common/models/purchase-order';
 import { ServiceBase } from './service-base'
 import { AuthService } from './auth-service';
 import { HttpClientFacade } from './http-client-facade';
@@ -14,32 +14,6 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
     super('purchase-orders', httpClient);
     this._auth = auth;
   }
-
-  /*
-  public get(id: string): Promise<PurchaseOrder> {
-    /// Override get to compute for the receivables
-    return super.get(id).then(data => {
-      data.receivables = this.computeReceivablesFrom(data);
-      return data;
-    });
-  }
-
-  public create(entity: PurchaseOrder): Promise<PurchaseOrder> {
-    /// Override get to compute for the receivables
-    return super.create(entity).then(data => {
-      data.receivables = this.computeReceivablesFrom(data);
-      return data;
-    });
-  }
-
-  public update(entity: PurchaseOrder): Promise<PurchaseOrder> {
-    /// Override get to compute for the receivables
-    return super.update(entity).then(data => {
-      data.receivables = this.computeReceivablesFrom(data);
-      return data;
-    });
-  }
-  */
 
   public getStatusList(): Promise<PurchaseOrderStatus[]> {
     var url = this._resouce + '/statuses';
@@ -171,28 +145,51 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
   }
 
   public computeReceivablesFrom(purchaseOrder: PurchaseOrder): PurchaseOrderReceivable[] {
-    return purchaseOrder.items.map(item => <PurchaseOrderReceivable>{
-      purchaseOrderId: purchaseOrder.id,
-      product: <Lookup<string>>{
-        id: item.product.id,
-        name: item.product.name
-      },
-      orderedQuantity: item.quantityValue,
-      receivedQuantity: purchaseOrder.receipts
-        .filter(receipt => receipt.product.id == item.product.id)
-        .reduce((prevVal, receipt) => prevVal + receipt.quantityValue, 0),
-      receivableQuantity: item.quantityValue - purchaseOrder.receipts
-        .filter(receipt => receipt.product.id == item.product.id)
-        .reduce((prevVal, receipt) => prevVal + receipt.quantityValue, 0),
-      receiving: <ReceivingDetails>{
-        receivedOn: new Date(),
-        quantity: 0
+    var itemProducts = ((purchaseOrder.items && purchaseOrder.items.map(x => x.product)) || []);
+    var receiptProducts = ((purchaseOrder.receipts && purchaseOrder.receipts.map(x => x.product)) || []);
+    var allProducts: Lookup<string>[] = [];
+
+    for (var i = 0; i < itemProducts.length; i++) {
+      if (!allProducts.find(x => x.id === itemProducts[i].id)) {
+        allProducts.push(itemProducts[i]);
       }
+    }
+
+    for (var i = 0; i < receiptProducts.length; i++) {
+      if (!allProducts.find(x => x.id === receiptProducts[i].id)) {
+        allProducts.push(receiptProducts[i]);
+      }
+    }
+
+    return allProducts.map(product => {
+      var receivable = <PurchaseOrderReceivable>{
+        purchaseOrderId: purchaseOrder.id,
+        product: <Lookup<string>>{
+          id: product.id,
+          name: product.name
+        },
+        orderedQuantity: purchaseOrder.items
+          .filter(item => item.product.id == product.id)
+          .reduce((prevVal, item) => prevVal + item.quantityValue, 0),
+        receivedQuantity: purchaseOrder.receipts
+          .filter(receipt => receipt.product.id == product.id)
+          .reduce((prevVal, receipt) => prevVal + receipt.quantityValue, 0),
+        receiving: <PurchaseOrderReceiving>{
+          receivedBy: this._auth.userAsLookup,
+          receivedOn: new Date(),
+          quantity: 0
+        }
+      };
+
+      receivable.receivableQuantity = receivable.orderedQuantity > receivable.receivedQuantity
+        ? receivable.orderedQuantity - receivable.receivedQuantity : 0;
+
+      return receivable;
     });
   }
 
-  public generateNewReceiptsFrom(receivables: PurchaseOrderReceivable[]): PurchaseOrderReceipt[] {
-    return receivables
+  public generateNewReceiptsFrom(purchaseOrder: PurchaseOrder): PurchaseOrderReceipt[] {
+    return purchaseOrder.receivables
       .filter(x =>
         x.receiving &&
         x.receiving.quantity > 0

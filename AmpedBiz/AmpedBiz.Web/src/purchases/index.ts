@@ -1,5 +1,5 @@
-import {Router, RouterConfiguration} from 'aurelia-router';
-import {PurchaseOrderStatus} from '../common/models/purchase-order';
+import { Router, RouterConfiguration } from 'aurelia-router';
+import { PurchaseOrderStatus } from '../common/models/purchase-order';
 
 export class Index {
   heading: string = "Purchases";
@@ -47,7 +47,7 @@ export class Index {
         settings: {
           status: PurchaseOrderStatus.completed
         }
-      }, 
+      },
       {
         route: ['cancelled-page'],
         name: 'cancelled-page',
@@ -57,7 +57,7 @@ export class Index {
         settings: {
           status: PurchaseOrderStatus.cancelled
         }
-      }, 
+      },
       {
         route: ['purchase-order-create'],
         name: 'purchase-order-create',

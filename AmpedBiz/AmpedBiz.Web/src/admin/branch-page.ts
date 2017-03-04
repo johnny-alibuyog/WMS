@@ -1,10 +1,10 @@
-import {autoinject} from 'aurelia-framework';
-import {DialogService} from 'aurelia-dialog';
-import {BranchCreate} from './branch-create';
-import {Branch, BranchPageItem} from '../common/models/branch';
-import {ServiceApi} from '../services/service-api';
-import {NotificationService} from '../common/controls/notification-service';
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
+import { autoinject } from 'aurelia-framework';
+import { DialogService } from 'aurelia-dialog';
+import { BranchCreate } from './branch-create';
+import { Branch, BranchPageItem } from '../common/models/branch';
+import { ServiceApi } from '../services/service-api';
+import { NotificationService } from '../common/controls/notification-service';
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
 
 @autoinject
 export class BranchPage {

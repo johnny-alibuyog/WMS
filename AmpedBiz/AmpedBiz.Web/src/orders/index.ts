@@ -1,5 +1,5 @@
-import {Router, RouterConfiguration} from 'aurelia-router'
-import {OrderStatus} from '../common/models/order';
+import { Router, RouterConfiguration } from 'aurelia-router'
+import { OrderStatus } from '../common/models/order';
 
 export class Index {
   heading: string = "Orders";

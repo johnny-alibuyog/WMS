@@ -7,7 +7,7 @@
 
   <section class="row row-no-padding">
 
-    <div class="col-md-10">
+    <div class="col-md-11">
 
       <div class="panel panel-default">
 
@@ -157,17 +157,17 @@
                     </a>
                   </li>
                   <li>
-                    <a data-toggle="tab" href="#returnsTab">
-                      <span>Returns &nbsp</span>
-                      <button type="button" disabled.bind="order.stage.allowedModifications | isModificationDisallowedTo: 'returns'" class="btn btn-default btn-circle" click.trigger="addReturn()">
+                    <a data-toggle="tab" href="#paymentsTab">
+                      <span>Payments &nbsp</span>
+                      <button type="button" disabled.bind="order.stage.allowedModifications | isModificationDisallowedTo: 'payments'" class="btn btn-default btn-circle" click.trigger="addPayment()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
                     </a>
                   </li>
                   <li>
-                    <a data-toggle="tab" href="#paymentsTab">
-                      <span>Payments &nbsp</span>
-                      <button type="button" disabled.bind="order.stage.allowedModifications | isModificationDisallowedTo: 'payments'" class="btn btn-default btn-circle" click.trigger="addPayment()">
+                    <a data-toggle="tab" href="#returnsTab">
+                      <span>Returns &nbsp</span>
+                      <button type="button" disabled.bind="order.stage.allowedModifications | isModificationDisallowedTo: 'returns'" class="btn btn-default btn-circle" click.trigger="addReturn()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
                     </a>
@@ -188,16 +188,6 @@
                     </order-item-page>
                   </div>
 
-                  <!-- returns -->
-                  <div id="returnsTab" class="tab-pane fade in">
-                    <br />
-
-                    <order-return-page 
-                      returns.bind="order.returns" 
-                      order-id.bind="order.id">
-                    </order-return-page>
-                  </div>
-
                   <!-- payment informations -->
                   <div id="paymentsTab" class="tab-pane fade">
                     <br />
@@ -207,6 +197,18 @@
                       payments.bind="order.payments" 
                       order-id.bind="order.id">
                     </order-payment-page>
+                  </div>
+
+                  <!-- returns -->
+                  <div id="returnsTab" class="tab-pane fade in">
+                    <br />
+
+                    <order-return-page 
+                      returns.bind="order.returns" 
+                      returnables.bind="order.returnables" 
+                      order-id.bind="order.id"
+                      reasons.bind="returnReasons">
+                    </order-return-page>
                   </div>
 
                 </div>

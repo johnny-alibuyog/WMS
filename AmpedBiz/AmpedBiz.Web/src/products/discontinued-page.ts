@@ -1,10 +1,10 @@
-import {Router, RouteConfig, NavigationInstruction} from 'aurelia-router';
-import {autoinject} from 'aurelia-framework';
-import {ProductCreate} from './product-create';
-import {Product, DiscontinuedPageItem} from '../common/models/product';
-import {ServiceApi} from '../services/service-api';
-import {NotificationService} from '../common/controls/notification-service';
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
+import { Router, RouteConfig, NavigationInstruction } from 'aurelia-router';
+import { autoinject } from 'aurelia-framework';
+import { ProductCreate } from './product-create';
+import { Product, DiscontinuedPageItem } from '../common/models/product';
+import { ServiceApi } from '../services/service-api';
+import { NotificationService } from '../common/controls/notification-service';
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
 
 @autoinject
 export class ProductPage {
@@ -40,7 +40,7 @@ export class ProductPage {
   }
 
   activate(): void {
-      this.getPage();
+    this.getPage();
   }
 
   getPage(): void {

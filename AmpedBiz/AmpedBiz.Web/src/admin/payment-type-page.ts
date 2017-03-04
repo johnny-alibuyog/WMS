@@ -1,10 +1,10 @@
-import {autoinject} from 'aurelia-framework';
-import {DialogService} from 'aurelia-dialog';
-import {PaymentTypeCreate} from './payment-type-create';
-import {PaymentType, PaymentTypePageItem} from '../common/models/payment-type';
-import {ServiceApi} from '../services/service-api';
-import {NotificationService} from '../common/controls/notification-service';
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
+import { autoinject } from 'aurelia-framework';
+import { DialogService } from 'aurelia-dialog';
+import { PaymentTypeCreate } from './payment-type-create';
+import { PaymentType, PaymentTypePageItem } from '../common/models/payment-type';
+import { ServiceApi } from '../services/service-api';
+import { NotificationService } from '../common/controls/notification-service';
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
 
 @autoinject
 export class PaymentTypePage {

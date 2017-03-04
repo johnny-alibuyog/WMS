@@ -1,10 +1,10 @@
-import {autoinject, bindable, bindingMode, customElement} from 'aurelia-framework'
-import {buildQueryString} from 'aurelia-path';
-import {Router} from 'aurelia-router';
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
-import {ServiceApi} from '../services/service-api';
-import {Dictionary} from '../common/custom_types/dictionary';
-import {ProductOrderPageItem} from '../common/models/product';
+import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
+import { buildQueryString } from 'aurelia-path';
+import { Router } from 'aurelia-router';
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
+import { ServiceApi } from '../services/service-api';
+import { Dictionary } from '../common/custom_types/dictionary';
+import { ProductOrderPageItem } from '../common/models/product';
 
 @autoinject
 @customElement("product-order-page")

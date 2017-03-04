@@ -1,10 +1,10 @@
-import {autoinject} from 'aurelia-framework';
-import {DialogService} from 'aurelia-dialog';
-import {ProductCategoryCreate} from './product-category-create';
-import {ProductCategory, ProductCategoryPageItem} from '../common/models/product-category';
-import {ServiceApi} from '../services/service-api';
-import {NotificationService} from '../common/controls/notification-service';
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
+import { autoinject } from 'aurelia-framework';
+import { DialogService } from 'aurelia-dialog';
+import { ProductCategoryCreate } from './product-category-create';
+import { ProductCategory, ProductCategoryPageItem } from '../common/models/product-category';
+import { ServiceApi } from '../services/service-api';
+import { NotificationService } from '../common/controls/notification-service';
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
 
 @autoinject
 export class ProductCategoryPage {

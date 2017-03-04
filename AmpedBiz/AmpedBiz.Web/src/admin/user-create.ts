@@ -1,10 +1,10 @@
-import {autoinject} from 'aurelia-framework';
-import {DialogController} from 'aurelia-dialog';
-import {User} from '../common/models/user';
-import {Branch} from '../common/models/branch';
-import {UserService} from '../services/user-service';
-import {BranchService} from '../services/branch-service';
-import {NotificationService} from '../common/controls/notification-service';
+import { autoinject } from 'aurelia-framework';
+import { DialogController } from 'aurelia-dialog';
+import { User } from '../common/models/user';
+import { Branch } from '../common/models/branch';
+import { UserService } from '../services/user-service';
+import { BranchService } from '../services/branch-service';
+import { NotificationService } from '../common/controls/notification-service';
 
 @autoinject
 export class UserCreate {
@@ -60,7 +60,7 @@ export class UserCreate {
             .then((data) => this._controller.ok({ wasCancelled: true, output: <User>data }));
         })
         .catch(error => {
-          this.notificaton.warning(error)
+          this.notificaton.warning(error);
         });
     }
     else {
@@ -71,7 +71,7 @@ export class UserCreate {
             .then((data) => this._controller.ok({ wasCancelled: true, output: <User>data }));
         })
         .catch(error => {
-          this.notificaton.warning(error)
+          this.notificaton.warning(error);
         });
     }
   }

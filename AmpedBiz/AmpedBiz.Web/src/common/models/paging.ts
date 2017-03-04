@@ -1,6 +1,6 @@
-import {transient} from 'aurelia-framework';
-import {Dictionary} from '../custom_types/dictionary';
-import {appConfig} from '../../app-config';
+import { transient } from 'aurelia-framework';
+import { Dictionary } from '../custom_types/dictionary';
+import { appConfig } from '../../app-config';
 
 @transient()
 export class Filter implements Dictionary<any> {

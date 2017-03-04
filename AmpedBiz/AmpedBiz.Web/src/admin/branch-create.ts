@@ -1,12 +1,12 @@
-import {inject} from 'aurelia-dependency-injection';
-import {autoinject} from 'aurelia-framework';
-import {DialogController} from 'aurelia-dialog';
-import {Branch} from '../common/models/branch';
-import {Address} from '../common/models/address';
-import {ServiceApi} from '../services/service-api';
-import {NotificationService} from '../common/controls/notification-service';
-import {ValidationRules, ValidationController, ValidationControllerFactory} from 'aurelia-validation';
-import {BootstrapFormRenderer} from '../common/controls/validations/bootstrap-form-renderer';
+import { inject } from 'aurelia-dependency-injection';
+import { autoinject } from 'aurelia-framework';
+import { DialogController } from 'aurelia-dialog';
+import { Branch } from '../common/models/branch';
+import { Address } from '../common/models/address';
+import { ServiceApi } from '../services/service-api';
+import { NotificationService } from '../common/controls/notification-service';
+import { ValidationRules, ValidationController, ValidationControllerFactory } from 'aurelia-validation';
+import { BootstrapFormRenderer } from '../common/controls/validations/bootstrap-form-renderer';
 
 @autoinject()
 export class BranchCreate {

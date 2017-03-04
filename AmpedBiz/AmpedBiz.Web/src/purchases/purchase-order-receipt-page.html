@@ -1,25 +1,64 @@
 <template>
   <require from="common/controls/pager"></require>
+  <require from="purchases/state-verification-value-converter"></require>
 
   <table class="table table-striped table-hover table-condensed">
 
     <thead>
-      <tr>
-        <th class="col-sm-2">Product</th>
-        <th class="col-sm-2 text-right">Ordered</th>
-        <th class="col-sm-2 text-right">Received</th>
-        <th class="col-sm-2 text-right">Receivable</th>
-        <th class="col-sm-2 text-right">Receiving</th>
+      <tr class="row-no-padding">
+        <th class="col-sm-1">Action</th>
+        <th class="col-sm-4">Product</th>
+        <th class="col-sm-1 text-right">Ordered</th>
+        <th class="col-sm-1 text-right">Received</th>
+        <th class="col-sm-1 text-right">Receivable</th>
+        <!--<th class="col-sm-1 text-right">Expiry</th>-->
+        <th class="col-sm-1 text-right">Receiving</th>
       </tr>
     </thead>
 
     <tbody>
-      <tr repeat.for="item of receivablePager.items">
-        <td>${item.product.name}</td>
+      <tr repeat.for="item of receivablePager.items" click.delegate="editItem(item)">
+        <!-- Action -->
+        <td>
+          <a href="javascript:undefined" class="text-info" click.delegate="editItem(item)">
+            <i class="fa fa-pencil"></i>
+          </a>
+          <a href="javascript:undefined" class="text-danger" click.delegate="resetItem(item)">
+            <i class="fa fa-refresh"></i>
+          </a>
+        </td>
+
+        <!-- Product -->
+        <td if.bind="item | productCannotBeChanged">${item.product.name}</td>
+        <td if.bind="item | productCanBeChanged">
+          <select class="form-control" value.bind="item.product | lookupToId:$parent.products">
+            <option>Select Product</option>
+            <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
+          </select>
+        </td>
+
+        <!-- Ordered -->
         <td class="text-right">${item.orderedQuantity}</td>
+
+        <!-- Received -->
         <td class="text-right">${item.receivedQuantity}</td>
+        
+        <!-- Receivable -->
         <td class="text-right">${item.receivableQuantity}</td>
-        <td class="text-right">${item.receiving.quantity}</td>
+
+        <!-- Expiry -->
+        <!--
+        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.receiving.expiresOn | dateFormat}</td>
+        <td if.bind="$parent.selectedItem === item" class="text-right">
+          <input class="form-control text-right" type="date" value.bind="item.receiving.expiresOn | dateInputFormat" />
+        </td>
+        -->
+
+        <!-- Receiving -->
+        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.receiving.quantity}</td>
+        <td if.bind="$parent.selectedItem === item" class="text-right">
+          <input class="form-control text-right" type="number" value.bind="item.receiving.quantity" />
+        </td>
       </tr>
     </tbody>
 

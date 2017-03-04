@@ -1,5 +1,5 @@
-import {autoinject} from 'aurelia-framework';
-import {ReportBuilder} from '../services/report-builder';
+import { autoinject } from 'aurelia-framework';
+import { ReportBuilder } from '../services/report-builder';
 
 @autoinject
 export class Reports {

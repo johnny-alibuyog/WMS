@@ -1,10 +1,10 @@
-import {autoinject} from 'aurelia-framework';
-import {DialogService} from 'aurelia-dialog';
-import {UnitOfMeasureClassCreate} from './unit-of-measure-class-create';
-import {UnitOfMeasureClass, UnitOfMeasureClassPageItem} from '../common/models/unit-of-measure-class';
-import {ServiceApi} from '../services/service-api';
-import {NotificationService} from '../common/controls/notification-service';
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
+import { autoinject } from 'aurelia-framework';
+import { DialogService } from 'aurelia-dialog';
+import { UnitOfMeasureClassCreate } from './unit-of-measure-class-create';
+import { UnitOfMeasureClass, UnitOfMeasureClassPageItem } from '../common/models/unit-of-measure-class';
+import { ServiceApi } from '../services/service-api';
+import { NotificationService } from '../common/controls/notification-service';
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
 
 @autoinject
 export class UnitOfMeasureClassPage {

@@ -1,7 +1,7 @@
-import {Role} from './role';
-import {Person} from './person';
-import {Branch} from './branch';
-import {Address} from './address';
+import { Role } from './role';
+import { Person } from './person';
+import { Branch } from './branch';
+import { Address } from './address';
 
 export interface User {
   id?: string;
@@ -11,7 +11,7 @@ export interface User {
   branch?: Branch;
   person?: Person;
   address?: Address;
-  roles?: Role[]; 
+  roles?: Role[];
 }
 
 export interface UserPageItem {

@@ -1,12 +1,12 @@
-import {DialogService} from 'aurelia-dialog';
-import {EventAggregator, Subscription} from 'aurelia-event-aggregator';
-import {autoinject, bindable, bindingMode, customElement} from 'aurelia-framework'
-import {Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection} from '../common/models/paging';
-import {Lookup} from '../common/custom_types/lookup';
-import {ServiceApi} from '../services/service-api';
-import {Dictionary} from '../common/custom_types/dictionary';
-import {PurchaseOrderItem, purchaseOrderEvents} from '../common/models/purchase-order';
-import {NotificationService} from '../common/controls/notification-service';
+import { DialogService } from 'aurelia-dialog';
+import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
+import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
+import { Lookup } from '../common/custom_types/lookup';
+import { ServiceApi } from '../services/service-api';
+import { Dictionary } from '../common/custom_types/dictionary';
+import { PurchaseOrderItem, purchaseOrderEvents } from '../common/models/purchase-order';
+import { NotificationService } from '../common/controls/notification-service';
 
 @autoinject
 @customElement("purchase-order-item-page")
@@ -26,9 +26,6 @@ export class PurchaseOrderItemPage {
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public products: Lookup<string>[] = [];
-
-  @bindable({ defaultBindingMode: bindingMode.twoWay })
-  public allowedTransitions: Dictionary<string> = {};
 
   public itemPager: Pager<PurchaseOrderItem> = new Pager<PurchaseOrderItem>();
 
@@ -86,7 +83,7 @@ export class PurchaseOrderItemPage {
 
   addItem(): void {
     if (!this.items)
-      this.items = <PurchaseOrderItem[]>[];
+      this.items = [];
 
     var item = <PurchaseOrderItem>{
       quantityValue: 0,

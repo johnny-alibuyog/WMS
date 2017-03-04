@@ -1,10 +1,10 @@
-import {autoinject} from 'aurelia-framework';
-import {Lookup} from '../common/custom_types/lookup';
-import {PageRequest} from '../common/models/paging';
-import {Return, ReturnsByCustomerPageItem, ReturnsByProductPageItem, ReturnsByReasonPageItem} from '../common/models/return';
-import {ServiceBase} from './service-base'
-import {AuthService} from './auth-service';
-import {HttpClientFacade} from './http-client-facade';
+import { autoinject } from 'aurelia-framework';
+import { Lookup } from '../common/custom_types/lookup';
+import { PageRequest } from '../common/models/paging';
+import { Return, ReturnsByCustomerPageItem, ReturnsByProductPageItem, ReturnsByReasonPageItem } from '../common/models/return';
+import { ServiceBase } from './service-base'
+import { AuthService } from './auth-service';
+import { HttpClientFacade } from './http-client-facade';
 
 @autoinject
 export class ReturnService extends ServiceBase<Return> {

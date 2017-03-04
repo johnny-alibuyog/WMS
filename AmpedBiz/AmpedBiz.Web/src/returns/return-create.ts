@@ -1,11 +1,11 @@
-import {Router} from 'aurelia-router';
-import {autoinject} from 'aurelia-framework';
-import {EventAggregator, Subscription} from 'aurelia-event-aggregator';
-import {Lookup} from '../common/custom_types/lookup';
-import {Return, returnEvents} from '../common/models/return';
-import {ProductInventory} from '../common/models/product';
-import {ServiceApi} from '../services/service-api';
-import {NotificationService} from '../common/controls/notification-service';
+import { Router } from 'aurelia-router';
+import { autoinject } from 'aurelia-framework';
+import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
+import { Lookup } from '../common/custom_types/lookup';
+import { Return, returnEvents } from '../common/models/return';
+import { ProductInventory } from '../common/models/product';
+import { ServiceApi } from '../services/service-api';
+import { NotificationService } from '../common/controls/notification-service';
 
 @autoinject
 export class ReturnCreate {

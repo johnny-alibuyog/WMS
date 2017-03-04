@@ -1,9 +1,9 @@
-import {autoinject} from 'aurelia-framework';
-import {DialogController} from 'aurelia-dialog';
-import {UnitOfMeasure} from '../common/models/unit-of-measure';
-import {UnitOfMeasureClass} from '../common/models/unit-of-measure-class';
-import {ServiceApi} from '../services/service-api';
-import {NotificationService} from '../common/controls/notification-service';
+import { autoinject } from 'aurelia-framework';
+import { DialogController } from 'aurelia-dialog';
+import { UnitOfMeasure } from '../common/models/unit-of-measure';
+import { UnitOfMeasureClass } from '../common/models/unit-of-measure-class';
+import { ServiceApi } from '../services/service-api';
+import { NotificationService } from '../common/controls/notification-service';
 
 @autoinject
 export class UnitOfMeasureCreate {
@@ -27,7 +27,7 @@ export class UnitOfMeasureCreate {
     var classes = this._api.unitOfMeasureClasses.getList()
       .then(data => this.unitOfMeasureClasses = <UnitOfMeasureClass[]>data)
       .catch(error => this._notification.warning(error));
-        
+
     if (unitOfMeasure) {
       this.header = "Edit Unit of Measure";
       this.isEdit = true;
@@ -60,7 +60,7 @@ export class UnitOfMeasureCreate {
         });
     }
     else {
-      
+
       this._api.unitOfMeasures.create(this.unitOfMeasure)
         .then(data => {
           this._notification.success("Unit of Measure has been saved.")

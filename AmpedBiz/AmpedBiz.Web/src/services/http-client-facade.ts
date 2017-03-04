@@ -1,6 +1,6 @@
-import {autoinject} from 'aurelia-framework';
-import {HttpClient, json} from 'aurelia-fetch-client';
-import {appConfig} from '../app-config';
+import { autoinject } from 'aurelia-framework';
+import { HttpClient, json } from 'aurelia-fetch-client';
+import { appConfig } from '../app-config';
 import 'fetch';
 
 @autoinject
@@ -32,7 +32,7 @@ export class HttpClientFacade {
     });
   }
 
-  send(param: SendParameters) : Promise<any> {
+  send(param: SendParameters): Promise<any> {
     return this.httpClient
       .fetch('/' + param.url, {
         method: param.method || "GET",
@@ -41,30 +41,30 @@ export class HttpClientFacade {
       .then(response => {
         if (response.status >= 200 && response.status < 300) {
           return response.json();
-        } 
+        }
         else {
           throw new Error(response.statusText);
         }
       });
   }
-  
-  get(url: string) : Promise<any> {
+
+  get(url: string): Promise<any> {
     return this.send({ url: url, method: "GET" });
   }
-  
-  post(url: string, data: any) : Promise<any> {
+
+  post(url: string, data: any): Promise<any> {
     return this.send({ url: url, method: "POST", data: data });
   }
-  
-  put(url: string, data: any) : Promise<any> {
+
+  put(url: string, data: any): Promise<any> {
     return this.send({ url: url, method: "PUT", data: data });
   }
-  
-  patch(url: string, data: any) : Promise<any> {
+
+  patch(url: string, data: any): Promise<any> {
     return this.send({ url: url, method: "PATCH", data: data });
   }
-  
-  delete(url: string, data: any) : Promise<any> {
+
+  delete(url: string, data: any): Promise<any> {
     return this.send({ url: url, method: "DELETE", data: data });
   }
 }

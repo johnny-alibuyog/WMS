@@ -1,19 +1,19 @@
-import {autoinject} from 'aurelia-framework';
-import {AuthService} from './auth-service';
-import {BranchService} from './branch-service';
-import {CustomerService} from './customer-service';
-import {PaymentTypeService} from './payment-type-service';
-import {PricingSchemeService} from './pricing-scheme-service';
-import {ProductCategoryService} from './product-category-service';
-import {ProductService} from './product-service';
-import {PurchaseOrderService} from './purchase-order-service';
-import {ReturnReasonService} from './return-reason-service';
-import {ReturnService} from './return-service';
-import {OrderService} from './order-service';
-import {SupplierService} from './supplier-service';
-import {UserService} from './user-service';
-import {UnitOfMeasureService} from './unit-of-measure';
-import {UnitOfMeasureClassService} from './unit-of-measure-class';
+import { autoinject } from 'aurelia-framework';
+import { AuthService } from './auth-service';
+import { BranchService } from './branch-service';
+import { CustomerService } from './customer-service';
+import { PaymentTypeService } from './payment-type-service';
+import { PricingSchemeService } from './pricing-scheme-service';
+import { ProductCategoryService } from './product-category-service';
+import { ProductService } from './product-service';
+import { PurchaseOrderService } from './purchase-order-service';
+import { ReturnReasonService } from './return-reason-service';
+import { ReturnService } from './return-service';
+import { OrderService } from './order-service';
+import { SupplierService } from './supplier-service';
+import { UserService } from './user-service';
+import { UnitOfMeasureService } from './unit-of-measure';
+import { UnitOfMeasureClassService } from './unit-of-measure-class';
 
 @autoinject
 export class ServiceApi {
@@ -65,11 +65,11 @@ export class ServiceApi {
     return this._purchaseOrders;
   }
 
-  public get returnReasons(): ReturnReasonService{
+  public get returnReasons(): ReturnReasonService {
     return this._returnReasons;
   }
 
-  public get returns(): ReturnService{
+  public get returns(): ReturnService {
     return this._returns;
   }
 
@@ -96,9 +96,9 @@ export class ServiceApi {
   constructor(auth: AuthService, branches: BranchService, customers: CustomerService, paymentTypes: PaymentTypeService,
     pricingSchemes: PricingSchemeService, products: ProductService, productCategories: ProductCategoryService,
     purchaseOrders: PurchaseOrderService, returnReasons: ReturnReasonService, returns: ReturnService,
-    orders: OrderService, suppliers: SupplierService, users: UserService, unitOfMeasures: UnitOfMeasureService, 
+    orders: OrderService, suppliers: SupplierService, users: UserService, unitOfMeasures: UnitOfMeasureService,
     unitOfMeasureClasses: UnitOfMeasureClassService) {
-      
+
     this._auth = auth;
     this._branches = branches;
     this._customers = customers;

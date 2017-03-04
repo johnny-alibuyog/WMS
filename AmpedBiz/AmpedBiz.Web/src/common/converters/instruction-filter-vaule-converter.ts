@@ -1,4 +1,4 @@
-import {NavigationInstruction} from 'aurelia-router';
+import { NavigationInstruction } from 'aurelia-router';
 
 export class InstructionFilterValueConverter {
   toView(navigationInstructions: NavigationInstruction[]) {

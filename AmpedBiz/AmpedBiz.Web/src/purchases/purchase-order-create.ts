@@ -46,13 +46,6 @@ export class PurchaseOrderCreate {
   }
 
   activate(purchaseOrder: PurchaseOrder): void {
-    this._subscriptions = [
-      this._eventAggegator.subscribe(
-        purchaseOrderEvents.receivings.added,
-        data => this.addedReceivings(data)
-      )
-    ];
-
     let requests: [
       Promise<Lookup<string>[]>,
       Promise<Lookup<string>[]>,
@@ -136,23 +129,12 @@ export class PurchaseOrderCreate {
   }
 
   addReceipt(): void {
-    this._eventAggegator.publish(purchaseOrderEvents.receipts.receive);
-  }
-
-  addReceivings(): void {
-    this._eventAggegator.publish(purchaseOrderEvents.receivings.add);
-  }
-
-  addedReceivings(receivables: PurchaseOrderReceivable[]): void {
-    this.purchaseOrder.receivables.forEach(item => {
-      var value = receivables.find(x => x.product.id == item.product.id);
-      item.receiving = value.receiving;
-    });
+    this._eventAggegator.publish(purchaseOrderEvents.receipts.add);
   }
 
   save(): void {
     // generate new receipts from receivables >> receiving items
-    var newReceipts = this._api.purchaseOrders.generateNewReceiptsFrom(this.purchaseOrder.receivables);
+    var newReceipts = this._api.purchaseOrders.generateNewReceiptsFrom(this.purchaseOrder);
     newReceipts.forEach(newReceipt => this.purchaseOrder.receipts.push(newReceipt));
 
     this._api.purchaseOrders.save(this.purchaseOrder)
@@ -177,33 +159,6 @@ export class PurchaseOrderCreate {
       .then(data => this.resetAndNoify(data, "Purchase order has been rejected."))
       .catch(error => this._notification.warning(error));
   }
-
-  /*
-  pay(): void {
-    var paidEvent = <PurchaseOrderPaidEvent>{
-      purchaseOrderId: this.purchaseOrder.id,
-      paidBy: this._api.auth.userAsLookup,
-      paidOn: new Date(),
-      paymentAmount: 0,
-      paymentType: null
-    };
-
-    this._api.purchaseOrders.pay(paidEvent)
-      .then(data => this.resetAndNoify(data, "Purchase order has been paid."))
-      .catch(error => this._notification.warning(error));
-  }
-
-  recieve(): void {
-    var recievedEvent = <PurchaseOrderReceivedEvent>{
-      purchaseOrderId: this.purchaseOrder.id,
-      receipts: []
-    };
-
-    this._api.purchaseOrders.receive(recievedEvent)
-      .then(data => this.resetAndNoify(data, "Purchase order has been received."))
-      .catch(error => this._notification.warning(error));
-  }
-  */
 
   complete(): void {
     this._api.purchaseOrders.complete(this.purchaseOrder)
