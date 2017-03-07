@@ -241,7 +241,6 @@
     <Compile Include="Controllers\ReturnController.cs" />
     <Compile Include="Controllers\ReturnReasonController.cs" />
     <Compile Include="Controllers\SupplierController.cs" />
-    <Compile Include="Controllers\UnitOfMeasureClassController.cs" />
     <Compile Include="Controllers\UnitOfMeasureController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">

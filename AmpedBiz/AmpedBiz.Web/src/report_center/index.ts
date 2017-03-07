@@ -89,9 +89,9 @@ export class Index {
         title: 'Products Reports',
       },
       {
-        route: ['unit-of-measure-class-report-page'],
-        name: 'unit-of-measure-class-report-page',
-        moduleId: './unit-of-measure-class-report-page',
+        route: ['unit-of-measure-report-page'],
+        name: 'unit-of-measure-report-page',
+        moduleId: './unit-of-measure-report-page',
         nav: true,
         title: 'Unit of Measure Reports',
       }

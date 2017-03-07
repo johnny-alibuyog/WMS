@@ -37,11 +37,6 @@ namespace AmpedBiz.Service.UnitOfMeasures
                         query = query.Where(x => x.Name.ToLower().Contains(value.ToLower()));
                     });
 
-                    message.Filter.Compose<string>("unitOfMeasureClassId", value =>
-                    {
-                        query = query.Where(x => x.UnitOfMeasureClass.Id == value);
-                    });
-
                     // compose sort
                     message.Sorter.Compose("code", direction =>
                     {
@@ -57,42 +52,21 @@ namespace AmpedBiz.Service.UnitOfMeasures
                             : query.OrderByDescending(x => x.Name);
                     });
 
-                    message.Sorter.Compose("isBaseUnit", direction =>
-                    {
-                        query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.IsBaseUnit)
-                            : query.OrderByDescending(x => x.IsBaseUnit);
-                    });
+                    var countFuture = query
+                        .ToFutureValue(x => x.Count());
 
-                    message.Sorter.Compose("conversionFactor", direction =>
-                    {
-                        query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.ConversionFactor)
-                            : query.OrderByDescending(x => x.ConversionFactor);
-                    });
-
-                    message.Sorter.Compose("unitOfMeasureClassName", direction =>
-                    {
-                        query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.UnitOfMeasureClass.Name)
-                            : query.OrderByDescending(x => x.UnitOfMeasureClass.Name);
-                    });
+                    if (message.Pager.IsPaged() != true)
+                        message.Pager.RetrieveAll(countFuture.Value);
 
                     var itemsFuture = query
                         .Select(x => new Dto.UnitOfMeasurePageItem()
                         {
                             Id = x.Id,
                             Name = x.Name,
-                            IsBaseUnit = x.IsBaseUnit,
-                            ConversionFactor = x.ConversionFactor,
-                            UnitOfMeasureClassName = x.UnitOfMeasureClass.Name
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)
                         .ToFuture();
-
-                    var countFuture = query
-                        .ToFutureValue(x => x.Count());
 
                     response = new Response()
                     {

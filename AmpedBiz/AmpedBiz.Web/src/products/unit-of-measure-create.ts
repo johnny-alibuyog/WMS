@@ -1,7 +1,6 @@
 import { autoinject } from 'aurelia-framework';
 import { DialogController } from 'aurelia-dialog';
 import { UnitOfMeasure } from '../common/models/unit-of-measure';
-import { UnitOfMeasureClass } from '../common/models/unit-of-measure-class';
 import { ServiceApi } from '../services/service-api';
 import { NotificationService } from '../common/controls/notification-service';
 
@@ -15,7 +14,6 @@ export class UnitOfMeasureCreate {
   public isEdit: boolean = false;
   public canSave: boolean = true;
   public unitOfMeasure: UnitOfMeasure;
-  public unitOfMeasureClasses: UnitOfMeasureClass[];
 
   constructor(api: ServiceApi, controller: DialogController, notification: NotificationService) {
     this._api = api;
@@ -24,10 +22,6 @@ export class UnitOfMeasureCreate {
   }
 
   activate(unitOfMeasure: UnitOfMeasure) {
-    var classes = this._api.unitOfMeasureClasses.getList()
-      .then(data => this.unitOfMeasureClasses = <UnitOfMeasureClass[]>data)
-      .catch(error => this._notification.warning(error));
-
     if (unitOfMeasure) {
       this.header = "Edit Unit of Measure";
       this.isEdit = true;

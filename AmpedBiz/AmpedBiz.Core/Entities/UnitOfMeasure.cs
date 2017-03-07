@@ -2,30 +2,34 @@
 
 namespace AmpedBiz.Core.Entities
 {
+    // Reference: https://docs.oracle.com/cd/A60725_05/html/comnls/us/inv/uomov.htm#c_uomov
+
     public class UnitOfMeasure : Entity<string, UnitOfMeasure>
     {
         public virtual string Name { get; set; }
 
-        public virtual bool IsBaseUnit { get; set; }
-
-        public virtual decimal? ConversionFactor { get; set; }
-
-        public virtual UnitOfMeasureClass UnitOfMeasureClass { get; set; }
-
-        public UnitOfMeasure(string id) : base(id) { }
-
         public UnitOfMeasure() : base(default(string)) { }
 
-        public UnitOfMeasure(string id, string name = null, bool isBaseUnit = false, decimal? conversionFactor = null) : base(id)
+        public UnitOfMeasure(string id = null, string name = null) : base(id)
         {
             this.Name = name;
-            this.IsBaseUnit = isBaseUnit;
-            this.ConversionFactor = conversionFactor;
         }
 
         public override string ToString()
         {
             return this.Id;
         }
+
+        public static readonly UnitOfMeasure Piece = new UnitOfMeasure("PC", "Piece");
+        public static readonly UnitOfMeasure Strips = new UnitOfMeasure("ST", "Strips");
+        public static readonly UnitOfMeasure Box = new UnitOfMeasure("BX", "Box");
+        public static readonly UnitOfMeasure Case = new UnitOfMeasure("CS", "Case");
+        public static readonly IEnumerable<UnitOfMeasure> All = new[]
+        {
+            UnitOfMeasure.Piece,
+            UnitOfMeasure.Strips,
+            UnitOfMeasure.Box,
+            UnitOfMeasure.Case,
+        };
     }
 }

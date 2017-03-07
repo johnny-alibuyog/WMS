@@ -12,12 +12,6 @@ namespace AmpedBiz.Data.EntityDefinitions
             Define(x => x.Name)
                 .NotNullableAndNotEmpty()
                 .And.MaxLength(255);
-
-            Define(x => x.IsBaseUnit);
-
-            Define(x => x.ConversionFactor);
-
-            Define(x => x.UnitOfMeasureClass);
         }
     }
 }

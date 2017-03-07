@@ -13,7 +13,6 @@ import { OrderService } from './order-service';
 import { SupplierService } from './supplier-service';
 import { UserService } from './user-service';
 import { UnitOfMeasureService } from './unit-of-measure';
-import { UnitOfMeasureClassService } from './unit-of-measure-class';
 
 @autoinject
 export class ServiceApi {
@@ -31,7 +30,6 @@ export class ServiceApi {
   private _suppliers: SupplierService;
   private _users: UserService;
   private _unitOfMeasures: UnitOfMeasureService;
-  private _unitOfMeasureClasses: UnitOfMeasureClassService;
 
   public get auth(): AuthService {
     return this._auth;
@@ -89,15 +87,10 @@ export class ServiceApi {
     return this._unitOfMeasures;
   }
 
-  public get unitOfMeasureClasses(): UnitOfMeasureClassService {
-    return this._unitOfMeasureClasses;
-  }
-
   constructor(auth: AuthService, branches: BranchService, customers: CustomerService, paymentTypes: PaymentTypeService,
     pricingSchemes: PricingSchemeService, products: ProductService, productCategories: ProductCategoryService,
     purchaseOrders: PurchaseOrderService, returnReasons: ReturnReasonService, returns: ReturnService,
-    orders: OrderService, suppliers: SupplierService, users: UserService, unitOfMeasures: UnitOfMeasureService,
-    unitOfMeasureClasses: UnitOfMeasureClassService) {
+    orders: OrderService, suppliers: SupplierService, users: UserService, unitOfMeasures: UnitOfMeasureService) {
 
     this._auth = auth;
     this._branches = branches;
@@ -113,6 +106,5 @@ export class ServiceApi {
     this._suppliers = suppliers;
     this._users = users;
     this._unitOfMeasures = unitOfMeasures;
-    this._unitOfMeasureClasses = unitOfMeasureClasses;
   }
 }

@@ -54,14 +54,6 @@ namespace AmpedBiz.Data.Configurations
                     x.Strategy = EntityCacheUsage.ReadWrite;
                     x.RegionName = CacheConfiguration.RegionName;
                 })
-                .EntityCache<UnitOfMeasureClass>(x =>
-                {
-                    x.Collection(@class => @class.Units, unit =>
-                    {
-                        unit.Strategy = EntityCacheUsage.ReadWrite;
-                        unit.RegionName = CacheConfiguration.RegionName;
-                    });
-                })
                 .EntityCache<Supplier>(x =>
                 {
                     x.Strategy = EntityCacheUsage.ReadWrite;

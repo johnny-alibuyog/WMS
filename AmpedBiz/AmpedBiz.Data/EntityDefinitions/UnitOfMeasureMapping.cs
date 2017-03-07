@@ -11,12 +11,6 @@ namespace AmpedBiz.Data.EntityDefinitions
                 .GeneratedBy.Assigned();
 
             Map(x => x.Name);
-
-            Map(x => x.IsBaseUnit);
-
-            Map(x => x.ConversionFactor);
-
-            References(x => x.UnitOfMeasureClass);
         }
     }
 }

@@ -142,8 +142,6 @@
     <Compile Include="EntityDefinitions\StockMapping.cs" />
     <Compile Include="EntityDefinitions\StockValidation.cs" />
     <Compile Include="EntityDefinitions\TenantMapping.cs" />
-    <Compile Include="EntityDefinitions\UnitOfMeasureClassMapping.cs" />
-    <Compile Include="EntityDefinitions\UnitOfMeasureClassValidation.cs" />
     <Compile Include="EntityDefinitions\UnitOfMeasureMapping.cs" />
     <Compile Include="EntityDefinitions\UnitOfMeasureValidation.cs" />
     <Compile Include="IAuditProvider.cs" />
@@ -166,7 +164,7 @@
     <Compile Include="Seeders\DefaultDataSeeders\_005_RoleSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_003_ShipperSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_001_SupplierSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_006_UnitOfMeasureClassSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_006_UnitOfMeasureSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_005_UserSeeder.cs" />
     <Compile Include="EntityDefinitions\AddressMapping.cs" />
     <Compile Include="EntityDefinitions\AddressValidation.cs" />

@@ -5,7 +5,6 @@ using AmpedBiz.Service.Orders;
 using AmpedBiz.Service.Products;
 using AmpedBiz.Service.PurchaseOrders;
 using AmpedBiz.Service.Returns;
-using AmpedBiz.Service.UnitOfMeasureClasses;
 using AmpedBiz.Service.Users;
 using System;
 using System.Collections.ObjectModel;
@@ -54,17 +53,7 @@ namespace AmpedBiz.Service.Dto.Mappers
             ExpressMapper.Mapper.Register<Entity.UnitOfMeasure, Dto.UnitOfMeasure>().Flatten();
 
             ExpressMapper.Mapper.Register<Dto.UnitOfMeasure, Entity.UnitOfMeasure>()
-                .Instantiate(x => new Entity.UnitOfMeasure(x.Id));
-
-            ExpressMapper.Mapper.Register<Entity.UnitOfMeasureClass, GetUnitOfMeasureClass.Response>()
-                .Member(x => x.Units, x => x.Units);
-
-            ExpressMapper.Mapper.Register<UpdateUnitOfMeasureClass.Request, Entity.UnitOfMeasureClass>().After((source, desitnation) =>
-            {
-                var units = source.Units.MapTo(default(Collection<Entity.UnitOfMeasure>));
-                desitnation.WithUnits(units);
-            });
-
+                .Instantiate(x => new Entity.UnitOfMeasure(x.Id, null));
         }
 
         private void RegisterPurchaseOrderMap()

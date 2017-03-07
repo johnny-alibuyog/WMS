@@ -2,7 +2,6 @@
 using AmpedBiz.Service.UnitOfMeasures;
 using MediatR;
 
-
 namespace AmpedBiz.Service.Host.Controllers
 {
     [RoutePrefix("unit-of-measures")]

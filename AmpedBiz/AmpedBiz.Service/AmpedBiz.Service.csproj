@@ -101,7 +101,6 @@
     <Compile Include="Dto\StageDefinition.cs" />
     <Compile Include="Dto\Supplier.cs" />
     <Compile Include="Dto\UnitOfMeasure.cs" />
-    <Compile Include="Dto\UnitOfMeasureClass.cs" />
     <Compile Include="Dto\User.cs" />
     <Compile Include="Dto\UserRole.cs" />
     <Compile Include="Orders\CancelOrder.cs" />
@@ -183,13 +182,6 @@
     <Compile Include="Suppliers\GetSupplierList.cs" />
     <Compile Include="Suppliers\GetSupplierReportPage.cs" />
     <Compile Include="Suppliers\UpdateSupplier.cs" />
-    <Compile Include="UnitOfMeasureClasses\CreateUnitOfMeasureClass.cs" />
-    <Compile Include="UnitOfMeasureClasses\GetUnitOfMeasureClass.cs" />
-    <Compile Include="UnitOfMeasureClasses\GetUnitOfMeasureClassPage.cs" />
-    <Compile Include="UnitOfMeasureClasses\GetUnitOfMeasureClassList.cs" />
-    <Compile Include="UnitOfMeasureClasses\GetUnitOfMeasureClassReportPage.cs" />
-    <Compile Include="UnitOfMeasureClasses\GetUnitOfMeasureClassLookup.cs" />
-    <Compile Include="UnitOfMeasureClasses\UpdateUnitOfMeasureClass.cs" />
     <Compile Include="UnitOfMeasures\CreateUnitOfMeasure.cs" />
     <Compile Include="UnitOfMeasures\GetUnitOfMeasure.cs" />
     <Compile Include="UnitOfMeasures\GetUnitOfMeasureList.cs" />

@@ -62,17 +62,8 @@
                 <th class="col-md-1" click.delegate="sorter.doSort('code')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['code'])}"></i>Code
                 </th>
-                <th class="col-md-2" click.delegate="sorter.doSort('unitOfMeasureClassName')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['unitOfMeasureClassName'])}"></i>Class
-                </th>
                 <th class="col-md-4" click.delegate="sorter.doSort('name')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['name'])}"></i>Name
-                </th>
-                <th class="col-md-2" click.delegate="sorter.doSort('isBaseUnit')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['isBaseUnit'])}"></i>IsBase
-                </th>
-                <th class="col-md-2 text-right" click.delegate="sorter.doSort('conversionFactor')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['conversionFactor'])}"></i>Conversion
                 </th>
               </tr>
             </thead>
@@ -87,10 +78,7 @@
                   </a>
                 </td>
                 <td>${item.id}</td>
-                <td>${item.unitOfMeasureClassName}</td>
                 <td>${item.name}</td>
-                <td>${item.isBaseUnit}</td>
-                <td class="text-right">${item.conversionFactor}</td>
               </tr>
             </tbody>
           </table>

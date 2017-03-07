@@ -23,27 +23,6 @@
                 <input type="text" class="form-control" placeholder="Enter Name" value.bind="unitOfMeasure.name" />
               </div>
             </div>
-            <div class="form-group">
-              <label class="control-label col-sm-4">Base Unit:</label>
-              <div class="col-sm-8">
-                <input type="checkbox" class="form-control" checked.bind="unitOfMeasure.isBaseUnit" />
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-sm-4">Conversion:</label>
-              <div class="col-sm-8">
-                <input type="number" class="form-control" placeholder="Conversion Factor" value.bind="unitOfMeasure.conversionFactor" />
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-sm-4">Name:</label>
-              <div class="col-sm-8">
-                <select class="form-control" value.bind="unitOfMeasure.unitOfMeasureClassId">
-                  <option value="">Select Class</option>
-                  <option repeat.for="class of unitOfMeasureClasses" model.bind="class.id">${class.name}</option>
-                </select>
-              </div>
-            </div>
           </form>
         </div>
       </div>

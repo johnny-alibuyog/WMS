@@ -77,7 +77,6 @@
     <Compile Include="Entities\Supplier.cs" />
     <Compile Include="Entities\Tenant.cs" />
     <Compile Include="Entities\UnitOfMeasure.cs" />
-    <Compile Include="Entities\UnitOfMeasureClass.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="IAuditable.cs" />
