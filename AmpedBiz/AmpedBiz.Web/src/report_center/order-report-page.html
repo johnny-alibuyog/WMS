@@ -53,9 +53,9 @@
               <div class="form-group">
                 <label class="control-label col-sm-4">Pricing:</label>
                 <div class="col-sm-8">
-                  <select class="form-control" value.bind="filter['pricingSchemeId']" change.delegate="filter.doFilter()">
+                  <select class="form-control" value.bind="filter['pricingId']" change.delegate="filter.doFilter()">
                       <option value="">All Pricing</option>
-                      <option repeat.for="item of pricingSchemes" model.bind="item.id">${item.name}</option>
+                      <option repeat.for="item of pricings" model.bind="item.id">${item.name}</option>
                     </select>
                 </div>
               </div>
@@ -103,8 +103,8 @@
                 <th class="col-md-2" click.delegate="sorter.doSort('branchName')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['branchName'])}"></i>Branch
                 </th>
-                <th class="col-md-2" click.delegate="sorter.doSort('pricingSchemeName')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['pricingSchemeName'])}"></i>Pricing
+                <th class="col-md-2" click.delegate="sorter.doSort('pricingName')">
+                  <i class="fa fa-fw fa-${sorter.class(sorter['pricingName'])}"></i>Pricing
                 </th>
                 <th class="col-md-2" click.delegate="sorter.doSort('status')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['status'])}"></i>Status
@@ -125,7 +125,7 @@
               <tr repeat.for="item of pager.items" click.delegate="edit(item)">
                 <td>${item.customerName}</td>
                 <td>${item.branchName}</td>
-                <td>${item.pricingSchemeName}</td>
+                <td>${item.pricingName}</td>
                 <td>${item.status | lookupIdToName:statuses}</td>
                 <td>${item.orderedByName}</td>
                 <td>${item.orderedOn | dateFormat}</td>

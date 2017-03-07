@@ -121,8 +121,8 @@
     <Compile Include="EntityDefinitions\OrderReturnMapping.cs" />
     <Compile Include="EntityDefinitions\OrderReturnValidation.cs" />
     <Compile Include="EntityDefinitions\OrderValidation.cs" />
-    <Compile Include="EntityDefinitions\PricingSchemeMapping.cs" />
-    <Compile Include="EntityDefinitions\PricingShemeValidation.cs" />
+    <Compile Include="EntityDefinitions\PricingMapping.cs" />
+    <Compile Include="EntityDefinitions\PricingValidation.cs" />
     <Compile Include="EntityDefinitions\PurchaseOrderItemMapping.cs" />
     <Compile Include="EntityDefinitions\PurchaseOrderItemValidation.cs" />
     <Compile Include="EntityDefinitions\PurchaseOrderMapping.cs" />
@@ -158,7 +158,7 @@
     <Compile Include="Seeders\ISeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_010_OrderSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_002_PaymentTypeSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_003_PricingSchemeSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_003_PricingSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_004_ProductCategorySeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_002_ProductSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_005_RoleSeeder.cs" />

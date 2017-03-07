@@ -6,7 +6,7 @@ import { Lookup } from '../common/custom_types/lookup';
 import { ServiceApi } from '../services/service-api';
 import { Dictionary } from '../common/custom_types/dictionary';
 import { OrderItem, orderEvents } from '../common/models/order';
-import { pricingScheme } from '../common/models/pricing-scheme';
+import { pricing } from '../common/models/pricing';
 import { NotificationService } from '../common/controls/notification-service';
 
 @autoinject
@@ -26,7 +26,7 @@ export class OrderItemPage {
   public items: OrderItem[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
-  public pricingScheme: Lookup<string> = pricingScheme.wholesalePrice;
+  public pricing: Lookup<string> = pricing.wholesalePrice;
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public products: Lookup<string>[] = [];
@@ -51,7 +51,7 @@ export class OrderItemPage {
         response => this.addItem()
       ),
       this._eventAggregator.subscribe(
-        orderEvents.pricingScheme.changed,
+        orderEvents.pricing.changed,
         response => this.recomputeByPricingScheme()
       )
     ];
@@ -75,12 +75,12 @@ export class OrderItemPage {
       this.initializeItem(item);
       /*
       this._api.products.getInventory(item.product.id).then(data => {
-        if (!this.pricingScheme){
-          this.pricingScheme = pricingScheme.wholesalePrice;
+        if (!this.pricing){
+          this.pricing = pricing.wholesalePrice;
         }
 
         item.quantityValue = 1;
-        item.unitPriceAmount = pricingScheme.getPriceAmount(this.pricingScheme, data) || 0;
+        item.unitPriceAmount = pricing.getPriceAmount(this.pricing, data) || 0;
         this.compute(item);
       });
       */
@@ -95,14 +95,15 @@ export class OrderItemPage {
     }
 
     this._api.products.getInventory(item.product.id).then(data => {
-      if (!this.pricingScheme) {
-        this.pricingScheme = pricingScheme.wholesalePrice;
+      if (!this.pricing) {
+        this.pricing = pricing.wholesalePrice;
       }
 
-      item.quantityValue = (this.pricingScheme.id == pricingScheme.badStockPrice.id)
-        ? data.badStockValue || 1 : data.availableValue || 1;
+      //item.quantityValue = (this.pricing.id == pricing.badStockPrice.id)
+      //  ? data.badStockValue || 1 : data.availableValue || 1;
 
-      item.unitPriceAmount = pricingScheme.getPriceAmount(this.pricingScheme, data) || 0;
+      console.log(pricing.getPriceAmount(this.pricing, data));
+      item.unitPriceAmount = pricing.getPriceAmount(this.pricing, data);
 
       this.compute(item);
     });

@@ -33,7 +33,7 @@ namespace AmpedBiz.Service.Dto
 
         public Lookup<string> Customer { get; set; }
 
-        public Lookup<string> PricingScheme { get; set; }
+        public Lookup<string> Pricing { get; set; }
 
         public Lookup<string> PaymentType { get; set; }
 
@@ -141,7 +141,7 @@ namespace AmpedBiz.Service.Dto
 
         public string CustomerName { get; set; }
 
-        public string PricingSchemeName { get; set; }
+        public string PricingName { get; set; }
 
         public DateTime? OrderedOn { get; set; }
 

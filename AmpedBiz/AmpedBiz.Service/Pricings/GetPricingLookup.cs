@@ -6,9 +6,9 @@ using NHibernate.Linq;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AmpedBiz.Service.PricingShemes
+namespace AmpedBiz.Service.Pricings
 {
-    public class GetPricingSchemeLookup
+    public class GetPricingLookup
     {
         public class Request : IRequest<Response> { }
 
@@ -31,7 +31,7 @@ namespace AmpedBiz.Service.PricingShemes
                 using (var transaction = session.BeginTransaction())
                 {
 
-                    var query = session.Query<PricingScheme>();
+                    var query = session.Query<Pricing>();
 
                     var pairs = query
                         .Select(x => new Lookup<string>()

@@ -324,7 +324,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         Customer = _utils.Random<Customer>(),
                         Shipper = _utils.Random<Shipper>(),
                         ShippingAddress = null,
-                        PricingScheme = _utils.Random<PricingScheme>(),
+                        Pricing = _utils.Random<Pricing>(),
                         PaymentType = _utils.Random<PaymentType>(),
                         TaxRate = _utils.RandomDecimal(0.01M, 0.30M),
                         Tax = null, // compute this

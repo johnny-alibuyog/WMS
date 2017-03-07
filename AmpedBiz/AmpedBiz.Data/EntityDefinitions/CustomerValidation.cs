@@ -14,7 +14,7 @@ namespace AmpedBiz.Data.EntityDefinitions
                 .NotNullableAndNotEmpty()
                 .And.MaxLength(255);
 
-            Define(x => x.PricingScheme)
+            Define(x => x.Pricing)
                 .IsValid();
 
             Define(x => x.OfficeAddress)

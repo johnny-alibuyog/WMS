@@ -3,9 +3,9 @@ using FluentNHibernate.Mapping;
 
 namespace AmpedBiz.Data.EntityDefinitions
 {
-    public class PricingSchemeMapping : ClassMap<PricingScheme>
+    public class PricingMapping : ClassMap<Pricing>
     {
-        public PricingSchemeMapping()
+        public PricingMapping()
         {
             Id(x => x.Id)
                 .GeneratedBy.Assigned();

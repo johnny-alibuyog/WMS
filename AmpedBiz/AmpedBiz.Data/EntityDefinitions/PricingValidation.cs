@@ -3,9 +3,9 @@ using NHibernate.Validator.Cfg.Loquacious;
 
 namespace AmpedBiz.Data.EntityDefinitions
 {
-    public class PricingSchemeValidation : ValidationDef<PricingScheme>
+    public class PricingValidation : ValidationDef<Pricing>
     {
-        public PricingSchemeValidation()
+        public PricingValidation()
         {
             Define(x => x.Id)
                 .NotNullableAndNotEmpty()

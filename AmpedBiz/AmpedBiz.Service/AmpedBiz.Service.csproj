@@ -122,7 +122,7 @@
     <Compile Include="Orders\StageOrder.cs" />
     <Compile Include="PaymentTypes\GetPaymentTypeLookup.cs" />
     <Compile Include="PaymentTypes\GetPaymentTypePage.cs" />
-    <Compile Include="PricingShemes\GetPricingSchemeLookup.cs" />
+    <Compile Include="Pricings\GetPricingLookup.cs" />
     <Compile Include="ProductCategories\CreateProductCategory.cs" />
     <Compile Include="ProductCategories\GetProductCategory.cs" />
     <Compile Include="ProductCategories\GetProductCategoryList.cs" />

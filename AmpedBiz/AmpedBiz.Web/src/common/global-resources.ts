@@ -12,6 +12,7 @@ export function configure(config: FrameworkConfiguration) {
     'common/converters/number-format-value-converter',
     'common/converters/object-keys-value-converter',
     'common/converters/object-values-value-converter',
+    'common/converters/percentage-value-converter',
     'common/converters/relative-date-value-converter',
     'common/converters/sort-value-converter',
     'common/converters/to-id-value-converter',

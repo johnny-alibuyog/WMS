@@ -12,7 +12,7 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Map(x => x.Name);
 
-            References(x => x.PricingScheme);
+            References(x => x.Pricing);
 
             Component(x => x.CreditLimit, 
                 MoneyMapping.Map("CreditLimit_", nameof(Customer)));

@@ -14,7 +14,7 @@
     </thead>
 
     <tbody>
-      <tr repeat.for="item of paymentPager.items">
+      <tr repeat.for="item of paymentPager.items" click.delegate="editItem(item)">
         <td>
           <a href="javascript:undefined" class="text-info" click.delegate="editItem(item)">
             <i class="fa fa-pencil"></i>

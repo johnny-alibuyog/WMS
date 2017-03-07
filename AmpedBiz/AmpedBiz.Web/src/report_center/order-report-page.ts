@@ -18,7 +18,7 @@ export class OrderReportPage {
   public sorter: Sorter;
   public pager: Pager<OrderReportPageItem>;
 
-  public pricingSchemes: Lookup<string>[];
+  public pricings: Lookup<string>[];
   public customers: Lookup<string>[];
   public statuses: Lookup<OrderStatus>[];
   public branches: Lookup<string>[];
@@ -40,7 +40,7 @@ export class OrderReportPage {
     this.sorter = new Sorter();
     this.sorter["branchName"] = SortDirection.None;
     this.sorter["customerName"] = SortDirection.None;
-    this.sorter["pricingSchemeName"] = SortDirection.None;
+    this.sorter["pricingName"] = SortDirection.None;
     this.sorter["status"] = SortDirection.None;
     this.sorter["orderedOn"] = SortDirection.Ascending;
     this.sorter["orderedByName"] = SortDirection.None;
@@ -59,7 +59,7 @@ export class OrderReportPage {
       Promise<Lookup<OrderStatus>[]>,
       Promise<Lookup<string>[]>] = [
 
-        this._api.pricingSchemes.getLookups(),
+        this._api.pricings.getLookups(),
         this._api.customers.getLookups(),
         this._api.orders.getStatusLookup(),
         this._api.branches.getLookups()
@@ -71,7 +71,7 @@ export class OrderReportPage {
       Lookup<OrderStatus>[],
       Lookup<string>[]]) => {
 
-      this.pricingSchemes = responses[0];
+      this.pricings = responses[0];
       this.customers = responses[1];
       this.statuses = responses[2];
       this.branches = responses[3];
@@ -97,7 +97,7 @@ export class OrderReportPage {
             id: x.id,
             branchName: x.branchName,
             customerName: x.customerName,
-            pricingSchemeName: x.pricingSchemeName,
+            pricingName: x.pricingName,
             orderedOn: x.orderedOn,
             orderedByName: x.orderedByName,
             status: x.status,

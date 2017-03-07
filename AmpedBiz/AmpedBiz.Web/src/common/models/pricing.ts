@@ -1,12 +1,12 @@
 import { Lookup } from '../custom_types/lookup';
 import { ProductInventory } from './product';
 
-export interface PricingScheme {
+export interface Pricing {
   id?: string;
   name?: string;
 }
 
-export interface PricingSchemePageItem {
+export interface PricingPageItem {
   id?: string;
   name?: string;
 }
@@ -18,13 +18,13 @@ let retailPrice = <Lookup<string>>{ id: 'RP', name: 'Retail Price' };
 let wholesalePrice = <Lookup<string>>{ id: 'WP', name: 'Wholesale Price' };
 let badStockPrice = <Lookup<string>>{ id: 'BSP', name: 'Bad Stock Price' };
 
-export let pricingScheme = {
+export let pricing = {
   basePrice: basePrice,
   retailPrice: retailPrice,
   wholesalePrice: wholesalePrice,
   badStockPrice: badStockPrice,
-  getPriceAmount: (pricingScheme: PricingScheme, product: ProductInventory) => {
-    switch (pricingScheme.id) {
+  getPriceAmount: (pricing: Pricing, product: ProductInventory) => {
+    switch (pricing.id) {
       case basePrice.id:
         return product.basePriceAmount;
       case retailPrice.id:

@@ -118,7 +118,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                 Id = this.GenerateUniqueString("Id_"),
                 Name = this.GenerateUniqueString("Name_"),
                 OfficeAddress = this.GenerateAddress(),
-                //PricingSchemeId = 
+                //PricingId = 
             };
         }
 

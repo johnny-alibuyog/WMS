@@ -90,11 +90,11 @@
                 </div>
 
                 <div class="form-group">
-                  <label class="control-label col-sm-4">Pricing Scheme:</label>
+                  <label class="control-label col-sm-4">Pricing:</label>
                   <div class="col-sm-8">
-                    <select class="form-control" value.bind="order.pricingScheme | lookupToId:pricingSchemes" change.delegate="signalPricingSchemChanged()">
-                      <option>Select Pricing Scheme</option>
-                      <option repeat.for="pricingScheme of pricingSchemes" model.bind="pricingScheme.id">${pricingScheme.name}</option>
+                    <select class="form-control" value.bind="order.pricing | lookupToId:pricings" change.delegate="signalPricingSchemChanged()">
+                      <option>Select Pricing</option>
+                      <option repeat.for="pricing of pricings" model.bind="pricing.id">${pricing.name}</option>
                     </select>
                   </div>
                 </div>
@@ -184,7 +184,7 @@
                       products.bind="products" 
                       items.bind="order.items" 
                       order-id.bind="order.id"
-                      pricing-scheme.bind="order.pricingScheme">
+                      pricing.bind="order.pricing">
                     </order-item-page>
                   </div>
 

@@ -29,13 +29,13 @@ namespace AmpedBiz.Service.Customers
                     if (exists)
                         throw new BusinessException($"Customer with id {message.Id} already exists.");
 
-                    if (string.IsNullOrEmpty(message.PricingSchemeId))
-                        message.PricingSchemeId = "RP";
+                    if (string.IsNullOrEmpty(message.PricingId))
+                        message.PricingId = "RP";
 
                     var entity = message.MapTo(new Customer(message.Id));
                     var currency = session.Load<Currency>(Currency.PHP.Id);
                     entity.CreditLimit = new Money(message.CreditLimitAmount, currency);
-                    entity.PricingScheme = session.Load<PricingScheme>(message.PricingSchemeId);
+                    entity.Pricing = session.Load<Pricing>(message.PricingId);
 
                     session.Save(entity);
                     transaction.Commit();

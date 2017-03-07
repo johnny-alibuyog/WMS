@@ -39,7 +39,7 @@ namespace AmpedBiz.Service.Orders
                             .Where(x => x.Id == message.Id)
                             .Fetch(x => x.Branch).Eager
                             .Fetch(x => x.Customer).Eager
-                            .Fetch(x => x.PricingScheme).Eager
+                            .Fetch(x => x.Pricing).Eager
                             .Fetch(x => x.PaymentType).Eager
                             .Fetch(x => x.Shipper).Eager
                             .Fetch(x => x.Tax).Eager
@@ -107,8 +107,8 @@ namespace AmpedBiz.Service.Orders
                             ? session.Load<Shipper>(message.Shipper.Id) : null,
                         ShippingAddress = (message.ShippingAddress != null)
                             ? message.ShippingAddress.MapTo<Dto.Address, Address>() : null,
-                        PricingScheme = (!message?.PricingScheme?.Id.IsNullOrEmpty() ?? false)
-                            ? session.Load<PricingScheme>(message.PricingScheme.Id) : null,
+                        Pricing = (!message?.Pricing?.Id.IsNullOrEmpty() ?? false)
+                            ? session.Load<Pricing>(message.Pricing.Id) : null,
                         PaymentType = (!message?.PaymentType?.Id.IsNullOrEmpty() ?? false)
                             ? session.Load<PaymentType>(message.PaymentType.Id) : null,
                         TaxRate = message.TaxRate,

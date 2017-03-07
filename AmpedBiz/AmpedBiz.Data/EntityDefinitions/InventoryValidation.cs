@@ -14,9 +14,9 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.UnitOfMeasure);
 
-            Define(x => x.UnitOfMeasureBase);
+            Define(x => x.PackagingUnitOfMeasure);
 
-            Define(x => x.ConversionFactor);
+            Define(x => x.PackagingSize);
 
             Define(x => x.BasePrice);
 

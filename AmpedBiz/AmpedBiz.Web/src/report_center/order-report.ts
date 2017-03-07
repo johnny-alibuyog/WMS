@@ -6,7 +6,7 @@ import { OrderStatus } from '../common/models/order';
 export interface OrderReportModel {
   branchName?: string;
   customerName?: string;
-  pricingSchemeName?: string;
+  pricingName?: string;
   fromDate?: Date;
   toDate?: Date;
   items: OrderReportModelItem[];
@@ -16,7 +16,7 @@ export interface OrderReportModelItem {
   id?: string;
   branchName?: string;
   customerName?: string;
-  pricingSchemeName?: string;
+  pricingName?: string;
   orderedOn?: Date;
   orderedByName?: string;
   status?: OrderStatus;
@@ -55,7 +55,7 @@ export class OrderReport implements Report<OrderReportModel> {
         orderTableBody.push([
           { text: emptyIfNull(x.customerName), style: 'tableData' },
           { text: emptyIfNull(x.branchName), style: 'tableData' },
-          //{ text: emptyIfNull(x.pricingSchemeName), style: 'tableData' },
+          //{ text: emptyIfNull(x.pricingName), style: 'tableData' },
           { text: emptyIfNull(x.orderedByName), style: 'tableData' },
           { text: formatDate(x.orderedOn), style: 'tableData' },
           { text: OrderStatus[x.status], style: 'tableData' },
@@ -86,7 +86,7 @@ export class OrderReport implements Report<OrderReportModel> {
               ],
               [
                 { text: 'Pricing: ', style: 'label' },
-                { text: emptyIfNull(data.pricingSchemeName), style: 'value' }
+                { text: emptyIfNull(data.pricingName), style: 'value' }
               ],
               [
                 { text: 'From Date: ', style: 'label' },

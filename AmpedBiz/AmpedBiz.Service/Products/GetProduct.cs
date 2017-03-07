@@ -36,7 +36,7 @@ namespace AmpedBiz.Service.Products
                         .Fetch(x => x.Category).Eager
                         .Fetch(x => x.Inventory).Eager
                         .Fetch(x => x.Inventory.UnitOfMeasure).Eager
-                        .Fetch(x => x.Inventory.UnitOfMeasureBase).Eager
+                        .Fetch(x => x.Inventory.PackagingUnitOfMeasure).Eager
                         .Fetch(x => x.Inventory.Stocks).Eager
                         .Fetch(x => x.Inventory.Stocks.First().ModifiedBy).Eager
                         .FutureValue();

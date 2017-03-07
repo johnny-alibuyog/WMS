@@ -6,7 +6,7 @@ import { Lookup } from '../common/custom_types/lookup';
 import { ServiceApi } from '../services/service-api';
 import { Dictionary } from '../common/custom_types/dictionary';
 import { ReturnItem, returnEvents } from '../common/models/return';
-import { pricingScheme } from '../common/models/pricing-scheme';
+import { pricing } from '../common/models/pricing';
 import { NotificationService } from '../common/controls/notification-service';
 import { ProductInventory } from '../common/models/product';
 
@@ -46,11 +46,11 @@ export class ReturnItemPage {
   }
 
   private getUnitPriceAmount(product: Lookup<string>): Promise<number> {
-    let wholesalePrice = pricingScheme.wholesalePrice;
+    let wholesalePrice = pricing.wholesalePrice;
     let inventory = this._productInventories.find(x => x.id == product.id);
 
     if (inventory) {
-      let unitPrice = pricingScheme.getPriceAmount(wholesalePrice, inventory);
+      let unitPrice = pricing.getPriceAmount(wholesalePrice, inventory);
       return Promise.resolve(unitPrice);
     }
     else {
@@ -59,7 +59,7 @@ export class ReturnItemPage {
           this._productInventories.push(data);
         }
 
-        let unitPrice = pricingScheme.getPriceAmount(wholesalePrice, data);
+        let unitPrice = pricing.getPriceAmount(wholesalePrice, data);
         return unitPrice;
       });
     }

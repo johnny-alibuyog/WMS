@@ -37,7 +37,7 @@ namespace AmpedBiz.Service.Orders
                     var entites = session.QueryOver<Order>()
                         .Fetch(x => x.Branch).Eager
                         .Fetch(x => x.Customer).Eager
-                        .Fetch(x => x.PricingScheme).Eager
+                        .Fetch(x => x.Pricing).Eager
                         .Fetch(x => x.PaymentType).Eager
                         .Fetch(x => x.Shipper).Eager
                         .Fetch(x => x.Tax).Eager

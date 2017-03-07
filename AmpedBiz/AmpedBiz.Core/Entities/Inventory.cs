@@ -6,15 +6,13 @@ namespace AmpedBiz.Core.Entities
 {
     public class Inventory : Entity<Guid, Inventory>
     {
-        //public virtual Tenant Tenant { get; protected set; }
-
         public virtual Product Product { get; protected set; }
 
         public virtual UnitOfMeasure UnitOfMeasure { get; set; }
 
-        public virtual UnitOfMeasure UnitOfMeasureBase { get; set; }
+        public virtual UnitOfMeasure PackagingUnitOfMeasure { get; set; }
 
-        public virtual decimal? ConversionFactor { get; set; }
+        public virtual decimal? PackagingSize { get; set; }
 
         public virtual Money BasePrice { get; set; }
 

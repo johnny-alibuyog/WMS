@@ -8,7 +8,7 @@
 
         public decimal CreditLimitAmount { get; set; }
 
-        public string PricingSchemeId { get; set; }
+        public string PricingId { get; set; }
 
         public Contact Contact { get; set; }
 
@@ -25,7 +25,7 @@
 
         public string CreditLimitAmount { get; set; }
 
-        public string PricingSchemeName { get; set; }
+        public string PricingName { get; set; }
 
         public Contact Contact { get; set; }
 

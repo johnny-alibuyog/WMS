@@ -3,7 +3,7 @@ import { AuthService } from './auth-service';
 import { BranchService } from './branch-service';
 import { CustomerService } from './customer-service';
 import { PaymentTypeService } from './payment-type-service';
-import { PricingSchemeService } from './pricing-scheme-service';
+import { PricingService } from './pricing-service';
 import { ProductCategoryService } from './product-category-service';
 import { ProductService } from './product-service';
 import { PurchaseOrderService } from './purchase-order-service';
@@ -20,7 +20,7 @@ export class ServiceApi {
   private _branches: BranchService;
   private _customers: CustomerService;
   private _paymentTypes: PaymentTypeService;
-  private _pricingSchemes: PricingSchemeService;
+  private _pricings: PricingService;
   private _productCategories: ProductCategoryService;
   private _products: ProductService;
   private _purchaseOrders: PurchaseOrderService;
@@ -47,8 +47,8 @@ export class ServiceApi {
     return this._paymentTypes;
   }
 
-  public get pricingSchemes(): PricingSchemeService {
-    return this._pricingSchemes;
+  public get pricings(): PricingService {
+    return this._pricings;
   }
 
   public get productCategories(): ProductCategoryService {
@@ -88,7 +88,7 @@ export class ServiceApi {
   }
 
   constructor(auth: AuthService, branches: BranchService, customers: CustomerService, paymentTypes: PaymentTypeService,
-    pricingSchemes: PricingSchemeService, products: ProductService, productCategories: ProductCategoryService,
+    pricings: PricingService, products: ProductService, productCategories: ProductCategoryService,
     purchaseOrders: PurchaseOrderService, returnReasons: ReturnReasonService, returns: ReturnService,
     orders: OrderService, suppliers: SupplierService, users: UserService, unitOfMeasures: UnitOfMeasureService) {
 
@@ -96,7 +96,7 @@ export class ServiceApi {
     this._branches = branches;
     this._customers = customers;
     this._paymentTypes = paymentTypes;
-    this._pricingSchemes = pricingSchemes;
+    this._pricings = pricings;
     this._productCategories = productCategories;
     this._products = products;
     this._purchaseOrders = purchaseOrders;

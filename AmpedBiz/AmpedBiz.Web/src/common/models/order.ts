@@ -5,8 +5,8 @@ import { Dictionary } from '../custom_types/dictionary';
 import { Address } from './Address';
 
 export const orderEvents = {
-  pricingScheme: {
-    changed: 'order-pricing-scheme-changed',
+  pricing: {
+    changed: 'order-pricing-changed',
   },
   item: {
     add: 'order-item-add',
@@ -48,7 +48,7 @@ export interface Order {
   id?: string;
   branch?: Lookup<string>;
   customer?: Lookup<string>;
-  pricingScheme?: Lookup<string>;
+  pricing?: Lookup<string>;
   paymentType?: Lookup<string>;
   shipper?: Lookup<string>;
   shippingAddress?: Address;
@@ -170,7 +170,7 @@ export interface OrderInvoiceDetail {
   invoiceNumber?: string;
   invoicedOn?: Date;
   invoicedByName?: string;
-  pricingSchemeName?: string;
+  pricingName?: string;
   paymentTypeName?: string;
 
   branchName?: string;
@@ -206,7 +206,7 @@ export class OrderReportPageItem {
   id?: string;
   branchName?: string;
   customerName?: string;
-  pricingSchemeName?: string;
+  pricingName?: string;
   orderedOn?: Date;
   orderedByName?: string;
   status?: OrderStatus;

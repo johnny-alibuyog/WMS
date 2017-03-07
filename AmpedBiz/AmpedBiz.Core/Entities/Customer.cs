@@ -9,7 +9,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Money CreditLimit { get; set; }
 
-        public virtual PricingScheme PricingScheme { get; set; }
+        public virtual Pricing Pricing { get; set; }
 
         public virtual Tenant Tenant { get; set; }
 

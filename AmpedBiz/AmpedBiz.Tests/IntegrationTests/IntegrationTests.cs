@@ -77,7 +77,7 @@ namespace AmpedBiz.Tests.IntegrationTests
         private List<Customer> _customers = new List<Customer>();
         private List<Currency> _currencies = new List<Currency>();
         private List<PaymentType> _paymentTypes = new List<PaymentType>();
-        private List<PricingScheme> _pricingSchemes = new List<PricingScheme>();
+        private List<Pricing> _pricings = new List<Pricing>();
         private List<ProductCategory> _productCategories = new List<ProductCategory>();
         private List<UnitOfMeasure> _unitOfMeasures = new List<UnitOfMeasure>();
 
@@ -132,7 +132,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                 this._customers = session.Query<Customer>().Cacheable().ToList();
                 this._currencies = session.Query<Currency>().Cacheable().ToList();
                 this._paymentTypes = session.Query<PaymentType>().Cacheable().ToList();
-                this._pricingSchemes = session.Query<PricingScheme>().Cacheable().ToList();
+                this._pricings = session.Query<Pricing>().Cacheable().ToList();
                 this._productCategories = session.Query<ProductCategory>().Cacheable().ToList();
                 this._unitOfMeasures = session.Query<UnitOfMeasure>().Cacheable().ToList();
                 this._suppliers = session.Query<Supplier>().Where(x => x.Products.Count() > 0).ToList();
@@ -189,9 +189,9 @@ namespace AmpedBiz.Tests.IntegrationTests
             return new Lookup<string>(random.Id, random.Name);
         }
 
-        private Lookup<string> RandomPricingScheme()
+        private Lookup<string> RandomPricing()
         {
-            var random = this._pricingSchemes[this.random.Next(0, this._pricingSchemes.Count - 1)];
+            var random = this._pricings[this.random.Next(0, this._pricings.Count - 1)];
             return new Lookup<string>(random.Id, random.Name);
         }
 
@@ -287,7 +287,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             for (var i = 0; i < count; i++)
             {
                 var custData = this.dummyData.GenerateCustomer();
-                custData.PricingSchemeId = this._pricingSchemes[this.random.Next(0, this._pricingSchemes.Count - 1)].Id;
+                custData.PricingId = this._pricings[this.random.Next(0, this._pricings.Count - 1)].Id;
 
                 var request = new CreateCustomer.Request()
                 {
@@ -297,7 +297,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     CreditLimitAmount = custData.CreditLimitAmount,
                     Name = custData.Name,
                     OfficeAddress = custData.OfficeAddress,
-                    PricingSchemeId = custData.PricingSchemeId
+                    PricingId = custData.PricingId
                 };
 
                 var handler = new CreateCustomer.Handler(this.sessionFactory).Handle(request);
@@ -372,8 +372,8 @@ namespace AmpedBiz.Tests.IntegrationTests
                     Inventory = new Service.Dto.Inventory()
                     {
                         UnitOfMeasure = this.RandomUnitOfMeasure(),
-                        UnitOfMeasureBase = this.RandomUnitOfMeasure(),
-                        ConversionFactor = 0.30M,
+                        PackagingUnitOfMeasure = this.RandomUnitOfMeasure(),
+                        PackagingSize = 0.30M,
                         BasePriceAmount = productData.Inventory.BasePriceAmount,
                         RetailPriceAmount = productData.Inventory.RetailPriceAmount,
                         WholesalePriceAmount = productData.Inventory.WholesalePriceAmount,

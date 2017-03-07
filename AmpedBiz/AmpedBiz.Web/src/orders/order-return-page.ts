@@ -6,7 +6,7 @@ import { Lookup } from '../common/custom_types/lookup';
 import { ServiceApi } from '../services/service-api';
 import { Dictionary } from '../common/custom_types/dictionary';
 import { OrderReturn, OrderReturnable, OrderReturning, orderEvents } from '../common/models/order';
-import { pricingScheme } from '../common/models/pricing-scheme';
+import { pricing } from '../common/models/pricing';
 import { NotificationService } from '../common/controls/notification-service';
 
 @autoinject

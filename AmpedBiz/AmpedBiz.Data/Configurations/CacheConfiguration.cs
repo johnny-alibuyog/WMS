@@ -29,7 +29,7 @@ namespace AmpedBiz.Data.Configurations
                     x.Strategy = EntityCacheUsage.ReadWrite;
                     x.RegionName = CacheConfiguration.RegionName;
                 })
-                .EntityCache<PricingScheme>(x =>
+                .EntityCache<Pricing>(x =>
                 {
                     x.Strategy = EntityCacheUsage.ReadWrite;
                     x.RegionName = CacheConfiguration.RegionName;

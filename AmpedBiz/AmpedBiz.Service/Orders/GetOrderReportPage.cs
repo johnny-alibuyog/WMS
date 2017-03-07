@@ -39,9 +39,9 @@ namespace AmpedBiz.Service.Orders
                         query = query.Where(x => x.Branch.Id == value);
                     });
 
-                    message.Filter.Compose<string>("pricingSchemeId", value =>
+                    message.Filter.Compose<string>("pricingId", value =>
                     {
-                        query = query.Where(x => x.PricingScheme.Id == value);
+                        query = query.Where(x => x.Pricing.Id == value);
                     });
 
                     message.Filter.Compose<OrderStatus>("status", value =>
@@ -74,11 +74,11 @@ namespace AmpedBiz.Service.Orders
                             : query.OrderByDescending(x => x.Customer.Name);
                     });
 
-                    message.Sorter.Compose("pricingSchemeName", direction =>
+                    message.Sorter.Compose("pricingName", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.PricingScheme.Name)
-                            : query.OrderByDescending(x => x.PricingScheme.Name);
+                            ? query.OrderBy(x => x.Pricing.Name)
+                            : query.OrderByDescending(x => x.Pricing.Name);
                     });
 
                     message.Sorter.Compose("orderedOn", direction =>
@@ -127,7 +127,7 @@ namespace AmpedBiz.Service.Orders
                             Id = x.Id,
                             BranchName = x.Branch.Name,
                             CustomerName = x.Customer.Name,
-                            PricingSchemeName = x.PricingScheme.Name,
+                            PricingName = x.Pricing.Name,
                             OrderedOn = x.OrderedOn,
                             OrderedByName = 
                                 x.OrderedBy.Person.FirstName + " " +

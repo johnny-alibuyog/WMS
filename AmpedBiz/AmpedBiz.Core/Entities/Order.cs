@@ -32,7 +32,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Customer Customer { get; internal protected set; }
 
-        public virtual PricingScheme PricingScheme { get; internal protected set; }
+        public virtual Pricing Pricing { get; internal protected set; }
 
         public virtual PaymentType PaymentType { get; internal protected set; }
 

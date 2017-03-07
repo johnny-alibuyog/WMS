@@ -24,7 +24,7 @@ namespace AmpedBiz.Core.Services.Orders
 
         public virtual Address ShippingAddress { get; set; }
 
-        public virtual PricingScheme PricingScheme { get; set; }
+        public virtual Pricing Pricing { get; set; }
 
         public virtual PaymentType PaymentType { get; set; }
 
@@ -62,7 +62,7 @@ namespace AmpedBiz.Core.Services.Orders
             target.Customer = this.Customer ?? target.Customer;
             target.Shipper = this.Shipper ?? target.Shipper;
             target.ShippingAddress = this.ShippingAddress ?? target.ShippingAddress;
-            target.PricingScheme = this.PricingScheme ?? target.PricingScheme;
+            target.Pricing = this.Pricing ?? target.Pricing;
             target.PaymentType = this.PaymentType ?? target.PaymentType;
             target.TaxRate = this.TaxRate ?? target.TaxRate;
             target.TaxRate = this.TaxRate ?? target.TaxRate;

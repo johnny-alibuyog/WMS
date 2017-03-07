@@ -60,7 +60,7 @@ namespace AmpedBiz.Service.Customers
                             Id = x.Id,
                             Name = x.Name,
                             CreditLimitAmount = x.CreditLimit.ToStringWithSymbol(),
-                            PricingSchemeName = x.PricingScheme.Name,
+                            PricingName = x.Pricing.Name,
                             Contact = x.Contact.MapTo(default(Dto.Contact)),
                             OfficeAddress = x.OfficeAddress.MapTo(default(Dto.Address)),
                             BillingAddress = x.BillingAddress.MapTo(default(Dto.Address)),

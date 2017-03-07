@@ -27,7 +27,7 @@ export class OrderCreate {
   public branches: Lookup<string>[] = [];
   public customers: Lookup<string>[] = [];
   public paymentTypes: Lookup<string>[] = [];
-  public pricingSchemes: Lookup<string>[] = [];
+  public pricings: Lookup<string>[] = [];
   public returnReasons: Lookup<string>[] = [];
   public statuses: Lookup<OrderStatus>[] = [];
   public payable: OrderPayable;
@@ -80,7 +80,7 @@ export class OrderCreate {
         this._api.branches.getLookups(),
         this._api.customers.getLookups(),
         this._api.paymentTypes.getLookups(),
-        this._api.pricingSchemes.getLookups(),
+        this._api.pricings.getLookups(),
         this._api.returnReasons.getLookups(),
         this._api.orders.getStatusLookup(),
         order.id
@@ -97,7 +97,7 @@ export class OrderCreate {
         this.branches = responses[1];
         this.customers = responses[2];
         this.paymentTypes = responses[3];
-        this.pricingSchemes = responses[4];
+        this.pricings = responses[4];
         this.returnReasons = responses[5];
         this.statuses = responses[6];
         this.payable = responses[7];
@@ -148,7 +148,7 @@ export class OrderCreate {
   }
 
   public signalPricingSchemChanged(): void {
-    this._eventAggregator.publish(orderEvents.pricingScheme.changed);
+    this._eventAggregator.publish(orderEvents.pricing.changed);
   }
 
   public save(): void {

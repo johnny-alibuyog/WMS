@@ -15,9 +15,9 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             References(x => x.UnitOfMeasure);
 
-            References(x => x.UnitOfMeasureBase);
+            References(x => x.PackagingUnitOfMeasure);
 
-            Map(x => x.ConversionFactor);
+            Map(x => x.PackagingSize);
 
             Component(x => x.BasePrice,
                 MoneyMapping.Map("BasePrice_", nameof(Inventory)));

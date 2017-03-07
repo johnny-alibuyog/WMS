@@ -221,7 +221,7 @@ let genDummy = (): OrderInvoiceDetail => <OrderInvoiceDetail>{
     .subtract(1, 'day')
     .toDate(),
   invoicedByName: 'invoiced by',
-  pricingSchemeName: 'pricing scheme',
+  pricingName: 'pricing',
   paymentTypeName: 'payment type',
   branchName: 'branch name',
   orderedOn: moment(new Date())

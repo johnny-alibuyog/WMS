@@ -54,8 +54,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         item.Supplier = _utils.Random<Supplier>();
                         item.Discontinued = _utils.RandomBoolean();
                         item.Inventory.UnitOfMeasure = _utils.Random<UnitOfMeasure>();
-                        item.Inventory.UnitOfMeasureBase = _utils.Random<UnitOfMeasure>();
-                        item.Inventory.ConversionFactor = _utils.RandomInteger(1, 24);
+                        item.Inventory.PackagingUnitOfMeasure = _utils.Random<UnitOfMeasure>();
+                        item.Inventory.PackagingSize = _utils.RandomInteger(1, 24);
                         item.Inventory.BasePrice = prices.BasePrice;
                         item.Inventory.RetailPrice = prices.RetailPrice;
                         item.Inventory.WholesalePrice = prices.WholesalePrice;

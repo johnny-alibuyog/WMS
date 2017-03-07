@@ -9,9 +9,9 @@ namespace AmpedBiz.Service.Dto
 
         public virtual Lookup<string> UnitOfMeasure { get; set; }
 
-        public virtual Lookup<string> UnitOfMeasureBase { get; set; }
+        public virtual Lookup<string> PackagingUnitOfMeasure { get; set; }
 
-        public virtual decimal? ConversionFactor { get; set; }
+        public virtual decimal? PackagingSize { get; set; }
 
         public decimal? BasePriceAmount { get; set; }
 

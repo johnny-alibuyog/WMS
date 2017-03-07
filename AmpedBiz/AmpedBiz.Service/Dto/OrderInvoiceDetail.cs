@@ -17,7 +17,7 @@ namespace AmpedBiz.Service.Dto
 
         public virtual string InvoicedByName { get; set; }
 
-        public virtual string PricingSchemeName { get; set; }
+        public virtual string PricingName { get; set; }
 
         public virtual string PaymentTypeName { get; set; }
 
