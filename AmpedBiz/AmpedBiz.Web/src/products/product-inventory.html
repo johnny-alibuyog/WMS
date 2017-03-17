@@ -32,33 +32,17 @@
           </div>
 
           <div class="form-group">
-            <label class="control-label col-sm-4">Base:</label>
+            <label class="control-label col-sm-4">Individual Barcode:</label>
             <div class="col-sm-8">
-              <input type="number" class="form-control text-right" placeholder="Enter Base Price" value.bind="inventory.basePriceAmount"
+              <input type="number" class="form-control text-right" placeholder="Enter Individual Barcode" value.bind="inventory.individualBarcode"
               />
             </div>
           </div>
 
           <div class="form-group">
-            <label class="control-label col-sm-4">Retail:</label>
+            <label class="control-label col-sm-4">Packaging Barcode:</label>
             <div class="col-sm-8">
-              <input type="number" class="form-control text-right" placeholder="Enter Retail Price" value.bind="inventory.retailPriceAmount"
-              />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="control-label col-sm-4">Wholesale:</label>
-            <div class="col-sm-8">
-              <input type="number" class="form-control text-right" placeholder="Enter Wholesale Price" value.bind="inventory.wholesalePriceAmount"
-              />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="control-label col-sm-4">Bad Stock:</label>
-            <div class="col-sm-8">
-              <input type="number" class="form-control text-right" placeholder="Enter Bad Stock Price" value.bind="inventory.badStockPriceAmount"
+              <input type="number" class="form-control text-right" placeholder="Enter Packaging Barcode" value.bind="inventory.packagingBarcode"
               />
             </div>
           </div>
@@ -120,14 +104,104 @@
 
   </div>
 
-  <!-- inventory shrinkage -->
+  <!-- pricing -->
   <div class="panel panel-default">
 
     <!-- heading -->
-    <div class="panel-heading">Inventory Shrinkage</div>
+    <div class="panel-heading">Pricing</div>
 
     <!-- body -->
-    <div class="panel-body">
+    <div class="panel-body text-center">
+
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th class="col-md-2"></th>
+            <th class="col-md-4 text-center">
+              <label class="control-label" if.bind="inventory.unitOfMeasure">Per ${inventory.unitOfMeasure.name}</label>
+            </th>
+            <th class="col-md-2"></th>
+            <th class="col-md-4  text-center">
+              <label class="control-label" if.bind="inventory.packagingUnitOfMeasure">Per ${inventory.packagingUnitOfMeasure.name}</label>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-right">
+              <label class="control-label">Base Price: </label>
+            </td>
+            <td class="text-right">
+              <input type="number" class="form-control text-right" 
+                placeholder="Enter Base Price Per ${inventory.unitOfMeasure.name}" 
+                value.bind="inventory.basePriceAmount"
+              />
+            </td>
+            <td class="text-right"></td>
+            <td class="text-right">
+              <input type="number" class="form-control text-right" disabled 
+                placeholder="Enter Base Price Per${inventory.packagingUnitOfMeasure.name}" 
+                value.bind="inventory.basePriceAmount * inventory.packagingSize"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td class="text-right">
+              <label class="control-label">Retail Price: </label>
+            </td>
+            <td class="text-right">
+              <input type="number" class="form-control text-right" 
+                placeholder="Enter Retail Price Per ${inventory.unitOfMeasure.name}" 
+                value.bind="inventory.retailPriceAmount"
+              />
+            </td>
+            <td class="text-right"></td>
+            <td class="text-right">
+              <input type="number" class="form-control text-right" disabled 
+                placeholder="Enter Retail Price Per${inventory.packagingUnitOfMeasure.name}" 
+                value.bind="inventory.retailPriceAmount * inventory.packagingSize"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td class="text-right">
+              <label class="control-label">Wholesale Price: </label>
+            </td>
+            <td class="text-right">
+              <input type="number" class="form-control text-right" 
+                placeholder="Enter Wholesale Price Per ${inventory.unitOfMeasure.name}" 
+                value.bind="inventory.wholesalePriceAmount"
+              />
+            </td>
+            <td class="text-right"></td>
+            <td class="text-right">
+              <input type="number" class="form-control text-right" disabled 
+                placeholder="Enter Wholesale Price Per${inventory.packagingUnitOfMeasure.name}" 
+                value.bind="inventory.wholesalePriceAmount * inventory.packagingSize"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td class="text-right">
+              <label class="control-label">Bad Stock Price: </label>
+            </td>
+            <td class="text-right">
+              <input type="number" class="form-control text-right" 
+                placeholder="Enter Bad Stock Price Per ${inventory.unitOfMeasure.name}" 
+                value.bind="inventory.badStockPriceAmount"
+              />
+            </td>
+            <td class="text-right"></td>
+            <td class="text-right">
+              <input type="number" class="form-control text-right" disabled 
+                placeholder="Enter Bad Stock Price Per${inventory.packagingUnitOfMeasure.name}" 
+                value.bind="inventory.badStockPriceAmount * inventory.packagingSize"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
     </div>
 
   </div>
@@ -147,32 +221,28 @@
         <div class="form-group">
           <label class="control-label col-sm-4">Received:</label>
           <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.receivedValue" disabled
-            />
+            <input type="number" class="form-control text-right" value.bind="inventory.receivedValue" disabled />
           </div>
         </div>
 
         <div class="form-group">
           <label class="control-label col-sm-4">On Order:</label>
           <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.onOrderValue" disabled
-            />
+            <input type="number" class="form-control text-right" value.bind="inventory.onOrderValue" disabled />
           </div>
         </div>
 
         <div class="form-group">
           <label class="control-label col-sm-4">Shipped:</label>
           <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.shippedValue" disabled
-            />
+            <input type="number" class="form-control text-right" value.bind="inventory.shippedValue" disabled />
           </div>
         </div>
 
         <div class="form-group">
           <label class="control-label col-sm-4">Back Ordered:</label>
           <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.backOrderedValue" disabled
-            />
+            <input type="number" class="form-control text-right" value.bind="inventory.backOrderedValue" disabled />
           </div>
         </div>
 
@@ -184,32 +254,28 @@
         <div class="form-group">
           <label class="control-label col-sm-4">On Hand:</label>
           <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.onHandValue" disabled
-            />
+            <input type="number" class="form-control text-right" value.bind="inventory.onHandValue" disabled />
           </div>
         </div>
 
         <div class="form-group">
           <label class="control-label col-sm-4">Available:</label>
           <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.availableValue" disabled
-            />
+            <input type="number" class="form-control text-right" value.bind="inventory.availableValue" disabled />
           </div>
         </div>
 
         <div class="form-group">
           <label class="control-label col-sm-4">Below Target:</label>
           <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.belowTargetLevelValue" disabled
-            />
+            <input type="number" class="form-control text-right" value.bind="inventory.belowTargetLevelValue" disabled />
           </div>
         </div>
 
         <div class="form-group">
           <label class="control-label col-sm-4">Total Shrinkage:</label>
           <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.shrinkageValue" disabled
-            />
+            <input type="number" class="form-control text-right" value.bind="inventory.shrinkageValue" disabled />
           </div>
         </div>
 

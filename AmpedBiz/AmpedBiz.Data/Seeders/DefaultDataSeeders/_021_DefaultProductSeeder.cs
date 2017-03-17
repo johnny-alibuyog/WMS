@@ -46,7 +46,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                     PriceToDownlinePerPackage = Convert.ToDecimal(x["Price to Downline Per Package"].Cast<double>()),
                     SuggestedRetailPrice = Convert.ToDecimal(x["Suggested Retail Price"].Cast<double>()),
                     IndividualBarcode = x["Individual Barcode"].ToString(),
-                    PackageBarcode = x["Package Barcode"].ToString(),
+                    PackagingBarcode = x["Packaging Barcode"].ToString(),
                     Category = x["Category"].ToString(),
                 })
                 .ToList();
@@ -102,6 +102,8 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                         product.Name = x.Name;
                         product.Supplier = defaults.Supplier;
                         product.Category = session.Load<ProductCategory>(x.Category);
+                        product.Inventory.IndividualBarcode = x.IndividualBarcode;
+                        product.Inventory.PackagingBarcode = x.PackagingBarcode;
                         product.Inventory.PackagingSize = x.PiecePerPackage;
                         product.Inventory.UnitOfMeasure = unitOfMeasure.Individual;
                         product.Inventory.PackagingUnitOfMeasure = unitOfMeasure.Packaging;

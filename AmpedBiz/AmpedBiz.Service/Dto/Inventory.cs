@@ -7,7 +7,7 @@ namespace AmpedBiz.Service.Dto
     {
         public virtual Guid Id { get; set; }
 
-        public virtual string Barcode { get; set; }
+        public virtual string IndividualBarcode { get; set; }
 
         public virtual string PackagingBarcode { get; set; }
 
