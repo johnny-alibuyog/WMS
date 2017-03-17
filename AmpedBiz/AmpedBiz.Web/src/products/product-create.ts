@@ -7,9 +7,9 @@ import { NotificationService } from '../common/controls/notification-service';
 
 @autoinject
 export class ProductCreate {
-  private _api: ServiceApi;
-  private _router: Router;
-  private _notification: NotificationService;
+  private readonly _api: ServiceApi;
+  private readonly _router: Router;
+  private readonly _notification: NotificationService;
 
   public header: string = 'Create Product';
   public isEdit: boolean = false;

@@ -30,7 +30,7 @@ namespace AmpedBiz.Service.Customers
                     // compose filters
                     message.Filter.Compose<string>("code", value =>
                     {
-                        query = query.Where(x => x.Id.ToLower().Contains(value.ToLower()));
+                        query = query.Where(x => x.Code.ToLower().Contains(value.ToLower()));
                     });
 
                     message.Filter.Compose<string>("name", value =>
@@ -42,8 +42,8 @@ namespace AmpedBiz.Service.Customers
                     message.Sorter.Compose("code", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Id)
-                            : query.OrderByDescending(x => x.Id);
+                            ? query.OrderBy(x => x.Code)
+                            : query.OrderByDescending(x => x.Code);
                     });
 
                     // compose sort
@@ -58,6 +58,7 @@ namespace AmpedBiz.Service.Customers
                         .Select(x => new Dto.CustomerPageItem()
                         {
                             Id = x.Id,
+                            Code = x.Code,
                             Name = x.Name,
                             CreditLimitAmount = x.CreditLimit.ToStringWithSymbol(),
                             PricingName = x.Pricing.Name,

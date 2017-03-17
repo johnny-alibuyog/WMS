@@ -2,9 +2,11 @@ import { Lookup } from '../custom_types/lookup';
 
 export interface Inventory {
   id?: string;
+  barcode?: string;
+  packagingBarcode?: string;
   unitOfMeasure?: Lookup<string>;
-  unitOfMeasureBase?: Lookup<string>;
-  conversionFactor?: number;
+  packagingUnitOfMeasure?: Lookup<string>;
+  packagingSize?: number;
   basePriceAmount?: number;
   retailPriceAmount?: number;
   wholesalePriceAmount?: number;

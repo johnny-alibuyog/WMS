@@ -7,6 +7,8 @@ namespace AmpedBiz.Service.Dto
     {
         public Guid Id { get; set; }
 
+        public string Code { get; set; }
+
         public string Name { get; set; }
 
         public string Description { get; set; }
@@ -31,6 +33,8 @@ namespace AmpedBiz.Service.Dto
     {
         public string Id { get; set; }
 
+        public string Code { get; set; }
+
         public string Name { get; set; }
 
         public string Description { get; set; }
@@ -54,6 +58,8 @@ namespace AmpedBiz.Service.Dto
     {
         public string Id { get; set; }
 
+        public string Code { get; set; }
+
         public string Name { get; set; }
 
         public string Description { get; set; }
@@ -75,9 +81,13 @@ namespace AmpedBiz.Service.Dto
     {
         public Guid Id { get; set; }
 
+        public string Code { get; set; }
+
         public string Name { get; set; }
 
         public string UnitOfMeasure { get; set; }
+
+        public string PackagingUnitOfMeasure { get; set; }
 
         public decimal? TargetValue { get; set; }
 
@@ -99,6 +109,8 @@ namespace AmpedBiz.Service.Dto
     public class ProductInventoryLevelPageItem
     {
         public Guid Id { get; set; }
+
+        public string Code { get; set; }
 
         public string Name { get; set; }
 
@@ -159,6 +171,8 @@ namespace AmpedBiz.Service.Dto
     {
         public string Id { get; set; }
 
+        public string ProductCode { get; set; }
+
         public string ProductName { get; set; }
 
         public string SupplierName { get; set; }
@@ -177,6 +191,8 @@ namespace AmpedBiz.Service.Dto
     public class ProductReportPageItem
     {
         public Guid Id { get; set; }
+
+        public string ProductCode { get; set; }
 
         public string ProductName { get; set; }
 

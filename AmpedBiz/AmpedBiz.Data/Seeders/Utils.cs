@@ -70,5 +70,13 @@ namespace AmpedBiz.Data.Seeders
         {
             return _random.NextDouble() > 0.5;
         }
+
+        public string RandomString(int? length = null)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            length = length ?? chars.Length;
+            return new string(Enumerable.Repeat(chars, length.Value)
+              .Select(x => x[_random.Next(x.Length)]).ToArray());
+        }
     }
 }

@@ -101,7 +101,7 @@ namespace AmpedBiz.Service.Orders
                         OrderedOn = message?.CreatedOn ?? DateTime.Now,
                         Branch = (!message?.Branch?.Id.IsNullOrDefault() ?? false)
                             ? session.Load<Branch>(message.Branch.Id) : null,
-                        Customer = (!message?.Customer?.Id.IsNullOrEmpty() ?? false)
+                        Customer = (!message?.Customer?.Id.IsNullOrDefault() ?? false)
                             ? session.Load<Customer>(message.Customer.Id) : null,
                         Shipper = (!message?.Shipper?.Id.IsNullOrEmpty() ?? false)
                             ? session.Load<Shipper>(message.Shipper.Id) : null,

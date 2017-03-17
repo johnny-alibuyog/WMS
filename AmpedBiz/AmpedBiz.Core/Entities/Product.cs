@@ -4,6 +4,8 @@ namespace AmpedBiz.Core.Entities
 {
     public class Product : Entity<Guid, Product>
     {
+        public virtual string Code { get; set; }
+
         public virtual string Name { get; set; }
 
         public virtual string Description { get; set; }

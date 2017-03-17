@@ -3,7 +3,7 @@
 
   <section class="row row-no-padding">
 
-    <div class="col-md-10">
+    <div class="col-md-11">
 
       <div class="panel panel-default">
 
@@ -39,12 +39,14 @@
             <thead>
               <tr class="row-no-padding">
                 <th class="col-sm-1">Action</th>
-                <th class="col-md-1" click.delegate="sorter.doSort('name')">
+                <th class="col-md-3" click.delegate="sorter.doSort('name')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['name'])}"></i>Name
                 </th>
-                <th class="col-md-1" click.delegate="sorter.doSort('supplier')">
+                <!--
+                <th class="col-md-2" click.delegate="sorter.doSort('supplier')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['supplier'])}"></i>Supplier
                 </th>
+                -->
                 <!--
                 <th class="col-md-1" click.delegate="sorter.doSort('unitOfMeasure')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['unitOfMeasure'])}"></i>UOM
@@ -82,7 +84,7 @@
                   </a>
                 </td>
                 <td>${item.name}</td>
-                <td>${item.supplier}</td>
+                <!--<td>${item.supplier}</td>-->
                 <!--<td>${item.unitOfMeasure}</td>-->
                 <td class="text-right">${item.onHandValue | numberFormat:'0,0'}</td>
                 <td class="text-right">${item.allocatedValue | numberFormat:'0,0'}</td>

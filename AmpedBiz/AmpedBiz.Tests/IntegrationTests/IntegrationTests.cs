@@ -165,10 +165,10 @@ namespace AmpedBiz.Tests.IntegrationTests
             return new Lookup<string>(random.Id, random.Name);
         }
 
-        private Lookup<string> RandomCustomer()
+        private Lookup<Guid> RandomCustomer()
         {
             var random = this._customers[this.random.Next(0, this._customers.Count - 1)];
-            return new Lookup<string>(random.Id, random.Name);
+            return new Lookup<Guid>(random.Id, random.Name);
         }
 
         private Lookup<Guid> RandomSupplier()
@@ -296,6 +296,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     BillingAddress = custData.BillingAddress,
                     CreditLimitAmount = custData.CreditLimitAmount,
                     Name = custData.Name,
+                    Code = custData.Code,
                     OfficeAddress = custData.OfficeAddress,
                     PricingId = custData.PricingId
                 };

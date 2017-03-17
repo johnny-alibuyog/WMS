@@ -12,6 +12,12 @@ namespace AmpedBiz.Data.EntityDefinitions
             Define(x => x.Product)
                 .IsValid();
 
+            Define(x => x.IndividualBarcode)
+                .MaxLength(255);
+
+            Define(x => x.PackagingBarcode)
+                .MaxLength(255);
+
             Define(x => x.UnitOfMeasure);
 
             Define(x => x.PackagingUnitOfMeasure);

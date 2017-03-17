@@ -31,8 +31,8 @@ namespace AmpedBiz.Service.Products
                     message.Sorter.Compose("code", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Id)
-                            : query.OrderByDescending(x => x.Id);
+                            ? query.OrderBy(x => x.Code)
+                            : query.OrderByDescending(x => x.Code);
                     });
 
                     message.Sorter.Compose("name", direction =>
@@ -88,6 +88,7 @@ namespace AmpedBiz.Service.Products
                         .Select(x => new Dto.DiscontinuedPageItem()
                         {
                             Id = x.Id.ToString(),
+                            Code = x.Code,
                             Name = x.Name,
                             Description = x.Description,
                             SupplierName = x.Supplier.Name,

@@ -13,6 +13,10 @@ namespace AmpedBiz.Data.EntityDefinitions
             HasOne(x => x.Product)
                 .Constrained();
 
+            Map(x => x.IndividualBarcode);
+
+            Map(x => x.PackagingBarcode);
+
             References(x => x.UnitOfMeasure);
 
             References(x => x.PackagingUnitOfMeasure);

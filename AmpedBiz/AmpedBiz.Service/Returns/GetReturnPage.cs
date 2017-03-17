@@ -3,6 +3,7 @@ using AmpedBiz.Service.Common;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
+using System;
 using System.Linq;
 
 namespace AmpedBiz.Service.Returns
@@ -32,7 +33,7 @@ namespace AmpedBiz.Service.Returns
                         query = query.Where(x => x.Branch.Id.ToString() == value);
                     });
 
-                    message.Filter.Compose<string>("customer", value =>
+                    message.Filter.Compose<Guid>("customer", value =>
                     {
                         query = query.Where(x => x.Customer.Id == value);
                     });

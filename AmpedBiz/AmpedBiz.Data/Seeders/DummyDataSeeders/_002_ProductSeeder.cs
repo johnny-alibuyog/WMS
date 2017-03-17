@@ -25,6 +25,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
             {
                 data.Add(new Product()
                 {
+                    Code = $"Code {1}",
                     Name = $"Product {i}",
                     Description = $"Description {i}",
                     Image = $"some_image_{i}.png"
@@ -50,9 +51,12 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         prices.WholesalePrice = new Money(_utils.RandomDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.RetailPrice.Amount), currency);
                         prices.BadStockPrice = new Money(prices.BasePrice.Amount * 0.10M, currency);
 
+                        item.Code = _utils.RandomString(length: 25);
                         item.Category = _utils.Random<ProductCategory>();
                         item.Supplier = _utils.Random<Supplier>();
                         item.Discontinued = _utils.RandomBoolean();
+                        item.Inventory.IndividualBarcode = _utils.RandomString(length: 25);
+                        item.Inventory.PackagingBarcode = _utils.RandomString(length: 25);
                         item.Inventory.UnitOfMeasure = _utils.Random<UnitOfMeasure>();
                         item.Inventory.PackagingUnitOfMeasure = _utils.Random<UnitOfMeasure>();
                         item.Inventory.PackagingSize = _utils.RandomInteger(1, 24);

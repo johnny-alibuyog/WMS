@@ -33,6 +33,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
             {
                 data.Add(new Supplier()
                 {
+                    Code = $"Code {i}",
                     Name = $"Supplier {i}",
                     Address = new Address()
                     {

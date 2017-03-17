@@ -1,19 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Customer : Entity<string, Customer>
+    public class Customer : Entity<Guid, Customer>
     {
-        public virtual string Name { get; set; }
+        public virtual string Code { get; set; }
 
-        public virtual Money CreditLimit { get; set; }
+        public virtual string Name { get; set; }
 
         public virtual Pricing Pricing { get; set; }
 
-        public virtual Tenant Tenant { get; set; }
-
         public virtual Contact Contact { get; set; }
+
+        public virtual bool IsActive { get; set; }
+
+        public virtual Money CreditLimit { get; set; }
 
         public virtual Address OfficeAddress { get; set; }
 
@@ -23,8 +26,8 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<Location> Locations { get; set; } = new Collection<Location>();
 
-        public Customer() : base(default(string)) { }
+        public Customer() : base(default(Guid)) { }
 
-        public Customer(string id) : base(id) { }
+        public Customer(Guid id) : base(id) { }
     }
 }

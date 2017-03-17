@@ -31,7 +31,7 @@ namespace AmpedBiz.Service.Dto
 
         public Lookup<Guid> Branch { get; set; }
 
-        public Lookup<string> Customer { get; set; }
+        public Lookup<Guid> Customer { get; set; }
 
         public Lookup<string> Pricing { get; set; }
 

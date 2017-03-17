@@ -3,6 +3,7 @@ import { Contact } from './contact'
 
 export interface Customer {
   id?: string;
+  code?: string;
   name?: string;
   contact?: Contact;
   billingAddress?: Address;
@@ -11,6 +12,7 @@ export interface Customer {
 
 export interface CustomerPageItem {
   id?: string;
+  code?: string;
   name?: string;
   description?: string;
   address?: Address;
@@ -18,6 +20,7 @@ export interface CustomerPageItem {
 
 export interface CustomerReportPageItem {
   id?: string;
+  code?: string;
   name?: string;
   creditLimitAmount?: number;
   contact?: Contact;

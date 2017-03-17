@@ -103,6 +103,7 @@ namespace AmpedBiz.Service.Products
                         .Select(x => new Dto.ProductReportPageItem()
                         {
                             Id = x.Id,
+                            ProductCode = x.Code,
                             ProductName = x.Name,
                             CategoryName = x.Category.Name,
                             SupplierName = x.Supplier.Name,

@@ -48,6 +48,7 @@
     <Compile Include="Entities\Currency.cs" />
     <Compile Include="Entities\Delivery.cs" />
     <Compile Include="Entities\DeliveryItem.cs" />
+    <Compile Include="Entities\InventoryPricing.cs" />
     <Compile Include="Entities\Measure.cs" />
     <Compile Include="Entities\Money.cs" />
     <Compile Include="Entities\Order.cs" />

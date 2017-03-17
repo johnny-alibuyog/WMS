@@ -7,8 +7,10 @@ namespace AmpedBiz.Data.EntityDefinitions
     {
         public CustomerValidation()
         {
-            Define(x => x.Id)
-                .NotNullableAndNotEmpty();
+            Define(x => x.Id);
+
+            Define(x => x.Code)
+                .MaxLength(255);
 
             Define(x => x.Name)
                 .NotNullableAndNotEmpty()
@@ -17,13 +19,18 @@ namespace AmpedBiz.Data.EntityDefinitions
             Define(x => x.Pricing)
                 .IsValid();
 
+            Define(x => x.Contact)
+                .IsValid();
+
+            Define(x => x.IsActive);
+
+            Define(x => x.CreditLimit)
+                .IsValid();
+
             Define(x => x.OfficeAddress)
                 .IsValid();
 
             Define(x => x.BillingAddress)
-                .IsValid();
-
-            Define(x => x.CreditLimit)
                 .IsValid();
         }
     }

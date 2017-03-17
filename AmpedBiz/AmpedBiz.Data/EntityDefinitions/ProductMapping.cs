@@ -10,6 +10,8 @@ namespace AmpedBiz.Data.EntityDefinitions
             Id(x => x.Id)
                 .GeneratedBy.GuidComb();
 
+            Map(x => x.Code);
+
             Map(x => x.Name);
 
             Map(x => x.Description);

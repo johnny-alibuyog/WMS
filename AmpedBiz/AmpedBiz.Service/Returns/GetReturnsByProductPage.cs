@@ -30,6 +30,7 @@ namespace AmpedBiz.Service.Returns
                         .Select(x => new Dto.ReturnsByProductPageItem()
                         {
                             Id = x.Key,
+                            ProductCode = x.Max(o => o.Product.Code),
                             ProductName = x.Max(o => o.Product.Name),
                             QuantityValue = x.Sum(o => o.Quantity.Value),
                             TotalAmount = x.Sum(o => o.TotalPrice.Amount)

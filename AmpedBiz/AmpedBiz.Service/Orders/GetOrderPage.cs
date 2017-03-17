@@ -3,6 +3,7 @@ using AmpedBiz.Service.Common;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
+using System;
 using System.Linq;
 
 namespace AmpedBiz.Service.Orders
@@ -37,7 +38,7 @@ namespace AmpedBiz.Service.Orders
                         query = query.Where(x => x.Status == value);
                     });
 
-                    message.Filter.Compose<string>("customer", value =>
+                    message.Filter.Compose<Guid>("customer", value =>
                     {
                         query = query.Where(x => x.Customer.Id == value);
                     });

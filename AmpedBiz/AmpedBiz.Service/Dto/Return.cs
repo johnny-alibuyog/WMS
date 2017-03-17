@@ -10,7 +10,7 @@ namespace AmpedBiz.Service.Dto
 
         public virtual Lookup<Guid> Branch { get; set; }
 
-        public virtual Lookup<string> Customer { get; set; }
+        public virtual Lookup<Guid> Customer { get; set; }
 
         public virtual Lookup<Guid> ReturnedBy { get; set; }
 
@@ -42,7 +42,7 @@ namespace AmpedBiz.Service.Dto
 
     public class ReturnsByCustomerPageItem
     {
-        public virtual string Id { get; set; }
+        public virtual Guid Id { get; set; }
 
         public virtual string CustomerName { get; set; }
 
@@ -52,6 +52,8 @@ namespace AmpedBiz.Service.Dto
     public class ReturnsByProductPageItem
     {
         public virtual Guid Id { get; set; }
+
+        public virtual string ProductCode { get; set; }
 
         public virtual string ProductName { get; set; }
 

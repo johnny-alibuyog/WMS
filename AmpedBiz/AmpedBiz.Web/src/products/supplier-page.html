@@ -3,7 +3,7 @@
 
   <section class="row row-no-padding">
 
-    <div class="col-md-10">
+    <div class="col-md-11">
 
       <div class="panel panel-default">
 
@@ -43,7 +43,10 @@
             <thead>
               <tr>
                 <th class="col-md-1">Action</th>
-                <th class="col-md-2" click.delegate="sorter.doSort('name')">
+                <th class="col-md-2" click.delegate="sorter.doSort('code')">
+                  <i class="fa fa-fw fa-${sorter.class(sorter['code'])}"></i>Code
+                </th>
+                <th class="col-md-3" click.delegate="sorter.doSort('name')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['name'])}"></i>Name
                 </th>
                 <th class="col-md-3">Contact</th>
@@ -60,6 +63,7 @@
                     <i class="fa fa-times"></i>
                   </a>
                 </td>
+                <td>${item.code}</td>
                 <td>${item.name}</td>
                 <td>
                   <contact-display contact.bind="item.contact" />

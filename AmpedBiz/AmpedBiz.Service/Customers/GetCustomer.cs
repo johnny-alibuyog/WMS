@@ -3,6 +3,7 @@ using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
+using System;
 
 namespace AmpedBiz.Service.Customers
 {
@@ -10,7 +11,7 @@ namespace AmpedBiz.Service.Customers
     {
         public class Request : IRequest<Response>
         {
-            public string Id { get; set; }
+            public Guid Id { get; set; }
         }
 
         public class Response : Dto.Customer { }

@@ -115,10 +115,9 @@ namespace AmpedBiz.Tests.IntegrationTests
                 BillingAddress = this.GenerateAddress(),
                 Contact = this.GenerateContact(),
                 CreditLimitAmount = 1000.00M,
-                Id = this.GenerateUniqueString("Id_"),
                 Name = this.GenerateUniqueString("Name_"),
+                Code = this.GenerateUniqueString("Code_"),
                 OfficeAddress = this.GenerateAddress(),
-                //PricingId = 
             };
         }
 

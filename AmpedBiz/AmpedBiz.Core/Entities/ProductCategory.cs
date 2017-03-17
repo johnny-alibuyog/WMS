@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace AmpedBiz.Core.Entities
 {
     public class ProductCategory : Entity<string, ProductCategory>
     {
-        public virtual int TenantId { get; set; }
-
         public virtual string Name { get; set; }
 
         public ProductCategory() : base(default(string)) { }

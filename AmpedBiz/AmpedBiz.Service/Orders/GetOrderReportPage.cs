@@ -29,7 +29,7 @@ namespace AmpedBiz.Service.Orders
                     var query = session.Query<Order>();
 
                     // compose filter
-                    message.Filter.Compose<string>("customerId", value =>
+                    message.Filter.Compose<Guid>("customerId", value =>
                     {
                         query = query.Where(x => x.Customer.Id == value);
                     });

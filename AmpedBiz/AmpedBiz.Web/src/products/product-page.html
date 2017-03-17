@@ -3,7 +3,7 @@
 
   <section class="row row-no-padding">
 
-    <div class="col-md-10">
+    <div class="col-md-11">
 
       <div class="panel panel-default">
 
@@ -43,10 +43,10 @@
             <thead>
               <tr>
                 <th class="col-md-1">Action</th>
-                <th class="col-md-2" click.delegate="sorter.doSort('name')">
+                <th class="col-md-3" click.delegate="sorter.doSort('name')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['name'])}"></i>Name
                 </th>
-                <th class="col-md-2" click.delegate="sorter.doSort('category')">
+                <th class="col-md-3" click.delegate="sorter.doSort('category')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['category'])}"></i>Category
                 </th>
                 <th class="col-md-2" click.delegate="sorter.doSort('supplier')">
@@ -65,7 +65,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr repeat.for="item of pager.items">
+              <tr repeat.for="item of pager.items" click.delegate="edit(item)">
                 <td click.delegate="edit(item)">
                   <a href="javascript:undefined" class="text-info" click.delegate="edit(item)">
                     <i class="fa fa-pencil"></i>

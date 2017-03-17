@@ -6,6 +6,8 @@ namespace AmpedBiz.Core.Entities
 {
     public class Supplier : Entity<Guid, Supplier>
     {
+        public virtual string Code { get; set; }
+
         public virtual string Name { get; set; }
 
         public virtual Address Address { get; set; }

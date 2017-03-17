@@ -3,7 +3,7 @@
 
   <section class="row row-no-padding">
 
-    <div class="col-md-10">
+    <div class="col-md-11">
 
       <div class="panel panel-default">
 
@@ -73,13 +73,13 @@
 
             <thead>
               <tr>
-                <th class="col-md-2" click.delegate="sorter.doSort('productName')">
+                <th class="col-md-3" click.delegate="sorter.doSort('productName')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['productName'])}"></i>Product
                 </th>
-                <th class="col-md-2" click.delegate="sorter.doSort('categoryName')">
+                <th class="col-md-3" click.delegate="sorter.doSort('categoryName')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['categoryName'])}"></i>Category
                 </th>
-                <th class="col-md-2" click.delegate="sorter.doSort('supplierName')">
+                <th class="col-md-3" click.delegate="sorter.doSort('supplierName')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['supplierName'])}"></i>Supplier
                 </th>
                 <th class="col-md-1 text-right" click.delegate="sorter.doSort('onHandValue')">

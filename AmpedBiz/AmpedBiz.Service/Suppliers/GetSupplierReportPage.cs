@@ -44,6 +44,7 @@ namespace AmpedBiz.Service.Suppliers
                         .Select(x => new Dto.SupplierReportPageItem()
                         {
                             Id = x.Id,
+                            Code = x.Code,
                             Name = x.Name,
                             Contact = new Dto.Contact()
                             {

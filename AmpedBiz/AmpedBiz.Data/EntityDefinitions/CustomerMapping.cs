@@ -8,11 +8,17 @@ namespace AmpedBiz.Data.EntityDefinitions
         public CustomerMapping()
         {
             Id(x => x.Id)
-                .GeneratedBy.Assigned();
+                .GeneratedBy.GuidComb();
+
+            Map(x => x.Code);
 
             Map(x => x.Name);
 
             References(x => x.Pricing);
+
+            Component(x => x.Contact);
+
+            Map(x => x.IsActive);
 
             Component(x => x.CreditLimit, 
                 MoneyMapping.Map("CreditLimit_", nameof(Customer)));
@@ -22,9 +28,6 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Component(x => x.BillingAddress, 
                 AddressMapping.Map("Billing_"));
-
-            Component(x => x.Contact);
-
         }
     }
 }

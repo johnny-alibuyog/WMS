@@ -3,6 +3,7 @@ import { Contact } from './contact';
 
 export interface Supplier {
   id?: string;
+  code?: string;
   name?: string;
   address?: Address;
   contact?: Contact;
@@ -10,6 +11,7 @@ export interface Supplier {
 
 export interface SupplierPageItem {
   id?: string;
+  code?: string;
   name?: string;
   address?: Address;
   contact?: Contact;
@@ -17,6 +19,7 @@ export interface SupplierPageItem {
 
 export interface SupplierReportPageItem {
   id?: string;
+  code?: string;
   name?: string;
   contact?: Contact;
   address?: Address;

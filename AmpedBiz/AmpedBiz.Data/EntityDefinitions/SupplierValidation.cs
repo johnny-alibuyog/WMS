@@ -9,6 +9,9 @@ namespace AmpedBiz.Data.EntityDefinitions
         {
             Define(x => x.Id);
 
+            Define(x => x.Code)
+                .MaxLength(150);
+
             Define(x => x.Name)
                 .NotNullableAndNotEmpty()
                 .And.MaxLength(150);

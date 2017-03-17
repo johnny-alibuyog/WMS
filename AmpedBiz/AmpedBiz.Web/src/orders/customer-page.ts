@@ -1,5 +1,5 @@
+import { Router, RouteConfig, NavigationInstruction } from 'aurelia-router';
 import { autoinject } from 'aurelia-framework';
-import { DialogService } from 'aurelia-dialog';
 import { CustomerCreate } from './customer-create';
 import { Customer, CustomerPageItem } from '../common/models/customer';
 import { ServiceApi } from '../services/service-api';
@@ -9,7 +9,7 @@ import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } fro
 @autoinject
 export class CustomerPage {
   private _api: ServiceApi;
-  private _dialog: DialogService;
+  private _router: Router;
   private _notification: NotificationService;
 
   public header: string = ' Customers';
@@ -18,9 +18,9 @@ export class CustomerPage {
   public sorter: Sorter;
   public pager: Pager<CustomerPageItem>;
 
-  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<CustomerPageItem>) {
+  constructor(api: ServiceApi, router: Router, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<CustomerPageItem>) {
     this._api = api;
-    this._dialog = dialog;
+    this._router = router;
     this._notification = notification;
 
     this.filter = filter;
@@ -59,13 +59,11 @@ export class CustomerPage {
   }
 
   public create(): void {
-    this._dialog.open({ viewModel: CustomerCreate, model: null })
-      .then(response => { if (!response.wasCancelled) this.getPage(); });
+    this._router.navigateToRoute('customer-create');
   }
 
   public edit(item: CustomerPageItem): void {
-    this._dialog.open({ viewModel: CustomerCreate, model: <Customer>{ id: item.id } })
-      .then(response => { if (!response.wasCancelled) this.getPage(); });
+    this._router.navigateToRoute('customer-create', <Customer>{ id: item.id });
   }
 
   public delete(item: any): void {

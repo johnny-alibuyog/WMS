@@ -1,8 +1,12 @@
-﻿namespace AmpedBiz.Service.Dto
+﻿using System;
+
+namespace AmpedBiz.Service.Dto
 {
     public class Customer
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
+
+        public string Code { get; set; }
 
         public string Name { get; set; }
 
@@ -19,7 +23,9 @@
 
     public class CustomerPageItem
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
+
+        public string Code { get; set; }
 
         public string Name { get; set; }
 
@@ -36,7 +42,9 @@
 
     public class CustomerReportPageItem
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
+
+        public string Code { get; set; }
 
         public string Name { get; set; }
 

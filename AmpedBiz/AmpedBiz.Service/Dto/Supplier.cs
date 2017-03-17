@@ -6,6 +6,8 @@ namespace AmpedBiz.Service.Dto
     {
         public virtual Guid Id { get; set; }
 
+        public virtual string Code { get; set; }
+
         public virtual string Name { get; set; }
 
         public virtual Address Address { get; set; }
@@ -17,6 +19,8 @@ namespace AmpedBiz.Service.Dto
     {
         public virtual Guid Id { get; set; }
 
+        public virtual string Code { get; set; }
+
         public virtual string Name { get; set; }
 
         public virtual Address Address { get; set; }
@@ -27,6 +31,8 @@ namespace AmpedBiz.Service.Dto
     public class SupplierReportPageItem
     {
         public virtual Guid Id { get; set; }
+
+        public virtual string Code { get; set; }
 
         public virtual string Name { get; set; }
 

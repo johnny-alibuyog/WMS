@@ -33,8 +33,10 @@ namespace AmpedBiz.Service.Products
                         .Select(x => new Dto.ProductInventory()
                         {
                             Id = x.Id,
+                            Code = x.Code,
                             Name = x.Name,
                             UnitOfMeasure = x.Inventory.UnitOfMeasure.Name,
+                            PackagingUnitOfMeasure = x.Inventory.PackagingUnitOfMeasure.Name,
                             TargetValue = x.Inventory.TargetLevel.Value,
                             AvailableValue = x.Inventory.Available.Value,
                             BadStockValue = x.Inventory.BadStock.Value,

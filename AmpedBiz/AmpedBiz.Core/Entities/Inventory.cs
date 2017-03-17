@@ -8,6 +8,10 @@ namespace AmpedBiz.Core.Entities
     {
         public virtual Product Product { get; protected set; }
 
+        public virtual string IndividualBarcode { get; set; }
+
+        public virtual string PackagingBarcode { get; set; }
+
         public virtual UnitOfMeasure UnitOfMeasure { get; set; }
 
         public virtual UnitOfMeasure PackagingUnitOfMeasure { get; set; }

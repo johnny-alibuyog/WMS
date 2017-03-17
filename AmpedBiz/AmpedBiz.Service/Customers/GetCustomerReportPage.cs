@@ -51,6 +51,7 @@ namespace AmpedBiz.Service.Customers
                         .Select(x => new Dto.CustomerReportPageItem()
                         {
                             Id = x.Id,
+                            Code = x.Code,
                             Name = x.Name,
                             Contact = new Dto.Contact()
                             {

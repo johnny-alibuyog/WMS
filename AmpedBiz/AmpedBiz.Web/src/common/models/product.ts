@@ -2,6 +2,7 @@ import { Inventory } from './inventory';
 
 export interface Product {
   id?: string;
+  code?: string;
   name?: string
   description?: string;
   supplierId?: string;
@@ -13,6 +14,7 @@ export interface Product {
 
 export interface ProductPageItem {
   id?: string;
+  code?: string;
   name?: string
   description?: string;
   supplierName?: string;
@@ -26,6 +28,7 @@ export interface ProductPageItem {
 
 export interface DiscontinuedPageItem {
   id?: string;
+  code?: string;
   name?: string
   description?: string;
   supplierName?: string;
@@ -38,6 +41,7 @@ export interface DiscontinuedPageItem {
 
 export interface ProductInventory {
   id?: string;
+  code?: string;
   name?: string;
   unitOfMeasure?: string;
   targetValue?: number;
@@ -52,6 +56,7 @@ export interface ProductInventory {
 
 export interface InventoryLevelPageItem {
   id?: string;
+  code?: string;
   name?: string;
   unitOfMeasure?: string;
   onHandValue?: number;
@@ -85,6 +90,7 @@ export interface ProductOrderPageItem {
 
 export interface NeedsReorderingPageItem {
   id?: string;
+  productCode?: string;
   productName?: string;
   supplierName?: string;
   categoryName?: string;
@@ -102,6 +108,7 @@ export interface ForPurchasing {
 
 export class ProductReportPageItem {
   id?: string;
+  productCode?: string;
   productName?: string;
   categoryName?: string;
   supplierName?: string;

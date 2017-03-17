@@ -27,10 +27,10 @@ namespace AmpedBiz.Service.Products
                     var query = session.Query<Product>();
 
                     // compose filters
-                    //message.Filter.Compose<string>("code", value =>
-                    //{
-                    //    query = query.Where(x => x.Id.ToLower().Contains(value.ToLower()));
-                    //});
+                    message.Filter.Compose<string>("code", value =>
+                    {
+                        query = query.Where(x => x.Code.ToLower().Contains(value.ToLower()));
+                    });
 
                     message.Filter.Compose<string>("name", value =>
                     {
@@ -48,12 +48,12 @@ namespace AmpedBiz.Service.Products
                     });
 
                     // compose sort
-                    //message.Sorter.Compose("code", direction =>
-                    //{
-                    //    query = direction == SortDirection.Ascending
-                    //        ? query.OrderBy(x => x.Id)
-                    //        : query.OrderByDescending(x => x.Id);
-                    //});
+                    message.Sorter.Compose("code", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.Code)
+                            : query.OrderByDescending(x => x.Code);
+                    });
 
                     message.Sorter.Compose("name", direction =>
                     {
@@ -108,6 +108,7 @@ namespace AmpedBiz.Service.Products
                         .Select(x => new Dto.ProductPageItem()
                         {
                             Id = x.Id.ToString(),
+                            Code = x.Code,
                             Name = x.Name,
                             Description = x.Description,
                             SupplierName = x.Supplier.Name,

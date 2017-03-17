@@ -35,16 +35,43 @@ export class CanModifyValueConverter {
 
 export class ProductCanBeChangedValueConverter {
 
-  toView(returnable: OrderReturnable): boolean {
-    var cannotBeChanged = new ProductCannotBeChangedValueConverter().toView;
-    return !cannotBeChanged(returnable);
+  toView(returnable: OrderReturnable, selected: OrderReturnable): boolean {
+    if (returnable !== selected) {
+      return false;
+    }
+
+    if (!returnable) {
+      return false;
+    }
+
+    if (returnable.returnableQuantity === 0) {
+      return false;
+    }
+
+    if (returnable.returnedQuantity > 0) {
+      return false;
+    }
+
+    return true;
   }
 }
 
 export class ProductCannotBeChangedValueConverter {
 
-  toView(returnable: OrderReturnable): boolean {
-    if (returnable && returnable.returnedQuantity > 0) {
+  toView(returnable: OrderReturnable, selected: OrderReturnable): boolean {
+    if (returnable !== selected) {
+      return true;
+    }
+
+    if (!returnable) {
+      return true;
+    }
+
+    if (returnable.returnableQuantity === 0) {
+      return true;
+    }
+
+    if (returnable.returnedQuantity > 0) {
       return true;
     }
 

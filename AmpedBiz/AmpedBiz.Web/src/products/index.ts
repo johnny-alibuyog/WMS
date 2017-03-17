@@ -50,13 +50,6 @@ export class Index {
         title: 'Unit of Measures'
       },
       {
-        route: ['unit-of-measure-class-page'],
-        name: 'unit-of-measure-class-page',
-        moduleId: './unit-of-measure-class-page',
-        nav: true,
-        title: 'Unit of Measures Class'
-      },
-      {
         route: ['product-create'],
         name: 'product-create',
         moduleId: './product-create',
