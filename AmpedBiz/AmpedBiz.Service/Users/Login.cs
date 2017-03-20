@@ -3,8 +3,6 @@ using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
-using NHibernate.Linq;
-using System.Linq;
 
 namespace AmpedBiz.Service.Users
 {

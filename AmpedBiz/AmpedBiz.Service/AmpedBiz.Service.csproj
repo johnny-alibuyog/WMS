@@ -194,6 +194,7 @@
     <Compile Include="Users\GetUserPage.cs" />
     <Compile Include="Users\GetUserList.cs" />
     <Compile Include="Users\Login.cs" />
+    <Compile Include="Users\Override.cs" />
     <Compile Include="Users\UpdateUser.cs" />
   </ItemGroup>
   <ItemGroup>
