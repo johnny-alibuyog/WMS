@@ -29,6 +29,9 @@ export class PurchaseOrderReceiptPage {
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public products: Lookup<string>[] = [];
 
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
+  public isModificationDisallowed: boolean = true;
+
   public receiptPager: Pager<PurchaseOrderReceipt> = new Pager<PurchaseOrderReceipt>();
 
   public receivablePager: Pager<PurchaseOrderReceivable> = new Pager<PurchaseOrderReceivable>();
@@ -89,6 +92,10 @@ export class PurchaseOrderReceiptPage {
   }
 
   private addItem(): void {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
     if (!this.receivables)
       this.receivables = [];
 
@@ -114,11 +121,19 @@ export class PurchaseOrderReceiptPage {
   }
 
   public editItem(_receivable: PurchaseOrderReceivable): void {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
     if (this.selectedItem !== _receivable)
       this.selectedItem = _receivable;
   }
 
   public deleteItem(_receivable: PurchaseOrderReceivable): void {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
     if (_receivable.orderedQuantity > 0) {
       this._notification.error("You cannot delete receipt item that has already been ordered.");
       return;

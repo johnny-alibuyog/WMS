@@ -18,7 +18,7 @@ export class IsModificationDisallowedToValueConverter {
       return false;
     }
 
-    return allowedModifications.find(x => x == OrderAggregate[aggregateString]) == undefined;
+    return allowedModifications.find(x => x == OrderAggregate[aggregateString]) === undefined;
   }
 }
 

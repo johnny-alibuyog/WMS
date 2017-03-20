@@ -27,6 +27,9 @@ export class OrderPaymentPage {
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public paymentTypes: Lookup<string>[] = [];
 
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
+  public isModificationDisallowed: boolean = true;
+
   public payable: OrderPayable;
 
   public paymentPager: Pager<OrderPayment> = new Pager<OrderPayment>();
@@ -84,6 +87,10 @@ export class OrderPaymentPage {
   }
 
   private addItem(): void {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
     if (!this.payments)
       this.payments = [];
 
@@ -100,11 +107,19 @@ export class OrderPaymentPage {
   }
 
   public editItem(_payment: OrderPayment): void {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
     if (this.selectedItem !== _payment)
       this.selectedItem = _payment;
   }
 
   public deleteItem(_payment: OrderPayment): void {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
     var index = this.payments.indexOf(_payment);
     if (index > -1) {
       this.payments.splice(index, 1);

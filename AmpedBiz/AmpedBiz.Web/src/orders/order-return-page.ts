@@ -31,6 +31,9 @@ export class OrderReturnPage {
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public reasons: Lookup<string>[] = [];
 
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
+  public isModificationDisallowed: boolean = true;
+
   public products: Lookup<string>[] = [];
 
   public returnPager: Pager<OrderReturn> = new Pager<OrderReturn>();
@@ -160,6 +163,10 @@ export class OrderReturnPage {
   }
 
   public addItem(): void {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
     if (!this.returnables)
       this.returnables = [];
 
@@ -189,11 +196,19 @@ export class OrderReturnPage {
   }
 
   public editItem(_returnable: OrderReturnable): void {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
     if (this.selectedItem !== _returnable)
       this.selectedItem = _returnable;
   }
 
   public deleteItem(_returnable: OrderReturnable): void {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
     if (_returnable.returnedQuantity > 0) {
       this._notification.error("You cannot delete return that has already been processed.");
       return;

@@ -147,10 +147,6 @@ export class OrderCreate {
     this._eventAggregator.publish(orderEvents.payment.add);
   }
 
-  public signalPricingSchemChanged(): void {
-    this._eventAggregator.publish(orderEvents.pricing.changed);
-  }
-
   public save(): void {
     // generate new returns from returnables >> returning items
     var newReturns = this._api.orders.generateNewReturnsFrom(this.order);

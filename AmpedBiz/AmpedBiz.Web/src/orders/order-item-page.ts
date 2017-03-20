@@ -8,16 +8,19 @@ import { Dictionary } from '../common/custom_types/dictionary';
 import { OrderItem, orderEvents } from '../common/models/order';
 import { pricing } from '../common/models/pricing';
 import { NotificationService } from '../common/controls/notification-service';
+import { ProductInventory } from '../common/models/product';
 
 @autoinject
 @customElement("order-item-page")
 export class OrderItemPage {
 
-  private _api: ServiceApi;
-  private _dialog: DialogService;
-  private _notification: NotificationService;
-  private _eventAggregator: EventAggregator;
+  private readonly _api: ServiceApi;
+  private readonly _dialog: DialogService;
+  private readonly _notification: NotificationService;
+  private readonly _eventAggregator: EventAggregator;
+
   private _subscriptions: Subscription[] = [];
+  private _productInventories: ProductInventory[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public orderId: string = '';
@@ -30,6 +33,9 @@ export class OrderItemPage {
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public products: Lookup<string>[] = [];
+
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
+  public isModificationDisallowed: boolean = true;
 
   public itemPager: Pager<OrderItem> = new Pager<OrderItem>();
 
@@ -44,16 +50,35 @@ export class OrderItemPage {
     this.itemPager.onPage = () => this.initializePage();
   }
 
+  private getUnitPriceAmount(product: Lookup<string>): Promise<number> {
+    let inventory = this._productInventories.find(x => x.id == product.id);
+
+    if (!this.pricing) {
+      this.pricing = pricing.wholesalePrice;
+    }
+
+    if (inventory) {
+      let unitPrice = pricing.getPriceAmount(this.pricing, inventory);
+      return Promise.resolve(unitPrice);
+    }
+    else {
+      return this._api.products.getInventory(product.id).then(data => {
+        if (data) {
+          this._productInventories.push(data);
+        }
+
+        let unitPrice = pricing.getPriceAmount(this.pricing, data);
+        return unitPrice;
+      });
+    }
+  }
+
   public attached(): void {
     this._subscriptions = [
       this._eventAggregator.subscribe(
         orderEvents.item.add,
         response => this.addItem()
       ),
-      this._eventAggregator.subscribe(
-        orderEvents.pricing.changed,
-        response => this.recomputeByPricingScheme()
-      )
     ];
   }
 
@@ -63,48 +88,33 @@ export class OrderItemPage {
 
   public itemsChanged(): void {
     this.initializePage();
+
+    let productIds = this.items.map(x => x.product.id);
+    this._api.products.getInventoryList(productIds)
+      .then(result => this._productInventories = result);
   }
 
-  public recomputeByPricingScheme(): void {
+  public pricingChanged(): void {
     if (!this.items) {
       this.items = [];
     }
 
-    // TODO: not a good idea. should make batch request. refactor soon
-    this.items.forEach(item => {
-      this.initializeItem(item);
-      /*
-      this._api.products.getInventory(item.product.id).then(data => {
-        if (!this.pricing){
-          this.pricing = pricing.wholesalePrice;
-        }
-
-        item.quantityValue = 1;
-        item.unitPriceAmount = pricing.getPriceAmount(this.pricing, data) || 0;
-        this.compute(item);
-      });
-      */
-    });
+    this.items.forEach(item => this.initializeItem(item));
   }
 
   public initializeItem(item: OrderItem): void {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
     if (!item.product) {
       item.quantityValue = 0;
       item.unitPriceAmount = 0;
       return;
     }
 
-    this._api.products.getInventory(item.product.id).then(data => {
-      if (!this.pricing) {
-        this.pricing = pricing.wholesalePrice;
-      }
-
-      //item.quantityValue = (this.pricing.id == pricing.badStockPrice.id)
-      //  ? data.badStockValue || 1 : data.availableValue || 1;
-
-      console.log(pricing.getPriceAmount(this.pricing, data));
-      item.unitPriceAmount = pricing.getPriceAmount(this.pricing, data);
-
+    this.getUnitPriceAmount(item.product).then(unitPrice => {
+      item.unitPriceAmount = unitPrice;
       this.compute(item);
     });
   }
@@ -127,6 +137,10 @@ export class OrderItemPage {
   }
 
   public addItem(): void {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
     if (!this.items)
       this.items = [];
 
@@ -141,11 +155,19 @@ export class OrderItemPage {
   }
 
   public editItem(item: OrderItem): void {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
     if (this.selectedItem !== item)
       this.selectedItem = item;
   }
 
   public deleteItem(item: OrderItem): void {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
     var index = this.items.indexOf(item);
     if (index > -1) {
       this.items.splice(index, 1);

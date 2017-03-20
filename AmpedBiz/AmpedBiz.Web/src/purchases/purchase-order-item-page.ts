@@ -27,6 +27,9 @@ export class PurchaseOrderItemPage {
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public products: Lookup<string>[] = [];
 
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
+  public isModificationDisallowed: boolean = true;
+
   public itemPager: Pager<PurchaseOrderItem> = new Pager<PurchaseOrderItem>();
 
   public selectedItem: PurchaseOrderItem;
@@ -58,6 +61,10 @@ export class PurchaseOrderItemPage {
   }
 
   initializeItem(item: PurchaseOrderItem): void {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
     if (!item.product) {
       item.quantityValue = 0;
       item.unitCostAmount = 0;
@@ -82,6 +89,10 @@ export class PurchaseOrderItemPage {
   }
 
   addItem(): void {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
     if (!this.items)
       this.items = [];
 
@@ -97,11 +108,19 @@ export class PurchaseOrderItemPage {
   }
 
   editItem(item: PurchaseOrderItem): void {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
     if (this.selectedItem !== item)
       this.selectedItem = item;
   }
 
   deleteItem(item: PurchaseOrderItem): void {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
     var index = this.items.indexOf(item);
     if (index > -1) {
       this.items.splice(index, 1);

@@ -92,7 +92,7 @@
                 <div class="form-group">
                   <label class="control-label col-sm-4">Pricing:</label>
                   <div class="col-sm-8">
-                    <select class="form-control" value.bind="order.pricing | lookupToId:pricings" change.delegate="signalPricingSchemChanged()">
+                    <select class="form-control" value.bind="order.pricing | lookupToId:pricings">
                       <option>Select Pricing</option>
                       <option repeat.for="pricing of pricings" model.bind="pricing.id">${pricing.name}</option>
                     </select>
@@ -184,7 +184,8 @@
                       products.bind="products" 
                       items.bind="order.items" 
                       order-id.bind="order.id"
-                      pricing.bind="order.pricing">
+                      pricing.bind="order.pricing"
+                      is-modification-disallowed.bind="order.stage.allowedModifications | isModificationDisallowedTo: 'items'">
                     </order-item-page>
                   </div>
 
@@ -195,7 +196,8 @@
                     <order-payment-page 
                       payment-types.bind="paymentTypes"
                       payments.bind="order.payments" 
-                      order-id.bind="order.id">
+                      order-id.bind="order.id"
+                      is-modification-disallowed.bind="order.stage.allowedModifications | isModificationDisallowedTo: 'payments'">
                     </order-payment-page>
                   </div>
 
@@ -207,7 +209,8 @@
                       returns.bind="order.returns" 
                       returnables.bind="order.returnables" 
                       order-id.bind="order.id"
-                      reasons.bind="returnReasons">
+                      reasons.bind="returnReasons"
+                      is-modification-disallowed.bind="order.stage.allowedModifications | isModificationDisallowedTo: 'returns'">
                     </order-return-page>
                   </div>
 

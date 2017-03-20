@@ -178,7 +178,8 @@
                     <purchase-order-item-page 
                       items.bind="purchaseOrder.items" 
                       products.bind="products" 
-                      purchase-order-id.bind="purchaseOrder.id">
+                      purchase-order-id.bind="purchaseOrder.id"
+                      is-modification-disallowed.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo: 'items'">
                     </purchase-order-item-page>
                   </div>
 
@@ -189,7 +190,8 @@
                     <purchase-order-payment-page 
                       payments.bind="purchaseOrder.payments" 
                       payment-types.bind="paymentTypes" 
-                      purchase-order-id.bind="purchaseOrder.id">
+                      purchase-order-id.bind="purchaseOrder.id"
+                      is-modification-disallowed.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo: 'payments'">
                     </purchase-order-payment-page>
                   </div>
 
@@ -201,7 +203,8 @@
                       products.bind="products" 
                       receipts.bind="purchaseOrder.receipts"
                       receivables.bind="purchaseOrder.receivables" 
-                      purchase-order-id.bind="purchaseOrder.id">
+                      purchase-order-id.bind="purchaseOrder.id"
+                      is-modification-disallowed.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo: 'receipts'">
                     </purchase-order-receipt-page>
                   </div>
 

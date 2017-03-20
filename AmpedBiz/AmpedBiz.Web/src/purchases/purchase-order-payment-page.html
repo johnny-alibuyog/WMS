@@ -6,8 +6,8 @@
     <thead>
       <tr>
         <th class="col-sm-1">Action</th>
-        <th class="col-sm-2">Paid On</th>
         <th class="col-sm-2">Paid By</th>
+        <th class="col-sm-2">Paid On</th>
         <th class="col-sm-2">Type</th>
         <th class="col-sm-2 text-right">Amount</th>
       </tr>
@@ -25,12 +25,14 @@
         </td>
 
         <!-- read-only mode -->
-        <td if.bind="$parent.selectedItem != item">${item.paidOn | dateFormat}</td>
         <td if.bind="$parent.selectedItem != item">${item.paidBy.name}</td>
+        <td if.bind="$parent.selectedItem != item">${item.paidOn | dateFormat}</td>
         <td if.bind="$parent.selectedItem != item">${item.paymentType.name}</td>
         <td if.bind="$parent.selectedItem != item" class="text-right">${item.paymentAmount | numberFormat}</td>
 
         <!-- edit mode -->
+        <td if.bind="$parent.selectedItem == item">${item.paidBy.name}</td>
+
         <td if.bind="$parent.selectedItem === item">
           <div class="row">
             <div class="col-xs-12">
@@ -38,8 +40,6 @@
             </div>
           </div>
         </td>
-
-        <td if.bind="$parent.selectedItem == item">${item.paidBy.name}</td>
 
         <td if.bind="$parent.selectedItem === item" class="text-right">
           <div class="row">

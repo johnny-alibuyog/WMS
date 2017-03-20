@@ -5,9 +5,6 @@ import { Dictionary } from '../custom_types/dictionary';
 import { Address } from './Address';
 
 export const orderEvents = {
-  pricing: {
-    changed: 'order-pricing-changed',
-  },
   item: {
     add: 'order-item-add',
     added: 'order-item-added',
