@@ -145,8 +145,8 @@ namespace AmpedBiz.Tests.IntegrationTests
                 Inventory = new Service.Dto.Inventory()
                 {
                     BasePriceAmount = basePrice,
-                    WholesalePriceAmount = basePrice + 1,
-                    RetailPriceAmount = basePrice + 2,
+                    ListPriceAmount = basePrice + 1,
+                    DistributorPriceAmount = basePrice + 2,
                 }
             };
         }

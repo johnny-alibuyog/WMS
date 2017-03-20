@@ -7,6 +7,7 @@ import { StageDefinition } from '../common/models/stage-definition';
 import { PurchaseOrder, PurchaseOrderStatus, PurchaseOrderAggregate, PurchaseOrderReceivable, purchaseOrderEvents, } from '../common/models/purchase-order';
 import { ServiceApi } from '../services/service-api';
 import { NotificationService } from '../common/controls/notification-service';
+import { pricing } from '../common/models/pricing';
 
 @autoinject
 export class PurchaseOrderCreate {
@@ -36,6 +37,7 @@ export class PurchaseOrderCreate {
   getInitializedPurchaseOrder(): PurchaseOrder {
     return <PurchaseOrder>{
       createdOn: new Date(),
+      pricing: pricing.distributorPrice,
       stage: <StageDefinition<PurchaseOrderStatus, PurchaseOrderAggregate>>{
         allowedTransitions: [],
         allowedModifications: [

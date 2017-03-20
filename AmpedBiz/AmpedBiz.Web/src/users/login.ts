@@ -24,7 +24,10 @@ export class Login {
   login() {
     if (this.user.username && this.user.password) {
       this._auth.login(this.user)
-        .catch(error => this._notification.warning(error));
+        .catch(error => {
+          this._notification.warning(error);
+          
+        });
     }
     else {
       this._notification.warning('Please enter a username and password.')

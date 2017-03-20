@@ -49,6 +49,17 @@ namespace AmpedBiz.Core.Entities
             }
         }
 
+        public virtual bool IsManager()
+        {
+            if (this.Roles.Contains(Role.SuperAdmin))
+                return true;
+
+            if (this.Roles.Contains(Role.Manger))
+                return true;
+
+            return false; ;
+        }
+
         public static User SuperUser = new User(new Guid("{CA42947A-0BA3-4FC8-86E0-A635014B6B11}"))
         {
             Username = "super_user",

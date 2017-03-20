@@ -10,9 +10,11 @@ namespace AmpedBiz.Data.EntityDefinitions
             Id(x => x.Id)
                 .GeneratedBy.GuidComb();
 
+            References(x => x.Order);
+
             References(x => x.Product);
 
-            References(x => x.Order);
+            Map(x => x.PackagingSize);
 
             Component(x => x.Quantity, 
                 MeasureMapping.Map("Quantity_", nameof(OrderItem)));

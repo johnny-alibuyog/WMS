@@ -47,9 +47,9 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? BasePriceAmount { get; set; }
 
-        public decimal? RetailPriceAmount { get; set; }
+        public decimal? DistributorPriceAmount { get; set; }
 
-        public decimal? WholesalePriceAmount { get; set; }
+        public decimal? ListPriceAmount { get; set; }
 
         public bool Discontinued { get; set; }
     }
@@ -72,9 +72,9 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? BasePriceAmount { get; set; }
 
-        public decimal? RetailPriceAmount { get; set; }
+        public decimal? DistributorPriceAmount { get; set; }
 
-        public decimal? WholesalePriceAmount { get; set; }
+        public decimal? ListPriceAmount { get; set; }
     }
 
     public class ProductInventory
@@ -89,6 +89,8 @@ namespace AmpedBiz.Service.Dto
 
         public string PackagingUnitOfMeasure { get; set; }
 
+        public decimal? PackagingSize { get; set; }
+
         public decimal? TargetValue { get; set; }
 
         public decimal? AvailableValue { get; set; }
@@ -97,9 +99,9 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? BasePriceAmount { get; set; }
 
-        public decimal? RetailPriceAmount { get; set; }
+        public decimal? DistributorPriceAmount { get; set; }
 
-        public decimal? WholeSalePriceAmount { get; set; }
+        public decimal? ListPriceAmount { get; set; }
 
         public decimal? BadStockPriceAmount { get; set; }
 
@@ -204,14 +206,14 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? BasePriceAmount { get; set; }
 
-        public decimal? RetailPriceAmount { get; set; }
+        public decimal? DistributorPriceAmount { get; set; }
 
-        public decimal? WholesalePriceAmount { get; set; }
+        public decimal? ListPriceAmount { get; set; }
 
         public decimal? TotalBasePriceAmount { get; set; }
 
-        public decimal? TotalRetailPriceAmount { get; set; }
+        public decimal? TotalDistributorPriceAmount { get; set; }
 
-        public decimal? TotalWholesalePriceAmount { get; set; }
+        public decimal? TotalListPriceAmount { get; set; }
     }
 }

@@ -14,23 +14,23 @@ export interface PricingPageItem {
 
 // TODO: need a better implementation of this. remodel the domain. work with this for now
 let basePrice = <Lookup<string>>{ id: 'BP', name: 'Base Price' };
-let retailPrice = <Lookup<string>>{ id: 'RP', name: 'Retail Price' };
-let wholesalePrice = <Lookup<string>>{ id: 'WP', name: 'Wholesale Price' };
+let distributorPrice = <Lookup<string>>{ id: 'DP', name: 'Distributor Price' };
+let listPrice = <Lookup<string>>{ id: 'LP', name: 'List Price' };
 let badStockPrice = <Lookup<string>>{ id: 'BSP', name: 'Bad Stock Price' };
 
 export let pricing = {
   basePrice: basePrice,
-  retailPrice: retailPrice,
-  wholesalePrice: wholesalePrice,
+  distributorPrice: distributorPrice,
+  listPrice: listPrice,
   badStockPrice: badStockPrice,
-  getPriceAmount: (pricing: Pricing, product: ProductInventory) => {
+  getPriceAmount: (pricing: Lookup<string>, product: ProductInventory) => {
     switch (pricing.id) {
       case basePrice.id:
         return product.basePriceAmount;
-      case retailPrice.id:
-        return product.retailPriceAmount;
-      case wholesalePrice.id:
-        return product.wholeSalePriceAmount;
+      case distributorPrice.id:
+        return product.distributorPriceAmount;
+      case listPrice.id:
+        return product.listPriceAmount;
       case badStockPrice.id:
         return product.badStockPriceAmount;
       default:

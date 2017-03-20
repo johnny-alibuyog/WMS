@@ -118,6 +118,15 @@ export class AuthService {
       });
   }
 
+  public override(user: User): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      var url = this._resouce + '/login';
+      this._httpClient.send({ url: url, method: 'POST', data: user })
+        .then(data => resolve(<User>data))
+        .catch(error => reject('Wrong credentials or no override rights.'));
+    });
+  }
+
   public logout(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.user = null;

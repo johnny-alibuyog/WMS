@@ -93,7 +93,6 @@
                   <label class="control-label col-sm-4">Pricing:</label>
                   <div class="col-sm-8">
                     <select class="form-control" value.bind="order.pricing | lookupToId:pricings">
-                      <option>Select Pricing</option>
                       <option repeat.for="pricing of pricings" model.bind="pricing.id">${pricing.name}</option>
                     </select>
                   </div>

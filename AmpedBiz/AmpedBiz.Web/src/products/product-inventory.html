@@ -147,37 +147,37 @@
           </tr>
           <tr>
             <td class="text-right">
-              <label class="control-label">Retail Price: </label>
+              <label class="control-label">Distributor Price: </label>
             </td>
             <td class="text-right">
               <input type="number" class="form-control text-right" 
-                placeholder="Enter Retail Price Per ${inventory.unitOfMeasure.name}" 
-                value.bind="inventory.retailPriceAmount"
+                placeholder="Enter Distributor Price Per ${inventory.unitOfMeasure.name}" 
+                value.bind="inventory.distributorPriceAmount"
               />
             </td>
             <td class="text-right"></td>
             <td class="text-right">
               <input type="number" class="form-control text-right" disabled 
-                placeholder="Enter Retail Price Per${inventory.packagingUnitOfMeasure.name}" 
-                value.bind="inventory.retailPriceAmount * inventory.packagingSize"
+                placeholder="Enter Distributor Price Per${inventory.packagingUnitOfMeasure.name}" 
+                value.bind="inventory.distributorPriceAmount * inventory.packagingSize"
               />
             </td>
           </tr>
           <tr>
             <td class="text-right">
-              <label class="control-label">Wholesale Price: </label>
+              <label class="control-label">List Price: </label>
             </td>
             <td class="text-right">
               <input type="number" class="form-control text-right" 
-                placeholder="Enter Wholesale Price Per ${inventory.unitOfMeasure.name}" 
-                value.bind="inventory.wholesalePriceAmount"
+                placeholder="Enter List Price Per ${inventory.unitOfMeasure.name}" 
+                value.bind="inventory.listPriceAmount"
               />
             </td>
             <td class="text-right"></td>
             <td class="text-right">
               <input type="number" class="form-control text-right" disabled 
-                placeholder="Enter Wholesale Price Per${inventory.packagingUnitOfMeasure.name}" 
-                value.bind="inventory.wholesalePriceAmount * inventory.packagingSize"
+                placeholder="Enter List Price Per${inventory.packagingUnitOfMeasure.name}" 
+                value.bind="inventory.listPriceAmount * inventory.packagingSize"
               />
             </td>
           </tr>

@@ -90,18 +90,18 @@ namespace AmpedBiz.Service.Products
                             : query.OrderByDescending(x => x.Inventory.BasePrice.Amount);
                     });
 
-                    message.Sorter.Compose("retailPrice", direction =>
+                    message.Sorter.Compose("distributorPrice", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Inventory.RetailPrice.Amount)
-                            : query.OrderByDescending(x => x.Inventory.RetailPrice.Amount);
+                            ? query.OrderBy(x => x.Inventory.DistributorPrice.Amount)
+                            : query.OrderByDescending(x => x.Inventory.DistributorPrice.Amount);
                     });
 
                     message.Sorter.Compose("wholeSalePrice", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Inventory.WholesalePrice.Amount)
-                            : query.OrderByDescending(x => x.Inventory.WholesalePrice.Amount);
+                            ? query.OrderBy(x => x.Inventory.ListPrice.Amount)
+                            : query.OrderByDescending(x => x.Inventory.ListPrice.Amount);
                     });
 
                     var itemsFuture = query
@@ -115,8 +115,8 @@ namespace AmpedBiz.Service.Products
                             CategoryName = x.Category.Name,
                             Image = x.Image,
                             BasePriceAmount = x.Inventory.BasePrice.Amount,
-                            RetailPriceAmount = x.Inventory.RetailPrice.Amount,
-                            WholesalePriceAmount = x.Inventory.WholesalePrice.Amount,
+                            DistributorPriceAmount = x.Inventory.DistributorPrice.Amount,
+                            ListPriceAmount = x.Inventory.ListPrice.Amount,
                             Discontinued = x.Discontinued
                         })
                         .Skip(message.Pager.SkipCount)

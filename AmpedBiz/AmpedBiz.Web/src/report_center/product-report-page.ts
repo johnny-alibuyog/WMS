@@ -39,8 +39,8 @@ export class ProductReportPage {
     this.sorter["supplierName"] = SortDirection.None;
     this.sorter["onHandValue"] = SortDirection.None;
     this.sorter["basePriceAmount"] = SortDirection.None;
-    this.sorter["retailPriceAmount"] = SortDirection.None;
-    this.sorter["wholesalePriceAmount"] = SortDirection.None;
+    this.sorter["distributorPriceAmount"] = SortDirection.None;
+    this.sorter["listPriceAmount"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
 
     this.pager = new Pager<ProductReportPageItem>();
@@ -111,11 +111,11 @@ export class ProductReportPage {
             supplierName: x.supplierName,
             onHandValue: x.onHandValue,
             basePriceAmount: x.basePriceAmount,
-            retailPriceAmount: x.retailPriceAmount,
-            wholesalePriceAmount: x.wholesalePriceAmount,
+            distributorPriceAmount: x.distributorPriceAmount,
+            listPriceAmount: x.listPriceAmount,
             totalBasePriceAmount: x.totalBasePriceAmount,
-            totalRetailPriceAmount: x.totalRetailPriceAmount,
-            totalWholesalePriceAmount: x.totalWholesalePriceAmount,
+            totalDistributorPriceAmount: x.totalDistributorPriceAmount,
+            totalListPriceAmount: x.totalListPriceAmount,
           })
         };
 

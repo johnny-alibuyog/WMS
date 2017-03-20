@@ -117,6 +117,7 @@ namespace AmpedBiz.Service.Orders
                         Items = message.Items.Select(x => new OrderItem(
                             id: x.Id,
                             discountRate: x.DiscountRate,
+                            packagingSize: x.PackagingSize,
                             product: GetProduct(x.Product.Id),
                             discount: new Money(x.DiscountAmount, currency),
                             unitPrice: new Money(x.UnitPriceAmount, currency),

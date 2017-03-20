@@ -6,14 +6,18 @@ import { Lookup } from '../common/custom_types/lookup';
 import { StageDefinition } from '../common/models/stage-definition';
 import { Order, OrderStatus, OrderAggregate, OrderPayable, orderEvents } from '../common/models/order';
 import { ServiceApi } from '../services/service-api';
+import { Override } from '../users/override';
 import { ReportViewer } from '../common/controls/report-viewer';
+import { DialogService } from 'aurelia-dialog';
 import { NotificationService } from '../common/controls/notification-service';
 import { OrderInvoiceDetailReport } from './order-invoice-detail-report';
+import { pricing } from '../common/models/pricing';
 
 @autoinject
 export class OrderCreate {
   private readonly _api: ServiceApi;
   private readonly _router: Router;
+  private readonly _dialog: DialogService;
   private readonly _notification: NotificationService;
   private readonly _eventAggregator: EventAggregator;
   private readonly _invoiceReport: OrderInvoiceDetailReport;
@@ -33,9 +37,10 @@ export class OrderCreate {
   public payable: OrderPayable;
   public order: Order;
 
-  constructor(api: ServiceApi, router: Router, notification: NotificationService, eventAggregator: EventAggregator, invoiceReport: OrderInvoiceDetailReport) {
+  constructor(api: ServiceApi, router: Router, dialog: DialogService, notification: NotificationService, eventAggregator: EventAggregator, invoiceReport: OrderInvoiceDetailReport) {
     this._api = api;
     this._router = router;
+    this._dialog = dialog;
     this._notification = notification;
     this._eventAggregator = eventAggregator;
     this._invoiceReport = invoiceReport;
@@ -44,6 +49,7 @@ export class OrderCreate {
   public getInitializedOrder(): Order {
     return <Order>{
       orderedOn: new Date(),
+      pricing: pricing.listPrice,
       stage: <StageDefinition<OrderStatus, OrderAggregate>>{
         allowedTransitions: [],
         allowedModifications: [
@@ -132,7 +138,7 @@ export class OrderCreate {
     order.payments = order.payments || [];
     order.returnables = this._api.orders.computeReturnablesFrom(order);
 
-    this.order = order; 
+    this.order = order;
   }
 
   public addItem(): void {
@@ -152,9 +158,21 @@ export class OrderCreate {
     var newReturns = this._api.orders.generateNewReturnsFrom(this.order);
     newReturns.forEach(newReturn => this.order.returns.push(newReturn));
 
-    this._api.orders.save(this.order)
+    let _save = () => this._api.orders.save(this.order)
       .then(data => this.resetAndNoify(data, "Order has been saved."))
       .catch(error => this._notification.warning(error));
+
+    if (newReturns && newReturns.length > 0) {
+      // if there are new returns, require override
+      this._dialog
+        .open({ viewModel: Override, model: {} })
+        .then(response => { if (!response.wasCancelled) _save(); });
+    }
+    else {
+      _save();
+    }
+
+
   }
 
   public invoice(): void {

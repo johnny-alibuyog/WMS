@@ -54,11 +54,14 @@ namespace AmpedBiz.Service.Products
                             Code = x.Code,
                             Name = x.Name,
                             UnitOfMeasure = x.Inventory.UnitOfMeasure.Name,
+                            PackagingUnitOfMeasure = x.Inventory.PackagingUnitOfMeasure.Name,
+                            PackagingSize = x.Inventory.PackagingSize,
                             TargetValue = x.Inventory.TargetLevel.Value,
                             AvailableValue = x.Inventory.Available.Value,
+                            BadStockValue = x.Inventory.BadStock.Value,
                             BasePriceAmount = x.Inventory.BasePrice.Amount,
-                            RetailPriceAmount = x.Inventory.RetailPrice.Amount,
-                            WholeSalePriceAmount = x.Inventory.WholesalePrice.Amount,
+                            DistributorPriceAmount = x.Inventory.DistributorPrice.Amount,
+                            ListPriceAmount = x.Inventory.ListPrice.Amount,
                             BadStockPriceAmount = x.Inventory.BadStockPrice.Amount,
                             DiscountAmount = 0M
                         })

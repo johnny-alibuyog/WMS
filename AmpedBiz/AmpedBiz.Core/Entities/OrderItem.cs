@@ -4,9 +4,11 @@ namespace AmpedBiz.Core.Entities
 {
     public class OrderItem : Entity<Guid, OrderItem>
     {
+        public virtual Order Order { get; protected internal set; }
+
         public virtual Product Product { get; protected set; }
 
-        public virtual Order Order { get; protected internal set; }
+        public virtual decimal PackagingSize { get; protected set; }
 
         public virtual Measure Quantity { get; protected set; }
 
@@ -22,10 +24,11 @@ namespace AmpedBiz.Core.Entities
 
         public OrderItem() : base(default(Guid)) { }
 
-        public OrderItem(Product product, Measure quantity, decimal discountRate,  Money discount, Money unitPrice, Guid? id = null) 
+        public OrderItem(Product product, decimal packagingSize, Measure quantity, decimal discountRate,  Money discount, Money unitPrice, Guid? id = null) 
             : base(id ?? default(Guid))
         {
             this.Product = product;
+            this.PackagingSize = packagingSize;
             this.Quantity = quantity;
             this.DiscountRate = discountRate;
             this.Discount = discount ?? new Money(0.0M);

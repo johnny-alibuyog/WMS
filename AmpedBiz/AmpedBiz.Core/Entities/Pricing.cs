@@ -15,18 +15,18 @@ namespace AmpedBiz.Core.Entities
 
         public static readonly Pricing BasePrice = new Pricing("BP", "Base Price");
 
-        public static readonly Pricing RetailPrice = new Pricing("RP", "Retail Price");
-
-        public static readonly Pricing WholesalePrice = new Pricing("WP", "Wholesale Price");
-
         public static readonly Pricing BadStockPrice = new Pricing("BSP", "Bad Stock Price");
+
+        public static readonly Pricing DistributorPrice = new Pricing("DP", "Distributor Price");
+
+        public static readonly Pricing ListPrice = new Pricing("LP", "List Price");
 
         public static readonly IEnumerable<Pricing> All = new [] 
         {
             Pricing.BasePrice,
-            Pricing.WholesalePrice,
-            Pricing.RetailPrice,
-            Pricing.BadStockPrice
+            Pricing.BadStockPrice,
+            Pricing.DistributorPrice,
+            Pricing.ListPrice,
         };
     }
 }

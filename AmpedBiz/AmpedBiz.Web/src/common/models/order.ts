@@ -98,6 +98,7 @@ export interface OrderPageItem {
 export interface OrderItem {
   id?: string;
   product?: Lookup<string>;
+  packagingSize?: number;
   quantityValue?: number;
   discountRate?: number;
   discountAmount?: number;

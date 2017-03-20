@@ -107,10 +107,13 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                         product.Inventory.PackagingSize = x.PiecePerPackage;
                         product.Inventory.UnitOfMeasure = unitOfMeasure.Individual;
                         product.Inventory.PackagingUnitOfMeasure = unitOfMeasure.Packaging;
-                        product.Inventory.BasePrice = new Money(amount: 0M, currency: defaults.Currency);
-                        product.Inventory.RetailPrice = new Money(amount: x.PriceToDownlinePerPiece, currency: defaults.Currency);
-                        product.Inventory.WholesalePrice = new Money(amount: x.PriceToDistributorPerPiece, currency: defaults.Currency);
-                        product.Inventory.BadStockPrice = new Money(amount: 0M, currency: defaults.Currency);
+                        // TODO: check for correct values
+                        product.Inventory.BasePrice = new Money(amount: x.PriceToDistributorPerPiece, currency: defaults.Currency);
+                        product.Inventory.BadStockPrice = new Money(amount: x.PriceToDistributorPerPiece, currency: defaults.Currency);
+                        //product.Inventory.BasePrice = new Money(amount: 0M, currency: defaults.Currency);
+                        //product.Inventory.BadStockPrice = new Money(amount: 0M, currency: defaults.Currency);
+                        product.Inventory.DistributorPrice = new Money(amount: x.PriceToDistributorPerPiece, currency: defaults.Currency);
+                        product.Inventory.ListPrice = new Money(amount: x.PriceToDownlinePerPiece, currency: defaults.Currency);
 
                         session.Save(product);
                     });

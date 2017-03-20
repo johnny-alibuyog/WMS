@@ -333,6 +333,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                             .Select(x => _utils.RandomProduct()).Distinct()
                             .Select(x => new OrderItem(
                                 product: x,
+                                packagingSize: x.Inventory.PackagingSize,
                                 discountRate: _utils.RandomDecimal(0.01M, 0.10M),
                                 quantity: new Measure(_utils.RandomDecimal(1M, 100M), x.Inventory.UnitOfMeasure),
                                 discount: new Money(_utils.RandomDecimal(100M, 500M), currency),

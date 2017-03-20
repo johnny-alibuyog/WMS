@@ -376,8 +376,8 @@ namespace AmpedBiz.Tests.IntegrationTests
                         PackagingUnitOfMeasure = this.RandomUnitOfMeasure(),
                         PackagingSize = 0.30M,
                         BasePriceAmount = productData.Inventory.BasePriceAmount,
-                        RetailPriceAmount = productData.Inventory.RetailPriceAmount,
-                        WholesalePriceAmount = productData.Inventory.WholesalePriceAmount,
+                        DistributorPriceAmount = productData.Inventory.DistributorPriceAmount,
+                        ListPriceAmount = productData.Inventory.ListPriceAmount,
                         BackOrderedValue = productData.Inventory.BackOrderedValue,
                     }
                 };
@@ -463,11 +463,11 @@ namespace AmpedBiz.Tests.IntegrationTests
             {
                 poItems.Add(new Service.Dto.PurchaseOrderItem
                 {
-                    //TotalAmount = product.RetailPriceAmount + 1m,
+                    //TotalAmount = product.DistributorPriceAmount + 1m,
                     PurchaseOrderId = request.Id,
                     Product = new Lookup<Guid>(product.Id, product.Name),
                     QuantityValue = this.random.Next(1, 100),
-                    UnitCostAmount = product.Inventory.RetailPriceAmount ?? 0M + 1m,
+                    UnitCostAmount = product.Inventory.DistributorPriceAmount ?? 0M + 1m,
                 });
             }
 
@@ -641,9 +641,10 @@ namespace AmpedBiz.Tests.IntegrationTests
                 {
                     ExtendedPriceAmount = 0M,
                     Product = new Lookup<Guid>(product.Id, product.Name),
+                    PackagingSize = product.Inventory.PackagingSize ?? 1,
                     //UnitOfMeasure = new Lookup<string>(product.Inv)
                     QuantityValue = this.random.Next(1, 100),
-                    UnitPriceAmount = product.Inventory.RetailPriceAmount ?? 0M
+                    UnitPriceAmount = product.Inventory.DistributorPriceAmount ?? 0M
                 });
             }
 

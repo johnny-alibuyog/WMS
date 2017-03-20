@@ -29,7 +29,7 @@ export class OrderItemPage {
   public items: OrderItem[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
-  public pricing: Lookup<string> = pricing.wholesalePrice;
+  public pricing: Lookup<string> = pricing.listPrice;
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public products: Lookup<string>[] = [];
@@ -50,27 +50,17 @@ export class OrderItemPage {
     this.itemPager.onPage = () => this.initializePage();
   }
 
-  private getUnitPriceAmount(product: Lookup<string>): Promise<number> {
-    let inventory = this._productInventories.find(x => x.id == product.id);
+  private getProductInventory(product: Lookup<string>): Promise<ProductInventory> {
+    let productInventory = this._productInventories.find(x => x.id === product.id);
 
-    if (!this.pricing) {
-      this.pricing = pricing.wholesalePrice;
+    if (productInventory) {
+      return Promise.resolve(productInventory);
     }
 
-    if (inventory) {
-      let unitPrice = pricing.getPriceAmount(this.pricing, inventory);
-      return Promise.resolve(unitPrice);
-    }
-    else {
-      return this._api.products.getInventory(product.id).then(data => {
-        if (data) {
-          this._productInventories.push(data);
-        }
-
-        let unitPrice = pricing.getPriceAmount(this.pricing, data);
-        return unitPrice;
-      });
-    }
+    return this._api.products.getInventory(product.id).then(data => {
+      this._productInventories.push(data);
+      return data;
+    });
   }
 
   public attached(): void {
@@ -95,6 +85,8 @@ export class OrderItemPage {
   }
 
   public pricingChanged(): void {
+    // TODO: find a better way to signal pricing change
+
     if (!this.items) {
       this.items = [];
     }
@@ -108,14 +100,16 @@ export class OrderItemPage {
     }
 
     if (!item.product) {
+      debugger;
       item.quantityValue = 0;
       item.unitPriceAmount = 0;
+      item.packagingSize = 1;
       return;
     }
 
-    this.getUnitPriceAmount(item.product).then(unitPrice => {
-      item.unitPriceAmount = unitPrice;
-      this.compute(item);
+    this.getProductInventory(item.product).then(inventory => {
+      item.packagingSize = inventory.packagingSize;
+      item.unitPriceAmount = pricing.getPriceAmount(this.pricing, inventory);
     });
   }
 
@@ -147,6 +141,7 @@ export class OrderItemPage {
     var item = <OrderItem>{
       quantityValue: 0,
       unitPriceAmountce: 0,
+      packagingSize: 1,
     };
 
     this.items.push(item);

@@ -23,9 +23,9 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                     Code = $"Code {i}",
                     Name = $"Customer {i}",
                     //CreditLimit = new Money(100000.00M, session.Load<Currency>(Currency.PHP.Id)),
-                    //Pricing = session.Load<Pricing>(Pricing.WholesalePrice.Id),
+                    //Pricing = session.Load<Pricing>(Pricing.ListPrice.Id),
                     CreditLimit = new Money(100000.00M, Currency.PHP),
-                    Pricing = Pricing.WholesalePrice,
+                    Pricing = Pricing.ListPrice,
                     IsActive = true,
                     Contact = new Contact()
                     {

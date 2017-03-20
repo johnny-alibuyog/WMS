@@ -8,8 +8,8 @@ export interface Inventory {
   packagingUnitOfMeasure?: Lookup<string>;
   packagingSize?: number;
   basePriceAmount?: number;
-  retailPriceAmount?: number;
-  wholesalePriceAmount?: number;
+  distributorPriceAmount?: number;
+  listPriceAmount?: number;
   badStockPriceAmount?: number;
   badStockValue?: number;
   receivedValue?: number;

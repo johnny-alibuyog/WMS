@@ -16,13 +16,13 @@ namespace AmpedBiz.Core.Entities
 
         public virtual UnitOfMeasure PackagingUnitOfMeasure { get; set; }
 
-        public virtual decimal? PackagingSize { get; set; }
+        public virtual decimal PackagingSize { get; set; }
 
         public virtual Money BasePrice { get; set; }
 
-        public virtual Money RetailPrice { get; set; }
+        public virtual Money DistributorPrice { get; set; }
 
-        public virtual Money WholesalePrice { get; set; }
+        public virtual Money ListPrice { get; set; }
 
         public virtual Money BadStockPrice { get; set; }
 

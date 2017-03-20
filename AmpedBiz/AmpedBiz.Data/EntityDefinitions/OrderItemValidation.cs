@@ -9,13 +9,15 @@ namespace AmpedBiz.Data.EntityDefinitions
         {
             Define(x => x.Id);
 
+            Define(x => x.Order)
+                .NotNullable()
+                .And.IsValid();
+
             Define(x => x.Product)
                 .NotNullable()
                 .And.IsValid();
 
-            Define(x => x.Order)
-                .NotNullable()
-                .And.IsValid();
+            Define(x => x.PackagingSize);
 
             Define(x => x.Quantity);
 

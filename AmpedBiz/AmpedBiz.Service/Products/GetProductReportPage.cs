@@ -79,18 +79,18 @@ namespace AmpedBiz.Service.Products
                             : query.OrderByDescending(x => x.Inventory.BasePrice.Amount);
                     });
 
-                    message.Sorter.Compose("retailPriceAmount", direction =>
+                    message.Sorter.Compose("distributorPriceAmount", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Inventory.RetailPrice.Amount)
-                            : query.OrderByDescending(x => x.Inventory.RetailPrice.Amount);
+                            ? query.OrderBy(x => x.Inventory.DistributorPrice.Amount)
+                            : query.OrderByDescending(x => x.Inventory.DistributorPrice.Amount);
                     });
 
-                    message.Sorter.Compose("wholesalePriceAmount", direction =>
+                    message.Sorter.Compose("listPriceAmount", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Inventory.WholesalePrice.Amount)
-                            : query.OrderByDescending(x => x.Inventory.WholesalePrice.Amount);
+                            ? query.OrderBy(x => x.Inventory.ListPrice.Amount)
+                            : query.OrderByDescending(x => x.Inventory.ListPrice.Amount);
                     });
 
                     var countFuture = query
@@ -109,11 +109,11 @@ namespace AmpedBiz.Service.Products
                             SupplierName = x.Supplier.Name,
                             OnHandValue = x.Inventory.OnHand.Value,
                             BasePriceAmount = x.Inventory.BasePrice.Amount,
-                            RetailPriceAmount = x.Inventory.RetailPrice.Amount,
-                            WholesalePriceAmount = x.Inventory.WholesalePrice.Amount,
+                            DistributorPriceAmount = x.Inventory.DistributorPrice.Amount,
+                            ListPriceAmount = x.Inventory.ListPrice.Amount,
                             TotalBasePriceAmount = x.Inventory.OnHand.Value * x.Inventory.BasePrice.Amount,
-                            TotalRetailPriceAmount = x.Inventory.OnHand.Value * x.Inventory.RetailPrice.Amount,
-                            TotalWholesalePriceAmount = x.Inventory.OnHand.Value * x.Inventory.WholesalePrice.Amount
+                            TotalDistributorPriceAmount = x.Inventory.OnHand.Value * x.Inventory.DistributorPrice.Amount,
+                            TotalListPriceAmount = x.Inventory.OnHand.Value * x.Inventory.ListPrice.Amount
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)
