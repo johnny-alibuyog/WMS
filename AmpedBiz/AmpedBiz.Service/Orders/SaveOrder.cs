@@ -1,11 +1,10 @@
-﻿using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Orders;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
-using NHibernate.Transform;
 using System;
 using System.Linq;
 
@@ -69,8 +68,7 @@ namespace AmpedBiz.Service.Orders
                             .Fetch(x => x.Returns.First().Product.Inventory).Eager
                             .SingleOrDefault();
 
-                        if (entity == null)
-                            throw new BusinessException($"Order with id {message.Id} does not exists.");
+                        entity.EnsureExistence($"Order with id {message.Id} does not exists.");
                     }
                     else
                     {
@@ -138,6 +136,7 @@ namespace AmpedBiz.Service.Orders
                             returned: new Money(x.ReturnedAmount, currency)
                         ))
                     });
+                    entity.EnsureValidity();
 
                     session.Save(entity);
                     transaction.Commit();

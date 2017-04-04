@@ -1,6 +1,6 @@
-﻿using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
 
@@ -25,10 +25,8 @@ namespace AmpedBiz.Service.Products
                 {
                     var currency = session.Load<Currency>(Currency.PHP.Id); // this should be taken from the tenant
                     var entity = session.Get<Product>(message.Id);
-                    if (entity == null)
-                        throw new BusinessException($"Product with id {message.Id} does not exists.");
-
-                    message.MapTo(entity);
+                    entity.EnsureExistence($"Product with id {message.Id} does not exists.");
+                    entity.MapFrom(message);
 
                     entity.Supplier = session.Load<Supplier>(message.Supplier.Id);
                     entity.Category = session.Load<ProductCategory>(message.Category.Id);
@@ -47,6 +45,7 @@ namespace AmpedBiz.Service.Products
                     entity.Inventory.MinimumReorderQuantity = new Measure(message.Inventory.MinimumReorderQuantityValue ?? 0M, entity.Inventory.UnitOfMeasure);
 
                     entity.Inventory.Compute();
+                    entity.EnsureValidity();
 
                     transaction.Commit();
 

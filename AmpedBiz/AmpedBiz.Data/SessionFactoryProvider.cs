@@ -13,11 +13,11 @@ namespace AmpedBiz.Data
     {
         private readonly ConfigurationContainer _configuration;
 
-        internal static ValidatorEngine Validator { get; private set; }
+        public static ValidatorEngine Validator { get; private set; }
 
-        internal static IAuditProvider AuditProvider { get; private set; }
+        public static IAuditProvider AuditProvider { get; private set; }
 
-        internal static ISessionFactory SessionFactory { get; private set; }
+        public static ISessionFactory SessionFactory { get; private set; }
 
         public ISessionFactory GetSessionFactory()
         {

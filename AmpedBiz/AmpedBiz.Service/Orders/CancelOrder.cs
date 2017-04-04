@@ -1,7 +1,7 @@
-﻿using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Orders;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
 using System;
@@ -34,15 +34,14 @@ namespace AmpedBiz.Service.Orders
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = session.Get<Order>(message.Id);
-                    if (entity == null)
-                        throw new BusinessException($"Order with id {message.Id} does not exists.");
-
+                    entity.EnsureExistence($"Order with id {message.Id} does not exists.");
                     entity.State.Process(new OrderCancelledVisitor()
                     {
                         CancelledBy = session.Load<User>(message.CancelledBy.Id),
                         CancelledOn = message.CancelledOn ?? DateTime.Now,
                         CancellationReason = message.CancellationReason
                     });
+                    entity.EnsureValidity();
 
                     session.Save(entity);
                     transaction.Commit();

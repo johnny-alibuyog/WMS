@@ -1,6 +1,6 @@
-﻿using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
 using System;
@@ -28,9 +28,7 @@ namespace AmpedBiz.Service.Customers
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = session.Get<Customer>(message.Id);
-                    if (entity == null)
-                        throw new BusinessException($"Customer with id {message.Id} does not exists.");
-
+                    entity.EnsureExistence($"Customer with id {message.Id} does not exists.");
                     entity.MapTo(response);
 
                     transaction.Commit();

@@ -163,6 +163,7 @@
     <Compile Include="IAuditProvider.cs" />
     <Compile Include="ISessionFactoryProvider.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_010_DefaultBranchSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_020_DefaultSupplierSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_021_DefaultProductSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_022_DefaultCustomerSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_000_BranchSeeder.cs" />
@@ -212,7 +213,7 @@
     <Compile Include="EntityDefinitions\UserValidation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seeders\Utils.cs" />
-    <Compile Include="SessionFactoryExtention.cs" />
+    <Compile Include="Extentions.cs" />
     <Compile Include="SessionFactoryProvider.cs" />
   </ItemGroup>
   <ItemGroup>

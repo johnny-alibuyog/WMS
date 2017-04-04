@@ -15,5 +15,17 @@ namespace AmpedBiz.Common.Extentions
                 ? Mapper.Map<TSource, TDestination>(source, destination)
                 : Mapper.Map<TSource, TDestination>(source);
         }
+
+        public static TDestination MapFrom<TSource, TDestination>(this TDestination destination, TSource source)
+            where TSource : class
+            where TDestination : class
+        {
+            if (source == null)
+                return null;
+
+            return (destination != null)
+                ? Mapper.Map<TSource, TDestination>(source, destination)
+                : Mapper.Map<TSource, TDestination>(source);
+        }
     }
 }

@@ -340,6 +340,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                 unitPrice: new Money(_utils.RandomDecimal(1000M, 100000M), currency)
                             ))
                     });
+                    entity.EnsureValidity();
 
                     session.Save(entity, entity.Id);
 
@@ -369,6 +370,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         InvoicedOn = DateTime.Now,
                         InvoicedBy = _utils.Random<User>()
                     });
+                    entity.EnsureValidity();
                     session.Update(entity);
                 }
 
@@ -400,6 +402,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                 payment: new Money(_utils.RandomDecimal(1M, entity.Total.Amount), currency)
                             ))
                     });
+                    entity.EnsureValidity();
                     session.Update(entity);
                 }
 
@@ -424,6 +427,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         StagedOn = DateTime.Today,
                         StagedBy = _utils.Random<User>()
                     });
+                    entity.EnsureValidity();
                     session.Update(entity);
                 }
 
@@ -448,6 +452,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         ShippedOn = DateTime.Now,
                         ShippedBy = _utils.Random<User>()
                     });
+                    entity.EnsureValidity();
                     session.Update(entity);
                 }
 
@@ -496,6 +501,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                 )
                             ))
                     });
+                    entity.EnsureValidity();
                 }
 
                 transaction.Commit();
@@ -520,6 +526,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         CompletedBy = _utils.Random<User>(),
                         CompletedOn = DateTime.Now
                     });
+                    entity.EnsureValidity();
                     session.Update(entity);
                 }
 
@@ -546,6 +553,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         CancelledOn = DateTime.Now,
                         CancellationReason = "Cancellation Reason"
                     });
+                    entity.EnsureValidity();
                     session.Update(entity);
                 }
 

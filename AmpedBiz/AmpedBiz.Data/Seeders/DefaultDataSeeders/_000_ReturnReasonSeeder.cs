@@ -24,6 +24,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 {
                     foreach (var item in ReturnReason.All)
                     {
+                        item.EnsureValidity();
                         session.Save(item);
                     }
                 }

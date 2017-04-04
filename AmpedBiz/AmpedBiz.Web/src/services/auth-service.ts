@@ -107,15 +107,17 @@ export class AuthService {
   }
 
   public login(user: User): Promise<any> {
-    var url = this._resouce + '/login';
-    return this._httpClient.send({ url: url, method: 'POST', data: user })
-      .then(data => {
-        this.user = <User>data;
-        this._app.setRoot('shell/shell')
-      })
-      .catch(error => {
-        this._notification.warning(error)
-      });
+    return new Promise<any>((resolve, reject) => {
+      var url = this._resouce + '/login';
+      return this._httpClient.send({ url: url, method: 'POST', data: user })
+        .then(data => {
+          this._app.setRoot('shell/shell')
+          this.user = <User>data;
+        })
+        .catch(error => {
+          this._notification.warning(error)
+        });
+    });
   }
 
   public override(user: User): Promise<any> {

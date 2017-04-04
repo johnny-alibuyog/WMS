@@ -33,7 +33,7 @@ namespace AmpedBiz.Data.Configurations
                 .Register(Assembly.Load(typeof(UserMapping).Assembly.FullName).ValidationDefinitions())
                 .IntegrateWithNHibernate
                     .ApplyingDDLConstraints()
-                    .And.RegisteringListeners();
+                    .RegisteringListeners();
 
             return configuration;
         }

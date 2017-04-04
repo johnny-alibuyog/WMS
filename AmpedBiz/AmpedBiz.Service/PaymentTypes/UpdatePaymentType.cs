@@ -1,6 +1,6 @@
-﻿using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
 
@@ -24,10 +24,9 @@ namespace AmpedBiz.Service.PaymentTypes
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = session.Get<PaymentType>(message.Id);
-                    if (entity == null)
-                        throw new BusinessException($"Payment Type with id {message.Id} does not exists.");
-
-                    message.MapTo(entity);
+                    entity.EnsureExistence($"Payment Type with id {message.Id} does not exists.");
+                    entity.MapFrom(message);
+                    entity.EnsureValidity();
 
                     transaction.Commit();
 

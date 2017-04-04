@@ -1,9 +1,9 @@
-﻿using System;
-using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
+using System;
 
 namespace AmpedBiz.Service.Branches
 {
@@ -28,9 +28,7 @@ namespace AmpedBiz.Service.Branches
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = session.Get<Branch>(message.Id);
-                    if (entity == null)
-                        throw new BusinessException($"Branch with id {message.Id} does not exists.");
-
+                    entity.EnsureExistence($"Branch with id {message.Id} does not exists.");
                     entity.MapTo(response);
 
                     transaction.Commit();

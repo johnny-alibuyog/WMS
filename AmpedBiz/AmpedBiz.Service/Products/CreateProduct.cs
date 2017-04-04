@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
@@ -26,8 +27,7 @@ namespace AmpedBiz.Service.Products
                 using (var transaction = session.BeginTransaction())
                 {
                     var exists = session.Query<Product>().Any(x => x.Id == message.Id);
-                    if (exists)
-                        throw new BusinessException($"Product with id {message.Id} already exists.");
+                    exists.Assert($"Product with id {message.Id} already exists.");
 
                     var currency = session.Load<Currency>(Currency.PHP.Id); // this should be taken from the tenant
                     var entity = message.MapTo(new Product(message.Id));
@@ -49,11 +49,12 @@ namespace AmpedBiz.Service.Products
                     entity.Inventory.MinimumReorderQuantity = new Measure(message.Inventory.MinimumReorderQuantityValue ?? 0M, entity.Inventory.UnitOfMeasure);
 
                     entity.Inventory.Compute();
+                    entity.EnsureValidity();
 
                     session.Save(entity);
                     transaction.Commit();
 
-                    response = entity.MapTo(response);;
+                    entity.MapTo(response);;
                 }
 
                 return response;

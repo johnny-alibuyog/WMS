@@ -8,6 +8,7 @@ namespace AmpedBiz.Service.Host
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
+            GlobalConfiguration.Configure(MindlewareConfig.Register);
             GlobalConfiguration.Configure(DependencyConfig.Register);
             SwaggerConfig.Register();
             GlobalConfiguration.Configure(MappingConfig.Register);

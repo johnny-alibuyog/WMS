@@ -1,6 +1,6 @@
-﻿using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
 using System;
@@ -54,9 +54,7 @@ namespace AmpedBiz.Service.Returns
                         .Fetch(x => x.Items.First().ReturnReason).Eager
                         .SingleOrDefault();
 
-                    if (entity == null)
-                        throw new BusinessException($"Returns with id {message.Id} does not exists.");
-
+                    entity.EnsureExistence($"Returns with id {message.Id} does not exists.");
                     entity.MapTo(response);
 
                     transaction.Commit();

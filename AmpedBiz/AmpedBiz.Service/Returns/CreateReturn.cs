@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Returns;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
@@ -57,6 +58,7 @@ namespace AmpedBiz.Service.Returns
                             ))
                             .ToList()
                     });
+                    entity.EnsureValidity();
 
                     session.Save(entity);
 

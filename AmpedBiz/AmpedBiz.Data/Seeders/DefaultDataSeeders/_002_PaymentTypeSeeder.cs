@@ -24,7 +24,10 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 foreach(var item in PaymentType.All)
                 {
                     if (!entities.Contains(item))
+                    {
+                        item.EnsureValidity();
                         session.Save(item);
+                    }
                 }
 
                 transaction.Commit();

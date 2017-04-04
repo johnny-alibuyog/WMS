@@ -1,7 +1,7 @@
-﻿using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Orders;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
 using System;
@@ -33,17 +33,15 @@ namespace AmpedBiz.Service.Orders
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.Get<Order>(message.Id);
                     var currency = session.Load<Currency>(Currency.PHP.Id);
-
-                    if (entity == null)
-                        throw new BusinessException($"Order with id {message.Id} does not exists.");
-
+                    var entity = session.Get<Order>(message.Id);
+                    entity.EnsureExistence($"Order with id {message.Id} does not exists.");
                     entity.State.Process(new OrderShippedVisitor()
                     {
                         ShippedOn = message.ShippedOn ?? DateTime.Now,
                         ShippedBy = session.Load<User>(message.ShippedBy.Id)
                     });
+                    entity.EnsureValidity();
 
                     session.Save(entity);
                     transaction.Commit();

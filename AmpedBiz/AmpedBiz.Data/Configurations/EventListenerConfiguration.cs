@@ -1,5 +1,6 @@
 ﻿using NHibernate.Cfg;
 using NHibernate.Event;
+using System.Linq;
 
 namespace AmpedBiz.Data.Configurations
 {

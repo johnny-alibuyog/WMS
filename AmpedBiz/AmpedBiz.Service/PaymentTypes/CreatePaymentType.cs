@@ -1,10 +1,11 @@
-﻿using System.Linq;
-using AmpedBiz.Common.Exceptions;
+﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
+using System.Linq;
 
 namespace AmpedBiz.Service.PaymentTypes
 {
@@ -26,10 +27,10 @@ namespace AmpedBiz.Service.PaymentTypes
                 using (var transaction = session.BeginTransaction())
                 {
                     var exists = session.Query<PaymentType>().Any(x => x.Id == message.Id);
-                    if (exists)
-                        throw new BusinessException($"Payment Type with id {message.Id} already exists.");
+                    exists.Assert($"Payment Type with id {message.Id} already exists.");
 
                     var entity = message.MapTo(new PaymentType(message.Id));
+                    entity.EnsureValidity();
 
                     session.Save(entity);
                     transaction.Commit();

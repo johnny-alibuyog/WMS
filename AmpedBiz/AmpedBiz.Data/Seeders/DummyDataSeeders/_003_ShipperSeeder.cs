@@ -55,6 +55,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                 {
                     foreach (var item in data)
                     {
+                        item.EnsureValidity();
                         session.Save(item);
                     }
                 }

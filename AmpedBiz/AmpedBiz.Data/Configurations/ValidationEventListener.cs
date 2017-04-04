@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using AmpedBiz.Common.Exceptions;
 using NHibernate.Event;
 
@@ -12,7 +11,7 @@ namespace AmpedBiz.Data.Configurations
         IPreCollectionUpdateEventListener, 
         IPreCollectionRemoveEventListener
     {
-        private void PerformValidation(object entity)
+        public void PerformValidation(object entity)
         {
             var validator = SessionFactoryProvider.Validator;
             var invalidValues = validator.Validate(entity);

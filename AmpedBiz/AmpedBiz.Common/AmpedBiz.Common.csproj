@@ -53,6 +53,8 @@
     <Compile Include="Configurations\DatabaseConfig.cs" />
     <Compile Include="Configurations\StateConfig.cs" />
     <Compile Include="Exceptions\BusinessException.cs" />
+    <Compile Include="Exceptions\ResourceAlreadyExistsException.cs" />
+    <Compile Include="Exceptions\ResourceNotFoundException.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />
     <Compile Include="Exceptions\ValidationExceptionBuilder.cs" />
     <Compile Include="Exceptions\IExceptionBuilder.cs" />

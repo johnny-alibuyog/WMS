@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using System.Linq;
-using NHibernate.Cfg;
+﻿using NHibernate.Cfg;
 using NHibernate.Mapping;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace AmpedBiz.Data.Configurations
 {

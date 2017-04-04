@@ -70,6 +70,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         item.Inventory.ReorderLevel = item.Inventory.TargetLevel - new Measure(_utils.RandomDecimal(50M, 100M), item.Inventory.UnitOfMeasure);
                         item.Inventory.MinimumReorderQuantity = item.Inventory.TargetLevel - item.Inventory.ReorderLevel;
                         item.Inventory.Compute();
+                        item.EnsureValidity();
 
                         session.Save(item);
                     }

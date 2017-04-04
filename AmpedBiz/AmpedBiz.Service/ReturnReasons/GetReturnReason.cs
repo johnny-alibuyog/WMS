@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
 
@@ -27,9 +28,7 @@ namespace AmpedBiz.Service.ReturnReasons
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = session.Get<ReturnReason>(message.Id);
-                    if (entity == null)
-                        throw new BusinessException($"Return Reason with id {message.Id} does not exists.");
-
+                    entity.EnsureExistence($"Return Reason with id {message.Id} does not exists.");
                     entity.MapTo(response);
 
                     transaction.Commit();

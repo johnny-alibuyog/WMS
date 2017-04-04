@@ -17,7 +17,7 @@ namespace AmpedBiz.Common.Exceptions
                     ? string.Format(_format, item.Entity, item.Property, item.Value)
                     : item.Message;
 
-                _builder.AppendLine(message);
+                _builder.Append(message + " ");
             }
 
             return new ValidationException(_builder.ToString());

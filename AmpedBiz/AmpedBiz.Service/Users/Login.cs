@@ -1,6 +1,6 @@
-﻿using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
 
@@ -32,9 +32,7 @@ namespace AmpedBiz.Service.Users
                         .Fetch(x => x.Roles).Eager
                         .SingleOrDefault();
 
-                    if (user == null)
-                        throw new BusinessException("Invalid username or password!");
-
+                    user.EnsureExistence("Invalid username or password!");
                     user.MapTo(response);
 
                     transaction.Commit();

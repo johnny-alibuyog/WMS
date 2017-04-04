@@ -1,6 +1,6 @@
-﻿using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
 
@@ -24,10 +24,8 @@ namespace AmpedBiz.Service.ProductCategories
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = session.Get<ProductCategory>(message.Id);
-                    if (entity == null)
-                        throw new BusinessException($"Product Category with id {message.Id} does not exists.");
-
-                    message.MapTo(entity);
+                    entity.EnsureExistence($"Product Category with id {message.Id} does not exists.");
+                    entity.MapFrom(message);
 
                     transaction.Commit();
 

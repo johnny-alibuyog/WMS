@@ -1,12 +1,10 @@
-﻿using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
-using NHibernate.Linq;
-using System.Linq;
-using NHibernate.Transform;
 using System;
+using System.Linq;
 
 namespace AmpedBiz.Service.Products
 {
@@ -42,9 +40,7 @@ namespace AmpedBiz.Service.Products
                         .FutureValue();
 
                     var entity = query.Value;
-                    if (entity == null)
-                        throw new BusinessException($"Product with id {message.Id} does not exists.");
-
+                    entity.EnsureExistence($"Product with id {message.Id} does not exists.");
                     entity.MapTo(response);
 
                     transaction.Commit();

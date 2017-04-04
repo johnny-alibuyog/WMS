@@ -1,9 +1,8 @@
-﻿using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
-using NHibernate.Transform;
 using System;
 using System.Linq;
 
@@ -116,9 +115,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                         .Fetch(x => x.Receipts.First().Product.Inventory).Eager
                         .SingleOrDefault();
 
-                    if (entity == null)
-                        throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
-
+                    entity.EnsureExistence($"PurchaseOrder with id {message.Id} does not exists.");
                     entity.MapTo(response);
 
                     response.Receivables = Dto.PurchaseOrderReceivable.Evaluate(entity);

@@ -2,6 +2,7 @@
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.PurchaseOrders;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
 using System;
@@ -34,14 +35,13 @@ namespace AmpedBiz.Service.PurchaseOrders
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = session.Get<PurchaseOrder>(message.Id);
-                    if (entity == null)
-                        throw new BusinessException($"PurchaseOrder with id {message.Id} does not exists.");
-
+                    entity.EnsureExistence($"PurchaseOrder with id {message.Id} does not exists.");
                     entity.State.Process(new PurchaseOrderSubmittedVisitor()
                     {
                         SubmittedBy= session.Load<User>(message.SubmittedBy.Id),
                         SubmittedOn= message.SubmittedOn ?? DateTime.Now
                     });
+                    entity.EnsureValidity();
 
                     session.Save(entity);
                     transaction.Commit();

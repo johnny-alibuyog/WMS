@@ -45,7 +45,11 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
                 if (!exists)
                 {
-                    data.ForEach(supplier => session.Save(supplier));
+                    data.ForEach(supplier =>
+                    {
+                        supplier.EnsureValidity();
+                        session.Save(supplier);
+                    });
                 }
 
                 transaction.Commit();

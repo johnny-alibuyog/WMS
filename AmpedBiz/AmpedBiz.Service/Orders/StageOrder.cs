@@ -1,10 +1,10 @@
-﻿using System;
-using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Services.Orders;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
-using AmpedBiz.Core.Services.Orders;
+using System;
 
 namespace AmpedBiz.Service.Orders
 {
@@ -34,14 +34,13 @@ namespace AmpedBiz.Service.Orders
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = session.Get<Order>(message.Id);
-                    if (entity == null)
-                        throw new BusinessException($"Order with id {message.Id} does not exists.");
-
+                    entity.EnsureExistence($"Order with id {message.Id} does not exists.");
                     entity.State.Process(new OrderStagedVisitor()
                     {
                         StagedOn = message.StagedOn ?? DateTime.Today,
                         StagedBy = session.Load<User>(message.StagedBy.Id)
                     });
+                    entity.EnsureValidity();
 
                     session.Save(entity);
                     transaction.Commit();

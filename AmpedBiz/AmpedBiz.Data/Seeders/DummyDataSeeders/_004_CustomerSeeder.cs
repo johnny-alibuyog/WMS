@@ -67,6 +67,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 {
                     foreach (var item in data)
                     {
+                        item.EnsureValidity();
                         session.Save(item);
                     }
                 }

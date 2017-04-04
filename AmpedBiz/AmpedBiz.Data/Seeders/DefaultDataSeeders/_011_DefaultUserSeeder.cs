@@ -31,6 +31,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                     user = User.SuperUser;
                     user.Branch = branch;
                     user.Roles = roles;
+                    user.EnsureValidity();
 
                     session.Save(user, user.Id);
                 }

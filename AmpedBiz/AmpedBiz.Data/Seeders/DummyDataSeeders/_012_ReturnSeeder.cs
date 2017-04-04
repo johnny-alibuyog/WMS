@@ -51,6 +51,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                             ))
                             .ToList()
                     });
+                    entity.EnsureValidity();
 
                     session.Save(entity);
 

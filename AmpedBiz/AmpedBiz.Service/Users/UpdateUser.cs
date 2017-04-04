@@ -1,10 +1,10 @@
 ﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
 using System.Linq;
-using System;
 
 namespace AmpedBiz.Service.Users
 {
@@ -26,9 +26,7 @@ namespace AmpedBiz.Service.Users
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = session.Get<User>(message.Id);
-                    if (entity == null)
-                        throw new BusinessException($"User with id {message.Id} does not exists.");
-
+                    entity.EnsureExistence($"User with id {message.Id} does not exists.");
                     entity.Username = message.Username;
                     entity.Password = message.Password;
                     entity.Person = message.Person.MapTo(default(Person));
@@ -39,6 +37,7 @@ namespace AmpedBiz.Service.Users
                         .Select(x => session.Get<Role>(x.Id))
                         .ToList()
                     );
+                    entity.EnsureValidity();
 
                     transaction.Commit();
                 }

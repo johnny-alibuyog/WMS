@@ -1,12 +1,11 @@
-﻿using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
 using NHibernate.Transform;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AmpedBiz.Service.Orders
 {
@@ -45,8 +44,7 @@ namespace AmpedBiz.Service.Orders
                         .TransformUsing(Transformers.DistinctRootEntity)
                         .List();
 
-                    if (orderItems == null || !orderItems.Any())
-                        throw new BusinessException($"Order with id {message.Id} does not exists.");
+                    orderItems.EnsureExistence($"Order with id {message.Id} does not exists.");
 
                     var dtos = orderItems.MapTo((List<Dto.OrderReturnable>)null);
                     response = new Response(dtos);

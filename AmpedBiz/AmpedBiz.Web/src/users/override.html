@@ -1,0 +1,49 @@
+<template>
+  
+  <ai-dialog>
+  
+    <ai-dialog-header>
+      <h3>${header}</h3>
+    </ai-dialog-header>
+
+    <ai-dialog-body>
+
+      <div class="panel panel-default">
+        <div class="panel-body">
+
+          <form class="form-horizontal" role="form">
+
+            <!-- username -->
+            <div class="form-group">
+              <label class="control-label col-sm-4">Username:</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" placeholder="Enter Username" value.bind="user.username" disabled.bind="isEdit" />
+              </div>
+            </div>
+
+            <!-- password -->
+            <div class="form-group">
+              <label class="control-label col-sm-4">password:</label>
+              <div class="col-sm-8">
+                <input type="password" class="form-control" placeholder="Enter Password" value.bind="user.password" />
+              </div>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    
+    </ai-dialog-body>
+
+    <ai-dialog-footer>
+      <button type="button" class="btn btn-success" click.trigger="override()">
+        <i class="fa fa-check-circle"></i> Override
+      </button>
+      <button type="button" class="btn btn-danger" click.trigger="cancel()">
+        <i class="fa fa-times-circle"></i> Cancel</button>
+    </ai-dialog-footer>
+  
+  </ai-dialog>
+
+</template>

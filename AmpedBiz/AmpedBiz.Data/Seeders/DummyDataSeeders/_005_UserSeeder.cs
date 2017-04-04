@@ -58,6 +58,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     {
                         item.Branch = branch;
                         item.Roles = roles;
+                        item.EnsureValidity();
 
                         session.Save(item);
                     }

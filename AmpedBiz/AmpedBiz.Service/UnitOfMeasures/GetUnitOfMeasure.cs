@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
 
@@ -27,9 +28,7 @@ namespace AmpedBiz.Service.UnitOfMeasures
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = session.Get<UnitOfMeasure>(message.Id);
-                    if (entity == null)
-                        throw new BusinessException($"Unit of Measure with id {message.Id} does not exists.");
-
+                    entity.EnsureExistence($"Unit of Measure with id {message.Id} does not exists.");
                     entity.MapTo(response);
 
                     transaction.Commit();

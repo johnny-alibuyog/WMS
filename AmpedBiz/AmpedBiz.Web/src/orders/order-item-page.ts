@@ -21,6 +21,7 @@ export class OrderItemPage {
 
   private _subscriptions: Subscription[] = [];
   private _productInventories: ProductInventory[] = [];
+  private _isPricingInitialized: boolean = false;
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public orderId: string = '';
@@ -85,7 +86,14 @@ export class OrderItemPage {
   }
 
   public pricingChanged(): void {
-    // TODO: find a better way to signal pricing change
+    if (!this._isPricingInitialized) {
+      this._isPricingInitialized = true;
+      return;
+    }
+    
+    if (this.isModificationDisallowed){
+      return;
+    }
 
     if (!this.items) {
       this.items = [];

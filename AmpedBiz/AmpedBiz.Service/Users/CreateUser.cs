@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace AmpedBiz.Service.Users
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = new User(message.Id);
+                    var entity = new User();
                     entity.Username = message.Username;
                     entity.Password = message.Password;
                     entity.Person = message.Person.MapTo(default(Person));
@@ -34,6 +35,7 @@ namespace AmpedBiz.Service.Users
                         .Select(x => session.Get<Role>(x.Id))
                         .ToList()
                     );
+                    entity.EnsureValidity();
 
                     session.Save(entity);
                     transaction.Commit();

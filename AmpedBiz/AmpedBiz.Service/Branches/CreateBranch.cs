@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
@@ -26,10 +27,10 @@ namespace AmpedBiz.Service.Branches
                 using (var transaction = session.BeginTransaction())
                 {
                     var exists = session.Query<Branch>().Any(x => x.Id == message.Id);
-                    if (exists)
-                        throw new BusinessException($"Branch with id {message.Id} already exists.");
+                    exists.Assert($"Branch with id {message.Id} already exists.");
 
                     var entity = message.MapTo(new Branch(message.Id));
+                    entity.EnsureValidity();
 
                     session.Save(entity);
                     transaction.Commit();

@@ -5,6 +5,7 @@ using AmpedBiz.Core.Entities;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
+using AmpedBiz.Data;
 
 namespace AmpedBiz.Service.ReturnReasons
 {
@@ -26,10 +27,10 @@ namespace AmpedBiz.Service.ReturnReasons
                 using (var transaction = session.BeginTransaction())
                 {
                     var exists = session.Query<ReturnReason>().Any(x => x.Id == message.Id);
-                    if (exists)
-                        throw new BusinessException($"Return Reason with id {message.Id} already exists.");
+                    exists.Assert($"Return Reason with id {message.Id} already exists.");
 
                     var entity = message.MapTo(new ReturnReason(message.Id));
+                    entity.EnsureValidity();
 
                     session.Save(entity);
                     transaction.Commit();
