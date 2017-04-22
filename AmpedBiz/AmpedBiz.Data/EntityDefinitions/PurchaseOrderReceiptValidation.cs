@@ -1,10 +1,5 @@
 ﻿using AmpedBiz.Core.Entities;
 using NHibernate.Validator.Cfg.Loquacious;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AmpedBiz.Data.EntityDefinitions
 {
@@ -13,6 +8,9 @@ namespace AmpedBiz.Data.EntityDefinitions
         public PurchaseOrderReceiptValidation()
         {
             Define(x => x.Id);
+
+            Define(x => x.BatchNumber)
+                .MaxLength(255);
 
             Define(x => x.PurchaseOrder)
                 .NotNullable();

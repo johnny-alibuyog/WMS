@@ -40,7 +40,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                         .Fetch(x => x.Shipper).Eager
                         .Fetch(x => x.Supplier).Eager
                         .Fetch(x => x.PaymentType).Eager
-                        .Fetch(x => x.Payment).Eager
+                        .Fetch(x => x.Paid).Eager
                         .Fetch(x => x.SubTotal).Eager
                         .Fetch(x => x.Total).Eager
                         .Fetch(x => x.CreatedBy).Eager

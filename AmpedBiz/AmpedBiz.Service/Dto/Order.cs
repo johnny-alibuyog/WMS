@@ -53,6 +53,8 @@ namespace AmpedBiz.Service.Dto
 
         public decimal TotalAmount { get; set; }
 
+        public decimal PaidAmount { get; set; }
+
         public OrderStatus Status { get; set; }
 
         public bool IsActive { get; set; } // this should be removed

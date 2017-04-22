@@ -88,7 +88,7 @@
     <Compile Include="Services\IAccept.cs" />
     <Compile Include="Services\Hashes\IHashProvider.cs" />
     <Compile Include="Services\IVisitor.cs" />
-    <Compile Include="Services\Orders\OrderCalculateTotalVisitor.cs">
+    <Compile Include="Services\Orders\OrderCalculateVisitor.cs">
       <DependentUpon>OrderVisitor.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\Orders\OrderCancelledVisitor.cs">
@@ -127,7 +127,7 @@
     <Compile Include="Services\PurchaseOrders\PurchaseOrderApprovedVisitor.cs">
       <DependentUpon>PurchaseOrderVisitor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Services\PurchaseOrders\PurchaseOrderCalculateTotalVisitor.cs">
+    <Compile Include="Services\PurchaseOrders\PurchaseOrderCalculateVisitor.cs">
       <DependentUpon>PurchaseOrderVisitor.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\PurchaseOrders\PurchaseOrderCancelledVisitor.cs">

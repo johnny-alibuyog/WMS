@@ -42,17 +42,6 @@ namespace AmpedBiz.Core.Services.Orders
 
         public override void Visit(Order target)
         {
-            if (target.State.Stage.IsModificationAllowedTo(OrderAggregate.Items))
-                target.Accept(new OrderUpdateItemsVisitor(this.Items));
-
-            if (target.State.Stage.IsModificationAllowedTo(OrderAggregate.Payments))
-                target.Accept(new OrderUpdatePaymentsVisitor(this.Payments));
-
-            if (target.State.Stage.IsModificationAllowedTo(OrderAggregate.Returns))
-                target.Accept(new OrderUpdateReturnsVisitor(this.Returns));
-
-            target.Accept(new OrderCalculateTotalVisitor());
-
             target.OrderNumber = this.OrderNumber ?? target.OrderNumber;
             target.CreatedBy = this.CreatedBy ?? target.CreatedBy;
             target.CreatedOn = this.CreatedOn ?? target.CreatedOn;
@@ -68,6 +57,17 @@ namespace AmpedBiz.Core.Services.Orders
             target.TaxRate = this.TaxRate ?? target.TaxRate;
             target.Tax = this.Tax ?? target.Tax;
             target.ShippingFee = this.ShippingFee ?? target.ShippingFee;
+
+            if (target.State.Stage.IsModificationAllowedTo(OrderAggregate.Items))
+                target.Accept(new OrderUpdateItemsVisitor(this.Items));
+
+            if (target.State.Stage.IsModificationAllowedTo(OrderAggregate.Payments))
+                target.Accept(new OrderUpdatePaymentsVisitor(this.Payments));
+
+            if (target.State.Stage.IsModificationAllowedTo(OrderAggregate.Returns))
+                target.Accept(new OrderUpdateReturnsVisitor(this.Returns));
+
+            target.Accept(new OrderCalculateVisitor());
         }
     }
 }

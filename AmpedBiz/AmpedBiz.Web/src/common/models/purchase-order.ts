@@ -84,6 +84,7 @@ export interface PurchaseOrderItem {
   product?: Lookup<string>;
   quantityValue?: number;
   unitCostAmount?: number;
+  totalCostAmount?: number;
 }
 
 export interface PurchaseOrderPayment {

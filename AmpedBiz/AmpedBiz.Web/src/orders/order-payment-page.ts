@@ -5,6 +5,7 @@ import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } fro
 import { Lookup } from '../common/custom_types/lookup';
 import { ServiceApi } from '../services/service-api';
 import { Dictionary } from '../common/custom_types/dictionary';
+import { ensureNumeric } from '../common/utils/ensure-numeric';
 import { OrderPayment, OrderPayable, orderEvents } from '../common/models/order';
 import { NotificationService } from '../common/controls/notification-service';
 
@@ -30,6 +31,8 @@ export class OrderPaymentPage {
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public isModificationDisallowed: boolean = true;
 
+  public totalPaymentAmount: number;
+
   public payable: OrderPayable;
 
   public paymentPager: Pager<OrderPayment> = new Pager<OrderPayment>();
@@ -54,7 +57,7 @@ export class OrderPaymentPage {
     ];
 
     Promise.all(requests).then((responses: [OrderPayable]) => {
-      this.payable = responses[1];
+      this.payable = responses[0];
     });
   }
 
@@ -76,8 +79,11 @@ export class OrderPaymentPage {
   }
 
   private initializePage(): void {
-    if (!this.payments)
+    if (!this.payments) {
       this.payments = [];
+    }
+
+    this.total();
 
     this.paymentPager.count = this.payments.length;
     this.paymentPager.items = this.payments.slice(
@@ -91,17 +97,24 @@ export class OrderPaymentPage {
       return;
     }
 
-    if (!this.payments)
+    if (!this.payments) {
       this.payments = [];
+    }
+
+    var current = this.payments.find(x => !x.paymentAmount || x.paymentAmount == 0);
+    if (current) {
+      this.selectedItem = current;
+      return;
+    }
 
     var _payment = <OrderPayment>{
       paidOn: new Date(),
-      paidBy: this._api.auth.userAsLookup,
+      paidTo: this._api.auth.userAsLookup,
       paymentType: this.paymentTypes && this.paymentTypes.length > 0 ? this.paymentTypes[0] : null,
-      paymentAmount: this.payable && this.payable.balanceAmount || 0,
+      paymentAmount: this.payable && this.payable.balanceAmount - this.totalPaymentAmount || 0,
     };
 
-    this.payments.push(_payment);
+    this.payments.unshift(_payment);
     this.selectedItem = _payment;
     this.initializePage();
   }
@@ -111,8 +124,13 @@ export class OrderPaymentPage {
       return;
     }
 
-    if (this.selectedItem !== _payment)
+    if (_payment.id) {
+      return; // do not allow edit of payment items that has already been published
+    }
+
+    if (this.selectedItem !== _payment) {
       this.selectedItem = _payment;
+    }
   }
 
   public deleteItem(_payment: OrderPayment): void {
@@ -120,10 +138,27 @@ export class OrderPaymentPage {
       return;
     }
 
+    if (_payment.id) {
+      return; // do not allow edit of payment items that has already been published
+    }
+
     var index = this.payments.indexOf(_payment);
     if (index > -1) {
       this.payments.splice(index, 1);
     }
     this.initializePage();
+  }
+
+  public compute(item: OrderPayment): void {
+    //item.paymentAmount = 25;
+    this.total();
+  }
+
+  public total(): void {
+    this.totalPaymentAmount = this.payments
+      .filter(item => !item.id)
+      .reduce((value, current) =>
+        value + ensureNumeric(current.paymentAmount), 0
+      ) || 0;
   }
 }

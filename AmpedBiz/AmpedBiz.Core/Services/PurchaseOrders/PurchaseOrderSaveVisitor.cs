@@ -41,8 +41,6 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             if (target.State.Stage.IsModificationAllowedTo(PurchaseOrderAggregate.Receipts))
                 target.Accept(new PurchaseOrderUpdateReceiptsVisitor(this.Receipts));
 
-            target.Accept(new PurchaseOrderCalculateTotalVisitor());
-
             target.PurchaseOrderNumber = this.PurchaseOrderNumber ?? target.PurchaseOrderNumber;
             target.CreatedBy = this.CreatedBy ?? target.CreatedBy;
             target.CreatedOn = this.CreatedOn ?? target.CreatedOn;
@@ -52,7 +50,8 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             target.ShippingFee = this.ShippingFee ?? target.ShippingFee;
             target.Shipper = this.Shipper ?? target.Shipper;
             target.Supplier = this.Supplier ?? target.Supplier;
-            target.Total = target.Tax + target.ShippingFee + target.Payment;
+
+            target.Accept(new PurchaseOrderCalculateVisitor());
 
             //target.Accept(new PurchaseOrderCalculateTotalVisitor());
             //target.Status = PurchaseOrderStatus.New;

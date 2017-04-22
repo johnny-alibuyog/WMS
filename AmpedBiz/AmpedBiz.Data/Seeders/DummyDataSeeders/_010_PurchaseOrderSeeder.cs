@@ -1,0 +1,479 @@
+﻿using AmpedBiz.Common.Extentions;
+using AmpedBiz.Common.Pipes;
+using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Services.PurchaseOrders;
+using NHibernate;
+using NHibernate.Linq;
+using NHibernate.Transform;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+
+namespace AmpedBiz.Data.Seeders.DummyDataSeeders
+{
+    public class _010_PurchaseOrderSeeder : IDummyDataSeeder
+    {
+        private readonly Utils _utils;
+        private readonly ISessionFactory _sessionFactory;
+
+        public _010_PurchaseOrderSeeder(ISessionFactory sessionFactory)
+        {
+            _utils = new Utils(new Random(), sessionFactory);
+            _sessionFactory = sessionFactory;
+        }
+
+        public void Seed()
+        {
+            var min = 1;
+            var max = 10;
+
+            CreateNewPurchaseOrders(_utils.RandomInteger(min, max));
+            CreateSubmittedPurchaseOrder(_utils.RandomInteger(min, max));
+            CreateApprovedPurchaseOrder(_utils.RandomInteger(min, max));
+            CreatePayPurchaseOrder(_utils.RandomInteger(min, max));
+            CreateReceivePurchaseOrder(_utils.RandomInteger(min, max));
+            CreateCompletePurchaseOrder(_utils.RandomInteger(min, max));
+            CreateCancelPurchaseOrder(_utils.RandomInteger(min, max));
+        }
+
+        private bool Exists(Expression<Func<PurchaseOrder, bool>> condition)
+        {
+            var exists = false;
+            using (var session = this._sessionFactory.OpenSession())
+            using (var transaction = session.BeginTransaction())
+            {
+                exists = session.Query<PurchaseOrder>().Where(condition).Any();
+                transaction.Commit();
+            }
+            return exists;
+        }
+
+        public IEnumerable<PurchaseOrder> CreateNewPurchaseOrders(int count)
+        {
+            try
+            {
+                if (this.Exists(x => x.Status == PurchaseOrderStatus.New))
+                    return null;
+
+                return new Pipeline<IEnumerable<PurchaseOrder>>()
+                    .Register(new PurchaseOrderActions.NewAction(count))
+                    .Execute(new List<PurchaseOrder>());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return null;
+            }
+        }
+
+        public IEnumerable<PurchaseOrder> CreateSubmittedPurchaseOrder(int count)
+        {
+            try
+            {
+                if (Exists(x => x.Status == PurchaseOrderStatus.Submitted))
+                    return null;
+
+                return new Pipeline<IEnumerable<PurchaseOrder>>()
+                    .Register(new PurchaseOrderActions.NewAction(count))
+                    .Register(new PurchaseOrderActions.SubmitAction())
+                    .Execute(new List<PurchaseOrder>());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return null;
+            }
+        }
+
+        public IEnumerable<PurchaseOrder> CreateApprovedPurchaseOrder(int count)
+        {
+            try
+            {
+                if (Exists(x => x.Status == PurchaseOrderStatus.Approved))
+                    return null;
+
+                return new Pipeline<IEnumerable<PurchaseOrder>>()
+                    .Register(new PurchaseOrderActions.NewAction(count))
+                    .Register(new PurchaseOrderActions.SubmitAction())
+                    .Register(new PurchaseOrderActions.ApproveAction())
+                    .Execute(new List<PurchaseOrder>());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return null;
+            }
+        }
+
+        public IEnumerable<PurchaseOrder> CreatePayPurchaseOrder(int count)
+        {
+            try
+            {
+                if (Exists(x => x.Payments.Any()))
+                    return null;
+
+                return new Pipeline<IEnumerable<PurchaseOrder>>()
+                    .Register(new PurchaseOrderActions.NewAction(count))
+                    .Register(new PurchaseOrderActions.SubmitAction())
+                    .Register(new PurchaseOrderActions.ApproveAction())
+                    .Register(new PurchaseOrderActions.PayAction())
+                    .Execute(new List<PurchaseOrder>());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return null;
+            }
+        }
+
+        public IEnumerable<PurchaseOrder> CreateReceivePurchaseOrder(int count)
+        {
+            try
+            {
+                if (Exists(x => x.Receipts.Any()))
+                    return null;
+
+                return new Pipeline<IEnumerable<PurchaseOrder>>()
+                    .Register(new PurchaseOrderActions.NewAction(count))
+                    .Register(new PurchaseOrderActions.SubmitAction())
+                    .Register(new PurchaseOrderActions.ApproveAction())
+                    .Register(new PurchaseOrderActions.PayAction())
+                    .Register(new PurchaseOrderActions.ReceiveAction())
+                    .Execute(new List<PurchaseOrder>());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return null;
+            }
+        }
+
+        public IEnumerable<PurchaseOrder> CreateCompletePurchaseOrder(int count)
+        {
+            try
+            {
+                if (Exists(x => x.Status == PurchaseOrderStatus.Completed))
+                    return null;
+
+                return new Pipeline<IEnumerable<PurchaseOrder>>()
+                    .Register(new PurchaseOrderActions.NewAction(count))
+                    .Register(new PurchaseOrderActions.SubmitAction())
+                    .Register(new PurchaseOrderActions.ApproveAction())
+                    .Register(new PurchaseOrderActions.PayAction())
+                    .Register(new PurchaseOrderActions.ReceiveAction())
+                    .Register(new PurchaseOrderActions.CompleteAction())
+                    .Execute(new List<PurchaseOrder>());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return null;
+            }
+        }
+
+        public IEnumerable<PurchaseOrder> CreateCancelPurchaseOrder(int count)
+        {
+            try
+            {
+                if (Exists(x => x.Status == PurchaseOrderStatus.Cancelled))
+                    return null;
+
+                return new Pipeline<IEnumerable<PurchaseOrder>>()
+                    .Register(new PurchaseOrderActions.NewAction(count))
+                    .Register(new PurchaseOrderActions.SubmitAction())
+                    .Register(new PurchaseOrderActions.CancelledAction())
+                    .Execute(new List<PurchaseOrder>());
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return null;
+            }
+        }
+    }
+
+    public class PurchaseOrderActions
+    {
+        internal abstract class ActionStep : Step<IEnumerable<PurchaseOrder>>
+        {
+            protected readonly Utils _utils = new Utils(new Random(), SessionFactoryProvider.SessionFactory);
+            protected readonly ISessionFactory _sessionFactory = SessionFactoryProvider.SessionFactory;
+
+            protected abstract override IEnumerable<PurchaseOrder> Process(IEnumerable<PurchaseOrder> input);
+
+            protected IEnumerable<PurchaseOrder> ReloadFromSession(IEnumerable<PurchaseOrder> input)
+            {
+                var session = this._sessionFactory.RetrieveSharedSession();
+                var ids = input.Select(x => x.Id).ToList();
+                return session.QueryOver<PurchaseOrder>()
+                    .AndRestrictionOn(x => x.Id).IsIn(ids)
+                    .Fetch(x => x.Tax).Eager
+                    .Fetch(x => x.ShippingFee).Eager
+                    .Fetch(x => x.Shipper).Eager
+                    .Fetch(x => x.Supplier).Eager
+                    .Fetch(x => x.PaymentType).Eager
+                    .Fetch(x => x.Paid).Eager
+                    .Fetch(x => x.SubTotal).Eager
+                    .Fetch(x => x.Total).Eager
+                    .Fetch(x => x.CreatedBy).Eager
+                    .Fetch(x => x.SubmittedBy).Eager
+                    .Fetch(x => x.ApprovedBy).Eager
+                    .Fetch(x => x.PaidBy).Eager
+                    .Fetch(x => x.ReceivedBy).Eager
+                    .Fetch(x => x.CompletedBy).Eager
+                    .Fetch(x => x.CancelledBy).Eager
+                    .Fetch(x => x.Items).Eager
+                    .Fetch(x => x.Items.First().Product).Eager
+                    .Fetch(x => x.Items.First().Product.Supplier).Eager
+                    .Fetch(x => x.Items.First().Product.Category).Eager
+                    .Fetch(x => x.Items.First().Product.Inventory).Eager
+                    .Fetch(x => x.Payments).Eager
+                    .Fetch(x => x.Payments.First().PaidBy).Eager
+                    .Fetch(x => x.Receipts).Eager
+                    .Fetch(x => x.Receipts.First().Product).Eager
+                    .Fetch(x => x.Receipts.First().Product.Supplier).Eager
+                    .Fetch(x => x.Receipts.First().Product.Category).Eager
+                    .Fetch(x => x.Receipts.First().Product.Inventory).Eager
+                    .TransformUsing(Transformers.DistinctRootEntity)
+                    .List();
+            }
+        }
+
+        internal class NewAction : ActionStep
+        {
+            public virtual int Count { get; set; }
+
+            public NewAction(int count)
+            {
+                this.Count = count;
+            }
+
+            protected override IEnumerable<PurchaseOrder> Process(IEnumerable<PurchaseOrder> input)
+            {
+                using (var session = this._sessionFactory.RetrieveSharedSession())
+                using (var transaction = session.BeginTransaction())
+                {
+                    var currency = session.Load<Currency>(Currency.PHP.Id);
+
+                    Enumerable.Range(0, this.Count).ToList().ForEach(_ =>
+                    {
+                        var entity = new PurchaseOrder(Guid.NewGuid());
+                        entity.Accept(new PurchaseOrderSaveVisitor()
+                        {
+                            CreatedBy = _utils.Random<User>(),
+                            CreatedOn = DateTime.Now,
+                            ExpectedOn = DateTime.Now.AddMonths(5),
+                            PaymentType = _utils.Random<PaymentType>(),
+                            Shipper = _utils.Random<Shipper>(),
+                            ShippingFee = new Money(_utils.RandomDecimal(10M, 10000M), currency),
+                            Tax = null, // compute this
+                            Supplier = _utils.Random<Supplier>(),
+                            Items = Enumerable.Range(0, _utils.RandomInteger(1, 50))
+                                .Select(x => _utils.RandomProduct()).Distinct()
+                                .Select(x => new PurchaseOrderItem(
+                                    product: x,
+                                    quantity: new Measure(_utils.RandomDecimal(1M, 100M), x.Inventory.UnitOfMeasure),
+                                    unitCost: new Money(_utils.RandomDecimal(1000M, 100000M), currency)
+                                ))
+                        });
+                        entity.EnsureValidity();
+
+                        session.Save(entity, entity.Id);
+
+                        input.Add(entity);
+                    });
+
+                    transaction.Commit();
+                    this._sessionFactory.ReleaseSharedSession();
+                }
+
+                return input;
+            }
+        }
+
+        internal class SubmitAction : ActionStep
+        {
+            protected override IEnumerable<PurchaseOrder> Process(IEnumerable<PurchaseOrder> input)
+            {
+                using (var session = this._sessionFactory.RetrieveSharedSession())
+                using (var transaction = session.BeginTransaction())
+                {
+                    input = this.ReloadFromSession(input);
+                    foreach (var entity in input)
+                    {
+                        entity.State.Process(new PurchaseOrderSubmittedVisitor()
+                        {
+                            SubmittedOn = DateTime.Now,
+                            SubmittedBy = _utils.Random<User>()
+                        });
+                        entity.EnsureValidity();
+                        session.Update(entity);
+                    }
+                    transaction.Commit();
+                    this._sessionFactory.ReleaseSharedSession();
+                }
+
+                return input;
+            }
+        }
+
+        internal class ApproveAction : ActionStep
+        {
+            protected override IEnumerable<PurchaseOrder> Process(IEnumerable<PurchaseOrder> input)
+            {
+                using (var session = this._sessionFactory.RetrieveSharedSession())
+                using (var transaction = session.BeginTransaction())
+                {
+                    input = this.ReloadFromSession(input);
+                    foreach (var entity in input)
+                    {
+                        entity.State.Process(new PurchaseOrderApprovedVisitor()
+                        {
+                            ApprovedOn = DateTime.Now,
+                            ApprovedBy = _utils.Random<User>()
+                        });
+                        entity.EnsureValidity();
+                        session.Update(entity);
+                    }
+
+                    transaction.Commit();
+                    this._sessionFactory.ReleaseSharedSession();
+                }
+
+                return input;
+            }
+        }
+
+        internal class PayAction : ActionStep
+        {
+            protected override IEnumerable<PurchaseOrder> Process(IEnumerable<PurchaseOrder> input)
+            {
+                using (var session = this._sessionFactory.RetrieveSharedSession())
+                using (var transaction = session.BeginTransaction())
+                {
+                    input = this.ReloadFromSession(input);
+                    foreach (var entity in input)
+                    {
+                        var currency = session.Load<Currency>(Currency.PHP.Id);
+                        entity.Accept(new PurchaseOrderSaveVisitor()
+                        {
+                            Payments = Enumerable
+                                .Range(0, _utils.RandomInteger(1, 1))
+                                .Select(x => new PurchaseOrderPayment(
+                                    paidOn: DateTime.Now,
+                                    paidBy: _utils.Random<User>(),
+                                    paymentType: _utils.Random<PaymentType>(),
+                                    payment: new Money(_utils.RandomDecimal(1M, entity.Total.Amount), currency)
+                                ))
+                        });
+                        entity.EnsureValidity();
+                        session.Update(entity);
+                    }
+
+                    transaction.Commit();
+                    this._sessionFactory.ReleaseSharedSession();
+                }
+
+                return input;
+            }
+        }
+
+        internal class ReceiveAction : ActionStep
+        {
+            protected override IEnumerable<PurchaseOrder> Process(IEnumerable<PurchaseOrder> input)
+            {
+                using (var session = this._sessionFactory.RetrieveSharedSession())
+                using (var transaction = session.BeginTransaction())
+                {
+                    input = this.ReloadFromSession(input);
+                    foreach (var entity in input)
+                    {
+                        entity.Accept(new PurchaseOrderSaveVisitor()
+                        {
+                            Receipts = entity.Items
+                                .Select(x => new PurchaseOrderReceipt(
+                                    batchNumber: this._utils.RandomString(255),
+                                    receivedBy: this._utils.Random<User>(),
+                                    receivedOn: DateTime.Now,
+                                    expiresOn: DateTime.Now.AddYears(3),
+                                    product: x.Product,
+                                    quantity: new Measure(
+                                        value: this._utils.RandomDecimal(
+                                            min: x.Quantity.Value - 2, 
+                                            max: x.Quantity.Value
+                                        ), 
+                                        unit: x.Quantity.Unit)
+                               ))
+                        });
+                        entity.EnsureValidity();
+                        session.Update(entity);
+                    }
+
+                    transaction.Commit();
+                    this._sessionFactory.ReleaseSharedSession();
+                }
+
+                return input;
+            }
+        }
+
+        internal class CompleteAction : ActionStep
+        {
+            protected override IEnumerable<PurchaseOrder> Process(IEnumerable<PurchaseOrder> input)
+            {
+                using (var session = this._sessionFactory.RetrieveSharedSession())
+                using (var transaction = session.BeginTransaction())
+                {
+                    input = this.ReloadFromSession(input);
+                    foreach (var entity in input)
+                    {
+                        entity.State.Process(new PurchaseOrderCompletedVisitor()
+                        {
+                            CompletedOn = DateTime.Now,
+                            CompletedBy = _utils.Random<User>()
+                        });
+                        entity.EnsureValidity();
+                        session.Update(entity);
+                    }
+
+                    transaction.Commit();
+                    this._sessionFactory.ReleaseSharedSession();
+                }
+
+                return input;
+            }
+        }
+
+        internal class CancelledAction : ActionStep
+        {
+            protected override IEnumerable<PurchaseOrder> Process(IEnumerable<PurchaseOrder> input)
+            {
+                using (var session = this._sessionFactory.RetrieveSharedSession())
+                using (var transaction = session.BeginTransaction())
+                {
+                    input = this.ReloadFromSession(input);
+                    foreach (var entity in input)
+                    {
+                        entity.State.Process(new PurchaseOrderCancelledVisitor()
+                        {
+                            CancelledOn = DateTime.Now,
+                            CancelledBy = _utils.Random<User>()
+                        });
+                        entity.EnsureValidity();
+                        session.Update(entity);
+                    }
+
+                    transaction.Commit();
+                    this._sessionFactory.ReleaseSharedSession();
+                }
+
+                return input;
+            }
+        }
+
+    }
+}

@@ -23,19 +23,12 @@
             <form class="search-form form-horizontal pull-right" role="form" submit.delegate="filter.doFilter()">
               
               <div class="search-form input">
-                <select class="form-control" value.bind="filter['status']" change.delegate="filter.doFilter()">
-                  <option value="">All Status</option>
-                  <option repeat.for="item of statuses" model.bind="item.id">${item.name}</option>
-                </select>
-              </div>
-
-              <div class="search-form input">
                 <select class="form-control" value.bind="filter['customer']" change.delegate="filter.doFilter()">
                   <option value="">All Customers</option>
                   <option repeat.for="item of customers" model.bind="item.id">${item.name}</option>
                 </select>
               </div>
-              
+
               <div class="search-form input">
                 <button class="btn btn-default" type="submit">
                   <i class="fa fa-search"></i>

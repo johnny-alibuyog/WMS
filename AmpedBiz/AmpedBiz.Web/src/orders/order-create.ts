@@ -187,6 +187,10 @@ export class OrderCreate {
       .then(data => this._invoiceReport.show(data))
   }
 
+  public signalPricingChanged(): void{
+    this._eventAggregator.publish(orderEvents.pricingChanged);
+  }
+
   public stage(): void {
     this._api.orders.stage(this.order)
       .then(data => this.resetAndNoify(data, "Order has been staged."))

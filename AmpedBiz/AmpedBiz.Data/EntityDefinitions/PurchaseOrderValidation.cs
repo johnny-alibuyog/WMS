@@ -33,7 +33,7 @@ namespace AmpedBiz.Data.EntityDefinitions
             Define(x => x.Total)
                 .IsValid();
 
-            Define(x => x.Payment)
+            Define(x => x.Paid)
                 .IsValid();
 
             Define(x => x.Status);

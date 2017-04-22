@@ -5,6 +5,8 @@ namespace AmpedBiz.Service.Dto
 {
     public class OrderReturn
     {
+        public virtual Guid Id { get; set; }
+
         public virtual Guid OrderId { get; set; }
 
         public Lookup<Guid> Product { get; set; }
@@ -22,6 +24,8 @@ namespace AmpedBiz.Service.Dto
 
     public class OrderReturnable
     {
+        public virtual Guid Id { get; set; }
+
         public virtual Guid OrderId { get; set; }
 
         public Lookup<Guid> Product { get; set; }

@@ -45,7 +45,7 @@ namespace AmpedBiz.Core.Services.Orders
             var lastPayment = target.Payments.OrderBy(x => x.PaidOn).Last();
 
             target.PaidOn = lastPayment.PaidOn;
-            target.PaidTo = lastPayment.PaidBy;
+            target.PaidTo = lastPayment.PaidTo;
         }
 
         //private void SetPaymentsTo(Order target)
@@ -84,7 +84,7 @@ namespace AmpedBiz.Core.Services.Orders
         //        return;
 
         //    target.InvoicedOn = lastPayment.PaidOn;
-        //    target.InvoicedBy = lastPayment.PaidBy;
+        //    target.InvoicedBy = lastPayment.PaidTo;
 
         //    foreach (var payment in this.Payments)
         //    {

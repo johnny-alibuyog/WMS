@@ -41,6 +41,8 @@ namespace AmpedBiz.Data.EntityDefinitions
                 .NotNullable()
                 .And.IsValid();
 
+            Define(x => x.Paid);
+
             Define(x => x.Status)
                 .NotNullable();
 

@@ -169,13 +169,14 @@
     <Compile Include="Seeders\DummyDataSeeders\_000_BranchSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_001_CurrencySeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_004_CustomerSeeder.cs" />
+    <Compile Include="Seeders\DummyDataSeeders\_010_PurchaseOrderSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_012_ReturnSeeder.cs" />
     <Compile Include="Seeders\IDefaultDataSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_000_ReturnReasonSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_011_DefaultUserSeeder.cs" />
     <Compile Include="Seeders\IDummyDataSeeder.cs" />
     <Compile Include="Seeders\ISeeder.cs" />
-    <Compile Include="Seeders\DummyDataSeeders\_010_OrderSeeder.cs" />
+    <Compile Include="Seeders\DummyDataSeeders\_011_OrderSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_002_PaymentTypeSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_003_PricingSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_004_ProductCategorySeeder.cs" />

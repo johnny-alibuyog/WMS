@@ -64,6 +64,8 @@ namespace AmpedBiz.Service.Dto.Mappers
             ExpressMapper.Mapper.Register<Entity.PurchaseOrder, SavePurchaseOrder.Response>().Flatten()
                 .Member(x => x.Stage, x => x.State.Stage).Flatten();
 
+            ExpressMapper.Mapper.Register<Entity.PurchaseOrder, GetPurchaseOrderPayable.Response>().Flatten();
+
             ExpressMapper.Mapper.Register<Entity.PurchaseOrderItem, Dto.PurchaseOrderItem>().Flatten();
 
             ExpressMapper.Mapper.Register<Entity.PurchaseOrderPayment, Dto.PurchaseOrderPayment>().Flatten();
@@ -79,6 +81,8 @@ namespace AmpedBiz.Service.Dto.Mappers
 
             ExpressMapper.Mapper.Register<Entity.Order, SaveOrder.Response>()
                 .Member(x => x.Stage, x => x.State.Stage).Flatten();
+
+            ExpressMapper.Mapper.Register<Entity.Order, GetOrderPayable.Response>().Flatten();
 
             ExpressMapper.Mapper.Register<Entity.OrderItem, Dto.OrderItem>().Flatten();
 

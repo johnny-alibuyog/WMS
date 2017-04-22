@@ -14,6 +14,9 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             target.CompletedBy = this.CompletedBy;
             target.CompletedOn = this.CompletedOn;
             target.Status = PurchaseOrderStatus.Completed;
+
+
         }
+        
     }
 }

@@ -1,33 +1,22 @@
-import { customAttribute, autoinject } from "aurelia-framework";
+import { customAttribute, bindable, autoinject } from 'aurelia-framework';
+  
+const ENTER: number = 13;
 
 @autoinject
 @customAttribute('on-enter')
 export class OnEnter {
-  action: any;
-  onEnter: any;
-  element: Element;
+  public value: Function;
+  private _element: Element;
+  private _keyup: EventListener;
 
   constructor(element: Element) {
-    this.element = element;
-    this.onEnter = (ev: KeyboardEvent) => {
-      //Enter keyCode is 13
-      if (ev.keyCode !== 13) {
-        return;
-      }
-
-      this.action();
+    this._element = element;
+    this._keyup = (ev: KeyboardEvent) => {
+      if (ev.keyCode !== ENTER) this.value();
     };
   }
 
-  attached() {
-    this.element.addEventListener("keyup", this.onEnter);
-  }
+  public attached = () => this._element.addEventListener("keyup", this._keyup);
 
-  valueChanged(func) {
-    this.action = func;
-  }
-
-  detached() {
-    this.element.removeEventListener("keyup", this.onEnter);
-  }
+  public detached = () => this._element.removeEventListener("keyup", this._keyup);
 }

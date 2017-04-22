@@ -141,7 +141,7 @@
             <td class="text-right">
               <input type="number" class="form-control text-right" disabled 
                 placeholder="Enter Base Price Per${inventory.packagingUnitOfMeasure.name}" 
-                value.bind="inventory.basePriceAmount * inventory.packagingSize"
+                value="${inventory.basePriceAmount * inventory.packagingSize}"
               />
             </td>
           </tr>
@@ -159,7 +159,7 @@
             <td class="text-right">
               <input type="number" class="form-control text-right" disabled 
                 placeholder="Enter Distributor Price Per${inventory.packagingUnitOfMeasure.name}" 
-                value.bind="inventory.distributorPriceAmount * inventory.packagingSize"
+                value="${inventory.distributorPriceAmount * inventory.packagingSize}"
               />
             </td>
           </tr>
@@ -177,7 +177,7 @@
             <td class="text-right">
               <input type="number" class="form-control text-right" disabled 
                 placeholder="Enter List Price Per${inventory.packagingUnitOfMeasure.name}" 
-                value.bind="inventory.listPriceAmount * inventory.packagingSize"
+                value="${inventory.listPriceAmount * inventory.packagingSize}"
               />
             </td>
           </tr>
@@ -195,7 +195,7 @@
             <td class="text-right">
               <input type="number" class="form-control text-right" disabled 
                 placeholder="Enter Bad Stock Price Per${inventory.packagingUnitOfMeasure.name}" 
-                value.bind="inventory.badStockPriceAmount * inventory.packagingSize"
+                value="${inventory.badStockPriceAmount * inventory.packagingSize}"
               />
             </td>
           </tr>

@@ -12,7 +12,7 @@ namespace AmpedBiz.Data.EntityDefinitions
             Define(x => x.Order)
                 .NotNullable();
 
-            Define(x => x.PaidBy)
+            Define(x => x.PaidTo)
                 .NotNullable();
 
             Define(x => x.PaidOn);

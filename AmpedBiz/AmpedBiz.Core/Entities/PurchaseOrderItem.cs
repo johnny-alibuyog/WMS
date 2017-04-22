@@ -12,7 +12,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Money UnitCost { get; protected set; }
 
-        public virtual Money ExtendedCost { get; protected set; }
+        public virtual Money TotalCost { get; protected set; }
 
         public PurchaseOrderItem() : base(default(Guid)) { }
 
@@ -21,7 +21,7 @@ namespace AmpedBiz.Core.Entities
             this.Product = product;
             this.Quantity = quantity;
             this.UnitCost = unitCost;
-            this.ExtendedCost = new Money(
+            this.TotalCost = new Money(
                 amount: this.UnitCost.Amount * this.Quantity.Value, 
                 currency: this.UnitCost.Currency
             );

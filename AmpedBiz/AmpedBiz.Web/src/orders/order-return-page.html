@@ -34,6 +34,8 @@
         </td>
 
         <!-- Product -->
+        <td>${item.product.name}</td>
+        <!-- Do not allow editing of products to return
         <td if.bind="item | productCannotBeChanged:$parent.selectedItem">${item.product.name}</td>
         <td if.bind="item | productCanBeChanged:$parent.selectedItem">
           <select class="form-control" value.bind="item.product | lookupToId:$parent.products" change.delegate="$parent.initializeItem(item)">
@@ -41,6 +43,7 @@
             <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
           </select>
         </td>
+        -->
 
         <!-- Price -->
         <td class="text-right">${item.totalPriceAmount / item.orderedQuantity | numberFormat}</td>
@@ -63,17 +66,41 @@
         <!-- Returning -->
         <td if.bind="$parent.selectedItem !== item" class="text-right">${item.returning.quantity}</td>
         <td if.bind="$parent.selectedItem === item" class="text-right">
-          <input class="form-control text-right" type="number" value.bind="item.returning.quantity" keyup.delegate="compute(item)"
+          <input class="form-control text-right" type="number" numeric-value.bind="item.returning.quantity" keyup.delegate="compute(item)"
           />
         </td>
 
         <!-- Amount -->
         <td if.bind="$parent.selectedItem !== item" class="text-right">${item.returning.amount | numberFormat}</td>
         <td if.bind="$parent.selectedItem === item" class="text-right">
-          <input class="form-control text-right" type="number" value.bind="item.returning.amount" />
+          <input class="form-control text-right" type="number" numeric-value.bind="item.returning.amount" keyup.delegate="compute(item)" />
         </td>
       </tr>
     </tbody>
+
+    <tfoot>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="text-right"><label>Returned:</label></td>
+        <td class="text-right">${totalReturnedAmount | numberFormat}</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="text-right"><label>Returning:</label></td>
+        <td class="text-right">${totalReturningAmount | numberFormat}</td>
+      </tr>
+    </tfoot>
+
   </table>
 
   <!-- pager -->

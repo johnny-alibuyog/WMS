@@ -1,4 +1,4 @@
-import { OrderAggregate, OrderStatus, OrderReturnable } from '../common/models/order'
+import { OrderAggregate, OrderStatus, OrderItem, OrderPayment, OrderReturn, OrderReturnable, OrderReturning } from '../common/models/order'
 
 export class IsTransitionAllowedToValueConverter {
 
@@ -44,7 +44,7 @@ export class ProductCanBeChangedValueConverter {
       return false;
     }
 
-    if (returnable.returnableQuantity === 0) {
+    if (returnable.returnableQuantity === 0 && returnable.product) {
       return false;
     }
 
@@ -67,7 +67,7 @@ export class ProductCannotBeChangedValueConverter {
       return true;
     }
 
-    if (returnable.returnableQuantity === 0) {
+    if (returnable.returnableQuantity === 0 && returnable.product) {
       return true;
     }
 
@@ -76,5 +76,97 @@ export class ProductCannotBeChangedValueConverter {
     }
 
     return false;
+  }
+}
+
+export class SumItemDiscountValueConverter {
+
+  toView(items: OrderItem[]): number {
+    if (!items) {
+      return 0;
+    }
+
+    if (items.length == 0) {
+      return 0;
+    }
+
+    return items.reduce((value, item) => value + item.discountAmount, 0);
+  }
+}
+
+export class SumItemPriceValueConverter {
+
+  toView(items: OrderItem[]): number {
+    if (!items) {
+      return 0;
+    }
+
+    if (items.length == 0) {
+      return 0;
+    }
+
+    return items.reduce((value, item) => value + item.totalPriceAmount, 0);
+  }
+}
+
+
+export class TotalItemPriceValueConverter {
+
+  toView(items: OrderItem[]): number {
+    var discount = new SumItemDiscountValueConverter().toView(items);
+    var price = new SumItemPriceValueConverter().toView(items);
+    var total = price - discount;
+
+    if (total < 0) {
+      total = 0;
+    }
+
+    return total;
+  }
+}
+
+
+export class TotalPaymentValueConverter {
+
+  toView(payments: OrderPayment[]): number {
+    if (!payments) {
+      return 0;
+    }
+
+    if (payments.length == 0) {
+      return 0;
+    }
+
+    return payments.reduce((value, item) => value + item.paymentAmount, 0);
+  }
+}
+
+export class TotalReturnedValueConverter {
+
+  toView(returns: OrderReturn[]): number {
+    if (!returns) {
+      return 0;
+    }
+
+    if (returns.length == 0) {
+      return 0;
+    }
+
+    return returns.reduce((value, item) => value + item.returnedAmount, 0);
+  }
+}
+
+export class TotalReturningValueConverter {
+
+  toView(returnings: OrderReturnable[]): number {
+    if (!returnings) {
+      return 0;
+    }
+
+    if (returnings.length == 0) {
+      return 0;
+    }
+
+    return returnings.reduce((value, item) => value + item.returning.amount, 0);
   }
 }

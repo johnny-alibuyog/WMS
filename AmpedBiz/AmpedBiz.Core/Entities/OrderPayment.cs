@@ -8,7 +8,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual DateTime? PaidOn { get; protected set; }
 
-        public virtual User PaidBy { get; protected set; }
+        public virtual User PaidTo { get; protected set; }
 
         public virtual PaymentType PaymentType { get; protected set; }
 
@@ -16,11 +16,11 @@ namespace AmpedBiz.Core.Entities
 
         public OrderPayment() : base(default(Guid)) { }
 
-        public OrderPayment(DateTime? paidOn, User paidBy, PaymentType paymentType, 
+        public OrderPayment(DateTime? paidOn, User paidTo, PaymentType paymentType, 
             Money payment, Guid? id = null) : base(id ?? default(Guid))
         {
             this.PaidOn = paidOn;
-            this.PaidBy = paidBy;
+            this.PaidTo = paidTo;
             this.PaymentType = paymentType;
             this.Payment = payment;
         }

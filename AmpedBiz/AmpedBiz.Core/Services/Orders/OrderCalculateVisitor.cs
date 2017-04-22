@@ -2,7 +2,7 @@
 
 namespace AmpedBiz.Core.Services.Orders
 {
-    public class OrderCalculateTotalVisitor : OrderVisitor
+    public class OrderCalculateVisitor : OrderVisitor
     {
         public override void Visit(Order target)
         {
@@ -28,6 +28,11 @@ namespace AmpedBiz.Core.Services.Orders
             foreach (var item in target.Returns)
             {
                 target.Returned += item.Returned;
+            }
+
+            foreach(var item in target.Payments)
+            {
+                target.Paid += item.Payment;
             }
 
             target.Total = target.Tax + target.ShippingFee + target.SubTotal - target.Discount;

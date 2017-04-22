@@ -21,7 +21,7 @@ namespace AmpedBiz.Data.EntityDefinitions
                 .NotNullable()
                 .And.IsValid();
 
-            Define(x => x.ExtendedCost)
+            Define(x => x.TotalCost)
                 .NotNullable()
                 .And.IsValid();
         }

@@ -5,6 +5,7 @@ import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } fro
 import { Lookup } from '../common/custom_types/lookup';
 import { ServiceApi } from '../services/service-api';
 import { Dictionary } from '../common/custom_types/dictionary';
+import { ensureNumeric } from '../common/utils/ensure-numeric';
 import { PurchaseOrderItem, purchaseOrderEvents } from '../common/models/purchase-order';
 import { NotificationService } from '../common/controls/notification-service';
 
@@ -29,6 +30,8 @@ export class PurchaseOrderItemPage {
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public isModificationDisallowed: boolean = true;
+
+  public totalCostAmount: number;
 
   public itemPager: Pager<PurchaseOrderItem> = new Pager<PurchaseOrderItem>();
 
@@ -78,8 +81,11 @@ export class PurchaseOrderItemPage {
   }
 
   initializePage(): void {
-    if (!this.items)
+    if (!this.items) {
       this.items = [];
+    }
+
+    this.total();
 
     this.itemPager.count = this.items.length;
     this.itemPager.items = this.items.slice(
@@ -93,15 +99,22 @@ export class PurchaseOrderItemPage {
       return;
     }
 
-    if (!this.items)
+    if (!this.items) {
       this.items = [];
+    }
+
+    var current = this.items.find(x => !x.totalCostAmount || x.totalCostAmount == 0);
+    if (current) {
+      this.selectedItem = current;
+      return;
+    }
 
     var item = <PurchaseOrderItem>{
       quantityValue: 0,
       unitPriceAmountce: 0,
     };
 
-    this.items.push(item);
+    this.items.unshift(item);
     this.selectedItem = item;
 
     this.initializePage();
@@ -126,5 +139,16 @@ export class PurchaseOrderItemPage {
       this.items.splice(index, 1);
     }
     this.initializePage();
+  }
+
+  public compute(item: PurchaseOrderItem): void {
+    item.totalCostAmount = item.unitCostAmount * item.quantityValue;
+
+    this.total();
+  }
+
+  public total(): void {
+    this.totalCostAmount = this.items
+      .reduce((value, current) => value + ensureNumeric(current.totalCostAmount), 0) || 0;
   }
 }

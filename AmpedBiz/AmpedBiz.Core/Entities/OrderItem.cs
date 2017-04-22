@@ -24,18 +24,18 @@ namespace AmpedBiz.Core.Entities
 
         public OrderItem() : base(default(Guid)) { }
 
-        public OrderItem(Product product, decimal packagingSize, Measure quantity, decimal discountRate,  Money discount, Money unitPrice, Guid? id = null) 
+        public OrderItem(Product product, decimal packagingSize, Measure quantity, decimal discountRate, Money unitPrice, Guid? id = null) 
             : base(id ?? default(Guid))
         {
             this.Product = product;
             this.PackagingSize = packagingSize;
             this.Quantity = quantity;
             this.DiscountRate = discountRate;
-            this.Discount = discount ?? new Money(0.0M);
             this.UnitPrice = unitPrice;
-
+            
             // discount is not included in the extended price
             this.ExtendedPrice = new Money((this.Quantity.Value * this.UnitPrice.Amount), this.UnitPrice.Currency);
+            this.Discount = new Money((this.ExtendedPrice.Amount * this.DiscountRate), this.UnitPrice.Currency);
             this.TotalPrice = this.ExtendedPrice - this.Discount;
         }
 

@@ -1,12 +1,13 @@
 import { DialogService } from 'aurelia-dialog';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
-import { autoinject, bindable, bindingMode, customElement, computedFrom } from 'aurelia-framework'
+import { BindingEngine, autoinject, bindable, bindingMode, customElement, computedFrom } from 'aurelia-framework'
 import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
 import { Lookup } from '../common/custom_types/lookup';
 import { ServiceApi } from '../services/service-api';
 import { Dictionary } from '../common/custom_types/dictionary';
 import { OrderReturn, OrderReturnable, OrderReturning, orderEvents } from '../common/models/order';
 import { pricing } from '../common/models/pricing';
+import { ensureNumeric } from '../common/utils/ensure-numeric';
 import { NotificationService } from '../common/controls/notification-service';
 
 @autoinject
@@ -17,6 +18,7 @@ export class OrderReturnPage {
   private _dialog: DialogService;
   private _notification: NotificationService;
   private _eventAggregator: EventAggregator;
+  private _bindingEngine: BindingEngine;
   private _subscriptions: Subscription[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
@@ -34,6 +36,10 @@ export class OrderReturnPage {
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public isModificationDisallowed: boolean = true;
 
+  public totalReturnedAmount?: number;
+
+  public totalReturningAmount?: number;
+
   public products: Lookup<string>[] = [];
 
   public returnPager: Pager<OrderReturn> = new Pager<OrderReturn>();
@@ -42,11 +48,12 @@ export class OrderReturnPage {
 
   public selectedItem: OrderReturnable;
 
-  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, eventAggregator: EventAggregator) {
+  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, eventAggregator: EventAggregator, bindingEngine: BindingEngine) {
     this._api = api;
     this._dialog = dialog;
     this._notification = notification;
     this._eventAggregator = eventAggregator;
+    this._bindingEngine = bindingEngine;
 
     this.returnPager.onPage = () => this.initializeReturnablePage();
     this.returnablePager.onPage = () => this.initializeReturnablePage();
@@ -54,10 +61,12 @@ export class OrderReturnPage {
 
   public attached(): void {
     this._subscriptions = [
+      /* do not allow adding anymore
       this._eventAggregator.subscribe(
         orderEvents.return.add,
         response => this.addItem()
       ),
+      */
     ];
   }
 
@@ -97,8 +106,11 @@ export class OrderReturnPage {
   }
 
   private initializeReturnPage(): void {
-    if (!this.returns)
+    if (!this.returns) {
       this.returns = [];
+    }
+
+    this.total();
 
     this.returnPager.count = this.returns.length;
     this.returnPager.items = this.returns.slice(
@@ -108,8 +120,11 @@ export class OrderReturnPage {
   }
 
   private initializeReturnablePage(): void {
-    if (!this.returnables)
+    if (!this.returnables) {
       this.returnables = [];
+    }
+
+    this.total();
 
     this.returnablePager.count = this.returnables.length;
     this.returnablePager.items = this.returnables.slice(
@@ -141,13 +156,9 @@ export class OrderReturnPage {
     returnable.returning.amount = reference && reference.returning && reference.returning.amount || 0;
 
     /*
-    if (!_returnable.pro duct ;
-      let reference = this._referenceReturnables.find(x => x.product.id == _returnable.product
-      
-      .id);
-      var destination = <OrderR
-      
-      eturnable>{};
+    if (!_returnable.product ;
+      let reference = this._referenceReturnables.find(x => x.product.id == _returnable.product.id);
+      var destination = <OrderReturnable>{};
       _returnable = Object.assign(_returnable, source);
       var source = {
 
@@ -167,8 +178,9 @@ export class OrderReturnPage {
       return;
     }
 
-    if (!this.returnables)
+    if (!this.returnables) {
       this.returnables = [];
+    }
 
     var _returnable = <OrderReturnable>{
       orderId: this.orderId,
@@ -190,13 +202,17 @@ export class OrderReturnPage {
       }
     };
 
-    this.returnables.push(_returnable);
+    this.returnables.unshift(_returnable);
     this.selectedItem = _returnable;
     this.initializeReturnablePage();
   }
 
   public editItem(_returnable: OrderReturnable): void {
     if (this.isModificationDisallowed) {
+      return;
+    }
+
+    if (_returnable.returnableQuantity == 0) {
       return;
     }
 
@@ -224,5 +240,14 @@ export class OrderReturnPage {
   public compute(item: OrderReturnable): void {
     var unitPrice = item.totalPriceAmount / item.orderedQuantity;
     item.returning.amount = unitPrice * item.returning.quantity;
+    this.total();
+  }
+
+  public total() {
+    this.totalReturnedAmount = this.returns
+      .reduce((value, item) => value + ensureNumeric(item.returnedAmount), 0) || 0;
+
+    this.totalReturningAmount = this.returnables
+      .reduce((value, item) => value + ensureNumeric(item.returning.amount), 0) || 0;
   }
 }

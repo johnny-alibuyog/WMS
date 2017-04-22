@@ -38,13 +38,13 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Money ShippingFee { get; internal protected set; }
 
-        public virtual Money Payment { get; internal protected set; }
+        public virtual Money Discount { get; internal protected set; }
 
         public virtual Money SubTotal { get; internal protected set; }
 
         public virtual Money Total { get; internal protected set; }
 
-        public virtual Money Discount { get; internal protected set; }
+        public virtual Money Paid { get; internal protected set; }
 
         public virtual PurchaseOrderStatus Status { get; internal protected set; } = PurchaseOrderStatus.New;
 

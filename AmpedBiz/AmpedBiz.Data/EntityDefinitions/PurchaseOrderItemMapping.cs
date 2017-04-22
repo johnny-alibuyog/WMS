@@ -20,8 +20,8 @@ namespace AmpedBiz.Data.EntityDefinitions
             Component(x => x.UnitCost, 
                 MoneyMapping.Map("UnitCost_", nameof(PurchaseOrderItem)));
 
-            Component(x => x.ExtendedCost, 
-                MoneyMapping.Map("ExtendedCost_", nameof(PurchaseOrderItem)));
+            Component(x => x.TotalCost, 
+                MoneyMapping.Map("TotalCost_", nameof(PurchaseOrderItem)));
         }
     }
 }

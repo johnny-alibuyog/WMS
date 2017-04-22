@@ -677,7 +677,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     new Service.Dto.OrderPayment()
                     {
                         PaidOn = DateTime.Now,
-                        PaidBy = RandomUser(),
+                        PaidTo = RandomUser(),
                         PaymentType = RandomPaymentType(),
                         PaymentAmount = order.TotalAmount
                     }

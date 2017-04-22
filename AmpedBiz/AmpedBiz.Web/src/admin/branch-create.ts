@@ -80,11 +80,11 @@ export class BranchCreate {
     }
   }
 
-  public cancel() {
+  public cancel(): void  {
     this._dialogController.cancel({ wasCancelled: true, output: null });
   }
 
-  public save() {
+  public save(): void {
     if (this.isEdit) {
 
       this._api.branches.update(this.branch)
@@ -97,7 +97,6 @@ export class BranchCreate {
         });
     }
     else {
-
       this._api.branches.create(this.branch)
         .then(data => {
           this._notification.success("Branch has been saved.")

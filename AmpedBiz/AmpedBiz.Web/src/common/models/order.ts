@@ -5,6 +5,7 @@ import { Dictionary } from '../custom_types/dictionary';
 import { Address } from './Address';
 
 export const orderEvents = {
+  pricingChanged: 'pricing-changed',
   item: {
     add: 'order-item-add',
     added: 'order-item-added',
@@ -142,7 +143,7 @@ export interface OrderReturning {
 export interface OrderPayment {
   id?: string;
   paidOn?: Date;
-  paidBy?: Lookup<string>;
+  paidTo?: Lookup<string>;
   paymentType?: Lookup<string>;
   paymentAmount?: number;
 }
@@ -151,7 +152,7 @@ export interface OrderPayable {
   id?: string;
   orderId?: string;
   paidOn?: Date;
-  paidBy?: Lookup<string>;
+  paidTo?: Lookup<string>;
   paymentType?: Lookup<string>;
   taxAmount?: number;
   shippingFeeAmount?: number;

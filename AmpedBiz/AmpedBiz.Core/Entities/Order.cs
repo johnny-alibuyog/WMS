@@ -54,7 +54,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Money Total { get; internal protected set; }
 
-        public virtual Money Payment { get; internal protected set; }
+        public virtual Money Paid { get; internal protected set; }
 
         public virtual OrderStatus Status { get; internal protected set; } = OrderStatus.New;
 

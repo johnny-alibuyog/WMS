@@ -37,11 +37,11 @@ namespace AmpedBiz.Service.Dto
 
         public decimal ShippingFeeAmount { get; set; }
 
-        public decimal PaymentAmount { get; set; }
-
         public decimal SubTotalAmount { get; set; }
 
         public decimal TotalAmount { get; set; }
+
+        public decimal PaidAmount { get; set; }
 
         public PurchaseOrderStatus Status { get; set; }
 

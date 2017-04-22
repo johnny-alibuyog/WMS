@@ -1,33 +1,22 @@
 import { customAttribute, autoinject } from "aurelia-framework";
 
+const ESCAPE: number = 27;
+
 @autoinject
 @customAttribute('on-escape')
-export class OnEscape {
-  action: any;
-  onEscape: any;
-  element: Element;
+export class OnEnter {
+  public value: Function;
+  private _element: Element;
+  private _keyup: EventListener;
 
   constructor(element: Element) {
-    this.element = element;
-    this.onEscape = (ev: KeyboardEvent) => {
-      //Escape keyCode is 27
-      if (ev.keyCode !== 27) {
-        return;
-      }
-
-      this.action();
+    this._element = element;
+    this._keyup = (ev: KeyboardEvent) => {
+      if (ev.keyCode !== ESCAPE) this.value();
     };
   }
 
-  attached() {
-    this.element.addEventListener("keyup", this.onEscape);
-  }
+  public attached = () => this._element.addEventListener("keyup", this._keyup);
 
-  valueChanged(func) {
-    this.action = func;
-  }
-
-  detached() {
-    this.element.removeEventListener("keyup", this.onEscape);
-  }
+  public detached = () => this._element.removeEventListener("keyup", this._keyup);
 }

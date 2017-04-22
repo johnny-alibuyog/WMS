@@ -40,6 +40,9 @@ namespace AmpedBiz.Data.EntityDefinitions
             Component(x => x.Total, 
                 MoneyMapping.Map("Total_", nameof(Order)));
 
+            Component(x => x.Paid,
+                MoneyMapping.Map("Payment_", nameof(Order)));
+
             Map(x => x.Status);
 
             Map(x => x.DueOn);

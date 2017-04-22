@@ -12,7 +12,7 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             References(x => x.Order);
 
-            References(x => x.PaidBy);
+            References(x => x.PaidTo);
 
             Map(x => x.PaidOn);
 

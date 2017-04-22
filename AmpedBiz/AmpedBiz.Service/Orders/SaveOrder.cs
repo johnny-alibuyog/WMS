@@ -59,7 +59,7 @@ namespace AmpedBiz.Service.Orders
                             .Fetch(x => x.Items.First().Product).Eager
                             .Fetch(x => x.Items.First().Product.Inventory).Eager
                             .Fetch(x => x.Payments).Eager
-                            .Fetch(x => x.Payments.First().PaidBy).Eager
+                            .Fetch(x => x.Payments.First().PaidTo).Eager
                             .Fetch(x => x.Payments.First().PaymentType).Eager
                             .Fetch(x => x.Returns).Eager
                             .Fetch(x => x.Returns.First().Reason).Eager
@@ -117,13 +117,12 @@ namespace AmpedBiz.Service.Orders
                             discountRate: x.DiscountRate,
                             packagingSize: x.PackagingSize,
                             product: GetProduct(x.Product.Id),
-                            discount: new Money(x.DiscountAmount, currency),
                             unitPrice: new Money(x.UnitPriceAmount, currency),
                             quantity: new Measure(x.QuantityValue, GetUnitOfMeasure(x.Product.Id))
                         )),
                         Payments = message.Payments.Select(x => new OrderPayment(
                             paidOn: x.PaidOn ?? DateTime.Now,
-                            paidBy: session.Load<User>(x.PaidBy.Id),
+                            paidTo: session.Load<User>(x.PaidTo.Id),
                             paymentType: session.Load<PaymentType>(x.PaymentType.Id),
                             payment: new Money(x.PaymentAmount, currency)
                         )),

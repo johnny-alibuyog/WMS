@@ -7,6 +7,7 @@ import { ServiceApi } from '../services/service-api';
 import { Dictionary } from '../common/custom_types/dictionary';
 import { OrderItem, orderEvents } from '../common/models/order';
 import { pricing } from '../common/models/pricing';
+import { ensureNumeric } from '../common/utils/ensure-numeric';
 import { NotificationService } from '../common/controls/notification-service';
 import { ProductInventory } from '../common/models/product';
 
@@ -30,13 +31,19 @@ export class OrderItemPage {
   public items: OrderItem[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
-  public pricing: Lookup<string> = pricing.listPrice;
+  public pricing: Lookup<string>; // = pricing.listPrice;
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public products: Lookup<string>[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public isModificationDisallowed: boolean = true;
+
+  public totalDiscountAmount: number;
+
+  public totalPriceAmount: number;
+
+  public totalAmount: number;
 
   public itemPager: Pager<OrderItem> = new Pager<OrderItem>();
 
@@ -85,13 +92,13 @@ export class OrderItemPage {
       .then(result => this._productInventories = result);
   }
 
-  public pricingChanged(): void {
+  public pricingChanged(newValue: Lookup<string>, oldValue: Lookup<string>): void {
     if (!this._isPricingInitialized) {
       this._isPricingInitialized = true;
       return;
     }
-    
-    if (this.isModificationDisallowed){
+
+    if (this.isModificationDisallowed) {
       return;
     }
 
@@ -108,16 +115,17 @@ export class OrderItemPage {
     }
 
     if (!item.product) {
-      debugger;
       item.quantityValue = 0;
       item.unitPriceAmount = 0;
       item.packagingSize = 1;
+      this.compute(item);
       return;
     }
 
     this.getProductInventory(item.product).then(inventory => {
       item.packagingSize = inventory.packagingSize;
       item.unitPriceAmount = pricing.getPriceAmount(this.pricing, inventory);
+      this.compute(item);
     });
   }
 
@@ -131,6 +139,8 @@ export class OrderItemPage {
       }
     });
 
+    this.total();
+
     this.itemPager.count = this.items.length;
     this.itemPager.items = this.items.slice(
       this.itemPager.start,
@@ -143,16 +153,27 @@ export class OrderItemPage {
       return;
     }
 
-    if (!this.items)
+    if (!this.items) {
       this.items = [];
+    }
+
+    var current = this.items.find(x => !x.totalPriceAmount || x.totalPriceAmount == 0);
+    if (current) {
+      this.selectedItem = current;
+      return;
+    }
 
     var item = <OrderItem>{
-      quantityValue: 0,
-      unitPriceAmountce: 0,
       packagingSize: 1,
+      quantityValue: 0,
+      discountRate: 0,
+      discountAmount: 0,
+      unitPriceAmount: 0,
+      extendedPriceAmount: 0,
+      totalPriceAmount: 0,
     };
 
-    this.items.push(item);
+    this.items.unshift(item);
     this.selectedItem = item;
     this.initializePage();
   }
@@ -162,8 +183,9 @@ export class OrderItemPage {
       return;
     }
 
-    if (this.selectedItem !== item)
+    if (this.selectedItem !== item) {
       this.selectedItem = item;
+    }
   }
 
   public deleteItem(item: OrderItem): void {
@@ -185,5 +207,17 @@ export class OrderItemPage {
     item.extendedPriceAmount = item.unitPriceAmount * item.quantityValue;
     item.discountAmount = item.discountRate * item.extendedPriceAmount;
     item.totalPriceAmount = item.extendedPriceAmount - item.discountAmount;
+
+    this.total();
+  }
+
+  public total(): void {
+    this.totalDiscountAmount = this.items
+      .reduce((value, current) => value + ensureNumeric(current.discountAmount), 0) || 0;
+
+    this.totalPriceAmount = this.items
+      .reduce((value, current) => value + ensureNumeric(current.totalPriceAmount), 0) || 0;
+      
+    this.totalAmount = this.totalPriceAmount - this.totalDiscountAmount;
   }
 }

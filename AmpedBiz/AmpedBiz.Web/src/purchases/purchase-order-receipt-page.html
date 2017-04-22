@@ -57,7 +57,7 @@
         <!-- Receiving -->
         <td if.bind="$parent.selectedItem !== item" class="text-right">${item.receiving.quantity}</td>
         <td if.bind="$parent.selectedItem === item" class="text-right">
-          <input class="form-control text-right" type="number" value.bind="item.receiving.quantity" />
+          <input class="form-control text-right" type="number" numeric-value.bind="item.receiving.quantity" />
         </td>
       </tr>
     </tbody>

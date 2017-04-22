@@ -30,7 +30,7 @@
         <td if.bind="$parent.selectedItem !== item">${item.product.name}</td>
         <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantityValue}</td>
         <td if.bind="$parent.selectedItem !== item" class="text-right">${item.unitCostAmount | numberFormat}</td>
-        <td if.bind="$parent.selectedItem !== item" class="text-right">${(item.quantityValue * item.unitCostAmount) | numberFormat}</td>
+        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.totalCostAmount | numberFormat}</td>
 
         <!-- edit mode -->
         <td if.bind="$parent.selectedItem === item">
@@ -40,14 +40,24 @@
           </select>
         </td>
         <td if.bind="$parent.selectedItem === item" class="text-right">
-          <input class="form-control text-right" type="number" value.bind="item.quantityValue" />
+          <input class="form-control text-right" type="number" numeric-value.bind="item.quantityValue" keyup.delegate="compute(item)" />
         </td>
         <td if.bind="$parent.selectedItem === item" class="text-right">
-          <input class="form-control text-right" type="number" value.bind="item.unitCostAmount" />
+          <input class="form-control text-right" type="number" numeric-value.bind="item.unitCostAmount" keyup.delegate="compute(item)" />
         </td>
-        <td if.bind="$parent.selectedItem === item" class="text-right">${(item.quantityValue * item.unitCostAmount) | numberFormat}</td>
+        <td if.bind="$parent.selectedItem === item" class="text-right">${item.totalCostAmount | numberFormat}</td>
       </tr>
     </tbody>
+
+    <tfoot>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="text-right"><label>Total:</label></td>
+        <td class="text-right">${totalCostAmount | numberFormat}</td>
+      </tr>
+    </tfoot>
 
   </table>
 

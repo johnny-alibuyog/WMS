@@ -5,11 +5,13 @@ namespace AmpedBiz.Service.Dto
 {
     public class OrderPayment
     {
+        public virtual Guid Id { get; set; }
+
         public virtual Guid OrderId { get; set; }
 
         public virtual DateTime? PaidOn { get; set; }
 
-        public virtual Lookup<Guid> PaidBy { get; set; }
+        public virtual Lookup<Guid> PaidTo { get; set; }
 
         public virtual Lookup<string> PaymentType { get; set; }
 
@@ -18,11 +20,11 @@ namespace AmpedBiz.Service.Dto
 
     public class OrderPayable
     {
-        public virtual Guid OrderId { get; set; }
+        public virtual Guid Id { get; set; }
 
         public virtual DateTime? PaidOn { get; set; }
 
-        public virtual Lookup<Guid> PaidBy { get; set; }
+        public virtual Lookup<Guid> PaidTo { get; set; }
 
         public virtual Lookup<string> PaymentType { get; set; }
 
