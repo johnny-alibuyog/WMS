@@ -16,8 +16,8 @@ export interface ProductReportModelItem {
   supplierName?: string;
   onHandValue?: number;
   basePriceAmount?: number;
-  distributorPriceAmount?: number;
-  listPriceAmount?: number;
+  wholesalePriceAmount?: number;
+  retailPriceAmount?: number;
   totalBasePriceAmount?: number;
   totalDistributorPriceAmount?: number;
   totalListPriceAmount?: number;
@@ -59,8 +59,8 @@ export class ProductReport implements Report<ProductReportModel> {
           //{ text: emptyIfNull(x.supplierName), style: 'tableData' },
           { text: formatNumber(x.onHandValue, "0"), style: 'tableData', alignment: 'right' },
           { text: formatNumber(x.basePriceAmount), style: 'tableData', alignment: 'right' },
-          { text: formatNumber(x.distributorPriceAmount), style: 'tableData', alignment: 'right' },
-          { text: formatNumber(x.listPriceAmount), style: 'tableData', alignment: 'right' },
+          { text: formatNumber(x.wholesalePriceAmount), style: 'tableData', alignment: 'right' },
+          { text: formatNumber(x.retailPriceAmount), style: 'tableData', alignment: 'right' },
         ])
       );
     }
@@ -71,10 +71,10 @@ export class ProductReport implements Report<ProductReportModel> {
       get basePriceAmount(): number {
         return sum(data.items.map(x => x.totalBasePriceAmount));
       },
-      get distributorPriceAmount(): number {
+      get wholesalePriceAmount(): number {
         return sum(data.items.map(x => x.totalDistributorPriceAmount));
       },
-      get listPriceAmount(): number {
+      get retailPriceAmount(): number {
         return sum(data.items.map(x => x.totalListPriceAmount));
       }
     };
@@ -86,8 +86,8 @@ export class ProductReport implements Report<ProductReportModel> {
       //{ text: '', style: 'tableData' },
       { text: 'Total:', style: 'label' },
       { text: formatNumber(total.basePriceAmount), style: 'tableData', alignment: 'right' },
-      { text: formatNumber(total.distributorPriceAmount), style: 'tableData', alignment: 'right' },
-      { text: formatNumber(total.listPriceAmount), style: 'tableData', alignment: 'right' },
+      { text: formatNumber(total.wholesalePriceAmount), style: 'tableData', alignment: 'right' },
+      { text: formatNumber(total.retailPriceAmount), style: 'tableData', alignment: 'right' },
     ])
 
     return <DocumentDefinition>{

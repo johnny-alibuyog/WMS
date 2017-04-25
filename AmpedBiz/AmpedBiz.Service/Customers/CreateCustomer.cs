@@ -34,7 +34,7 @@ namespace AmpedBiz.Service.Customers
                     entity.CreditLimit = new Money(message.CreditLimitAmount, currency);
                     entity.Pricing = session.Load<Pricing>(
                         string.IsNullOrEmpty(message.PricingId)
-                            ? Pricing.ListPrice.Id 
+                            ? Pricing.RetailPrice.Id 
                             : message.PricingId
                     );
                     entity.EnsureValidity();

@@ -40,10 +40,10 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                     Name = x["Product Name"].ToString(),
                     Size = x["Size"].ToString(),
                     PiecePerPackage = Convert.ToDecimal(x["Piece Per Package"].Cast<double>()),
-                    PriceToDistributorPerPiece = Convert.ToDecimal(x["Price to Distributor Per Piece"].Cast<double>()),
-                    PriceToDistributorPerPackage = Convert.ToDecimal(x["Price to Distributor Per Package"].Cast<double>()),
-                    PriceToDownlinePerPiece = Convert.ToDecimal(x["Price to Downline Per Piece"].Cast<double>()),
-                    PriceToDownlinePerPackage = Convert.ToDecimal(x["Price to Downline Per Package"].Cast<double>()),
+                    WholesalePerPiece = Convert.ToDecimal(x["Wholesale Price Per Piece"].Cast<double>()),
+                    WholesalePerPackage = Convert.ToDecimal(x["Wholesale Price Per Package"].Cast<double>()),
+                    RetailPricePerPiece = Convert.ToDecimal(x["Retail Price Per Piece"].Cast<double>()),
+                    RetailPricePerPackage = Convert.ToDecimal(x["Retail Price Per Package"].Cast<double>()),
                     SuggestedRetailPrice = Convert.ToDecimal(x["Suggested Retail Price"].Cast<double>()),
                     IndividualBarcode = x["Individual Barcode"].ToString(),
                     PackagingBarcode = x["Packaging Barcode"].ToString(),
@@ -108,12 +108,12 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                         product.Inventory.UnitOfMeasure = unitOfMeasure.Individual;
                         product.Inventory.PackagingUnitOfMeasure = unitOfMeasure.Packaging;
                         // TODO: check for correct values
-                        //product.Inventory.BasePrice = new Money(amount: x.PriceToDistributorPerPiece, currency: defaults.Currency);
-                        //product.Inventory.BadStockPrice = new Money(amount: x.PriceToDistributorPerPiece, currency: defaults.Currency);
-                        product.Inventory.BasePrice = new Money(amount: 0M, currency: defaults.Currency);
-                        product.Inventory.BadStockPrice = new Money(amount: 0M, currency: defaults.Currency);
-                        product.Inventory.DistributorPrice = new Money(amount: x.PriceToDistributorPerPiece, currency: defaults.Currency);
-                        product.Inventory.ListPrice = new Money(amount: x.PriceToDownlinePerPiece, currency: defaults.Currency);
+                        //product.Inventory.BasePrice = new Money(amount: 0M, currency: defaults.Currency);
+                        //product.Inventory.BadStockPrice = new Money(amount: 0M, currency: defaults.Currency);
+                        product.Inventory.BasePrice = new Money(amount: x.WholesalePerPiece, currency: defaults.Currency);
+                        product.Inventory.BadStockPrice = new Money(amount: x.WholesalePerPiece, currency: defaults.Currency);
+                        product.Inventory.WholesalePrice = new Money(amount: x.WholesalePerPiece, currency: defaults.Currency);
+                        product.Inventory.RetailPrice = new Money(amount: x.RetailPricePerPiece, currency: defaults.Currency);
                         product.EnsureValidity();
 
                         session.Save(product);

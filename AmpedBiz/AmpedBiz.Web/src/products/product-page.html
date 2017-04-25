@@ -55,11 +55,11 @@
                 <th class="col-md-1 text-right" click.delegate="sorter.doSort('basePrice')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['basePrice'])}"></i>Base
                 </th>
-                <th class="col-md-1 text-right" click.delegate="sorter.doSort('distributorPrice')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['distributorPrice'])}"></i>Retail
+                <th class="col-md-1 text-right" click.delegate="sorter.doSort('wholesalePrice')">
+                  <i class="fa fa-fw fa-${sorter.class(sorter['wholesalePrice'])}"></i>Retail
                 </th>
-                <th class="col-md-1 text-right" click.delegate="sorter.doSort('listPrice')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['listPrice'])}"></i>Whole...
+                <th class="col-md-1 text-right" click.delegate="sorter.doSort('retailPrice')">
+                  <i class="fa fa-fw fa-${sorter.class(sorter['retailPrice'])}"></i>Whole...
                 </th>
                 <!--<th class="col-md-1 text-right" >Discontinued</th>-->
               </tr>
@@ -78,8 +78,8 @@
                 <td>${item.categoryName}</td>
                 <td>${item.supplierName}</td>
                 <td class="text-right">${item.basePriceAmount | numberFormat}</td>
-                <td class="text-right">${item.distributorPriceAmount | numberFormat}</td>
-                <td class="text-right">${item.listPriceAmount | numberFormat}</td>
+                <td class="text-right">${item.wholesalePriceAmount | numberFormat}</td>
+                <td class="text-right">${item.retailPriceAmount | numberFormat}</td>
                 <!--<td class="text-right">${item.discontinued}</td>-->
               </tr>
             </tbody>

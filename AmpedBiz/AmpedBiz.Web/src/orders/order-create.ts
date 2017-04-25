@@ -49,7 +49,7 @@ export class OrderCreate {
   public getInitializedOrder(): Order {
     return <Order>{
       orderedOn: new Date(),
-      pricing: pricing.listPrice,
+      pricing: pricing.retailPrice,
       stage: <StageDefinition<OrderStatus, OrderAggregate>>{
         allowedTransitions: [],
         allowedModifications: [

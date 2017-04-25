@@ -376,8 +376,8 @@ namespace AmpedBiz.Tests.IntegrationTests
                         PackagingUnitOfMeasure = this.RandomUnitOfMeasure(),
                         PackagingSize = 0.30M,
                         BasePriceAmount = productData.Inventory.BasePriceAmount,
-                        DistributorPriceAmount = productData.Inventory.DistributorPriceAmount,
-                        ListPriceAmount = productData.Inventory.ListPriceAmount,
+                        WholesalePriceAmount = productData.Inventory.WholesalePriceAmount,
+                        RetailPriceAmount = productData.Inventory.RetailPriceAmount,
                         BackOrderedValue = productData.Inventory.BackOrderedValue,
                     }
                 };
@@ -463,11 +463,11 @@ namespace AmpedBiz.Tests.IntegrationTests
             {
                 poItems.Add(new Service.Dto.PurchaseOrderItem
                 {
-                    //TotalAmount = product.DistributorPriceAmount + 1m,
+                    //TotalAmount = product.WholesalePriceAmount + 1m,
                     PurchaseOrderId = request.Id,
                     Product = new Lookup<Guid>(product.Id, product.Name),
                     QuantityValue = this.random.Next(1, 100),
-                    UnitCostAmount = product.Inventory.DistributorPriceAmount ?? 0M + 1m,
+                    UnitCostAmount = product.Inventory.WholesalePriceAmount ?? 0M + 1m,
                 });
             }
 
@@ -644,7 +644,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     PackagingSize = product.Inventory.PackagingSize ?? 1,
                     //UnitOfMeasure = new Lookup<string>(product.Inv)
                     QuantityValue = this.random.Next(1, 100),
-                    UnitPriceAmount = product.Inventory.DistributorPriceAmount ?? 0M
+                    UnitPriceAmount = product.Inventory.WholesalePriceAmount ?? 0M
                 });
             }
 

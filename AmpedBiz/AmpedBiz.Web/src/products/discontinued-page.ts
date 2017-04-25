@@ -31,8 +31,8 @@ export class ProductPage {
     this.sorter["category"] = SortDirection.None;
     this.sorter["supplier"] = SortDirection.None;
     this.sorter["basePrice"] = SortDirection.None;
-    this.sorter["distributorPrice"] = SortDirection.None;
-    this.sorter["listPrice"] = SortDirection.None;
+    this.sorter["wholesalePrice"] = SortDirection.None;
+    this.sorter["retailPrice"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
 
     this.pager = new Pager<DiscontinuedPageItem>();

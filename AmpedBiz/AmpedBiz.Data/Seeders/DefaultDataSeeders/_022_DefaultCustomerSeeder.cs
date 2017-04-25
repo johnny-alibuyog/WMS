@@ -31,7 +31,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                     Code = x["Account ID"],
                     Name = x["Account Name"],
                     IsActive = x["Customer Activity Status"] == "Active",
-                    Pricing = Pricing.ListPrice,
+                    Pricing = Pricing.RetailPrice,
                     CreditLimit = new Money(0),
                     BillingAddress = new Address()
                     {

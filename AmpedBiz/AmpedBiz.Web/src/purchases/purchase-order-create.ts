@@ -40,7 +40,7 @@ export class PurchaseOrderCreate {
   public getInitializedPurchaseOrder(): PurchaseOrder {
     return <PurchaseOrder>{
       createdOn: new Date(),
-      pricing: pricing.distributorPrice,
+      pricing: pricing.wholesalePrice,
       stage: <StageDefinition<PurchaseOrderStatus, PurchaseOrderAggregate>>{
         allowedTransitions: [],
         allowedModifications: [

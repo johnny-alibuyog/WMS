@@ -46,11 +46,11 @@ export class ReturnItemPage {
   }
 
   private getUnitPriceAmount(product: Lookup<string>): Promise<number> {
-    let listPrice = pricing.listPrice;
+    let retailPrice = pricing.retailPrice;
     let inventory = this._productInventories.find(x => x.id == product.id);
 
     if (inventory) {
-      let unitPrice = pricing.getPriceAmount(listPrice, inventory);
+      let unitPrice = pricing.getPriceAmount(retailPrice, inventory);
       return Promise.resolve(unitPrice);
     }
     else {
@@ -59,7 +59,7 @@ export class ReturnItemPage {
           this._productInventories.push(data);
         }
 
-        let unitPrice = pricing.getPriceAmount(listPrice, data);
+        let unitPrice = pricing.getPriceAmount(retailPrice, data);
         return unitPrice;
       });
     }

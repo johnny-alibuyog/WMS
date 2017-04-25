@@ -22,7 +22,7 @@ export interface ProductPageItem {
   image?: string;
   availableValue?: number;
   basePriceAmount?: number;
-  distributorPriceAmount?: number;
+  wholesalePriceAmount?: number;
   discontinued?: boolean;
 }
 
@@ -35,8 +35,8 @@ export interface DiscontinuedPageItem {
   categoryName?: string;
   image?: string;
   basePriceAmount?: number;
-  distributorPriceAmount?: number;
-  listPriceAmount?: number;
+  wholesalePriceAmount?: number;
+  retailPriceAmount?: number;
 }
 
 export interface ProductInventory {
@@ -49,8 +49,8 @@ export interface ProductInventory {
   availableValue?: number;
   badStockValue?: number;
   basePriceAmount?: number;
-  distributorPriceAmount?: number;
-  listPriceAmount?: number;
+  wholesalePriceAmount?: number;
+  retailPriceAmount?: number;
   badStockPriceAmount?: number;
   discountAmount?: number;
 }
@@ -115,8 +115,8 @@ export class ProductReportPageItem {
   supplierName?: string;
   onHandValue?: number;
   basePriceAmount?: number;
-  distributorPriceAmount?: number;
-  listPriceAmount?: number;
+  wholesalePriceAmount?: number;
+  retailPriceAmount?: number;
   totalBasePriceAmount?: number;
   totalDistributorPriceAmount?: number;
   totalListPriceAmount?: number;

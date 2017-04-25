@@ -273,7 +273,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                     packagingSize: x.Inventory.PackagingSize,
                                     discountRate: _utils.RandomDecimal(0.01M, 0.10M),
                                     quantity: new Measure(_utils.RandomDecimal(1M, 100M), x.Inventory.UnitOfMeasure),
-                                    unitPrice: x.Inventory.DistributorPrice
+                                    unitPrice: x.Inventory.WholesalePrice
                                 ))
                         });
                         entity.EnsureValidity();

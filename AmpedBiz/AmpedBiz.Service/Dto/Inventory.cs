@@ -19,9 +19,9 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? BasePriceAmount { get; set; }
 
-        public decimal? DistributorPriceAmount { get; set; }
+        public decimal? WholesalePriceAmount { get; set; }
 
-        public decimal? ListPriceAmount { get; set; }
+        public decimal? RetailPriceAmount { get; set; }
 
         public decimal? BadStockPriceAmount { get; set; }
 

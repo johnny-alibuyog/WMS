@@ -47,8 +47,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     {
                         dynamic prices = new ExpandoObject();
                         prices.BasePrice = new Money(_utils.RandomDecimal(1.00M, 20000.00M), currency);
-                        prices.DistributorPrice = new Money(_utils.RandomDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.BasePrice.Amount + 5000M), currency);
-                        prices.ListPrice = new Money(_utils.RandomDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.DistributorPrice.Amount), currency);
+                        prices.WholesalePrice = new Money(_utils.RandomDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.BasePrice.Amount + 5000M), currency);
+                        prices.RetailPrice = new Money(_utils.RandomDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.WholesalePrice.Amount), currency);
                         prices.BadStockPrice = new Money(prices.BasePrice.Amount * 0.10M, currency);
 
                         item.Code = _utils.RandomString(length: 25);
@@ -61,8 +61,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         item.Inventory.PackagingUnitOfMeasure = _utils.Random<UnitOfMeasure>();
                         item.Inventory.PackagingSize = _utils.RandomInteger(1, 24);
                         item.Inventory.BasePrice = prices.BasePrice;
-                        item.Inventory.DistributorPrice = prices.DistributorPrice;
-                        item.Inventory.ListPrice = prices.ListPrice;
+                        item.Inventory.WholesalePrice = prices.WholesalePrice;
+                        item.Inventory.RetailPrice = prices.RetailPrice;
                         item.Inventory.BadStockPrice = prices.BadStockPrice;
 
                         item.Inventory.InitialLevel = new Measure(_utils.RandomDecimal(150M, 300M), item.Inventory.UnitOfMeasure);

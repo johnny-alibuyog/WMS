@@ -42,19 +42,19 @@ function normalizeExportPaths() {
 
 // deletes all files in the output path
 gulp.task('clean-export', function() {
-  return gulp.src([ paths.exportSrv ])
+  return gulp.src([paths.export ])
     .pipe(vinylPaths(del));
 });
 
 gulp.task('export-copy', function() {
   return gulp.src(getExportList(), { base: '.' })
-    .pipe(gulp.dest(paths.exportSrv));
+    .pipe(gulp.dest(paths.export));
 });
 
 gulp.task('export-normalized-resources', function() {
   return normalizeExportPaths().then(normalizedPaths => {
     return gulp.src(normalizedPaths, { base: '.' })
-      .pipe(gulp.dest(paths.exportSrv));
+      .pipe(gulp.dest(paths.export));
   });
 });
 

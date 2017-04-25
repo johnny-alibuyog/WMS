@@ -47,9 +47,9 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? BasePriceAmount { get; set; }
 
-        public decimal? DistributorPriceAmount { get; set; }
+        public decimal? WholesalePriceAmount { get; set; }
 
-        public decimal? ListPriceAmount { get; set; }
+        public decimal? RetailPriceAmount { get; set; }
 
         public bool Discontinued { get; set; }
     }
@@ -72,9 +72,9 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? BasePriceAmount { get; set; }
 
-        public decimal? DistributorPriceAmount { get; set; }
+        public decimal? WholesalePriceAmount { get; set; }
 
-        public decimal? ListPriceAmount { get; set; }
+        public decimal? RetailPriceAmount { get; set; }
     }
 
     public class ProductInventory
@@ -99,9 +99,9 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? BasePriceAmount { get; set; }
 
-        public decimal? DistributorPriceAmount { get; set; }
+        public decimal? WholesalePriceAmount { get; set; }
 
-        public decimal? ListPriceAmount { get; set; }
+        public decimal? RetailPriceAmount { get; set; }
 
         public decimal? BadStockPriceAmount { get; set; }
 
@@ -206,14 +206,14 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? BasePriceAmount { get; set; }
 
-        public decimal? DistributorPriceAmount { get; set; }
+        public decimal? WholesalePriceAmount { get; set; }
 
-        public decimal? ListPriceAmount { get; set; }
+        public decimal? RetailPriceAmount { get; set; }
 
         public decimal? TotalBasePriceAmount { get; set; }
 
-        public decimal? TotalDistributorPriceAmount { get; set; }
+        public decimal? TotalWholesalePriceAmount { get; set; }
 
-        public decimal? TotalListPriceAmount { get; set; }
+        public decimal? TotalRetailPriceAmount { get; set; }
     }
 }

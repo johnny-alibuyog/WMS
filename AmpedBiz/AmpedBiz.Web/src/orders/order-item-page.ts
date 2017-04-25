@@ -31,7 +31,7 @@ export class OrderItemPage {
   public items: OrderItem[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
-  public pricing: Lookup<string>; // = pricing.listPrice;
+  public pricing: Lookup<string>; // = pricing.retailPrice;
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public products: Lookup<string>[] = [];
