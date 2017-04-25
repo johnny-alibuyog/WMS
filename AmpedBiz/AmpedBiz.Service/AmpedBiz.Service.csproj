@@ -103,6 +103,7 @@
     <Compile Include="Dto\UnitOfMeasure.cs" />
     <Compile Include="Dto\User.cs" />
     <Compile Include="Dto\UserRole.cs" />
+    <Compile Include="Dto\Voucher.cs" />
     <Compile Include="Orders\CancelOrder.cs" />
     <Compile Include="Orders\CompleteOrder.cs" />
     <Compile Include="Orders\SaveOrder.cs" />
@@ -153,6 +154,7 @@
     <Compile Include="PurchaseOrders\GetPurchaseOrderReceivableList.cs" />
     <Compile Include="PurchaseOrders\ApprovePurchaseOder.cs" />
     <Compile Include="PurchaseOrders\CompletePurchaseOder.cs" />
+    <Compile Include="PurchaseOrders\GetVoucher.cs" />
     <Compile Include="PurchaseOrders\SavePurchaseOrder.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrder.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrderList.cs" />

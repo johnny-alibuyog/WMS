@@ -1,7 +1,14 @@
 import { autoinject } from 'aurelia-framework';
 import { Lookup } from '../common/custom_types/lookup';
 import { PageRequest } from '../common/models/paging';
-import { PurchaseOrder, PurchaseOrderStatus, PurchaseOrderPayment, PurchaseOrderReceipt, PurchaseOrderReceivable, PurchaseOrderReceiving, PurchaseOrderPayable } from '../common/models/purchase-order';
+import { PurchaseOrder } from '../common/models/purchase-order';
+import { PurchaseOrderStatus } from '../common/models/purchase-order';
+import { PurchaseOrderPayment } from '../common/models/purchase-order';
+import { PurchaseOrderReceipt } from '../common/models/purchase-order';
+import { PurchaseOrderReceivable } from '../common/models/purchase-order';
+import { PurchaseOrderReceiving } from '../common/models/purchase-order';
+import { PurchaseOrderPayable } from '../common/models/purchase-order';
+import { Voucher } from '../common/models/purchase-order';
 import { ServiceBase } from './service-base'
 import { AuthService } from './auth-service';
 import { HttpClientFacade } from './http-client-facade';
@@ -51,6 +58,12 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
     var url = this._resouce + '/' + id + '/receivables';
     return this._httpClient.get(url)
       .then(response => <PurchaseOrderReceivable[]>response);
+  }
+
+  public getVoucher(purchaseOrderId: string): Promise<Voucher> {
+    var url = this._resouce + '/' + purchaseOrderId + '/voucher';
+    return this._httpClient.get(url)
+      .then(response => <Voucher>response);
   }
 
   public getPayables(orderId: string): Promise<PurchaseOrderPayable> {

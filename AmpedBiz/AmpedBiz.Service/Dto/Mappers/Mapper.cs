@@ -66,12 +66,15 @@ namespace AmpedBiz.Service.Dto.Mappers
 
             ExpressMapper.Mapper.Register<Entity.PurchaseOrder, GetPurchaseOrderPayable.Response>().Flatten();
 
+            ExpressMapper.Mapper.Register<Entity.PurchaseOrder, GetVoucher.Response>().Flatten();
+
             ExpressMapper.Mapper.Register<Entity.PurchaseOrderItem, Dto.PurchaseOrderItem>().Flatten();
+
+            ExpressMapper.Mapper.Register<Entity.PurchaseOrderItem, Dto.VoucherItem>().Flatten();
 
             ExpressMapper.Mapper.Register<Entity.PurchaseOrderPayment, Dto.PurchaseOrderPayment>().Flatten();
 
             ExpressMapper.Mapper.Register<Entity.PurchaseOrderReceipt, Dto.PurchaseOrderReceipt>().Flatten();
-
         }
 
         private void RegisterOrderMap()
@@ -84,17 +87,19 @@ namespace AmpedBiz.Service.Dto.Mappers
 
             ExpressMapper.Mapper.Register<Entity.Order, GetOrderPayable.Response>().Flatten();
 
-            ExpressMapper.Mapper.Register<Entity.OrderItem, Dto.OrderItem>().Flatten();
-
-            ExpressMapper.Mapper.Register<Entity.OrderReturn, Dto.OrderReturn>().Flatten();
-
-            ExpressMapper.Mapper.Register<Entity.OrderPayment, Dto.OrderPayment>().Flatten();
-
             ExpressMapper.Mapper.Register<Entity.Order, InvoiceOrder.Response>().Flatten();
 
             ExpressMapper.Mapper.Register<Entity.Order, GetOrderInvoiceDetail.Response>().Flatten();
 
             ExpressMapper.Mapper.Register<Entity.OrderItem, Dto.OrderReturnable>().Flatten();
+
+            ExpressMapper.Mapper.Register<Entity.OrderItem, Dto.OrderInvoiceDetailItem>().Flatten();
+
+            ExpressMapper.Mapper.Register<Entity.OrderItem, Dto.OrderItem>().Flatten();
+
+            ExpressMapper.Mapper.Register<Entity.OrderReturn, Dto.OrderReturn>().Flatten();
+
+            ExpressMapper.Mapper.Register<Entity.OrderPayment, Dto.OrderPayment>().Flatten();
 
             //ExpressMapper.Mapper.Register<Entity.OrderItem, Dto.OrderItemPageItem>().Flatten();
         }

@@ -8,6 +8,7 @@ import { PurchaseOrder, PurchaseOrderStatus, PurchaseOrderAggregate, PurchaseOrd
 import { ServiceApi } from '../services/service-api';
 import { NotificationService } from '../common/controls/notification-service';
 import { pricing } from '../common/models/pricing';
+import { VoucherReport } from './voucher-report';
 
 @autoinject
 export class PurchaseOrderCreate {
@@ -16,6 +17,7 @@ export class PurchaseOrderCreate {
   private _notification: NotificationService;
   private _eventAggegator: EventAggregator;
   private _subscriptions: Subscription[] = [];
+  private _voucherReport: VoucherReport;
 
   public header: string = 'Purchase Order';
   public isEdit: boolean = false;
@@ -27,14 +29,15 @@ export class PurchaseOrderCreate {
   public statuses: Lookup<PurchaseOrderStatus>[] = [];
   public purchaseOrder: PurchaseOrder;
 
-  constructor(api: ServiceApi, router: Router, notification: NotificationService, eventAggegator: EventAggregator) {
+  constructor(api: ServiceApi, router: Router, notification: NotificationService, eventAggegator: EventAggregator, voucherReport: VoucherReport) {
     this._api = api;
     this._router = router;
     this._notification = notification;
     this._eventAggegator = eventAggegator;
+    this._voucherReport = voucherReport;
   }
 
-  getInitializedPurchaseOrder(): PurchaseOrder {
+  public getInitializedPurchaseOrder(): PurchaseOrder {
     return <PurchaseOrder>{
       createdOn: new Date(),
       pricing: pricing.distributorPrice,
@@ -47,7 +50,11 @@ export class PurchaseOrderCreate {
     };
   }
 
-  activate(purchaseOrder: PurchaseOrder): void {
+  public get isPurchaseOrderApproved(): boolean {
+    return this.purchaseOrder && this.purchaseOrder.status >= PurchaseOrderStatus.approved;
+  }
+
+  public activate(purchaseOrder: PurchaseOrder): void {
     let requests: [
       Promise<Lookup<string>[]>,
       Promise<Lookup<string>[]>,
@@ -73,11 +80,11 @@ export class PurchaseOrderCreate {
       );
   }
 
-  deactivate(): void {
+  public deactivate(): void {
     this._subscriptions.forEach(subscription => subscription.dispose());
   }
 
-  resetAndNoify(purchaseOrder: PurchaseOrder, notificationMessage?: string) {
+  public resetAndNoify(purchaseOrder: PurchaseOrder, notificationMessage?: string) {
     this.setPurchaseOrder(purchaseOrder);
 
     if (notificationMessage) {
@@ -85,7 +92,7 @@ export class PurchaseOrderCreate {
     }
   }
 
-  setPurchaseOrder(purchaseOrder: PurchaseOrder): void {
+  public setPurchaseOrder(purchaseOrder: PurchaseOrder): void {
     if (purchaseOrder.id) {
       this.isEdit = true;
     }
@@ -102,7 +109,7 @@ export class PurchaseOrderCreate {
     this.hydrateSupplierProducts(this.purchaseOrder.supplier);
   }
 
-  changeSupplier(supplier: Lookup<string>): void {
+  public changeSupplier(supplier: Lookup<string>): void {
     this.products = [];
     this.purchaseOrder.items = [];
 
@@ -113,7 +120,7 @@ export class PurchaseOrderCreate {
     this.hydrateSupplierProducts(supplier);
   }
 
-  hydrateSupplierProducts(supplier: Lookup<string>): void {
+  public hydrateSupplierProducts(supplier: Lookup<string>): void {
     if (supplier == null || supplier.id == null) {
       return;
     }
@@ -122,19 +129,19 @@ export class PurchaseOrderCreate {
       .then(data => this.products = data);
   }
 
-  addItem(): void {
+  public addItem(): void {
     this._eventAggegator.publish(purchaseOrderEvents.item.add);
   }
 
-  addPayment(): void {
+  public addPayment(): void {
     this._eventAggegator.publish(purchaseOrderEvents.payment.add);
   }
 
-  addReceipt(): void {
+  public addReceipt(): void {
     this._eventAggegator.publish(purchaseOrderEvents.receipts.add);
   }
 
-  save(): void {
+  public save(): void {
     // generate new receipts from receivables >> receiving items
     var newReceipts = this._api.purchaseOrders.generateNewReceiptsFrom(this.purchaseOrder);
     newReceipts.forEach(newReceipt => this.purchaseOrder.receipts.push(newReceipt));
@@ -144,41 +151,47 @@ export class PurchaseOrderCreate {
       .catch(error => this._notification.warning(error));
   }
 
-  submit(): void {
+  public submit(): void {
     this._api.purchaseOrders.submit(this.purchaseOrder)
       .then(data => this.resetAndNoify(data, "Purchase order has been submitted."))
       .catch(error => this._notification.warning(error));
   }
 
-  approve(): void {
+  public approve(): void {
     this._api.purchaseOrders.approve(this.purchaseOrder)
       .then(data => this.resetAndNoify(data, "Purchase order has been approved."))
+      .then(_ => this.showVoucher())
       .catch(error => this._notification.warning(error));
   }
 
-  reject(): void {
+  public showVoucher(): void {
+    this._api.purchaseOrders.getVoucher(this.purchaseOrder.id)
+      .then(data => this._voucherReport.show(data))
+  }
+
+  public reject(): void {
     this._api.purchaseOrders.reject(this)
       .then(data => this.resetAndNoify(data, "Purchase order has been rejected."))
       .catch(error => this._notification.warning(error));
   }
 
-  complete(): void {
+  public complete(): void {
     this._api.purchaseOrders.complete(this.purchaseOrder)
       .then(data => this.resetAndNoify(data, "Purchase order has been completed."))
       .catch(error => this._notification.warning(error));
   }
 
-  cancel(): void {
+  public cancel(): void {
     this._api.purchaseOrders.cancel(this.purchaseOrder)
       .then(data => this.resetAndNoify(data, "Purchase order has been cancelled."))
       .catch(error => this._notification.warning(error));
   }
 
-  refresh() {
+  public refresh() {
     this.activate(this.purchaseOrder);
   }
 
-  back(): void {
+  public back(): void {
     this._router.navigateBack();
   }
 }

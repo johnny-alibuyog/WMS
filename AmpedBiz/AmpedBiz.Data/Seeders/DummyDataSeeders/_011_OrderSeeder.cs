@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace AmpedBiz.Data.Seeders.DummyDataSeeders
@@ -38,214 +39,152 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
             CreateCancelledOrders(_utils.RandomInteger(min, max));
         }
 
+
+        private bool Exists(Expression<Func<Order, bool>> condition)
+        {
+            var exists = false;
+            using (var session = this._sessionFactory.OpenSession())
+            using (var transaction = session.BeginTransaction())
+            {
+                exists = session.Query<Order>().Where(condition).Any();
+                transaction.Commit();
+            }
+            return exists;
+        }
+
         public IEnumerable<Order> CreateNewOrders(int count)
         {
-            var orders = (IEnumerable<Order>)null;
             try
             {
-                var session = this._sessionFactory.RetrieveSharedSession();
-                var exists = session.Query<Order>().Any(x => x.Status == OrderStatus.New);
-                if (exists)
+                if (Exists(x => x.Status == OrderStatus.New))
                     return null;
 
-                var start = Stopwatch.StartNew();
-
-                orders = new Pipeline<IEnumerable<Order>>()
+                return new Pipeline<IEnumerable<Order>>()
                     .Register(new OrderActions.NewAction(count))
-                    .Execute(null);
+                    .Execute(new List<Order>());
 
-                Console.WriteLine("{0}({1}): {2} seconds", MethodBase.GetCurrentMethod().Name, count, start.Elapsed.Seconds);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                return null;
             }
-            finally
-            {
-                this._sessionFactory.ReleaseSharedSession();
-            }
-            return null;
         }
 
         public IEnumerable<Order> CreateInvoicedOrders(int count)
         {
-            var orders = (IEnumerable<Order>)null;
             try
             {
-                var session = this._sessionFactory.RetrieveSharedSession();
-                var exists = session.Query<Order>().Any(x => x.Status == OrderStatus.Invoiced);
-                if (exists)
+                if (Exists(x => x.Status == OrderStatus.Invoiced))
                     return null;
 
-                var start = Stopwatch.StartNew();
-
-                orders = new Pipeline<IEnumerable<Order>>()
+                return new Pipeline<IEnumerable<Order>>()
                     .Register(new OrderActions.NewAction(count))
                     .Register(new OrderActions.InvoiceAction())
-                    .Execute(null);
-
-                Console.WriteLine("{0}({1}): {2} seconds", MethodBase.GetCurrentMethod().Name, count, start.Elapsed.Seconds);
+                    .Execute(new List<Order>());
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                return null;
             }
-            finally
-            {
-                this._sessionFactory.ReleaseSharedSession();
-            }
-            return orders;
         }
 
         public IEnumerable<Order> CreatePaidOrders(int count)
         {
-            var orders = (IEnumerable<Order>)null;
             try
             {
-                var session = this._sessionFactory.RetrieveSharedSession();
-                var exists = session.Query<Order>()
-                    .Where(x => x.Payments.Any())
-                    .Any();
-
-                if (exists)
+                if (Exists(x => x.Payments.Any()))
                     return null;
 
-                var start = Stopwatch.StartNew();
-
-                orders = new Pipeline<IEnumerable<Order>>()
+                return new Pipeline<IEnumerable<Order>>()
                     .Register(new OrderActions.NewAction(count))
                     .Register(new OrderActions.InvoiceAction())
                     .Register(new OrderActions.PayAction())
-                    .Execute(null);
+                    .Execute(new List<Order>());
 
-                Console.WriteLine("{0}({1}): {2} seconds", MethodBase.GetCurrentMethod().Name, count, start.Elapsed.Seconds);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                return null;
             }
-            finally
-            {
-                this._sessionFactory.ReleaseSharedSession();
-            }
-            return orders;
         }
 
         public IEnumerable<Order> CreateStageOrders(int count)
         {
-            var orders = (IEnumerable<Order>)null;
             try
             {
-                var session = this._sessionFactory.RetrieveSharedSession();
-                var exists = session.Query<Order>().Any(x => x.Status == OrderStatus.Staged);
-                if (exists)
+                if (Exists(x => x.Status == OrderStatus.Staged))
                     return null;
 
-                var start = Stopwatch.StartNew();
-
-                orders = new Pipeline<IEnumerable<Order>>()
+                return new Pipeline<IEnumerable<Order>>()
                     .Register(new OrderActions.NewAction(count))
                     .Register(new OrderActions.InvoiceAction())
                     .Register(new OrderActions.PayAction())
                     .Register(new OrderActions.StageAction())
-                    .Execute(null);
-
-                Console.WriteLine("{0}({1}): {2} seconds", MethodBase.GetCurrentMethod().Name, count, start.Elapsed.Seconds);
+                    .Execute(new List<Order>());
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                return null;
             }
-            finally
-            {
-                this._sessionFactory.ReleaseSharedSession();
-            }
-            return orders;
         }
 
         public IEnumerable<Order> CreateShippedOrders(int count)
         {
-            var orders = (IEnumerable<Order>)null;
             try
             {
-                var session = this._sessionFactory.RetrieveSharedSession();
-                var exists = session.Query<Order>().Any(x => x.Status == OrderStatus.Shipped);
-                if (exists)
-                    return orders;
+                if (Exists(x => x.Status == OrderStatus.Shipped))
+                    return null;
 
-                var start = Stopwatch.StartNew();
-
-                orders = new Pipeline<IEnumerable<Order>>()
+                return new Pipeline<IEnumerable<Order>>()
                     .Register(new OrderActions.NewAction(count))
                     .Register(new OrderActions.InvoiceAction())
                     .Register(new OrderActions.PayAction())
                     .Register(new OrderActions.StageAction())
                     .Register(new OrderActions.ShipAction())
-                    .Execute(null);
-
-                Console.WriteLine("{0}({1}): {2} seconds", MethodBase.GetCurrentMethod().Name, count, start.Elapsed.Seconds);
+                    .Execute(new List<Order>());
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                return null;
             }
-            finally
-            {
-                this._sessionFactory.ReleaseSharedSession();
-            }
-            return orders;
         }
 
         public IEnumerable<Order> CreateReturnedOrders(int count)
         {
-            var orders = (IEnumerable<Order>)null;
             try
             {
-                var session = this._sessionFactory.RetrieveSharedSession();
-                var exists = session.Query<Order>()
-                    .Where(x => x.Returns.Any())
-                    .Any();
-
-                if (exists)
+                if (Exists(x => x.Returns.Any()))
                     return null;
 
-                var start = Stopwatch.StartNew();
-
-                orders = new Pipeline<IEnumerable<Order>>()
+                return new Pipeline<IEnumerable<Order>>()
                     .Register(new OrderActions.NewAction(count))
                     .Register(new OrderActions.InvoiceAction())
                     .Register(new OrderActions.PayAction())
                     .Register(new OrderActions.StageAction())
                     .Register(new OrderActions.ShipAction())
                     .Register(new OrderActions.ReturnAction())
-                    .Execute(null);
-
-                Console.WriteLine("{0}({1}): {2} seconds", MethodBase.GetCurrentMethod().Name, count, start.Elapsed.Seconds);
+                    .Execute(new List<Order>());
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                return null;
             }
-            finally
-            {
-                this._sessionFactory.ReleaseSharedSession();
-            }
-            return orders;
         }
 
         public IEnumerable<Order> CreateCompletedOrders(int count)
         {
-            var orders = (IEnumerable<Order>)null;
             try
             {
-                var session = this._sessionFactory.RetrieveSharedSession();
-                var exists = session.Query<Order>().Any(x => x.Status == OrderStatus.Completed);
-                if (exists)
+                if (Exists(x => x.Status == OrderStatus.Completed))
                     return null;
 
-                var start = Stopwatch.StartNew();
-
-                orders = new Pipeline<IEnumerable<Order>>()
+                return new Pipeline<IEnumerable<Order>>()
                     .Register(new OrderActions.NewAction(count))
                     .Register(new OrderActions.InvoiceAction())
                     .Register(new OrderActions.PayAction())
@@ -253,49 +192,32 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     .Register(new OrderActions.ShipAction())
                     .Register(new OrderActions.ReturnAction())
                     .Register(new OrderActions.CompleteAction())
-                    .Execute(null);
-
-                Console.WriteLine("{0}({1}): {2} seconds", MethodBase.GetCurrentMethod().Name, count, start.Elapsed.Seconds);
+                    .Execute(new List<Order>());
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                return null;
             }
-            finally
-            {
-                this._sessionFactory.ReleaseSharedSession();
-            }
-            return orders;
         }
 
         public IEnumerable<Order> CreateCancelledOrders(int count)
         {
-            var orders = (IEnumerable<Order>)null;
             try
             {
-                var session = this._sessionFactory.RetrieveSharedSession();
-                var exists = session.Query<Order>().Any(x => x.Status == OrderStatus.Cancelled);
-                if (exists)
+                if (Exists(x => x.Status == OrderStatus.Cancelled))
                     return null;
 
-                var start = Stopwatch.StartNew();
-
-                new Pipeline<IEnumerable<Order>>()
+                return new Pipeline<IEnumerable<Order>>()
                     .Register(new OrderActions.NewAction(count))
                     .Register(new OrderActions.CancelAction())
-                    .Execute(null);
-
-                Console.WriteLine("{0}({1}): {2} seconds", MethodBase.GetCurrentMethod().Name, count, start.Elapsed.Seconds);
+                    .Execute(new List<Order>());
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                return null;
             }
-            finally
-            {
-                this._sessionFactory.ReleaseSharedSession();
-            }
-            return orders;
         }
     }
 
@@ -320,8 +242,6 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
             protected override IEnumerable<Order> Process(IEnumerable<Order> input)
             {
-                input = new List<Order>();
-
                 using (var session = this._sessionFactory.RetrieveSharedSession())
                 using (var transaction = session.BeginTransaction())
                 {
@@ -391,6 +311,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     }
 
                     transaction.Commit();
+
+                    this._sessionFactory.ReleaseSharedSession();
                 }
 
                 return input;
@@ -423,6 +345,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     }
 
                     transaction.Commit();
+
+                    this._sessionFactory.ReleaseSharedSession();
                 }
 
                 return input;
@@ -448,6 +372,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     }
 
                     transaction.Commit();
+
+                    this._sessionFactory.ReleaseSharedSession();
                 }
 
                 return input;
@@ -473,6 +399,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     }
 
                     transaction.Commit();
+
+                    this._sessionFactory.ReleaseSharedSession();
                 }
 
                 return input;
@@ -520,6 +448,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     }
 
                     transaction.Commit();
+
+                    this._sessionFactory.ReleaseSharedSession();
                 }
 
                 return input;
@@ -546,6 +476,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     }
 
                     transaction.Commit();
+
+                    this._sessionFactory.ReleaseSharedSession();
                 }
 
                 return input;
@@ -573,6 +505,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     }
 
                     transaction.Commit();
+
+                    this._sessionFactory.ReleaseSharedSession();
                 }
 
                 return input;

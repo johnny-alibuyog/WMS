@@ -41,9 +41,9 @@ export class ProductReport implements Report<ProductReportModel> {
     let orderTableBody: any[] = [
       [
         { text: 'Product', style: 'tableHeader' },
-        { text: 'Category', style: 'tableHeader' },
-        { text: 'Supplier', style: 'tableHeader' },
-        { text: 'On Hand', style: 'tableHeader', alignment: 'right' },
+        //{ text: 'Category', style: 'tableHeader' },
+        //{ text: 'Supplier', style: 'tableHeader' },
+        { text: 'On-Hand', style: 'tableHeader', alignment: 'right' },
         { text: 'Base', style: 'tableHeader', alignment: 'right' },
         { text: 'Retail', style: 'tableHeader', alignment: 'right' },
         { text: 'Wholesale', style: 'tableHeader', alignment: 'right' },
@@ -55,8 +55,8 @@ export class ProductReport implements Report<ProductReportModel> {
       data.items.forEach(x =>
         orderTableBody.push([
           { text: emptyIfNull(x.productName), style: 'tableData' },
-          { text: emptyIfNull(x.categoryName), style: 'tableData' },
-          { text: emptyIfNull(x.supplierName), style: 'tableData' },
+          //{ text: emptyIfNull(x.categoryName), style: 'tableData' },
+          //{ text: emptyIfNull(x.supplierName), style: 'tableData' },
           { text: formatNumber(x.onHandValue, "0"), style: 'tableData', alignment: 'right' },
           { text: formatNumber(x.basePriceAmount), style: 'tableData', alignment: 'right' },
           { text: formatNumber(x.distributorPriceAmount), style: 'tableData', alignment: 'right' },
@@ -82,8 +82,8 @@ export class ProductReport implements Report<ProductReportModel> {
     // total
     orderTableBody.push([
       { text: '', style: 'tableData' },
-      { text: '', style: 'tableData' },
-      { text: '', style: 'tableData' },
+      //{ text: '', style: 'tableData' },
+      //{ text: '', style: 'tableData' },
       { text: 'Total:', style: 'label' },
       { text: formatNumber(total.basePriceAmount), style: 'tableData', alignment: 'right' },
       { text: formatNumber(total.distributorPriceAmount), style: 'tableData', alignment: 'right' },
@@ -122,7 +122,8 @@ export class ProductReport implements Report<ProductReportModel> {
         {
           table: {
             headerRows: 1,
-            widths: ['*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+            //widths: ['*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+            widths: ['*', 'auto', 'auto', 'auto', 'auto'],
             body: orderTableBody
           },
           layout: 'lightHorizontalLines',

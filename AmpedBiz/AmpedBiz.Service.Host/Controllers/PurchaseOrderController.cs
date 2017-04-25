@@ -71,6 +71,13 @@ namespace AmpedBiz.Service.Host.Controllers
             return _mediator.Send(request ?? new GetPurchaseOrderPayable.Request());
         }
 
+        [HttpGet()]
+        [Route("{id}/voucher")]
+        public GetVoucher.Response Process([FromUri]GetVoucher.Request request)
+        {
+            return _mediator.Send(request ?? new GetVoucher.Request());
+        }
+
         [HttpPost()]
         [Route("active-orders/page")]
         public GetActivePurchaseOrderPage.Response Process([FromBody]GetActivePurchaseOrderPage.Request request)

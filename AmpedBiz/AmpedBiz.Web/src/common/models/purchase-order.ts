@@ -139,3 +139,25 @@ export interface PurchaseOrderPayable {
   paidAmount?: number;
   paymentAmount?: number;
 }
+
+export interface Voucher{
+  id?: string;
+  supplierName?: string;
+  voucherNumber?: string;
+  approvedByName?: string;
+  approvedOn?: Date;
+  paymentTypeName?: string;
+  taxAmount?: number;
+  shippingFeeAmount?: number;
+  subTotalAmount?: number;
+  totalAmount?: number;
+  items: VoucherItem[];
+}
+
+export interface VoucherItem{
+  id?: string;
+  product?: Lookup<string>;
+  quantityValue?: number;
+  unitCostAmount?: number;
+  totalCostAmount?: number;
+}
