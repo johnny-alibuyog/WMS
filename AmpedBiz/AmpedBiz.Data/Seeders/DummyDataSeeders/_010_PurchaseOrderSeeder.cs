@@ -28,7 +28,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         public void Seed()
         {
             var min = 1;
-            var max = 10;
+            var max = 3;
 
             CreateNewPurchaseOrders(_utils.RandomInteger(min, max));
             CreateSubmittedPurchaseOrder(_utils.RandomInteger(min, max));
@@ -269,15 +269,15 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                             ExpectedOn = DateTime.Now.AddMonths(5),
                             PaymentType = _utils.Random<PaymentType>(),
                             Shipper = _utils.Random<Shipper>(),
-                            ShippingFee = new Money(_utils.RandomDecimal(10M, 10000M), currency),
+                            ShippingFee = new Money(_utils.RandomInteger(10, 10000), currency),
                             Tax = null, // compute this
                             Supplier = _utils.Random<Supplier>(),
                             Items = Enumerable.Range(0, _utils.RandomInteger(1, 50))
                                 .Select(x => _utils.RandomProduct()).Distinct()
                                 .Select(x => new PurchaseOrderItem(
                                     product: x,
-                                    quantity: new Measure(_utils.RandomDecimal(1M, 100M), x.Inventory.UnitOfMeasure),
-                                    unitCost: new Money(_utils.RandomDecimal(1000M, 100000M), currency)
+                                    quantity: new Measure(_utils.RandomInteger(1, 100), x.Inventory.UnitOfMeasure),
+                                    unitCost: new Money(_utils.RandomInteger(1000, 100000), currency)
                                 ))
                         });
                         entity.EnsureValidity();
@@ -367,7 +367,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                     paidOn: DateTime.Now,
                                     paidBy: _utils.Random<User>(),
                                     paymentType: _utils.Random<PaymentType>(),
-                                    payment: new Money(_utils.RandomDecimal(1M, entity.Total.Amount), currency)
+                                    payment: new Money(_utils.RandomInteger(1, (int)entity.Total.Amount), currency)
                                 ))
                         });
                         entity.EnsureValidity();
@@ -402,9 +402,9 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                     expiresOn: DateTime.Now.AddYears(3),
                                     product: x.Product,
                                     quantity: new Measure(
-                                        value: this._utils.RandomDecimal(
-                                            min: x.Quantity.Value - 2, 
-                                            max: x.Quantity.Value
+                                        value: this._utils.RandomInteger(
+                                            min: (int)x.Quantity.Value - 2, 
+                                            max: (int)x.Quantity.Value
                                         ), 
                                         unit: x.Quantity.Unit)
                                ))

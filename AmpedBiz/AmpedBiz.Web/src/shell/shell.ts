@@ -47,7 +47,7 @@ export class Shell {
         moduleId: '../orders/index',
         nav: true,
         main: true,
-        title: 'Orders'
+        title: 'Customer Orders'
       },
       {
         route: ['returns'],

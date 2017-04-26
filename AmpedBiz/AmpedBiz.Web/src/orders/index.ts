@@ -2,11 +2,11 @@ import { Router, RouterConfiguration } from 'aurelia-router'
 import { OrderStatus } from '../common/models/order';
 
 export class Index {
-  heading: string = "Orders";
+  heading: string = "Customer Orders";
   router: Router;
 
   configureRouter(config: RouterConfiguration, router: Router) {
-    config.title = "Orders";
+    config.title = "Customer Orders";
     config.map([
       {
         route: ['', 'new-page'],

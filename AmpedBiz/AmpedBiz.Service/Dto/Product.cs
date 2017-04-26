@@ -183,6 +183,8 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? AvailableValue { get; set; }
 
+        public decimal? ReorderLevelValue { get; set; }
+
         public decimal? CurrentLevelValue { get; set; }
 
         public decimal? TargetLevelValue { get; set; }

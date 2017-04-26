@@ -66,6 +66,11 @@ namespace AmpedBiz.Data.Seeders
             return _random.NextDecimal(min, max);
         }
 
+        //public decimal RandomDecimal(decimal min, decimal max)
+        //{
+        //    return _random.NextDecimal(min, max);
+        //}
+
         public bool RandomBoolean()
         {
             return _random.NextDouble() > 0.5;

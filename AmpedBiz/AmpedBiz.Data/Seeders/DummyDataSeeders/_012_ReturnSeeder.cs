@@ -41,11 +41,11 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                 product: x,
                                 returnReason: _utils.Random<ReturnReason>(),
                                 quantity: new Measure(
-                                    value: _utils.RandomDecimal(1M, 100M), 
+                                    value: _utils.RandomInteger(1, 100), 
                                     unit: x.Inventory.UnitOfMeasure
                                 ),
                                 unitPrice: new Money(
-                                    amount: _utils.RandomDecimal(1000M, 100000M), 
+                                    amount: _utils.RandomInteger(1000, 100000), 
                                     currency: currency
                                 )
                             ))

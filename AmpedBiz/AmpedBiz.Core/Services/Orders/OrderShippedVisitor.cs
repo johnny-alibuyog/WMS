@@ -13,7 +13,7 @@ namespace AmpedBiz.Core.Services.Orders
         {
             foreach (var item in target.Items)
             {
-                item.Shiped();
+                item.Shipped();
             }
 
             target.ShippedOn = this.ShippedOn;

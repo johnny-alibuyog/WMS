@@ -40,6 +40,7 @@ export class NeedsReorderingPage {
     this.sorter["supplierId"] = SortDirection.None;
     this.sorter["productName"] = SortDirection.Ascending;
     this.sorter["categoryName"] = SortDirection.None;
+    this.sorter["reorderLevel"] = SortDirection.None;
     this.sorter["available"] = SortDirection.None;
     this.sorter["currentLevel"] = SortDirection.None;
     this.sorter["targetLevel"] = SortDirection.None;

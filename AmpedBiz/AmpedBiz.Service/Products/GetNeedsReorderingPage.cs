@@ -25,7 +25,7 @@ namespace AmpedBiz.Service.Products
                 using (var transaction = session.BeginTransaction())
                 {
                     var query = session.Query<Product>()
-                        .Where(x => x.Inventory.BelowTargetLevel.Value > 0M);
+                        .Where(x => x.Inventory.CurrentLevel.Value <= x.Inventory.ReorderLevel.Value);
 
                     // compose filters
                     message.Filter.Compose<string>("supplierId", value =>
@@ -53,6 +53,13 @@ namespace AmpedBiz.Service.Products
                         query = direction == SortDirection.Ascending
                             ? query.OrderBy(x => x.Category.Name)
                             : query.OrderByDescending(x => x.Category.Name);
+                    });
+
+                    message.Sorter.Compose("reorderLevel", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.Inventory.ReorderLevel.Value)
+                            : query.OrderByDescending(x => x.Inventory.ReorderLevel.Value);
                     });
 
                     message.Sorter.Compose("available", direction =>
@@ -91,6 +98,7 @@ namespace AmpedBiz.Service.Products
                             ProductName = x.Name,
                             SupplierName = x.Supplier.Name,
                             CategoryName = x.Category.Name,
+                            ReorderLevelValue = x.Inventory.ReorderLevel.Value,
                             AvailableValue = x.Inventory.Available.Value,
                             CurrentLevelValue = x.Inventory.CurrentLevel.Value,
                             TargetLevelValue = x.Inventory.TargetLevel.Value,

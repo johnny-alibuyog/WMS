@@ -14,8 +14,8 @@ export interface PricingPageItem {
 
 // TODO: need a better implementation of this. remodel the domain. work with this for now
 let basePrice = <Lookup<string>>{ id: 'BP', name: 'Base Price' };
-let wholesalePrice = <Lookup<string>>{ id: 'DP', name: 'Wholesale Price' };
-let retailPrice = <Lookup<string>>{ id: 'LP', name: 'Retail Price' };
+let wholesalePrice = <Lookup<string>>{ id: 'WSP', name: 'Wholesale Price' };
+let retailPrice = <Lookup<string>>{ id: 'RTP', name: 'Retail Price' };
 let badStockPrice = <Lookup<string>>{ id: 'BSP', name: 'Bad Stock Price' };
 
 export let pricing = {

@@ -44,7 +44,7 @@ namespace AmpedBiz.Core.Entities
             this.Product.Inventory.Allocate(this.Quantity);
         }
 
-        protected internal virtual void Shiped()
+        protected internal virtual void Shipped()
         {
             this.Product.Inventory.Ship(this.Quantity);
         }

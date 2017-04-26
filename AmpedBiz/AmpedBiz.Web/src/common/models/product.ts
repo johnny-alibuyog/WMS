@@ -95,6 +95,7 @@ export interface NeedsReorderingPageItem {
   productName?: string;
   supplierName?: string;
   categoryName?: string;
+  reorderLevelValue?: number;
   availableValue?: number;
   currentLevelValue?: number;
   targetLevelValue?: number;

@@ -205,7 +205,7 @@ export class OrderCreate {
 
   public ship(): void {
     this._api.orders.ship(this.order)
-      .then(data => this.resetAndNoify(data, "Order has been shiped."))
+      .then(data => this.resetAndNoify(data, "Order has been shipped."))
       .catch(error => this._notification.warning(error));
   }
 

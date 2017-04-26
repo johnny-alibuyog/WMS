@@ -147,7 +147,7 @@ export class PurchaseOrderCreate {
     newReceipts.forEach(newReceipt => this.purchaseOrder.receipts.push(newReceipt));
 
     this._api.purchaseOrders.save(this.purchaseOrder)
-      .then(data => this.resetAndNoify(data, "Purchas eOrder has been saved."))
+      .then(data => this.resetAndNoify(data, "Purchase order has been saved."))
       .catch(error => this._notification.warning(error));
   }
 

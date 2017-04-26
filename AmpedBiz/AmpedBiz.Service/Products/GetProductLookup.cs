@@ -52,6 +52,7 @@ namespace AmpedBiz.Service.Products
                             Id = x.Id,
                             Name = x.Name
                         })
+                        .OrderBy(x => x.Name)
                         .Cacheable()
                         .ToList();
 

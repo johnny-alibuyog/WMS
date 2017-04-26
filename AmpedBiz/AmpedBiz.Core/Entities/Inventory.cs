@@ -116,19 +116,34 @@ namespace AmpedBiz.Core.Entities
             this.CurrentLevel = this.Available + this.OnOrder - this.BackOrdered;
             this.BelowTargetLevel = this.TargetLevel - this.CurrentLevel;
 
-            if (this.BelowTargetLevel != null)
+            if (this.CurrentLevel <= this.ReorderLevel)
             {
                 if (this.BelowTargetLevel.Value < 0M)
                     this.BelowTargetLevel.Value = 0M;
 
-                if (this.BelowTargetLevel.Value != 0M)
+                if (this.BelowTargetLevel.Value > 0M)
                 {
                     if (this.BelowTargetLevel < this.MinimumReorderQuantity)
                         this.ReorderQuantity = this.MinimumReorderQuantity;
                     else
                         this.ReorderQuantity = this.BelowTargetLevel;
                 }
+
             }
+
+            //if (this.BelowTargetLevel != null)
+            //{
+            //    if (this.BelowTargetLevel.Value < 0M)
+            //        this.BelowTargetLevel.Value = 0M;
+
+            //    if (this.BelowTargetLevel.Value != 0M)
+            //    {
+            //        if (this.BelowTargetLevel < this.MinimumReorderQuantity)
+            //            this.ReorderQuantity = this.MinimumReorderQuantity;
+            //        else
+            //            this.ReorderQuantity = this.BelowTargetLevel;
+            //    }
+            //}
         }
 
         public Inventory() : base(default(Guid)) { }

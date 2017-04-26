@@ -6,10 +6,8 @@ using NHibernate;
 using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 {
@@ -27,7 +25,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         public void Seed()
         {
             var min = 1;
-            var max = 10;
+            var max = 3;
 
             CreateNewOrders(_utils.RandomInteger(min, max));
             CreateInvoicedOrders(_utils.RandomInteger(min, max));
@@ -252,7 +250,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         var entity = new Order(Guid.NewGuid());
                         entity.Accept(new OrderSaveVisitor()
                         {
-                            OrderNumber = _utils.RandomDecimal(10000M, 99999M).ToString(),
+                            OrderNumber = _utils.RandomInteger(10000, 99999).ToString(),
                             CreatedBy = _utils.Random<User>(),
                             CreatedOn = DateTime.Now,
                             OrderedBy = _utils.Random<User>(),
@@ -265,14 +263,14 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                             PaymentType = _utils.Random<PaymentType>(),
                             TaxRate = _utils.RandomDecimal(0.01M, 0.30M),
                             Tax = null, // compute this
-                            ShippingFee = new Money(_utils.RandomDecimal(10M, 10000M), currency),
+                            ShippingFee = new Money(_utils.RandomInteger(10, 10000), currency),
                             Items = Enumerable.Range(0, _utils.RandomInteger(1, 50))
                                 .Select(x => _utils.RandomProduct()).Distinct()
                                 .Select(x => new OrderItem(
                                     product: x,
                                     packagingSize: x.Inventory.PackagingSize,
                                     discountRate: _utils.RandomDecimal(0.01M, 0.10M),
-                                    quantity: new Measure(_utils.RandomDecimal(1M, 100M), x.Inventory.UnitOfMeasure),
+                                    quantity: new Measure(_utils.RandomInteger(1, 100), x.Inventory.UnitOfMeasure),
                                     unitPrice: x.Inventory.WholesalePrice
                                 ))
                         });
@@ -337,7 +335,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                     paidOn: DateTime.Now,
                                     paidTo: _utils.Random<User>(),
                                     paymentType: _utils.Random<PaymentType>(),
-                                    payment: new Money(_utils.RandomDecimal(1M, entity.Total.Amount), currency)
+                                    payment: new Money(_utils.RandomInteger(1, (int)entity.Total.Amount), currency)
                                 ))
                         });
                         entity.EnsureValidity();
@@ -435,11 +433,11 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                     returnedOn: DateTime.Now,
                                     returnedBy: _utils.Random<User>(),
                                     quantity: new Measure(
-                                        value: _utils.RandomDecimal(1M, x.Quantity.Value),
+                                        value: _utils.RandomInteger(1, (int)x.Quantity.Value),
                                         unit: x.Quantity.Unit
                                     ),
                                     returned: new Money(
-                                        amount: _utils.RandomDecimal(1M, x.TotalPrice.Amount),
+                                        amount: _utils.RandomInteger(1, (int)x.TotalPrice.Amount),
                                         currency: x.TotalPrice.Currency
                                     )
                                 ))

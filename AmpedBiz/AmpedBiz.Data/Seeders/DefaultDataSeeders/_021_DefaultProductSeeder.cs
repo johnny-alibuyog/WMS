@@ -10,10 +10,12 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 {
     public class _021_DefaultProductSeeder : IDefaultDataSeeder
     {
+        private readonly Utils _utils;
         private readonly ISessionFactory _sessionFactory;
 
         public _021_DefaultProductSeeder(ISessionFactory sessionFactory)
         {
+            _utils = new Utils(new Random(), sessionFactory);
             this._sessionFactory = sessionFactory;
         }
 
@@ -102,11 +104,19 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                         product.Name = x.Name;
                         product.Supplier = defaults.Supplier;
                         product.Category = session.Load<ProductCategory>(x.Category);
+
+                        // inventory settings
+                        // TODO: get this from excel
+                        product.Inventory.TargetLevel = new Measure(_utils.RandomInteger(100, 200), UnitOfMeasure.Piece);
+                        product.Inventory.ReorderLevel = new Measure(_utils.RandomInteger(50, 75), UnitOfMeasure.Piece);
+                        product.Inventory.MinimumReorderQuantity = new Measure(_utils.RandomInteger(100, 150), UnitOfMeasure.Piece);
+
                         product.Inventory.IndividualBarcode = x.IndividualBarcode;
                         product.Inventory.PackagingBarcode = x.PackagingBarcode;
                         product.Inventory.PackagingSize = x.PiecePerPackage;
                         product.Inventory.UnitOfMeasure = unitOfMeasure.Individual;
                         product.Inventory.PackagingUnitOfMeasure = unitOfMeasure.Packaging;
+
                         // TODO: check for correct values
                         //product.Inventory.BasePrice = new Money(amount: 0M, currency: defaults.Currency);
                         //product.Inventory.BadStockPrice = new Money(amount: 0M, currency: defaults.Currency);

@@ -54,27 +54,27 @@ namespace AmpedBiz.Tests.IntegrationTests
             }
         }
 
-        [Test]
-        public void Test1()
-        {
-            using (var session = this._sessionFactory.OpenSession())
-            using (var transaction = session.BeginTransaction())
-            {
-                //var entity = new ProductCategory("xxx");
-                //var entity = session.Get<ProductCategory>(ProductCategory.Drinks.Id);
+        //[Test]
+        //public void Test1()
+        //{
+        //    using (var session = this._sessionFactory.OpenSession())
+        //    using (var transaction = session.BeginTransaction())
+        //    {
+        //        //var entity = new ProductCategory("xxx");
+        //        //var entity = session.Get<ProductCategory>(ProductCategory.Drinks.Id);
 
-                //entity.Name = null;
+        //        //entity.Name = null;
 
-                //var invalidValues = SessionFactoryProvider.Validator.Validate(entity);
+        //        //var invalidValues = SessionFactoryProvider.Validator.Validate(entity);
 
-                var entity = new Order();
-                entity.EnsureValidity();
+        //        var entity = new Order();
+        //        entity.EnsureValidity();
 
-                session.Save(new Order());
+        //        session.Save(new Order());
 
-                transaction.Commit();
-            }
-        }
+        //        transaction.Commit();
+        //    }
+        //}
 
     }
 }
