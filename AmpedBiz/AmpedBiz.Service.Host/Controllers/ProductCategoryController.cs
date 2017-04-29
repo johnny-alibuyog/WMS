@@ -1,6 +1,7 @@
-﻿using System.Web.Http;
-using AmpedBiz.Service.ProductCategories;
+﻿using AmpedBiz.Service.ProductCategories;
 using MediatR;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace AmpedBiz.Service.Host.Controllers
 {
@@ -16,44 +17,44 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("{request.id}")]
-        public GetProductCategory.Response Process([FromUri]GetProductCategory.Request request)
+        public async Task<GetProductCategory.Response> Process([FromUri]GetProductCategory.Request request)
         {
-            return _mediator.Send(request ?? new GetProductCategory.Request());
+            return await _mediator.Send(request ?? new GetProductCategory.Request());
         }
 
         [HttpGet()]
         [Route("")]
-        public GetProductCategoryList.Response Process([FromUri]GetProductCategoryList.Request request)
+        public async Task<GetProductCategoryList.Response> Process([FromUri]GetProductCategoryList.Request request)
         {
-            return _mediator.Send(request ?? new GetProductCategoryList.Request());
+            return await _mediator.Send(request ?? new GetProductCategoryList.Request());
         }
 
         [HttpPost()]
         [Route("page")]
-        public GetProductCategoryPage.Response Process([FromBody]GetProductCategoryPage.Request request)
+        public async Task<GetProductCategoryPage.Response> Process([FromBody]GetProductCategoryPage.Request request)
         {
-            return _mediator.Send(request ?? new GetProductCategoryPage.Request());
+            return await _mediator.Send(request ?? new GetProductCategoryPage.Request());
         }
 
         [HttpGet()]
         [Route("~/product-category-lookups")]
-        public GetProductCategoryLookup.Response Process([FromBody]GetProductCategoryLookup.Request request)
+        public async Task<GetProductCategoryLookup.Response> Process([FromBody]GetProductCategoryLookup.Request request)
         {
-            return _mediator.Send(request ?? new GetProductCategoryLookup.Request());
+            return await _mediator.Send(request ?? new GetProductCategoryLookup.Request());
         }
 
         [HttpPost()]
         [Route("")]
-        public CreateProductCategory.Response Process([FromBody]CreateProductCategory.Request request)
+        public async Task<CreateProductCategory.Response> Process([FromBody]CreateProductCategory.Request request)
         {
-            return _mediator.Send(request ?? new CreateProductCategory.Request());
+            return await _mediator.Send(request ?? new CreateProductCategory.Request());
         }
 
         [HttpPut()]
         [Route("")]
-        public UpdateProductCategory.Response Process([FromBody]UpdateProductCategory.Request request)
+        public async Task<UpdateProductCategory.Response> Process([FromBody]UpdateProductCategory.Request request)
         {
-            return _mediator.Send(request ?? new UpdateProductCategory.Request());
+            return await _mediator.Send(request ?? new UpdateProductCategory.Request());
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Service.ReturnReasons;
 using MediatR;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace AmpedBiz.Service.Host.Controllers
@@ -16,44 +17,44 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("{request.id}")]
-        public GetReturnReason.Response Process([FromUri]GetReturnReason.Request request)
+        public async Task<GetReturnReason.Response> Process([FromUri]GetReturnReason.Request request)
         {
-            return _mediator.Send(request ?? new GetReturnReason.Request());
+            return await _mediator.Send(request ?? new GetReturnReason.Request());
         }
 
         [HttpGet()]
         [Route("")]
-        public GetReturnReasonList.Response Process([FromUri]GetReturnReasonList.Request request)
+        public async Task<GetReturnReasonList.Response> Process([FromUri]GetReturnReasonList.Request request)
         {
-            return _mediator.Send(request ?? new GetReturnReasonList.Request());
+            return await _mediator.Send(request ?? new GetReturnReasonList.Request());
         }
 
         [HttpPost()]
         [Route("page")]
-        public GetReturnReasonPage.Response Process([FromBody]GetReturnReasonPage.Request request)
+        public async Task<GetReturnReasonPage.Response> Process([FromBody]GetReturnReasonPage.Request request)
         {
-            return _mediator.Send(request ?? new GetReturnReasonPage.Request());
+            return await _mediator.Send(request ?? new GetReturnReasonPage.Request());
         }
 
         [HttpGet()]
         [Route("~/return-reason-lookups")]
-        public GetReturnReasonLookup.Response Process([FromBody]GetReturnReasonLookup.Request request)
+        public async Task<GetReturnReasonLookup.Response> Process([FromBody]GetReturnReasonLookup.Request request)
         {
-            return _mediator.Send(request ?? new GetReturnReasonLookup.Request());
+            return await _mediator.Send(request ?? new GetReturnReasonLookup.Request());
         }
 
         [HttpPost()]
         [Route("")]
-        public CreateReturnReason.Response Process([FromBody]CreateReturnReason.Request request)
+        public async Task<CreateReturnReason.Response> Process([FromBody]CreateReturnReason.Request request)
         {
-            return _mediator.Send(request ?? new CreateReturnReason.Request());
+            return await _mediator.Send(request ?? new CreateReturnReason.Request());
         }
 
         [HttpPut()]
         [Route("")]
-        public UpdateReturnReason.Response Process([FromBody]UpdateReturnReason.Request request)
+        public async Task<UpdateReturnReason.Response> Process([FromBody]UpdateReturnReason.Request request)
         {
-            return _mediator.Send(request ?? new UpdateReturnReason.Request());
+            return await _mediator.Send(request ?? new UpdateReturnReason.Request());
         }
     }
 }

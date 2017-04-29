@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Service.Products;
 using MediatR;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace AmpedBiz.Service.Host.Controllers
@@ -16,101 +17,101 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("{request.id}")]
-        public GetProduct.Response Process([FromUri]GetProduct.Request request)
+        public async Task<GetProduct.Response> Process([FromUri]GetProduct.Request request)
         {
-            return _mediator.Send(request ?? new GetProduct.Request());
+            return await _mediator.Send(request ?? new GetProduct.Request());
         }
 
 
         [HttpGet()]
         [Route("~/product-inventories/{productId}")]
-        public GetProductInventory.Response Process([FromUri]GetProductInventory.Request request)
+        public async Task<GetProductInventory.Response> Process([FromUri]GetProductInventory.Request request)
         {
-            return _mediator.Send(request ?? new GetProductInventory.Request());
+            return await _mediator.Send(request ?? new GetProductInventory.Request());
         }
 
         [HttpGet()]
         [Route("~/product-inventories")]
-        public GetProductInventoryList.Response Process([FromUri]GetProductInventoryList.Request request)
+        public async Task<GetProductInventoryList.Response> Process([FromUri]GetProductInventoryList.Request request)
         {
-            return _mediator.Send(request ?? new GetProductInventoryList.Request());
+            return await _mediator.Send(request ?? new GetProductInventoryList.Request());
         }
 
         [HttpGet()]
         [Route("~/product-lookups")]
-        public GetProductLookup.Response Process([FromUri]GetProductLookup.Request request)
+        public async Task<GetProductLookup.Response> Process([FromUri]GetProductLookup.Request request)
         {
-            return _mediator.Send(request ?? new GetProductLookup.Request());
+            return await _mediator.Send(request ?? new GetProductLookup.Request());
         }
 
         [HttpGet()]
         [Route("")]
-        public GetProductList.Response Process([FromUri]GetProductList.Request request)
+        public async Task<GetProductList.Response> Process([FromUri]GetProductList.Request request)
         {
-            return _mediator.Send(request ?? new GetProductList.Request());
+            return await _mediator.Send(request ?? new GetProductList.Request());
         }
 
         [HttpPost()]
         [Route("page")]
-        public GetProductPage.Response Process([FromBody]GetProductPage.Request request)
+        public async Task<GetProductPage.Response> Process([FromBody]GetProductPage.Request request)
         {
-            return _mediator.Send(request ?? new GetProductPage.Request());
+            return await _mediator.Send(request ?? new GetProductPage.Request());
         }
 
         [HttpPost()]
         [Route("needs-reordering/page")]
-        public GetNeedsReorderingPage.Response Process([FromBody]GetNeedsReorderingPage.Request request)
+        public async Task<GetNeedsReorderingPage.Response> Process([FromBody]GetNeedsReorderingPage.Request request)
         {
-            return _mediator.Send(request ?? new GetNeedsReorderingPage.Request());
+            return await _mediator.Send(request ?? new GetNeedsReorderingPage.Request());
         }
 
         [HttpPost()]
         [Route("discontinued/page")]
-        public GetDiscontinuedPage.Response Process([FromBody]GetDiscontinuedPage.Request request)
+        public async Task<GetDiscontinuedPage.Response> Process([FromBody]GetDiscontinuedPage.Request request)
         {
-            return _mediator.Send(request ?? new GetDiscontinuedPage.Request());
+            return await _mediator.Send(request ?? new GetDiscontinuedPage.Request());
         }
 
         [HttpPost()]
         [Route("inventory-level/page")]
-        public GetProductInventoryLevelPage.Response Process([FromBody]GetProductInventoryLevelPage.Request request)
+        public async Task<GetProductInventoryLevelPage.Response> Process([FromBody]GetProductInventoryLevelPage.Request request)
         {
-            return _mediator.Send(request ?? new GetProductInventoryLevelPage.Request());
+            return await _mediator.Send(request ?? new GetProductInventoryLevelPage.Request());
         }
 
         [HttpPost()]
         [Route("{id}/orders/page")]
-        public GetProductOrderPage.Response Process([FromUri]string id, [FromBody]GetProductOrderPage.Request request)
+        public async Task<GetProductOrderPage.Response> Process([FromUri]string id, [FromBody]GetProductOrderPage.Request request)
         {
-            return _mediator.Send(request ?? new GetProductOrderPage.Request());
+            return await _mediator.Send(request ?? new GetProductOrderPage.Request());
         }
 
         [HttpPost()]
         [Route("{id}/purchases/page")]
-        public GetProductPurchasePage.Response Process([FromUri]string id, [FromBody]GetProductPurchasePage.Request request)
+        public async Task<GetProductPurchasePage.Response> Process([FromUri]string id, [FromBody]GetProductPurchasePage.Request request)
         {
-            return _mediator.Send(request ?? new GetProductPurchasePage.Request());
+            return await _mediator.Send(request ?? new GetProductPurchasePage.Request());
         }
 
         [HttpPost()]
         [Route("report/page")]
-        public GetProductReportPage.Response Process([FromBody]GetProductReportPage.Request request)
+        public async Task<GetProductReportPage.Response> Process([FromBody]GetProductReportPage.Request request)
         {
-            return _mediator.Send(request ?? new GetProductReportPage.Request());
+            return await _mediator.Send(request ?? new GetProductReportPage.Request());
         }
 
         [HttpPost()]
         [Route("")]
-        public CreateProduct.Response Process([FromBody]CreateProduct.Request request)
+        public async Task<CreateProduct.Response> Process([FromBody]CreateProduct.Request request)
         {
-            return _mediator.Send(request ?? new CreateProduct.Request());
+            return await _mediator.Send(request ?? new CreateProduct.Request());
         }
 
         [HttpPut()]
         [Route("")]
-        public UpdateProduct.Response Process([FromBody]UpdateProduct.Request request)
+        public async Task<UpdateProduct.Response> Process([FromBody]UpdateProduct.Request request)
         {
-            return _mediator.Send(request ?? new UpdateProduct.Request());
+            return await _mediator.Send(request ?? new UpdateProduct.Request());
         }
     }
 }

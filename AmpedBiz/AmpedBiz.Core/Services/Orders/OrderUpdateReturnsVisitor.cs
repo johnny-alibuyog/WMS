@@ -19,27 +19,13 @@ namespace AmpedBiz.Core.Services.Orders
             if (this.Returns.IsNullOrEmpty())
                 return;
 
+            // allow only insert. edit and delete is not allowed for this aggregate
             var itemsToInsert = this.Returns.Except(target.Returns).ToList();
-            //var itemsToUpdate = target.Returns.Where(x => this.Returns.Contains(x)).ToList();
-            var itemsToRemove = target.Returns.Except(this.Returns).ToList();
 
             foreach (var item in itemsToInsert)
             {
                 item.Order = target;
                 target.Returns.Add(item);
-            }
-
-            //foreach (var item in itemsToUpdate)
-            //{
-            //    var value = this.Returns.Single(x => x == item);
-            //    item.SerializeWith(value);
-            //    item.Order = target;
-            //}
-
-            foreach (var item in itemsToRemove)
-            {
-                item.Order = null;
-                target.Returns.Remove(item);
             }
         }
     }

@@ -1,7 +1,8 @@
-﻿using System.Web.Http;
+﻿using AmpedBiz.Service.Products;
 using AmpedBiz.Service.Suppliers;
 using MediatR;
-using AmpedBiz.Service.Products;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace AmpedBiz.Service.Host.Controllers
 {
@@ -17,65 +18,65 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("{request.id}")]
-        public GetSupplier.Response Process([FromUri]GetSupplier.Request request)
+        public async Task<GetSupplier.Response> Process([FromUri]GetSupplier.Request request)
         {
-            return _mediator.Send(request ?? new GetSupplier.Request());
+            return await _mediator.Send(request ?? new GetSupplier.Request());
         }
 
         [HttpGet()]
         [Route("")]
-        public GetSupplierList.Response Process([FromUri]GetSupplierList.Request request)
+        public async Task<GetSupplierList.Response> Process([FromUri]GetSupplierList.Request request)
         {
-            return _mediator.Send(request ?? new GetSupplierList.Request());
+            return await _mediator.Send(request ?? new GetSupplierList.Request());
         }
 
         [HttpGet()]
         [Route("{supplierId}/product-inventories")]
-        public GetProductInventoryList.Response Process([FromUri]GetProductInventoryList.Request request)
+        public async Task<GetProductInventoryList.Response> Process([FromUri]GetProductInventoryList.Request request)
         {
-            return _mediator.Send(request ?? new GetProductInventoryList.Request());
+            return await _mediator.Send(request ?? new GetProductInventoryList.Request());
         }
 
         [HttpGet()]
         [Route("{supplierId}/product-lookups")]
-        public GetProductLookup.Response Process([FromUri]GetProductLookup.Request request)
+        public async Task<GetProductLookup.Response> Process([FromUri]GetProductLookup.Request request)
         {
-            return _mediator.Send(request ?? new GetProductLookup.Request());
+            return await _mediator.Send(request ?? new GetProductLookup.Request());
         }
 
         [HttpPost()]
         [Route("page")]
-        public GetSupplierPage.Response Process([FromBody]GetSupplierPage.Request request)
+        public async Task<GetSupplierPage.Response> Process([FromBody]GetSupplierPage.Request request)
         {
-            return _mediator.Send(request ?? new GetSupplierPage.Request());
+            return await _mediator.Send(request ?? new GetSupplierPage.Request());
         }
 
         [HttpPost()]
         [Route("report/page")]
-        public GetSupplierReportPage.Response Process([FromBody]GetSupplierReportPage.Request request)
+        public async Task<GetSupplierReportPage.Response> Process([FromBody]GetSupplierReportPage.Request request)
         {
-            return _mediator.Send(request ?? new GetSupplierReportPage.Request());
+            return await _mediator.Send(request ?? new GetSupplierReportPage.Request());
         }
 
         [HttpGet()]
         [Route("~/supplier-lookups")]
-        public GetSupplierLookup.Response Process([FromBody]GetSupplierLookup.Request request)
+        public async Task<GetSupplierLookup.Response> Process([FromBody]GetSupplierLookup.Request request)
         {
-            return _mediator.Send(request ?? new GetSupplierLookup.Request());
+            return await _mediator.Send(request ?? new GetSupplierLookup.Request());
         }
 
         [HttpPost()]
         [Route("")]
-        public CreateSupplier.Response Process([FromBody]CreateSupplier.Request request)
+        public async Task<CreateSupplier.Response> Process([FromBody]CreateSupplier.Request request)
         {
-            return _mediator.Send(request ?? new CreateSupplier.Request());
+            return await _mediator.Send(request ?? new CreateSupplier.Request());
         }
 
         [HttpPut()]
         [Route("")]
-        public UpdateSupplier.Response Process([FromBody]UpdateSupplier.Request request)
+        public async Task<UpdateSupplier.Response> Process([FromBody]UpdateSupplier.Request request)
         {
-            return _mediator.Send(request ?? new UpdateSupplier.Request());
+            return await _mediator.Send(request ?? new UpdateSupplier.Request());
         }
     }
 }

@@ -1,6 +1,7 @@
-﻿using System.Web.Http;
-using AmpedBiz.Service.UnitOfMeasures;
+﻿using AmpedBiz.Service.UnitOfMeasures;
 using MediatR;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace AmpedBiz.Service.Host.Controllers
 {
@@ -16,44 +17,44 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("{request.id}")]
-        public GetUnitOfMeasure.Response Process([FromUri]GetUnitOfMeasure.Request request)
+        public async Task<GetUnitOfMeasure.Response> Process([FromUri]GetUnitOfMeasure.Request request)
         {
-            return _mediator.Send(request ?? new GetUnitOfMeasure.Request());
+            return await _mediator.Send(request ?? new GetUnitOfMeasure.Request());
         }
 
         [HttpGet()]
         [Route("")]
-        public GetUnitOfMeasureList.Response Process([FromUri]GetUnitOfMeasureList.Request request)
+        public async Task<GetUnitOfMeasureList.Response> Process([FromUri]GetUnitOfMeasureList.Request request)
         {
-            return _mediator.Send(request ?? new GetUnitOfMeasureList.Request());
+            return await _mediator.Send(request ?? new GetUnitOfMeasureList.Request());
         }
 
         [HttpPost()]
         [Route("page")]
-        public GetUnitOfMeasurePage.Response Process([FromBody]GetUnitOfMeasurePage.Request request)
+        public async Task<GetUnitOfMeasurePage.Response> Process([FromBody]GetUnitOfMeasurePage.Request request)
         {
-            return _mediator.Send(request ?? new GetUnitOfMeasurePage.Request());
+            return await _mediator.Send(request ?? new GetUnitOfMeasurePage.Request());
         }
 
         [HttpGet()]
         [Route("~/unit-of-measure-lookups")]
-        public GetUnitOfMeasureLookup.Response Process([FromUri]GetUnitOfMeasureLookup.Request request)
+        public async Task<GetUnitOfMeasureLookup.Response> Process([FromUri]GetUnitOfMeasureLookup.Request request)
         {
-            return _mediator.Send(request ?? new GetUnitOfMeasureLookup.Request());
+            return await _mediator.Send(request ?? new GetUnitOfMeasureLookup.Request());
         }
 
         [HttpPost()]
         [Route("")]
-        public CreateUnitOfMeasure.Response Process([FromBody]CreateUnitOfMeasure.Request request)
+        public async Task<CreateUnitOfMeasure.Response> Process([FromBody]CreateUnitOfMeasure.Request request)
         {
-            return _mediator.Send(request ?? new CreateUnitOfMeasure.Request());
+            return await _mediator.Send(request ?? new CreateUnitOfMeasure.Request());
         }
 
         [HttpPut()]
         [Route("")]
-        public UpdateUnitOfMeasure.Response Process([FromBody]UpdateUnitOfMeasure.Request request)
+        public async Task<UpdateUnitOfMeasure.Response> Process([FromBody]UpdateUnitOfMeasure.Request request)
         {
-            return _mediator.Send(request ?? new UpdateUnitOfMeasure.Request());
+            return await _mediator.Send(request ?? new UpdateUnitOfMeasure.Request());
         }
     }
 }

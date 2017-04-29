@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Service.Orders;
 using MediatR;
 using System;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace AmpedBiz.Service.Host.Controllers
@@ -17,128 +18,128 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("{request.id}")]
-        public GetOrder.Response Process([FromUri]GetOrder.Request request)
+        public async Task<GetOrder.Response> Process([FromUri]GetOrder.Request request)
         {
-            return _mediator.Send(request ?? new GetOrder.Request());
+            return await _mediator.Send(request ?? new GetOrder.Request());
         }
 
         [HttpGet()]
         [Route("")]
-        public GetOrderList.Response Process([FromUri]GetOrderList.Request request)
+        public async Task<GetOrderList.Response> Process([FromUri]GetOrderList.Request request)
         {
-            return _mediator.Send(request ?? new GetOrderList.Request());
+            return await _mediator.Send(request ?? new GetOrderList.Request());
         }
 
         [HttpPost()]
         [Route("")]
-        public SaveOrder.Response Process([FromBody]SaveOrder.Request request)
+        public async Task<SaveOrder.Response> Process([FromBody]SaveOrder.Request request)
         {
-            return _mediator.Send(request ?? new SaveOrder.Request());
+            return await _mediator.Send(request ?? new SaveOrder.Request());
         }
 
         [HttpPut()]
         [Route("{id}")]
-        public SaveOrder.Response Process([FromUri]Guid id, [FromBody]SaveOrder.Request request)
+        public async Task<SaveOrder.Response> Process([FromUri]Guid id, [FromBody]SaveOrder.Request request)
         {
-            return _mediator.Send(request ?? new SaveOrder.Request());
+            return await _mediator.Send(request ?? new SaveOrder.Request());
         }
 
         [HttpPost()]
         [Route("page")]
-        public GetOrderPage.Response Process([FromBody]GetOrderPage.Request request)
+        public async Task<GetOrderPage.Response> Process([FromBody]GetOrderPage.Request request)
         {
-            return _mediator.Send(request ?? new GetOrderPage.Request());
+            return await _mediator.Send(request ?? new GetOrderPage.Request());
         }
 
         [HttpPost()]
         [Route("report/page")]
-        public GetOrderReportPage.Response Process([FromBody]GetOrderReportPage.Request request)
+        public async Task<GetOrderReportPage.Response> Process([FromBody]GetOrderReportPage.Request request)
         {
-            return _mediator.Send(request ?? new GetOrderReportPage.Request());
+            return await _mediator.Send(request ?? new GetOrderReportPage.Request());
         }
 
         [HttpGet()]
         [Route("statuses")]
-        public GetOrderStatusList.Response Process([FromBody]GetOrderStatusList.Request request)
+        public async Task<GetOrderStatusList.Response> Process([FromBody]GetOrderStatusList.Request request)
         {
-            return _mediator.Send(request ?? new GetOrderStatusList.Request());
+            return await _mediator.Send(request ?? new GetOrderStatusList.Request());
         }
 
         [HttpGet()]
         [Route("status-lookups")]
-        public GetOrderStatusLookup.Response Process([FromBody]GetOrderStatusLookup.Request request)
+        public async Task<GetOrderStatusLookup.Response> Process([FromBody]GetOrderStatusLookup.Request request)
         {
-            return _mediator.Send(request ?? new GetOrderStatusLookup.Request());
+            return await _mediator.Send(request ?? new GetOrderStatusLookup.Request());
         }
 
         [HttpGet()]
         [Route("{id}/payables")]
-        public GetOrderPayable.Response Process([FromUri]GetOrderPayable.Request request)
+        public async Task<GetOrderPayable.Response> Process([FromUri]GetOrderPayable.Request request)
         {
-            return _mediator.Send(request ?? new GetOrderPayable.Request());
+            return await _mediator.Send(request ?? new GetOrderPayable.Request());
         }
 
         [HttpGet()]
         [Route("{id}/returnables")]
-        public GetOrderReturnable.Response Process([FromUri]GetOrderReturnable.Request request)
+        public async Task<GetOrderReturnable.Response> Process([FromUri]GetOrderReturnable.Request request)
         {
-            return _mediator.Send(request ?? new GetOrderReturnable.Request());
+            return await _mediator.Send(request ?? new GetOrderReturnable.Request());
         }
 
         [HttpGet()]
         [Route("{id}/invoice-detail")]
-        public GetOrderInvoiceDetail.Response Process([FromUri]GetOrderInvoiceDetail.Request request)
+        public async Task<GetOrderInvoiceDetail.Response> Process([FromUri]GetOrderInvoiceDetail.Request request)
         {
-            return _mediator.Send(request ?? new GetOrderInvoiceDetail.Request());
+            return await _mediator.Send(request ?? new GetOrderInvoiceDetail.Request());
         }
 
         [HttpPost()]
         [Route("active-orders/page")]
-        public GetActiveOrderPage.Response Process([FromBody]GetActiveOrderPage.Request request)
+        public async Task<GetActiveOrderPage.Response> Process([FromBody]GetActiveOrderPage.Request request)
         {
-            return _mediator.Send(request ?? new GetActiveOrderPage.Request());
+            return await _mediator.Send(request ?? new GetActiveOrderPage.Request());
         }
 
         [HttpPost()]
         [Route("{id}/staged")]
-        public StageOrder.Response Process([FromUri]Guid id, [FromBody]StageOrder.Request request)
+        public async Task<StageOrder.Response> Process([FromUri]Guid id, [FromBody]StageOrder.Request request)
         {
-            return _mediator.Send(request ?? new StageOrder.Request());
+            return await _mediator.Send(request ?? new StageOrder.Request());
         }
 
         [HttpPost()]
         [Route("{id}/routed")]
-        public RouteOrder.Response Process([FromUri]Guid id, [FromBody]RouteOrder.Request request)
+        public async Task<RouteOrder.Response> Process([FromUri]Guid id, [FromBody]RouteOrder.Request request)
         {
-            return _mediator.Send(request ?? new RouteOrder.Request());
+            return await _mediator.Send(request ?? new RouteOrder.Request());
         }
 
         [HttpPost()]
         [Route("{id}/invoiced")]
-        public InvoiceOrder.Response Process([FromUri]Guid id, [FromBody]InvoiceOrder.Request request)
+        public async Task<InvoiceOrder.Response> Process([FromUri]Guid id, [FromBody]InvoiceOrder.Request request)
         {
-            return _mediator.Send(request ?? new InvoiceOrder.Request());
+            return await _mediator.Send(request ?? new InvoiceOrder.Request());
         }
 
         [HttpPost()]
         [Route("{id}/shipped")]
-        public ShipOrder.Response Process([FromUri]Guid id, [FromBody]ShipOrder.Request request)
+        public async Task<ShipOrder.Response> Process([FromUri]Guid id, [FromBody]ShipOrder.Request request)
         {
-            return _mediator.Send(request ?? new ShipOrder.Request());
+            return await _mediator.Send(request ?? new ShipOrder.Request());
         }
 
         [HttpPost()]
         [Route("{id}/completed")]
-        public CompleteOrder.Response Process([FromUri]Guid id, [FromBody]CompleteOrder.Request request)
+        public async Task<CompleteOrder.Response> Process([FromUri]Guid id, [FromBody]CompleteOrder.Request request)
         {
-            return _mediator.Send(request ?? new CompleteOrder.Request());
+            return await _mediator.Send(request ?? new CompleteOrder.Request());
         }
 
         [HttpPost()]
         [Route("{id}/cancelled")]
-        public CancelOrder.Response Process([FromUri]Guid id, [FromBody]CancelOrder.Request request)
+        public async Task<CancelOrder.Response> Process([FromUri]Guid id, [FromBody]CancelOrder.Request request)
         {
-            return _mediator.Send(request ?? new CancelOrder.Request());
+            return await _mediator.Send(request ?? new CancelOrder.Request());
         }
     }
 }

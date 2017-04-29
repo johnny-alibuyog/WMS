@@ -1,15 +1,13 @@
-using AmpedBiz.Service.Host;
 using Swashbuckle.Application;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Web.Http;
-using WebActivatorEx;
 
 //[assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
 namespace AmpedBiz.Service.Host
-{   
+{
     public class SwaggerConfig
     {
         private static string GetXmlCommentsPath()

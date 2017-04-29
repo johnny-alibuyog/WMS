@@ -128,22 +128,7 @@ namespace AmpedBiz.Core.Entities
                     else
                         this.ReorderQuantity = this.BelowTargetLevel;
                 }
-
             }
-
-            //if (this.BelowTargetLevel != null)
-            //{
-            //    if (this.BelowTargetLevel.Value < 0M)
-            //        this.BelowTargetLevel.Value = 0M;
-
-            //    if (this.BelowTargetLevel.Value != 0M)
-            //    {
-            //        if (this.BelowTargetLevel < this.MinimumReorderQuantity)
-            //            this.ReorderQuantity = this.MinimumReorderQuantity;
-            //        else
-            //            this.ReorderQuantity = this.BelowTargetLevel;
-            //    }
-            //}
         }
 
         public Inventory() : base(default(Guid)) { }

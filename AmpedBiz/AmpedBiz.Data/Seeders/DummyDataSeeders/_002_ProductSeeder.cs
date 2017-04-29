@@ -55,11 +55,19 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         item.Category = _utils.Random<ProductCategory>();
                         item.Supplier = _utils.Random<Supplier>();
                         item.Discontinued = _utils.RandomBoolean();
+
+                        // inventory settings
+                        // TODO: get this from excel
+                        item.Inventory.TargetLevel = new Measure(_utils.RandomInteger(100, 200), UnitOfMeasure.Piece);
+                        item.Inventory.ReorderLevel = new Measure(_utils.RandomInteger(50, 75), UnitOfMeasure.Piece);
+                        item.Inventory.MinimumReorderQuantity = new Measure(_utils.RandomInteger(100, 150), UnitOfMeasure.Piece);
+
                         item.Inventory.IndividualBarcode = _utils.RandomString(length: 25);
+                        item.Inventory.PackagingSize = _utils.RandomInteger(1, 24);
                         item.Inventory.PackagingBarcode = _utils.RandomString(length: 25);
                         item.Inventory.UnitOfMeasure = _utils.Random<UnitOfMeasure>();
                         item.Inventory.PackagingUnitOfMeasure = _utils.Random<UnitOfMeasure>();
-                        item.Inventory.PackagingSize = _utils.RandomInteger(1, 24);
+
                         item.Inventory.BasePrice = prices.BasePrice;
                         item.Inventory.WholesalePrice = prices.WholesalePrice;
                         item.Inventory.RetailPrice = prices.RetailPrice;

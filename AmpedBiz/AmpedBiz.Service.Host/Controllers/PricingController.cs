@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Service.Pricings;
 using MediatR;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace AmpedBiz.Service.Host.Controllers
@@ -16,9 +17,9 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("~/pricing-lookups")]
-        public GetPricingLookup.Response Process([FromUri]GetPricingLookup.Request request)
+        public async Task<GetPricingLookup.Response> Process([FromUri]GetPricingLookup.Request request)
         {
-            return _mediator.Send(request ?? new GetPricingLookup.Request());
+            return await _mediator.Send(request ?? new GetPricingLookup.Request());
         }
     }
 }

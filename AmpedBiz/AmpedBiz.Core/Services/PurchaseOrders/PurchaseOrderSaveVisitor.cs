@@ -32,15 +32,6 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
 
         public override void Visit(PurchaseOrder target)
         {
-            if (target.State.Stage.IsModificationAllowedTo(PurchaseOrderAggregate.Items))
-                target.Accept(new PurchaseOrderUpdateItemsVisitor(this.Items));
-
-            if (target.State.Stage.IsModificationAllowedTo(PurchaseOrderAggregate.Payments))
-                target.Accept(new PurchaseOrderUpdatePaymentsVisitor(this.Payments));
-
-            if (target.State.Stage.IsModificationAllowedTo(PurchaseOrderAggregate.Receipts))
-                target.Accept(new PurchaseOrderUpdateReceiptsVisitor(this.Receipts));
-
             target.PurchaseOrderNumber = this.PurchaseOrderNumber ?? target.PurchaseOrderNumber;
             target.CreatedBy = this.CreatedBy ?? target.CreatedBy;
             target.CreatedOn = this.CreatedOn ?? target.CreatedOn;
@@ -50,6 +41,15 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             target.ShippingFee = this.ShippingFee ?? target.ShippingFee;
             target.Shipper = this.Shipper ?? target.Shipper;
             target.Supplier = this.Supplier ?? target.Supplier;
+
+            if (target.State.Stage.IsModificationAllowedTo(PurchaseOrderAggregate.Items))
+                target.Accept(new PurchaseOrderUpdateItemsVisitor(this.Items));
+
+            if (target.State.Stage.IsModificationAllowedTo(PurchaseOrderAggregate.Payments))
+                target.Accept(new PurchaseOrderUpdatePaymentsVisitor(this.Payments));
+
+            if (target.State.Stage.IsModificationAllowedTo(PurchaseOrderAggregate.Receipts))
+                target.Accept(new PurchaseOrderUpdateReceiptsVisitor(this.Receipts));
 
             target.Accept(new PurchaseOrderCalculateVisitor());
 

@@ -19,6 +19,9 @@ namespace AmpedBiz.Core.Services.Orders
             if (target.Total != null)
                 target.Total.Amount = 0M;
 
+            if (target.Paid != null)
+                target.Paid.Amount = 0M;
+
             foreach (var item in target.Items)
             {
                 target.Discount += item.Discount;

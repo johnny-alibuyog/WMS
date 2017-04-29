@@ -1,7 +1,8 @@
-﻿using System.Web.Http;
-using AmpedBiz.Service.Branches;
+﻿using AmpedBiz.Service.Branches;
 using Common.Logging;
 using MediatR;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace AmpedBiz.Service.Host.Controllers
 {
@@ -23,44 +24,44 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("{request.id}")]
-        public GetBranch.Response Process([FromUri]GetBranch.Request request)
+        public async Task<GetBranch.Response> Process([FromUri]GetBranch.Request request)
         {
-            return _mediator.Send(request ?? new GetBranch.Request());
+            return await _mediator.Send(request ?? new GetBranch.Request());
         }
 
         [HttpGet()]
         [Route("")]
-        public GetBranchList.Response Process([FromUri]GetBranchList.Request request)
+        public async Task<GetBranchList.Response> Process([FromUri]GetBranchList.Request request)
         {
-            return _mediator.Send(request ?? new GetBranchList.Request());
+            return await _mediator.Send(request ?? new GetBranchList.Request());
         }
 
         [HttpPost()]
         [Route("page")]
-        public GetBranchPage.Response Process([FromBody]GetBranchPage.Request request)
+        public async Task<GetBranchPage.Response> Process([FromBody]GetBranchPage.Request request)
         {
-            return _mediator.Send(request ?? new GetBranchPage.Request());
+            return await _mediator.Send(request ?? new GetBranchPage.Request());
         }
 
         [HttpGet()]
         [Route("~/branch-lookups")]
-        public GetBranchLookup.Response Process([FromBody]GetBranchLookup.Request request)
+        public async Task<GetBranchLookup.Response> Process([FromBody]GetBranchLookup.Request request)
         {
-            return _mediator.Send(request ?? new GetBranchLookup.Request());
+            return await _mediator.Send(request ?? new GetBranchLookup.Request());
         }
 
         [HttpPost()]
         [Route("")]
-        public CreateBranch.Response Process([FromBody]CreateBranch.Request request)
+        public async Task<CreateBranch.Response> Process([FromBody]CreateBranch.Request request)
         {
-            return _mediator.Send(request ?? new CreateBranch.Request());
+            return await _mediator.Send(request ?? new CreateBranch.Request());
         }
 
         [HttpPut()]
         [Route("")]
-        public UpdateBranch.Response Process([FromBody]UpdateBranch.Request request)
+        public async Task<UpdateBranch.Response> Process([FromBody]UpdateBranch.Request request)
         {
-            return _mediator.Send(request ?? new UpdateBranch.Request());
+            return await _mediator.Send(request ?? new UpdateBranch.Request());
         }
     }
 }

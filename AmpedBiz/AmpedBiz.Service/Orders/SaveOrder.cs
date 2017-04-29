@@ -121,12 +121,14 @@ namespace AmpedBiz.Service.Orders
                             quantity: new Measure(x.QuantityValue, GetUnitOfMeasure(x.Product.Id))
                         )),
                         Payments = message.Payments.Select(x => new OrderPayment(
+                            id: x.Id,
                             paidOn: x.PaidOn ?? DateTime.Now,
                             paidTo: session.Load<User>(x.PaidTo.Id),
                             paymentType: session.Load<PaymentType>(x.PaymentType.Id),
                             payment: new Money(x.PaymentAmount, currency)
                         )),
                         Returns = message.Returns.Select(x => new OrderReturn(
+                            id: x.Id,
                             product: GetProduct(x.Product.Id),
                             reason: session.Load<ReturnReason>(x.Reason.Id),
                             returnedOn: message.ReturnedOn ?? DateTime.Now,

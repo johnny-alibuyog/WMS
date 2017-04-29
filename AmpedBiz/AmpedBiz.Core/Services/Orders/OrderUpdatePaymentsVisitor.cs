@@ -19,9 +19,8 @@ namespace AmpedBiz.Core.Services.Orders
             if (this.Payments.IsNullOrEmpty())
                 return;
 
+            // allow only insert. edit and delete is not allowed for this aggregate
             var itemsToInsert = this.Payments.Except(target.Payments).ToList();
-            var itemsToUpdate = target.Payments.Where(x => this.Payments.Contains(x)).ToList();
-            var itemsToRemove = target.Payments.Except(this.Payments).ToList();
 
             foreach (var item in itemsToInsert)
             {
@@ -29,68 +28,10 @@ namespace AmpedBiz.Core.Services.Orders
                 target.Payments.Add(item);
             }
 
-            foreach (var item in itemsToUpdate)
-            {
-                var value = this.Payments.Single(x => x == item);
-                item.SerializeWith(value);
-                item.Order = target;
-            }
-
-            foreach (var item in itemsToRemove)
-            {
-                item.Order = null;
-                target.Payments.Remove(item);
-            }
-
             var lastPayment = target.Payments.OrderBy(x => x.PaidOn).Last();
 
             target.PaidOn = lastPayment.PaidOn;
             target.PaidTo = lastPayment.PaidTo;
         }
-
-        //private void SetPaymentsTo(Order target)
-        //{
-        //    if (this.Payments.IsNullOrEmpty())
-        //        return;
-
-        //    var itemsToInsert = this.Payments.Except(target.Payments).ToList();
-        //    var itemsToUpdate = target.Payments.Where(x => this.Payments.Contains(x)).ToList();
-        //    var itemsToRemove = target.Payments.Except(this.Payments).ToList();
-
-        //    foreach (var item in itemsToInsert)
-        //    {
-        //        item.Order = target;
-        //        target.Payments.Add(item);
-        //    }
-
-        //    foreach (var item in itemsToUpdate)
-        //    {
-        //        var value = this.Payments.Single(x => x == item);
-        //        item.SerializeWith(value);
-        //        item.Order = target;
-        //    }
-
-        //    foreach (var item in itemsToRemove)
-        //    {
-        //        item.Order = null;
-        //        target.Payments.Remove(item);
-        //    }
-        //}
-
-        //private void AddPaymentsTo(Order target)
-        //{
-        //    var lastPayment = this.Payments.OrderBy(x => x.PaidOn).LastOrDefault();
-        //    if (lastPayment == null)
-        //        return;
-
-        //    target.InvoicedOn = lastPayment.PaidOn;
-        //    target.InvoicedBy = lastPayment.PaidTo;
-
-        //    foreach (var payment in this.Payments)
-        //    {
-        //        payment.Order = target;
-        //        target.Payments.Add(payment);
-        //    }
-        //}
     }
 }

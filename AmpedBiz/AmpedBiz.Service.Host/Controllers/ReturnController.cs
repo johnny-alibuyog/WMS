@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Service.Returns;
 using MediatR;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace AmpedBiz.Service.Host.Controllers
@@ -16,51 +17,51 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("{request.id}")]
-        public GetReturn.Response Process([FromUri]GetReturn.Request request)
+        public async Task<GetReturn.Response> Process([FromUri]GetReturn.Request request)
         {
-            return _mediator.Send(request ?? new GetReturn.Request());
+            return await _mediator.Send(request ?? new GetReturn.Request());
         }
 
         [HttpPost()]
         [Route("")]
-        public CreateReturn.Response Process([FromBody]CreateReturn.Request request)
+        public async Task<CreateReturn.Response> Process([FromBody]CreateReturn.Request request)
         {
-            return _mediator.Send(request ?? new CreateReturn.Request());
+            return await _mediator.Send(request ?? new CreateReturn.Request());
         }
 
         [HttpGet()]
         [Route("")]
-        public GetReturnList.Response Process([FromUri]GetReturnList.Request request)
+        public async Task<GetReturnList.Response> Process([FromUri]GetReturnList.Request request)
         {
-            return _mediator.Send(request ?? new GetReturnList.Request());
+            return await _mediator.Send(request ?? new GetReturnList.Request());
         }
 
         [HttpPost()]
         [Route("page")]
-        public GetReturnPage.Response Process([FromBody]GetReturnPage.Request request)
+        public async Task<GetReturnPage.Response> Process([FromBody]GetReturnPage.Request request)
         {
-            return _mediator.Send(request ?? new GetReturnPage.Request());
+            return await _mediator.Send(request ?? new GetReturnPage.Request());
         }
 
         [HttpPost()]
         [Route("~/returns-by-customer/page")]
-        public GetReturnsByCustomerPage.Response Process([FromBody]GetReturnsByCustomerPage.Request request)
+        public async Task<GetReturnsByCustomerPage.Response> Process([FromBody]GetReturnsByCustomerPage.Request request)
         {
-            return _mediator.Send(request ?? new GetReturnsByCustomerPage.Request());
+            return await _mediator.Send(request ?? new GetReturnsByCustomerPage.Request());
         }
 
         [HttpPost()]
         [Route("~/returns-by-product/page")]
-        public GetReturnsByProductPage.Response Process([FromBody]GetReturnsByProductPage.Request request)
+        public async Task<GetReturnsByProductPage.Response> Process([FromBody]GetReturnsByProductPage.Request request)
         {
-            return _mediator.Send(request ?? new GetReturnsByProductPage.Request());
+            return await _mediator.Send(request ?? new GetReturnsByProductPage.Request());
         }
 
         [HttpPost()]
         [Route("~/returns-by-reason/page")]
-        public GetReturnsByReasonPage.Response Process([FromBody]GetReturnsByReasonPage.Request request)
+        public async Task<GetReturnsByReasonPage.Response> Process([FromBody]GetReturnsByReasonPage.Request request)
         {
-            return _mediator.Send(request ?? new GetReturnsByReasonPage.Request());
+            return await _mediator.Send(request ?? new GetReturnsByReasonPage.Request());
         }
     }
 }

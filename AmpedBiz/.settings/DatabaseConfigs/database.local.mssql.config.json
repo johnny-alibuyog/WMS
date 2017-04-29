@@ -1,7 +1,7 @@
 ﻿{
   "Database": "MsSql",
   "Port": 3306,
-  "HostServer": "PHMADJALIBUYOG2",
+  "HostServer": "localhost",
   "Name": "ampbizdb",
   "Username": "ampbizdb",
   "Password": "6jPbwQtZ8N52WRJ5rEWv2g==",

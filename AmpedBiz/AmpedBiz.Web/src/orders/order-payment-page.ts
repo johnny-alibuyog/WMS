@@ -49,16 +49,7 @@ export class OrderPaymentPage {
   }
 
   public orderIdChanged(): void {
-
-    let requests: [Promise<OrderPayable>] = [
-      this.orderId
-        ? this._api.orders.getPayables(this.orderId)
-        : Promise.resolve(<OrderPayable>{})
-    ];
-
-    Promise.all(requests).then((responses: [OrderPayable]) => {
-      this.payable = responses[0];
-    });
+    this.initializePayables();
   }
 
   public attached(): void {
@@ -75,6 +66,7 @@ export class OrderPaymentPage {
   }
 
   public paymentsChanged(): void {
+    this.initializePayables();
     this.initializePage();
   }
 
@@ -90,6 +82,18 @@ export class OrderPaymentPage {
       this.paymentPager.start,
       this.paymentPager.end
     );
+  }
+
+  public initializePayables(): void {
+    let requests: [Promise<OrderPayable>] = [
+      this.orderId
+        ? this._api.orders.getPayables(this.orderId)
+        : Promise.resolve(<OrderPayable>{})
+    ];
+
+    Promise.all(requests).then((responses: [OrderPayable]) => {
+      this.payable = responses[0];
+    });
   }
 
   private addItem(): void {

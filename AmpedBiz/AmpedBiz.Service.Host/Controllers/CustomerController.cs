@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Service.Customers;
 using MediatR;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace AmpedBiz.Service.Host.Controllers
@@ -16,51 +17,51 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("{request.id}")]
-        public GetCustomer.Response Process([FromUri]GetCustomer.Request request)
+        public async Task<GetCustomer.Response> Process([FromUri]GetCustomer.Request request)
         {
-            return _mediator.Send(request ?? new GetCustomer.Request());
+            return await _mediator.Send(request ?? new GetCustomer.Request());
         }
 
         [HttpGet()]
         [Route("")]
-        public GetCustomerList.Response Process([FromUri]GetCustomerList.Request request)
+        public async Task<GetCustomerList.Response> Process([FromUri]GetCustomerList.Request request)
         {
-            return _mediator.Send(request ?? new GetCustomerList.Request());
+            return await _mediator.Send(request ?? new GetCustomerList.Request());
         }
 
         [HttpPost()]
         [Route("page")]
-        public GetCustomerPage.Response Process([FromBody]GetCustomerPage.Request request)
+        public async Task<GetCustomerPage.Response> Process([FromBody]GetCustomerPage.Request request)
         {
-            return _mediator.Send(request ?? new GetCustomerPage.Request());
+            return await _mediator.Send(request ?? new GetCustomerPage.Request());
         }
 
         [HttpPost()]
         [Route("report/page")]
-        public GetCustomerReportPage.Response Process([FromBody]GetCustomerReportPage.Request request)
+        public async Task<GetCustomerReportPage.Response> Process([FromBody]GetCustomerReportPage.Request request)
         {
-            return _mediator.Send(request ?? new GetCustomerReportPage.Request());
+            return await _mediator.Send(request ?? new GetCustomerReportPage.Request());
         }
 
         [HttpGet()]
         [Route("~/customer-lookups")]
-        public GetCustomerLookup.Response Process([FromBody]GetCustomerLookup.Request request)
+        public async Task<GetCustomerLookup.Response> Process([FromBody]GetCustomerLookup.Request request)
         {
-            return _mediator.Send(request ?? new GetCustomerLookup.Request());
+            return await _mediator.Send(request ?? new GetCustomerLookup.Request());
         }
 
         [HttpPost()]
         [Route("")]
-        public CreateCustomer.Response Process([FromBody]CreateCustomer.Request request)
+        public async Task<CreateCustomer.Response> Process([FromBody]CreateCustomer.Request request)
         {
-            return _mediator.Send(request ?? new CreateCustomer.Request());
+            return await _mediator.Send(request ?? new CreateCustomer.Request());
         }
 
         [HttpPut()]
         [Route("")]
-        public UpdateCustomer.Response Process([FromBody]UpdateCustomer.Request request)
+        public async Task<UpdateCustomer.Response> Process([FromBody]UpdateCustomer.Request request)
         {
-            return _mediator.Send(request ?? new UpdateCustomer.Request());
+            return await _mediator.Send(request ?? new UpdateCustomer.Request());
         }
     }
 }
