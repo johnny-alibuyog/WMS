@@ -11,12 +11,16 @@ export class Notification {
     this._controller = controller;
   }
 
-  activate(alert: Alert) {
+  public activate(alert: Alert): void {
     this.alert = alert;
   }
 
-  ok() {
+  public ok(): void {
     this._controller.ok(this.alert);
+  }
+
+  public cancel(): void {
+    this._controller.cancel(this.alert);
   }
 }
 

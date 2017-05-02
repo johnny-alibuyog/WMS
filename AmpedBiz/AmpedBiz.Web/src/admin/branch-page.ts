@@ -58,12 +58,12 @@ export class BranchPage {
 
   create() {
     this._dialog.open({ viewModel: BranchCreate, model: null })
-      .then(response => { if (!response.wasCancelled) this.getPage(); });
+      .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   edit(item: BranchPageItem) {
     this._dialog.open({ viewModel: BranchCreate, model: <Branch>{ id: item.id } })
-      .then(response => { if (!response.wasCancelled) this.getPage(); });
+      .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   delete(item: any) {

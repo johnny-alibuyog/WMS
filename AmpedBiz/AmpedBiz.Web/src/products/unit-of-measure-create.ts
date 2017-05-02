@@ -47,7 +47,7 @@ export class UnitOfMeasureCreate {
       this._api.unitOfMeasures.update(this.unitOfMeasure)
         .then(data => {
           this._notification.success("Unit of Measure has been saved.")
-            .then((data) => this._controller.ok({ wasCancelled: true, output: <UnitOfMeasure>data }));
+            .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <UnitOfMeasure>data }));
         })
         .catch(error => {
           this._notification.warning(error)
@@ -58,7 +58,7 @@ export class UnitOfMeasureCreate {
       this._api.unitOfMeasures.create(this.unitOfMeasure)
         .then(data => {
           this._notification.success("Unit of Measure has been saved.")
-            .then((data) => this._controller.ok({ wasCancelled: true, output: <UnitOfMeasure>data }));
+            .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <UnitOfMeasure>data }));
         })
         .catch(error => {
           this._notification.warning(error)

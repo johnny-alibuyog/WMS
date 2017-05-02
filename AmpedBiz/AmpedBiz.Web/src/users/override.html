@@ -1,12 +1,12 @@
 <template>
   
-  <ai-dialog>
+  <ux-dialog>
   
-    <ai-dialog-header>
+    <ux-dialog-header>
       <h3>${header}</h3>
-    </ai-dialog-header>
+    </ux-dialog-header>
 
-    <ai-dialog-body>
+    <ux-dialog-body>
 
       <div class="panel panel-default">
         <div class="panel-body">
@@ -34,16 +34,16 @@
         </div>
       </div>
     
-    </ai-dialog-body>
+    </ux-dialog-body>
 
-    <ai-dialog-footer>
+    <ux-dialog-footer>
       <button type="button" class="btn btn-success" click.trigger="override()">
         <i class="fa fa-check-circle"></i> Override
       </button>
       <button type="button" class="btn btn-danger" click.trigger="cancel()">
         <i class="fa fa-times-circle"></i> Cancel</button>
-    </ai-dialog-footer>
+    </ux-dialog-footer>
   
-  </ai-dialog>
+  </ux-dialog>
 
 </template>

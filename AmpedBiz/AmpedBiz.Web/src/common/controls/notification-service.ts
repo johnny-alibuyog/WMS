@@ -1,5 +1,5 @@
 import { autoinject, noView } from 'aurelia-framework';
-import { DialogService, DialogResult } from 'aurelia-dialog';
+import { DialogService, DialogOpenPromise, DialogOpenResult, DialogCancelResult } from 'aurelia-dialog';
 import { Notification, Alert } from './notification';
 
 @autoinject
@@ -10,7 +10,7 @@ export class NotificationService {
     this._dialog = dialog;
   }
 
-  info(message: string): Promise<any> {
+  public info(message: string): DialogOpenPromise<DialogOpenResult | DialogCancelResult> {
     //TODO: there is an issue currently with aurelia-dialog, 
     // return implementaion as soon as fix is available
     // https://github.com/aurelia/dialog/issues/180
@@ -27,7 +27,7 @@ export class NotificationService {
     });
   }
 
-  success(message: string): Promise<any> {
+  public success(message: string): DialogOpenPromise<DialogOpenResult | DialogCancelResult> {
     //TODO: there is an issue currently with aurelia-dialog, 
     // return implementaion as soon as fix is available
     // https://github.com/aurelia/dialog/issues/180
@@ -44,7 +44,7 @@ export class NotificationService {
     });
   }
 
-  warning(message: string): Promise<any> {
+  public warning(message: string): DialogOpenPromise<DialogOpenResult | DialogCancelResult> {
     //TODO: there is an issue currently with aurelia-dialog, 
     // return implementaion as soon as fix is available
     // https://github.com/aurelia/dialog/issues/180
@@ -61,7 +61,7 @@ export class NotificationService {
     });
   }
 
-  error(message: string): Promise<any> {
+  public error(message: string): DialogOpenPromise<DialogOpenResult | DialogCancelResult> {
     //TODO: there is an issue currently with aurelia-dialog, 
     // return implementaion as soon as fix is available
     // https://github.com/aurelia/dialog/issues/180

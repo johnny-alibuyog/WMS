@@ -90,7 +90,7 @@ export class BranchCreate {
       this._api.branches.update(this.branch)
         .then(data => {
           this._notification.success("Branch  has been saved.")
-            .then((data) => this._dialogController.ok({ wasCancelled: true, output: <Branch>data }));
+            .whenClosed((data) => this._dialogController.ok({ wasCancelled: true, output: <Branch>data }));
         })
         .catch(error => {
           this._notification.warning(error)
@@ -100,7 +100,7 @@ export class BranchCreate {
       this._api.branches.create(this.branch)
         .then(data => {
           this._notification.success("Branch has been saved.")
-            .then((data) => this._dialogController.ok({ wasCancelled: true, output: <Branch>data }));
+            .whenClosed((data) => this._dialogController.ok({ wasCancelled: true, output: <Branch>data }));
         })
         .catch(error => {
           this._notification.warning(error)

@@ -1,7 +1,20 @@
 /* update node and npm */ (run powershell as admin)
+/* not working anymore
 Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
 npm install -g npm-windows-upgrade
 npm-windows-upgrade
+*/
+
+/* use choco install instead */
+cinst nodejs
+# or for full install with npm
+cinst nodejs.install
+
+/* aurelia validation typings */
+typings install aurelia-validation=github:aurelia/validation#0.13.1 --save
+
+/* tslint error fix */
+npm install tslint@next -g
 
 /* update tslint and typescript */
 npm install -g tslint typescript

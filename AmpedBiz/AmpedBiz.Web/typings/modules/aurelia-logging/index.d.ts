@@ -100,11 +100,24 @@ export function getLogger(id: string): Logger;
 export function addAppender(appender: Appender): void;
 
 /**
+* Removes an appender
+* @param appender An appender that has been added previously.
+*/
+export function removeAppender(appender: Appender): void;
+
+/**
 * Sets the level of logging for ALL the application loggers.
 *
 * @param level Matches a value of logLevel specifying the level of logging.
 */
 export function setLevel(level: number): void;
+
+/**
+* Gets the level of logging of ALL the application loggers.
+*
+* @return The logLevel value used in all loggers.
+*/
+export function getLevel(): number;
 
 /**
 * A logger logs messages to a set of appenders, depending on the log level that is set.
@@ -124,7 +137,7 @@ export class Logger {
   /**
     * You cannot instantiate the logger directly - you must use the getLogger method instead.
     */
-  constructor(id: string, key: Object);
+  constructor(id: string);
   
   /**
      * Logs a debug message.

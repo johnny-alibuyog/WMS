@@ -47,7 +47,7 @@ export class SupplierCreate {
       this._api.suppliers.update(this.supplier)
         .then(data => {
           this._notification.success("Supplier has been saved.")
-            .then((data) => this._controller.ok({ wasCancelled: true, output: <Supplier>data }));
+            .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <Supplier>data }));
         })
         .catch(error => {
           this._notification.warning(error)
@@ -58,7 +58,7 @@ export class SupplierCreate {
       this._api.suppliers.create(this.supplier)
         .then(data => {
           this._notification.success("Supplier has been saved.")
-            .then((data) => this._controller.ok({ wasCancelled: true, output: <Supplier>data }));
+            .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <Supplier>data }));
         })
         .catch(error => {
           this._notification.warning(error)

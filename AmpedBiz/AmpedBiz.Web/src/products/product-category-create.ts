@@ -47,7 +47,7 @@ export class ProductCategoryCreate {
       this._api.productCategories.update(this.productCategory)
         .then(data => {
           this._notification.success("Product Category has been saved.")
-            .then((data) => this._controller.ok(<ProductCategory>data));
+            .whenClosed((data) => this._controller.ok(<ProductCategory>data));
         })
         .catch(error => {
           this._notification.warning(error)
@@ -58,7 +58,7 @@ export class ProductCategoryCreate {
       this._api.productCategories.create(this.productCategory)
         .then(data => {
           this._notification.success("Product Category has been saved.")
-            .then((data) => this._controller.ok(<ProductCategory>data));
+            .whenClosed((data) => this._controller.ok(<ProductCategory>data));
         })
         .catch(error => {
           this._notification.warning(error)

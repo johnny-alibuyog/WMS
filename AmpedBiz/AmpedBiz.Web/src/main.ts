@@ -7,13 +7,13 @@ export function configure(aurelia: Aurelia) {
     .standardConfiguration()
     .developmentLogging()
     .plugin('common/global-resources')
+    .plugin('aurelia-validation')
     .plugin('aurelia-dialog', config => {
       config.useDefaults();
       config.settings.lock = false;
       config.settings.centerVerticalOnly = true;
       config.settings.startingZIndex = 5;
-    })
-    .plugin('aurelia-validation');
+    });
 
   //.plugin('aurelia-computed', config => {
   //  config.enableLogging = true;

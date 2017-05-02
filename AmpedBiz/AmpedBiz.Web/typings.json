@@ -4,6 +4,7 @@
     "aurelia-binding": "github:aurelia/binding",
     "aurelia-bootstrapper": "github:aurelia/bootstrapper",
     "aurelia-dependency-injection": "github:aurelia/dependency-injection",
+    "aurelia-dialog": "github:aurelia/dialog",
     "aurelia-event-aggregator": "github:aurelia/event-aggregator",
     "aurelia-fetch-client": "github:aurelia/fetch-client",
     "aurelia-framework": "github:aurelia/framework",
@@ -24,6 +25,7 @@
     "aurelia-templating-binding": "github:aurelia/templating-binding",
     "aurelia-templating-resources": "github:aurelia/templating-resources",
     "aurelia-templating-router": "github:aurelia/templating-router",
+    "aurelia-validation": "github:aurelia/validation#0.13.1",
     "moment": "registry:npm/moment#2.10.5+20160211003958"
   },
   "globalDevDependencies": {

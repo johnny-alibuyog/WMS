@@ -1,21 +1,21 @@
 <template>
-  <ai-dialog>
+  <ux-dialog>
 
-    <ai-dialog-header>
+    <ux-dialog-header>
       <!--<h3>${report.title}</h3>-->
-    </ai-dialog-header>
+    </ux-dialog-header>
 
-    <ai-dialog-body>
+    <ux-dialog-body>
       <iframe class="report-viewer" src.bind="report.content"></iframe>
-    </ai-dialog-body>
+    </ux-dialog-body>
 
     <!--
-    <ai-dialog-footer>
+    <ux-dialog-footer>
       <button click.trigger="close()" class="text-danger">
         <i class="fa fa-times-circle"></i> Close
       </button>
-    </ai-dialog-footer>
+    </ux-dialog-footer>
     -->
     
-  </ai-dialog>
+  </ux-dialog>
 </template>

@@ -102,6 +102,10 @@ export class ThrottleBindingBehavior {
   bind(binding?: any, source?: any, delay?: any): any;
   unbind(binding?: any, source?: any): any;
 }
+export class SelfBindingBehavior {
+  bind(binding?: any, source?: any): any;
+  unbind(binding?: any, source?: any): any;
+}
 
 /**
 * Marks any part of a view to be replacable by the consumer.
@@ -257,8 +261,6 @@ export class Focus {
 }
 export class DebounceBindingBehavior {
   bind(binding?: any, source?: any, delay?: any): any;
-  
-  // should not delay initial target update that occurs during bind.
   unbind(binding?: any, source?: any): any;
 }
 
@@ -269,6 +271,7 @@ export class Compose {
   model: any;
   view: any;
   viewModel: any;
+  swapOrder: any;
   
   /**
     * Creates an instance of Compose.
