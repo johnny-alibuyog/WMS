@@ -3,6 +3,8 @@
   <require from="products/product-inventory"></require>
   <require from="products/product-order-page"></require>
   <require from="products/product-purchase-page"></require>
+  <require from="products/product-order-return-page"></require>
+  <require from="products/product-return-page"></require>
 
   <section class="row row-no-padding">
 
@@ -104,8 +106,10 @@
 
                 <ul class="nav nav-tabs">
                   <li class="active"><a data-toggle="tab" href="#inventoryTab"><span>Inventory</span></a></li>
-                  <li><a data-toggle="tab" href="#orderHistoryTab"><span>Order History</span></a></li>
                   <li><a data-toggle="tab" href="#purchaseHistoryTab"><span>Purchase History</span></a></li>
+                  <li><a data-toggle="tab" href="#orderHistoryTab"><span>Order History</span></a></li>
+                  <li><a data-toggle="tab" href="#orderReturnHistoryTab"><span>Order Return History</span></a></li>
+                  <li><a data-toggle="tab" href="#returnHistoryTab"><span>Return History</span></a></li>
                 </ul>
                 <div class="tab-content">
 
@@ -117,6 +121,14 @@
                     </product-inventory>
                   </div>
 
+                  <!-- purchase history -->
+                  <div id="purchaseHistoryTab" class="tab-pane fade">
+                    <br />
+
+                    <product-purchase-page product-id.bind="product.id">
+                    </product-purchase-page>
+                  </div>
+
                   <!-- order history -->
                   <div id="orderHistoryTab" class="tab-pane fade">
                     <br />
@@ -125,12 +137,20 @@
                     </product-order-page>
                   </div>
 
-                  <!-- purchase history -->
-                  <div id="purchaseHistoryTab" class="tab-pane fade">
+                  <!-- order return history -->
+                  <div id="orderReturnHistoryTab" class="tab-pane fade">
                     <br />
 
-                    <product-purchase-page product-id.bind="product.id">
-                    </product-purchase-page>
+                    <product-order-return-page product-id.bind="product.id">
+                    </product-order-return-page>
+                  </div>
+
+                  <!-- return history -->
+                  <div id="returnHistoryTab" class="tab-pane fade">
+                    <br />
+
+                    <product-return-page product-id.bind="product.id">
+                    </product-return-page>
                   </div>
 
                 </div>

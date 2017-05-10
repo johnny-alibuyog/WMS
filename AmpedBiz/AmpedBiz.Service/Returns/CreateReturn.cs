@@ -42,7 +42,7 @@ namespace AmpedBiz.Service.Returns
 
                     var entity = new Return();
 
-                    entity.Accept(new ReturnCreateVisitor()
+                    entity.Accept(new ReturnSaveVisitor()
                     {
                         Branch = session.Load<Branch>(message.Branch.Id),
                         Customer = session.Load<Customer>(message.Customer.Id),

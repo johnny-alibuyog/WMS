@@ -1,6 +1,6 @@
 ﻿using AmpedBiz.Core.Entities;
 
-namespace AmpedBiz.Core.Services.Products
+namespace AmpedBiz.Core.Services.Inventories
 {
     public class ProductsCreatedVisitor
     {

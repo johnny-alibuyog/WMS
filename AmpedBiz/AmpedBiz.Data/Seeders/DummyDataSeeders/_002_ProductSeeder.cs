@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Services.Inventories;
 using NHibernate;
 using NHibernate.Linq;
 using System;
@@ -77,7 +78,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         item.Inventory.TargetLevel = new Measure(_utils.RandomDecimal(150M, 300M), item.Inventory.UnitOfMeasure);
                         item.Inventory.ReorderLevel = item.Inventory.TargetLevel - new Measure(_utils.RandomDecimal(50M, 100M), item.Inventory.UnitOfMeasure);
                         item.Inventory.MinimumReorderQuantity = item.Inventory.TargetLevel - item.Inventory.ReorderLevel;
-                        item.Inventory.Compute();
+                        item.Inventory.Accept(new InventoryRecomputeVisitor());
                         item.EnsureValidity();
 
                         session.Save(item);

@@ -144,6 +144,8 @@
     <Compile Include="Products\GetProductList.cs" />
     <Compile Include="Products\GetProductLookup.cs" />
     <Compile Include="Products\GetProductOrderPage.cs" />
+    <Compile Include="Products\GetProductReturnPage.cs" />
+    <Compile Include="Products\GetProductOrderReturnPage.cs" />
     <Compile Include="Products\GetProductPage.cs" />
     <Compile Include="Products\GetProductPurchasePage.cs" />
     <Compile Include="Products\GetProductReportPage.cs" />

@@ -46,6 +46,8 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Define(x => x.BackOrdered);
 
+            Define(x => x.Returned);
+
             Define(x => x.Available);
 
             Define(x => x.InitialLevel);

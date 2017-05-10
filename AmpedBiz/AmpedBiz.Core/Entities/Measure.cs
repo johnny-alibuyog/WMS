@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AmpedBiz.Core.Entities
 {
@@ -131,6 +132,16 @@ namespace AmpedBiz.Core.Entities
             }
 
             return measure.Value;
+        }
+
+        public static Measure Sum<T>(this IEnumerable<T> items, Func<T, Measure> selector)
+        {
+            var sum = default(Measure);
+            foreach (var item in items)
+            {
+                sum += selector(item);
+            }
+            return sum;
         }
     }
 }

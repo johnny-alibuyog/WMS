@@ -21,6 +21,12 @@ namespace AmpedBiz.Common.Extentions
             ((ICollection<T>)items).Remove(value);
         }
 
+        public static void ForEach<T>(this IEnumerable<T> items, Action<T> action)
+        {
+            foreach (var item in items)
+                action.Invoke(item);
+        }
+
         public static bool IsNullOrEmpty<T>(this IEnumerable<T> items)
         {
             if (items == null)

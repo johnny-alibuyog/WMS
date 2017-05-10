@@ -148,11 +148,19 @@ export class ReturnItemPage {
   }
 
   public editItem(item: ReturnItem): void {
+    if (item.id) {
+      return; // do not allow edit of items which is already saved
+    }
+
     if (this.selectedItem !== item)
       this.selectedItem = item;
   }
 
   public deleteItem(item: ReturnItem): void {
+    if (item.id) {
+      return; // do not allow edit of items which is already saved
+    }
+
     var index = this.items.indexOf(item);
     if (index > -1) {
       this.items.splice(index, 1);

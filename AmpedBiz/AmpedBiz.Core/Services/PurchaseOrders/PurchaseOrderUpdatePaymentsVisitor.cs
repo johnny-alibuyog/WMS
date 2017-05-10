@@ -2,6 +2,7 @@
 using AmpedBiz.Core.Entities;
 using System.Linq;
 using System.Collections.Generic;
+using System;
 
 namespace AmpedBiz.Core.Services.PurchaseOrders
 {
@@ -19,9 +20,8 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             if (this.Payments.IsNullOrEmpty())
                 return;
 
+            // allow only insert. edit and delete is not allowed for this aggregate
             var itemsToInsert = this.Payments.Except(target.Payments).ToList();
-            var itemsToUpdate = target.Payments.Where(x => this.Payments.Contains(x)).ToList();
-            var itemsToRemove = target.Payments.Except(this.Payments).ToList();
 
             foreach (var item in itemsToInsert)
             {
@@ -29,23 +29,11 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
                 target.Payments.Add(item);
             }
 
-            foreach (var item in itemsToUpdate)
-            {
-                var value = this.Payments.Single(x => x == item);
-                item.SerializeWith(value);
-                item.PurchaseOrder = target;
-            }
-
-            foreach (var item in itemsToRemove)
-            {
-                item.PurchaseOrder = null;
-                target.Payments.Remove(item);
-            }
-
             var lastPayment = target.Payments.OrderBy(x => x.PaidOn).Last();
 
             target.PaidOn = lastPayment.PaidOn;
             target.PaidBy = lastPayment.PaidBy;
+
         }
     }
 }

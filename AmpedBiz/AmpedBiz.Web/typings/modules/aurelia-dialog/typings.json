@@ -9,7 +9,8 @@
         "src": "https://raw.githubusercontent.com/aurelia/dependency-injection/master/typings.json",
         "raw": "github:aurelia/dependency-injection",
         "main": "dist/aurelia-dependency-injection.d.ts",
-        "name": "aurelia-dependency-injection"
+        "name": "aurelia-dependency-injection",
+        "type": "typings"
       },
       "aurelia-metadata": {
         "src": "https://raw.githubusercontent.com/aurelia/metadata/master/typings.json",
@@ -20,24 +21,29 @@
             "src": "https://raw.githubusercontent.com/aurelia/pal/master/typings.json",
             "raw": "github:aurelia/pal",
             "main": "dist/aurelia-pal.d.ts",
-            "name": "aurelia-pal"
+            "name": "aurelia-pal",
+            "type": "typings"
           }
         },
-        "name": "aurelia-metadata"
+        "name": "aurelia-metadata",
+        "type": "typings"
       },
       "aurelia-pal": {
         "src": "https://raw.githubusercontent.com/aurelia/pal/master/typings.json",
         "raw": "github:aurelia/pal",
         "main": "dist/aurelia-pal.d.ts",
-        "name": "aurelia-pal"
+        "name": "aurelia-pal",
+        "type": "typings"
       },
       "aurelia-templating": {
         "src": "https://raw.githubusercontent.com/aurelia/templating/master/typings.json",
         "raw": "github:aurelia/templating",
         "main": "dist/aurelia-templating.d.ts",
-        "name": "aurelia-templating"
+        "name": "aurelia-templating",
+        "type": "typings"
       }
     },
-    "name": "aurelia-dialog"
+    "name": "aurelia-dialog",
+    "type": "typings"
   }
 }

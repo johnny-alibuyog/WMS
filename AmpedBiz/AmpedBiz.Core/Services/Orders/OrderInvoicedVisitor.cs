@@ -1,4 +1,6 @@
 ﻿using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Services.Inventories.Orders;
+using AmpedBiz.Core.Services.Products;
 using System;
 
 namespace AmpedBiz.Core.Services.Orders
@@ -13,7 +15,16 @@ namespace AmpedBiz.Core.Services.Orders
         {
             foreach (var item in target.Items)
             {
-                item.Invoiced();
+                //item.Product.Inventory.Allocate(item.Quantity);
+                item.Product.Accept(new SearchAndApplyVisitor()
+                {
+                    Branch = null,
+                    InventoryVisitor = new AllocateVisitor()
+                    {
+                        Quantity = item.Quantity
+                    }
+                });
+
             }
 
             target.InvoicedOn = this.InvoicedOn;

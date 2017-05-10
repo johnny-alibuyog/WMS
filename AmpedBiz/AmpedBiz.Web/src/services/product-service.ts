@@ -1,5 +1,12 @@
-import { autoinject, buildQueryString } from 'aurelia-framework';
-import { Product, ProductInventory, ProductReportPageItem } from '../common/models/product';
+import { autoinject } from 'aurelia-framework';
+import { buildQueryString } from 'aurelia-framework';
+import { Product } from '../common/models/product';
+import { ProductInventory } from '../common/models/product';
+import { ProductReportPageItem } from '../common/models/product';
+import { ProductOrderPageItem } from '../common/models/product';
+import { ProductOrderReturnPageItem } from '../common/models/product';
+import { ProductReturnPageItem } from '../common/models/product';
+import { ProductPurchasePageItem } from '../common/models/product';
 import { PageRequest, PagerResponse } from '../common/models/paging';
 import { ServiceBase } from './service-base'
 import { HttpClientFacade } from './http-client-facade';
@@ -46,12 +53,22 @@ export class ProductService extends ServiceBase<Product> {
     return this._httpClient.post(url, page);
   }
 
-  getOrderPage(page: PageRequest): Promise<any> {
+  getOrderPage(page: PageRequest): Promise<ProductOrderPageItem> {
     var url = this._resouce + '/' + page.filter["id"] + '/orders/page';
     return this._httpClient.post(url, page);
   }
 
-  getPurchasePage(page: PageRequest): Promise<any> {
+  getOrderReturnPage(page: PageRequest): Promise<ProductOrderReturnPageItem> {
+    var url = this._resouce + '/' + page.filter["id"] + '/order-returns/page';
+    return this._httpClient.post(url, page);
+  }
+
+  getReturnPage(page: PageRequest): Promise<ProductReturnPageItem> {
+    var url = this._resouce + '/' + page.filter["id"] + '/returns/page';
+    return this._httpClient.post(url, page);
+  }
+
+  getPurchasePage(page: PageRequest): Promise<ProductPurchasePageItem> {
     var url = this._resouce + '/' + page.filter["id"] + '/purchases/page';
     return this._httpClient.post(url, page);
   }

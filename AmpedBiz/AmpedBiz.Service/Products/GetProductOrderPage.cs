@@ -3,6 +3,7 @@ using AmpedBiz.Service.Common;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
+using System;
 using System.Linq;
 
 namespace AmpedBiz.Service.Products
@@ -27,10 +28,10 @@ namespace AmpedBiz.Service.Products
                     var query = session.Query<OrderItem>();
 
                     // compose filters
-                    //message.Filter.Compose<string>("id", value =>
-                    //{
-                    //    query = query.Where(x => x.Product.Id.ToLower().Contains(value.ToLower()));
-                    //});
+                    message.Filter.Compose<Guid>("id", value =>
+                    {
+                        query = query.Where(x => x.Product.Id == value);
+                    });
 
                     // compose sort order
                     message.Sorter.Compose("orderNumber", direction =>

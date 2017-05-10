@@ -87,10 +87,24 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpPost()]
+        [Route("{id}/order-returns/page")]
+        public async Task<GetProductOrderReturnPage.Response> Process([FromUri]string id, [FromBody]GetProductOrderReturnPage.Request request)
+        {
+            return await _mediator.Send(request ?? new GetProductOrderReturnPage.Request());
+        }
+
+        [HttpPost()]
         [Route("{id}/purchases/page")]
         public async Task<GetProductPurchasePage.Response> Process([FromUri]string id, [FromBody]GetProductPurchasePage.Request request)
         {
             return await _mediator.Send(request ?? new GetProductPurchasePage.Request());
+        }
+
+        [HttpPost()]
+        [Route("{id}/returns/page")]
+        public async Task<GetProductReturnPage.Response> Process([FromUri]string id, [FromBody]GetProductReturnPage.Request request)
+        {
+            return await _mediator.Send(request ?? new GetProductReturnPage.Request());
         }
 
         [HttpPost()]

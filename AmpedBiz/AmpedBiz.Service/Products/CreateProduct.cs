@@ -1,6 +1,6 @@
-﻿using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Services.Inventories;
 using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
@@ -48,7 +48,7 @@ namespace AmpedBiz.Service.Products
                     entity.Inventory.ReorderLevel = new Measure(message.Inventory.ReorderLevelValue ?? 0M, entity.Inventory.UnitOfMeasure);
                     entity.Inventory.MinimumReorderQuantity = new Measure(message.Inventory.MinimumReorderQuantityValue ?? 0M, entity.Inventory.UnitOfMeasure);
 
-                    entity.Inventory.Compute();
+                    entity.Inventory.Accept(new InventoryRecomputeVisitor());
                     entity.EnsureValidity();
 
                     session.Save(entity);

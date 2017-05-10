@@ -39,6 +39,8 @@ namespace AmpedBiz.Service.Dto
 
         public virtual decimal? BackOrderedValue { get; set; }
 
+        public virtual decimal? ReturnedValue { get; set; }
+
         public virtual decimal? AvailableValue { get; set; }
 
         public virtual decimal? InitialLevelValue { get; set; }

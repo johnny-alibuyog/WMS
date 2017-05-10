@@ -69,6 +69,24 @@ export interface InventoryLevelPageItem {
   belowTargetLevelValue?: number;
 }
 
+export class ProductReturnPageItem {
+  id?: string;
+  reasonName?: string;
+  returnedOn?: Date;
+  returnedByName?: string;
+  returnedAmount?: number;
+  quantityValue?: number;
+}
+
+export class ProductOrderReturnPageItem {
+  id?: string;
+  reasonName?: string;
+  returnedOn?: Date;
+  returnedByName?: string;
+  returnedAmount?: number;
+  quantityValue?: number;
+}
+
 export interface ProductPurchasePageItem {
   id?: string;
   purchaseOrderNumber?: string;

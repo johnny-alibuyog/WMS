@@ -1,4 +1,7 @@
-﻿namespace AmpedBiz.Core.Entities
+﻿using System;
+using System.Collections.Generic;
+
+namespace AmpedBiz.Core.Entities
 {
     public class Money : ValueObject<Money>
     {
@@ -67,6 +70,16 @@
             }
 
             return money.Amount;
+        }
+        
+        public static Money Sum<T>(this IEnumerable<T> items, Func<T, Money> selector)
+        {
+            var sum = default(Money);
+            foreach (var item in items)
+            {
+                sum += selector(item);
+            }
+            return sum;
         }
     }
 }

@@ -4,6 +4,7 @@ using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Orders;
 using NHibernate;
 using NHibernate.Linq;
+using NHibernate.Transform;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -227,6 +228,46 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
             protected readonly ISessionFactory _sessionFactory = SessionFactoryProvider.SessionFactory;
 
             protected abstract override IEnumerable<Order> Process(IEnumerable<Order> input);
+
+            protected IEnumerable<Order> ReloadFromSession(IEnumerable<Order> input)
+            {
+                var session = this._sessionFactory.RetrieveSharedSession();
+                var ids = input.Select(x => x.Id).ToList();
+                return session.QueryOver<Order>()
+                    .AndRestrictionOn(x => x.Id).IsIn(ids)
+                    .Fetch(x => x.Branch).Eager
+                    .Fetch(x => x.Customer).Eager
+                    .Fetch(x => x.Pricing).Eager
+                    .Fetch(x => x.PaymentType).Eager
+                    .Fetch(x => x.Shipper).Eager
+                    .Fetch(x => x.Tax).Eager
+                    .Fetch(x => x.ShippingFee).Eager
+                    .Fetch(x => x.Discount).Eager
+                    .Fetch(x => x.SubTotal).Eager
+                    .Fetch(x => x.Total).Eager
+                    .Fetch(x => x.CreatedBy).Eager
+                    .Fetch(x => x.OrderedBy).Eager
+                    .Fetch(x => x.RoutedBy).Eager
+                    .Fetch(x => x.StagedBy).Eager
+                    .Fetch(x => x.InvoicedBy).Eager
+                    .Fetch(x => x.PaidTo).Eager
+                    .Fetch(x => x.RoutedBy).Eager
+                    .Fetch(x => x.CompletedBy).Eager
+                    .Fetch(x => x.CancelledBy).Eager
+                    .Fetch(x => x.Items).Eager
+                    .Fetch(x => x.Items.First().Product).Eager
+                    .Fetch(x => x.Items.First().Product.Inventory).Eager
+                    .Fetch(x => x.Payments).Eager
+                    .Fetch(x => x.Payments.First().PaidTo).Eager
+                    .Fetch(x => x.Payments.First().PaymentType).Eager
+                    .Fetch(x => x.Returns).Eager
+                    .Fetch(x => x.Returns.First().Reason).Eager
+                    .Fetch(x => x.Returns.First().ReturnedBy).Eager
+                    .Fetch(x => x.Returns.First().Product).Eager
+                    .Fetch(x => x.Returns.First().Product.Inventory).Eager
+                    .TransformUsing(Transformers.DistinctRootEntity)
+                    .List();
+            }
         }
 
         internal class NewAction : ActionStep
@@ -247,6 +288,13 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
                     Enumerable.Range(0, this.Count).ToList().ForEach(_ =>
                     {
+                        var products = _utils.RandomAvailableProducts();
+                        if (!products.Any())
+                            return;
+
+                        var validCount = _utils.RandomInteger(1, products.Count());
+                        var randomProductCount = validCount > 50 ? 50 : validCount;
+
                         var entity = new Order(Guid.NewGuid());
                         entity.Accept(new OrderSaveVisitor()
                         {
@@ -264,13 +312,16 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                             TaxRate = _utils.RandomDecimal(0.01M, 0.30M),
                             Tax = null, // compute this
                             ShippingFee = new Money(_utils.RandomInteger(10, 10000), currency),
-                            Items = Enumerable.Range(0, _utils.RandomInteger(1, 50))
-                                .Select(x => _utils.RandomProduct()).Distinct()
+                            Items = products
+                                .Take(randomProductCount)
                                 .Select(x => new OrderItem(
                                     product: x,
                                     packagingSize: x.Inventory.PackagingSize,
                                     discountRate: _utils.RandomDecimal(0.01M, 0.10M),
-                                    quantity: new Measure(_utils.RandomInteger(1, 100), x.Inventory.UnitOfMeasure),
+                                    quantity: new Measure(
+                                        value: _utils.RandomInteger(1, (int)x.Inventory.Available.Value), 
+                                        unit: x.Inventory.UnitOfMeasure
+                                    ),
                                     unitPrice: x.Inventory.WholesalePrice
                                 ))
                         });
@@ -297,6 +348,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                 using (var session = this._sessionFactory.RetrieveSharedSession())
                 using (var transaction = session.BeginTransaction())
                 {
+                    input = this.ReloadFromSession(input);
                     foreach (var entity in input)
                     {
                         entity.State.Process(new OrderInvoicedVisitor()
@@ -324,6 +376,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                 using (var session = this._sessionFactory.RetrieveSharedSession())
                 using (var transaction = session.BeginTransaction())
                 {
+                    input = this.ReloadFromSession(input);
                     foreach (var entity in input)
                     {
                         var currency = session.Load<Currency>(Currency.PHP.Id);
@@ -358,6 +411,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                 using (var session = this._sessionFactory.RetrieveSharedSession())
                 using (var transaction = session.BeginTransaction())
                 {
+                    input = this.ReloadFromSession(input);
                     foreach (var entity in input)
                     {
                         entity.State.Process(new OrderStagedVisitor()
@@ -385,6 +439,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                 using (var session = this._sessionFactory.RetrieveSharedSession())
                 using (var transaction = session.BeginTransaction())
                 {
+                    input = this.ReloadFromSession(input);
                     foreach (var entity in input)
                     {
                         entity.State.Process(new OrderShippedVisitor()
@@ -412,6 +467,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                 using (var session = this._sessionFactory.RetrieveSharedSession())
                 using (var transaction = session.BeginTransaction())
                 {
+                    input = this.ReloadFromSession(input);
                     foreach (var entity in input)
                     {
                         var products = entity.Items
@@ -461,6 +517,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                 using (var session = this._sessionFactory.RetrieveSharedSession())
                 using (var transaction = session.BeginTransaction())
                 {
+                    input = this.ReloadFromSession(input);
                     foreach (var entity in input)
                     {
                         var currency = session.Load<Currency>(Currency.PHP.Id);
@@ -489,6 +546,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                 using (var session = this._sessionFactory.RetrieveSharedSession())
                 using (var transaction = session.BeginTransaction())
                 {
+                    input = this.ReloadFromSession(input);
                     foreach (var entity in input)
                     {
                         var currency = session.Load<Currency>(Currency.PHP.Id);

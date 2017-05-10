@@ -4,6 +4,7 @@
     "src": "https://raw.githubusercontent.com/aurelia/validation/0.13.1/typings.json",
     "raw": "github:aurelia/validation#0.13.1",
     "main": "dist/amd/aurelia-validation.d.ts",
-    "name": "aurelia-validation"
+    "name": "aurelia-validation",
+    "type": "typings"
   }
 }

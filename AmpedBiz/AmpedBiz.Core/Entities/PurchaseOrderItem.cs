@@ -27,9 +27,9 @@ namespace AmpedBiz.Core.Entities
             );
         }
 
-        protected internal virtual void Approved()
-        {
-            this.Product.Inventory.Order(this.Quantity);
-        }
+        //protected internal virtual void Approved()
+        //{
+        //    this.Product.Inventory.Order(this.Quantity);
+        //}
     }
 }

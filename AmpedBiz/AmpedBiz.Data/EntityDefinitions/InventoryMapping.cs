@@ -56,6 +56,9 @@ namespace AmpedBiz.Data.EntityDefinitions
             Component(x => x.BackOrdered,
                 MeasureMapping.Map("BackOrdered_", nameof(Inventory)));
 
+            Component(x => x.Returned,
+                MeasureMapping.Map("Returned_", nameof(Inventory)));
+
             Component(x => x.Available,
                 MeasureMapping.Map("Available_", nameof(Inventory)));
 

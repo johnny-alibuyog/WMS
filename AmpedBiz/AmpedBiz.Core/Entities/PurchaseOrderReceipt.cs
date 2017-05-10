@@ -32,9 +32,9 @@ namespace AmpedBiz.Core.Entities
             this.Quantity = quantity;
         }
 
-        protected internal virtual void Received()
-        {
-            this.Product.Inventory.Receive(this.Quantity);
-        }
+        //protected internal virtual void Received()
+        //{
+        //    this.Product.Inventory.Receive(this.Quantity);
+        //}
     }
 }

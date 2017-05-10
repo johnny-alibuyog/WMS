@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Services.Inventories.PurchaseOrders;
 using System;
 
 namespace AmpedBiz.Core.Services.PurchaseOrders
@@ -13,7 +14,10 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
         {
             foreach (var item in target.Items)
             {
-                item.Approved();
+                item.Product.Inventory.Accept(new OrderVisitor() 
+                {
+                    Quantity = item.Quantity
+                });
             }
 
             target.ApprovedBy = this.ApprovedBy;

@@ -1,8 +1,10 @@
-﻿using System;
+﻿using AmpedBiz.Core.Services;
+using AmpedBiz.Core.Services.Inventories;
+using System;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Product : Entity<Guid, Product>
+    public class Product : Entity<Guid, Product>, IAccept<ProductVisitor>
     {
         public virtual string Code { get; set; }
 
@@ -28,6 +30,11 @@ namespace AmpedBiz.Core.Entities
         public Product(Guid id) : base(id)
         {
             this.Inventory = new Inventory(this);
+        }
+
+        public virtual void Accept(ProductVisitor visitor)
+        {
+            visitor.Visit(this);
         }
     }
 }

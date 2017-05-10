@@ -3,7 +3,9 @@ using AmpedBiz.Core.Entities;
 using NHibernate;
 using NHibernate.Linq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace AmpedBiz.Data.Seeders
 {
@@ -29,21 +31,67 @@ namespace AmpedBiz.Data.Seeders
             return entities[randomIndex];
         }
 
-        private Product[] _product;
-        public Product RandomProduct()
+        private IEnumerable<Product> GetProducts(Expression<Func<Product, bool>> condition = null)
         {
-            // for some reason, product always hit database with a queary on 
+            // for some reason, product always hit database with a query on 
             // the same session. let us put it in an container(_product) instead.
-            if (_product == null)
-            {
-                var session = _sessionFactory.RetrieveSharedSession();
-                _product = session.Query<Product>()
-                    .Fetch(x => x.Inventory)
-                    .ToArray();
-            }
 
-            var randomIndex = _random.Next(0, _product.Count());
-            return _product[randomIndex];
+            var session = _sessionFactory.RetrieveSharedSession();
+            var query = session.Query<Product>();
+            if (condition != null)
+            {
+                query = query.Where(condition);
+            }
+            return query
+                .Fetch(x => x.Inventory)
+                .ToList();
+
+            //return (condition != null)
+            //    ? this._products.Where(condition)
+            //    : this._products.AsEnumerable();
+        }
+
+
+        public Product RandomProduct(Expression<Func<Product, bool>> condition = null)
+        {
+            var products = GetProducts(condition);
+
+            var randomIndex = _random.Next(0, products.Count());
+
+            return products
+                .Select((x, i) => new { Index = i, Product = x })
+                .Where(x => x.Index == randomIndex)
+                .Select(x => x.Product)
+                .FirstOrDefault();
+        }
+
+        public IEnumerable<Product> RandomWithShippedProducts()
+        {
+            return this.GetProducts(x =>
+                x.Inventory != null &&
+                x.Inventory.Shipped != null &&
+                x.Inventory.Shipped.Value > 0
+            );
+        }
+
+        public IEnumerable<Product> RandomAvailableProducts()
+        {
+            return this.GetProducts(x =>
+                x.Inventory != null &&
+                x.Inventory.Available != null &&
+                x.Inventory.Available.Value > 0
+            );
+        }
+
+        public IEnumerable<Product> RandomUninitializedProducts()
+        {
+            return this.GetProducts(x =>
+                x.Inventory != null &&
+                (
+                    x.Inventory.OnHand == null ||
+                    x.Inventory.OnHand.Value <= 0
+                )
+            );
         }
 
         public int RandomInteger()

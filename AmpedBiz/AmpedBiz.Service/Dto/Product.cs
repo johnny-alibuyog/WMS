@@ -150,6 +150,36 @@ namespace AmpedBiz.Service.Dto
         public decimal QuantityValue { get; set; }
     }
 
+    public class ProductReturnPageItem
+    {
+        public Guid Id { get; set; }
+
+        public virtual string ReasonName { get; set; }
+
+        public virtual DateTime? ReturnedOn { get; set; }
+
+        public virtual string ReturnedByName { get; set; }
+
+        public virtual decimal ReturnedAmount { get; set; }
+
+        public virtual decimal QuantityValue { get; set; }
+    }
+
+    public class ProductOrderReturnPageItem
+    {
+        public Guid Id { get; set; }
+
+        public virtual string ReasonName { get; set; }
+
+        public virtual DateTime? ReturnedOn { get; set; }
+
+        public virtual string ReturnedByName { get; set; }
+
+        public virtual decimal ReturnedAmount { get; set; }
+
+        public virtual decimal QuantityValue { get; set; }
+    }
+
     public class ProductPurchasePageItem
     {
         public Guid Id { get; set; }

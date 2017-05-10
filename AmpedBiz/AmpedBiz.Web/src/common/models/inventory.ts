@@ -18,6 +18,7 @@ export interface Inventory {
   allocatedValue?: number;
   shippedValue?: number;
   backOrderedValue?: number;
+  returnedValue?: number;
   availableValue?: number;
   initialLevelValue?: number;
   shrinkageValue?: number;

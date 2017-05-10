@@ -1,5 +1,7 @@
 ﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Services.Inventories.Orders;
+using AmpedBiz.Core.Services.Products;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,6 +27,15 @@ namespace AmpedBiz.Core.Services.Orders
             foreach (var item in itemsToInsert)
             {
                 item.Order = target;
+                item.Product.Accept(new SearchAndApplyVisitor()
+                {
+                    Branch = null,
+                    InventoryVisitor = new ReturnVisitor()
+                    {
+                        Reason = item.Reason,
+                        Quantity = item.Quantity,
+                    }
+                });
                 target.Returns.Add(item);
             }
         }

@@ -7,10 +7,8 @@ using NHibernate.Linq;
 using NHibernate.Transform;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 {
@@ -34,8 +32,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
             CreateSubmittedPurchaseOrder(_utils.RandomInteger(min, max));
             CreateApprovedPurchaseOrder(_utils.RandomInteger(min, max));
             CreatePayPurchaseOrder(_utils.RandomInteger(min, max));
-            CreateReceivePurchaseOrder(_utils.RandomInteger(min, max));
-            CreateCompletePurchaseOrder(_utils.RandomInteger(min, max));
+            CreateReceivePurchaseOrder(_utils.RandomInteger(min, max * 2));
+            CreateCompletePurchaseOrder(_utils.RandomInteger(min, max * 3));
             CreateCancelPurchaseOrder(_utils.RandomInteger(min, max));
         }
 
@@ -261,6 +259,13 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
                     Enumerable.Range(0, this.Count).ToList().ForEach(_ =>
                     {
+                        var products = _utils.RandomUninitializedProducts();
+                        if (!products.Any())
+                            return;
+
+                        var validCount = _utils.RandomInteger(1, products.Count());
+                        var randomProductCount = validCount > 50 ? 50 : validCount;
+
                         var entity = new PurchaseOrder(Guid.NewGuid());
                         entity.Accept(new PurchaseOrderSaveVisitor()
                         {
@@ -272,12 +277,15 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                             ShippingFee = new Money(_utils.RandomInteger(10, 10000), currency),
                             Tax = null, // compute this
                             Supplier = _utils.Random<Supplier>(),
-                            Items = Enumerable.Range(0, _utils.RandomInteger(1, 50))
-                                .Select(x => _utils.RandomProduct()).Distinct()
+                            Items = products
+                                .Take(randomProductCount)
                                 .Select(x => new PurchaseOrderItem(
                                     product: x,
-                                    quantity: new Measure(_utils.RandomInteger(1, 100), x.Inventory.UnitOfMeasure),
-                                    unitCost: new Money(_utils.RandomInteger(1000, 100000), currency)
+                                    quantity: new Measure(
+                                        value: _utils.RandomInteger(1, 100), 
+                                        unit: x.Inventory.UnitOfMeasure
+                                    ),
+                                    unitCost: x.Inventory.BasePrice
                                 ))
                         });
                         entity.EnsureValidity();
