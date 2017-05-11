@@ -55,6 +55,7 @@
     <Compile Include="Entities\Order.cs" />
     <Compile Include="Entities\OrderItem.cs" />
     <Compile Include="Entities\OrderReturn.cs" />
+    <Compile Include="Entities\Organization.cs" />
     <Compile Include="Entities\Person.cs" />
     <Compile Include="Entities\Pricing.cs" />
     <Compile Include="Entities\ProductCategory.cs" />

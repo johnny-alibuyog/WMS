@@ -4,14 +4,17 @@ import { Lookup } from '../common/custom_types/lookup';
 import { Address } from '../common/models/Address';
 import { OrderItem } from '../common/models/order';
 import { OrderInvoiceDetail } from '../common/models/order';
+import { AuthService } from '../services/auth-service';
 import { formatDate, formatNumber, emptyIfNull } from '../services/formaters';
 import * as moment from 'moment';
 
 @autoinject
 export class OrderInvoiceDetailReport implements Report<OrderInvoiceDetail> {
+  private readonly _authService: AuthService;
   private readonly _reportBuilder: ReportBuilder;
 
-  constructor(reportBuilder: ReportBuilder) {
+  constructor(authService: AuthService, reportBuilder: ReportBuilder) {
+    this._authService = authService;
     this._reportBuilder = reportBuilder;
   }
 
@@ -45,13 +48,33 @@ export class OrderInvoiceDetailReport implements Report<OrderInvoiceDetail> {
         ])
       );
     }
+    var branch = this._authService.user.branch;
+    var branchAddress = branch && branch.address && `${branch.address.barangay || ''}, ${branch.address.city || ''}, ${branch.address.province || ''}`;
+    var telephoneNumber = branch && branch.contact && branch.contact.landline || '';
+    var tinNumber = branch && branch.taxpayerIdentificationNumber || '';
 
     return <DocumentDefinition>{
       content:
       [
         {
-          text: 'Invoice',
+          text: branch.description,
           style: 'title'
+        },
+        {
+          text: branchAddress,
+          style: 'header3'
+        },
+        {
+          text: `TEL NO. ${telephoneNumber}`,
+          style: 'header3'
+        },
+        {
+          text: `TIN ${tinNumber}`,
+          style: 'header3'
+        },
+        {
+          text: ' ',
+          style: 'spacer'
         },
         {
           columns:
@@ -115,8 +138,8 @@ export class OrderInvoiceDetailReport implements Report<OrderInvoiceDetail> {
           ]
         },
         {
-          text: 'Products',
-          style: 'header'
+          text: ' ',
+          style: 'spacer'
         },
         {
           style: 'tableExample',
@@ -176,7 +199,6 @@ export class OrderInvoiceDetailReport implements Report<OrderInvoiceDetail> {
         {
           fontSize: 28,
           bold: true,
-          margin: [0, 0, 0, 10]
         },
         header:
         {
@@ -184,10 +206,20 @@ export class OrderInvoiceDetailReport implements Report<OrderInvoiceDetail> {
           bold: true,
           margin: [0, 10, 0, 10]
         },
+        header3:
+        {
+          bold: true,
+          fontSize: 10,
+          alignment: 'left',
+        },
         label:
         {
           fontSize: 10,
           alignment: 'right',
+        },
+        spacer:
+        {
+          margin: [0, 0, 0, 2]
         },
         value:
         {

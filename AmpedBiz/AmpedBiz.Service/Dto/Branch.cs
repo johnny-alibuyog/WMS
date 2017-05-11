@@ -10,6 +10,10 @@ namespace AmpedBiz.Service.Dto
 
         public string Description { get; set; }
 
+        public string TaxpayerIdentificationNumber { get; set; }
+
+        public Contact Contact { get; set; }
+
         public Address Address { get; set; }
     }
 

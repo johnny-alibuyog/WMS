@@ -26,6 +26,8 @@ export class BranchCreate {
       id: '',
       name: '',
       description: '',
+      taxpayerIdentificationNumber: '',
+      contact: {},
       address: {}
     };
   }

@@ -14,6 +14,10 @@ namespace AmpedBiz.Data.EntityDefinitions
 
             Map(x => x.Description);
 
+            Map(x => x.TaxpayerIdentificationNumber);
+
+            Component(x => x.Contact);
+
             Component(x => x.Address);
         }
     }

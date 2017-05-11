@@ -10,6 +10,10 @@ namespace AmpedBiz.Core.Entities
 
         public virtual string Description { get; set; }
 
+        public virtual string TaxpayerIdentificationNumber { get; set; }
+
+        public virtual Contact Contact { get; set; }
+
         public virtual Address Address { get; set; }
 
         public Branch() : base(default(Guid)) { }
@@ -18,17 +22,22 @@ namespace AmpedBiz.Core.Entities
 
         public static Branch SuperBranch = new Branch(new Guid("406A71D8-4DFD-4D34-821E-A5E52E144E50"))
         {
-            Name = "Super Branch",
-            Description = "Super Description",
+            Name = "Nicon",
+            Description = "Nicon Services",
+            TaxpayerIdentificationNumber = "102-7078388",
+            Contact = new Contact()
+            {
+                Landline = "(052) 811-3678"
+            },
             Address = new Address()
             {
-                Street = "Super Street",
-                Barangay = "Super Barangay",
-                City = "Super City",
-                Province = "Super Province",
-                Region = "Super Region",
-                Country = "Super Country",
-                ZipCode = "Super Zip Code"
+                Street = string.Empty,
+                Barangay = "Francia",
+                City = "Virac",
+                Province = "Catanduanes",
+                Region = string.Empty,
+                Country = "Philippines",
+                ZipCode = "4800"
             }
         };
     }
