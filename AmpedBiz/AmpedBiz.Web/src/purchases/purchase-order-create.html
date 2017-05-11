@@ -49,6 +49,10 @@
               <i class="fa fa-check"></i> View Voucher
             </button>
 
+            <button type="button" class="btn btn-default" if.bind="isPurchaseOrderApproved" click.trigger="downloadVoucherCsv()">
+              <i class="fa fa-check"></i> Download Excel
+            </button>
+
             <button type="button" class="btn btn-default" click.trigger="back()">
               <i class="fa fa-times"></i> Back
             </button>

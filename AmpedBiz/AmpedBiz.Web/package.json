@@ -91,6 +91,7 @@
   },
   "dependencies": {
     "aurelia-dialog": "^1.0.0-beta.1.1.0",
-    "aurelia-validation": "^0.12.3"
+    "aurelia-validation": "^0.12.3",
+    "title-case": "^2.1.1"
   }
 }
