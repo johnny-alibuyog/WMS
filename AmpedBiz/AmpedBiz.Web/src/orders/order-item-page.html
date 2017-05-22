@@ -104,15 +104,37 @@
       </tr>
 
       <tfoot>
+        <!--
         <tr>
           <td></td>
           <td></td>
           <td></td>
           <td></td>
           <td></td>
-          <td class="text-right"><label>Total:</label></td>
-          <td class="text-right">${totalDiscountAmount | numberFormat}</td>
-          <td class="text-right">${totalPriceAmount | numberFormat}</td>
+          <td></td>
+          <td class="text-right">
+            Discount:<br />
+            Shipping Fee:<br />
+            Sub Total:<br />
+            Grand Total:<br />
+          </td>
+          <td class="text-right">
+            (${discountAmount | numberFormat})<br />
+            ${shippingFeeAmount | numberFormat}<br />
+            ${subTotalAmount | numberFormat}<br />
+            ${grandTotalAmount | numberFormat}<br />
+          </td>
+        </tr>
+        -->
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="text-right">Discount:</td>
+          <td class="text-right">(${discountAmount | numberFormat})</td>
         </tr>
         <tr>
           <td></td>
@@ -120,9 +142,29 @@
           <td></td>
           <td></td>
           <td></td>
-          <td class="text-right"><label>Grand Total:</label></td>
           <td></td>
-          <td class="text-right">${totalAmount | numberFormat}</td>
+          <td class="text-right">Shipping Fee:</td>
+          <td class="text-right">${shippingFeeAmount | numberFormat}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="text-right">Sub Total:</td>
+          <td class="text-right">${subTotalAmount | numberFormat}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="text-right"><label>Grand Total:</label></td>
+          <td class="text-right">${grandTotalAmount | numberFormat}</td>
         </tr>
       </tfoot>
 

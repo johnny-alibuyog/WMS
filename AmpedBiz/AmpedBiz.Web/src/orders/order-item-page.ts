@@ -39,11 +39,17 @@ export class OrderItemPage {
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public isModificationDisallowed: boolean = true;
 
-  public totalDiscountAmount: number;
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
+  public taxAmount: number;
 
-  public totalPriceAmount: number;
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
+  public shippingFeeAmount: number;
 
-  public totalAmount: number;
+  public discountAmount: number;
+
+  public subTotalAmount: number;
+
+  public grandTotalAmount: number;
 
   public itemPager: Pager<OrderItem> = new Pager<OrderItem>();
 
@@ -90,6 +96,14 @@ export class OrderItemPage {
     let productIds = this.items.map(x => x.product.id);
     this._api.products.getInventoryList(productIds)
       .then(result => this._productInventories = result);
+  }
+
+  public taxAmountChanged(): void {
+    this.total();
+  }
+
+  public shippingFeeAmountChanged(): void {
+    this.total();
   }
 
   public pricingChanged(newValue: Lookup<string>, oldValue: Lookup<string>): void {
@@ -212,12 +226,20 @@ export class OrderItemPage {
   }
 
   public total(): void {
-    this.totalDiscountAmount = this.items
+    //this.taxAmount = ensureNumeric(this.taxAmount);
+
+    //this.shippingFeeAmount = ensureNumeric(this.shippingFeeAmount);
+
+    this.discountAmount = this.items
       .reduce((value, current) => value + ensureNumeric(current.discountAmount), 0) || 0;
 
-    this.totalPriceAmount = this.items
+    this.subTotalAmount = this.items
       .reduce((value, current) => value + ensureNumeric(current.totalPriceAmount), 0) || 0;
       
-    this.totalAmount = this.totalPriceAmount - this.totalDiscountAmount;
+    this.grandTotalAmount = 
+      ensureNumeric(this.taxAmount) + 
+      ensureNumeric(this.shippingFeeAmount) + 
+      ensureNumeric(this.subTotalAmount) - 
+      ensureNumeric(this.discountAmount);
   }
 }

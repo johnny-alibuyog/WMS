@@ -81,14 +81,12 @@
                   </div>
                 </div>
 
-                <!--
                 <div class="form-group">
-                  <label class="control-label col-sm-4">Created By:</label>
+                  <label class="control-label col-sm-4">Shipping Fee:</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" value.bind="purchaseOrder.createdBy.name" disabled />
+                    <input type="number" class="form-control text-right" value.bind="purchaseOrder.shippingFeeAmount" />
                   </div>
                 </div>
-                -->
 
                 <div class="form-group">
                   <label class="control-label col-sm-4">Submitted By:</label>
@@ -108,13 +106,6 @@
                   <label class="control-label col-sm-4">Completed By:</label>
                   <div class="col-sm-8">
                     <input type="text" class="form-control" value.bind="purchaseOrder.completedBy.name" disabled />
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label class="control-label col-sm-4">Status:</label>
-                  <div class="col-sm-8">
-                    <input type="text" class="form-control" value.bind="purchaseOrder.status | lookupIdToName:statuses" disabled />
                   </div>
                 </div>
 
@@ -156,6 +147,13 @@
                   <label class="control-label col-sm-4">Completed On:</label>
                   <div class="col-sm-8">
                     <input type="text" class="form-control" value.bind="purchaseOrder.completedOn | dateFormat" disabled />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Status:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" value.bind="purchaseOrder.status | lookupIdToName:statuses" disabled />
                   </div>
                 </div>
 
@@ -205,6 +203,8 @@
                       items.bind="purchaseOrder.items" 
                       products.bind="products" 
                       purchase-order-id.bind="purchaseOrder.id"
+                      tax-amount.bind="purchaseOrder.taxAmount"
+                      shipping-fee-amount.bind="purchaseOrder.shippingFeeAmount"
                       is-modification-disallowed.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo: 'items'">
                     </purchase-order-item-page>
                   </div>

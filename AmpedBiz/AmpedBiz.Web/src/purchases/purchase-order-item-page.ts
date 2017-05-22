@@ -5,18 +5,19 @@ import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } fro
 import { Lookup } from '../common/custom_types/lookup';
 import { ServiceApi } from '../services/service-api';
 import { Dictionary } from '../common/custom_types/dictionary';
-import { ensureNumeric } from '../common/utils/ensure-numeric';
 import { PurchaseOrderItem, purchaseOrderEvents } from '../common/models/purchase-order';
+import { ensureNumeric } from '../common/utils/ensure-numeric';
 import { NotificationService } from '../common/controls/notification-service';
 
 @autoinject
 @customElement("purchase-order-item-page")
 export class PurchaseOrderItemPage {
 
-  private _api: ServiceApi;
-  private _dialog: DialogService;
-  private _notification: NotificationService;
-  private _eventAggregator: EventAggregator;
+  private readonly _api: ServiceApi;
+  private readonly _dialog: DialogService;
+  private readonly _notification: NotificationService;
+  private readonly _eventAggregator: EventAggregator;
+
   private _subscriptions: Subscription[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
@@ -31,7 +32,17 @@ export class PurchaseOrderItemPage {
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public isModificationDisallowed: boolean = true;
 
-  public totalCostAmount: number;
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
+  public taxAmount: number;
+
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
+  public shippingFeeAmount: number;
+
+  public discountAmount: number;
+
+  public subTotalAmount: number;
+
+  public grandTotalAmount: number;
 
   public itemPager: Pager<PurchaseOrderItem> = new Pager<PurchaseOrderItem>();
 
@@ -46,7 +57,7 @@ export class PurchaseOrderItemPage {
     this.itemPager.onPage = () => this.initializePage();
   }
 
-  attached(): void {
+  public attached(): void {
     this._subscriptions = [
       this._eventAggregator.subscribe(
         purchaseOrderEvents.item.add,
@@ -55,15 +66,23 @@ export class PurchaseOrderItemPage {
     ];
   }
 
-  detached(): void {
+  public detached(): void {
     this._subscriptions.forEach(subscription => subscription.dispose());
   }
 
-  itemsChanged(): void {
+  public itemsChanged(): void {
     this.initializePage();
   }
 
-  initializeItem(item: PurchaseOrderItem): void {
+  public taxAmountChanged(): void {
+    this.total();
+  }
+
+  public shippingFeeAmountChanged(): void {
+    this.total();
+  }
+
+  public initializeItem(item: PurchaseOrderItem): void {
     if (this.isModificationDisallowed) {
       return;
     }
@@ -80,7 +99,7 @@ export class PurchaseOrderItemPage {
     });
   }
 
-  initializePage(): void {
+  public initializePage(): void {
     if (!this.items) {
       this.items = [];
     }
@@ -94,7 +113,7 @@ export class PurchaseOrderItemPage {
     );
   }
 
-  addItem(): void {
+  public addItem(): void {
     if (this.isModificationDisallowed) {
       return;
     }
@@ -120,7 +139,7 @@ export class PurchaseOrderItemPage {
     this.initializePage();
   }
 
-  editItem(item: PurchaseOrderItem): void {
+  public editItem(item: PurchaseOrderItem): void {
     if (this.isModificationDisallowed) {
       return;
     }
@@ -129,7 +148,7 @@ export class PurchaseOrderItemPage {
       this.selectedItem = item;
   }
 
-  deleteItem(item: PurchaseOrderItem): void {
+  public deleteItem(item: PurchaseOrderItem): void {
     if (this.isModificationDisallowed) {
       return;
     }
@@ -148,7 +167,19 @@ export class PurchaseOrderItemPage {
   }
 
   public total(): void {
-    this.totalCostAmount = this.items
+    //this.taxAmount = ensureNumeric(this.taxAmount);
+
+    //this.shippingFeeAmount = ensureNumeric(this.shippingFeeAmount);
+
+    //this.discountAmount = ensureNumeric(this.discountAmount);
+
+    this.subTotalAmount = this.items
       .reduce((value, current) => value + ensureNumeric(current.totalCostAmount), 0) || 0;
+      
+    this.grandTotalAmount = 
+      ensureNumeric(this.taxAmount) + 
+      ensureNumeric(this.shippingFeeAmount) + 
+      ensureNumeric(this.subTotalAmount) - 
+      ensureNumeric(this.discountAmount);
   }
 }

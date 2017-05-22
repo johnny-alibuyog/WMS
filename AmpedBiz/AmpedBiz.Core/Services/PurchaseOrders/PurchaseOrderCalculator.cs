@@ -26,6 +26,11 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             return target.Items.Sum(x => x.TotalCost);
         }
 
+        internal Money Paid(PurchaseOrder target)
+        {
+            return target.Payments.Sum(x => x.Payment);
+        }
+
         public Money GrandTotal(PurchaseOrder target)
         {
             return target.Tax + target.ShippingFee + target.SubTotal - target.Discount;
@@ -42,11 +47,6 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
                 .Sum(x => x.Quantity);
 
             var remaining = quantity - received;
-            if (remaining == null)
-                return null;
-
-            //if (remaining.Value < 0)
-            //    return new Measure(0M, remaining.Unit);
 
             return remaining;
         }

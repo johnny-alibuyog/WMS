@@ -49,16 +49,7 @@ export class PurchaseOrderPaymentPage {
   }
 
   public purchaseOrderIdChanged(): void {
-
-    let requests: [Promise<PurchaseOrderPayable>] = [
-      this.purchaseOrderId
-        ? this._api.purchaseOrders.getPayables(this.purchaseOrderId)
-        : Promise.resolve(<PurchaseOrderPayable>{})
-    ];
-
-    Promise.all(requests).then((responses: [PurchaseOrderPayable]) => {
-      this.payable = responses[0];
-    });
+    this.loadPayables();
   }
 
   public attached(): void {
@@ -75,7 +66,21 @@ export class PurchaseOrderPaymentPage {
   }
 
   public paymentsChanged(): void {
+    this.loadPayables();
     this.initializePage();
+  }
+
+  private loadPayables(): void{
+
+    let requests: [Promise<PurchaseOrderPayable>] = [
+      this.purchaseOrderId
+        ? this._api.purchaseOrders.getPayables(this.purchaseOrderId)
+        : Promise.resolve(<PurchaseOrderPayable>{})
+    ];
+
+    Promise.all(requests).then((responses: [PurchaseOrderPayable]) => {
+      this.payable = responses[0];
+    });
   }
 
   private initializePage(): void {

@@ -45,9 +45,10 @@ export interface PurchaseOrder {
   paymentType?: string;
   taxAmount?: number;
   shippingFeeAmount?: number;
-  paymentAmount?: number;
+  discountAmount?: number;
   subTotalAmount?: number;
   totalAmount?: number;
+  paymentAmount?: number;
   status?: PurchaseOrderStatus;
   expectedOn?: Date;
   createdBy?: Lookup<string>;
