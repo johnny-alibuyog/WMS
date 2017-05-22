@@ -14,7 +14,7 @@ export class ActiveOrderPage {
   private _router: Router;
   private _notification: NotificationService;
 
-  public header: string = 'Active Orders';
+  public header: string = 'Active Customer Orders';
 
   public filter: Filter;
   public sorter: Sorter;
