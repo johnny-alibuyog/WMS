@@ -10,7 +10,7 @@ import { Override } from '../users/override';
 import { ReportViewer } from '../common/controls/report-viewer';
 import { DialogService } from 'aurelia-dialog';
 import { NotificationService } from '../common/controls/notification-service';
-import { OrderInvoiceDetailReport } from './order-invoice-detail-report';
+import { InvoiceReport } from './invoice-report';
 import { pricing } from '../common/models/pricing';
 
 @autoinject
@@ -20,7 +20,7 @@ export class OrderCreate {
   private readonly _dialog: DialogService;
   private readonly _notification: NotificationService;
   private readonly _eventAggregator: EventAggregator;
-  private readonly _invoiceReport: OrderInvoiceDetailReport;
+  private readonly _invoiceReport: InvoiceReport;
 
   private _subscriptions: Subscription[] = [];
 
@@ -37,7 +37,7 @@ export class OrderCreate {
   public payable: OrderPayable;
   public order: Order;
 
-  constructor(api: ServiceApi, router: Router, dialog: DialogService, notification: NotificationService, eventAggregator: EventAggregator, invoiceReport: OrderInvoiceDetailReport) {
+  constructor(api: ServiceApi, router: Router, dialog: DialogService, notification: NotificationService, eventAggregator: EventAggregator, invoiceReport: InvoiceReport) {
     this._api = api;
     this._router = router;
     this._dialog = dialog;

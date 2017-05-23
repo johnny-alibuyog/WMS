@@ -3,14 +3,17 @@ import { ReportBuilder, Report, DocumentDefinition } from '../services/report-bu
 import { Lookup } from '../common/custom_types/lookup';
 import { Address } from '../common/models/Address';
 import { Voucher } from '../common/models/purchase-order';
+import { AuthService } from '../services/auth-service';
 import { formatDate, formatNumber, emptyIfNull } from '../services/formaters';
 import * as moment from 'moment';
 
 @autoinject
 export class VoucherReport implements Report<Voucher> {
+  private readonly _authService: AuthService;
   private readonly _reportBuilder: ReportBuilder;
 
-  constructor(reportBuilder: ReportBuilder) {
+  constructor(authService: AuthService, reportBuilder: ReportBuilder) {
+    this._authService = authService;
     this._reportBuilder = reportBuilder;
   }
 
@@ -40,12 +43,33 @@ export class VoucherReport implements Report<Voucher> {
       );
     }
 
+    var branch = this._authService.user.branch;
+    var branchAddress = branch && branch.address && `${branch.address.barangay || ''}, ${branch.address.city || ''}, ${branch.address.province || ''}`;
+    var telephoneNumber = branch && branch.contact && branch.contact.landline || '';
+    var tinNumber = branch && branch.taxpayerIdentificationNumber || '';
+
     return <DocumentDefinition>{
       content:
       [
         {
-          text: 'Voucher',
+          text: branch.description,
           style: 'title'
+        },
+        {
+          text: branchAddress,
+          style: 'header3'
+        },
+        {
+          text: `TEL NO. ${telephoneNumber}`,
+          style: 'header3'
+        },
+        {
+          text: `TIN ${tinNumber}`,
+          style: 'header3'
+        },
+        {
+          text: ' ',
+          style: 'spacer'
         },
         {
           columns:
@@ -93,8 +117,8 @@ export class VoucherReport implements Report<Voucher> {
           ]
         },
         {
-          text: 'Products',
-          style: 'header'
+          text: ' ',
+          style: 'spacer'
         },
         {
           style: 'tableExample',
@@ -118,12 +142,14 @@ export class VoucherReport implements Report<Voucher> {
               {
                 body:
                 [
+                  /*
                   [
                     { text: 'Tax: ', style: 'label' },
                     { text: formatNumber(data.taxAmount), style: 'value', alignment: 'right' }
                   ],
+                  */
                   [
-                    { text: 'Freight: ', style: 'label' },
+                    { text: 'Shipping Fee: ', style: 'label' },
                     { text: formatNumber(data.shippingFeeAmount), style: 'value', alignment: 'right' }
                   ],
                   [
@@ -131,7 +157,7 @@ export class VoucherReport implements Report<Voucher> {
                     { text: formatNumber(data.subTotalAmount), style: 'value', alignment: 'right' }
                   ],
                   [
-                    { text: 'Total: ', style: 'label' },
+                    { text: 'Grand Total: ', style: 'label' },
                     { text: formatNumber(data.totalAmount), style: 'value', alignment: 'right' }
                   ],
                 ],
@@ -158,6 +184,10 @@ export class VoucherReport implements Report<Voucher> {
         {
           fontSize: 10,
           alignment: 'right',
+        },
+        spacer:
+        {
+          margin: [0, 0, 0, 2]
         },
         value:
         {

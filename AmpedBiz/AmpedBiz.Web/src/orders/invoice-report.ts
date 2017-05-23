@@ -9,7 +9,7 @@ import { formatDate, formatNumber, emptyIfNull } from '../services/formaters';
 import * as moment from 'moment';
 
 @autoinject
-export class OrderInvoiceDetailReport implements Report<OrderInvoiceDetail> {
+export class InvoiceReport implements Report<OrderInvoiceDetail> {
   private readonly _authService: AuthService;
   private readonly _reportBuilder: ReportBuilder;
 
@@ -48,6 +48,7 @@ export class OrderInvoiceDetailReport implements Report<OrderInvoiceDetail> {
         ])
       );
     }
+    
     var branch = this._authService.user.branch;
     var branchAddress = branch && branch.address && `${branch.address.barangay || ''}, ${branch.address.city || ''}, ${branch.address.province || ''}`;
     var telephoneNumber = branch && branch.contact && branch.contact.landline || '';
@@ -163,12 +164,14 @@ export class OrderInvoiceDetailReport implements Report<OrderInvoiceDetail> {
               {
                 body:
                 [
+                  /*
                   [
                     { text: 'Tax: ', style: 'label' },
                     { text: formatNumber(data.taxAmount), style: 'value', alignment: 'right' }
                   ],
+                  */
                   [
-                    { text: 'Freight: ', style: 'label' },
+                    { text: 'Shipping Fee: ', style: 'label' },
                     { text: formatNumber(data.shippingFeeAmount), style: 'value', alignment: 'right' }
                   ],
                   [
@@ -180,7 +183,7 @@ export class OrderInvoiceDetailReport implements Report<OrderInvoiceDetail> {
                     { text: formatNumber(data.subTotalAmount), style: 'value', alignment: 'right' }
                   ],
                   [
-                    { text: 'Total: ', style: 'label' },
+                    { text: 'Grand Total: ', style: 'label' },
                     { text: formatNumber(data.totalAmount), style: 'value', alignment: 'right' }
                   ],
                   [
