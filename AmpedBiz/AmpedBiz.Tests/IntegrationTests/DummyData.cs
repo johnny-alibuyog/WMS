@@ -147,6 +147,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     BasePriceAmount = basePrice,
                     RetailPriceAmount = basePrice + 1,
                     WholesalePriceAmount = basePrice + 2,
+                    InitialLevelValue = (decimal)random.Next(300000, 400000),
                 }
             };
         }

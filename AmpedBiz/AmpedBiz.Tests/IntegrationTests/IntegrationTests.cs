@@ -1,4 +1,5 @@
-﻿using AmpedBiz.Common.CustomTypes;
+﻿using AmpedBiz.Common.Extentions;
+using AmpedBiz.Common.CustomTypes;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Data;
 using AmpedBiz.Data.Seeders;
@@ -375,6 +376,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                         UnitOfMeasure = this.RandomUnitOfMeasure(),
                         PackagingUnitOfMeasure = this.RandomUnitOfMeasure(),
                         PackagingSize = 0.30M,
+                        InitialLevelValue = productData.Inventory.InitialLevelValue,
                         BasePriceAmount = productData.Inventory.BasePriceAmount,
                         WholesalePriceAmount = productData.Inventory.WholesalePriceAmount,
                         RetailPriceAmount = productData.Inventory.RetailPriceAmount,
@@ -401,10 +403,36 @@ namespace AmpedBiz.Tests.IntegrationTests
             return products;
         }
 
+        private IEnumerable<Service.Dto.Product> SelectRandomAvailableProducts(Guid supplierId, int count = 12)
+        {
+            var request = new GetProductList.Request() { SupplierId = supplierId };
+            var response = new GetProductList.Handler(this.sessionFactory).Handle(request);
+            var availableProducts = response
+                .Where(x => x.Inventory.AvailableValue > 0);
+
+            var totalProduct = availableProducts.Count();
+
+            count = totalProduct < count ? totalProduct : count;
+
+            var randomIndexs = this.dummyData.GenerateUniqueNumbers(0, totalProduct, count);
+
+            var products = availableProducts
+                .Select((product, index) => new
+                {
+                    Index = index,
+                    Product = product
+                })
+                .Where(x => randomIndexs.Contains(x.Index))
+                .Select(x => x.Product);
+
+            return products;
+        }
+
         private IEnumerable<Service.Dto.Product> SelectRandomProducts(Guid supplierId, int count = 12)
         {
             var request = new GetProductList.Request() { SupplierId = supplierId };
             var response = new GetProductList.Handler(this.sessionFactory).Handle(request);
+
             var totalProduct = response.Count();
 
             count = totalProduct < count ? totalProduct : count;
@@ -592,9 +620,12 @@ namespace AmpedBiz.Tests.IntegrationTests
                     Customer = RandomCustomer(),
                     TaxRate = .12M,
                     PaymentType = RandomPaymentType(),
+                    Items = this.CreateOrderItems(this.random.Next(3, 6))
                 };
 
-                request.Items = this.CreateOrderItems(this.random.Next(20, 50));
+                if (request.Items.Count() == 0)
+                    Console.WriteLine("Hey");
+
                 var handler = new SaveOrder.Handler(this.sessionFactory).Handle(request);
 
                 orders.Add(handler as Service.Dto.Order);
@@ -627,10 +658,9 @@ namespace AmpedBiz.Tests.IntegrationTests
             var randomProductIndexes = this.dummyData.GenerateUniqueNumbers(0, count, count).ToArray();
 
             comeAsYouAre:
+            var selectedProducts = this.SelectRandomAvailableProducts(suppliersId[this.random.Next(0, suppliersId.Count - 1)], 10).ToList();
 
-            var selectedProducts = this.SelectRandomProducts(suppliersId[this.random.Next(0, suppliersId.Count - 1)], 10).ToList();
-
-            if (selectedProducts.Count < 1)
+            if (selectedProducts.Count == 0)
                 goto comeAsYouAre;
 
             for (var i = 0; i < selectedProducts.Count; i++)
@@ -643,7 +673,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     Product = new Lookup<Guid>(product.Id, product.Name),
                     PackagingSize = product.Inventory.PackagingSize ?? 1,
                     //UnitOfMeasure = new Lookup<string>(product.Inv)
-                    QuantityValue = this.random.Next(1, 100),
+                    QuantityValue = this.random.Next(1, (int)product.Inventory.AvailableValue),
                     UnitPriceAmount = product.Inventory.WholesalePriceAmount ?? 0M
                 });
             }
@@ -653,10 +683,55 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         private Service.Dto.Order InvoiceOrder(Service.Dto.Order order)
         {
+            //this.AdjustOrderByProductAvailability(order);
+
             var request = new InvoiceOrder.Request() { Id = order.Id, InvoicedBy = RandomUser() };
             var handler = new InvoiceOrder.Handler(this.sessionFactory).Handle(request);
 
             return handler;
+        }
+
+        private void AdjustOrderByProductAvailability(Service.Dto.Order order)
+        {
+            using (var session = sessionFactory.OpenSession())
+            using (var transaction = session.BeginTransaction())
+            {
+                var productIds = order.Items.Select(x => x.Product.Id);
+
+                var products = session.Query<Product>()
+                    .Where(x => productIds.Contains(x.Id))
+                    .Fetch(x => x.Inventory)
+                    .ToList();
+
+                products.ForEach(product =>
+                {
+                    var item = order.Items.FirstOrDefault(x => x.Product.Id == product.Id);
+                    if (product.Inventory.Available.Value == 0)
+                    {
+                        order.Items.Remove(item);
+                        return;
+                    }
+
+                    if (product.Inventory.Available.Value < item.QuantityValue)
+                    {
+                        item.QuantityValue = product.Inventory.Available.Value;
+                        return;
+                    }
+                });
+            }
+
+            if (order.Items.Count() == 0)
+                Console.WriteLine("Hey");
+
+            var response = new SaveOrder.Handler(this.sessionFactory).Handle(new SaveOrder.Request()
+            {
+                CreatedBy = order.CreatedBy,
+                Branch = order.Branch,
+                Customer = order.Customer,
+                TaxRate = order.TaxRate,
+                PaymentType = order.PaymentType,
+                Items = order.Items
+            });
         }
 
         private Service.Dto.Order StageOrder(Service.Dto.Order order)

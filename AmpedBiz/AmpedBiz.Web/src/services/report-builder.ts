@@ -62,6 +62,7 @@ export interface Report<T> {
 export interface DocumentDefinition {
   info?: Info;
   content?: Content[] | any[];
+  footer?: (currentPage: number, pageCount: number) => Content[] | any[];
   images?: any;
   styles?: any;
   defaultStyle?: any;

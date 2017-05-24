@@ -49,6 +49,12 @@ export class VoucherReport implements Report<Voucher> {
     var tinNumber = branch && branch.taxpayerIdentificationNumber || '';
 
     return <DocumentDefinition>{
+      footer: (currentPage: number, pageCount: number) => [
+        { 
+          text: `Page ${currentPage} of ${pageCount}`, 
+          style: "footer" 
+        }
+      ],
       content:
       [
         {
@@ -208,7 +214,14 @@ export class VoucherReport implements Report<Voucher> {
         tableData: {
           fontSize: 10,
           color: 'gray'
-        }
+        },
+        footer:
+        {
+          color: 'gray',
+          fontSize: 10,
+          alignment: 'right',
+          margin: [40, 0]
+        },
       },
     };
   }

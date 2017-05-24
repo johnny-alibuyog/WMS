@@ -48,13 +48,19 @@ export class InvoiceReport implements Report<OrderInvoiceDetail> {
         ])
       );
     }
-    
+
     var branch = this._authService.user.branch;
     var branchAddress = branch && branch.address && `${branch.address.barangay || ''}, ${branch.address.city || ''}, ${branch.address.province || ''}`;
     var telephoneNumber = branch && branch.contact && branch.contact.landline || '';
     var tinNumber = branch && branch.taxpayerIdentificationNumber || '';
 
     return <DocumentDefinition>{
+      footer: (currentPage: number, pageCount: number) => [
+        { 
+          text: `Page ${currentPage} of ${pageCount}`, 
+          style: "footer" 
+        }
+      ],
       content:
       [
         {
@@ -243,7 +249,14 @@ export class InvoiceReport implements Report<OrderInvoiceDetail> {
         tableData: {
           fontSize: 10,
           color: 'gray'
-        }
+        },
+        footer:
+        {
+          color: 'gray',
+          fontSize: 10,
+          alignment: 'right',
+          margin: [40, 0]
+        },
       },
     };
   }
