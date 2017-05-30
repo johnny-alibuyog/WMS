@@ -16,7 +16,7 @@ System.config({
   map: {
     "aurelia-animator-css": "npm:aurelia-animator-css@1.0.2",
     "aurelia-bootstrapper": "npm:aurelia-bootstrapper@1.0.1",
-    "aurelia-dialog": "npm:aurelia-dialog@1.0.0-rc.1.0.2",
+    "aurelia-dialog": "npm:aurelia-dialog@1.0.0-rc.1.0.3",
     "aurelia-event-aggregator": "npm:aurelia-event-aggregator@1.0.1",
     "aurelia-fetch-client": "npm:aurelia-fetch-client@1.1.2",
     "aurelia-framework": "npm:aurelia-framework@1.1.2",
@@ -36,7 +36,7 @@ System.config({
     "font-awesome": "npm:font-awesome@4.6.3",
     "moment": "npm:moment@2.18.1",
     "numeral": "npm:numeral@1.5.6",
-    "pdfmake": "github:bpampuch/pdfmake@0.1.27",
+    "pdfmake": "github:bpampuch/pdfmake@0.1.28",
     "text": "github:systemjs/plugin-text@0.0.8",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
@@ -93,7 +93,7 @@ System.config({
       "aurelia-metadata": "npm:aurelia-metadata@1.0.3",
       "aurelia-pal": "npm:aurelia-pal@1.3.0"
     },
-    "npm:aurelia-dialog@1.0.0-rc.1.0.2": {
+    "npm:aurelia-dialog@1.0.0-rc.1.0.3": {
       "aurelia-dependency-injection": "npm:aurelia-dependency-injection@1.3.1",
       "aurelia-metadata": "npm:aurelia-metadata@1.0.3",
       "aurelia-pal": "npm:aurelia-pal@1.3.0",
@@ -201,7 +201,7 @@ System.config({
       "ieee754": "npm:ieee754@1.1.8"
     },
     "npm:font-awesome@4.6.3": {
-      "css": "github:systemjs/plugin-css@0.1.33"
+      "css": "github:systemjs/plugin-css@0.1.35"
     },
     "npm:inherits@2.0.1": {
       "util": "github:jspm/nodelibs-util@0.1.0"

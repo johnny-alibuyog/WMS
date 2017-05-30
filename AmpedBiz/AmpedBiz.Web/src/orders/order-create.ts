@@ -166,7 +166,7 @@ export class OrderCreate {
       // if there are new returns, require override
       this._dialog
         .open({ viewModel: Override, model: {} })
-        .then(response => { if (!response.wasCancelled) _save(); });
+        .whenClosed(response => { if (!response.wasCancelled) _save(); });
     }
     else {
       _save();

@@ -1,9 +1,9 @@
-﻿using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
+using System;
 using System.Linq;
 
 namespace AmpedBiz.Service.Users
@@ -31,7 +31,9 @@ namespace AmpedBiz.Service.Users
                     entity.Password = message.Password;
                     entity.Person = message.Person.MapTo(default(Person));
                     entity.Address = message.Address.MapTo(default(Address));
-                    entity.Branch = session.Load<Branch>(message.BranchId);
+                    entity.Branch = message.BranchId != Guid.Empty
+                            ? session.Load<Branch>(message.BranchId)
+                            : default(Branch);
                     entity.SetRoles(message.Roles
                         .Where(x => x.Assigned)
                         .Select(x => session.Get<Role>(x.Id))

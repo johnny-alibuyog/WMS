@@ -1,4 +1,3 @@
-import { DialogService } from 'aurelia-dialog';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
 import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
@@ -14,7 +13,6 @@ import { NotificationService } from '../common/controls/notification-service';
 export class PurchaseOrderItemPage {
 
   private readonly _api: ServiceApi;
-  private readonly _dialog: DialogService;
   private readonly _notification: NotificationService;
   private readonly _eventAggregator: EventAggregator;
 
@@ -48,9 +46,8 @@ export class PurchaseOrderItemPage {
 
   public selectedItem: PurchaseOrderItem;
 
-  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, eventAggregator: EventAggregator) {
+  constructor(api: ServiceApi, notification: NotificationService, eventAggregator: EventAggregator) {
     this._api = api;
-    this._dialog = dialog;
     this._notification = notification;
     this._eventAggregator = eventAggregator;
 

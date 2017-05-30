@@ -2,6 +2,8 @@
 
 namespace AmpedBiz.Core.Entities
 {
+    // TODO: should be renamed as PriceType
+
     public class Pricing : Entity<string, Pricing>
     {
         public virtual string Name { get; set; }

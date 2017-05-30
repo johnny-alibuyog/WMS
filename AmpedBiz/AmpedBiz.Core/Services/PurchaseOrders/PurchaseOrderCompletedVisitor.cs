@@ -18,6 +18,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             {
                 item.Product.Inventory.Accept(new RetractOrderedVisitor()
                 {
+                    Status = target.Status,
                     Remaining = calculator.Remaining(
                         product: item.Product,
                         items: target.Items,

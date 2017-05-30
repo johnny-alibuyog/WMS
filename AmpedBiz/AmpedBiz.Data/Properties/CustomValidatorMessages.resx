@@ -148,25 +148,25 @@
     <value>The length of [PropertyName]  should be {Min} and {Max}  but is [PropertyValue.Length].</value>
   </data>
   <data name="validator.max" xml:space="preserve">
-    <value>The [PropertyName] must be less than or equal to {Value}.</value>
+    <value>[PropertyName] must be less than or equal to {Value}.</value>
   </data>
   <data name="validator.min" xml:space="preserve">
-    <value>The [PropertyName] must be greater than or equal to {Value}.</value>
+    <value>[PropertyName] must be greater than or equal to {Value}.</value>
   </data>
   <data name="validator.notEmpty" xml:space="preserve">
-    <value>The [PropertyName] may not be empty.</value>
+    <value>[PropertyName] may not be empty.</value>
   </data>
   <data name="validator.notNull" xml:space="preserve">
-    <value>The [PropertyName] is mandatory.</value>
+    <value>[PropertyName] is mandatory.</value>
   </data>
   <data name="validator.notNullNotEmpty" xml:space="preserve">
-    <value>The [PropertyName] of the [EntityName] is mandatory.</value>
+    <value>[PropertyName] of the [EntityName] is mandatory.</value>
   </data>
   <data name="validator.numeric" xml:space="preserve">
-    <value>The [PropertyName] must be numeric.</value>
+    <value>[PropertyName] must be numeric.</value>
   </data>
   <data name="validator.past" xml:space="preserve">
-    <value>The [PropertyName] must be a past date.</value>
+    <value>[PropertyName] must be a past date.</value>
   </data>
   <data name="validator.pattern" xml:space="preserve">
     <value>[PropertyName] must match "{Regex}".</value>

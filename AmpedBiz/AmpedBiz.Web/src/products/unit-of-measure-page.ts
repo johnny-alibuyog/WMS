@@ -58,12 +58,12 @@ export class UnitOfMeasurePage {
 
   create() {
     this._dialog.open({ viewModel: UnitOfMeasureCreate, model: null })
-      .then(response => { if (!response.wasCancelled) this.getPage(); });
+      .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   edit(item: UnitOfMeasure) {
     this._dialog.open({ viewModel: UnitOfMeasureCreate, model: item })
-      .then(response => { if (!response.wasCancelled) this.getPage(); });
+      .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   delete(item: any) {

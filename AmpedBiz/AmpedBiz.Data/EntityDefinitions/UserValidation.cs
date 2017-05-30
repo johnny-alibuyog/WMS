@@ -24,10 +24,12 @@ namespace AmpedBiz.Data.EntityDefinitions
                 .IsValid();
 
             Define(x => x.Branch)
-                .IsValid();
+                .NotNullable()
+                .And.IsValid();
 
             Define(x => x.Roles)
-                .HasValidElements();
+                .NotNullableAndNotEmpty()
+                .And.HasValidElements();
         }
     }
 }

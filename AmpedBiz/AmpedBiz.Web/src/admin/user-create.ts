@@ -8,70 +8,74 @@ import { NotificationService } from '../common/controls/notification-service';
 
 @autoinject
 export class UserCreate {
-  private _controller: DialogController;
-  private _service: UserService;
-  private _branchService: BranchService;
+  private readonly _notificaton: NotificationService;
+  private readonly _controller: DialogController;
+  private readonly _service: UserService;
+  private readonly _branchService: BranchService;
 
   public header: string = 'Create User';
   public isEdit: boolean = false;
   public canSave: boolean = true;
   public user: User;
   public branches: Branch[];
-  public notificaton: NotificationService;
 
   constructor(notification: NotificationService, controller: DialogController, service: UserService, branchService: BranchService) {
     this._branchService = branchService;
-    this.notificaton = notification;
+    this._notificaton = notification;
     this._controller = controller;
     this._service = service;
   }
 
-  activate(user: User) {
+  public activate(user: User): void {
     this._branchService.getList()
       .then(data => this.branches = <Branch[]>data)
-      .catch(error => this.notificaton.warning(error));
+      .catch(error => this._notificaton.warning(error));
 
     if (user) {
       this.header = "Edit User";
       this.isEdit = true;
       this._service.get(user.id)
         .then(data => this.user = <User>data)
-        .catch(error => this.notificaton.warning(error));
+        .catch(error => this._notificaton.warning(error));
     }
     else {
       this.header = "Create User";
       this.isEdit = false;
       this._service.getInitialUser(null)
         .then(data => this.user = <User>data)
-        .catch(error => this.notificaton.warning(error));
+        .catch(error => this._notificaton.warning(error));
     }
   }
 
-  cancel() {
+  public changeValue(): void {
+    this.isEdit = !this.isEdit;
+  }
+
+  public cancel(): void {
     this._controller.cancel({ wasCancelled: true, output: null });
   }
 
-  save() {
+  public save(): void {
     if (this.isEdit) {
 
       this._service.update(this.user)
         .then(data => {
-          this.notificaton.success("User  has been saved.")
-            .then((data) => this._controller.ok({ wasCancelled: true, output: <User>data }));
+          this._notificaton.success("User  has been saved.")
+            .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <User>data }));
         })
         .catch(error => {
-          this.notificaton.warning(error);
+          this._notificaton.warning(error);
         });
     }
     else {
 
       this._service.create(this.user)
         .then(data => {
-          this.notificaton.success("User has been saved.")
-            .then((data) => this._controller.ok({ wasCancelled: true, output: <User>data }));
+          this._notificaton.success("User has been saved.")
+            .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <User>data }));
         })
         .catch(error => {
-          this.notificaton.warning(error);
+          this._notificaton.warning(error);
         });
     }
   }

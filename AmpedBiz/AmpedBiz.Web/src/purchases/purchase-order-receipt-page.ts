@@ -1,4 +1,3 @@
-import { DialogService } from 'aurelia-dialog';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
 import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
@@ -12,7 +11,6 @@ import { NotificationService } from '../common/controls/notification-service';
 @customElement("purchase-order-receipt-page")
 export class PurchaseOrderReceiptPage {
   private _api: ServiceApi;
-  private _dialog: DialogService;
   private _notification: NotificationService;
   private _eventAggregator: EventAggregator;
   private _subscriptions: Subscription[] = [];
@@ -38,9 +36,8 @@ export class PurchaseOrderReceiptPage {
 
   public selectedItem: PurchaseOrderReceivable;
 
-  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, eventAggregator: EventAggregator) {
+  constructor(api: ServiceApi, notification: NotificationService, eventAggregator: EventAggregator) {
     this._api = api;
-    this._dialog = dialog;
     this._notification = notification;
     this._eventAggregator = eventAggregator;
 
@@ -48,7 +45,7 @@ export class PurchaseOrderReceiptPage {
     this.receivablePager.onPage = () => this.initializeReceivablePage();
   }
 
-  attached(): void {
+  public attached(): void {
     this._subscriptions = [
       this._eventAggregator.subscribe(
         purchaseOrderEvents.receipts.add,
@@ -57,19 +54,19 @@ export class PurchaseOrderReceiptPage {
     ];
   }
 
-  detached(): void {
+  public detached(): void {
     this._subscriptions.forEach(subscription => subscription.dispose());
   }
 
-  receiptsChanged() {
+  public receiptsChanged() {
     this.initializeReceiptPage();
   }
 
-  receivablesChanged() {
+  public receivablesChanged() {
     this.initializeReceivablePage();
   }
 
-  initializeReceiptPage(): void {
+  public initializeReceiptPage(): void {
     if (!this.receipts)
       this.receipts = [];
 
@@ -80,7 +77,7 @@ export class PurchaseOrderReceiptPage {
     );
   }
 
-  initializeReceivablePage(): void {
+  public initializeReceivablePage(): void {
     if (!this.receivables)
       this.receivables = [];
 

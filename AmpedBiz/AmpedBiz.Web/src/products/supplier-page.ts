@@ -57,12 +57,12 @@ export class SupplierPage {
 
   create() {
     this._dialog.open({ viewModel: SupplierCreate, model: null })
-      .then(response => { if (!response.wasCancelled) this.getPage(); });
+      .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   edit(item: SupplierPageItem) {
     this._dialog.open({ viewModel: SupplierCreate, model: <Supplier>{ id: item.id } })
-      .then(response => { if (!response.wasCancelled) this.getPage(); });
+      .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   delete(item: any) {

@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".tasks", ".tasks", "{70BE7E
 		deploy-gear.host.ps1 = deploy-gear.host.ps1
 		deploy-gear.host.service.host.ps1 = deploy-gear.host.service.host.ps1
 		deploy-gear.host.web.ps1 = deploy-gear.host.web.ps1
+		run-app-service.host.ps1 = run-app-service.host.ps1
+		run-app-web.ps1 = run-app-web.ps1
 		run-test.ps1 = run-test.ps1
 	EndProjectSection
 EndProject

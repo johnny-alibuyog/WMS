@@ -28,6 +28,16 @@ namespace AmpedBiz.Service.Users
                     var query = session.Query<User>();
 
                     // compose filters
+                    message.Filter.Compose<string>("name", value =>
+                    {
+                        query = query.Where(x => 
+                            x.Username.ToLower().Contains(value.ToLower()) ||
+                            x.Person.FirstName.ToLower().Contains(value.ToLower()) ||
+                            x.Person.MiddleName.ToLower().Contains(value.ToLower()) ||
+                            x.Person.LastName.ToLower().Contains(value.ToLower())
+                        );
+                    });
+
                     message.Filter.Compose<string>("username", value =>
                     {
                         query = query.Where(x => x.Username.ToLower().Contains(value.ToLower()));

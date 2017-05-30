@@ -77,7 +77,7 @@ namespace AmpedBiz.Service.Products
                             : query.OrderByDescending(x => x.Inventory.WholesalePrice.Amount);
                     });
 
-                    message.Sorter.Compose("wholeSalePrice", direction =>
+                    message.Sorter.Compose("retailPrice", direction =>
                     {
                         query = direction == SortDirection.Ascending
                             ? query.OrderBy(x => x.Inventory.RetailPrice.Amount)

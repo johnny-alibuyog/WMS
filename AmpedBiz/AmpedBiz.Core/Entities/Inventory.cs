@@ -63,78 +63,7 @@ namespace AmpedBiz.Core.Entities
         public virtual Measure MinimumReorderQuantity { get; set; }
 
         public virtual IEnumerable<Stock> Stocks { get; protected internal set; } = new Collection<Stock>();
-
-        //public virtual void Order(Measure quantity) // purchase order
-        //{
-        //    this.OnOrder += quantity;
-
-        //    this.Compute();
-        //}
-
-        //public virtual void Receive(Measure quantity) // purchase order received
-        //{
-        //    this.OnOrder -= quantity;
-        //    this.OnHand += quantity;
-        //    this.Received += quantity;
-
-        //    this.Compute();
-        //}
-
-        //public virtual void BackOrder(Measure quantity)
-        //{
-        //    this.BackOrdered += quantity;
-
-        //    this.Compute();
-        //}
-
-        //public virtual void Allocate(Measure quantity)
-        //{
-        //    this.Allocated += quantity;
-
-        //    this.Compute();
-        //}
-
-        //public virtual void Ship(Measure quantity)
-        //{
-        //    this.Shipped += quantity;
-        //    this.OnHand -= quantity;
-        //    this.Allocated -= quantity;
-
-        //    this.Compute();
-        //}
-
-        //public virtual void Shrink(Measure quantity)
-        //{
-        //    this.OnHand -= quantity;
-        //    this.Shrinkage += quantity;
-
-        //    this.Compute();
-        //}
-
-        //public virtual void Compute()
-        //{
-        //    if (this.OnHand == null)
-        //        this.OnHand = this.InitialLevel;
-
-        //    this.Available = this.OnHand - this.Allocated;
-        //    this.CurrentLevel = this.Available + this.OnOrder - this.BackOrdered;
-        //    this.BelowTargetLevel = this.TargetLevel - this.CurrentLevel;
-
-        //    if (this.CurrentLevel <= this.ReorderLevel)
-        //    {
-        //        if (this.BelowTargetLevel.Value < 0M)
-        //            this.BelowTargetLevel.Value = 0M;
-
-        //        if (this.BelowTargetLevel.Value > 0M)
-        //        {
-        //            if (this.BelowTargetLevel < this.MinimumReorderQuantity)
-        //                this.ReorderQuantity = this.MinimumReorderQuantity;
-        //            else
-        //                this.ReorderQuantity = this.BelowTargetLevel;
-        //        }
-        //    }
-        //}
-
+        
         public virtual void Accept(InventoryVisitor visitor)
         {
             visitor.Visit(this);

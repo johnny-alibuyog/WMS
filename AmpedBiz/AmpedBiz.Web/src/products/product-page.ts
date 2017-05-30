@@ -73,14 +73,10 @@ export class ProductPage {
 
   create() {
     this._router.navigateToRoute('product-create');
-    //this._dialog.open({ viewModel: ProductCreate, model: null })
-    //  .then(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   edit(item: ProductPageItem) {
     this._router.navigateToRoute('product-create', <Product>{ id: item.id });
-    //this._dialog.open({ viewModel: ProductCreate, model: <Product>{ id: item.id } })
-    //  .then(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
   delete(item: ProductPageItem) {
