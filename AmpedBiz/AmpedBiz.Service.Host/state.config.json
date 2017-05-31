@@ -1,0 +1,93 @@
+﻿{
+  "OrderConfig": {
+    "New": {
+      "AllowedTransitions": [
+        "Invoiced",
+        "Cancelled"
+      ],
+      "AllowedModifications": [
+        "Items",
+        "Payments"
+      ]
+    },
+    "Invoiced": {
+      "AllowedTransitions": [
+        "Staged",
+        "Cancelled"
+      ],
+      "AllowedModifications": [
+        "Payments"
+      ]
+    },
+    "Staged": {
+      "AllowedTransitions": [
+        "Shipped",
+        "Cancelled"
+      ],
+      "AllowedModifications": [
+        "Payments"
+      ]
+    },
+    "Shipped": {
+      "AllowedTransitions": [
+        "Completed",
+        "Cancelled"
+      ],
+      "AllowedModifications": [
+        "Payments",
+        "Returns"
+      ]
+    },
+    "Completed": {
+      "AllowedTransitions": [],
+      "AllowedModifications": [
+        "Returns"
+      ]
+    },
+    "Cancelled": {
+      "AllowedTransitions": [],
+      "AllowedModifications": []
+    }
+  },
+  "PurchaseOrderConfig": {
+    "New": {
+      "AllowedTransitions": [
+        "New",
+        "Submitted",
+        "Cancelled"
+      ],
+      "AllowedModifications": [
+        "Items",
+        "Payments"
+      ]
+    },
+    "Submitted": {
+      "AllowedTransitions": [
+        "New",
+        "Approved",
+        "Cancelled"
+      ],
+      "AllowedModifications": [
+        "Payments"
+      ]
+    },
+    "Approved": {
+      "AllowedTransitions": [
+        "Completed",
+        "Cancelled"
+      ],
+      "AllowedModifications": [
+        "Payments",
+        "Receipts"
+      ]
+    },
+    "Completed": {
+      "AllowedTransitions": [],
+      "AllowedModifications": []
+    },
+    "Cancelled": {
+      "AllowedTransitions": [],
+      "AllowedModifications": []
+    }
+  }
+}

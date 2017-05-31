@@ -1,8 +1,8 @@
 import { autoinject } from 'aurelia-framework';
 import { DialogController } from 'aurelia-dialog';
-import { PaymentType } from '../common/models/payment-type';
-import { PaymentTypeService } from '../services/payment-type-service';
-import { NotificationService } from '../common/controls/notification-service';
+import { PaymentType } from '../../common/models/payment-type';
+import { PaymentTypeService } from '../../services/payment-type-service';
+import { NotificationService } from '../../common/controls/notification-service';
 
 @autoinject
 export class PaymentTypeCreate {

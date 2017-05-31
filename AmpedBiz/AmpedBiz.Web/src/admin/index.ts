@@ -12,7 +12,7 @@ export class Index {
       {
         route: ['', 'branch-page'],
         name: 'branch-page',
-        moduleId: './branch-page',
+        moduleId: './branches/branch-page',
         nav: true,
         title: 'Branches',
         settings: {
@@ -29,9 +29,47 @@ export class Index {
         },
       },
       {
+        route: ['customer-page'],
+        name: 'customer-page',
+        moduleId: './customers/customer-page',
+        nav: true,
+        title: 'Customers',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.encoder,
+              role.manager,
+              role.sales,
+              role.superAdmin,
+              role.warehouse
+            ]
+          }
+        }
+      },
+      {
+        route: ['customer-create'],
+        name: 'customer-create',
+        moduleId: './customers/customer-create',
+        nav: false,
+        title: 'Create Customer',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.encoder,
+              role.manager,
+              role.sales,
+              role.superAdmin,
+              role.warehouse
+            ]
+          }
+        }
+      },
+      {
         route: ['payment-type-page'],
         name: 'payment-type-page',
-        moduleId: './payment-type-page',
+        moduleId: './payment-types/payment-type-page',
         nav: true,
         title: 'Payment Types',
         settings: {
@@ -48,9 +86,65 @@ export class Index {
         },
       },
       {
+        route: ['product-category-page'],
+        name: 'product-category-page',
+        moduleId: './product-categories/product-category-page',
+        nav: true,
+        title: 'Product Categories',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.encoder,
+              role.manager,
+              role.sales,
+              role.superAdmin,
+              role.warehouse
+            ]
+          }
+        },
+      },
+      {
+        route: ['supplier-page'],
+        name: 'supplier-page',
+        moduleId: './suppliers/supplier-page',
+        nav: true,
+        title: 'Suppliers',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.encoder,
+              role.manager,
+              role.sales,
+              role.superAdmin,
+              role.warehouse
+            ]
+          }
+        }
+      },      {
+        route: ['unit-of-measure-page'],
+        name: 'unit-of-measure-page',
+        moduleId: './unit-of-measures/unit-of-measure-page',
+        nav: true,
+        title: 'Unit of Measures',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.encoder,
+              role.manager,
+              role.sales,
+              role.superAdmin,
+              role.warehouse
+            ]
+          }
+        },
+      },
+      {
         route: ['user-page'],
         name: 'user-page',
-        moduleId: './user-page',
+        moduleId: './users/user-page',
         nav: true,
         title: 'Users',
         settings: {

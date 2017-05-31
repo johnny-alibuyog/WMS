@@ -1,11 +1,11 @@
 import { autoinject } from 'aurelia-framework';
 import { DialogController } from 'aurelia-dialog';
-import { ProductCategory } from '../common/models/product-category';
-import { ServiceApi } from '../services/service-api';
-import { NotificationService } from '../common/controls/notification-service';
+import { Supplier } from '../../common/models/supplier';
+import { ServiceApi } from '../../services/service-api';
+import { NotificationService } from '../../common/controls/notification-service';
 
 @autoinject
-export class ProductCategoryCreate {
+export class SupplierCreate {
   private _api: ServiceApi;
   private _controller: DialogController;
   private _notification: NotificationService;
@@ -13,7 +13,7 @@ export class ProductCategoryCreate {
   public header: string = 'Create Product Category';
   public isEdit: boolean = false;
   public canSave: boolean = true;
-  public productCategory: ProductCategory;
+  public supplier: Supplier;
 
   constructor(api: ServiceApi, controller: DialogController, notification: NotificationService) {
     this._api = api;
@@ -21,18 +21,18 @@ export class ProductCategoryCreate {
     this._notification = notification;
   }
 
-  activate(productCategory: ProductCategory) {
-    if (productCategory) {
-      this.header = "Edit Product Category";
+  activate(supplier: Supplier) {
+    if (supplier) {
+      this.header = "Edit Supplier";
       this.isEdit = true;
-      this._api.productCategories.get(productCategory.id)
-        .then(data => this.productCategory = <ProductCategory>data)
+      this._api.suppliers.get(supplier.id)
+        .then(data => this.supplier = <Supplier>data)
         .catch(error => this._notification.warning(error));
     }
     else {
-      this.header = "Create Product Category";
+      this.header = "Create Supplier";
       this.isEdit = false;
-      this.productCategory = <ProductCategory>{};
+      this.supplier = <Supplier>{};
     }
   }
 
@@ -44,10 +44,10 @@ export class ProductCategoryCreate {
 
     if (this.isEdit) {
 
-      this._api.productCategories.update(this.productCategory)
+      this._api.suppliers.update(this.supplier)
         .then(data => {
-          this._notification.success("Product Category has been saved.")
-            .whenClosed((data) => this._controller.ok(<ProductCategory>data));
+          this._notification.success("Supplier has been saved.")
+            .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <Supplier>data }));
         })
         .catch(error => {
           this._notification.warning(error)
@@ -55,10 +55,10 @@ export class ProductCategoryCreate {
     }
     else {
 
-      this._api.productCategories.create(this.productCategory)
+      this._api.suppliers.create(this.supplier)
         .then(data => {
-          this._notification.success("Product Category has been saved.")
-            .whenClosed((data) => this._controller.ok(<ProductCategory>data));
+          this._notification.success("Supplier has been saved.")
+            .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <Supplier>data }));
         })
         .catch(error => {
           this._notification.warning(error)

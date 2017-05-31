@@ -1,23 +1,22 @@
 import { autoinject } from 'aurelia-framework';
 import { DialogService } from 'aurelia-dialog';
-import { UserCreate } from './user-create';
-import { User, UserPageItem } from '../common/models/user';
-import { ServiceApi } from '../services/service-api';
-import { NotificationService } from '../common/controls/notification-service';
-import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
+import { BranchCreate } from './branch-create';
+import { Branch, BranchPageItem } from '../../common/models/branch';
+import { ServiceApi } from '../../services/service-api';
+import { NotificationService } from '../../common/controls/notification-service';
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../../common/models/paging';
 
 @autoinject
-export class UserPage {
+export class BranchPage {
   private _api: ServiceApi;
   private _dialog: DialogService;
   private _notification: NotificationService;
 
   public filter: Filter;
   public sorter: Sorter;
-  public pager: Pager<UserPageItem>;
-  public booleanValue: boolean = false;
+  public pager: Pager<Branch>;
 
-  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<UserPageItem>) {
+  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<BranchPageItem>) {
     this._api = api;
     this._dialog = dialog;
     this._notification = notification;
@@ -27,28 +26,28 @@ export class UserPage {
     this.filter.onFilter = () => this.getPage();
 
     this.sorter = sorter;
+    this.sorter["code"] = SortDirection.None;
     this.sorter["name"] = SortDirection.Ascending;
-    this.sorter["username"] = SortDirection.None;
-    this.sorter["branchName"] = SortDirection.None;
+    this.sorter["descirption"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
 
     this.pager = pager;
     this.pager.onPage = () => this.getPage();
   }
 
-  public activate(): void {
+  activate() {
     this.getPage();
   }
 
-  public getPage(): void {
-    this._api.users
+  getPage(): void {
+    this._api.branches
       .getPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager
       })
       .then(data => {
-        var response = <PagerResponse<UserPageItem>>data;
+        var response = <PagerResponse<BranchPageItem>>data;
         this.pager.count = response.count;
         this.pager.items = response.items;
       })
@@ -57,17 +56,17 @@ export class UserPage {
       });
   }
 
-  public create(): void {
-    this._dialog.open({ viewModel: UserCreate, model: null })
+  create() {
+    this._dialog.open({ viewModel: BranchCreate, model: null })
       .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
-  public edit(item: User): void {
-    this._dialog.open({ viewModel: UserCreate, model: item })
+  edit(item: BranchPageItem) {
+    this._dialog.open({ viewModel: BranchCreate, model: <Branch>{ id: item.id } })
       .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
- public delete(item: any): void {
+  delete(item: any) {
     /*
     var index = this.mockData.indexOf(item);
     if (index > -1) {

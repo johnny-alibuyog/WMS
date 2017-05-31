@@ -1,8 +1,8 @@
 import { autoinject } from 'aurelia-framework';
 import { DialogController } from 'aurelia-dialog';
-import { UnitOfMeasure } from '../common/models/unit-of-measure';
-import { ServiceApi } from '../services/service-api';
-import { NotificationService } from '../common/controls/notification-service';
+import { UnitOfMeasure } from '../../common/models/unit-of-measure';
+import { ServiceApi } from '../../services/service-api';
+import { NotificationService } from '../../common/controls/notification-service';
 
 @autoinject
 export class UnitOfMeasureCreate {

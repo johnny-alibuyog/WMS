@@ -1,8 +1,8 @@
 import { Router } from 'aurelia-router';
 import { autoinject } from 'aurelia-framework';
-import { Customer } from '../common/models/customer';
-import { ServiceApi } from '../services/service-api';
-import { NotificationService } from '../common/controls/notification-service';
+import { Customer } from '../../common/models/customer';
+import { ServiceApi } from '../../services/service-api';
+import { NotificationService } from '../../common/controls/notification-service';
 
 @autoinject
 export class CustomerCreate {

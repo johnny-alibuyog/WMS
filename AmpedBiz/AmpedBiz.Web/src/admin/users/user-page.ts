@@ -1,22 +1,23 @@
 import { autoinject } from 'aurelia-framework';
 import { DialogService } from 'aurelia-dialog';
-import { PaymentTypeCreate } from './payment-type-create';
-import { PaymentType, PaymentTypePageItem } from '../common/models/payment-type';
-import { ServiceApi } from '../services/service-api';
-import { NotificationService } from '../common/controls/notification-service';
-import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
+import { UserCreate } from './user-create';
+import { User, UserPageItem } from '../../common/models/user';
+import { ServiceApi } from '../../services/service-api';
+import { NotificationService } from '../../common/controls/notification-service';
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../../common/models/paging';
 
 @autoinject
-export class PaymentTypePage {
+export class UserPage {
   private _api: ServiceApi;
   private _dialog: DialogService;
   private _notification: NotificationService;
 
   public filter: Filter;
   public sorter: Sorter;
-  public pager: Pager<PaymentTypePageItem>;
+  public pager: Pager<UserPageItem>;
+  public booleanValue: boolean = false;
 
-  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<PaymentTypePageItem>) {
+  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<UserPageItem>) {
     this._api = api;
     this._dialog = dialog;
     this._notification = notification;
@@ -26,27 +27,28 @@ export class PaymentTypePage {
     this.filter.onFilter = () => this.getPage();
 
     this.sorter = sorter;
-    this.sorter["code"] = SortDirection.None;
     this.sorter["name"] = SortDirection.Ascending;
+    this.sorter["username"] = SortDirection.None;
+    this.sorter["branchName"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
 
     this.pager = pager;
     this.pager.onPage = () => this.getPage();
   }
 
-  activate() {
+  public activate(): void {
     this.getPage();
   }
 
-  getPage() {
-    this._api.paymentTypes
+  public getPage(): void {
+    this._api.users
       .getPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager
       })
       .then(data => {
-        var response = <PagerResponse<PaymentTypePageItem>>data;
+        var response = <PagerResponse<UserPageItem>>data;
         this.pager.count = response.count;
         this.pager.items = response.items;
       })
@@ -55,17 +57,17 @@ export class PaymentTypePage {
       });
   }
 
-  create() {
-    this._dialog.open({ viewModel: PaymentTypeCreate, model: null })
+  public create(): void {
+    this._dialog.open({ viewModel: UserCreate, model: null })
       .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
-  edit(item: PaymentTypePageItem) {
-    this._dialog.open({ viewModel: PaymentTypeCreate, model: <PaymentType>{ id: item.id } })
+  public edit(item: User): void {
+    this._dialog.open({ viewModel: UserCreate, model: item })
       .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
-  delete(item: any) {
+ public delete(item: any): void {
     /*
     var index = this.mockData.indexOf(item);
     if (index > -1) {

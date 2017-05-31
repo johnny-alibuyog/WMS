@@ -1,24 +1,26 @@
+import { Router, RouteConfig, NavigationInstruction } from 'aurelia-router';
 import { autoinject } from 'aurelia-framework';
-import { DialogService } from 'aurelia-dialog';
-import { BranchCreate } from './branch-create';
-import { Branch, BranchPageItem } from '../common/models/branch';
-import { ServiceApi } from '../services/service-api';
-import { NotificationService } from '../common/controls/notification-service';
-import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
+import { CustomerCreate } from './customer-create';
+import { Customer, CustomerPageItem } from '../../common/models/customer';
+import { ServiceApi } from '../../services/service-api';
+import { NotificationService } from '../../common/controls/notification-service';
+import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../../common/models/paging';
 
 @autoinject
-export class BranchPage {
+export class CustomerPage {
   private _api: ServiceApi;
-  private _dialog: DialogService;
+  private _router: Router;
   private _notification: NotificationService;
+
+  public header: string = ' Customers';
 
   public filter: Filter;
   public sorter: Sorter;
-  public pager: Pager<Branch>;
+  public pager: Pager<CustomerPageItem>;
 
-  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<BranchPageItem>) {
+  constructor(api: ServiceApi, router: Router, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<CustomerPageItem>) {
     this._api = api;
-    this._dialog = dialog;
+    this._router = router;
     this._notification = notification;
 
     this.filter = filter;
@@ -35,19 +37,19 @@ export class BranchPage {
     this.pager.onPage = () => this.getPage();
   }
 
-  activate() {
+  public activate(): void {
     this.getPage();
   }
 
-  getPage(): void {
-    this._api.branches
+  private getPage(): void {
+    this._api.customers
       .getPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager
       })
       .then(data => {
-        var response = <PagerResponse<BranchPageItem>>data;
+        var response = <PagerResponse<CustomerPageItem>>data;
         this.pager.count = response.count;
         this.pager.items = response.items;
       })
@@ -56,17 +58,15 @@ export class BranchPage {
       });
   }
 
-  create() {
-    this._dialog.open({ viewModel: BranchCreate, model: null })
-      .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
+  public create(): void {
+    this._router.navigateToRoute('customer-create');
   }
 
-  edit(item: BranchPageItem) {
-    this._dialog.open({ viewModel: BranchCreate, model: <Branch>{ id: item.id } })
-      .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
+  public edit(item: CustomerPageItem): void {
+    this._router.navigateToRoute('customer-create', <Customer>{ id: item.id });
   }
 
-  delete(item: any) {
+  public delete(item: any): void {
     /*
     var index = this.mockData.indexOf(item);
     if (index > -1) {

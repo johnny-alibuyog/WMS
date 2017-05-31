@@ -106,20 +106,6 @@ export class Index {
         nav: false,
         title: 'Create Order'
       },
-      {
-        route: ['customer-page'],
-        name: 'customer-page',
-        moduleId: './customer-page',
-        nav: true,
-        title: 'Customers'
-      },
-      {
-        route: ['customer-create'],
-        name: 'customer-create',
-        moduleId: './customer-create',
-        nav: false,
-        title: 'Create Customer'
-      },
     ]);
     this.router = router;
   }

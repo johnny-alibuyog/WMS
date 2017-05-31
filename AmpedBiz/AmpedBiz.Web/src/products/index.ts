@@ -29,27 +29,6 @@ export class Index {
         title: 'Discontinued Products'
       },
       {
-        route: ['product-category-page'],
-        name: 'product-category-page',
-        moduleId: './product-category-page',
-        nav: true,
-        title: 'Categories'
-      },
-      {
-        route: ['supplier-page'],
-        name: 'supplier-page',
-        moduleId: './supplier-page',
-        nav: true,
-        title: 'Suppliers'
-      },
-      {
-        route: ['unit-of-measure-page'],
-        name: 'unit-of-measure-page',
-        moduleId: './unit-of-measure-page',
-        nav: true,
-        title: 'Unit of Measures'
-      },
-      {
         route: ['product-create'],
         name: 'product-create',
         moduleId: './product-create',
