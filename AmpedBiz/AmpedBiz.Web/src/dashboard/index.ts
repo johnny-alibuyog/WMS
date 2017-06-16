@@ -1,4 +1,6 @@
 import { Router, RouterConfiguration } from 'aurelia-router'
+import { AuthSettings } from '../services/auth-service';
+import { role } from '../common/models/role';
 
 export class Index {
   heading: string = "Dashboard";
@@ -12,21 +14,51 @@ export class Index {
         name: 'pending-page',
         moduleId: './pending-page',
         nav: true,
-        title: 'Pending List'
+        title: 'Pending List',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
+        }
       },
       {
         route: ['new-customer-order'],
         name: 'new-customer-order',
         moduleId: '../orders/order-create',
         nav: true,
-        title: 'New Customer Order'
+        title: 'New Customer Order',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
+        }
       },
       {
         route: ['new-purchase-order'],
         name: 'new-purchase-order',
         moduleId: '../purchases/purchase-order-create',
         nav: true,
-        title: 'New Purchase Order'
+        title: 'New Purchase Order',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
+        }
       }
     ]);
 

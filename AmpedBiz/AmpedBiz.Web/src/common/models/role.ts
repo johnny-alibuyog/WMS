@@ -9,25 +9,17 @@ export const role = {
     id: 'A',
     name: 'Admin'
   },
-  encoder: <Role>{
-    id: 'E',
-    name: 'Encoder'
-  },
   manager: <Role>{
     id: 'M',
     name: 'Manager'
   },
-  sales: <Role>{
+  salesclerk: <Role>{
     id: 'S',
-    name: 'Sales'
+    name: 'Salesclerk'
   },
-  superAdmin: <Role>{
-    id: 'SA',
-    name: 'Super Admin'
-  },
-  warehouse: <Role>{
+  warehouseman: <Role>{
     id: 'W',
-    name: 'Warehouse'
+    name: 'Warehouseman'
   },
   unknownRole: <Role>{
     id: 'UR',
@@ -35,10 +27,8 @@ export const role = {
   },
   all: <Role[]>[
     this.admin,
-    this.encoder,
     this.manager,
-    this.sales,
-    this.superAdmin,
-    this.warehouse,
+    this.salesclerk,
+    this.warehouseman,
   ]
 }

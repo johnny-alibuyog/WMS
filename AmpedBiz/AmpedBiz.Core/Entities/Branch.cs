@@ -20,7 +20,7 @@ namespace AmpedBiz.Core.Entities
 
         public Branch(Guid id) : base(id) { }
 
-        public static Branch SuperBranch = new Branch(new Guid("406A71D8-4DFD-4D34-821E-A5E52E144E50"))
+        public static Branch Warehouse = new Branch(new Guid("406A71D8-4DFD-4D34-821E-A5E52E144E50"))
         {
             Name = "Nicon",
             Description = "Nicon Services",

@@ -115,7 +115,7 @@ class AuthorizeStep implements PipelineStep {
 
       if (authSettings.roles) {
         if (!this._auth.isAuthorized(authSettings.roles)) {
-          this._notification.warning(`You are not authorized for ${instructionConfig.title}`);
+          this._notification.warning(`You are not authorized to view ${instructionConfig.title}`);
           return next.cancel();
         }
       }

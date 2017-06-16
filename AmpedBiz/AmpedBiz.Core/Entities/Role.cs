@@ -15,24 +15,18 @@ namespace AmpedBiz.Core.Entities
 
         public static readonly Role Admin = new Role("A", "Admin");
 
-        public static readonly Role Encoder = new Role("E", "Encoder");
-
         public static readonly Role Manger = new Role("M", "Manager");
 
-        public static readonly Role Sales = new Role("S", "Sales");
+        public static readonly Role Salesclerk = new Role("S", "Salesclerk");
 
-        public static readonly Role SuperAdmin = new Role("SA", "Super Admin");
-
-        public static readonly Role Warehouse = new Role("W", "Warehouse");
+        public static readonly Role Warehouseman = new Role("W", "Warehouseman");
 
         public static IEnumerable<Role> All = new [] 
         {
             Role.Admin,
-            Role.Encoder,
             Role.Manger,
-            Role.Sales,
-            Role.SuperAdmin,
-            Role.Warehouse
+            Role.Salesclerk,
+            Role.Warehouseman
         };
     }
 }

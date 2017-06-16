@@ -3,7 +3,8 @@ import { FrameworkConfiguration } from 'aurelia-framework';
 export function configure(config: FrameworkConfiguration) {
   config.globalResources([
     'common/attributes/numeric-value',
-    'common/converters/age-value-conveter',
+    'common/converters/age-value-converter',
+    'common/converters/authorized-value-converter',
     'common/converters/date-format-value-converter',
     'common/converters/date-input-format-value-converter',
     'common/converters/instruction-filter-vaule-converter',

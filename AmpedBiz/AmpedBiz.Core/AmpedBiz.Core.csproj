@@ -138,7 +138,9 @@
     <Compile Include="Services\Orders\OrderVisitor.cs" />
     <Compile Include="Services\Orders\StateDispatcher.cs" />
     <Compile Include="Services\Products1\ProductsCreatedVisitor.cs" />
-    <Compile Include="Services\Products\SearchAndApplyVisitor.cs" />
+    <Compile Include="Services\Products\SearchAndApplyVisitor.cs">
+      <DependentUpon>ProductVisitor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Services\PurchaseOrders\PurchaseOrderApprovedVisitor.cs">
       <DependentUpon>PurchaseOrderVisitor.cs</DependentUpon>
     </Compile>

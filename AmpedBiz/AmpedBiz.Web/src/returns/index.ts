@@ -1,4 +1,6 @@
 import { Router, RouterConfiguration } from 'aurelia-router'
+import { AuthSettings } from '../services/auth-service';
+import { role } from '../common/models/role';
 
 export class Index {
   heading: string = "Returns";
@@ -13,6 +15,16 @@ export class Index {
         moduleId: './return-page',
         nav: true,
         title: 'Returns',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
+        },
       },
       {
         route: ['returns-by-customer-page'],
@@ -20,6 +32,16 @@ export class Index {
         moduleId: './returns-by-customer-page',
         nav: true,
         title: 'Returns By Customer',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
+        },
       },
       {
         route: ['returns-by-product-page'],
@@ -27,6 +49,16 @@ export class Index {
         moduleId: './returns-by-product-page',
         nav: true,
         title: 'Returns By Product',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
+        },
       },
       {
         route: ['returns-by-reason-page'],
@@ -34,13 +66,33 @@ export class Index {
         moduleId: './returns-by-reason-page',
         nav: true,
         title: 'Returns By Reason',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
+        },
       },
       {
         route: ['return-create'],
         name: 'return-create',
         moduleId: './return-create',
         nav: false,
-        title: 'Create Return'
+        title: 'Create Return',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
+        },
       },
     ]);
     this.router = router;

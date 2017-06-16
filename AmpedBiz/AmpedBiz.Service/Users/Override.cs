@@ -1,5 +1,4 @@
-﻿using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Data;
 using MediatR;

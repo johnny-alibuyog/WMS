@@ -1,5 +1,7 @@
 import { Router, RouterConfiguration } from 'aurelia-router'
 import { OrderStatus } from '../common/models/order';
+import { AuthSettings } from '../services/auth-service';
+import { role } from '../common/models/role';
 
 export class Index {
   heading: string = "Customer Orders";
@@ -15,7 +17,15 @@ export class Index {
         nav: true,
         title: 'New',
         settings: {
-          status: OrderStatus.new
+          status: OrderStatus.new,
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
         }
       },
       {
@@ -25,7 +35,15 @@ export class Index {
         nav: true,
         title: 'Invoiced',
         settings: {
-          status: OrderStatus.invoiced
+          status: OrderStatus.invoiced,
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
         }
       },
       {
@@ -35,7 +53,15 @@ export class Index {
         nav: true,
         title: 'Staged',
         settings: {
-          status: OrderStatus.staged
+          status: OrderStatus.staged,
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
         }
       },
       /*
@@ -46,7 +72,15 @@ export class Index {
         nav: true,
         title: 'Routed',
         settings: {
-          status: OrderStatus.routed
+          status: OrderStatus.routed,
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
         }
       },
       */
@@ -57,7 +91,15 @@ export class Index {
         nav: true,
         title: 'Shipped',
         settings: {
-          status: OrderStatus.shipped
+          status: OrderStatus.shipped,
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
         }
       },
       /*
@@ -68,7 +110,15 @@ export class Index {
         nav: true,
         title: 'Dilivered',
         settings: {
-          status: OrderStatus.dilivered
+          status: OrderStatus.dilivered,
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
         }
       },
       */
@@ -79,7 +129,15 @@ export class Index {
         nav: true,
         title: 'Completed',
         settings: {
-          status: OrderStatus.completed
+          status: OrderStatus.completed,
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
         }
       },
       {
@@ -89,7 +147,15 @@ export class Index {
         nav: true,
         title: 'Cancelled',
         settings: {
-          status: OrderStatus.cancelled
+          status: OrderStatus.cancelled,
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
         }
       },
       {
@@ -97,14 +163,30 @@ export class Index {
         name: 'subdivide-invoice',
         moduleId: './subdivide-invoice',
         nav: false,
-        title: 'Subdivide Invoice'
+        title: 'Subdivide Invoice',
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
       },
       {
         route: ['order-create'],
         name: 'order-create',
         moduleId: './order-create',
         nav: false,
-        title: 'Create Order'
+        title: 'Create Order',
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
       },
     ]);
     this.router = router;

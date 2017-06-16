@@ -506,3 +506,118 @@ let genDummy = (): OrderInvoiceDetail => <OrderInvoiceDetail>{
   shippingFeeAmount: 1,
   totalPriceAmount: 90
 };
+
+
+/* page break sample */
+/*
+var dd = {
+	content: [
+		{text: 'lightHorizontalLines:', fontSize: 14, bold: true, margin: [0, 20, 0, 8]},
+		{
+			style: 'tableExample',
+			table: {
+				headerRows: 1,
+				body: [
+					[{text: 'Header 1', style: 'tableHeader'}, {text: 'Header 2', style: 'tableHeader'}, {text: 'Header 3', style: 'tableHeader'}],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+				]
+			},
+			layout: 'lightHorizontalLines',
+			pageBreak: 'after'
+		},
+		{
+			style: 'tableExample',
+			table: {
+				headerRows: 1,
+				body: [
+					[{text: 'Header 1', style: 'tableHeader'}, {text: 'Header 2', style: 'tableHeader'}, {text: 'Header 3', style: 'tableHeader'}],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+				]
+			},
+			layout: 'lightHorizontalLines',
+			pageBreak: 'after'
+		},
+		{
+			style: 'tableExample',
+			table: {
+				headerRows: 1,
+				body: [
+					[{text: 'Header 1', style: 'tableHeader'}, {text: 'Header 2', style: 'tableHeader'}, {text: 'Header 3', style: 'tableHeader'}],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+				]
+			},
+			layout: 'lightHorizontalLines',
+			pageBreak: 'after'
+		},
+		{
+			style: 'tableExample',
+			table: {
+				headerRows: 1,
+				body: [
+					[{text: 'Header 1', style: 'tableHeader'}, {text: 'Header 2', style: 'tableHeader'}, {text: 'Header 3', style: 'tableHeader'}],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+				]
+			},
+			layout: 'lightHorizontalLines',
+			pageBreak: 'after'
+		},
+		{
+			style: 'tableExample',
+			table: {
+				headerRows: 1,
+				body: [
+					[{text: 'Header 1', style: 'tableHeader'}, {text: 'Header 2', style: 'tableHeader'}, {text: 'Header 3', style: 'tableHeader'}],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+				]
+			},
+			layout: 'lightHorizontalLines',
+			pageBreak: 'after'
+		},
+	],
+	styles: {
+		header: {
+			fontSize: 18,
+			bold: true,
+			margin: [0, 0, 0, 10]
+		},
+		subheader: {
+			fontSize: 16,
+			bold: true,
+			margin: [0, 10, 0, 5]
+		},
+		tableExample: {
+			margin: [0, 5, 0, 15]
+		},
+		tableHeader: {
+			bold: true,
+			fontSize: 13,
+			color: 'black'
+		}
+	},
+	defaultStyle: {
+		// alignment: 'justify'
+	}
+	
+}
+
+*/

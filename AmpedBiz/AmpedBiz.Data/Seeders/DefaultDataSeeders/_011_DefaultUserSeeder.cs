@@ -22,18 +22,13 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var user = session.Get<User>(User.SuperUser.Id);
-                var branch = session.Get<Branch>(Branch.SuperBranch.Id);
-                var roles = session.Query<Role>().Cacheable().ToList();
+                var users = session.Query<User>().Cacheable().ToList();
+                var usersToInsert = User.All.Except(users);
 
-                if (user == null)
+                foreach (var user in usersToInsert)
                 {
-                    user = User.SuperUser;
-                    user.Branch = branch;
-                    user.Roles = roles;
                     user.EnsureValidity();
-
-                    session.Save(user, user.Id);
+                    session.Save(user);
                 }
 
                 transaction.Commit();

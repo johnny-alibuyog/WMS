@@ -10,7 +10,7 @@ export class Index {
     config.title = "Admin";
     config.map([
       {
-        route: ['', 'branch-page'],
+        route: ['branch-page'],
         name: 'branch-page',
         moduleId: './branches/branch-page',
         nav: true,
@@ -19,11 +19,9 @@ export class Index {
           auth: <AuthSettings>{
             roles: [
               role.admin,
-              role.encoder,
-              role.manager,
-              role.sales,
-              role.superAdmin,
-              role.warehouse
+              //role.manager,
+              //role.salesclerk,
+              //role.warehouseman
             ]
           }
         },
@@ -38,11 +36,9 @@ export class Index {
           auth: <AuthSettings>{
             roles: [
               role.admin,
-              role.encoder,
               role.manager,
-              role.sales,
-              role.superAdmin,
-              role.warehouse
+              role.salesclerk,
+              role.warehouseman
             ]
           }
         }
@@ -57,11 +53,9 @@ export class Index {
           auth: <AuthSettings>{
             roles: [
               role.admin,
-              role.encoder,
               role.manager,
-              role.sales,
-              role.superAdmin,
-              role.warehouse
+              role.salesclerk,
+              role.warehouseman
             ]
           }
         }
@@ -76,11 +70,9 @@ export class Index {
           auth: <AuthSettings>{
             roles: [
               role.admin,
-              role.encoder,
               role.manager,
-              role.sales,
-              role.superAdmin,
-              role.warehouse
+              role.salesclerk,
+              role.warehouseman
             ]
           }
         },
@@ -95,11 +87,9 @@ export class Index {
           auth: <AuthSettings>{
             roles: [
               role.admin,
-              role.encoder,
               role.manager,
-              role.sales,
-              role.superAdmin,
-              role.warehouse
+              role.salesclerk,
+              role.warehouseman
             ]
           }
         },
@@ -114,11 +104,9 @@ export class Index {
           auth: <AuthSettings>{
             roles: [
               role.admin,
-              role.encoder,
               role.manager,
-              role.sales,
-              role.superAdmin,
-              role.warehouse
+              role.salesclerk,
+              role.warehouseman
             ]
           }
         }
@@ -132,17 +120,15 @@ export class Index {
           auth: <AuthSettings>{
             roles: [
               role.admin,
-              role.encoder,
               role.manager,
-              role.sales,
-              role.superAdmin,
-              role.warehouse
+              role.salesclerk,
+              role.warehouseman
             ]
           }
         },
       },
       {
-        route: ['user-page'],
+        route: ['', 'user-page'],
         name: 'user-page',
         moduleId: './users/user-page',
         nav: true,
@@ -151,11 +137,9 @@ export class Index {
           auth: <AuthSettings>{
             roles: [
               role.admin,
-              role.encoder,
               role.manager,
-              role.sales,
-              role.superAdmin,
-              role.warehouse
+              role.salesclerk,
+              role.warehouseman
             ]
           }
         },

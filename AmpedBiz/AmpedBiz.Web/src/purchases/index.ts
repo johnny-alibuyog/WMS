@@ -1,5 +1,7 @@
 import { Router, RouterConfiguration } from 'aurelia-router';
 import { PurchaseOrderStatus } from '../common/models/purchase-order';
+import { AuthSettings } from '../services/auth-service';
+import { role } from '../common/models/role';
 
 export class Index {
   heading: string = "Purchases";
@@ -15,7 +17,15 @@ export class Index {
         nav: true,
         title: 'New',
         settings: {
-          status: PurchaseOrderStatus.new
+          status: PurchaseOrderStatus.new,
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
         }
       },
       {
@@ -25,7 +35,15 @@ export class Index {
         nav: true,
         title: 'Submitted',
         settings: {
-          status: PurchaseOrderStatus.submitted
+          status: PurchaseOrderStatus.submitted,
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
         }
       },
       {
@@ -35,7 +53,15 @@ export class Index {
         nav: true,
         title: 'Approved',
         settings: {
-          status: PurchaseOrderStatus.approved
+          status: PurchaseOrderStatus.approved,
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
         }
       },
       {
@@ -45,7 +71,15 @@ export class Index {
         nav: true,
         title: 'Completed',
         settings: {
-          status: PurchaseOrderStatus.completed
+          status: PurchaseOrderStatus.completed,
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
         }
       },
       {
@@ -55,7 +89,15 @@ export class Index {
         nav: true,
         title: 'Cancelled',
         settings: {
-          status: PurchaseOrderStatus.cancelled
+          status: PurchaseOrderStatus.cancelled,
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
         }
       },
       {
@@ -63,7 +105,15 @@ export class Index {
         name: 'purchase-order-create',
         moduleId: './purchase-order-create',
         nav: false,
-        title: 'Create Purchase'
+        title: 'Create Purchase',
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
+              role.warehouseman
+            ]
+          }
       }
     ]);
 
