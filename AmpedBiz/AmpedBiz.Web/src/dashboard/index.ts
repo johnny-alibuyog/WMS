@@ -17,12 +17,7 @@ export class Index {
         title: 'Pending List',
         settings: {
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         }
       },
@@ -38,7 +33,6 @@ export class Index {
               role.admin,
               role.manager,
               role.salesclerk,
-              role.warehouseman
             ]
           }
         }
@@ -55,11 +49,10 @@ export class Index {
               role.admin,
               role.manager,
               role.salesclerk,
-              role.warehouseman
             ]
           }
         }
-      }
+      },
     ]);
 
     this.router = router;

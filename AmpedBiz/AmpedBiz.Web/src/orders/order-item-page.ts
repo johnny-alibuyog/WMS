@@ -90,6 +90,10 @@ export class OrderItemPage {
   public itemsChanged(): void {
     this.initializePage();
 
+    if (!this.items || this.items.length == 0){
+      return;
+    }
+
     let productIds = this.items.map(x => x.product.id);
     this._api.products.getInventoryList(productIds)
       .then(result => this._productInventories = result);

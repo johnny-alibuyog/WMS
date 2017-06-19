@@ -19,12 +19,7 @@ export class Index {
         settings: {
           status: OrderStatus.new,
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         }
       },
@@ -37,12 +32,7 @@ export class Index {
         settings: {
           status: OrderStatus.invoiced,
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         }
       },
@@ -55,12 +45,7 @@ export class Index {
         settings: {
           status: OrderStatus.staged,
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         }
       },
@@ -74,12 +59,7 @@ export class Index {
         settings: {
           status: OrderStatus.routed,
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         }
       },
@@ -93,12 +73,7 @@ export class Index {
         settings: {
           status: OrderStatus.shipped,
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         }
       },
@@ -112,12 +87,7 @@ export class Index {
         settings: {
           status: OrderStatus.dilivered,
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         }
       },
@@ -131,12 +101,7 @@ export class Index {
         settings: {
           status: OrderStatus.completed,
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         }
       },
@@ -149,12 +114,7 @@ export class Index {
         settings: {
           status: OrderStatus.cancelled,
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         }
       },
@@ -164,14 +124,12 @@ export class Index {
         moduleId: './subdivide-invoice',
         nav: false,
         title: 'Subdivide Invoice',
+        settings: {
+          status: OrderStatus.cancelled,
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
+        }
       },
       {
         route: ['order-create'],
@@ -184,7 +142,6 @@ export class Index {
               role.admin,
               role.manager,
               role.salesclerk,
-              role.warehouseman
             ]
           }
       },

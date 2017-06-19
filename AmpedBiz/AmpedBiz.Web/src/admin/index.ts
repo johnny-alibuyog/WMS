@@ -19,9 +19,6 @@ export class Index {
           auth: <AuthSettings>{
             roles: [
               role.admin,
-              //role.manager,
-              //role.salesclerk,
-              //role.warehouseman
             ]
           }
         },
@@ -37,8 +34,6 @@ export class Index {
             roles: [
               role.admin,
               role.manager,
-              role.salesclerk,
-              role.warehouseman
             ]
           }
         }
@@ -54,8 +49,6 @@ export class Index {
             roles: [
               role.admin,
               role.manager,
-              role.salesclerk,
-              role.warehouseman
             ]
           }
         }
@@ -71,8 +64,6 @@ export class Index {
             roles: [
               role.admin,
               role.manager,
-              role.salesclerk,
-              role.warehouseman
             ]
           }
         },
@@ -88,8 +79,6 @@ export class Index {
             roles: [
               role.admin,
               role.manager,
-              role.salesclerk,
-              role.warehouseman
             ]
           }
         },
@@ -105,8 +94,6 @@ export class Index {
             roles: [
               role.admin,
               role.manager,
-              role.salesclerk,
-              role.warehouseman
             ]
           }
         }
@@ -121,8 +108,6 @@ export class Index {
             roles: [
               role.admin,
               role.manager,
-              role.salesclerk,
-              role.warehouseman
             ]
           }
         },
@@ -138,8 +123,6 @@ export class Index {
             roles: [
               role.admin,
               role.manager,
-              role.salesclerk,
-              role.warehouseman
             ]
           }
         },

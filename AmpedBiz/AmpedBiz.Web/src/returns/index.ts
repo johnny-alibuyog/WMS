@@ -17,12 +17,7 @@ export class Index {
         title: 'Returns',
         settings: {
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         },
       },
@@ -34,12 +29,7 @@ export class Index {
         title: 'Returns By Customer',
         settings: {
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         },
       },
@@ -51,12 +41,7 @@ export class Index {
         title: 'Returns By Product',
         settings: {
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         },
       },
@@ -68,12 +53,7 @@ export class Index {
         title: 'Returns By Reason',
         settings: {
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         },
       },
@@ -89,7 +69,6 @@ export class Index {
               role.admin,
               role.manager,
               role.salesclerk,
-              role.warehouseman
             ]
           }
         },

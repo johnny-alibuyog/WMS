@@ -90,6 +90,10 @@ export class AuthService {
       return false;
     }
 
+    if (params == null || params == undefined) {
+      return true;
+    }
+
     if (!this.user.roles) {
       return false;
     }

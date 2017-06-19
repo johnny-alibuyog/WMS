@@ -19,12 +19,7 @@ export class Index {
         settings: {
           status: PurchaseOrderStatus.new,
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         }
       },
@@ -37,12 +32,7 @@ export class Index {
         settings: {
           status: PurchaseOrderStatus.submitted,
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         }
       },
@@ -55,12 +45,7 @@ export class Index {
         settings: {
           status: PurchaseOrderStatus.approved,
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         }
       },
@@ -73,12 +58,7 @@ export class Index {
         settings: {
           status: PurchaseOrderStatus.completed,
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         }
       },
@@ -91,12 +71,7 @@ export class Index {
         settings: {
           status: PurchaseOrderStatus.cancelled,
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         }
       },
@@ -111,7 +86,6 @@ export class Index {
               role.admin,
               role.manager,
               role.salesclerk,
-              role.warehouseman
             ]
           }
       }

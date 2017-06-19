@@ -11,11 +11,14 @@ import { ReportViewer } from '../common/controls/report-viewer';
 import { DialogService } from 'aurelia-dialog';
 import { NotificationService } from '../common/controls/notification-service';
 import { InvoiceReport } from './invoice-report';
+import { AuthService } from '../services/auth-service';
 import { pricing } from '../common/models/pricing';
+import { role } from '../common/models/role';
 
 @autoinject
 export class OrderCreate {
   private readonly _api: ServiceApi;
+  private readonly _auth: AuthService;
   private readonly _router: Router;
   private readonly _dialog: DialogService;
   private readonly _notification: NotificationService;
@@ -25,7 +28,17 @@ export class OrderCreate {
   private _subscriptions: Subscription[] = [];
 
   public header: string = 'Order';
-  public canSave: boolean = true;
+
+  public readonly canSave: boolean = true;
+  public readonly canAddItem: boolean = true;
+  public readonly canAddReturn: boolean = true;
+  public readonly canAddPayment: boolean = true;
+  public readonly canInvoice: boolean = true;
+  public readonly canStage: boolean = true;
+  public readonly canRoute: boolean = true;
+  public readonly canShip: boolean = true;
+  public readonly canComplete: boolean = true;
+  public readonly canCancel: boolean = true;
 
   public products: Lookup<string>[] = [];
   public branches: Lookup<string>[] = [];
@@ -37,13 +50,24 @@ export class OrderCreate {
   public payable: OrderPayable;
   public order: Order;
 
-  constructor(api: ServiceApi, router: Router, dialog: DialogService, notification: NotificationService, eventAggregator: EventAggregator, invoiceReport: InvoiceReport) {
+  constructor(api: ServiceApi, auth: AuthService, router: Router, dialog: DialogService, notification: NotificationService, eventAggregator: EventAggregator, invoiceReport: InvoiceReport) {
     this._api = api;
+    this._auth = auth;
     this._router = router;
     this._dialog = dialog;
     this._notification = notification;
     this._eventAggregator = eventAggregator;
     this._invoiceReport = invoiceReport;
+    this.canSave = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
+    this.canAddItem = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
+    this.canAddReturn = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
+    this.canAddPayment = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
+    this.canInvoice = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
+    this.canStage = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
+    this.canRoute = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
+    this.canShip = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
+    this.canComplete = this._auth.isAuthorized([role.admin, role.manager]);
+    this.canCancel = this._auth.isAuthorized([role.admin, role.manager]);
   }
 
   public getInitializedOrder(): Order {

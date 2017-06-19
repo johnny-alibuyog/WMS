@@ -1,5 +1,5 @@
 import { Router, RouterConfiguration } from 'aurelia-router'
-import { AuthService, AuthSettings } from '../services/auth-service';
+import { AuthSettings, AuthService } from '../services/auth-service';
 import { role } from '../common/models/role';
 
 export class Index {
@@ -17,12 +17,7 @@ export class Index {
         title: 'Products',
         settings: {
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         },
       },
@@ -34,12 +29,7 @@ export class Index {
         title: 'Inventory Level',
         settings: {
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         },
       },
@@ -51,12 +41,7 @@ export class Index {
         title: 'Discontinued Products',
         settings: {
           auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
+            roles: role.all()
           }
         },
       },
@@ -67,14 +52,7 @@ export class Index {
         nav: false,
         title: 'Product',
         settings: {
-          auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-              role.warehouseman
-            ]
-          }
+          auth: role.all()
         },
       },
     ]);

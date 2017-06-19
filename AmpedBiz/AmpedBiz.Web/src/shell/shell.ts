@@ -19,6 +19,11 @@ export class Shell {
         nav: true,
         main: true,
         title: 'Dashboard',
+        settings: {
+          auth: <AuthSettings>{
+            roles: role.all()
+          }
+        },
       },
       {
         route: ['products'],
@@ -29,7 +34,7 @@ export class Shell {
         title: 'Products',
         settings: {
           auth: <AuthSettings>{
-            roles: role.unknownRole
+            roles: role.all()
           }
         },
       },
@@ -39,7 +44,12 @@ export class Shell {
         moduleId: '../purchases/index',
         nav: true,
         main: true,
-        title: 'Purchases'
+        title: 'Purchases',
+        settings: {
+          auth: <AuthSettings>{
+            roles: role.all()
+          }
+        },
       },
       {
         route: ['orders'],
@@ -47,7 +57,12 @@ export class Shell {
         moduleId: '../orders/index',
         nav: true,
         main: true,
-        title: 'Customer Orders'
+        title: 'Customer Orders',
+        settings: {
+          auth: <AuthSettings>{
+            roles: role.all()
+          }
+        },
       },
       {
         route: ['returns'],
@@ -55,7 +70,12 @@ export class Shell {
         moduleId: '../returns/index',
         nav: true,
         main: true,
-        title: 'Returns'
+        title: 'Returns',
+        settings: {
+          auth: <AuthSettings>{
+            roles: role.all()
+          }
+        },
       },
       {
         route: ['routes'],
@@ -63,7 +83,12 @@ export class Shell {
         moduleId: '../routes/index',
         nav: true,
         main: true,
-        title: 'Routes'
+        title: 'Routes',
+        settings: {
+          auth: <AuthSettings>{
+            roles: role.unknown
+          }
+        },
       },
       {
         route: ['report_center'],
@@ -71,7 +96,14 @@ export class Shell {
         moduleId: '../report_center/index',
         nav: true,
         main: true,
-        title: 'Report Center'
+        title: 'Report Center',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+            ]
+          }
+        },
       },
       {
         route: ['admin'],
@@ -79,7 +111,15 @@ export class Shell {
         moduleId: '../admin/index',
         nav: true,
         main: true,
-        title: 'Admin'
+        title: 'Admin',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+            ]
+          }
+        },
       },
       {
         route: [""],

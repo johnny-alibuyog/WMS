@@ -6,14 +6,17 @@ import { Lookup } from '../common/custom_types/lookup';
 import { StageDefinition } from '../common/models/stage-definition';
 import { PurchaseOrder, PurchaseOrderStatus, PurchaseOrderAggregate, PurchaseOrderReceivable, purchaseOrderEvents, } from '../common/models/purchase-order';
 import { ServiceApi } from '../services/service-api';
+import { AuthService } from "../services/auth-service";
 import { NotificationService } from '../common/controls/notification-service';
 import { pricing } from '../common/models/pricing';
 import { formatDate } from '../services/formaters';
 import { VoucherReport } from './voucher-report';
+import { role } from "../common/models/role";
 
 @autoinject
 export class PurchaseOrderCreate {
   private _api: ServiceApi;
+  private _auth: AuthService;
   private _router: Router;
   private _notification: NotificationService;
   private _eventAggegator: EventAggregator;
@@ -21,8 +24,15 @@ export class PurchaseOrderCreate {
   private _voucherReport: VoucherReport;
 
   public header: string = 'Purchase Order';
-  public isEdit: boolean = false;
-  public canSave: boolean = true;
+
+  public readonly canSave: boolean = true;
+  public readonly canAddItem: boolean = true;
+  public readonly canAddPayment: boolean = true;
+  public readonly canAddReceipt: boolean = true;
+  public readonly canSubmit: boolean = true;
+  public readonly canApprove: boolean = true;
+  public readonly canComplete: boolean = true;
+  public readonly canCancel: boolean = true;
 
   public paymentTypes: Lookup<string>[] = [];
   public suppliers: Lookup<string>[] = [];
@@ -30,12 +40,22 @@ export class PurchaseOrderCreate {
   public statuses: Lookup<PurchaseOrderStatus>[] = [];
   public purchaseOrder: PurchaseOrder;
 
-  constructor(api: ServiceApi, router: Router, notification: NotificationService, eventAggegator: EventAggregator, voucherReport: VoucherReport) {
+  constructor(api: ServiceApi, auth: AuthService, router: Router, notification: NotificationService, eventAggegator: EventAggregator, voucherReport: VoucherReport) {
     this._api = api;
+    this._auth = auth;
     this._router = router;
     this._notification = notification;
     this._eventAggegator = eventAggegator;
     this._voucherReport = voucherReport;
+
+    this.canSave = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
+    this.canAddItem = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
+    this.canAddPayment = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
+    this.canAddReceipt = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
+    this.canSubmit = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
+    this.canApprove = this._auth.isAuthorized([role.admin, role.manager]);
+    this.canComplete = this._auth.isAuthorized([role.admin, role.manager]);
+    this.canCancel = this._auth.isAuthorized([role.admin, role.manager]);
   }
 
   public getInitializedPurchaseOrder(): PurchaseOrder {
@@ -94,13 +114,6 @@ export class PurchaseOrderCreate {
   }
 
   public setPurchaseOrder(purchaseOrder: PurchaseOrder): void {
-    if (purchaseOrder.id) {
-      this.isEdit = true;
-    }
-    else {
-      this.isEdit = false;
-    }
-
     this.purchaseOrder = purchaseOrder;
     this.purchaseOrder.items = this.purchaseOrder.items || [];
     this.purchaseOrder.payments = this.purchaseOrder.payments || [];

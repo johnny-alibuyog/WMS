@@ -13,12 +13,22 @@ export class IsTransitionAllowedToValueConverter {
 
 export class IsModificationDisallowedToValueConverter {
 
-  toView(allowedModifications: OrderAggregate[], aggregateString: string): boolean {
+  toView(allowedModifications: OrderAggregate[], aggregateString: string, isPermitted: boolean): boolean {
     if (!allowedModifications) {
       return false;
     }
 
-    return allowedModifications.find(x => x == OrderAggregate[aggregateString]) === undefined;
+    var isAllowedViaConfiguration = allowedModifications.find(x => x == OrderAggregate[aggregateString]) !== undefined;
+    if (!isAllowedViaConfiguration) {
+      return true;
+    }
+
+    var isAllowedViaPermission = isPermitted;
+    if (!isAllowedViaPermission) {
+      return true;
+    }
+
+    return false;
   }
 }
 

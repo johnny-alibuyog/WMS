@@ -1,3 +1,5 @@
+import { role } from '../common/models/role';
+import { AuthService } from '../services/auth-service';
 import { Router } from 'aurelia-router';
 import { autoinject } from 'aurelia-framework';
 import { Product } from '../common/models/product';
@@ -8,6 +10,7 @@ import { NotificationService } from '../common/controls/notification-service';
 @autoinject
 export class ProductCreate {
   private readonly _api: ServiceApi;
+  private readonly _auth: AuthService;
   private readonly _router: Router;
   private readonly _notification: NotificationService;
 
@@ -19,10 +22,12 @@ export class ProductCreate {
   public suppliers: Lookup<string>[];
   public categories: Lookup<string>[];
 
-  constructor(api: ServiceApi, router: Router, notification: NotificationService) {
+  constructor(api: ServiceApi, auth: AuthService, router: Router, notification: NotificationService) {
     this._api = api;
+    this._auth = auth;
     this._router = router;
     this._notification = notification;
+    this.canSave = this._auth.isAuthorized([role.admin, role.manager]);
   }
 
   public activate(product: Product): void {

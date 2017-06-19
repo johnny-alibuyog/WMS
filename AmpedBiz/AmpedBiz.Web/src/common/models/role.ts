@@ -21,14 +21,14 @@ export const role = {
     id: 'W',
     name: 'Warehouseman'
   },
-  unknownRole: <Role>{
+  unknown: <Role>{
     id: 'UR',
-    name: 'Unknown Role'
-  },
-  all: <Role[]>[
-    this.admin,
-    this.manager,
-    this.salesclerk,
-    this.warehouseman,
-  ]
+    name: 'Unknown'
+  },  
+  all: () => [
+    role.admin,
+    role.manager,
+    role.salesclerk,
+    role.warehouseman,
+  ],
 }

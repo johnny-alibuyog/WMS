@@ -28,7 +28,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 foreach (var user in usersToInsert)
                 {
                     user.EnsureValidity();
-                    session.Save(user);
+                    session.Save(user, user.Id);
                 }
 
                 transaction.Commit();

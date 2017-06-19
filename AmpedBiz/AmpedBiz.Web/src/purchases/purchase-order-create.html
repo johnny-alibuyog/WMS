@@ -21,23 +21,23 @@
             <span6>&nbsp ${header} &nbsp</span6>
 
             <!-- transition buttons -->
-            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedModifications | canModify" click.trigger="save()">
+            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedModifications | canModify" disabled.bind="!canSave" click.trigger="save()">
               <i class="fa fa-check"></i> Save
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'submitted'" click.trigger="submit()">
+            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'submitted'" disabled.bind="!canSubmit" click.trigger="submit()">
               <i class="fa fa-check"></i> Submit
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'approved'" click.trigger="approve()">
+            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'approved'" disabled.bind="!canApprove" click.trigger="approve()">
               <i class="fa fa-check"></i> Approve
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'completed'" click.trigger="complete()">
+            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'completed'" disabled.bind="!canComplete" click.trigger="complete()">
               <i class="fa fa-check"></i> Complete
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'cancelled'" click.trigger="cancel()">
+            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'cancelled'" disabled.bind="!canCancel" click.trigger="cancel()">
               <i class="fa fa-check"></i> Cancel
             </button>
 
@@ -170,7 +170,9 @@
                   <li class="active">
                     <a data-toggle="tab" href="#itemsTab">
                       <span>Purchase Items &nbsp</span>
-                      <button type="button" disabled.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo: 'items'" class="btn btn-default btn-circle" click.trigger="addItem()">
+                      <button type="button" class="btn btn-default btn-circle" 
+                        disabled.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo:'items':canAddItem" 
+                        click.trigger="addItem()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
                     </a>
@@ -178,7 +180,9 @@
                   <li>
                     <a data-toggle="tab" href="#paymentsTab">
                       <span>Payments &nbsp</span>
-                      <button type="button" disabled.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo: 'payments'" class="btn btn-default btn-circle" click.trigger="addPayment()">
+                      <button type="button" class="btn btn-default btn-circle" 
+                        disabled.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo:'payments':canAddPayment" 
+                        click.trigger="addPayment()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
                     </a>
@@ -186,7 +190,9 @@
                   <li>
                     <a data-toggle="tab" href="#receiptsTab">
                       <span>Inventory Recieving&nbsp</span>
-                      <button type="button" disabled.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo: 'receipts'" class="btn btn-default btn-circle" click.trigger="addReceipt()">
+                      <button type="button" class="btn btn-default btn-circle" 
+                        disabled.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo:'receipts':canAddReceipt" 
+                        click.trigger="addReceipt()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
                     </a>
@@ -205,7 +211,7 @@
                       purchase-order-id.bind="purchaseOrder.id"
                       tax-amount.bind="purchaseOrder.taxAmount"
                       shipping-fee-amount.bind="purchaseOrder.shippingFeeAmount"
-                      is-modification-disallowed.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo: 'items'">
+                      is-modification-disallowed.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo:'items':canAddItem">
                     </purchase-order-item-page>
                   </div>
 
@@ -217,7 +223,7 @@
                       payments.bind="purchaseOrder.payments" 
                       payment-types.bind="paymentTypes" 
                       purchase-order-id.bind="purchaseOrder.id"
-                      is-modification-disallowed.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo: 'payments'">
+                      is-modification-disallowed.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo:'payments':canAddPayment">
                     </purchase-order-payment-page>
                   </div>
 
@@ -230,7 +236,7 @@
                       receipts.bind="purchaseOrder.receipts"
                       receivables.bind="purchaseOrder.receivables" 
                       purchase-order-id.bind="purchaseOrder.id"
-                      is-modification-disallowed.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo: 'receipts'">
+                      is-modification-disallowed.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo:'receipts':canAddReceipt">
                     </purchase-order-receipt-page>
                   </div>
 
