@@ -21,27 +21,26 @@ export class Login {
     //  .ensure('password').isNotEmpty().hasMinLength(3).hasMaxLength(10);
   }
 
-  login() {
+  public login(): void {
     if (this.user.username && this.user.password) {
       this._auth.login(this.user)
-        .catch(error => {
-          this._notification.warning(error);
-        });
+        .catch(error => this._notification.warning(error));
     }
     else {
       this._notification.warning('Please enter a username and password.')
     }
   }
 
-  logout() {
+  public logout(): void {
     this._auth.logout()
+      .then(data => this.user = this._auth.user)
       .catch(error => this._notification.warning(error));
   }
 
-  activate() {
+  public activate(): void {
     this.user = {
-      username: 'admin',
-      password: 'admin123'
-    };
+      username: '',
+      password: ''
+    }
   }
 }

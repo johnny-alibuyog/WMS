@@ -115,8 +115,8 @@ export class AuthService {
       var url = this._resouce + '/login';
       return this._httpClient.send({ url: url, method: 'POST', data: user })
         .then(data => {
-          this._app.setRoot('shell/shell')
           this.user = <User>data;
+          this._app.setRoot('shell/shell')
         })
         .catch(error => {
           this._notification.warning(error)
@@ -137,7 +137,6 @@ export class AuthService {
     return new Promise<any>((resolve, reject) => {
       this.user = null;
       this._app.setRoot('users/login');
-      resolve();
     });
   }
 }

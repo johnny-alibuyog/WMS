@@ -90,18 +90,18 @@ namespace AmpedBiz.Service.Products
                             : query.OrderByDescending(x => x.Inventory.BasePrice.Amount);
                     });
 
+                    message.Sorter.Compose("retailPrice", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.Inventory.RetailPrice.Amount)
+                            : query.OrderByDescending(x => x.Inventory.RetailPrice.Amount);
+                    });
+
                     message.Sorter.Compose("wholesalePrice", direction =>
                     {
                         query = direction == SortDirection.Ascending
                             ? query.OrderBy(x => x.Inventory.WholesalePrice.Amount)
                             : query.OrderByDescending(x => x.Inventory.WholesalePrice.Amount);
-                    });
-
-                    message.Sorter.Compose("wholeSalePrice", direction =>
-                    {
-                        query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Inventory.RetailPrice.Amount)
-                            : query.OrderByDescending(x => x.Inventory.RetailPrice.Amount);
                     });
 
                     var itemsFuture = query

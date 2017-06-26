@@ -6,6 +6,6 @@
   "Username": "ampbizdb",
   "Password": "6jPbwQtZ8N52WRJ5rEWv2g==",
   "BatchSize": 50,
-  "UseDummyData": false,
-  "RecreateDb": false
+  "UseDummyData": true,
+  "RecreateDb": true
 }

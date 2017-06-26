@@ -21,10 +21,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<Role> Roles { get; set; } = new Collection<Role>();
         
-        public virtual string Name
-        {
-            get { return Regex.Replace($"{this.Person.FirstName} {this.Person.LastName}", @"\s+", " "); } // this will be used by ExpressMapper
-        }
+        public virtual string Name => Regex.Replace($"{this.Person.FirstName} {this.Person.LastName}", @"\s+", " "); // this will be used by ExpressMapper
 
         public User() : base(default(Guid)) { }
 
