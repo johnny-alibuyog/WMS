@@ -18,8 +18,13 @@ namespace AmpedBiz.Core.Entities
 
         public ReturnItem() : base(default(Guid)) { }
 
-        public ReturnItem(Product product, ReturnReason returnReason, Measure quantity, Money unitPrice, Guid? id = null)
-            : base(id ?? default(Guid))
+        public ReturnItem(
+            Product product, 
+            ReturnReason returnReason, 
+            Measure quantity, 
+            Money unitPrice, 
+            Guid? id = null
+        ) : base(id ?? default(Guid))
         {
             this.Product = product;
             this.ReturnReason = returnReason;

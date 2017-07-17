@@ -1,9 +1,11 @@
 ﻿using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Inventories;
+using AmpedBiz.Core.Services.Products;
 using NHibernate;
 using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Dynamic;
 using System.Linq;
 
@@ -24,13 +26,18 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
             for (int i = 0; i < 5; i++)
             {
-                data.Add(new Product()
+                data.Add(new Func<Product>(() =>
                 {
-                    Code = $"Code {1}",
-                    Name = $"Product {i}",
-                    Description = $"Description {i}",
-                    Image = $"some_image_{i}.png"
-                });
+                    var product = new Product();
+                    product.Accept(new ProductUpdateVisitor()
+                    {
+                        Code = $"Code {1}",
+                        Name = $"Product {i}",
+                        Description = $"Description {i}",
+                        Image = $"some_image_{i}.png",
+                    });
+                    return product;
+                })());
             }
 
             using (var session = _sessionFactory.RetrieveSharedSession())
@@ -52,33 +59,61 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         prices.RetailPrice = new Money(_utils.RandomDecimal((decimal)prices.BasePrice.Amount, (decimal)prices.WholesalePrice.Amount), currency);
                         prices.BadStockPrice = new Money(prices.BasePrice.Amount * 0.10M, currency);
 
-                        item.Code = _utils.RandomString(length: 25);
-                        item.Category = _utils.Random<ProductCategory>();
-                        item.Supplier = _utils.Random<Supplier>();
-                        item.Discontinued = _utils.RandomBoolean();
+                        item.Accept(new ProductUpdateVisitor()
+                        {
+                            Code = _utils.RandomString(length: 25),
+                            Category = _utils.Random<ProductCategory>(),
+                            Supplier = _utils.Random<Supplier>(),
+                            Discontinued = _utils.RandomBoolean(),
+                            UnitOfMeasures = new Collection<ProductUnitOfMeasure>()
+                            {
+                                new ProductUnitOfMeasure(
+                                    isDefault: false,
+                                    isStandard: true,
+                                    standardEquivalentValue: 1,
+                                    unitOfMeasure: UnitOfMeasure.Piece,
+                                    prices: new Collection<ProductUnitOfMeasurePrice>()
+                                    {
+                                        new ProductUnitOfMeasurePrice(
+                                            pricing: Pricing.BasePrice,
+                                            amount: new Money(100M, Currency.PHP)
+                                        ),
+                                        new ProductUnitOfMeasurePrice(
+                                            pricing: Pricing.WholesalePrice,
+                                            amount: new Money(100M, Currency.PHP)
+                                        ),
+                                        new ProductUnitOfMeasurePrice(
+                                            pricing: Pricing.RetailPrice,
+                                            amount: new Money(100M, Currency.PHP)
+                                        ),
+                                        new ProductUnitOfMeasurePrice(
+                                            pricing: Pricing.BadStockPrice,
+                                            amount: new Money(100M, Currency.PHP)
+                                        ),
+                                    }
+                                )
+                            }
+                        });
 
-                        // inventory settings
-                        // TODO: get this from excel
-                        item.Inventory.TargetLevel = new Measure(_utils.RandomInteger(100, 200), UnitOfMeasure.Piece);
-                        item.Inventory.ReorderLevel = new Measure(_utils.RandomInteger(50, 75), UnitOfMeasure.Piece);
-                        item.Inventory.MinimumReorderQuantity = new Measure(_utils.RandomInteger(100, 150), UnitOfMeasure.Piece);
+                        item.Inventory.Accept(new InventoryUpdateVisitor()
+                        {
+                            IndividualBarcode = _utils.RandomString(length: 25),
+                            PackagingSize = _utils.RandomInteger(1, 24),
+                            PackagingBarcode = _utils.RandomString(length: 25),
+                            UnitOfMeasure = _utils.Random<UnitOfMeasure>(),
+                            PackagingUnitOfMeasure = _utils.Random<UnitOfMeasure>(),
 
-                        item.Inventory.IndividualBarcode = _utils.RandomString(length: 25);
-                        item.Inventory.PackagingSize = _utils.RandomInteger(1, 24);
-                        item.Inventory.PackagingBarcode = _utils.RandomString(length: 25);
-                        item.Inventory.UnitOfMeasure = _utils.Random<UnitOfMeasure>();
-                        item.Inventory.PackagingUnitOfMeasure = _utils.Random<UnitOfMeasure>();
+                            BasePrice = prices.BasePrice,
+                            WholesalePrice = prices.WholesalePrice,
+                            RetailPrice = prices.RetailPrice,
+                            BadStockPrice = prices.BadStockPrice,
 
-                        item.Inventory.BasePrice = prices.BasePrice;
-                        item.Inventory.WholesalePrice = prices.WholesalePrice;
-                        item.Inventory.RetailPrice = prices.RetailPrice;
-                        item.Inventory.BadStockPrice = prices.BadStockPrice;
+                            InitialLevel = new Measure(_utils.RandomDecimal(150M, 300M), item.Inventory.UnitOfMeasure),
+                            TargetLevel = new Measure(_utils.RandomDecimal(150M, 300M), item.Inventory.UnitOfMeasure),
+                            ReorderLevel = item.Inventory.TargetLevel - new Measure(_utils.RandomDecimal(50M, 100M), item.Inventory.UnitOfMeasure),
+                            MinimumReorderQuantity = item.Inventory.TargetLevel - item.Inventory.ReorderLevel,
+                        });
 
-                        item.Inventory.InitialLevel = new Measure(_utils.RandomDecimal(150M, 300M), item.Inventory.UnitOfMeasure);
-                        item.Inventory.TargetLevel = new Measure(_utils.RandomDecimal(150M, 300M), item.Inventory.UnitOfMeasure);
-                        item.Inventory.ReorderLevel = item.Inventory.TargetLevel - new Measure(_utils.RandomDecimal(50M, 100M), item.Inventory.UnitOfMeasure);
-                        item.Inventory.MinimumReorderQuantity = item.Inventory.TargetLevel - item.Inventory.ReorderLevel;
-                        item.Inventory.Accept(new InventoryRecomputeVisitor());
                         item.EnsureValidity();
 
                         session.Save(item);

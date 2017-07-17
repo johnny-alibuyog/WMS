@@ -73,7 +73,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 
                     Func<Guid, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
 
-                    entity.Accept(new PurchaseOrderSaveVisitor()
+                    entity.Accept(new PurchaseOrderUpdateVisitor()
                     { 
                         CreatedBy = (!message?.CreatedBy?.Id.IsNullOrDefault() ?? false)
                             ? session.Load<User>(message.CreatedBy.Id) : null,

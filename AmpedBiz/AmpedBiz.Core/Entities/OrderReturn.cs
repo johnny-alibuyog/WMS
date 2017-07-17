@@ -21,8 +21,15 @@ namespace AmpedBiz.Core.Entities
 
         public OrderReturn() : base(default(Guid)) { }
 
-        public OrderReturn(Product product, ReturnReason reason, DateTime? returnedOn, User returnedBy, Measure quantity, Money returned, Guid? id = null)
-            : base(id ?? default(Guid))
+        public OrderReturn(
+            Product product, 
+            ReturnReason reason, 
+            DateTime? returnedOn, 
+            User returnedBy, 
+            Measure quantity, 
+            Money returned, 
+            Guid? id = null
+        ) : base(id ?? default(Guid))
         {
             this.Product = product;
             this.Reason = reason;

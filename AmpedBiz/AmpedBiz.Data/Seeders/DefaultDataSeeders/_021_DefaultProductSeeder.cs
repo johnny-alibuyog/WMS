@@ -1,4 +1,7 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Common.Configurations;
+using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Services.Inventories;
+using AmpedBiz.Core.Services.Products;
 using LinqToExcel;
 using NHibernate;
 using NHibernate.Linq;
@@ -21,21 +24,12 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
         public void Seed()
         {
-            var productsFilename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\Default\default_products.xlsx");
-            var supplierFilename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\Default\default_suppliers.xlsx");
+            var filename = Path.Combine(DatabaseConfig.Instance.GetDefaultSeederDataAbsolutePath(), @"default_products.xlsx");
 
-            if (!File.Exists(productsFilename) || !File.Exists(supplierFilename))
+            if (!File.Exists(filename))
                 return;
-
-            var supplierData = new ExcelQueryFactory(supplierFilename).Worksheet()
-                .Select(x => new
-                {
-                    Code = x["Supplier Id"],
-                    Name = x["Supplier Name"]
-                })
-                .ToList();
-
-            var productData = new ExcelQueryFactory(productsFilename).Worksheet()
+            
+            var productData = new ExcelQueryFactory(filename).Worksheet()
                 .Select(x => new
                 {
                     Code = x["Product Id"].ToString(),
@@ -71,13 +65,6 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
                 if (!exists)
                 {
-                    // suppliers
-                    supplierData.ForEach(supplier => session.Save(new Supplier()
-                    {
-                        Code = supplier.Code,
-                        Name = supplier.Name
-                    }));
-
                     // categories
                     categoryData.ForEach(category => session.Save(new ProductCategory(category, category)));
 
@@ -90,40 +77,65 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                     var defaults = new
                     {
                         Currency = session.Load<Currency>(Currency.PHP.Id),
-                        Supplier = session.Query<Supplier>().FirstOrDefault(x =>
-                            x.Code == supplierData.First().Code ||
-                            x.Name == supplierData.First().Name
-                        )
+                        Supplier = session.Query<Supplier>().FirstOrDefault()
+                        // TODO: Think of better way to included the supplier from the product.
+                        //       One option is to name the product seeding source with the supplier id (default_products-SMIS.xlsx)
                     };
 
                     // products
                     productData.ForEach(x =>
                     {
                         var product = new Product();
-                        product.Code = x.Code;
-                        product.Name = x.Name;
-                        product.Supplier = defaults.Supplier;
-                        product.Category = session.Load<ProductCategory>(x.Category);
+                        product.Accept(new ProductUpdateVisitor()
+                        {
+                            Code = x.Code,
+                            Name = x.Name,
+                            Supplier = defaults.Supplier,
+                            Category = session.Load<ProductCategory>(x.Category)
+                        });
 
-                        // inventory settings
-                        // TODO: get this from excel
-                        product.Inventory.TargetLevel = new Measure(_utils.RandomInteger(100, 200), UnitOfMeasure.Piece);
-                        product.Inventory.ReorderLevel = new Measure(_utils.RandomInteger(50, 75), UnitOfMeasure.Piece);
-                        product.Inventory.MinimumReorderQuantity = new Measure(_utils.RandomInteger(100, 150), UnitOfMeasure.Piece);
+                        product.Inventory.Accept(new InventoryUpdateVisitor()
+                        {
+                            // inventory settings
+                            // TODO: get this from excel
+                            TargetLevel = new Measure(_utils.RandomInteger(100, 200), UnitOfMeasure.Piece),
+                            ReorderLevel = new Measure(_utils.RandomInteger(50, 75), UnitOfMeasure.Piece),
+                            MinimumReorderQuantity = new Measure(_utils.RandomInteger(100, 150), UnitOfMeasure.Piece),
 
-                        product.Inventory.IndividualBarcode = x.IndividualBarcode;
-                        product.Inventory.PackagingBarcode = x.PackagingBarcode;
-                        product.Inventory.PackagingSize = x.PiecePerPackage;
-                        product.Inventory.UnitOfMeasure = unitOfMeasure.Individual;
-                        product.Inventory.PackagingUnitOfMeasure = unitOfMeasure.Packaging;
+                            IndividualBarcode = x.IndividualBarcode,
+                            PackagingBarcode = x.PackagingBarcode,
+                            PackagingSize = x.PiecePerPackage,
+                            UnitOfMeasure = unitOfMeasure.Individual,
+                            PackagingUnitOfMeasure = unitOfMeasure.Packaging,
 
-                        // TODO: check for correct values
-                        //product.Inventory.BasePrice = new Money(amount: 0M, currency: defaults.Currency);
-                        //product.Inventory.BadStockPrice = new Money(amount: 0M, currency: defaults.Currency);
-                        product.Inventory.BasePrice = new Money(amount: x.WholesalePerPiece, currency: defaults.Currency);
-                        product.Inventory.BadStockPrice = new Money(amount: x.WholesalePerPiece, currency: defaults.Currency);
-                        product.Inventory.WholesalePrice = new Money(amount: x.WholesalePerPiece, currency: defaults.Currency);
-                        product.Inventory.RetailPrice = new Money(amount: x.RetailPricePerPiece, currency: defaults.Currency);
+                            // TODO: check for correct values
+                            //BasePrice = new Money(amount: 0M, currency: defaults.Currency),
+                            //BadStockPrice = new Money(amount: 0M, currency: defaults.Currency),
+                            BasePrice = new Money(amount: x.WholesalePerPiece, currency: defaults.Currency),
+                            BadStockPrice = new Money(amount: x.WholesalePerPiece, currency: defaults.Currency),
+                            WholesalePrice = new Money(amount: x.WholesalePerPiece, currency: defaults.Currency),
+                            RetailPrice = new Money(amount: x.RetailPricePerPiece, currency: defaults.Currency),
+                        });
+
+                        //product.Inventory.TargetLevel = new Measure(_utils.RandomInteger(100, 200), UnitOfMeasure.Piece);
+                        //product.Inventory.ReorderLevel = new Measure(_utils.RandomInteger(50, 75), UnitOfMeasure.Piece);
+                        //product.Inventory.MinimumReorderQuantity = new Measure(_utils.RandomInteger(100, 150), UnitOfMeasure.Piece);
+
+                        //product.Inventory.IndividualBarcode = x.IndividualBarcode;
+                        //product.Inventory.PackagingBarcode = x.PackagingBarcode;
+                        //product.Inventory.PackagingSize = x.PiecePerPackage;
+                        //product.Inventory.UnitOfMeasure = unitOfMeasure.Individual;
+                        //product.Inventory.PackagingUnitOfMeasure = unitOfMeasure.Packaging;
+
+                        //// TODO: check for correct values
+                        ////product.Inventory.BasePrice = new Money(amount: 0M, currency: defaults.Currency);
+                        ////product.Inventory.BadStockPrice = new Money(amount: 0M, currency: defaults.Currency);
+                        //product.Inventory.BasePrice = new Money(amount: x.WholesalePerPiece, currency: defaults.Currency);
+                        //product.Inventory.BadStockPrice = new Money(amount: x.WholesalePerPiece, currency: defaults.Currency);
+                        //product.Inventory.WholesalePrice = new Money(amount: x.WholesalePerPiece, currency: defaults.Currency);
+                        //product.Inventory.RetailPrice = new Money(amount: x.RetailPricePerPiece, currency: defaults.Currency);
+                        //product.EnsureValidity();
+
                         product.EnsureValidity();
 
                         session.Save(product);

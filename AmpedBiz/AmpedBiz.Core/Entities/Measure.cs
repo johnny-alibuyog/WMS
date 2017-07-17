@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Measure : ValueObject<Measure>, IComparable<Measure>
+    public class Measure : ValueObject<Measure>
     {
         public virtual decimal Value { get; set; }
 
@@ -25,17 +25,6 @@ namespace AmpedBiz.Core.Entities
         public virtual string ToStringWithSymbol()
         {
             return $"{this.Value.ToString("0.##")} {this.Unit}";
-        }
-
-        public int CompareTo(Measure that)
-        {
-            if (that == null)
-                return 1;
-
-            if (this.Unit != null && that.Unit != null && this.Unit != that.Unit)
-                throw new InvalidOperationException($"You cannot compare measure of unit {this.Unit.Name} to {that.Unit.Name}");
-
-            return this.Value.CompareTo(that.Value);
         }
 
         public static bool operator >(Measure operand1, Measure operand2)
@@ -143,5 +132,23 @@ namespace AmpedBiz.Core.Entities
             }
             return sum;
         }
+
+        public static int CompareTo(this Measure left, Measure right)
+        {
+            if (left == null && right == null)
+                return 0;
+
+            if (left == null)
+                return -1;
+
+            if (right == null)
+                return 1;
+
+            if (left.Unit != null && right.Unit != null && left.Unit != right.Unit)
+                throw new InvalidOperationException($"You cannot compare measure of unit {left.Unit.Name} to {right.Unit.Name}");
+
+            return left.Value.CompareTo(right.Value);
+        }
+
     }
 }

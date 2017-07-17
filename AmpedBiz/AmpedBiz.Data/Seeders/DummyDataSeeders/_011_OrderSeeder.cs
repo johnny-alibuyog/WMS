@@ -296,7 +296,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         var randomProductCount = validCount > 50 ? 50 : validCount;
 
                         var entity = new Order(Guid.NewGuid());
-                        entity.Accept(new OrderSaveVisitor()
+                        entity.Accept(new OrderUpdateVisitor()
                         {
                             OrderNumber = _utils.RandomInteger(10000, 99999).ToString(),
                             CreatedBy = _utils.Random<User>(),
@@ -380,7 +380,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     foreach (var entity in input)
                     {
                         var currency = session.Load<Currency>(Currency.PHP.Id);
-                        entity.Accept(new OrderSaveVisitor()
+                        entity.Accept(new OrderUpdateVisitor()
                         {
                             Payments = Enumerable
                                 .Range(0, _utils.RandomInteger(1, 1))
@@ -479,7 +479,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
                         var currency = session.Load<Currency>(Currency.PHP.Id);
 
-                        entity.Accept(new OrderSaveVisitor()
+                        entity.Accept(new OrderUpdateVisitor()
                         {
                             Returns = entity.Items
                                 .Take(_utils.RandomInteger(1, entity.Items.Count()))

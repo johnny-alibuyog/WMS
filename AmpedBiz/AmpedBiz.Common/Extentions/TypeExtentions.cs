@@ -34,5 +34,14 @@ namespace AmpedBiz.Common.Extentions
 
             return false;
         }
+
+        public static T Coalesce<T>(params T[] vaules)
+        {
+            var defaultValue = vaules
+                .Where(x => !x.IsNullOrDefault())
+                .FirstOrDefault();
+
+            return defaultValue;
+        }
     }
 }

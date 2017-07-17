@@ -32,10 +32,7 @@ namespace AmpedBiz.Common.Extentions
             if (items == null)
                 return true;
 
-            if (items.Count() == 0)
-                return true;
-
-            return false;
+            return !items.Any();
         }
             
         public static T RandomElement<T>(this IEnumerable<T> enumerable)

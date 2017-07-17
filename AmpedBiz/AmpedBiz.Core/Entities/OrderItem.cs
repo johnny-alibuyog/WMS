@@ -24,8 +24,14 @@ namespace AmpedBiz.Core.Entities
 
         public OrderItem() : base(default(Guid)) { }
 
-        public OrderItem(Product product, decimal packagingSize, Measure quantity, decimal discountRate, Money unitPrice, Guid? id = null) 
-            : base(id ?? default(Guid))
+        public OrderItem(
+            Product product, 
+            decimal packagingSize, 
+            Measure quantity, 
+            decimal discountRate, 
+            Money unitPrice, 
+            Guid? id = null
+        ) : base(id ?? default(Guid))
         {
             this.Product = product;
             this.PackagingSize = packagingSize;
@@ -38,20 +44,5 @@ namespace AmpedBiz.Core.Entities
             this.Discount = new Money((this.ExtendedPrice.Amount * this.DiscountRate), this.UnitPrice.Currency);
             this.TotalPrice = this.ExtendedPrice - this.Discount;
         }
-
-        //protected internal virtual void Invoiced()
-        //{
-        //    this.Product.Inventory.Allocate(this.Quantity);
-        //}
-
-        //protected internal virtual void Shipped()
-        //{
-        //    this.Product.Inventory.Ship(this.Quantity);
-        //}
-
-        //protected internal virtual void BackOrdered()
-        //{
-        //    this.Product.Inventory.BackOrder(this.Quantity);
-        //}
     }
 }

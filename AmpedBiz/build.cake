@@ -54,6 +54,7 @@ Setup((context) =>
 {
     // Executed BEFORE the first task.
     Information("Running tasks...");
+	//Information(AppDomain.CurrentDomain.BaseDirectory);
 });
 
 Teardown((context) =>

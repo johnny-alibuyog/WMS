@@ -1,8 +1,8 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Common.Configurations;
+using AmpedBiz.Core.Entities;
 using LinqToExcel;
 using NHibernate;
 using NHibernate.Linq;
-using System;
 using System.IO;
 using System.Linq;
 
@@ -19,7 +19,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
         public void Seed()
         {
-            var filename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\Default\default_customers.xlsx");
+            var filename = Path.Combine(DatabaseConfig.Instance.GetDefaultSeederDataAbsolutePath(), @"default_customers.xlsx");
 
             if (!File.Exists(filename))
                 return;

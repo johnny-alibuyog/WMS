@@ -1,6 +1,6 @@
 ﻿using AmpedBiz.Core.Entities;
 
-namespace AmpedBiz.Core.Services.Inventories
+namespace AmpedBiz.Core.Services.Products
 {
     public abstract class ProductVisitor : IVisitor<Product>
     {

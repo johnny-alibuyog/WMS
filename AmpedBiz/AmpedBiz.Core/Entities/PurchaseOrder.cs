@@ -24,7 +24,7 @@ namespace AmpedBiz.Core.Entities
 
     public class PurchaseOrder : Entity<Guid, PurchaseOrder>, IAccept<PurchaseOrderVisitor>
     {
-        public virtual string PurchaseOrderNumber { get;  internal protected set; }
+        public virtual string PurchaseOrderNumber { get; internal protected set; }
 
         public virtual Tenant Tenant { get; internal protected set; }
 
@@ -86,10 +86,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<PurchaseOrderReceipt> Receipts { get; internal protected set; } = new Collection<PurchaseOrderReceipt>();
 
-        public virtual StateDispatcher State
-        {
-            get { return new StateDispatcher(this); }
-        }
+        public virtual StateDispatcher State => new StateDispatcher(this);
 
         public PurchaseOrder() : base(default(Guid)) { }
 

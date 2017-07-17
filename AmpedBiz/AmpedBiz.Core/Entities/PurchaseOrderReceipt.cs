@@ -20,8 +20,15 @@ namespace AmpedBiz.Core.Entities
 
         public PurchaseOrderReceipt() : base(default(Guid)) { }
 
-        public PurchaseOrderReceipt(string batchNumber, User receivedBy, DateTime? receivedOn, 
-            DateTime? expiresOn, Product product, Measure quantity, Guid? id = null) : base(id ?? default(Guid))
+        public PurchaseOrderReceipt(
+            string batchNumber, 
+            User receivedBy, 
+            DateTime? receivedOn, 
+            DateTime? expiresOn, 
+            Product product, 
+            Measure quantity, 
+            Guid? id = null
+        ) : base(id ?? default(Guid))
         {
             this.Id = id ?? this.Id;
             this.BatchNumber = batchNumber;
@@ -31,10 +38,5 @@ namespace AmpedBiz.Core.Entities
             this.Product = product;
             this.Quantity = quantity;
         }
-
-        //protected internal virtual void Received()
-        //{
-        //    this.Product.Inventory.Receive(this.Quantity);
-        //}
     }
 }

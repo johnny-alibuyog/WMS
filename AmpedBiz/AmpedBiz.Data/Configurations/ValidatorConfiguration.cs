@@ -30,7 +30,7 @@ namespace AmpedBiz.Data.Configurations
                 .SetMessageInterpolator<ConventionMessageInterpolator>()
                 .SetCustomResourceManager("AmpedBiz.Data.Properties.CustomValidatorMessages", Assembly.Load("AmpedBiz.Data"))
                 .SetDefaultValidatorMode(ValidatorMode.OverrideExternalWithAttribute)
-                .Register(Assembly.Load(typeof(UserMapping).Assembly.FullName).ValidationDefinitions())
+                .Register(Assembly.Load(typeof(UserDefinition.Mapping).Assembly.FullName).ValidationDefinitions())
                 .IntegrateWithNHibernate
                     .ApplyingDDLConstraints()
                     .RegisteringListeners();

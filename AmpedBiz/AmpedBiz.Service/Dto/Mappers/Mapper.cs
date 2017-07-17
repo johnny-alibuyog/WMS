@@ -1,13 +1,10 @@
-﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Service.Branches;
-using AmpedBiz.Service.Customers;
+﻿using AmpedBiz.Service.Customers;
 using AmpedBiz.Service.Orders;
 using AmpedBiz.Service.Products;
 using AmpedBiz.Service.PurchaseOrders;
 using AmpedBiz.Service.Returns;
 using AmpedBiz.Service.Users;
 using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using Entity = AmpedBiz.Core.Entities;
 

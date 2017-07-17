@@ -1,26 +1,30 @@
 ﻿using AmpedBiz.Core.Services;
-using AmpedBiz.Core.Services.Inventories;
+using AmpedBiz.Core.Services.Products;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Entities
 {
     public class Product : Entity<Guid, Product>, IAccept<ProductVisitor>
     {
-        public virtual string Code { get; set; }
+        public virtual string Code { get; protected internal set; }
 
-        public virtual string Name { get; set; }
+        public virtual string Name { get; protected internal set; }
 
-        public virtual string Description { get; set; }
+        public virtual string Description { get; protected internal set; }
 
-        public virtual Supplier Supplier { get; set; }
+        public virtual Supplier Supplier { get; protected internal set; }
 
-        public virtual ProductCategory Category { get; set; }
+        public virtual ProductCategory Category { get; protected internal set; }
 
-        public virtual string Image { get; set; }
+        public virtual string Image { get; protected internal set; }
 
-        public virtual bool Discontinued { get; set; }
+        public virtual bool Discontinued { get; protected internal set; }
 
-        public virtual Inventory Inventory { get; set; }
+        public virtual Inventory Inventory { get; protected internal set; }
+
+        public virtual IEnumerable<ProductUnitOfMeasure> UnitOfMeasures { get; protected internal set; } = new Collection<ProductUnitOfMeasure>();
 
         public Product() : base(default(Guid))
         {

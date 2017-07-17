@@ -11,7 +11,7 @@ namespace AmpedBiz.Data.Configurations
         public static void Configure(MappingConfiguration config)
         {
             config
-                .FluentMappings.AddFromAssemblyOf<UserMapping>()
+                .FluentMappings.AddFromAssemblyOf<UserDefinition.Mapping>()
                 .Conventions.AddFromAssemblyOf<CustomJoinedSubclassConvention>()
                 .Conventions.Setup(o => o.Add(AutoImport.Never()))
                 .ExportTo(DatabaseConfig.Instance.GetWorkingPath("Mappings"));

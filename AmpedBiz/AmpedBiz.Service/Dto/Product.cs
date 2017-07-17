@@ -17,7 +17,7 @@ namespace AmpedBiz.Service.Dto
 
         public Lookup<string> Category { get; set; }
 
-        public bool Discontinued { get; set; }
+        public bool? Discontinued { get; set; }
 
         public string Image { get; set; }
 

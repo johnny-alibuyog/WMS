@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Common.Exceptions;
+using AmpedBiz.Common.Extentions;
 using AmpedBiz.Data.Configurations;
 using NHibernate;
 using NHibernate.Context;

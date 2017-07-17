@@ -90,6 +90,12 @@
     <Compile Include="Services\IAccept.cs" />
     <Compile Include="Services\Hashes\IHashProvider.cs" />
     <Compile Include="Services\Inventories\InventoryCalculator.cs" />
+    <Compile Include="Services\Inventories\InventoryRecomputeVisitor.cs">
+      <DependentUpon>InventoryVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\Inventories\InventoryUpdateVisitor.cs">
+      <DependentUpon>InventoryVisitor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Services\Inventories\InventoryVisitor.cs" />
     <Compile Include="Services\Inventories\Orders\AllocateVisitor.cs" />
     <Compile Include="Services\Inventories\Orders\RetractAllocatedVisitor.cs" />
@@ -97,7 +103,22 @@
     <Compile Include="Services\Inventories\Orders\ShipVisitor.cs" />
     <Compile Include="Services\Inventories\PurchaseOrders\ReceiveVisitor.cs" />
     <Compile Include="Services\Inventories\PurchaseOrders\RetractOrderedVisitor.cs" />
-    <Compile Include="Services\Inventories\InventoryRecomputeVisitor.cs" />
+    <Compile Include="Services\Orders\OrderUpdateItemsVisitor.cs">
+      <DependentUpon>OrderUpdateVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\Orders\OrderUpdatePaymentsVisitor.cs">
+      <DependentUpon>OrderUpdateVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\Orders\OrderUpdateReturnsVisitor.cs">
+      <DependentUpon>OrderUpdateVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\Orders\OrderUpdateVisitor.cs">
+      <DependentUpon>OrderVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\Products\ProductUpdateVisitor.cs" />
+    <Compile Include="Services\Products\ProductUpdateUnitOfMeasuresVisitor.cs">
+      <DependentUpon>ProductUpdateVisitor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Services\Products\ProductVisitor.cs" />
     <Compile Include="Services\Inventories\PurchaseOrders\OrderVisitor.cs" />
     <Compile Include="Services\IVisitor.cs" />
@@ -117,23 +138,11 @@
     <Compile Include="Services\Orders\OrderRoutedVisitor.cs">
       <DependentUpon>OrderVisitor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Services\Orders\OrderSaveVisitor.cs">
-      <DependentUpon>OrderVisitor.cs</DependentUpon>
-    </Compile>
     <Compile Include="Services\Orders\OrderShippedVisitor.cs">
       <DependentUpon>OrderVisitor.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\Orders\OrderStagedVisitor.cs">
       <DependentUpon>OrderVisitor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Services\Orders\OrderUpdateItemsVisitor.cs">
-      <DependentUpon>OrderSaveVisitor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Services\Orders\OrderUpdatePaymentsVisitor.cs">
-      <DependentUpon>OrderSaveVisitor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Services\Orders\OrderUpdateReturnsVisitor.cs">
-      <DependentUpon>OrderSaveVisitor.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\Orders\OrderVisitor.cs" />
     <Compile Include="Services\Orders\StateDispatcher.cs" />
@@ -154,20 +163,20 @@
     <Compile Include="Services\PurchaseOrders\PurchaseOrderCompletedVisitor.cs">
       <DependentUpon>PurchaseOrderVisitor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Services\PurchaseOrders\PurchaseOrderSaveVisitor.cs">
-      <DependentUpon>PurchaseOrderVisitor.cs</DependentUpon>
-    </Compile>
     <Compile Include="Services\PurchaseOrders\PurchaseOrderSubmittedVisitor.cs">
       <DependentUpon>PurchaseOrderVisitor.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\PurchaseOrders\PurchaseOrderUpdateItemsVisitor.cs">
-      <DependentUpon>PurchaseOrderSaveVisitor.cs</DependentUpon>
+      <DependentUpon>PurchaseOrderUpdateVisitor.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\PurchaseOrders\PurchaseOrderUpdatePaymentsVisitor.cs">
-      <DependentUpon>PurchaseOrderSaveVisitor.cs</DependentUpon>
+      <DependentUpon>PurchaseOrderUpdateVisitor.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\PurchaseOrders\PurchaseOrderUpdateReceiptsVisitor.cs">
-      <DependentUpon>PurchaseOrderSaveVisitor.cs</DependentUpon>
+      <DependentUpon>PurchaseOrderUpdateVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\PurchaseOrders\PurchaseOrderUpdateVisitor.cs">
+      <DependentUpon>PurchaseOrderVisitor.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\PurchaseOrders\PurchaseOrderVisitor.cs" />
     <Compile Include="Services\PurchaseOrders\StateDispatcher.cs" />

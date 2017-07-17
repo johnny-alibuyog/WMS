@@ -18,23 +18,35 @@ namespace AmpedBiz.Core.Entities
 
     public class ProductUnitOfMeasure : Entity<Guid, ProductUnitOfMeasure>
     {
-        public virtual Product Product { get; set; }
+        public virtual Product Product { get; protected internal set; }
 
-        public virtual UnitOfMeasure UnitOfMeasure { get; set; }
+        public virtual UnitOfMeasure UnitOfMeasure { get; protected internal set; }
 
-        public virtual UnitOfMeasure StandardEquivalent { get; set; }
+        public virtual decimal StandardEquivalentValue { get; protected internal set; }
 
-        public virtual bool IsStandard { get; set; }
+        public virtual bool IsStandard { get; protected internal set; }
 
-        public virtual bool IsDefault { get; set; }
+        public virtual bool IsDefault { get; protected internal set; }
 
-        public virtual IEnumerable<ProductUnitOfMeasurePrice> Prices { get; set; } = new Collection<ProductUnitOfMeasurePrice>();
+        public virtual IEnumerable<ProductUnitOfMeasurePrice> Prices { get; protected internal set; } = new Collection<ProductUnitOfMeasurePrice>();
+
+        public virtual Measure GetStandardEquivalent() => new Measure(this.StandardEquivalentValue, this.UnitOfMeasure);
 
         public ProductUnitOfMeasure() : base(default(Guid)) { }
 
-        public ProductUnitOfMeasure(Product product, Guid id = default(Guid)) : base(id)
+        public ProductUnitOfMeasure(
+            bool isDefault,
+            bool isStandard,
+            UnitOfMeasure unitOfMeasure,
+            decimal standardEquivalentValue,
+            IEnumerable<ProductUnitOfMeasurePrice> prices,
+            Guid id = default(Guid)
+        ) : base(id)
         {
-            this.Product = product;
+            this.UnitOfMeasure = unitOfMeasure;
+            this.StandardEquivalentValue = standardEquivalentValue;
+            this.IsStandard = isStandard;
+            this.IsDefault = isDefault;
         }
     }
 }

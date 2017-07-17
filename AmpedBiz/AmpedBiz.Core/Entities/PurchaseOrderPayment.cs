@@ -16,8 +16,13 @@ namespace AmpedBiz.Core.Entities
 
         public PurchaseOrderPayment() : base(default(Guid)) { }
 
-        public PurchaseOrderPayment(User paidBy, DateTime? paidOn, Money payment, PaymentType paymentType, Guid? id = null) 
-            : base(id ?? default(Guid))
+        public PurchaseOrderPayment(
+            User paidBy, 
+            DateTime? paidOn, 
+            Money payment, 
+            PaymentType paymentType, 
+            Guid? id = null
+        ) : base(id ?? default(Guid))
         {
             this.PaidBy = paidBy;
             this.PaidOn = paidOn;

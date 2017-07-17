@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using Westwind.Utilities.Configuration;
 
 namespace AmpedBiz.Common.Configurations
@@ -33,6 +34,24 @@ namespace AmpedBiz.Common.Configurations
         public virtual bool UseDummyData { get; set; }
 
         public virtual bool RecreateDb { get; set; }
+
+        public virtual string DefaultSeedDataPath { get; set; }
+
+        public virtual string GetDefaultSeederDataAbsolutePath()
+        {
+            return Path.Combine(this.AssemblyPath, this.DefaultSeedDataPath);
+        }
+
+        private string AssemblyPath
+        {
+            get
+            {
+                var codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                var uri = new UriBuilder(codeBase);
+                var path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
+            }
+        }
 
         public DatabaseConfig()
         {
@@ -79,6 +98,7 @@ namespace AmpedBiz.Common.Configurations
             this.BatchSize = 50;
             this.UseDummyData = true;
             this.RecreateDb = true;
+            this.DefaultSeedDataPath = ".\\Data\\Default";
         }
 
         private static DatabaseConfig Create()

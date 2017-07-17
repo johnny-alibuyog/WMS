@@ -90,6 +90,8 @@
     <Compile Include="Dto\Person.cs" />
     <Compile Include="Dto\Product.cs" />
     <Compile Include="Dto\ProductCategory.cs" />
+    <Compile Include="Dto\ProductUnitOfMeasure.cs" />
+    <Compile Include="Dto\ProductUnitOfMeasurePrice.cs" />
     <Compile Include="Dto\PurchaseOrder.cs" />
     <Compile Include="Dto\PurchaseOrderItem.cs" />
     <Compile Include="Dto\PurchaseOrderPayment.cs" />

@@ -88,7 +88,7 @@ namespace AmpedBiz.Service.Orders
 
                     Func<Guid, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
 
-                    entity.Accept(new OrderSaveVisitor()
+                    entity.Accept(new OrderUpdateVisitor()
                     {
                         OrderNumber = message.OrderNumber,
                         CreatedBy = (!message?.CreatedBy?.Id.IsNullOrDefault() ?? false)

@@ -20,6 +20,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AmpedBiz.Common.Configurations;
 
 namespace AmpedBiz.Tests.IntegrationTests
 {
@@ -86,7 +87,10 @@ namespace AmpedBiz.Tests.IntegrationTests
         private Service.Common.Pager pager = new Service.Common.Pager() { Offset = 1, Size = 1000 };
         private Service.Common.Sorter sorter = new Service.Common.Sorter() { };
 
-        public IntegrationTests() { }
+        public IntegrationTests()
+        {
+            Console.WriteLine(DatabaseConfig.Instance.GetDefaultSeederDataAbsolutePath());
+        }
 
         [OneTimeSetUp]
         public void SetupTest()
@@ -101,6 +105,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                 .GetSessionFactory();
 
             this.SetupDefaultSeeders();
+            //this.SetupDummySeeders();
         }
 
         [OneTimeTearDown]
@@ -115,7 +120,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                 from t in AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("AmpedBiz.Data")).GetTypes()
                 where t.GetInterfaces().Contains(typeof(IDefaultDataSeeder))
                 orderby t.Name
-                select Activator.CreateInstance(t, this.sessionFactory) as IDefaultDataSeeder
+                select Activator.CreateInstance(t, this.sessionFactory) as ISeeder
             );
 
             foreach (var seeder in seeders)
@@ -137,6 +142,21 @@ namespace AmpedBiz.Tests.IntegrationTests
                 this._productCategories = session.Query<ProductCategory>().Cacheable().ToList();
                 this._unitOfMeasures = session.Query<UnitOfMeasure>().Cacheable().ToList();
                 this._suppliers = session.Query<Supplier>().Where(x => x.Products.Count() > 0).ToList();
+            }
+        }
+
+        private void SetupDummySeeders()
+        {
+            var seeders = (
+                from t in AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("AmpedBiz.Data")).GetTypes()
+                where t.GetInterfaces().Contains(typeof(IDummyDataSeeder))
+                orderby t.Name
+                select Activator.CreateInstance(t, this.sessionFactory) as ISeeder
+            );
+
+            foreach (var seeder in seeders)
+            {
+                seeder.Seed();
             }
         }
 
@@ -683,7 +703,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         private Service.Dto.Order InvoiceOrder(Service.Dto.Order order)
         {
-            //this.AdjustOrderByProductAvailability(order);
+            this.AdjustOrderByProductAvailability(order);
 
             var request = new InvoiceOrder.Request() { Id = order.Id, InvoicedBy = RandomUser() };
             var handler = new InvoiceOrder.Handler(this.sessionFactory).Handle(request);
@@ -725,6 +745,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             var response = new SaveOrder.Handler(this.sessionFactory).Handle(new SaveOrder.Request()
             {
+                Id = order.Id,
                 CreatedBy = order.CreatedBy,
                 Branch = order.Branch,
                 Customer = order.Customer,

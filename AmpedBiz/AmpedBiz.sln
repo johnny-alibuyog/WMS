@@ -47,6 +47,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseConfigs", "Database
 		.settings\DatabaseConfigs\database.staging.mywindowshosting.config.json = .settings\DatabaseConfigs\database.staging.mywindowshosting.config.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Test.Integration", "AmpedBiz.Test.Integration\AmpedBiz.Test.Integration.csproj", "{FDB8EBA6-B55D-4D57-9DF6-0CD66AFDD73D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{EEC4D7F9-9FD5-41D1-900F-565057FE61FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEC4D7F9-9FD5-41D1-900F-565057FE61FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEC4D7F9-9FD5-41D1-900F-565057FE61FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDB8EBA6-B55D-4D57-9DF6-0CD66AFDD73D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDB8EBA6-B55D-4D57-9DF6-0CD66AFDD73D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDB8EBA6-B55D-4D57-9DF6-0CD66AFDD73D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDB8EBA6-B55D-4D57-9DF6-0CD66AFDD73D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,6 +3,7 @@ using AmpedBiz.Core.Entities;
 using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
+using NHibernate.Linq;
 using System;
 using System.Linq;
 
@@ -25,6 +26,9 @@ namespace AmpedBiz.Service.Users
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
+                    var exists = session.Query<User>().Any(x => x.Username == message.Username);
+                    exists.Assert($"Username {message.Username} already exists.");
+
                     var entity = new User();
                     entity.Username = message.Username;
                     entity.Password = message.Password;
@@ -41,6 +45,7 @@ namespace AmpedBiz.Service.Users
                     entity.EnsureValidity();
 
                     session.Save(entity);
+
                     transaction.Commit();
 
                     message.MapTo(response);

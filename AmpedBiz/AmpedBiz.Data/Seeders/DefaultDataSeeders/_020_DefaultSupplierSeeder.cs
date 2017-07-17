@@ -1,8 +1,8 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Common.Configurations;
+using AmpedBiz.Core.Entities;
 using LinqToExcel;
 using NHibernate;
 using NHibernate.Linq;
-using System;
 using System.IO;
 using System.Linq;
 
@@ -19,16 +19,16 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
         public void Seed()
         {
-            var filename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Data\Default\default_supliers.xlsx");
+            var filename = Path.Combine(DatabaseConfig.Instance.GetDefaultSeederDataAbsolutePath(), "default_suppliers.xlsx");
 
             if (!File.Exists(filename))
-                return;
+                return; //throw new FileNotFoundException($"File {filename} not found", filename);
 
-            var excel = new ExcelQueryFactory(filename);
+                var excel = new ExcelQueryFactory(filename);
             var data = excel.Worksheet()
                 .Select(x => new Supplier()
                 {
-                    Code = x["Supplier ID"],
+                    Code = x["Supplier Id"],
                     Name = x["Supplier Name"],
                 })
                 .ToList();

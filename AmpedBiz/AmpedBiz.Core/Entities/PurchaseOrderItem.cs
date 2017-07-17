@@ -16,7 +16,12 @@ namespace AmpedBiz.Core.Entities
 
         public PurchaseOrderItem() : base(default(Guid)) { }
 
-        public PurchaseOrderItem(Product product, Money unitCost, Measure quantity, Guid? id = null) : base(id ?? default(Guid))
+        public PurchaseOrderItem(
+            Product product, 
+            Money unitCost, 
+            Measure quantity, 
+            Guid? id = null
+        ) : base(id ?? default(Guid))
         {
             this.Product = product;
             this.Quantity = quantity;
@@ -26,10 +31,5 @@ namespace AmpedBiz.Core.Entities
                 currency: this.UnitCost.Currency
             );
         }
-
-        //protected internal virtual void Approved()
-        //{
-        //    this.Product.Inventory.Order(this.Quantity);
-        //}
     }
 }
