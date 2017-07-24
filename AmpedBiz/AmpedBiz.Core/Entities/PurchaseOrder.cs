@@ -26,6 +26,10 @@ namespace AmpedBiz.Core.Entities
     {
         public virtual string PurchaseOrderNumber { get; internal protected set; }
 
+        public virtual string ReferenceNumber { get; internal protected set; }
+
+        public virtual string VoucherNumber { get; internal protected set; }
+
         public virtual Tenant Tenant { get; internal protected set; }
 
         public virtual PaymentType PaymentType { get; internal protected set; }

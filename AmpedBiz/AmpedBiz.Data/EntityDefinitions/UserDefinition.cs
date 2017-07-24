@@ -26,6 +26,10 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 HasManyToMany(x => x.Roles)
                    .Table("UsersRoles")
+                   .ForeignKeyConstraintNames(
+                        parentForeignKeyName: "FK_Users_UsersRoles",
+                        childForeignKeyName: "FK_Roles_UsersRoles"
+                    )
                    .Cascade.All()
                    .AsSet();
 

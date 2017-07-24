@@ -29,6 +29,8 @@ namespace AmpedBiz.Service.Dto
 
         public string OrderNumber { get; set; }
 
+        public string InvoiceNumber { get; set; }
+
         public Lookup<Guid> Branch { get; set; }
 
         public Lookup<Guid> Customer { get; set; }
@@ -115,6 +117,8 @@ namespace AmpedBiz.Service.Dto
     public class OrderPageItem
     {
         public Guid Id { get; set; }
+
+        public string InvoiceNumber { get; set; }
 
         public string Status { get; set; }
 

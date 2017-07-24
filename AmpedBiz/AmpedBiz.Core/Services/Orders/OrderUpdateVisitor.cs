@@ -42,6 +42,9 @@ namespace AmpedBiz.Core.Services.Orders
 
         public override void Visit(Order target)
         {
+            if (string.IsNullOrEmpty(target.InvoiceNumber))
+                target.InvoiceNumber = new InvoiceGenerator().Generate();
+
             target.OrderNumber = this.OrderNumber ?? target.OrderNumber;
             target.CreatedBy = this.CreatedBy ?? target.CreatedBy;
             target.CreatedOn = this.CreatedOn ?? target.CreatedOn;

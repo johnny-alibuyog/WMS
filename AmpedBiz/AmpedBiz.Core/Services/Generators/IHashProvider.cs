@@ -1,4 +1,4 @@
-﻿namespace AmpedBiz.Core.Services.Hashes
+﻿namespace AmpedBiz.Core.Services.Generators
 {
     public interface IHashProvider
     {

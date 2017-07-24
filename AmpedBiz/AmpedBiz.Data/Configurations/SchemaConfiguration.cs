@@ -16,26 +16,19 @@ namespace AmpedBiz.Data.Configurations
                 UpdateDatabase(config);     /// NOTE: Applies in production
         }
 
-        private static void RecreateDatabase(Configuration config)
+        private static void RecreateDatabase(this Configuration config)
         {
-            //new SchemaExport(config).Create(true, true);
+            var path = Path.Combine(DatabaseConfig.Instance.GetWorkingPath("Schemas"), "schema.sql");
 
-            var schemaPath = Path.Combine(DatabaseConfig.Instance.GetWorkingPath("Schemas"), "schema.sql");
-
-            //new SchemaExport(config)
-            //    .SetOutputFile(schemaPath)
-            //    .Create(true, true);
-
-            new SchemaExport(config)
-                .SetOutputFile(schemaPath)
-                .Create(x => Debug.WriteLine(x), true);
+            var schema = new SchemaExport(config);
+            schema.SetOutputFile(path);
+            schema.Create(x => Debug.WriteLine(x), true);
         }
 
         private static void UpdateDatabase(Configuration config)
         {
-            //new SchemaUpdate(config).Execute(true, true);
-
-            new SchemaUpdate(config).Execute(x => Debug.WriteLine(x), true);
+            var schema = new SchemaUpdate(config);
+            schema.Execute(x => Debug.WriteLine(x), true);
         }
     }
 }

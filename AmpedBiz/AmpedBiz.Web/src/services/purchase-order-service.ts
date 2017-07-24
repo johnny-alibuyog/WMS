@@ -73,6 +73,16 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
   }
 
   public save(purchaseOrder: PurchaseOrder): Promise<PurchaseOrder> {
+    var request = (purchaseOrder.id)
+      ? this._httpClient.put(this._resouce + '/' + purchaseOrder.id, purchaseOrder)
+      : this._httpClient.post(this._resouce, purchaseOrder);
+
+    return request.then(data => {
+      data.receivables = this.computeReceivablesFrom(data);
+      return data;
+    });
+
+    /*
     if (purchaseOrder.id) {
       var url = this._resouce + '/' + purchaseOrder.id;
       return this._httpClient
@@ -113,6 +123,7 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
           return data;
         });
     }
+    */
   }
 
   public submit(purchaseOrder: PurchaseOrder): Promise<PurchaseOrder> {

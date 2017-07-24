@@ -15,6 +15,8 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Map(x => x.OrderNumber);
 
+                Map(x => x.InvoiceNumber);
+
                 References(x => x.Branch);
 
                 References(x => x.Customer);
@@ -124,6 +126,9 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Define(x => x.Id);
 
                 Define(x => x.OrderNumber)
+                    .MaxLength(30);
+
+                Define(x => x.InvoiceNumber)
                     .MaxLength(30);
 
                 Define(x => x.Branch)

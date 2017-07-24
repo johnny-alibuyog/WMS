@@ -40,7 +40,14 @@ export class PurchaseOrderCreate {
   public statuses: Lookup<PurchaseOrderStatus>[] = [];
   public purchaseOrder: PurchaseOrder;
 
-  constructor(api: ServiceApi, auth: AuthService, router: Router, notification: NotificationService, eventAggegator: EventAggregator, voucherReport: VoucherReport) {
+  constructor(
+    api: ServiceApi,
+    auth: AuthService,
+    router: Router,
+    notification: NotificationService,
+    eventAggegator: EventAggregator,
+    voucherReport: VoucherReport
+  ) {
     this._api = api;
     this._auth = auth;
     this._router = router;
@@ -61,6 +68,7 @@ export class PurchaseOrderCreate {
   public getInitializedPurchaseOrder(): PurchaseOrder {
     return <PurchaseOrder>{
       createdOn: new Date(),
+      createdBy: this._auth.userAsLookup,
       pricing: pricing.wholesalePrice,
       stage: <StageDefinition<PurchaseOrderStatus, PurchaseOrderAggregate>>{
         allowedTransitions: [],
@@ -188,11 +196,11 @@ export class PurchaseOrderCreate {
   public downloadVoucherCsv(): void {
     //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
     var arrData = this.purchaseOrder.items.map(x => <any>{
-        Product: x.product.name,
-        Quantity: x.quantityValue,
-        Cost: x.unitCostAmount,
-        Total: x.totalCostAmount
-      });
+      Product: x.product.name,
+      Quantity: x.quantityValue,
+      Cost: x.unitCostAmount,
+      Total: x.totalCostAmount
+    });
 
     var $csv = 'sep=,' + '\r\n\n';
     var showLabel = true;

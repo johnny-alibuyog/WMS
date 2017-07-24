@@ -1,6 +1,6 @@
 ﻿using AmpedBiz.Data;
 
-namespace AmpedBiz.Tests.Configurations
+namespace AmpedBiz.Service.Test.Integration.Configurations
 {
     internal class AuditProvider : IAuditProvider
     {

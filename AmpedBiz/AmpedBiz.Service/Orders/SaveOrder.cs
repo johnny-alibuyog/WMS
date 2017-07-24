@@ -94,9 +94,9 @@ namespace AmpedBiz.Service.Orders
                         CreatedBy = (!message?.CreatedBy?.Id.IsNullOrDefault() ?? false)
                             ? session.Load<User>(message.CreatedBy.Id) : null,
                         CreatedOn = message?.CreatedOn ?? DateTime.Now,
-                        OrderedBy = (!message?.CreatedBy?.Id.IsNullOrDefault() ?? false)
+                        OrderedBy = (!message?.OrderedBy?.Id.IsNullOrDefault() ?? false)
                             ? session.Load<User>(message.CreatedBy.Id) : null,
-                        OrderedOn = message?.CreatedOn ?? DateTime.Now,
+                        OrderedOn = message?.OrderedOn ?? DateTime.Now,
                         Branch = (!message?.Branch?.Id.IsNullOrDefault() ?? false)
                             ? session.Load<Branch>(message.Branch.Id) : null,
                         Customer = (!message?.Customer?.Id.IsNullOrDefault() ?? false)

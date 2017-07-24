@@ -75,6 +75,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 
                     entity.Accept(new PurchaseOrderUpdateVisitor()
                     { 
+                        ReferenceNumber = message.ReferenceNumber,
                         CreatedBy = (!message?.CreatedBy?.Id.IsNullOrDefault() ?? false)
                             ? session.Load<User>(message.CreatedBy.Id) : null,
                         CreatedOn = message?.CreatedOn ?? DateTime.Now,

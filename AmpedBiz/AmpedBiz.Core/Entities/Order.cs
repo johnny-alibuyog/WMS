@@ -26,7 +26,9 @@ namespace AmpedBiz.Core.Entities
 
     public class Order : Entity<Guid, Order>, IAccept<OrderVisitor>
     {
-        public virtual string OrderNumber  { get; set; }
+        public virtual string OrderNumber  { get; internal protected set; }
+
+        public virtual string InvoiceNumber { get; internal protected set; }
 
         public virtual Branch Branch { get; internal protected set; }
 

@@ -15,6 +15,10 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Map(x => x.PurchaseOrderNumber);
 
+                Map(x => x.ReferenceNumber);
+
+                Map(x => x.VoucherNumber);
+
                 References(x => x.PaymentType);
 
                 References(x => x.Supplier);
@@ -103,6 +107,12 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Define(x => x.Id);
 
                 Define(x => x.PurchaseOrderNumber)
+                    .MaxLength(30);
+
+                Define(x => x.ReferenceNumber)
+                    .MaxLength(30);
+
+                Define(x => x.VoucherNumber)
                     .MaxLength(30);
 
                 Define(x => x.PaymentType);

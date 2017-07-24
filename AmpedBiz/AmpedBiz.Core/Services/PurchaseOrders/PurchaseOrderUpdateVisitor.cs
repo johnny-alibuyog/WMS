@@ -8,6 +8,8 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
     {
         public virtual string PurchaseOrderNumber { get; set; }
 
+        public virtual string ReferenceNumber { get; set; }
+
         public virtual User CreatedBy { get; set; }
 
         public virtual DateTime? CreatedOn { get; set; }
@@ -32,7 +34,11 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
 
         public override void Visit(PurchaseOrder target)
         {
+            if (string.IsNullOrWhiteSpace(target.VoucherNumber))
+                target.VoucherNumber = new VoucherGenerator().Generate();
+
             target.PurchaseOrderNumber = this.PurchaseOrderNumber ?? target.PurchaseOrderNumber;
+            target.ReferenceNumber = this.ReferenceNumber ?? target.ReferenceNumber;
             target.CreatedBy = this.CreatedBy ?? target.CreatedBy;
             target.CreatedOn = this.CreatedOn ?? target.CreatedOn;
             target.ExpectedOn = this.ExpectedOn ?? target.ExpectedOn;

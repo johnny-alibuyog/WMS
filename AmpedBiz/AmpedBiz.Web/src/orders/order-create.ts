@@ -50,7 +50,15 @@ export class OrderCreate {
   public payable: OrderPayable;
   public order: Order;
 
-  constructor(api: ServiceApi, auth: AuthService, router: Router, dialog: DialogService, notification: NotificationService, eventAggregator: EventAggregator, invoiceReport: InvoiceReport) {
+  constructor(
+    api: ServiceApi,
+    auth: AuthService,
+    router: Router,
+    dialog: DialogService,
+    notification: NotificationService,
+    eventAggregator: EventAggregator,
+    invoiceReport: InvoiceReport
+  ) {
     this._api = api;
     this._auth = auth;
     this._router = router;
@@ -73,6 +81,9 @@ export class OrderCreate {
   public getInitializedOrder(): Order {
     return <Order>{
       orderedOn: new Date(),
+      orderedBy: this._auth.userAsLookup,
+      createdOn: new Date(),
+      createdBy: this._auth.userAsLookup,
       pricing: pricing.retailPrice,
       stage: <StageDefinition<OrderStatus, OrderAggregate>>{
         allowedTransitions: [],
@@ -211,7 +222,7 @@ export class OrderCreate {
       .then(data => this._invoiceReport.show(data))
   }
 
-  public signalPricingChanged(): void{
+  public signalPricingChanged(): void {
     this._eventAggregator.publish(orderEvents.pricingChanged);
   }
 

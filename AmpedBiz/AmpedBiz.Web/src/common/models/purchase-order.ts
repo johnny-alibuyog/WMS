@@ -39,6 +39,8 @@ export enum PurchaseOrderAggregate {
 
 export interface PurchaseOrder {
   id?: string;
+  referenceNumber?: string;
+  voucherNumber?: string;
   user?: Lookup<string>;
   supplier?: Lookup<string>;
   shipper?: Lookup<string>;
@@ -141,9 +143,10 @@ export interface PurchaseOrderPayable {
   paymentAmount?: number;
 }
 
-export interface Voucher{
+export interface Voucher {
   id?: string;
   supplierName?: string;
+  referenceNumber?: string;
   voucherNumber?: string;
   approvedByName?: string;
   approvedOn?: Date;
@@ -155,7 +158,7 @@ export interface Voucher{
   items: VoucherItem[];
 }
 
-export interface VoucherItem{
+export interface VoucherItem {
   id?: string;
   product?: Lookup<string>;
   quantityValue?: number;

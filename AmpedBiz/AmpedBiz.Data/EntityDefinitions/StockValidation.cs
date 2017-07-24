@@ -33,9 +33,9 @@ namespace AmpedBiz.Data.EntityDefinitions
         }
     }
 
-    public class ReleasedStokValidation : ValidationDef<ReleasedStock> { }
+    public class ReleasedStockValidation : ValidationDef<ReleasedStock> { }
 
-    public class ReceivedStokValidation : ValidationDef<ReceivedStock> { }
+    public class ReceivedStockValidation : ValidationDef<ReceivedStock> { }
 
     public class ShrinkedStockValidation : ValidationDef<ShrinkedStock>
     {

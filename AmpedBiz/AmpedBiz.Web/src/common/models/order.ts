@@ -44,6 +44,8 @@ export enum OrderAggregate {
 
 export interface Order {
   id?: string;
+  orderNumber?: string;
+  invoiceNumber?: string;
   branch?: Lookup<string>;
   customer?: Lookup<string>;
   pricing?: Lookup<string>;
@@ -166,6 +168,7 @@ export interface OrderPayable {
 
 export interface OrderInvoiceDetail {
   customerName?: string;
+  orderNumber?: string;
   invoiceNumber?: string;
   invoicedOn?: Date;
   invoicedByName?: string;

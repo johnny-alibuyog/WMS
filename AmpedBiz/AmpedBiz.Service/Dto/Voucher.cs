@@ -11,6 +11,8 @@ namespace AmpedBiz.Service.Dto
 
         public string SupplierName { get; set; }
 
+        public string ReferenceNumber { get; set; }
+
         public string VoucherNumber { get; set; }
 
         public string ApprovedByName { get; set; }
