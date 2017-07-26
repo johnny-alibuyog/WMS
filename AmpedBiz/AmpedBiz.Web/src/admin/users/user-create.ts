@@ -1,17 +1,16 @@
 import { autoinject } from 'aurelia-framework';
 import { DialogController } from 'aurelia-dialog';
+import { Role, role } from '../../common/models/role';
 import { User } from '../../common/models/user';
 import { Branch } from '../../common/models/branch';
-import { UserService } from '../../services/user-service';
-import { BranchService } from '../../services/branch-service';
+import { ServiceApi } from '../../services/service-api';
 import { NotificationService } from '../../common/controls/notification-service';
 
 @autoinject
 export class UserCreate {
+  private readonly _api: ServiceApi;
   private readonly _notificaton: NotificationService;
   private readonly _controller: DialogController;
-  private readonly _service: UserService;
-  private readonly _branchService: BranchService;
 
   public header: string = 'Create User';
   public isEdit: boolean = false;
@@ -19,32 +18,48 @@ export class UserCreate {
   public user: User;
   public branches: Branch[];
 
-  constructor(notification: NotificationService, controller: DialogController, service: UserService, branchService: BranchService) {
-    this._branchService = branchService;
+  constructor(notification: NotificationService, controller: DialogController, api: ServiceApi) {
     this._notificaton = notification;
     this._controller = controller;
-    this._service = service;
+    this._api = api;
   }
 
   public activate(user: User): void {
-    this._branchService.getList()
+    this._api.branches.getList()
       .then(data => this.branches = <Branch[]>data)
       .catch(error => this._notificaton.warning(error));
 
     if (user) {
       this.header = "Edit User";
       this.isEdit = true;
-      this._service.get(user.id)
+      this._api.users.get(user.id)
         .then(data => this.user = <User>data)
         .catch(error => this._notificaton.warning(error));
     }
     else {
       this.header = "Create User";
       this.isEdit = false;
-      this._service.getInitialUser(null)
+      this._api.users.getInitialUser(null)
         .then(data => this.user = <User>data)
         .catch(error => this._notificaton.warning(error));
     }
+  }
+
+  public canAssign(_role: Role): boolean {
+    if (this._api.auth.isAuthorized(role.admin)) {
+      return true;
+    }
+
+    if (this._api.auth.isAuthorized(role.manager)) {
+      if (_role.id === role.salesclerk.id) {
+        return true;
+      }
+      if (_role.id === role.warehouseman.id) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   public changeValue(): void {
@@ -58,7 +73,7 @@ export class UserCreate {
   public save(): void {
     if (this.isEdit) {
 
-      this._service.update(this.user)
+      this._api.users.update(this.user)
         .then(data => {
           this._notificaton.success("User  has been saved.")
             .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <User>data }));
@@ -69,7 +84,7 @@ export class UserCreate {
     }
     else {
 
-      this._service.create(this.user)
+      this._api.users.create(this.user)
         .then(data => {
           this._notificaton.success("User has been saved.")
             .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <User>data }));

@@ -28,6 +28,26 @@ namespace AmpedBiz.Service.Orders
                     var query = session.Query<Order>();
 
                     // compose filters
+                    message.Filter.Compose<string>("invoiceNumber", value =>
+                    {
+                        query = query.Where(x => x.InvoiceNumber.Contains(value));
+                    });
+
+                    message.Filter.Compose<Guid>("createdBy", value =>
+                    {
+                        query = query.Where(x => x.CreatedBy.Id == value);
+                    });
+
+                    message.Filter.Compose<Guid>("customer", value =>
+                    {
+                        query = query.Where(x => x.Customer.Id == value);
+                    });
+
+                    message.Filter.Compose<OrderStatus[]>("statuses", value =>
+                    {
+                        query = query.Where(x => value.Contains(x.Status));
+                    });
+
                     message.Filter.Compose<OrderStatus[]>("statuses", value =>
                     {
                         query = query.Where(x => value.Contains(x.Status));
@@ -38,12 +58,14 @@ namespace AmpedBiz.Service.Orders
                         query = query.Where(x => x.Status == value);
                     });
 
-                    message.Filter.Compose<Guid>("customer", value =>
+                    // compose sort
+                    message.Sorter.Compose("invoiceNumber", direction =>
                     {
-                        query = query.Where(x => x.Customer.Id == value);
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.InvoiceNumber)
+                            : query.OrderByDescending(x => x.InvoiceNumber);
                     });
 
-                    // compose sort
                     message.Sorter.Compose("orderdOn", direction =>
                     {
                         query = direction == SortDirection.Ascending
@@ -62,12 +84,11 @@ namespace AmpedBiz.Service.Orders
                                 .ThenByDescending(x => x.CreatedBy.Person.LastName);
                     });
 
-
                     message.Sorter.Compose("customer", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Customer)
-                            : query.OrderByDescending(x => x.Customer);
+                            ? query.OrderBy(x => x.Customer.Name)
+                            : query.OrderByDescending(x => x.Customer.Name);
                     });
 
                     message.Sorter.Compose("status", direction =>
@@ -116,8 +137,9 @@ namespace AmpedBiz.Service.Orders
                         .Select(x => new Dto.OrderPageItem()
                         {
                             Id = x.Id,
+                            InvoiceNumber = x.InvoiceNumber,
                             OrderedOn = x.OrderedOn.Value,
-                            CreatedBy = 
+                            CreatedBy =
                                 x.CreatedBy.Person.FirstName + " " +
                                 x.CreatedBy.Person.LastName,
                             Customer = x.Customer.Name,

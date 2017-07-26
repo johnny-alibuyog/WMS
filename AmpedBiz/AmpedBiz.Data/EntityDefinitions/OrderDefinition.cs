@@ -15,7 +15,8 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Map(x => x.OrderNumber);
 
-                Map(x => x.InvoiceNumber);
+                Map(x => x.InvoiceNumber)
+                    .Index("IDX_InvoiceNumber");
 
                 References(x => x.Branch);
 

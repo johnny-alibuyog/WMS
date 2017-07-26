@@ -11,7 +11,7 @@ namespace AmpedBiz.Core.Services.Orders
 
             var raw = $"{generator.Generate()}IN";
 
-            return Regex.Replace(raw, ".{5}", "$0-");
+            return Regex.Replace(raw, ".{6}", "$0-");
         }
     }
 }

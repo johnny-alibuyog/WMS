@@ -96,6 +96,12 @@ export class PurchaseOrderReceiptPage {
     if (!this.receivables)
       this.receivables = [];
 
+    var current = this.receivables.find(x => !x.product && x.receiving.quantity == 0);
+    if (current) {
+      this.selectedItem = current;
+      return;
+    }
+
     var _receivable = <PurchaseOrderReceivable>{
       purchaseOrderId: this.purchaseOrderId,
       product: null,
@@ -111,8 +117,9 @@ export class PurchaseOrderReceiptPage {
       }
     };
 
-    this.receivables.push(_receivable);
+    this.receivables.unshift(_receivable);
     this.selectedItem = _receivable;
+
     this.initializeReceiptPage();
     this.initializeReceivablePage();
   }

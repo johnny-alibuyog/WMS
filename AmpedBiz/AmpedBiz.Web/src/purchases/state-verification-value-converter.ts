@@ -45,25 +45,28 @@ export class CanModifyValueConverter {
 
 export class ProductCanBeChangedValueConverter {
 
-  toView(receivable: PurchaseOrderReceivable): boolean {
-    var cannotBeChanged = new ProductCannotBeChangedValueConverter().toView;
-    return !cannotBeChanged(receivable);
+  toView(receivable: PurchaseOrderReceivable, selectedItem: PurchaseOrderReceivable): boolean {
+    return !productCannotBeChanged(receivable) && receivable === selectedItem;
   }
 }
 
 export class ProductCannotBeChangedValueConverter {
 
-  toView(receivable: PurchaseOrderReceivable): boolean {
-    if (receivable && receivable.orderedQuantity > 0) {
-      return true;
-    }
-
-    if (receivable && receivable.receivedQuantity > 0) {
-      return true;
-    }
-
-    return false;
+  toView(receivable: PurchaseOrderReceivable, selectedItem: PurchaseOrderReceivable): boolean {
+    return productCannotBeChanged(receivable) || receivable !== selectedItem;
   }
+}
+
+function productCannotBeChanged(receivable: PurchaseOrderReceivable): boolean {
+  if (receivable && receivable.orderedQuantity > 0) {
+    return true;
+  }
+
+  if (receivable && receivable.receivedQuantity > 0) {
+    return true;
+  }
+
+  return false;
 }
 
 /*

@@ -41,7 +41,7 @@ export class StageGuard<TStatus, TAggregate> {
     return true;
   }
 
-  public CanSave(requiredRoles: Role[]){
+  public CanSave(requiredRoles: Role[]) {
     return this._auth.isAuthorized(requiredRoles);
   }
 }

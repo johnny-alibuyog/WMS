@@ -14,7 +14,7 @@ namespace AmpedBiz.Core.Services.Generators
 
         public Option()
         {
-            this.Length = 10;
+            this.Length = 6;
             this.AllowedCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".ToArray();
         }
 

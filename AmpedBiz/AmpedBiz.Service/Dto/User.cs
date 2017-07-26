@@ -33,5 +33,7 @@ namespace AmpedBiz.Service.Dto
         public virtual Person Person { get; set; }
 
         public virtual Address Address { get; set; }
+
+        public virtual List<Role> Roles { get; set; }
     }
 }

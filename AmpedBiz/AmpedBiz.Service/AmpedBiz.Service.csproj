@@ -195,6 +195,7 @@
     <Compile Include="UnitOfMeasures\GetUnitOfMeasurePage.cs" />
     <Compile Include="UnitOfMeasures\UpdateUnitOfMeasure.cs" />
     <Compile Include="Users\CreateUser.cs" />
+    <Compile Include="Users\GetUserLookup.cs" />
     <Compile Include="Users\GetInitialUser.cs" />
     <Compile Include="Users\GetUser.cs" />
     <Compile Include="Users\GetUserPage.cs" />

@@ -7,9 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AmpedBiz.Service.Customers
+namespace AmpedBiz.Service.Users
 {
-    public class GetCustomerLookup
+    public class GetUserLookup
     {
         public class Request : IRequest<Response>
         {
@@ -34,11 +34,13 @@ namespace AmpedBiz.Service.Customers
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var pairs = session.Query<Customer>()
+                    var pairs = session.Query<User>()
                         .Select(x => new Lookup<Guid>()
                         {
                             Id = x.Id,
-                            Name = x.Name
+                            Name = 
+                                x.Person.FirstName + " " +
+                                x.Person.LastName
                         })
                         .OrderBy(x => x.Name)
                         .Cacheable()

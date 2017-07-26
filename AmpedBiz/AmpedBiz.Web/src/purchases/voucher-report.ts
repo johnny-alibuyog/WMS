@@ -96,8 +96,8 @@ export class VoucherReport implements Report<Voucher> {
                     { text: emptyIfNull(data.voucherNumber), style: 'value' }
                   ],
                   [
-                    { text: 'Payment Type: ', style: 'label' },
-                    { text: emptyIfNull(data.paymentTypeName), style: 'value' }
+                    { text: 'Reference Number: ', style: 'label' },
+                    { text: emptyIfNull(data.referenceNumber), style: 'value' }
                   ],
                 ],
               }
@@ -109,6 +109,10 @@ export class VoucherReport implements Report<Voucher> {
               {
                 body:
                 [
+                  [
+                    { text: 'Payment Type: ', style: 'label' },
+                    { text: emptyIfNull(data.paymentTypeName), style: 'value' }
+                  ],
                   [
                     { text: 'Approved On: ', style: 'label' },
                     { text: formatDate(data.approvedOn), style: 'value' }

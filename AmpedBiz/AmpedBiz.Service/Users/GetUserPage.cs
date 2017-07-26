@@ -4,6 +4,7 @@ using AmpedBiz.Service.Common;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AmpedBiz.Service.Users
@@ -112,6 +113,13 @@ namespace AmpedBiz.Service.Users
                             BranchName = x.Branch.Name,
                             Person = x.Person.MapTo(default(Dto.Person)),
                             Address = x.Address.MapTo(default(Dto.Address)),
+                            Roles = x.Roles
+                                .Select(o => new Dto.Role()
+                                {
+                                    Id = o.Id,
+                                    Name = o.Name
+                                })
+                                .ToList()
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)

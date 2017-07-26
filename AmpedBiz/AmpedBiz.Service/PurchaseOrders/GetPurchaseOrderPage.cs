@@ -3,6 +3,7 @@ using AmpedBiz.Service.Common;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
+using System;
 using System.Linq;
 
 namespace AmpedBiz.Service.PurchaseOrders
@@ -27,6 +28,26 @@ namespace AmpedBiz.Service.PurchaseOrders
                     var query = session.Query<PurchaseOrder>();
 
                     // compose filters
+                    message.Filter.Compose<string>("referenceNumber", value =>
+                    {
+                        query = query.Where(x => x.ReferenceNumber.Contains(value));
+                    });
+
+                    message.Filter.Compose<string>("voucherNumber", value =>
+                    {
+                        query = query.Where(x => x.VoucherNumber.Contains(value));
+                    });
+
+                    message.Filter.Compose<Guid>("createdBy", value =>
+                    {
+                        query = query.Where(x => x.CreatedBy.Id == value);
+                    });
+
+                    message.Filter.Compose<Guid>("supplier", value =>
+                    {
+                        query = query.Where(x => x.Supplier.Id == value);
+                    });
+
                     message.Filter.Compose<PurchaseOrderStatus[]>("statuses", value =>
                     {
                         query = query.Where(x => value.Contains(x.Status));
@@ -44,6 +65,20 @@ namespace AmpedBiz.Service.PurchaseOrders
                     });
 
                     // compose sort
+                    message.Sorter.Compose("referenceNumber", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.ReferenceNumber)
+                            : query.OrderByDescending(x => x.ReferenceNumber);
+                    });
+
+                    message.Sorter.Compose("voucherNumber", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.VoucherNumber)
+                            : query.OrderByDescending(x => x.VoucherNumber);
+                    });
+
                     message.Sorter.Compose("supplier", direction =>
                     {
                         query = direction == SortDirection.Ascending
@@ -123,6 +158,8 @@ namespace AmpedBiz.Service.PurchaseOrders
                         .Select(x => new Dto.PurchaseOrderPageItem()
                         {
                             Id = x.Id,
+                            ReferenceNumber = x.ReferenceNumber,
+                            VoucherNumber = x.VoucherNumber,
                             Supplier = x.Supplier.Name,
                             Status = x.Status.ToString(),
                             CreatedBy =

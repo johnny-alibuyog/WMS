@@ -15,9 +15,11 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Map(x => x.PurchaseOrderNumber);
 
-                Map(x => x.ReferenceNumber);
+                Map(x => x.ReferenceNumber)
+                    .Index("IDX_ReferenceNumber");
 
-                Map(x => x.VoucherNumber);
+                Map(x => x.VoucherNumber)
+                    .Index("IDX_VoucherNumber");
 
                 References(x => x.PaymentType);
 

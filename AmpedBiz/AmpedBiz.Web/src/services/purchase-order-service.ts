@@ -217,6 +217,23 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
   }
 
   public generateNewReceiptsFrom(purchaseOrder: PurchaseOrder): PurchaseOrderReceipt[] {
+    if (purchaseOrder.receivables.some(x => !x.product)) {
+      throw new Error("Product for newly added inventory receiving is not selected.");
+    }
+
+    let unfulfilledReveiving = purchaseOrder
+      .receivables.filter(x => 
+        x.orderedQuantity == 0 && 
+        x.receivedQuantity == 0 &&
+        x.receiving.quantity == 0
+      );
+
+    let plural = unfulfilledReveiving && unfulfilledReveiving.length > 1;
+    if (unfulfilledReveiving && unfulfilledReveiving.length > 0) {
+      let products = unfulfilledReveiving.map(x => x.product.name).join('; ');
+      throw new Error(`Receiving quantity for newly added product${plural ? 's' : ''} (${products}) ${plural ? 'are' : 'is'} not filled.`);
+    }
+
     return purchaseOrder.receivables
       .filter(x =>
         x.receiving &&

@@ -4,7 +4,7 @@ import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { Dictionary } from '../common/custom_types/dictionary';
 import { Lookup } from '../common/custom_types/lookup';
 import { StageDefinition } from '../common/models/stage-definition';
-import { PurchaseOrder, PurchaseOrderStatus, PurchaseOrderAggregate, PurchaseOrderReceivable, purchaseOrderEvents, } from '../common/models/purchase-order';
+import { PurchaseOrderReceipt, PurchaseOrder, PurchaseOrderStatus, PurchaseOrderAggregate, PurchaseOrderReceivable, purchaseOrderEvents, } from '../common/models/purchase-order';
 import { ServiceApi } from '../services/service-api';
 import { AuthService } from "../services/auth-service";
 import { NotificationService } from '../common/controls/notification-service';
@@ -165,8 +165,14 @@ export class PurchaseOrderCreate {
 
   public save(): void {
     // generate new receipts from receivables >> receiving items
-    var newReceipts = this._api.purchaseOrders.generateNewReceiptsFrom(this.purchaseOrder);
-    newReceipts.forEach(newReceipt => this.purchaseOrder.receipts.push(newReceipt));
+    let newReceipts: PurchaseOrderReceipt[] = [];
+    try {
+      newReceipts = this._api.purchaseOrders.generateNewReceiptsFrom(this.purchaseOrder);
+      newReceipts.forEach(newReceipt => this.purchaseOrder.receipts.push(newReceipt));
+    } catch (error) {
+      this._notification.warning(error);
+      return;
+    }
 
     this._api.purchaseOrders.save(this.purchaseOrder)
       .then(data => this.resetAndNoify(data, "Purchase order has been saved."))

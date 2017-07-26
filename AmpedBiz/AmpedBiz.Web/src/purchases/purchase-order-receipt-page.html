@@ -23,14 +23,14 @@
           <a href="javascript:undefined" class="text-info" click.delegate="editItem(item)">
             <i class="fa fa-pencil"></i>
           </a>
-          <a href="javascript:undefined" class="text-danger" click.delegate="resetItem(item)">
-            <i class="fa fa-refresh"></i>
+          <a href="javascript:undefined" class="text-danger" click.delegate="deleteItem(item)">
+            <i class="fa fa-times"></i>
           </a>
         </td>
 
         <!-- Product -->
-        <td if.bind="item | productCannotBeChanged">${item.product.name}</td>
-        <td if.bind="item | productCanBeChanged">
+        <td if.bind="item | productCannotBeChanged:$parent.selectedItem">${item.product.name}</td>
+        <td if.bind="item | productCanBeChanged:$parent.selectedItem">
           <select class="form-control" value.bind="item.product | lookupToId:$parent.products">
             <option>Select Product</option>
             <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>

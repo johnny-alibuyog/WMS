@@ -1,6 +1,7 @@
 import { autoinject } from 'aurelia-framework';
 import { DialogService } from 'aurelia-dialog';
 import { UserCreate } from './user-create';
+import { Role, role } from '../../common/models/role';
 import { User, UserPageItem } from '../../common/models/user';
 import { ServiceApi } from '../../services/service-api';
 import { NotificationService } from '../../common/controls/notification-service';
@@ -62,12 +63,17 @@ export class UserPage {
       .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
-  public edit(item: User): void {
-    this._dialog.open({ viewModel: UserCreate, model: item })
+  public edit(user: User): void {
+    if (!this.canEdit(user)){
+        this._notification.warning(`You are not allowed to edit ${user.person.firstName + ' ' + user.person.lastName}.`);
+        return;
+    }
+
+    this._dialog.open({ viewModel: UserCreate, model: user })
       .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
- public delete(item: any): void {
+  public delete(user: any): void {
     /*
     var index = this.mockData.indexOf(item);
     if (index > -1) {
@@ -75,5 +81,25 @@ export class UserPage {
     }
     this.filter();
     */
+  }
+
+  public canEdit(user: User) {
+    if (this._api.auth.isAuthorized(role.admin)) {
+      return true;
+    }
+
+    var adminOrManager = (x: Role) => x.id === role.admin.id || x.id === role.manager.id;
+
+    if (this._api.auth.isAuthorized(role.manager)) {
+      if (user.roles.some(adminOrManager)) {
+        return false;
+      }
+      else {
+        return true;
+      }
+    }
+
+    return false;
+
   }
 }

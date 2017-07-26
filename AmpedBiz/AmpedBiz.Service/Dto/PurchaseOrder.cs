@@ -94,6 +94,10 @@ namespace AmpedBiz.Service.Dto
     {
         public Guid Id { get; set; }
 
+        public string ReferenceNumber { get; set; }
+
+        public string VoucherNumber { get; set; }
+
         public string Supplier { get; set; }
 
         public string Status { get; set; }

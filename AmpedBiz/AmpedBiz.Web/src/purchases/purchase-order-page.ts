@@ -22,6 +22,7 @@ export class PurchaseOrderPage {
 
   public statuses: Lookup<PurchaseOrderStatus>[];
   public suppliers: Lookup<string>[];
+  public users: Lookup<string>[];
 
   constructor(api: ServiceApi, router: Router, notification: NotificationService) {
     this._api = api;
@@ -30,6 +31,7 @@ export class PurchaseOrderPage {
 
     this.filter = new Filter();
     this.filter["status"] = PurchaseOrderStatus.new;
+    this.filter["createdBy"] = null;
     this.filter["supplier"] = null;
     this.filter.onFilter = () => this.getPage();
 
@@ -48,14 +50,16 @@ export class PurchaseOrderPage {
 
   activate(params: any, routeConfig: RouteConfig, $navigationInstruction: NavigationInstruction): any {
 
-    let requests: [Promise<Lookup<string>[]>, Promise<Lookup<PurchaseOrderStatus>[]>] = [
+    let requests: [Promise<Lookup<string>[]>, Promise<Lookup<string>[]>, Promise<Lookup<PurchaseOrderStatus>[]>] = [
+      this._api.users.getLookups(),
       this._api.suppliers.getLookups(),
       this._api.purchaseOrders.getStatusLookup()
     ];
 
-    Promise.all(requests).then((responses: [Lookup<string>[], Lookup<PurchaseOrderStatus>[]]) => {
-      this.suppliers = responses[0];
-      this.statuses = responses[1];
+    Promise.all(requests).then((responses: [Lookup<string>[], Lookup<string>[], Lookup<PurchaseOrderStatus>[]]) => {
+      this.users = responses[0];
+      this.suppliers = responses[1];
+      this.statuses = responses[2];
       this.filter["status"] = routeConfig.settings.status;
       this.header = routeConfig.title;
 
