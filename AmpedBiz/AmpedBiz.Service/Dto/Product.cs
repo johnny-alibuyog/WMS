@@ -120,19 +120,21 @@ namespace AmpedBiz.Service.Dto
 
         public string UnitOfMeasure { get; set; }
 
-        public virtual decimal? OnHandValue { get; set; }
+        public decimal? OnHandValue { get; set; }
 
-        public virtual decimal? AllocatedValue { get; set; }
+        public decimal? AllocatedValue { get; set; }
 
-        public virtual decimal? AvailableValue { get; set; }
+        public decimal? AvailableValue { get; set; }
 
-        public virtual decimal? OnOrderValue { get; set; }
+        public decimal? OnOrderValue { get; set; }
 
-        public virtual decimal? CurrentLevelValue { get; set; }
+        public decimal? CurrentLevelValue { get; set; }
 
-        public virtual decimal? TargetLevelValue { get; set; }
+        public decimal? ReorderLevelValue { get; set; }
 
-        public virtual decimal? BelowTargetLevelValue { get; set; }
+        public decimal? TargetLevelValue { get; set; }
+
+        public decimal? BelowTargetLevelValue { get; set; }
     }
 
     public class ProductOrderPageItem
@@ -154,30 +156,30 @@ namespace AmpedBiz.Service.Dto
     {
         public Guid Id { get; set; }
 
-        public virtual string ReasonName { get; set; }
+        public string ReasonName { get; set; }
 
-        public virtual DateTime? ReturnedOn { get; set; }
+        public DateTime? ReturnedOn { get; set; }
 
-        public virtual string ReturnedByName { get; set; }
+        public string ReturnedByName { get; set; }
 
-        public virtual decimal ReturnedAmount { get; set; }
+        public decimal ReturnedAmount { get; set; }
 
-        public virtual decimal QuantityValue { get; set; }
+        public decimal QuantityValue { get; set; }
     }
 
     public class ProductOrderReturnPageItem
     {
         public Guid Id { get; set; }
 
-        public virtual string ReasonName { get; set; }
+        public string ReasonName { get; set; }
 
-        public virtual DateTime? ReturnedOn { get; set; }
+        public DateTime? ReturnedOn { get; set; }
 
-        public virtual string ReturnedByName { get; set; }
+        public string ReturnedByName { get; set; }
 
-        public virtual decimal ReturnedAmount { get; set; }
+        public decimal ReturnedAmount { get; set; }
 
-        public virtual decimal QuantityValue { get; set; }
+        public decimal QuantityValue { get; set; }
     }
 
     public class ProductPurchasePageItem

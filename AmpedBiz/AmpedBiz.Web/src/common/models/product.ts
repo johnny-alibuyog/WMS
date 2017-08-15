@@ -64,6 +64,7 @@ export interface InventoryLevelPageItem {
   allocatedValue?: number;
   availableValue?: number;
   onOrderValue?: number;
+  reorderLevelValue?: number;
   currentLevelValue?: number;
   targetLevelValue?: number;
   belowTargetLevelValue?: number;

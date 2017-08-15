@@ -1,27 +1,42 @@
 ﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Data.Configurations;
+using AmpedBiz.Data.EntityDefinitions;
 using NHibernate;
 using NHibernate.Context;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AmpedBiz.Data
 {
+    public class Context
+    {
+        public Guid? TenantId { get; set; }
+    }
+
     public static class Extentions
     {
-        public static ISession RetrieveSharedSession(this ISessionFactory sessionFactory)
+        private static ISession WithFilters(this ISession session, Context context = null)
+        {
+            if (context?.TenantId != null)
+                session.ApplyTenantFilter(context.TenantId.Value);
+
+            return session;
+        }
+
+        public static ISession RetrieveSharedSession(this ISessionFactory sessionFactory, Context context = null)
         {
             if (!CurrentSessionContext.HasBind(sessionFactory))
             {
-                CurrentSessionContext.Bind(sessionFactory.OpenSession());
+                CurrentSessionContext.Bind(sessionFactory.OpenSession().WithFilters(context));
             }
 
             if (!sessionFactory.GetCurrentSession().IsConnected ||
                 !sessionFactory.GetCurrentSession().IsOpen)
             {
                 CurrentSessionContext.Unbind(sessionFactory);
-                CurrentSessionContext.Bind(sessionFactory.OpenSession());
+                CurrentSessionContext.Bind(sessionFactory.OpenSession().WithFilters(context));
             }
 
             return sessionFactory.GetCurrentSession();
@@ -32,10 +47,10 @@ namespace AmpedBiz.Data
             return CurrentSessionContext.Unbind(sessionFactory);
         }
 
-        // this was created since NotNull is validated by nhibernate before on pre insert/update is triggered. 
-        // this is just a work around. if NotNull will be captured by event listeners, this will be removed soon
         public static void EnsureValidity(this object entity)
         {
+            // this was created since NotNull is validated by nhibernate before on pre insert/update is triggered. 
+            // this is just a work around. if NotNull will be captured by event listeners, this will be removed soon
             new ValidationEventListener().PerformValidation(entity);
         }
 

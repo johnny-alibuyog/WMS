@@ -39,7 +39,7 @@
             <thead>
               <tr class="row-no-padding">
                 <th class="col-sm-1">Action</th>
-                <th class="col-md-3" click.delegate="sorter.doSort('name')">
+                <th class="col-md-2" click.delegate="sorter.doSort('name')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['name'])}"></i>Name
                 </th>
                 <!--
@@ -67,6 +67,9 @@
                 <th class="col-md-1 text-right" click.delegate="sorter.doSort('currentLevel')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['currentLevel'])}"></i>Current Level
                 </th>
+                <th class="col-md-1 text-right" click.delegate="sorter.doSort('reorderLevel')">
+                  <i class="fa fa-fw fa-${sorter.class(sorter['reorderLevel'])}"></i>Reorder Level
+                </th>
                 <th class="col-md-1 text-right" click.delegate="sorter.doSort('targetLevel')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['targetLevel'])}"></i>Target Level
                 </th>
@@ -91,6 +94,7 @@
                 <td class="text-right">${item.availableValue | numberFormat:'0,0'}</td>
                 <td class="text-right">${item.onOrderValue | numberFormat:'0,0'}</td>
                 <td class="text-right">${item.currentLevelValue | numberFormat:'0,0'}</td>
+                <td class="text-right">${item.reorderLevelValue | numberFormat:'0,0'}</td>
                 <td class="text-right">${item.targetLevelValue | numberFormat:'0,0'}</td>
                 <td class="text-right">${item.belowTargetLevelValue | numberFormat:'0,0'}</td>
               </tr>

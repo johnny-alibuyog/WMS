@@ -19,24 +19,24 @@ System.config({
     "aurelia-dialog": "npm:aurelia-dialog@1.0.0-rc.1.0.3",
     "aurelia-event-aggregator": "npm:aurelia-event-aggregator@1.0.1",
     "aurelia-fetch-client": "npm:aurelia-fetch-client@1.1.2",
-    "aurelia-framework": "npm:aurelia-framework@1.1.2",
+    "aurelia-framework": "npm:aurelia-framework@1.1.4",
     "aurelia-history-browser": "npm:aurelia-history-browser@1.0.0",
     "aurelia-loader-default": "npm:aurelia-loader-default@1.0.2",
     "aurelia-logging-console": "npm:aurelia-logging-console@1.0.0",
     "aurelia-pal-browser": "npm:aurelia-pal-browser@1.2.1",
     "aurelia-path": "npm:aurelia-path@1.1.1",
-    "aurelia-polyfills": "npm:aurelia-polyfills@1.2.1",
+    "aurelia-polyfills": "npm:aurelia-polyfills@1.2.2",
     "aurelia-router": "npm:aurelia-router@1.3.0",
     "aurelia-templating-binding": "npm:aurelia-templating-binding@1.3.0",
     "aurelia-templating-resources": "npm:aurelia-templating-resources@1.4.0",
     "aurelia-templating-router": "npm:aurelia-templating-router@1.1.0",
-    "aurelia-validation": "npm:aurelia-validation@1.0.0",
+    "aurelia-validation": "npm:aurelia-validation@1.1.1",
     "bootstrap": "github:twbs/bootstrap@3.3.7",
     "fetch": "github:github/fetch@1.1.1",
     "font-awesome": "npm:font-awesome@4.6.3",
     "moment": "npm:moment@2.18.1",
     "numeral": "npm:numeral@1.5.6",
-    "pdfmake": "github:bpampuch/pdfmake@0.1.28",
+    "pdfmake": "github:bpampuch/pdfmake@0.1.31",
     "text": "github:systemjs/plugin-text@0.0.8",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
@@ -75,14 +75,14 @@ System.config({
     },
     "npm:aurelia-bootstrapper@1.0.1": {
       "aurelia-event-aggregator": "npm:aurelia-event-aggregator@1.0.1",
-      "aurelia-framework": "npm:aurelia-framework@1.1.2",
+      "aurelia-framework": "npm:aurelia-framework@1.1.4",
       "aurelia-history": "npm:aurelia-history@1.0.0",
       "aurelia-history-browser": "npm:aurelia-history-browser@1.0.0",
       "aurelia-loader-default": "npm:aurelia-loader-default@1.0.2",
       "aurelia-logging-console": "npm:aurelia-logging-console@1.0.0",
       "aurelia-pal": "npm:aurelia-pal@1.3.0",
       "aurelia-pal-browser": "npm:aurelia-pal-browser@1.2.1",
-      "aurelia-polyfills": "npm:aurelia-polyfills@1.2.1",
+      "aurelia-polyfills": "npm:aurelia-polyfills@1.2.2",
       "aurelia-router": "npm:aurelia-router@1.3.0",
       "aurelia-templating": "npm:aurelia-templating@1.4.2",
       "aurelia-templating-binding": "npm:aurelia-templating-binding@1.3.0",
@@ -102,7 +102,7 @@ System.config({
     "npm:aurelia-event-aggregator@1.0.1": {
       "aurelia-logging": "npm:aurelia-logging@1.3.1"
     },
-    "npm:aurelia-framework@1.1.2": {
+    "npm:aurelia-framework@1.1.4": {
       "aurelia-binding": "npm:aurelia-binding@1.2.1",
       "aurelia-dependency-injection": "npm:aurelia-dependency-injection@1.3.1",
       "aurelia-loader": "npm:aurelia-loader@1.0.0",
@@ -135,7 +135,7 @@ System.config({
     "npm:aurelia-pal-browser@1.2.1": {
       "aurelia-pal": "npm:aurelia-pal@1.3.0"
     },
-    "npm:aurelia-polyfills@1.2.1": {
+    "npm:aurelia-polyfills@1.2.2": {
       "aurelia-pal": "npm:aurelia-pal@1.3.0"
     },
     "npm:aurelia-route-recognizer@1.1.0": {
@@ -188,7 +188,7 @@ System.config({
       "aurelia-path": "npm:aurelia-path@1.1.1",
       "aurelia-task-queue": "npm:aurelia-task-queue@1.2.0"
     },
-    "npm:aurelia-validation@1.0.0": {
+    "npm:aurelia-validation@1.1.1": {
       "aurelia-binding": "npm:aurelia-binding@1.2.1",
       "aurelia-dependency-injection": "npm:aurelia-dependency-injection@1.3.1",
       "aurelia-logging": "npm:aurelia-logging@1.3.1",
@@ -197,7 +197,7 @@ System.config({
       "aurelia-templating": "npm:aurelia-templating@1.4.2"
     },
     "npm:buffer@5.0.6": {
-      "base64-js": "npm:base64-js@1.2.0",
+      "base64-js": "npm:base64-js@1.2.1",
       "ieee754": "npm:ieee754@1.1.8"
     },
     "npm:font-awesome@4.6.3": {

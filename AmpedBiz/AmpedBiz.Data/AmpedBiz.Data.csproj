@@ -104,6 +104,7 @@
     <Compile Include="Configurations\MappingDefinitionConfiguration.cs" />
     <Compile Include="Configurations\SchemaConfiguration.cs" />
     <Compile Include="Configurations\SessionContextConfiguration.cs" />
+    <Compile Include="Configurations\TenancyAssuranceEventListener.cs" />
     <Compile Include="Configurations\ValidationEventListener.cs">
       <DependentUpon>EventListenerConfiguration.cs</DependentUpon>
     </Compile>
@@ -143,7 +144,7 @@
     <Compile Include="EntityDefinitions\ReturnReasonDefinition.cs" />
     <Compile Include="EntityDefinitions\ShipperDefinition.cs" />
     <Compile Include="EntityDefinitions\StockDefinition.cs" />
-    <Compile Include="EntityDefinitions\TenantMapping.cs" />
+    <Compile Include="EntityDefinitions\TenantDefinition.cs" />
     <Compile Include="EntityDefinitions\UnitOfMeasureDefinition.cs" />
     <Compile Include="IAuditProvider.cs" />
     <Compile Include="ISessionFactoryProvider.cs" />

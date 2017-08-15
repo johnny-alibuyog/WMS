@@ -27,6 +27,8 @@ namespace AmpedBiz.Data.EntityDefinitions
                     .Not.KeyUpdate()
                     .Inverse()
                     .AsBag();
+
+                //ApplyFilter<TenantDefinition.Filter>();
             }
         }
 

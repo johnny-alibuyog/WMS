@@ -104,6 +104,13 @@ namespace AmpedBiz.Service.Products
                             : query.OrderByDescending(x => x.Inventory.OnOrder.Value);
                     });
 
+                    message.Sorter.Compose("reorderLevel", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.Inventory.ReorderLevel.Value)
+                            : query.OrderByDescending(x => x.Inventory.ReorderLevel.Value);
+                    });
+
                     message.Sorter.Compose("currentLevel", direction =>
                     {
                         query = direction == SortDirection.Ascending
@@ -138,6 +145,7 @@ namespace AmpedBiz.Service.Products
                             AvailableValue = x.Inventory.Available.Value,
                             OnOrderValue = x.Inventory.OnOrder.Value,
                             CurrentLevelValue = x.Inventory.CurrentLevel.Value,
+                            ReorderLevelValue = x.Inventory.ReorderLevel.Value,
                             TargetLevelValue = x.Inventory.TargetLevel.Value,
                             BelowTargetLevelValue = x.Inventory.BelowTargetLevel.Value,
                         })

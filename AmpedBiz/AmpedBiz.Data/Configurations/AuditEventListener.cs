@@ -6,7 +6,10 @@ using NHibernate.Event;
 
 namespace AmpedBiz.Data.Configurations
 {
-    internal class AuditEventListener : IPostInsertEventListener, IPostUpdateEventListener, IPostDeleteEventListener
+    internal class AuditEventListener : 
+        IPostInsertEventListener, 
+        IPostUpdateEventListener, 
+        IPostDeleteEventListener
     {
         public void OnPostDelete(PostDeleteEvent @event)
         {

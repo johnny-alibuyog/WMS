@@ -25,7 +25,10 @@ namespace AmpedBiz.Service.Products
                 using (var transaction = session.BeginTransaction())
                 {
                     var query = session.Query<Product>()
-                        .Where(x => x.Inventory.CurrentLevel.Value <= x.Inventory.ReorderLevel.Value);
+                        .Where(x =>
+                            (x.Inventory.CurrentLevel == null && x.Inventory.ReorderLevel != null) ||
+                            (x.Inventory.CurrentLevel.Value <= x.Inventory.ReorderLevel.Value)
+                        );
 
                     // compose filters
                     message.Filter.Compose<string>("supplierId", value =>
