@@ -49,16 +49,65 @@ export class InvoiceReport implements Report<OrderInvoiceDetail> {
       );
     }
 
-    var branch = this._authService.user.branch;
-    var branchAddress = branch && branch.address && `${branch.address.barangay || ''}, ${branch.address.city || ''}, ${branch.address.province || ''}`;
-    var telephoneNumber = branch && branch.contact && branch.contact.landline || '';
-    var tinNumber = branch && branch.taxpayerIdentificationNumber || '';
+    let branch = this._authService.user.branch;
+    let branchAddress = branch && branch.address && `${branch.address.barangay || ''}, ${branch.address.city || ''}, ${branch.address.province || ''}`;
+    let telephoneNumber = branch && branch.contact && branch.contact.landline || '';
+    let tinNumber = branch && branch.taxpayerIdentificationNumber || '';
+
+    let pagedTables = [];
+
+    let pageSize = 5;
+    let total = data.items.length;
+
+    for (let i = 0; i < total; i += pageSize) {
+      let pageItems = data.items.slice(i, i + pageSize);
+      let tableBody = [];
+
+      // table header
+      tableBody.push([
+        { text: 'Product', style: 'tableHeader' },
+        { text: 'Quantity', style: 'tableHeader', alignment: 'right' },
+        { text: 'Unit Price', style: 'tableHeader', alignment: 'right' },
+        { text: 'Discount', style: 'tableHeader', alignment: 'right' },
+        { text: 'Price', style: 'tableHeader', alignment: 'right' }
+      ]);
+
+      // table content
+      tableBody.push(...pageItems.map(x => [
+        { text: x.product && x.product.name || '', style: 'tableData' },
+        { text: formatNumber(x.quantityValue, "0"), style: 'tableData', alignment: 'right' },
+        { text: formatNumber(x.unitPriceAmount), style: 'tableData', alignment: 'right' },
+        { text: formatNumber(x.discountAmount), style: 'tableData', alignment: 'right' },
+        { text: formatNumber(x.totalPriceAmount), style: 'tableData', alignment: 'right' },
+      ]));
+
+      // table footer
+      tableBody.push([
+        { text: '', style: 'tableData' },
+        { text: formatNumber(pageItems.map(o => o.quantityValue).reduce((pre, cur) => pre + cur), "0"), style: 'tableData', alignment: 'right' },
+        { text: formatNumber(pageItems.map(o => o.unitPriceAmount).reduce((pre, cur) => pre + cur)), style: 'tableData', alignment: 'right' },
+        { text: formatNumber(pageItems.map(o => o.discountAmount).reduce((pre, cur) => pre + cur)), style: 'tableData', alignment: 'right' },
+        { text: formatNumber(pageItems.map(o => o.totalPriceAmount).reduce((pre, cur) => pre + cur)), style: 'tableData', alignment: 'right' },
+      ]);
+
+      pagedTables.push({
+        style: 'tableExample',
+        table: {
+          headerRows: 1,
+          widths: ['*', 'auto', 'auto', 'auto', 'auto'],
+          body: tableBody
+        },
+        layout: 'lightHorizontalLines',
+        pageBreak: 'after'
+      });
+
+    }
 
     return <DocumentDefinition>{
       footer: (currentPage: number, pageCount: number) => [
-        { 
-          text: `Page ${currentPage} of ${pageCount}`, 
-          style: "footer" 
+        {
+          text: `Page ${currentPage} of ${pageCount}`,
+          style: "footer"
         }
       ],
       content:
@@ -148,15 +197,17 @@ export class InvoiceReport implements Report<OrderInvoiceDetail> {
           text: ' ',
           style: 'spacer'
         },
-        {
-          style: 'tableExample',
-          table: {
-            headerRows: 1,
-            widths: ['*', 'auto', 'auto', 'auto', 'auto'],
-            body: productTableBody
-          },
-          layout: 'lightHorizontalLines'
-        },
+        // {
+        //   style: 'tableExample',
+        //   table: {
+        //     headerRows: 1,
+        //     widths: ['*', 'auto', 'auto', 'auto', 'auto'],
+        //     body: productTableBody
+        //   },
+        //   layout: 'lightHorizontalLines',
+        //   pageBreak: 'after'
+        // },
+        ...pagedTables,
         {
           columns:
           [
@@ -170,12 +221,10 @@ export class InvoiceReport implements Report<OrderInvoiceDetail> {
               {
                 body:
                 [
-                  /*
-                  [
-                    { text: 'Tax: ', style: 'label' },
-                    { text: formatNumber(data.taxAmount), style: 'value', alignment: 'right' }
-                  ],
-                  */
+                  // [
+                  //   { text: 'Tax: ', style: 'label' },
+                  //   { text: formatNumber(data.taxAmount), style: 'value', alignment: 'right' }
+                  // ],
                   [
                     { text: 'Shipping Fee: ', style: 'label' },
                     { text: formatNumber(data.shippingFeeAmount), style: 'value', alignment: 'right' }

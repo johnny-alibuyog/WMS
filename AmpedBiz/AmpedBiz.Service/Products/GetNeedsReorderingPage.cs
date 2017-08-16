@@ -3,6 +3,7 @@ using AmpedBiz.Service.Common;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
+using System;
 using System.Linq;
 
 namespace AmpedBiz.Service.Products
@@ -31,9 +32,9 @@ namespace AmpedBiz.Service.Products
                         );
 
                     // compose filters
-                    message.Filter.Compose<string>("supplierId", value =>
+                    message.Filter.Compose<Guid>("supplierId", value =>
                     {
-                        query = query.Where(x => x.Supplier.Id.ToString() == value);
+                        query = query.Where(x => x.Supplier.Id == value);
                     });
 
                     // compose sort
