@@ -84,7 +84,7 @@ export class InvoiceReport implements Report<OrderInvoiceDetail> {
       // table footer
       tableBody.push([
         { text: '', style: 'tableData' },
-        { text: formatNumber(pageItems.map(o => o.quantityValue).reduce((pre, cur) => pre + cur), "0"), style: 'tableData', alignment: 'right' },
+        { text: '', style: 'tableData' },
         { text: formatNumber(pageItems.map(o => o.unitPriceAmount).reduce((pre, cur) => pre + cur)), style: 'tableData', alignment: 'right' },
         { text: formatNumber(pageItems.map(o => o.discountAmount).reduce((pre, cur) => pre + cur)), style: 'tableData', alignment: 'right' },
         { text: formatNumber(pageItems.map(o => o.totalPriceAmount).reduce((pre, cur) => pre + cur)), style: 'tableData', alignment: 'right' },
