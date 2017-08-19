@@ -5,6 +5,7 @@
   <require from="products/product-purchase-page"></require>
   <require from="products/product-order-return-page"></require>
   <require from="products/product-return-page"></require>
+  <require from="products/product-uom"></require>
 
   <section class="row row-no-padding">
 
@@ -106,6 +107,7 @@
 
                 <ul class="nav nav-tabs">
                   <li class="active"><a data-toggle="tab" href="#inventoryTab"><span>Inventory</span></a></li>
+                  <li><a data-toggle="tab" href="#uomTab"><span>UOM Pricing</span></a></li>
                   <li><a data-toggle="tab" href="#purchaseHistoryTab"><span>Purchase History</span></a></li>
                   <li><a data-toggle="tab" href="#orderHistoryTab"><span>Order History</span></a></li>
                   <li><a data-toggle="tab" href="#orderReturnHistoryTab"><span>Order Return History</span></a></li>
@@ -119,6 +121,14 @@
                     
                     <product-inventory inventory.bind="product.inventory">
                     </product-inventory>
+                  </div>
+
+                  <!-- product uom -->
+                  <div id="uomTab" class="tab-pane fade">
+                    <br />
+                    
+                    <product-uom items.bind="product.unitOfMeasures">
+                    </product-uom>
                   </div>
 
                   <!-- purchase history -->

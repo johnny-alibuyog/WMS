@@ -17,18 +17,20 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 References(x => x.UnitOfMeasure);
 
+                Map(x => x.Size);
+
                 Map(x => x.StandardEquivalentValue);
 
                 Map(x => x.IsStandard);
 
                 Map(x => x.IsDefault);
 
-                //HasMany(x => x.Prices)
-                //    .Cascade.AllDeleteOrphan()
-                //    .Not.KeyNullable()
-                //    .Not.KeyUpdate()
-                //    .Inverse()
-                //    .AsSet();
+                HasMany(x => x.Prices)
+                    .Cascade.AllDeleteOrphan()
+                    .Not.KeyNullable()
+                    .Not.KeyUpdate()
+                    .Inverse()
+                    .AsSet();
             }
         }
 
@@ -43,6 +45,9 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Define(x => x.UnitOfMeasure)
                     .NotNullable();
+
+                Define(x => x.Size)
+                    .MaxLength(255);
 
                 Define(x => x.StandardEquivalentValue);
 

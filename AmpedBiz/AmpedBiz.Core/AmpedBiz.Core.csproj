@@ -118,9 +118,6 @@
       <DependentUpon>OrderVisitor.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\Products\ProductUpdateVisitor.cs" />
-    <Compile Include="Services\Products\ProductUpdateUnitOfMeasuresVisitor.cs">
-      <DependentUpon>ProductUpdateVisitor.cs</DependentUpon>
-    </Compile>
     <Compile Include="Services\Products\ProductVisitor.cs" />
     <Compile Include="Services\Inventories\PurchaseOrders\OrderVisitor.cs" />
     <Compile Include="Services\IVisitor.cs" />
@@ -150,6 +147,12 @@
     <Compile Include="Services\Orders\StateDispatcher.cs" />
     <Compile Include="Services\Products\SearchAndApplyVisitor.cs">
       <DependentUpon>ProductVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\Products\UpdateProductUnitOfMeasurePricesVisitor.cs">
+      <DependentUpon>UpdateProductUnitOfMeasuresVisitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\Products\UpdateProductUnitOfMeasuresVisitor.cs">
+      <DependentUpon>ProductUpdateVisitor.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\PurchaseOrders\PurchaseOrderApprovedVisitor.cs">
       <DependentUpon>PurchaseOrderVisitor.cs</DependentUpon>

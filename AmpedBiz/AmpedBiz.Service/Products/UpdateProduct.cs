@@ -5,6 +5,7 @@ using AmpedBiz.Core.Services.Products;
 using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
+using System.Linq;
 using static AmpedBiz.Common.Extentions.TypeExtentions;
 
 namespace AmpedBiz.Service.Products
@@ -42,6 +43,20 @@ namespace AmpedBiz.Service.Products
                             ? session.Load<ProductCategory>(message.Category.Id) : null,
                         Image = message.Image,
                         Discontinued = message.Discontinued,
+                        UnitOfMeasures = message.UnitOfMeasures
+                            .Select(x => new ProductUnitOfMeasure(
+                                id: x.Id,
+                                size: x.Size,
+                                isDefault: x.IsDefault ?? false,
+                                isStandard: x.IsStandard ?? false,
+                                unitOfMeasure: session.Load<UnitOfMeasure>(x.UnitOfMeasure.Id),
+                                standardEquivalentValue: x.StandardEquivalentValue ?? 0M,
+                                prices: x.Prices
+                                    .Select(o => new ProductUnitOfMeasurePrice(
+                                        pricing: session.Load<Pricing>(o.Pricing.Id),
+                                        price: new Money(amount: o.PriceAmount ?? 0M, currency: currency)
+                                    ))
+                            ))
                     });
 
                     entity.Inventory.Accept(new InventoryUpdateVisitor()

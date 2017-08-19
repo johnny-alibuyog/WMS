@@ -104,6 +104,106 @@
 
   </div>
 
+  <!-- inventory status -->
+  <div class="panel panel-default">
+
+    <!-- heading -->
+    <div class="panel-heading">Inventory Status</div>
+
+    <!-- body -->
+    <div class="panel-body">
+
+      <!-- left side -->
+      <div class="col-lg-6">
+
+        <div class="form-group">
+          <label class="control-label col-sm-4">Received:</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control text-right" value.bind="inventory.receivedValue" disabled />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-4">On Order:</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control text-right" value.bind="inventory.onOrderValue" disabled />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-4">Allocated:</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control text-right" value.bind="inventory.allocatedValue" disabled />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-4">Shipped:</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control text-right" value.bind="inventory.shippedValue" disabled />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-4">Returned:</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control text-right" value.bind="inventory.returnedValue" disabled />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-4">Back Ordered:</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control text-right" value.bind="inventory.backOrderedValue" disabled />
+          </div>
+        </div>
+
+      </div>
+
+      <!-- left right -->
+      <div class="col-lg-6">
+
+        <div class="form-group">
+          <label class="control-label col-sm-4">On Hand:</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control text-right" value.bind="inventory.onHandValue" disabled />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-4">Available:</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control text-right" value.bind="inventory.availableValue" disabled />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-4">Current Level:</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control text-right" value.bind="inventory.currentLevelValue" disabled />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-4">Below Target:</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control text-right" value.bind="inventory.belowTargetLevelValue" disabled />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-4">Total Shrinkage:</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control text-right" value.bind="inventory.shrinkageValue" disabled />
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
   <!-- pricing -->
   <div class="panel panel-default">
 
@@ -201,106 +301,6 @@
           </tr>
         </tbody>
       </table>
-
-    </div>
-
-  </div>
-
-  <!-- inventory status -->
-  <div class="panel panel-default">
-
-    <!-- heading -->
-    <div class="panel-heading">Inventory Status</div>
-
-    <!-- body -->
-    <div class="panel-body">
-
-      <!-- left side -->
-      <div class="col-lg-6">
-
-        <div class="form-group">
-          <label class="control-label col-sm-4">Received:</label>
-          <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.receivedValue" disabled />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="control-label col-sm-4">On Order:</label>
-          <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.onOrderValue" disabled />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="control-label col-sm-4">Allocated:</label>
-          <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.allocatedValue" disabled />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="control-label col-sm-4">Shipped:</label>
-          <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.shippedValue" disabled />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="control-label col-sm-4">Returned:</label>
-          <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.returnedValue" disabled />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="control-label col-sm-4">Back Ordered:</label>
-          <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.backOrderedValue" disabled />
-          </div>
-        </div>
-
-      </div>
-
-      <!-- left right -->
-      <div class="col-lg-6">
-
-        <div class="form-group">
-          <label class="control-label col-sm-4">On Hand:</label>
-          <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.onHandValue" disabled />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="control-label col-sm-4">Available:</label>
-          <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.availableValue" disabled />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="control-label col-sm-4">Current Level:</label>
-          <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.currentLevelValue" disabled />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="control-label col-sm-4">Below Target:</label>
-          <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.belowTargetLevelValue" disabled />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="control-label col-sm-4">Total Shrinkage:</label>
-          <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.shrinkageValue" disabled />
-          </div>
-        </div>
-
-      </div>
 
     </div>
 

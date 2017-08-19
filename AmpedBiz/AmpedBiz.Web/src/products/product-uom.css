@@ -1,0 +1,28 @@
+.todo-container {
+  width: 500px;
+  margin: 5px auto;
+  margin-top: 20px;
+}
+.add-todo-container {
+  margin-bottom: 10px;
+}
+.add-todo-container .col-md-10 {
+  padding: 0;
+}
+.add-todo-container .col-md-2 {
+  padding-right: 0;
+  text-align: right;
+}
+
+.too-small {
+  display: none;
+}
+
+@media (max-width: 500px) {
+  .todo-container {  
+    display: none;
+  }
+  .too-small {
+    display: block;
+  }
+}

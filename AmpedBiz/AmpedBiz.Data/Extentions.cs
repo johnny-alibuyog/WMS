@@ -67,6 +67,20 @@ namespace AmpedBiz.Data
             }
         }
 
+        public static TValue GetValueSafely<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key)
+        {
+            if (key.IsNullOrDefault())
+                return default(TValue);
+
+            if (source == null)
+                return default(TValue);
+
+            if (source.ContainsKey(key) != true)
+                return default(TValue);
+
+            return source[key];
+        }
+
         public static void EnsureExistence<T>(this T entity, string message)
         {
             if (string.IsNullOrWhiteSpace(message))

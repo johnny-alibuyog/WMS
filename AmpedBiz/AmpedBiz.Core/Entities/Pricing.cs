@@ -23,12 +23,15 @@ namespace AmpedBiz.Core.Entities
 
         public static readonly Pricing RetailPrice = new Pricing("RTP", "Retail Price");
 
+        public static readonly Pricing SuggestedRetailPrice = new Pricing("SRP", "Suggested Retail Price");
+
         public static readonly IEnumerable<Pricing> All = new [] 
         {
             Pricing.BasePrice,
             Pricing.BadStockPrice,
             Pricing.WholesalePrice,
             Pricing.RetailPrice,
+            Pricing.SuggestedRetailPrice
         };
     }
 }

@@ -8,16 +8,16 @@ namespace AmpedBiz.Service.Dto
     {
         public virtual Guid Id { get; set; }
 
-        public virtual Product Product { get; set; }
+        public string Size { get; set; }
 
-        public virtual UnitOfMeasure UnitOfMeasure { get; set; }
+        public UnitOfMeasure UnitOfMeasure { get; set; }
 
-        public virtual decimal? StandardEquivalentValue { get; set; }
+        public decimal? StandardEquivalentValue { get; set; }
 
-        public virtual bool? IsStandard { get; set; }
+        public bool? IsStandard { get; set; }
 
-        public virtual bool? IsDefault { get; set; }
+        public bool? IsDefault { get; set; }
 
-        public virtual IEnumerable<ProductUnitOfMeasurePrice> Prices { get; set; } = new Collection<ProductUnitOfMeasurePrice>();
+        public IEnumerable<ProductUnitOfMeasurePrice> Prices { get; set; } = new Collection<ProductUnitOfMeasurePrice>();
     }
 }

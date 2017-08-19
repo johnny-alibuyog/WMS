@@ -1,4 +1,6 @@
 import { Inventory } from './inventory';
+import { Lookup } from "../custom_types/lookup";
+import { UnitOfMeasure } from "./unit-of-measure";
 
 export interface Product {
   id?: string;
@@ -10,6 +12,23 @@ export interface Product {
   image?: string;
   discontinued?: boolean;
   inventory?: Inventory;
+  unitOfMeasures?: ProductUnitOfMeasure[];
+}
+
+export interface ProductUnitOfMeasure {
+  id?: string;
+  size?: string;
+  unitOfMeasure?: UnitOfMeasure;
+  standardEquivalent?: number;
+  isStandard?: boolean;
+  isDefault?: boolean;
+  prices?: ProductUnitOfMeasurePrice[];
+}
+
+export interface ProductUnitOfMeasurePrice {
+  id?: string;
+  pricing?: Lookup<string>;
+  priceAmount?: number;
 }
 
 export interface ProductPageItem {

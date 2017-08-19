@@ -6,6 +6,7 @@ using NHibernate.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using NHibernate.Transform;
 
 namespace AmpedBiz.Service.Products
 {
@@ -36,15 +37,25 @@ namespace AmpedBiz.Service.Products
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var query = session.Query<Product>();
+                    var query = session.QueryOver<Product>()
+                        .Fetch(x => x.Supplier).Eager
+                        .Fetch(x => x.Category).Eager
+                        .Fetch(x => x.Inventory).Eager
+                        .Fetch(x => x.Inventory.UnitOfMeasure).Eager
+                        .Fetch(x => x.Inventory.PackagingUnitOfMeasure).Eager
+                        .Fetch(x => x.Inventory.Stocks).Eager
+                        .Fetch(x => x.Inventory.Stocks.First().ModifiedBy).Eager
+                        .Fetch(x => x.UnitOfMeasures).Eager
+                        .Fetch(x => x.UnitOfMeasures.First().Prices).Eager
+                        .TransformUsing(Transformers.DistinctRootEntity);
 
-                    if (!message.Id.IsNullOrEmpty())
+                    if (message.Id.IsNullOrEmpty() != true)
                         query = query.Where(x => message.Id.Contains(x.Id));
                     
-                    if (message.SupplierId != null)
+                    if (message.SupplierId != Guid.Empty)
                         query = query.Where(x => x.Supplier.Id == message.SupplierId);
 
-                    var entities = query.ToList();
+                    var entities = query.List();
 
                     var dtos = entities.MapTo(default(List<Dto.Product>));
 

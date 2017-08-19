@@ -6,6 +6,7 @@ using LinqToExcel;
 using NHibernate;
 using NHibernate.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -28,22 +29,39 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
             if (!File.Exists(filename))
                 return;
-            
+
             var productData = new ExcelQueryFactory(filename).Worksheet()
                 .Select(x => new
                 {
                     Code = x["Product Id"].ToString(),
                     Name = x["Product Name"].ToString(),
-                    Size = x["Size"].ToString(),
-                    PiecePerPackage = Convert.ToDecimal(x["Piece Per Package"].Cast<double>()),
-                    WholesalePerPiece = Convert.ToDecimal(x["Wholesale Price Per Piece"].Cast<double>()),
-                    WholesalePerPackage = Convert.ToDecimal(x["Wholesale Price Per Package"].Cast<double>()),
-                    RetailPricePerPiece = Convert.ToDecimal(x["Retail Price Per Piece"].Cast<double>()),
-                    RetailPricePerPackage = Convert.ToDecimal(x["Retail Price Per Package"].Cast<double>()),
-                    SuggestedRetailPrice = Convert.ToDecimal(x["Suggested Retail Price"].Cast<double>()),
-                    IndividualBarcode = x["Individual Barcode"].ToString(),
-                    PackagingBarcode = x["Packaging Barcode"].ToString(),
                     Category = x["Category"].ToString(),
+                    Piece = new
+                    {
+                        Size = x["Size"].ToString(),
+                        StandardEquivalentValue = 1M,
+                        UnitOfMeasure = x["Piece UOM"].ToString(),
+                        Barcode = x["Individual Barcode"].ToString(),
+                        Price = new
+                        {
+                            WholesalePrice = Convert.ToDecimal(x["Wholesale Price Per Piece"].Cast<double>()),
+                            RetailPrice = Convert.ToDecimal(x["Retail Price Per Piece"].Cast<double>()),
+                            SuggestedRetailPrice = Convert.ToDecimal(x["Suggested Retail Price"].Cast<double>()),
+                        },
+                    },
+                    Package = new
+                    {
+                        Size = string.Empty,
+                        StandardEquivalentValue = Convert.ToDecimal(x["Piece Per Package"].Cast<double>()),
+                        UnitOfMeasure = x["Package UOM"].ToString(),
+                        Barcode = x["Packaging Barcode"].ToString(),
+                        Price = new
+                        {
+                            WholesalePrice = Convert.ToDecimal(x["Wholesale Price Per Package"].Cast<double>()),
+                            RetailPrice = Convert.ToDecimal(x["Retail Price Per Package"].Cast<double>()),
+                            SuggestedRetailPrice = Convert.ToDecimal(x["Retail Price Per Package"].Cast<double>()),
+                        }
+                    },
                 })
                 .ToList();
 
@@ -68,6 +86,12 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                     // categories
                     categoryData.ForEach(category => session.Save(new ProductCategory(category, category)));
 
+                    var lookup = new
+                    {
+                        UnitOfMeasures = session.Query<UnitOfMeasure>().ToDictionary(x => x.Name, x => x),
+                        Pricings = session.Query<Pricing>().ToDictionary(x => x.Id, x => x),
+                    };
+
                     var unitOfMeasure = new
                     {
                         Individual = session.Load<UnitOfMeasure>(UnitOfMeasure.Piece.Id),
@@ -91,7 +115,103 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                             Code = x.Code,
                             Name = x.Name,
                             Supplier = defaults.Supplier,
-                            Category = session.Load<ProductCategory>(x.Category)
+                            Category = session.Load<ProductCategory>(x.Category),
+                            UnitOfMeasures = new List<ProductUnitOfMeasure>()
+                            {
+                                // Piece
+                                new ProductUnitOfMeasure(
+                                    size: x.Piece.Size,
+                                    isDefault: false,
+                                    isStandard: true,
+                                    standardEquivalentValue: x.Piece.StandardEquivalentValue,
+                                    unitOfMeasure: lookup.UnitOfMeasures.GetValueSafely(x.Piece.UnitOfMeasure),
+                                    prices: new List<ProductUnitOfMeasurePrice>()
+                                    {
+                                        new ProductUnitOfMeasurePrice(
+                                            pricing: lookup.Pricings[Pricing.BasePrice.Id],
+                                            price: new Money(
+                                                currency: defaults.Currency,
+                                                amount:  x.Piece.Price.WholesalePrice
+                                            )
+                                        ),
+                                        new ProductUnitOfMeasurePrice(
+                                            pricing: lookup.Pricings[Pricing.WholesalePrice.Id],
+                                            price: new Money(
+                                                currency: defaults.Currency,
+                                                amount:  x.Piece.Price.WholesalePrice
+                                            )
+                                        ),
+                                        new ProductUnitOfMeasurePrice(
+                                            pricing: lookup.Pricings[Pricing.RetailPrice.Id],
+                                            price: new Money(
+                                                currency: defaults.Currency,
+                                                amount:  x.Piece.Price.RetailPrice
+                                            )
+                                        ),
+                                        new ProductUnitOfMeasurePrice(
+                                            pricing: lookup.Pricings[Pricing.SuggestedRetailPrice.Id],
+                                            price: new Money(
+                                                currency: defaults.Currency,
+                                                amount:  x.Piece.Price.SuggestedRetailPrice
+                                            )
+                                        ),
+                                        new ProductUnitOfMeasurePrice(
+                                            pricing: lookup.Pricings[Pricing.BadStockPrice.Id],
+                                            price: new Money(
+                                                currency: defaults.Currency,
+                                                amount:  0M
+                                            )
+                                        ),
+                                    }
+                                ),
+                                // Package
+                                new ProductUnitOfMeasure(
+                                    size: x.Package.Size,
+                                    isDefault: true,
+                                    isStandard: false,
+                                    standardEquivalentValue: x.Package.StandardEquivalentValue,
+                                    unitOfMeasure: lookup.UnitOfMeasures.GetValueSafely(x.Package.UnitOfMeasure),
+                                    prices: new List<ProductUnitOfMeasurePrice>()
+                                    {
+                                        new ProductUnitOfMeasurePrice(
+                                            pricing: lookup.Pricings[Pricing.BasePrice.Id],
+                                            price: new Money(
+                                                currency: defaults.Currency,
+                                                amount:  x.Package.Price.WholesalePrice
+                                            )
+                                        ),
+                                        new ProductUnitOfMeasurePrice(
+                                            pricing: lookup.Pricings[Pricing.WholesalePrice.Id],
+                                            price: new Money(
+                                                currency: defaults.Currency,
+                                                amount:  x.Package.Price.WholesalePrice
+                                            )
+                                        ),
+                                        new ProductUnitOfMeasurePrice(
+                                            pricing: lookup.Pricings[Pricing.RetailPrice.Id],
+                                            price: new Money(
+                                                currency: defaults.Currency,
+                                                amount:  x.Package.Price.RetailPrice
+                                            )
+                                        ),
+                                        new ProductUnitOfMeasurePrice(
+                                            pricing: lookup.Pricings[Pricing.SuggestedRetailPrice.Id],
+                                            price: new Money(
+                                                currency: defaults.Currency,
+                                                amount:  x.Package.Price.SuggestedRetailPrice
+                                            )
+                                        ),
+                                        new ProductUnitOfMeasurePrice(
+                                            pricing: lookup.Pricings[Pricing.BadStockPrice.Id],
+                                            price: new Money(
+                                                currency: defaults.Currency,
+                                                amount:  0M
+                                            )
+                                        ),
+                                    }
+                                ),
+                            }
+                            .Where(o => o.UnitOfMeasure != null)
                         });
 
                         product.Inventory.Accept(new InventoryUpdateVisitor()
@@ -102,19 +222,19 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                             ReorderLevel = new Measure(_utils.RandomInteger(50, 75), UnitOfMeasure.Piece),
                             MinimumReorderQuantity = new Measure(_utils.RandomInteger(100, 150), UnitOfMeasure.Piece),
 
-                            IndividualBarcode = x.IndividualBarcode,
-                            PackagingBarcode = x.PackagingBarcode,
-                            PackagingSize = x.PiecePerPackage,
+                            IndividualBarcode = x.Piece.Barcode,
+                            PackagingBarcode = x.Package.Barcode,
+                            PackagingSize = x.Package.StandardEquivalentValue,
                             UnitOfMeasure = unitOfMeasure.Individual,
                             PackagingUnitOfMeasure = unitOfMeasure.Packaging,
 
                             // TODO: check for correct values
                             //BasePrice = new Money(amount: 0M, currency: defaults.Currency),
                             //BadStockPrice = new Money(amount: 0M, currency: defaults.Currency),
-                            BasePrice = new Money(amount: x.WholesalePerPiece, currency: defaults.Currency),
-                            BadStockPrice = new Money(amount: x.WholesalePerPiece, currency: defaults.Currency),
-                            WholesalePrice = new Money(amount: x.WholesalePerPiece, currency: defaults.Currency),
-                            RetailPrice = new Money(amount: x.RetailPricePerPiece, currency: defaults.Currency),
+                            BasePrice = new Money(amount: x.Piece.Price.WholesalePrice, currency: defaults.Currency),
+                            BadStockPrice = new Money(amount: x.Piece.Price.WholesalePrice, currency: defaults.Currency),
+                            WholesalePrice = new Money(amount: x.Piece.Price.WholesalePrice, currency: defaults.Currency),
+                            RetailPrice = new Money(amount: x.Piece.Price.RetailPrice, currency: defaults.Currency),
                         });
 
                         //product.Inventory.TargetLevel = new Measure(_utils.RandomInteger(100, 200), UnitOfMeasure.Piece);

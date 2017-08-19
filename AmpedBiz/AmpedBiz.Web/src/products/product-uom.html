@@ -1,0 +1,72 @@
+<template>
+  <div class="row">
+    <div class="col-sm-3">
+      <div class="input-group">
+        <select class="form-control" value.bind="lookups.unitOfMeasure.selected">
+          <option value="${undefined}">Select UOM to Add</option>
+          <option repeat.for="item of lookups.unitOfMeasure.items" model.bind="item">${item.name}</option>
+        </select>
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="submit" click.delegate="insert()">
+            <i class="fa fa-plus"></i>
+          </button>
+        </span>
+      </div>
+      <nav class="navbar" role="navigation">
+        <ul class="nav nav-pills nav-stacked">
+          <li class="nav-item ${selected  === item ? 'active' : ''}" repeat.for="item of items">
+            <a class="nav-link" data-toggle="tab" href="#${item.unitOfMeasure.id}" click.delegate="select(item)">
+              <span>${item.unitOfMeasure.name}</span>
+              <button type="button" class="close" aria-label="Close" click.delegate="remove(item)">
+                <span aria-hidden="true">×</span>
+              </button>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-sm-9">
+      <div class="tab-content">
+        <div id.bind="item.unitOfMeasure.id" class="tab-pane fade ${selected === item ? 'in active' : ''}" repeat.for="item of items">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <span>Pricing Per ${item.unitOfMeasure.name}</span>
+              </h4>
+            </div>
+            <div class="panel-body">
+              <table class="table table-striped table-condensed table-hover">
+                <thead>
+                  <tr>
+                    <th class="col-md-1">Action</th>
+                    <th class="col-md-1">Pricing</th>
+                    <th class="col-md-1 text-right">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr repeat.for="item of item.prices" click.delegate="edit(item)">
+                    <td click.delegate="edit(item)">
+                      <a href="javascript:undefined" class="text-info" click.delegate="edit(item)">
+                        <i class="fa fa-pencil"></i>
+                      </a>
+                      <a href="javascript:undefined" class="text-danger" click.delegate="delete(item)">
+                        <i class="fa fa-times"></i>
+                      </a>
+                    </td>
+                    <td>${item.pricing.name}</td>
+                    <td class="text-right">${item.priceAmount | numberFormat}</td>
+                    <!--<td class="text-right">${item.discontinued}</td>-->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!--<div repeat.for="price of item.prices">
+            <span>${price.pricing.name}</span>
+          </div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

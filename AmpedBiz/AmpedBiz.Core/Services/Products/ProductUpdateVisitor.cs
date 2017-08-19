@@ -32,7 +32,7 @@ namespace AmpedBiz.Core.Services.Products
             target.Category = this.Category ?? target.Category;
             target.Image = this.Image ?? target.Image;
             target.Discontinued = this.Discontinued ?? target.Discontinued;
-            target.Accept(new ProductUpdateUnitOfMeasuresVisitor(this.UnitOfMeasures));
+            target.Accept(new UpdateProductUnitOfMeasuresVisitor(this.UnitOfMeasures));
         }
     }
 }

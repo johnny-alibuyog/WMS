@@ -42,6 +42,8 @@ namespace AmpedBiz.Service.Dto.Mappers
         {
             ExpressMapper.Mapper.Register<Entity.Product, Dto.Product>().Flatten();
             ExpressMapper.Mapper.Register<Entity.Inventory, Dto.Inventory>().Flatten();
+            ExpressMapper.Mapper.Register<Entity.ProductUnitOfMeasure, Dto.ProductUnitOfMeasure>().Flatten();
+            ExpressMapper.Mapper.Register<Entity.ProductUnitOfMeasurePrice, Dto.ProductUnitOfMeasurePrice>().Flatten();
             ExpressMapper.Mapper.Register<Entity.Product, GetProduct.Response>().Flatten();
         }
 

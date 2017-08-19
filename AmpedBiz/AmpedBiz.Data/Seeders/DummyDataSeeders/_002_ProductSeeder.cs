@@ -68,6 +68,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                             UnitOfMeasures = new Collection<ProductUnitOfMeasure>()
                             {
                                 new ProductUnitOfMeasure(
+                                    size: string.Empty,
                                     isDefault: false,
                                     isStandard: true,
                                     standardEquivalentValue: 1,
@@ -76,19 +77,23 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                     {
                                         new ProductUnitOfMeasurePrice(
                                             pricing: Pricing.BasePrice,
-                                            amount: new Money(100M, Currency.PHP)
+                                            price: new Money(100M, Currency.PHP)
                                         ),
                                         new ProductUnitOfMeasurePrice(
                                             pricing: Pricing.WholesalePrice,
-                                            amount: new Money(100M, Currency.PHP)
+                                            price: new Money(100M, Currency.PHP)
                                         ),
                                         new ProductUnitOfMeasurePrice(
                                             pricing: Pricing.RetailPrice,
-                                            amount: new Money(100M, Currency.PHP)
+                                            price: new Money(100M, Currency.PHP)
+                                        ),
+                                        new ProductUnitOfMeasurePrice(
+                                            pricing: Pricing.SuggestedRetailPrice,
+                                            price: new Money(100M, Currency.PHP)
                                         ),
                                         new ProductUnitOfMeasurePrice(
                                             pricing: Pricing.BadStockPrice,
-                                            amount: new Money(100M, Currency.PHP)
+                                            price: new Money(100M, Currency.PHP)
                                         ),
                                     }
                                 )

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmpedBiz.Core.Services;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -16,37 +17,47 @@ namespace AmpedBiz.Core.Entities
 		        Amount
      */
 
-    public class ProductUnitOfMeasure : Entity<Guid, ProductUnitOfMeasure>
+    public class ProductUnitOfMeasure : Entity<Guid, ProductUnitOfMeasure>, IAccept<IVisitor<ProductUnitOfMeasure>>
     {
         public virtual Product Product { get; protected internal set; }
 
         public virtual UnitOfMeasure UnitOfMeasure { get; protected internal set; }
 
-        public virtual decimal StandardEquivalentValue { get; protected internal set; }
+        public virtual string Size { get; protected internal set; }
 
         public virtual bool IsStandard { get; protected internal set; }
 
         public virtual bool IsDefault { get; protected internal set; }
 
+        public virtual decimal StandardEquivalentValue { get; protected internal set; }
+
         public virtual IEnumerable<ProductUnitOfMeasurePrice> Prices { get; protected internal set; } = new Collection<ProductUnitOfMeasurePrice>();
 
-        public virtual Measure GetStandardEquivalent() => new Measure(this.StandardEquivalentValue, this.UnitOfMeasure);
+        public virtual Measure GetStandardMeasure() => new Measure(this.StandardEquivalentValue, this.UnitOfMeasure);
 
         public ProductUnitOfMeasure() : base(default(Guid)) { }
 
         public ProductUnitOfMeasure(
+            UnitOfMeasure unitOfMeasure,
+            string size,
             bool isDefault,
             bool isStandard,
-            UnitOfMeasure unitOfMeasure,
             decimal standardEquivalentValue,
             IEnumerable<ProductUnitOfMeasurePrice> prices,
             Guid id = default(Guid)
         ) : base(id)
         {
             this.UnitOfMeasure = unitOfMeasure;
-            this.StandardEquivalentValue = standardEquivalentValue;
-            this.IsStandard = isStandard;
+            this.Size = size;
             this.IsDefault = isDefault;
+            this.IsStandard = isStandard;
+            this.StandardEquivalentValue = standardEquivalentValue;
+            this.Prices = prices;
+        }
+
+        public virtual void Accept(IVisitor<ProductUnitOfMeasure> visitor)
+        {
+            visitor.Visit(this);
         }
     }
 }

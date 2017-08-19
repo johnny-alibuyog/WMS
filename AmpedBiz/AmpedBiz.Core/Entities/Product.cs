@@ -24,16 +24,18 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Inventory Inventory { get; protected internal set; }
 
-        public virtual IEnumerable<ProductUnitOfMeasure> UnitOfMeasures { get; protected internal set; } = new Collection<ProductUnitOfMeasure>();
+        public virtual IEnumerable<ProductUnitOfMeasure> UnitOfMeasures { get; protected internal set; } 
 
         public Product() : base(default(Guid))
         {
             this.Inventory = new Inventory(this);
+            this.UnitOfMeasures = new Collection<ProductUnitOfMeasure>();
         }
 
         public Product(Guid id) : base(id)
         {
             this.Inventory = new Inventory(this);
+            this.UnitOfMeasures = new Collection<ProductUnitOfMeasure>();
         }
 
         public virtual void Accept(ProductVisitor visitor)

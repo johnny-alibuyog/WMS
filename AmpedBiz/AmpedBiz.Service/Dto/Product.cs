@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Common.CustomTypes;
 using System;
+using System.Collections.Generic;
 
 namespace AmpedBiz.Service.Dto
 {
@@ -21,12 +22,9 @@ namespace AmpedBiz.Service.Dto
 
         public string Image { get; set; }
 
-        public Inventory Inventory { get; set; }
+        public Inventory Inventory { get; set; } = new Inventory();
 
-        public Product()
-        {
-            this.Inventory = new Inventory();
-        }
+        public List<ProductUnitOfMeasure> UnitOfMeasures { get; set; } = new List<ProductUnitOfMeasure>();
     }
 
     public class ProductPageItem

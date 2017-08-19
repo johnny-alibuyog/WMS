@@ -1,6 +1,9 @@
 ﻿using AmpedBiz.Core.Entities;
 using FluentNHibernate.Mapping;
+using Humanizer;
 using NHibernate.Validator.Cfg.Loquacious;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AmpedBiz.Data.EntityDefinitions
 {
@@ -30,6 +33,13 @@ namespace AmpedBiz.Data.EntityDefinitions
                 HasOne(x => x.Inventory)
                     .Cascade.All()
                     .Fetch.Join();
+
+                HasMany(x => x.UnitOfMeasures)
+                    .Cascade.AllDeleteOrphan()
+                    .Not.KeyNullable()
+                    .Not.KeyUpdate()
+                    .Inverse()
+                    .AsSet();
             }
         }
 
@@ -58,6 +68,39 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Define(x => x.Supplier)
                     .NotNullable()
                     .And.IsValid();
+
+                Define(x => x.Inventory);
+
+                Define(x => x.UnitOfMeasures)
+                    .HasValidElements();
+
+
+                this.ValidateInstance.By((instance, context) =>
+                {
+                    var valid = true;
+
+                    var defaultCount = instance.UnitOfMeasures.Where(x => x.IsDefault).Count();
+                    if (defaultCount > 1)
+                    {
+                        context.AddInvalid<Product, IEnumerable<ProductUnitOfMeasure>>(
+                            message: $"There should be one default UOM for {instance.Name} but has {defaultCount.ToWords()}.", 
+                            property: x => x.UnitOfMeasures
+                        );
+                        valid = false;
+                    }
+
+                    var standardCount = instance.UnitOfMeasures.Where(x => x.IsStandard).Count();
+                    if (standardCount != 1)
+                    {
+                        context.AddInvalid<Product, IEnumerable<ProductUnitOfMeasure>>(
+                            message: $"There should be one standard UOM for {instance.Name} but has {standardCount.ToWords()}.", 
+                            property: x => x.UnitOfMeasures
+                        );
+                        valid = false;
+                    }
+
+                    return valid;
+                });
             }
         }
     }
