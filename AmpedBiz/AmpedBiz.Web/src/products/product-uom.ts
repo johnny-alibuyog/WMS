@@ -21,6 +21,8 @@ export class ProductUOM {
 
   public selected: ProductUnitOfMeasure;
 
+  public selectedPrice: ProductUnitOfMeasurePrice;
+
   public lookups = {
     pricing: {
       original: <Lookup<string>[]>[],
@@ -37,6 +39,10 @@ export class ProductUOM {
 
   constructor(api: ServiceApi, router: Router) {
     this._api = api;
+  }
+
+  public selectPrice(item: ProductUnitOfMeasurePrice): void {
+    this.selectedPrice = item;
   }
 
   public select(item: ProductUnitOfMeasure): void {
@@ -80,7 +86,7 @@ export class ProductUOM {
     this.resetSelected();
   }
 
-  private resetSelected(): void {
+  private resetSelected = () => {
     if (this.items && this.items.length > 0) {
       this.selected = this.items[0];
     }

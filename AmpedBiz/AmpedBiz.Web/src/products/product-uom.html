@@ -35,30 +35,78 @@
               </h4>
             </div>
             <div class="panel-body">
-              <table class="table table-striped table-condensed table-hover">
-                <thead>
-                  <tr>
-                    <th class="col-md-1">Action</th>
-                    <th class="col-md-1">Pricing</th>
-                    <th class="col-md-1 text-right">Amount</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr repeat.for="item of item.prices" click.delegate="edit(item)">
-                    <td click.delegate="edit(item)">
-                      <a href="javascript:undefined" class="text-info" click.delegate="edit(item)">
-                        <i class="fa fa-pencil"></i>
-                      </a>
-                      <a href="javascript:undefined" class="text-danger" click.delegate="delete(item)">
-                        <i class="fa fa-times"></i>
-                      </a>
-                    </td>
-                    <td>${item.pricing.name}</td>
-                    <td class="text-right">${item.priceAmount | numberFormat}</td>
-                    <!--<td class="text-right">${item.discontinued}</td>-->
-                  </tr>
-                </tbody>
-              </table>
+              <form class="form-horizontal" role="form">
+                <div class="col-lg-10">
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Size:</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" placeholder="Enter Size" value.bind="item.size" />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Standard Equivalent:</label>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" placeholder="Enter Standard Equivalent" value.bind="item.standardEquivalentValue" />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Is Standard:</label>
+                    <div class="col-sm-6">
+                      <label class="switch">
+                        <input type="checkbox" checked.bind="item.isStandard">
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Is Default:</label>
+                    <div class="col-sm-6">
+                      <label class="switch">
+                        <input type="checkbox" checked.bind="item.isDefault">
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                </div>
+
+                <table class="table table-striped table-condensed table-hover">
+                  <thead>
+                    <tr>
+                      <th class="col-md-1">Action</th>
+                      <th class="col-md-1">Pricing</th>
+                      <th class="col-md-1 text-right">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr repeat.for="price of item.prices" click.delegate="selectPrice(price)">
+                      <td>
+                        <a href="javascript:undefined" class="text-info">
+                          <i class="fa fa-pencil"></i>
+                        </a>
+                      </td>
+                      <td>${price.pricing.name}</td>
+
+                      <!-- read-only mode -->
+                      <td if.bind="$parent.$parent.selectedPrice !== price" class="text-right">${price.priceAmount | numberFormat}</td>
+
+                      <!-- edit mode -->
+                      <td if.bind="$parent.$parent.selectedPrice === price" class="text-right">
+                        <div class="row">
+                          <div class="col-xs-12 pull-right">
+                            <input class="form-control input-xs text-right" type="number" numeric-value.bind="price.priceAmount" />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </form>
             </div>
           </div>
 

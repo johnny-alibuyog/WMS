@@ -19,7 +19,7 @@ export interface ProductUnitOfMeasure {
   id?: string;
   size?: string;
   unitOfMeasure?: UnitOfMeasure;
-  standardEquivalent?: number;
+  standardEquivalentValue?: number;
   isStandard?: boolean;
   isDefault?: boolean;
   prices?: ProductUnitOfMeasurePrice[];

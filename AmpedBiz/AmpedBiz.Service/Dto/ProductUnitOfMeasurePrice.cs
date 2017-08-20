@@ -6,6 +6,6 @@ namespace AmpedBiz.Service.Dto
     {
         public virtual Lookup<string> Pricing { get; set; }
 
-        public virtual decimal? PriceAmount { get; protected set; }
+        public virtual decimal? PriceAmount { get; set; }
     }
 }

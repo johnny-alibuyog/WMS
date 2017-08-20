@@ -19,7 +19,7 @@ namespace AmpedBiz.Data.EntityDefinitions
                 References(x => x.Pricing);
 
                 Component(x => x.Price,
-                    MoneyDefinition.Mapping.Map("Amount_", nameof(ProductUnitOfMeasurePrice)));
+                    MoneyDefinition.Mapping.Map("Price_", nameof(ProductUnitOfMeasurePrice)));
             }
         }
 
