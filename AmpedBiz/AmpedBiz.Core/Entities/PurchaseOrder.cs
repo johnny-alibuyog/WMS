@@ -22,7 +22,7 @@ namespace AmpedBiz.Core.Entities
         Receipts = 3
     }
 
-    public class PurchaseOrder : Entity<Guid, PurchaseOrder>, IAccept<PurchaseOrderVisitor>
+    public class PurchaseOrder : Entity<Guid, PurchaseOrder>, IAccept<IVisitor<PurchaseOrder>>
     {
         public virtual string PurchaseOrderNumber { get; internal protected set; }
 
@@ -96,7 +96,7 @@ namespace AmpedBiz.Core.Entities
 
         public PurchaseOrder(Guid id) : base(id) { }
 
-        public virtual void Accept(PurchaseOrderVisitor visitor)
+        public virtual void Accept(IVisitor<PurchaseOrder> visitor)
         {
             visitor.Visit(this);
         }

@@ -2,13 +2,13 @@
 
 namespace AmpedBiz.Core.Services.Inventories.Orders
 {
-    public class ReturnVisitor : InventoryVisitor
+    public class ReturnVisitor : IVisitor<Inventory>
     {
         public virtual Measure Quantity { get; set; }
 
         public virtual ReturnReason Reason { get; set; }
 
-        public override void Visit(Inventory target)
+        public virtual void Visit(Inventory target)
         {
             // NOTE: identify if returned item based on reason will get back to inventory
 

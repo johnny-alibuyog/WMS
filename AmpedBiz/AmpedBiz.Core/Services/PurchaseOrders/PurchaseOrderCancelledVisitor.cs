@@ -4,7 +4,7 @@ using System;
 
 namespace AmpedBiz.Core.Services.PurchaseOrders
 {
-    public class PurchaseOrderCancelledVisitor : PurchaseOrderVisitor
+    public class PurchaseOrderCancelledVisitor : IVisitor<PurchaseOrder>
     {
         public virtual User CancelledBy { get; set; }
 
@@ -12,7 +12,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
 
         public virtual string CancellationReason { get; set; }
 
-        public override void Visit(PurchaseOrder target)
+        public virtual void Visit(PurchaseOrder target)
         {
             var calculator = new PurchaseOrderCalculator();
 

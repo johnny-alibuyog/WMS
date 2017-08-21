@@ -2,9 +2,9 @@
 
 namespace AmpedBiz.Core.Services.PurchaseOrders
 {
-    public class PurchaseOrderCalculateVisitor : PurchaseOrderVisitor
+    public class PurchaseOrderCalculateVisitor : IVisitor<PurchaseOrder>
     {
-        public override void Visit(PurchaseOrder target)
+        public virtual void Visit(PurchaseOrder target)
         {
             var calculator = new PurchaseOrderCalculator();
             target.Tax = calculator.Tax(target);

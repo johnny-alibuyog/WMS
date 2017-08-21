@@ -5,18 +5,18 @@ using System.Linq;
 
 namespace AmpedBiz.Core.Services.Products
 {
-    public class UpdateProductUnitOfMeasurePricesVisitor : IVisitor<ProductUnitOfMeasure>
+    public class ProductUnitOfMeasurePricesUpdateVisitor : IVisitor<ProductUnitOfMeasure>
     {
         public IEnumerable<ProductUnitOfMeasurePrice> Prices { get; private set; }
 
-        public UpdateProductUnitOfMeasurePricesVisitor(IEnumerable<ProductUnitOfMeasurePrice> prices)
+        public ProductUnitOfMeasurePricesUpdateVisitor(IEnumerable<ProductUnitOfMeasurePrice> prices)
         {
             this.Prices = prices;
         }
 
-        public void Visit(ProductUnitOfMeasure target)
+        public virtual void Visit(ProductUnitOfMeasure target)
         {
-            this.Prices.ForEach(x => x.ProductUnitOfMeasure = target);
+            //this.Prices.ForEach(x => x.ProductUnitOfMeasure = target);
 
             var itemsToInsert = this.Prices.Except(target.Prices).ToList();
             var itemsToUpdate = target.Prices.Where(x => this.Prices.Contains(x)).ToList();

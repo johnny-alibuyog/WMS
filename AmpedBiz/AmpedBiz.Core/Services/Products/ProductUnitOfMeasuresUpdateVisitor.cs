@@ -5,16 +5,16 @@ using System.Linq;
 
 namespace AmpedBiz.Core.Services.Products
 {
-    public class UpdateProductUnitOfMeasuresVisitor : ProductVisitor
+    public class ProductUnitOfMeasuresUpdateVisitor : IVisitor<Product>
     {
         public IEnumerable<ProductUnitOfMeasure> UnitOfMeasures { get; set; }
 
-        public UpdateProductUnitOfMeasuresVisitor(IEnumerable<ProductUnitOfMeasure> unitOfMeasures)
+        public ProductUnitOfMeasuresUpdateVisitor(IEnumerable<ProductUnitOfMeasure> unitOfMeasures)
         {
             this.UnitOfMeasures = unitOfMeasures;
         }
 
-        public override void Visit(Product target)
+        public virtual void Visit(Product target)
         {
             if (this.UnitOfMeasures.IsNullOrEmpty())
                 return;
@@ -26,7 +26,7 @@ namespace AmpedBiz.Core.Services.Products
             foreach (var unitOfMeasure in unitOfMeasuresToInsert)
             {
                 unitOfMeasure.Product = target;
-                unitOfMeasure.Accept(new UpdateProductUnitOfMeasurePricesVisitor(unitOfMeasure.Prices));
+                unitOfMeasure.Prices.ForEach(x => x.ProductUnitOfMeasure = unitOfMeasure); // ensure relationship
                 target.UnitOfMeasures.Add(unitOfMeasure);
             }
 
@@ -38,7 +38,7 @@ namespace AmpedBiz.Core.Services.Products
                 unitOfMeasure.StandardEquivalentValue = value.StandardEquivalentValue;
                 unitOfMeasure.IsDefault = value.IsDefault;
                 unitOfMeasure.IsStandard = value.IsStandard;
-                unitOfMeasure.Accept(new UpdateProductUnitOfMeasurePricesVisitor(value.Prices));
+                unitOfMeasure.Accept(new ProductUnitOfMeasurePricesUpdateVisitor(value.Prices));
                 unitOfMeasure.Product = target;
             }
 

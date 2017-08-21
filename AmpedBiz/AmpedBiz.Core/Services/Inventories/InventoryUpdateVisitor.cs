@@ -2,7 +2,7 @@
 
 namespace AmpedBiz.Core.Services.Inventories
 {
-    public class InventoryUpdateVisitor : InventoryVisitor
+    public class InventoryUpdateVisitor : IVisitor<Inventory>
     {
         public Branch Branch { get; set; }
 
@@ -34,7 +34,7 @@ namespace AmpedBiz.Core.Services.Inventories
 
         public virtual Measure MinimumReorderQuantity { get; set; }
 
-        public override void Visit(Inventory target)
+        public virtual void Visit(Inventory target)
         {
             target.Branch = this.Branch ?? target.Branch;
             target.Product = this.Product ?? target.Product;

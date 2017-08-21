@@ -24,7 +24,7 @@ namespace AmpedBiz.Core.Entities
         Returns = 3
     }
 
-    public class Order : Entity<Guid, Order>, IAccept<OrderVisitor>
+    public class Order : Entity<Guid, Order>, IAccept<IVisitor<Order>>
     {
         public virtual string OrderNumber  { get; internal protected set; }
 
@@ -119,7 +119,7 @@ namespace AmpedBiz.Core.Entities
 
         public Order(Guid id) : base(id) { }
 
-        public virtual void Accept(OrderVisitor visitor)
+        public virtual void Accept(IVisitor<Order> visitor)
         {
             visitor.Visit(this);
         }

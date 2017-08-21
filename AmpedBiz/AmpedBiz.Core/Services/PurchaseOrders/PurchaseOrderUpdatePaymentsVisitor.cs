@@ -6,7 +6,7 @@ using System;
 
 namespace AmpedBiz.Core.Services.PurchaseOrders
 {
-    public class PurchaseOrderUpdatePaymentsVisitor : PurchaseOrderVisitor
+    public class PurchaseOrderUpdatePaymentsVisitor : IVisitor<PurchaseOrder>
     {
         public virtual IEnumerable<PurchaseOrderPayment> Payments { get; set; }
 
@@ -15,7 +15,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             this.Payments = payments;
         }
 
-        public override void Visit(PurchaseOrder target)
+        public virtual void Visit(PurchaseOrder target)
         {
             if (this.Payments.IsNullOrEmpty())
                 return;

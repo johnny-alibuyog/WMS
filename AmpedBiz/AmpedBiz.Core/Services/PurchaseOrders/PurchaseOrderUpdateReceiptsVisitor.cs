@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace AmpedBiz.Core.Services.PurchaseOrders
 {
-    public class PurchaseOrderUpdateReceiptsVisitor : PurchaseOrderVisitor
+    public class PurchaseOrderUpdateReceiptsVisitor : IVisitor<PurchaseOrder>
     {
         public virtual IEnumerable<PurchaseOrderReceipt> Receipts { get; set; }
 
@@ -16,7 +16,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             Receipts = receipts;
         }
 
-        public override void Visit(PurchaseOrder target)
+        public virtual void Visit(PurchaseOrder target)
         {
             if (this.Receipts.IsNullOrEmpty())
                 return;

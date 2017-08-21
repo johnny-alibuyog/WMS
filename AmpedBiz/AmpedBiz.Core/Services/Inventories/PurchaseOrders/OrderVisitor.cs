@@ -2,11 +2,11 @@
 
 namespace AmpedBiz.Core.Services.Inventories.PurchaseOrders
 {
-    public class OrderVisitor : InventoryVisitor
+    public class OrderVisitor : IVisitor<Inventory>
     {
         public virtual Measure Quantity { get; set; }
 
-        public override void Visit(Inventory target)
+        public virtual void Visit(Inventory target)
         {
             target.OnOrder += this.Quantity;
             target.Accept(new InventoryRecomputeVisitor());

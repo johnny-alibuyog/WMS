@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AmpedBiz.Core.Services.PurchaseOrders
 {
-    public class PurchaseOrderUpdateVisitor : PurchaseOrderVisitor
+    public class PurchaseOrderUpdateVisitor : IVisitor<PurchaseOrder>
     {
         public virtual string PurchaseOrderNumber { get; set; }
 
@@ -32,7 +32,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
 
         public virtual IEnumerable<PurchaseOrderReceipt> Receipts { get; set; }
 
-        public override void Visit(PurchaseOrder target)
+        public virtual void Visit(PurchaseOrder target)
         {
             if (string.IsNullOrWhiteSpace(target.VoucherNumber))
                 target.VoucherNumber = new VoucherGenerator().Generate();

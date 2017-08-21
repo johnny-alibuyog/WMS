@@ -3,11 +3,11 @@ using AmpedBiz.Core.Entities;
 
 namespace AmpedBiz.Core.Services.Inventories.Orders
 {
-    public class AllocateVisitor : InventoryVisitor
+    public class AllocateVisitor : IVisitor<Inventory>
     {
         public Measure Quantity { get; set; }
 
-        public override void Visit(Inventory target)
+        public virtual void Visit(Inventory target)
         {
             if (target.Available < this.Quantity)
             {

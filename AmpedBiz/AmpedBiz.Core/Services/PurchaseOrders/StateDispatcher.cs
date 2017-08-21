@@ -24,7 +24,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             //this.AllowedTransitions = StageOld.Transitions[target.Status];
         }
 
-        public virtual void Process(PurchaseOrderVisitor visitor)
+        public virtual void Process(IVisitor<PurchaseOrder> visitor)
         {
             this.Process((dynamic)visitor);
         }

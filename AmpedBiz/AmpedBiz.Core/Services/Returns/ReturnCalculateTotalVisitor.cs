@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace AmpedBiz.Core.Services.Returns
 {
-    public class ReturnCalculateTotalVisitor : ReturnVisitor
+    public class ReturnCalculateTotalVisitor : IVisitor<Return>
     {
-        public override void Visit(Return target)
+        public virtual void Visit(Return target)
         {
             if (target.Items.Any())
             {

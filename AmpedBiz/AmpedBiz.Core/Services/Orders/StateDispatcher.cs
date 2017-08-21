@@ -20,7 +20,7 @@ namespace AmpedBiz.Core.Services.Orders
             this.Stage = StageDefinitionConfigReader.Values[target.Status];
         }
 
-        public virtual void Process(OrderVisitor visitor)
+        public virtual void Process(IVisitor<Order> visitor)
         {
             this.Process((dynamic)visitor);
         }

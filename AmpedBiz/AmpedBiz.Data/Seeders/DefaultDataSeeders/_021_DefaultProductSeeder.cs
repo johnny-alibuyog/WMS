@@ -214,13 +214,15 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                             .Where(o => o.UnitOfMeasure != null)
                         });
 
+                        var standard = product.UnitOfMeasures.FirstOrDefault(o => o.IsStandard);
+
                         product.Inventory.Accept(new InventoryUpdateVisitor()
                         {
                             // inventory settings
                             // TODO: get this from excel
-                            TargetLevel = new Measure(_utils.RandomInteger(100, 200), UnitOfMeasure.Piece),
-                            ReorderLevel = new Measure(_utils.RandomInteger(50, 75), UnitOfMeasure.Piece),
-                            MinimumReorderQuantity = new Measure(_utils.RandomInteger(100, 150), UnitOfMeasure.Piece),
+                            TargetLevel = new Measure(_utils.RandomInteger(100, 200), standard.UnitOfMeasure),
+                            ReorderLevel = new Measure(_utils.RandomInteger(50, 75), standard.UnitOfMeasure),
+                            MinimumReorderQuantity = new Measure(_utils.RandomInteger(100, 150), standard.UnitOfMeasure),
 
                             IndividualBarcode = x.Piece.Barcode,
                             PackagingBarcode = x.Package.Barcode,
@@ -236,25 +238,6 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                             WholesalePrice = new Money(amount: x.Piece.Price.WholesalePrice, currency: defaults.Currency),
                             RetailPrice = new Money(amount: x.Piece.Price.RetailPrice, currency: defaults.Currency),
                         });
-
-                        //product.Inventory.TargetLevel = new Measure(_utils.RandomInteger(100, 200), UnitOfMeasure.Piece);
-                        //product.Inventory.ReorderLevel = new Measure(_utils.RandomInteger(50, 75), UnitOfMeasure.Piece);
-                        //product.Inventory.MinimumReorderQuantity = new Measure(_utils.RandomInteger(100, 150), UnitOfMeasure.Piece);
-
-                        //product.Inventory.IndividualBarcode = x.IndividualBarcode;
-                        //product.Inventory.PackagingBarcode = x.PackagingBarcode;
-                        //product.Inventory.PackagingSize = x.PiecePerPackage;
-                        //product.Inventory.UnitOfMeasure = unitOfMeasure.Individual;
-                        //product.Inventory.PackagingUnitOfMeasure = unitOfMeasure.Packaging;
-
-                        //// TODO: check for correct values
-                        ////product.Inventory.BasePrice = new Money(amount: 0M, currency: defaults.Currency);
-                        ////product.Inventory.BadStockPrice = new Money(amount: 0M, currency: defaults.Currency);
-                        //product.Inventory.BasePrice = new Money(amount: x.WholesalePerPiece, currency: defaults.Currency);
-                        //product.Inventory.BadStockPrice = new Money(amount: x.WholesalePerPiece, currency: defaults.Currency);
-                        //product.Inventory.WholesalePrice = new Money(amount: x.WholesalePerPiece, currency: defaults.Currency);
-                        //product.Inventory.RetailPrice = new Money(amount: x.RetailPricePerPiece, currency: defaults.Currency);
-                        //product.EnsureValidity();
 
                         product.EnsureValidity();
 

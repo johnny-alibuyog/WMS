@@ -1,12 +1,11 @@
-﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Inventories.Orders;
 using AmpedBiz.Core.Services.Products;
 using System;
 
 namespace AmpedBiz.Core.Services.Orders
 {
-    public class OrderCancelledVisitor : OrderVisitor
+    public class OrderCancelledVisitor : IVisitor<Order>
     {
         public virtual DateTime? CancelledOn { get; set; }
 
@@ -14,7 +13,7 @@ namespace AmpedBiz.Core.Services.Orders
 
         public virtual string CancellationReason { get; set; }
 
-        public override void Visit(Order target)
+        public virtual void Visit(Order target)
         {
             switch (target.Status)
             {

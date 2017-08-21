@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AmpedBiz.Core.Services.Orders
 {
-    public class OrderUpdateVisitor : OrderVisitor
+    public class OrderUpdateVisitor : IVisitor<Order>
     {
         public virtual string OrderNumber { get; set; }
 
@@ -40,7 +40,7 @@ namespace AmpedBiz.Core.Services.Orders
 
         public virtual IEnumerable<OrderReturn> Returns { get; set; }
 
-        public override void Visit(Order target)
+        public virtual void Visit(Order target)
         {
             if (string.IsNullOrEmpty(target.InvoiceNumber))
                 target.InvoiceNumber = new InvoiceGenerator().Generate();

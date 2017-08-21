@@ -22,7 +22,6 @@ namespace AmpedBiz.Service.Host.Controllers
             return await _mediator.Send(request ?? new GetProduct.Request());
         }
 
-
         [HttpGet()]
         [Route("~/product-inventories/{productId}")]
         public async Task<GetProductInventory.Response> Process([FromUri]GetProductInventory.Request request)

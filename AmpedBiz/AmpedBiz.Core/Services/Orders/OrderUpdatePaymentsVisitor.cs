@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AmpedBiz.Core.Services.Orders
 {
-    public class OrderUpdatePaymentsVisitor : OrderVisitor
+    public class OrderUpdatePaymentsVisitor : IVisitor<Order>
     {
         public virtual IEnumerable<OrderPayment> Payments { get; set; }
 
@@ -14,7 +14,7 @@ namespace AmpedBiz.Core.Services.Orders
             this.Payments = payments;
         }
 
-        public override void Visit(Order target)
+        public virtual void Visit(Order target)
         {
             if (this.Payments.IsNullOrEmpty())
                 return;

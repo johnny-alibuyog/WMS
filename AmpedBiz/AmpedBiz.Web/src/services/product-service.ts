@@ -1,16 +1,17 @@
-import { autoinject } from 'aurelia-framework';
-import { buildQueryString } from 'aurelia-framework';
-import { Product } from '../common/models/product';
-import { ProductInventory } from '../common/models/product';
-import { ProductReportPageItem } from '../common/models/product';
-import { ProductOrderPageItem } from '../common/models/product';
-import { ProductOrderReturnPageItem } from '../common/models/product';
-import { ProductReturnPageItem } from '../common/models/product';
-import { ProductPurchasePageItem } from '../common/models/product';
 import { PageRequest, PagerResponse } from '../common/models/paging';
-import { ServiceBase } from './service-base'
+
 import { HttpClientFacade } from './http-client-facade';
 import { Lookup } from '../common/custom_types/lookup';
+import { Product } from '../common/models/product';
+import { ProductInventory } from '../common/models/product';
+import { ProductOrderPageItem } from '../common/models/product';
+import { ProductOrderReturnPageItem } from '../common/models/product';
+import { ProductPurchasePageItem } from '../common/models/product';
+import { ProductReportPageItem } from '../common/models/product';
+import { ProductReturnPageItem } from '../common/models/product';
+import { ServiceBase } from './service-base'
+import { autoinject } from 'aurelia-framework';
+import { buildQueryString } from 'aurelia-framework';
 
 @autoinject
 export class ProductService extends ServiceBase<Product> {

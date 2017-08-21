@@ -2,9 +2,9 @@
 
 namespace AmpedBiz.Core.Services.Orders
 {
-    public class OrderCalculateVisitor : OrderVisitor
+    public class OrderCalculateVisitor : IVisitor<Order>
     {
-        public override void Visit(Order target)
+        public virtual void Visit(Order target)
         {
             var calculator = new OrderCalculator();
             target.Tax = calculator.Tax(target);

@@ -401,6 +401,32 @@ namespace AmpedBiz.Tests.IntegrationTests
                         WholesalePriceAmount = productData.Inventory.WholesalePriceAmount,
                         RetailPriceAmount = productData.Inventory.RetailPriceAmount,
                         BackOrderedValue = productData.Inventory.BackOrderedValue,
+                    },
+                    UnitOfMeasures = new List<Service.Dto.ProductUnitOfMeasure>()
+                    {
+                        new Service.Dto.ProductUnitOfMeasure()
+                        {
+                            Size = "Size",
+                            IsDefault = false,
+                            IsStandard = true,
+                            StandardEquivalentValue = 1,
+                            UnitOfMeasure = new Func<Service.Dto.UnitOfMeasure>(() => 
+                            {
+                                var uom = this.RandomUnitOfMeasure();
+                                return new Service.Dto.UnitOfMeasure()
+                                {
+                                    Id = uom.Id,
+                                    Name = uom.Name
+                                };
+                            })(), 
+                            Prices = this._pricings
+                                .Select(x => new Service.Dto.ProductUnitOfMeasurePrice()
+                                {
+                                    Pricing = new Lookup<string>(x.Id, x.Name),
+                                    PriceAmount = this.random.Next(20, 40),
+                                })
+                                .ToList()
+                        },
                     }
                 };
 

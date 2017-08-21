@@ -106,6 +106,34 @@ namespace AmpedBiz.Service.Dto
         public decimal? DiscountAmount { get; set; }
     }
 
+
+    public class ProductInventory1
+    {
+        public Guid Id { get; set; }
+
+        public string Code { get; set; }
+
+        public string Name { get; set; }
+
+        public List<ProductInventoryUnitOfMeasure> UnitOfMeasure { get; set; } = new List<ProductInventoryUnitOfMeasure>();
+    }
+
+    public class ProductInventoryUnitOfMeasure
+    {
+        public Lookup<string> UnitOfMeasure { get; set; }
+
+        public decimal? AvailableValue { get; set; }
+
+        public List<ProductInventoryUnitOfMeasurePrice> Prices { get; set; } = new List<ProductInventoryUnitOfMeasurePrice>();
+    }
+
+    public class ProductInventoryUnitOfMeasurePrice
+    {
+        public Lookup<string> Pricing { get; set; }
+
+        public decimal? PriceAmount { get; set; }
+    }
+
     public class ProductInventoryLevelPageItem
     {
         public Guid Id { get; set; }

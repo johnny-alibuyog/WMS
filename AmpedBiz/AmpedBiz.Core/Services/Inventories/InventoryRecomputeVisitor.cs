@@ -2,9 +2,9 @@
 
 namespace AmpedBiz.Core.Services.Inventories
 {
-    public class InventoryRecomputeVisitor : InventoryVisitor
+    public class InventoryRecomputeVisitor : IVisitor<Inventory>
     {
-        public override void Visit(Inventory target)
+        public virtual void Visit(Inventory target)
         {
             var calculator = new InventoryCalculator();
             target.OnHand = calculator.OnHand(target);

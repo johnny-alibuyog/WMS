@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Return : Entity<Guid, Return>, IAccept<ReturnVisitor>
+    public class Return : Entity<Guid, Return>, IAccept<IVisitor<Return>>
     {
         public virtual Branch Branch { get; internal protected set; }
 
@@ -26,7 +26,7 @@ namespace AmpedBiz.Core.Entities
 
         public Return(Guid id) : base(id) { }
 
-        public virtual void Accept(ReturnVisitor visitor)
+        public virtual void Accept(IVisitor<Return> visitor)
         {
             visitor.Visit(this);
         }

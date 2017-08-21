@@ -3,13 +3,13 @@ using System;
 
 namespace AmpedBiz.Core.Services.PurchaseOrders
 {
-    public class PurchaseOrderSubmittedVisitor : PurchaseOrderVisitor
+    public class PurchaseOrderSubmittedVisitor : IVisitor<PurchaseOrder>
     {
         public virtual User SubmittedBy { get; set; }
 
         public virtual DateTime? SubmittedOn { get; set; }
 
-        public override void Visit(PurchaseOrder target)
+        public virtual void Visit(PurchaseOrder target)
         {
             target.SubmittedBy = this.SubmittedBy;
             target.SubmittedOn = this.SubmittedOn;

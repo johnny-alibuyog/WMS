@@ -141,6 +141,7 @@
     <Compile Include="Products\GetNeedsReorderingPage.cs" />
     <Compile Include="Products\GetProduct.cs" />
     <Compile Include="Products\GetProductInventory.cs" />
+    <Compile Include="Products\GetProductInventory1.cs" />
     <Compile Include="Products\GetProductInventoryLevelPage.cs" />
     <Compile Include="Products\GetProductInventoryList.cs" />
     <Compile Include="Products\GetProductList.cs" />
@@ -151,6 +152,7 @@
     <Compile Include="Products\GetProductPage.cs" />
     <Compile Include="Products\GetProductPurchasePage.cs" />
     <Compile Include="Products\GetProductReportPage.cs" />
+    <Compile Include="Products\GetProductUOMInventoryList.cs" />
     <Compile Include="Products\UpdateProduct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PurchaseOrders\GetActivePurchaseOrderPage.cs" />

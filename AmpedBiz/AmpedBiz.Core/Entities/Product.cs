@@ -1,12 +1,11 @@
 ﻿using AmpedBiz.Core.Services;
-using AmpedBiz.Core.Services.Products;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Product : Entity<Guid, Product>, IAccept<ProductVisitor>
+    public class Product : Entity<Guid, Product>, IAccept<IVisitor<Product>>
     {
         public virtual string Code { get; protected internal set; }
 
@@ -38,7 +37,7 @@ namespace AmpedBiz.Core.Entities
             this.UnitOfMeasures = new Collection<ProductUnitOfMeasure>();
         }
 
-        public virtual void Accept(ProductVisitor visitor)
+        public virtual void Accept(IVisitor<Product> visitor)
         {
             visitor.Visit(this);
         }

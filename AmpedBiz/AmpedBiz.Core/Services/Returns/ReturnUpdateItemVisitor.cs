@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace AmpedBiz.Core.Services.Returns
 {
-    public class ReturnUpdateItemVisitor : ReturnVisitor
+    public class ReturnUpdateItemVisitor : IVisitor<Return>
     {
         public virtual IEnumerable<ReturnItem> Items { get; set; }
 
-        public override void Visit(Return target)
+        public virtual void Visit(Return target)
         {
             if (this.Items.IsNullOrEmpty())
                 return;

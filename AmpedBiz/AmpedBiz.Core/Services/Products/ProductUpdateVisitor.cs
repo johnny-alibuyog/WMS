@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AmpedBiz.Core.Services.Products
 {
-    public class ProductUpdateVisitor : ProductVisitor
+    public class ProductUpdateVisitor : IVisitor<Product>
     {
         public string Code { get; set; }
 
@@ -23,7 +23,7 @@ namespace AmpedBiz.Core.Services.Products
 
         public IEnumerable<ProductUnitOfMeasure> UnitOfMeasures { get; set; }
 
-        public override void Visit(Product target)
+        public virtual void Visit(Product target)
         {
             target.Code = this.Code ?? target.Code;
             target.Name = this.Name ?? target.Name;
@@ -32,7 +32,7 @@ namespace AmpedBiz.Core.Services.Products
             target.Category = this.Category ?? target.Category;
             target.Image = this.Image ?? target.Image;
             target.Discontinued = this.Discontinued ?? target.Discontinued;
-            target.Accept(new UpdateProductUnitOfMeasuresVisitor(this.UnitOfMeasures));
+            target.Accept(new ProductUnitOfMeasuresUpdateVisitor(this.UnitOfMeasures));
         }
     }
 }

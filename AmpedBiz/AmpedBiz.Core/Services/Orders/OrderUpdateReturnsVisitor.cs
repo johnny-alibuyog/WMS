@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace AmpedBiz.Core.Services.Orders
 {
-    public class OrderUpdateReturnsVisitor : OrderVisitor
+    public class OrderUpdateReturnsVisitor : IVisitor<Order>
     {
         public virtual IEnumerable<OrderReturn> Returns { get; set; }
 
@@ -16,7 +16,7 @@ namespace AmpedBiz.Core.Services.Orders
             this.Returns = returns;
         }
 
-        public override void Visit(Order target)
+        public virtual void Visit(Order target)
         {
             if (this.Returns.IsNullOrEmpty())
                 return;

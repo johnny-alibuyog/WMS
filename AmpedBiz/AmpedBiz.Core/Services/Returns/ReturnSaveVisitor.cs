@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AmpedBiz.Core.Services.Returns
 {
-    public class ReturnSaveVisitor : ReturnVisitor
+    public class ReturnSaveVisitor : IVisitor<Return>
     {
         public virtual Branch Branch  { get; set; }
 
@@ -18,7 +18,7 @@ namespace AmpedBiz.Core.Services.Returns
 
         public virtual IEnumerable<ReturnItem> Items  { get; set; }
 
-        public override void Visit(Return target)
+        public virtual void Visit(Return target)
         {
             target.Branch = this.Branch;
             target.Customer = this.Customer;

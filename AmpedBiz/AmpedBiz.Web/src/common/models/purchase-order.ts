@@ -1,7 +1,6 @@
+import { Dictionary } from '../custom_types/dictionary';
 import { Lookup } from '../custom_types/lookup';
 import { StageDefinition } from './stage-definition';
-import { ProductInventory } from './product';
-import { Dictionary } from '../custom_types/dictionary';
 
 export const purchaseOrderEvents = {
   item: {

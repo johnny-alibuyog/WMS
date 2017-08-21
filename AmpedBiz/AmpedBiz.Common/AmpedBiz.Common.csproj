@@ -59,6 +59,7 @@
     <Compile Include="Exceptions\ValidationExceptionBuilder.cs" />
     <Compile Include="Exceptions\IExceptionBuilder.cs" />
     <Compile Include="Exceptions\InvalidField.cs" />
+    <Compile Include="Extentions\AssertionExtention.cs" />
     <Compile Include="Extentions\DateTimeExtention.cs" />
     <Compile Include="Extentions\EnumerableExtention.cs" />
     <Compile Include="Extentions\EnumExtention.cs" />

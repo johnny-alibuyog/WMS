@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Inventory : Entity<Guid, Inventory>, IAccept<InventoryVisitor>
+    public class Inventory : Entity<Guid, Inventory>, IAccept<IVisitor<Inventory>>
     {
         public virtual Branch Branch { get; protected internal set; } // TODO: implement
 
@@ -66,7 +66,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<Stock> Stocks { get; protected internal set; } = new Collection<Stock>();
         
-        public virtual void Accept(InventoryVisitor visitor)
+        public virtual void Accept(IVisitor<Inventory> visitor)
         {
             visitor.Visit(this);
         }

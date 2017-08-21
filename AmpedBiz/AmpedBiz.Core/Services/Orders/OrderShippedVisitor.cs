@@ -5,13 +5,13 @@ using System;
 
 namespace AmpedBiz.Core.Services.Orders
 {
-    public class OrderShippedVisitor : OrderVisitor
+    public class OrderShippedVisitor : IVisitor<Order>
     {
         public virtual DateTime? ShippedOn { get; set; }
 
         public virtual User ShippedBy { get; set; }
 
-        public override void Visit(Order target)
+        public virtual void Visit(Order target)
         {
             foreach (var item in target.Items)
             {

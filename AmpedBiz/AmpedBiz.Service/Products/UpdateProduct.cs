@@ -56,7 +56,9 @@ namespace AmpedBiz.Service.Products
                                         pricing: session.Load<Pricing>(o.Pricing.Id),
                                         price: new Money(amount: o.PriceAmount ?? 0M, currency: currency)
                                     ))
+                                    .ToList()
                             ))
+                            .ToList()
                     });
 
                     entity.Inventory.Accept(new InventoryUpdateVisitor()
