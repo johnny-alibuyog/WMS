@@ -523,6 +523,10 @@ div.au-stagger {
 */
 
  /* The switch - the box around the slider */
+div.switch {
+  height: 34
+}
+
 .switch {
   position: relative;
   display: inline-block;

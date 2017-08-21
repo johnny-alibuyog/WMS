@@ -36,7 +36,6 @@ export class ProductUOM {
     }
   };
 
-
   constructor(api: ServiceApi, router: Router) {
     this._api = api;
   }
@@ -80,6 +79,19 @@ export class ProductUOM {
       this.items.splice(index, 1);
       this.resetSelected();
     }
+  }
+
+  public toggleDefault(item: ProductUnitOfMeasure): boolean {
+    /* only one item should be default, the reset is not  */
+    this.items.filter(x => x !== item).forEach(x => x.isDefault = false);
+    return true; // continue propagtion to UI
+  }
+
+  public toggleStandard(item: ProductUnitOfMeasure): boolean {
+    /* only one item should be standard, the reset is not  */
+    item.standardEquivalentValue = 1;
+    this.items.filter(x => x !== item).forEach(x => x.isStandard = false);
+    return true; // continue propagtion to UI
   }
 
   public itemsChanged(): void {

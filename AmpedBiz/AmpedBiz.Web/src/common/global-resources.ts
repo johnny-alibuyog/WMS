@@ -7,6 +7,7 @@ export function configure(config: FrameworkConfiguration) {
     'common/converters/authorize-value-converter',
     'common/converters/date-format-value-converter',
     'common/converters/date-input-format-value-converter',
+    'common/converters/filter-value-converter',
     'common/converters/instruction-filter-vaule-converter',
     'common/converters/lookup-id-to-name-value-converter',
     'common/converters/lookup-to-id-value-converter',
