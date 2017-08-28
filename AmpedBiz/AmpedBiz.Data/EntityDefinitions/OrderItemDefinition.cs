@@ -17,10 +17,14 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 References(x => x.Product);
 
-                Map(x => x.PackagingSize);
-
                 Component(x => x.Quantity,
                     MeasureDefinition.Mapping.Map("Quantity_", nameof(OrderItem)));
+
+                Component(x => x.Standard,
+                    MeasureDefinition.Mapping.Map("Standard", nameof(OrderItem)));
+
+                Component(x => x.QuantityStandardEquivalent,
+                    MeasureDefinition.Mapping.Map("QuantityStandardEquivalent", nameof(OrderItem)));
 
                 Map(x => x.DiscountRate);
 
@@ -52,9 +56,17 @@ namespace AmpedBiz.Data.EntityDefinitions
                     .NotNullable()
                     .And.IsValid();
 
-                Define(x => x.PackagingSize);
+                Define(x => x.Quantity)
+                    .NotNullable()
+                    .And.IsValid();
 
-                Define(x => x.Quantity);
+                Define(x => x.Standard)
+                    .NotNullable()
+                    .And.IsValid();
+
+                Define(x => x.QuantityStandardEquivalent)
+                    .NotNullable()
+                    .And.IsValid();
 
                 Define(x => x.DiscountRate);
 

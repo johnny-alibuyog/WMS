@@ -1,5 +1,6 @@
-﻿using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Configurations;
 using AmpedBiz.Common.CustomTypes;
+using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Data;
 using AmpedBiz.Data.Seeders;
@@ -20,7 +21,6 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AmpedBiz.Common.Configurations;
 
 namespace AmpedBiz.Tests.IntegrationTests
 {
@@ -161,6 +161,18 @@ namespace AmpedBiz.Tests.IntegrationTests
         }
 
         #region Common Helpers
+
+        private Service.Dto.ProductInventoryUnitOfMeasure RandomProductUnitOfMeasure(Service.Dto.ProductInventory1 productInventory)
+        {
+            var random = productInventory.UnitOfMeasures[this.random.Next(0, productInventory.UnitOfMeasures.Count - 1)];
+            return random;
+        }
+
+        private Service.Dto.ProductInventoryUnitOfMeasurePrice RandomProductUnitOfMeasurePrice(Service.Dto.ProductInventoryUnitOfMeasure productUnitOfMeasure)
+        {
+            var random = productUnitOfMeasure.Prices[this.random.Next(0, productUnitOfMeasure.Prices.Count - 1)];
+            return random;
+        }
 
         private Lookup<string> RandomRoles()
         {
@@ -407,10 +419,10 @@ namespace AmpedBiz.Tests.IntegrationTests
                         new Service.Dto.ProductUnitOfMeasure()
                         {
                             Size = "Size",
-                            IsDefault = false,
+                            IsDefault = true,
                             IsStandard = true,
                             StandardEquivalentValue = 1,
-                            UnitOfMeasure = new Func<Service.Dto.UnitOfMeasure>(() => 
+                            UnitOfMeasure = new Func<Service.Dto.UnitOfMeasure>(() =>
                             {
                                 var uom = this.RandomUnitOfMeasure();
                                 return new Service.Dto.UnitOfMeasure()
@@ -418,7 +430,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                                     Id = uom.Id,
                                     Name = uom.Name
                                 };
-                            })(), 
+                            })(),
                             Prices = this._pricings
                                 .Select(x => new Service.Dto.ProductUnitOfMeasurePrice()
                                 {
@@ -472,6 +484,34 @@ namespace AmpedBiz.Tests.IntegrationTests
                 .Select(x => x.Product);
 
             return products;
+        }
+
+        private IEnumerable<Service.Dto.ProductInventory1> SelectRandomAvailableProductInventories(Guid supplierId, int count = 12)
+        {
+            var request = new GetProductInventory1List.Request() { SupplierId = supplierId };
+            var response = new GetProductInventory1List.Handler(this.sessionFactory).Handle(request);
+            var availableProductInventories = response.Where(x =>
+                x.UnitOfMeasures != null &&
+                x.UnitOfMeasures.Any() &&
+                x.UnitOfMeasures.All(o => o.Available?.Value > 0)
+            );
+
+            var totalProductInventory = availableProductInventories.Count();
+
+            count = totalProductInventory < count ? totalProductInventory : count;
+
+            var randomIndexs = this.dummyData.GenerateUniqueNumbers(0, totalProductInventory, count);
+
+            var productInventories = availableProductInventories
+                .Select((productInventory, index) => new
+                {
+                    Index = index,
+                    ProductInventory = productInventory
+                })
+                .Where(x => randomIndexs.Contains(x.Index))
+                .Select(x => x.ProductInventory);
+
+            return productInventories;
         }
 
         private IEnumerable<Service.Dto.Product> SelectRandomProducts(Guid supplierId, int count = 12)
@@ -690,6 +730,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             {
                 suppliersId = session
                     .Query<Supplier>()
+                    .Where(x => x.Products.Any())
                     .Select(s => s.Id)
                     .ToList();
 
@@ -704,23 +745,32 @@ namespace AmpedBiz.Tests.IntegrationTests
             var randomProductIndexes = this.dummyData.GenerateUniqueNumbers(0, count, count).ToArray();
 
             comeAsYouAre:
-            var selectedProducts = this.SelectRandomAvailableProducts(suppliersId[this.random.Next(0, suppliersId.Count - 1)], 10).ToList();
+            var selectedProductInventories = this.SelectRandomAvailableProductInventories(suppliersId[this.random.Next(0, suppliersId.Count - 1)], 10).ToList();
 
-            if (selectedProducts.Count == 0)
+            if (selectedProductInventories.Count == 0)
                 goto comeAsYouAre;
 
-            for (var i = 0; i < selectedProducts.Count; i++)
+            for (var i = 0; i < selectedProductInventories.Count; i++)
             {
-                var product = selectedProducts[i];
+                var productInventory = selectedProductInventories[i];
+                var productInventoryUnitOfMeasure = this.RandomProductUnitOfMeasure(productInventory);
+                var productInventoryUnitOfMeasurePrice = this.RandomProductUnitOfMeasurePrice(productInventoryUnitOfMeasure);
 
                 orderItems.Add(new Service.Dto.OrderItem()
                 {
                     ExtendedPriceAmount = 0M,
-                    Product = new Lookup<Guid>(product.Id, product.Name),
-                    PackagingSize = product.Inventory.PackagingSize ?? 1,
-                    //UnitOfMeasure = new Lookup<string>(product.Inv)
-                    QuantityValue = this.random.Next(1, (int)product.Inventory.AvailableValue),
-                    UnitPriceAmount = product.Inventory.WholesalePriceAmount ?? 0M
+                    Product = new Lookup<Guid>(productInventory.Id, productInventory.Name),
+                    Quantity = new Service.Dto.Measure()
+                    {
+                        Unit = productInventoryUnitOfMeasure.UnitOfMeasure,
+                        Value = this.random.Next(1, (int)(productInventoryUnitOfMeasure?.Available?.Value ?? 0M))
+                    },
+                    Standard = new Service.Dto.Measure()
+                    {
+                        Unit = productInventoryUnitOfMeasure.Standard?.Unit,
+                        Value = productInventoryUnitOfMeasure.Standard?.Value ?? 0M
+                    },
+                    UnitPriceAmount = productInventoryUnitOfMeasurePrice.PriceAmount ?? 0M
                 });
             }
 
@@ -742,25 +792,23 @@ namespace AmpedBiz.Tests.IntegrationTests
             using (var session = sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var productIds = order.Items.Select(x => x.Product.Id);
+                var productIds = order.Items.Select(x => x.Product.Id).ToArray();
+                var productInventories = new GetProductInventory1List.Handler(this.sessionFactory)
+                    .Handle(new GetProductInventory1List.Request() { ProductIds = productIds });
 
-                var products = session.Query<Product>()
-                    .Where(x => productIds.Contains(x.Id))
-                    .Fetch(x => x.Inventory)
-                    .ToList();
-
-                products.ForEach(product =>
+                productInventories.ForEach(productInventory =>
                 {
-                    var item = order.Items.FirstOrDefault(x => x.Product.Id == product.Id);
-                    if (product.Inventory.Available.Value == 0)
+                    var item = order.Items.FirstOrDefault(x => x.Product.Id == productInventory.Id);
+                    var productInventorUnitOfMeasure = productInventory.UnitOfMeasures.FirstOrDefault(x => x.UnitOfMeasure.Id == item.Quantity.Unit.Id);
+                    if (productInventorUnitOfMeasure.Available.Value == 0)
                     {
                         order.Items.Remove(item);
                         return;
                     }
 
-                    if (product.Inventory.Available.Value < item.QuantityValue)
+                    if (productInventorUnitOfMeasure.Available.Value < item.Quantity.Value)
                     {
-                        item.QuantityValue = product.Inventory.Available.Value;
+                        item.Quantity.Value = productInventorUnitOfMeasure.Available.Value;
                         return;
                     }
                 });
@@ -769,16 +817,17 @@ namespace AmpedBiz.Tests.IntegrationTests
             if (order.Items.Count() == 0)
                 Console.WriteLine("Hey");
 
-            var response = new SaveOrder.Handler(this.sessionFactory).Handle(new SaveOrder.Request()
-            {
-                Id = order.Id,
-                CreatedBy = order.CreatedBy,
-                Branch = order.Branch,
-                Customer = order.Customer,
-                TaxRate = order.TaxRate,
-                PaymentType = order.PaymentType,
-                Items = order.Items
-            });
+            var response = new SaveOrder.Handler(this.sessionFactory)
+                .Handle(new SaveOrder.Request()
+                {
+                    Id = order.Id,
+                    CreatedBy = order.CreatedBy,
+                    Branch = order.Branch,
+                    Customer = order.Customer,
+                    TaxRate = order.TaxRate,
+                    PaymentType = order.PaymentType,
+                    Items = order.Items
+                });
         }
 
         private Service.Dto.Order StageOrder(Service.Dto.Order order)

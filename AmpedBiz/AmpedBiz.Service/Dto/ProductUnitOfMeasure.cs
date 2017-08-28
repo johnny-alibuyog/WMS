@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Service.Dto
 {
@@ -10,6 +9,8 @@ namespace AmpedBiz.Service.Dto
 
         public string Size { get; set; }
 
+        public string Barcode { get; set; }
+
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
         public decimal? StandardEquivalentValue { get; set; }
@@ -18,6 +19,6 @@ namespace AmpedBiz.Service.Dto
 
         public bool? IsDefault { get; set; }
 
-        public IEnumerable<ProductUnitOfMeasurePrice> Prices { get; set; } = new Collection<ProductUnitOfMeasurePrice>();
+        public List<ProductUnitOfMeasurePrice> Prices { get; set; } = new List<ProductUnitOfMeasurePrice>();
     }
 }

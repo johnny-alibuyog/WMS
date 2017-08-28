@@ -36,6 +36,10 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                     Code = x["Product Id"].ToString(),
                     Name = x["Product Name"].ToString(),
                     Category = x["Category"].ToString(),
+                    InitialLevel = Convert.ToDecimal(x["Initial Level"].Cast<double>()),
+                    TargetLevel = Convert.ToDecimal(x["Target Level"].Cast<double>()),
+                    ReorderLevel = Convert.ToDecimal(x["Reorder Level"].Cast<double>()),
+                    MinimumReorderQuantity = Convert.ToDecimal(x["Minimum Reorder Quantity"].Cast<double>()),
                     Piece = new
                     {
                         Size = x["Size"].ToString(),
@@ -121,6 +125,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                                 // Piece
                                 new ProductUnitOfMeasure(
                                     size: x.Piece.Size,
+                                    barcode: x.Piece.Barcode,
                                     isDefault: false,
                                     isStandard: true,
                                     standardEquivalentValue: x.Piece.StandardEquivalentValue,
@@ -167,6 +172,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                                 // Package
                                 new ProductUnitOfMeasure(
                                     size: x.Package.Size,
+                                    barcode: x.Package.Barcode,
                                     isDefault: true,
                                     isStandard: false,
                                     standardEquivalentValue: x.Package.StandardEquivalentValue,
@@ -218,11 +224,10 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
                         product.Inventory.Accept(new InventoryUpdateVisitor()
                         {
-                            // inventory settings
-                            // TODO: get this from excel
-                            TargetLevel = new Measure(_utils.RandomInteger(100, 200), standard.UnitOfMeasure),
-                            ReorderLevel = new Measure(_utils.RandomInteger(50, 75), standard.UnitOfMeasure),
-                            MinimumReorderQuantity = new Measure(_utils.RandomInteger(100, 150), standard.UnitOfMeasure),
+                            InitialLevel = new Measure(x.InitialLevel, standard.UnitOfMeasure),
+                            TargetLevel = new Measure(x.TargetLevel, standard.UnitOfMeasure),
+                            ReorderLevel = new Measure(x.ReorderLevel, standard.UnitOfMeasure),
+                            MinimumReorderQuantity = new Measure(x.MinimumReorderQuantity, standard.UnitOfMeasure),
 
                             IndividualBarcode = x.Piece.Barcode,
                             PackagingBarcode = x.Package.Barcode,

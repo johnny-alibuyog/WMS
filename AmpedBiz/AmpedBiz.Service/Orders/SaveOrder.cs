@@ -82,6 +82,8 @@ namespace AmpedBiz.Service.Orders
                     var products = session.Query<Product>()
                         .Where(x => productIds.Contains(x.Id))
                         .Fetch(x => x.Inventory)
+                        .FetchMany(x => x.UnitOfMeasures)
+                        .ThenFetchMany(x => x.Prices)
                         .ToList();
 
                     Func<Guid, Product> GetProduct = (id) => products.First(x => x.Id == id);
@@ -112,30 +114,36 @@ namespace AmpedBiz.Service.Orders
                         TaxRate = message.TaxRate,
                         Tax = new Money(message.TaxAmount, currency),
                         ShippingFee = new Money(message.ShippingFeeAmount, currency),
-                        Items = message.Items.Select(x => new OrderItem(
-                            id: x.Id,
-                            discountRate: x.DiscountRate,
-                            packagingSize: x.PackagingSize,
-                            product: GetProduct(x.Product.Id),
-                            unitPrice: new Money(x.UnitPriceAmount, currency),
-                            quantity: new Measure(x.QuantityValue, GetUnitOfMeasure(x.Product.Id))
-                        )),
-                        Payments = message.Payments.Select(x => new OrderPayment(
-                            id: x.Id,
-                            paidOn: x.PaidOn ?? DateTime.Now,
-                            paidTo: session.Load<User>(x.PaidTo.Id),
-                            paymentType: session.Load<PaymentType>(x.PaymentType.Id),
-                            payment: new Money(x.PaymentAmount, currency)
-                        )),
-                        Returns = message.Returns.Select(x => new OrderReturn(
-                            id: x.Id,
-                            product: GetProduct(x.Product.Id),
-                            reason: session.Load<ReturnReason>(x.Reason.Id),
-                            returnedOn: message.ReturnedOn ?? DateTime.Now,
-                            returnedBy: session.Load<User>(x.ReturnedBy.Id),
-                            quantity: new Measure(x.QuantityValue, GetUnitOfMeasure(x.Product.Id)),
-                            returned: new Money(x.ReturnedAmount, currency)
-                        ))
+                        Items = message.Items
+                            .Select(x => new OrderItem(
+                                id: x.Id,
+                                discountRate: x.DiscountRate,
+                                product: GetProduct(x.Product.Id),
+                                unitPrice: new Money(x.UnitPriceAmount, currency),
+                                quantity: new Measure(x.Quantity.Value, session.Load<UnitOfMeasure>(x.Quantity.Unit.Id)),
+                                standard: new Measure(x.Standard.Value, session.Load<UnitOfMeasure>(x.Standard.Unit.Id))
+                            ))
+                            .ToList(),
+                        Payments = message.Payments
+                            .Select(x => new OrderPayment(
+                                id: x.Id,
+                                paidOn: x.PaidOn ?? DateTime.Now,
+                                paidTo: session.Load<User>(x.PaidTo.Id),
+                                paymentType: session.Load<PaymentType>(x.PaymentType.Id),
+                                payment: new Money(x.PaymentAmount, currency)
+                            ))
+                            .ToList(),
+                        Returns = message.Returns
+                            .Select(x => new OrderReturn(
+                                id: x.Id,
+                                product: GetProduct(x.Product.Id),
+                                reason: session.Load<ReturnReason>(x.Reason.Id),
+                                returnedOn: message.ReturnedOn ?? DateTime.Now,
+                                returnedBy: session.Load<User>(x.ReturnedBy.Id),
+                                quantity: new Measure(x.QuantityValue, GetUnitOfMeasure(x.Product.Id)),
+                                returned: new Money(x.ReturnedAmount, currency)
+                            ))
+                            .ToList()
                     });
                     entity.EnsureValidity();
 

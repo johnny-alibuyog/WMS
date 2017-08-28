@@ -1,14 +1,17 @@
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
-import { autoinject, bindable, bindingMode, customElement, computedFrom } from 'aurelia-framework'
-import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
-import { Lookup } from '../common/custom_types/lookup';
-import { ServiceApi } from '../services/service-api';
-import { Dictionary } from '../common/custom_types/dictionary';
+import { Filter, Pager, PagerRequest, PagerResponse, SortDirection, Sorter } from '../common/models/paging';
 import { OrderItem, orderEvents } from '../common/models/order';
-import { pricing } from '../common/models/pricing';
-import { ensureNumeric } from '../common/utils/ensure-numeric';
+import { ProductInventory, ProductInventory1, ProductInventoryFacade } from '../common/models/product';
+import { autoinject, bindable, bindingMode, computedFrom, customElement } from 'aurelia-framework'
+
+import { Dictionary } from '../common/custom_types/dictionary';
+import { Lookup } from '../common/custom_types/lookup';
 import { NotificationService } from '../common/controls/notification-service';
-import { ProductInventory } from '../common/models/product';
+import { ServiceApi } from '../services/service-api';
+import { UnitOfMeasure } from "../common/models/unit-of-measure";
+import { ensureNumeric } from '../common/utils/ensure-numeric';
+import { getValue } from "../common/models/measure";
+import { pricing } from '../common/models/pricing';
 
 @autoinject
 @customElement("order-item-page")
@@ -19,7 +22,8 @@ export class OrderItemPage {
   private readonly _eventAggregator: EventAggregator;
 
   private _subscriptions: Subscription[] = [];
-  private _productInventories: ProductInventory[] = [];
+  //private _productInventories: ProductInventory[] = [];
+  private _productInventories1: ProductInventory1[] = [];
   private _isPricingInitialized: boolean = false;
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
@@ -61,15 +65,15 @@ export class OrderItemPage {
     this.itemPager.onPage = () => this.initializePage();
   }
 
-  private getProductInventory(product: Lookup<string>): Promise<ProductInventory> {
-    let productInventory = this._productInventories.find(x => x.id === product.id);
+  private getProductInventory(product: Lookup<string>): Promise<ProductInventory1> {
+    let productInventory = this._productInventories1.find(x => x.id === product.id);
 
     if (productInventory) {
       return Promise.resolve(productInventory);
     }
 
-    return this._api.products.getInventory(product.id).then(data => {
-      this._productInventories.push(data);
+    return this._api.products.getInventory1(product.id).then(data => {
+      this._productInventories1.push(data);
       return data;
     });
   }
@@ -90,13 +94,13 @@ export class OrderItemPage {
   public itemsChanged(): void {
     this.initializePage();
 
-    if (!this.items || this.items.length == 0){
+    if (!this.items || this.items.length == 0) {
       return;
     }
 
     let productIds = this.items.map(x => x.product.id);
-    this._api.products.getInventoryList(productIds)
-      .then(result => this._productInventories = result);
+    this._api.products.getInventory1List(productIds)
+      .then(result => this._productInventories1 = result);
   }
 
   public taxAmountChanged(): void {
@@ -124,22 +128,63 @@ export class OrderItemPage {
     this.items.forEach(item => this.initializeItem(item));
   }
 
+  public computeUnitPriceAmount() {
+    var item = this.selectedItem;
+    this.getProductInventory(item.product).then(inventory => {
+      var facade = new ProductInventoryFacade(inventory);
+      item.unitPriceAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
+      this.compute(item);
+    });
+  }
+
+  // we added unit parameter just to make the binding watch when ever item.quantity.unit changes
+  public getUnitOfMeasures(item: OrderItem, unit: UnitOfMeasure): UnitOfMeasure[] {
+    if (!item.product) {
+      return [];
+    }
+
+    var productInventory = this._productInventories1.find(x => x.id === item.product.id);
+    if (!productInventory) {
+      return [];
+    }
+
+    var productUnitOfMeasures = productInventory.unitOfMeasures;
+    if (!productUnitOfMeasures) {
+      return [];
+    }
+
+    return productUnitOfMeasures.map(x => x.unitOfMeasure);
+  }
+
   public initializeItem(item: OrderItem): void {
     if (this.isModificationDisallowed) {
       return;
     }
 
     if (!item.product) {
-      item.quantityValue = 0;
+      item.quantity = {
+        unit: null,
+        value: 0
+      };
+      item.standard = {
+        unit: null,
+        value: 0
+      };
       item.unitPriceAmount = 0;
-      item.packagingSize = 1;
       this.compute(item);
       return;
     }
 
     this.getProductInventory(item.product).then(inventory => {
-      item.packagingSize = inventory.packagingSize;
-      item.unitPriceAmount = pricing.getPriceAmount(this.pricing, inventory);
+      var facade = new ProductInventoryFacade(inventory);
+      var current = facade.default;
+
+      item.unitOfMeasures = inventory.unitOfMeasures.map(x => x.unitOfMeasure);
+      item.quantity.unit = current.unitOfMeasure;
+      //item.quantity.value = 0;
+      item.standard.unit = current.standard.unit;
+      item.standard.value = current.standard.value;
+      item.unitPriceAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
       this.compute(item);
     });
   }
@@ -178,9 +223,15 @@ export class OrderItemPage {
       return;
     }
 
-    var item = <OrderItem>{
-      packagingSize: 1,
-      quantityValue: 0,
+    var item: OrderItem = {
+      quantity: {
+        unit: {},
+        value: 0
+      },
+      standard: {
+        unit: {},
+        value: 0
+      },
       discountRate: 0,
       discountAmount: 0,
       unitPriceAmount: 0,
@@ -219,9 +270,9 @@ export class OrderItemPage {
     if (!item.discountRate) {
       item.discountRate = 0;
     }
-    item.extendedPriceAmount = item.unitPriceAmount * item.quantityValue;
-    item.discountAmount = item.discountRate * item.extendedPriceAmount;
-    item.totalPriceAmount = item.extendedPriceAmount - item.discountAmount;
+    item.extendedPriceAmount = ensureNumeric(item.unitPriceAmount) * getValue(item.quantity);
+    item.discountAmount = ensureNumeric(item.discountRate) * ensureNumeric(item.extendedPriceAmount);
+    item.totalPriceAmount = ensureNumeric(item.extendedPriceAmount) - ensureNumeric(item.discountAmount);
 
     this.total();
   }
@@ -236,11 +287,11 @@ export class OrderItemPage {
 
     this.subTotalAmount = this.items
       .reduce((value, current) => value + ensureNumeric(current.totalPriceAmount), 0) || 0;
-      
-    this.grandTotalAmount = 
-      ensureNumeric(this.taxAmount) + 
-      ensureNumeric(this.shippingFeeAmount) + 
-      ensureNumeric(this.subTotalAmount) - 
+
+    this.grandTotalAmount =
+      ensureNumeric(this.taxAmount) +
+      ensureNumeric(this.shippingFeeAmount) +
+      ensureNumeric(this.subTotalAmount) -
       ensureNumeric(this.discountAmount);
   }
 }

@@ -49,6 +49,7 @@ namespace AmpedBiz.Service.Products
                             .Select(x => new ProductUnitOfMeasure(
                                 id: x.Id,
                                 size: x.Size,
+                                barcode: x.Barcode,
                                 isDefault: x.IsDefault ?? false,
                                 isStandard: x.IsStandard ?? false,
                                 unitOfMeasure: session.Load<UnitOfMeasure>(x.UnitOfMeasure.Id),
@@ -63,19 +64,22 @@ namespace AmpedBiz.Service.Products
                             .ToList()
                     });
 
+                    var productStandardUnitOfMeasure = entity.UnitOfMeasures.Standard(x => x.UnitOfMeasure);
+                    var productDefaultUnitOfMeasure = entity.UnitOfMeasures.Default(x => x.UnitOfMeasure);
+
                     entity.Inventory.Accept(new InventoryUpdateVisitor()
                     {
-                        UnitOfMeasure = session.Load<UnitOfMeasure>(message.Inventory.UnitOfMeasure.Id),
-                        PackagingUnitOfMeasure = session.Load<UnitOfMeasure>(message.Inventory.PackagingUnitOfMeasure.Id),
+                        UnitOfMeasure = productStandardUnitOfMeasure,
+                        PackagingUnitOfMeasure = productStandardUnitOfMeasure,
                         PackagingSize = message.Inventory.PackagingSize ?? 1,
                         BasePrice = new Money(message.Inventory.BasePriceAmount ?? 0M, currency),
                         WholesalePrice = new Money(message.Inventory.WholesalePriceAmount ?? 0M, currency),
                         RetailPrice = new Money(message.Inventory.RetailPriceAmount ?? 0M, currency),
                         BadStockPrice = new Money(message.Inventory.BadStockPriceAmount ?? 0M, currency),
-                        InitialLevel = new Measure(message.Inventory.InitialLevelValue ?? 0M, entity.Inventory.UnitOfMeasure),
-                        TargetLevel = new Measure(message.Inventory.TargetLevelValue ?? 0M, entity.Inventory.UnitOfMeasure),
-                        ReorderLevel = new Measure(message.Inventory.ReorderLevelValue ?? 0M, entity.Inventory.UnitOfMeasure),
-                        MinimumReorderQuantity = new Measure(message.Inventory.MinimumReorderQuantityValue ?? 0M, entity.Inventory.UnitOfMeasure),
+                        InitialLevel = new Measure(message.Inventory.InitialLevelValue ?? 0M, productStandardUnitOfMeasure),
+                        TargetLevel = new Measure(message.Inventory.TargetLevelValue ?? 0M, productStandardUnitOfMeasure),
+                        ReorderLevel = new Measure(message.Inventory.ReorderLevelValue ?? 0M, productStandardUnitOfMeasure),
+                        MinimumReorderQuantity = new Measure(message.Inventory.MinimumReorderQuantityValue ?? 0M, productStandardUnitOfMeasure),
                     });
 
                     entity.EnsureValidity();

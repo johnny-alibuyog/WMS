@@ -19,6 +19,8 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Map(x => x.Size);
 
+                Map(x => x.Barcode);
+
                 Map(x => x.StandardEquivalentValue);
 
                 Map(x => x.IsStandard);
@@ -45,6 +47,9 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Define(x => x.UnitOfMeasure)
                     .NotNullable();
+
+                Define(x => x.Barcode)
+                    .MaxLength(255);
 
                 Define(x => x.Size)
                     .MaxLength(255);

@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Common.Pipes;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Services.Products;
 using AmpedBiz.Core.Services.PurchaseOrders;
 using NHibernate;
 using NHibernate.Linq;
@@ -229,6 +230,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     .Fetch(x => x.Items.First().Product.Supplier).Eager
                     .Fetch(x => x.Items.First().Product.Category).Eager
                     .Fetch(x => x.Items.First().Product.Inventory).Eager
+                    .Fetch(x => x.Items.First().Product.UnitOfMeasures).Eager
+                    .Fetch(x => x.Items.First().Product.UnitOfMeasures.First().Prices).Eager
                     .Fetch(x => x.Payments).Eager
                     .Fetch(x => x.Payments.First().PaidBy).Eager
                     .Fetch(x => x.Receipts).Eager
@@ -282,10 +285,10 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                 .Select(x => new PurchaseOrderItem(
                                     product: x,
                                     quantity: new Measure(
-                                        value: _utils.RandomInteger(1, 100), 
-                                        unit: x.Inventory.UnitOfMeasure
+                                        value: _utils.RandomInteger(1, 100),
+                                        unit: x.UnitOfMeasures.Standard(o => o.UnitOfMeasure)
                                     ),
-                                    unitCost: x.Inventory.BasePrice
+                                    unitCost: x.UnitOfMeasures.Standard(o => o.Prices.Base())
                                 ))
                         });
                         entity.EnsureValidity();
@@ -367,6 +370,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     foreach (var entity in input)
                     {
                         var currency = session.Load<Currency>(Currency.PHP.Id);
+
                         entity.Accept(new PurchaseOrderUpdateVisitor()
                         {
                             Payments = Enumerable
@@ -411,9 +415,9 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                     product: x.Product,
                                     quantity: new Measure(
                                         value: this._utils.RandomInteger(
-                                            min: (int)x.Quantity.Value - 2, 
+                                            min: (int)x.Quantity.Value - 2,
                                             max: (int)x.Quantity.Value
-                                        ), 
+                                        ),
                                         unit: x.Quantity.Unit)
                                ))
                         });

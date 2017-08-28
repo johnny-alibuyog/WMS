@@ -47,6 +47,7 @@ namespace AmpedBiz.Service.Products
                             .Select(x => new ProductUnitOfMeasure(
                                 id: x.Id,
                                 size: x.Size,
+                                barcode: x.Barcode,
                                 isDefault: x.IsDefault ?? false,
                                 isStandard: x.IsStandard ?? false,
                                 unitOfMeasure: session.Load<UnitOfMeasure>(x.UnitOfMeasure.Id),

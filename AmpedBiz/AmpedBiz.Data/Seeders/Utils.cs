@@ -37,13 +37,18 @@ namespace AmpedBiz.Data.Seeders
             // the same session. let us put it in an container(_product) instead.
 
             var session = _sessionFactory.RetrieveSharedSession();
+
             var query = session.Query<Product>();
+
             if (condition != null)
             {
                 query = query.Where(condition);
             }
+
             return query
                 .Fetch(x => x.Inventory)
+                .FetchMany(x => x.UnitOfMeasures)
+                .ThenFetchMany(x => x.Prices)
                 .ToList();
 
             //return (condition != null)

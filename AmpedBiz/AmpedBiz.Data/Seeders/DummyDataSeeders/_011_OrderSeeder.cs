@@ -2,6 +2,7 @@
 using AmpedBiz.Common.Pipes;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Orders;
+using AmpedBiz.Core.Services.Products;
 using NHibernate;
 using NHibernate.Linq;
 using NHibernate.Transform;
@@ -257,6 +258,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     .Fetch(x => x.Items).Eager
                     .Fetch(x => x.Items.First().Product).Eager
                     .Fetch(x => x.Items.First().Product.Inventory).Eager
+                    .Fetch(x => x.Items.First().Product.UnitOfMeasures).Eager
+                    .Fetch(x => x.Items.First().Product.UnitOfMeasures.First().Prices).Eager
                     .Fetch(x => x.Payments).Eager
                     .Fetch(x => x.Payments.First().PaidTo).Eager
                     .Fetch(x => x.Payments.First().PaymentType).Eager
@@ -315,15 +318,19 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                             Items = products
                                 .Take(randomProductCount)
                                 .Select(x => new OrderItem(
-                                    product: x,
-                                    packagingSize: x.Inventory.PackagingSize,
-                                    discountRate: _utils.RandomDecimal(0.01M, 0.10M),
-                                    quantity: new Measure(
-                                        value: _utils.RandomInteger(1, (int)x.Inventory.Available.Value), 
-                                        unit: x.Inventory.UnitOfMeasure
-                                    ),
-                                    unitPrice: x.Inventory.WholesalePrice
-                                ))
+                                        product: x,
+                                        discountRate: _utils.RandomDecimal(0.01M, 0.10M),
+                                        quantity: new Measure(
+                                            value: _utils.RandomInteger(1, 15),
+                                            unit: x.UnitOfMeasures.Standard(o => o.UnitOfMeasure)
+                                        ),
+                                        standard: new Measure(
+                                            unit: x.UnitOfMeasures.Standard(o => o.UnitOfMeasure),
+                                            value: x.UnitOfMeasures.Standard(o => o.StandardEquivalentValue)
+                                        ),
+                                        unitPrice: x.UnitOfMeasures.Standard(o => o.Prices.Wholesale())
+                                    )
+                                )
                         });
                         entity.EnsureValidity();
 

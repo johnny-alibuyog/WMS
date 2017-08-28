@@ -111,6 +111,8 @@
     <Compile Include="Services\Orders\OrderUpdatePaymentsVisitor.cs" />
     <Compile Include="Services\Orders\OrderUpdateReturnsVisitor.cs" />
     <Compile Include="Services\Orders\OrderUpdateVisitor.cs" />
+    <Compile Include="Services\Products\InventoryConverter.cs" />
+    <Compile Include="Services\Products\GetAvailableVisitor.cs" />
     <Compile Include="Services\Products\MeasureConverter.cs" />
     <Compile Include="Services\Products\ProductUpdateVisitor.cs" />
     <Compile Include="Services\Inventories\PurchaseOrders\OrderVisitor.cs" />

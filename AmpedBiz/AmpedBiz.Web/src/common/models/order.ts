@@ -1,8 +1,11 @@
-import { Lookup } from '../custom_types/lookup';
-import { StageDefinition } from './stage-definition';
-import { ProductInventory } from './product';
-import { Dictionary } from '../custom_types/dictionary';
+import { ProductInventory, ProductInventory1 } from './product';
+
 import { Address } from './Address';
+import { Dictionary } from '../custom_types/dictionary';
+import { Lookup } from '../custom_types/lookup';
+import { Measure } from "./measure";
+import { StageDefinition } from './stage-definition';
+import { UnitOfMeasure } from "./unit-of-measure";
 
 export const orderEvents = {
   pricingChanged: 'pricing-changed',
@@ -101,8 +104,9 @@ export interface OrderPageItem {
 export interface OrderItem {
   id?: string;
   product?: Lookup<string>;
-  packagingSize?: number;
-  quantityValue?: number;
+  unitOfMeasures?: UnitOfMeasure[];
+  quantity?: Measure;
+  standard?: Measure;
   discountRate?: number;
   discountAmount?: number;
   unitPriceAmount?: number;

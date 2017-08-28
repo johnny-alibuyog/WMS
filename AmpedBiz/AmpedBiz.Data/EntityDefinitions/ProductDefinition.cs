@@ -80,7 +80,7 @@ namespace AmpedBiz.Data.EntityDefinitions
                     var valid = true;
 
                     var defaultCount = instance.UnitOfMeasures.Where(x => x.IsDefault).Count();
-                    if (defaultCount > 1)
+                    if (defaultCount != 1)
                     {
                         context.AddInvalid<Product, IEnumerable<ProductUnitOfMeasure>>(
                             message: $"There should be one default UOM for {instance.Name} but has {defaultCount.ToWords()}.", 

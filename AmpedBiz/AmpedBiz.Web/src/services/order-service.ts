@@ -1,10 +1,12 @@
-import { autoinject } from 'aurelia-framework';
-import { Lookup } from '../common/custom_types/lookup';
+import { Order, OrderInvoiceDetail, OrderPayable, OrderReportPageItem, OrderReturn, OrderReturnable, OrderReturning, OrderStatus } from '../common/models/order';
 import { PageRequest, PagerResponse } from '../common/models/paging';
-import { Order, OrderPayable, OrderReturnable, OrderReturning, OrderReturn, OrderStatus, OrderInvoiceDetail, OrderReportPageItem } from '../common/models/order';
-import { ServiceBase } from './service-base'
+
 import { AuthService } from './auth-service';
 import { HttpClientFacade } from './http-client-facade';
+import { Lookup } from '../common/custom_types/lookup';
+import { ServiceBase } from './service-base'
+import { autoinject } from 'aurelia-framework';
+import { getValue } from "../common/models/measure";
 
 @autoinject
 export class OrderService extends ServiceBase<Order> {
@@ -165,7 +167,7 @@ export class OrderService extends ServiceBase<Order> {
         totalPriceAmount: order.items.find(x => x.product.id == product.id).totalPriceAmount,
         orderedQuantity: order.items
           .filter(item => item.product.id == product.id)
-          .reduce((prevVal, item) => prevVal + item.quantityValue, 0),
+          .reduce((prevVal, item) => prevVal + getValue(item.quantity), 0),
         returnedQuantity: order.returns
           .filter(receipt => receipt.product.id == product.id)
           .reduce((prevVal, receipt) => prevVal + receipt.quantityValue, 0),

@@ -1,5 +1,6 @@
 import { Inventory } from './inventory';
 import { Lookup } from "../custom_types/lookup";
+import { Measure } from "./measure";
 import { UnitOfMeasure } from "./unit-of-measure";
 
 export interface Product {
@@ -18,6 +19,7 @@ export interface Product {
 export interface ProductUnitOfMeasure {
   id?: string;
   size?: string;
+  barcode?: string;
   unitOfMeasure?: UnitOfMeasure;
   standardEquivalentValue?: number;
   isStandard?: boolean;
@@ -72,6 +74,27 @@ export interface ProductInventory {
   retailPriceAmount?: number;
   badStockPriceAmount?: number;
   discountAmount?: number;
+}
+
+export interface ProductInventory1 {
+  id?: string;
+  code?: string;
+  name?: string;
+  unitOfMeasures?: ProductInventoryUnitOfMeasure[];
+}
+
+export interface ProductInventoryUnitOfMeasure {
+  unitOfMeasure?: UnitOfMeasure;
+  isStandard?: boolean;
+  isDefault?: boolean;
+  available?: Measure;
+  standard?: Measure;
+  prices?: ProductInventoryUnitOfMeasurePrice[];
+}
+
+export interface ProductInventoryUnitOfMeasurePrice {
+  pricing?: Lookup<string>;
+  priceAmount?: number;
 }
 
 export interface InventoryLevelPageItem {
@@ -160,3 +183,33 @@ export class ProductReportPageItem {
   totalDistributorPriceAmount?: number;
   totalListPriceAmount?: number;
 }
+
+export class ProductInventoryFacade {
+  private _inventory: ProductInventory1;
+
+  constructor(inventory: ProductInventory1) {
+    this._inventory = inventory;
+  }
+
+  public get standard(): ProductInventoryUnitOfMeasure {
+    return this._inventory.unitOfMeasures.find(x => x.isStandard);
+  }
+
+  public get default(): ProductInventoryUnitOfMeasure {
+    return this._inventory.unitOfMeasures.find(x => x.isDefault);
+  }
+
+  public getPrice(inventory: ProductInventory1, unitOfMeasure: UnitOfMeasure, pricing: Lookup<string>) : ProductInventoryUnitOfMeasurePrice {
+    var productUnitOfMeasure = inventory.unitOfMeasures.find(x => x.unitOfMeasure.id === unitOfMeasure.id);
+    if (!productUnitOfMeasure) {
+      return null;
+    }
+
+    return productUnitOfMeasure.prices.find(x => x.pricing.id == pricing.id);
+  }
+
+  public getPriceAmount(inventory: ProductInventory1, unitOfMeasure: UnitOfMeasure, pricing: Lookup<string>) : number {
+    var price = this.getPrice(inventory, unitOfMeasure, pricing);
+    return price && price.priceAmount || 0;
+  }
+};

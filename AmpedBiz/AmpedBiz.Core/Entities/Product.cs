@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace AmpedBiz.Core.Entities
 {
@@ -23,7 +24,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Inventory Inventory { get; protected internal set; }
 
-        public virtual IEnumerable<ProductUnitOfMeasure> UnitOfMeasures { get; protected internal set; } 
+        public virtual IEnumerable<ProductUnitOfMeasure> UnitOfMeasures { get; protected internal set; }
 
         public Product() : base(default(Guid))
         {
@@ -40,6 +41,21 @@ namespace AmpedBiz.Core.Entities
         public virtual void Accept(IVisitor<Product> visitor)
         {
             visitor.Visit(this);
+        }
+    }
+
+    public static class ProductExtention
+    {
+        public static Measure StandardEquivalentMeasureOf(this Product product, UnitOfMeasure unit)
+        {
+            var standardEquivalentValue = product.UnitOfMeasures
+                .Where(x => x.UnitOfMeasure == unit)
+                .Select(x => x.StandardEquivalentValue)
+                .FirstOrDefault();
+
+            var standardUnitOfMeasure = product.UnitOfMeasures.Standard(x => x.UnitOfMeasure);
+
+            return new Measure(value: standardEquivalentValue, unit: standardUnitOfMeasure);
         }
     }
 }

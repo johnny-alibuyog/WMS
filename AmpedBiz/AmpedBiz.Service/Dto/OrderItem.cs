@@ -11,9 +11,9 @@ namespace AmpedBiz.Service.Dto
 
         public Lookup<Guid> Product { get; set; }
 
-        public decimal PackagingSize { get; set; }
+        public Measure Quantity { get; set; }
 
-        public decimal QuantityValue { get; set; }
+        public Measure Standard { get; set; }
 
         public decimal DiscountRate { get; set; }
 
@@ -35,6 +35,10 @@ namespace AmpedBiz.Service.Dto
         public decimal PackagingSize { get; set; }
 
         public string Quantity { get; set; }
+
+        public string Standard { get; set; }
+
+        public string QuantityStandardEquivalent { get; set; }
 
         public string Discount { get; set; }
 

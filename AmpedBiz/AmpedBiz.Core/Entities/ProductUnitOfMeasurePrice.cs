@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AmpedBiz.Core.Entities
 {
@@ -17,5 +19,14 @@ namespace AmpedBiz.Core.Entities
             this.Pricing = pricing;
             this.Price = price;
         }
+    }
+
+    public static class ProductUnitOfMeasurePriceExtention
+    {
+        public static Money Base(this IEnumerable<ProductUnitOfMeasurePrice> prices) => prices.FirstOrDefault(x => x.Pricing == Pricing.BasePrice)?.Price;
+        public static Money BadStock(this IEnumerable<ProductUnitOfMeasurePrice> prices) => prices.FirstOrDefault(x => x.Pricing == Pricing.BadStockPrice)?.Price;
+        public static Money Wholesale(this IEnumerable<ProductUnitOfMeasurePrice> prices) => prices.FirstOrDefault(x => x.Pricing == Pricing.WholesalePrice)?.Price;
+        public static Money Retail(this IEnumerable<ProductUnitOfMeasurePrice> prices) => prices.FirstOrDefault(x => x.Pricing == Pricing.RetailPrice)?.Price;
+        public static Money SuggestedRetail(this IEnumerable<ProductUnitOfMeasurePrice> prices) => prices.FirstOrDefault(x => x.Pricing == Pricing.SuggestedRetailPrice)?.Price;
     }
 }

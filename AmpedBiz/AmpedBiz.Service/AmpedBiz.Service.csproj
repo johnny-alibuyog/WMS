@@ -143,6 +143,7 @@
     <Compile Include="Products\GetProductInventory.cs" />
     <Compile Include="Products\GetProductInventory1.cs" />
     <Compile Include="Products\GetProductInventoryLevelPage.cs" />
+    <Compile Include="Products\GetProductInventory1List.cs" />
     <Compile Include="Products\GetProductInventoryList.cs" />
     <Compile Include="Products\GetProductList.cs" />
     <Compile Include="Products\GetProductLookup.cs" />

@@ -1,5 +1,5 @@
 ﻿using AmpedBiz.Core.Services;
-using AmpedBiz.Core.Services.Inventories;
+using AmpedBiz.Core.Services.Products;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -65,7 +65,9 @@ namespace AmpedBiz.Core.Entities
         public virtual Measure MinimumReorderQuantity { get; protected internal set; }
 
         public virtual IEnumerable<Stock> Stocks { get; protected internal set; } = new Collection<Stock>();
-        
+
+        public virtual InventoryConverter Convert(Func<Inventory, Measure> selector) => new InventoryConverter(this, selector);
+
         public virtual void Accept(IVisitor<Inventory> visitor)
         {
             visitor.Visit(this);

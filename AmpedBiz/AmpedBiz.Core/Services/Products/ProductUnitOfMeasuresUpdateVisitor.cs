@@ -19,6 +19,13 @@ namespace AmpedBiz.Core.Services.Products
             if (this.UnitOfMeasures.IsNullOrEmpty())
                 return;
 
+            if (this.UnitOfMeasures.Count() == 1)
+            {
+                var onlyUnit = this.UnitOfMeasures.First();
+                onlyUnit.IsDefault = true;
+                onlyUnit.IsStandard = true;
+            }
+
             var unitOfMeasuresToInsert = this.UnitOfMeasures.Except(target.UnitOfMeasures).ToList();
             var unitOfMeasuresToUpdate = target.UnitOfMeasures.Where(x => this.UnitOfMeasures.Contains(x)).ToList();
             var unitOfMeasuresToRemove = target.UnitOfMeasures.Except(this.UnitOfMeasures).ToList();
@@ -34,6 +41,7 @@ namespace AmpedBiz.Core.Services.Products
             {
                 var value = this.UnitOfMeasures.Single(x => x == unitOfMeasure);
                 unitOfMeasure.Size = value.Size;
+                unitOfMeasure.Barcode = value.Barcode;
                 unitOfMeasure.UnitOfMeasure = value.UnitOfMeasure;
                 unitOfMeasure.StandardEquivalentValue = value.StandardEquivalentValue;
                 unitOfMeasure.IsDefault = value.IsDefault;

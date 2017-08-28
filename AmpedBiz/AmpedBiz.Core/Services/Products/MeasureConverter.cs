@@ -8,23 +8,27 @@ namespace AmpedBiz.Core.Services.Products
     {
         public Measure Convert(Product product, Measure measure, UnitOfMeasure toUnit)
         {
-            Ensure.That(() => product.IsNullOrDefault(), $"{nameof(product)} should not be null");
-            Ensure.That(() => product.UnitOfMeasures.IsNullOrEmpty(), $"{nameof(product.UnitOfMeasures)} of {product.Name} should not be null or empty.");
-            Ensure.That(() => measure.IsNullOrDefault(), $"{nameof(measure)} should not be null");
-            Ensure.That(() => measure.Unit.IsNullOrDefault(),$"{nameof(measure.Unit)} should not be null");
-            Ensure.That(() => toUnit.IsNullOrDefault(), $"{nameof(toUnit)} should not be null");
+            if (toUnit == null)
+                return null;
 
-            var fromSev = product.UnitOfMeasures
+            if (measure == null)
+                return new Measure(0M, toUnit);
+
+            Ensure.That(() => !product.IsNullOrDefault(), $"{nameof(product)} should not be null.");
+            Ensure.That(() => !measure.Unit.IsNullOrDefault(), $"Product(({nameof(product.Name)})) convertion with value {measure.Value} should have a unit");
+
+
+            var fromStandardEquivalentValue = product.UnitOfMeasures
                 .Where(x => x.UnitOfMeasure == measure.Unit)
                 .Select(x => x.StandardEquivalentValue)
                 .FirstOrDefault();
 
-            var toSev = product.UnitOfMeasures
+            var toStandardEquivalentValue = product.UnitOfMeasures
                 .Where(x => x.UnitOfMeasure == toUnit)
                 .Select(x => x.StandardEquivalentValue)
                 .FirstOrDefault();
 
-            var toValue = measure.Value * fromSev / toSev;
+            var toValue = measure.Value * fromStandardEquivalentValue / toStandardEquivalentValue;
 
             return new Measure(value: toValue, unit: toUnit);
         }
@@ -45,5 +49,4 @@ namespace AmpedBiz.Core.Services.Products
             return result.Value;
         }
     }
-
 }

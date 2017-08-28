@@ -69,6 +69,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                             {
                                 new ProductUnitOfMeasure(
                                     size: string.Empty,
+                                    barcode: string.Empty,
                                     isDefault: false,
                                     isStandard: true,
                                     standardEquivalentValue: 1,

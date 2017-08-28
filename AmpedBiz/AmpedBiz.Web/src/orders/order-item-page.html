@@ -9,9 +9,8 @@
       <tr class="row-no-padding">
         <th class="col-sm-1">Action</th>
         <th class="col-sm-3">Product</th>
-        <!--<th class="col-sm-1 text-right">Quantity</th>-->
-        <th class="col-sm-1 text-right">PC</th>
-        <th class="col-sm-1 text-right">PKG</th>
+        <th class="col-sm-1 text-right">Unit</th>
+        <th class="col-sm-1 text-right">Qty</th>
         <th class="col-sm-1 text-right">Price</th>
         <th class="col-sm-1 text-right">Discount Rate</th>
         <th class="col-sm-1 text-right">Discount</th>
@@ -32,8 +31,8 @@
 
         <!-- read-only mode -->
         <td if.bind="$parent.selectedItem !== item">${item.product.name}</td>
-        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantityValue}</td>
-        <td if.bind="$parent.selectedItem !== item" class="text-right">${(item.quantityValue / item.packagingSize) | numberFormat}</td>
+        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantity.unit.name}</td>
+        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantity.value | numberFormat}</td>
         <td if.bind="$parent.selectedItem !== item" class="text-right">${item.unitPriceAmount | numberFormat}</td>
         <td if.bind="$parent.selectedItem !== item" class="text-right">${item.discountRate | percentage | numberFormat}</td>
         <td if.bind="$parent.selectedItem !== item" class="text-right">${item.discountAmount | numberFormat}</td>
@@ -54,8 +53,9 @@
         <td if.bind="$parent.selectedItem === item" class="text-right">
           <div class="row">
             <div class="col-xs-12 pull-right">
-              <input class="form-control input-xs text-right" type="number" numeric-value.bind="item.quantityValue" change.delegate="compute(item)"
-                keyup.delegate="compute(item)" />
+              <select class="form-control input-xs" value.bind="item.quantity.unit | lookupToId:item.unitOfMeasures" change.delegate="computeUnitPriceAmount()">
+                <option repeat.for="unitOfMeasure of item.unitOfMeasures" model.bind="unitOfMeasure.id">${unitOfMeasure.name}</option>
+              </select>
             </div>
           </div>
         </td>
@@ -63,8 +63,8 @@
         <td if.bind="$parent.selectedItem === item" class="text-right">
           <div class="row">
             <div class="col-xs-12 pull-right">
-              <input class="form-control input-xs text-right" type="number" numeric-value="${item.quantityValue / item.packagingSize}" disabled
-              />
+              <input class="form-control input-xs text-right" type="number" numeric-value.bind="item.quantity.value" change.delegate="compute(item)"
+                keyup.delegate="compute(item)" />
             </div>
           </div>
         </td>

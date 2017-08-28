@@ -2,18 +2,15 @@
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Products;
+using ExpressMapper.Extensions;
 using MediatR;
 using NHibernate;
-using NHibernate.Linq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AmpedBiz.Service.Products
 {
-    class GetProductInventory1
+    public class GetProductInventory1
     {
         public class Request : IRequest<Response>
         {
@@ -33,55 +30,46 @@ namespace AmpedBiz.Service.Products
                 using (var session = _sessionFactory.OpenSession())
                 using (var transaction = session.BeginTransaction())
                 {
-                    var product = session.QueryOver<Product>()
-                        .Where(x => x.Id == message.ProductId)
-                        .Fetch(x => x.UnitOfMeasures).Eager
-                        .Fetch(x => x.UnitOfMeasures.First().Prices).Eager
+                    var inventory = session.QueryOver<Inventory>()
+                        .Where(x => x.Product.Id == message.ProductId)
+                        .Fetch(x => x.Product).Eager
+                        .Fetch(x => x.Product.UnitOfMeasures).Eager
+                        .Fetch(x => x.Product.UnitOfMeasures.First().Prices).Eager
                         .SingleOrDefault();
 
                     response = new Response()
                     {
-                        Id = product.Id,
-                        Code = product.Code,
-                        Name = product.Name,
-                        UnitOfMeasure = product.UnitOfMeasures
+                        Id = inventory.Product.Id,
+                        Code = inventory.Product.Code,
+                        Name = inventory.Product.Name,
+                        UnitOfMeasures = inventory.Product.UnitOfMeasures
                             .Select(x => new Dto.ProductInventoryUnitOfMeasure()
                             {
-                                UnitOfMeasure = new Lookup<string>()
-                                {
-                                    Id = x.UnitOfMeasure.Id,
-                                    Name = x.UnitOfMeasure.Name
-                                },
-                                AvailableValue = product.ConvertValue(
-                                    measure: product.Inventory.Available, 
-                                    toUnit: x.UnitOfMeasure
-                                )
+                                IsDefault = x.IsDefault,
+                                IsStandard = x.IsStandard,
+                                UnitOfMeasure = x.UnitOfMeasure
+                                    .MapTo(default(Dto.UnitOfMeasure)),
+                                Available = inventory
+                                    .Convert(o => o.Available)
+                                    .To(x.UnitOfMeasure)
+                                    .MapTo(default(Dto.Measure)),
+                                Standard = inventory.Product
+                                    .StandardEquivalentMeasureOf(x.UnitOfMeasure)
+                                    .MapTo(default(Dto.Measure)),
+                                Prices = x.Prices
+                                    .Select(o => new Dto.ProductInventoryUnitOfMeasurePrice()
+                                    {
+                                        Pricing = new Lookup<string>()
+                                        {
+                                            Id = o.Pricing.Id,
+                                            Name = o.Pricing.Name
+                                        },
+                                        PriceAmount = o.Price.Amount
+                                    })
+                                    .ToList()
                             })
                             .ToList()
                     };
-
-                    //var dto = session.Query<Product>()
-                    //    .Where(x => x.Id == message.ProductId)
-                    //    .Select(x => new Dto.ProductInventory()
-                    //    {
-                    //        Id = x.Id,
-                    //        Code = x.Code,
-                    //        Name = x.Name,
-                    //        UnitOfMeasure = x.Inventory.UnitOfMeasure.Name,
-                    //        PackagingUnitOfMeasure = x.Inventory.PackagingUnitOfMeasure.Name,
-                    //        PackagingSize = x.Inventory.PackagingSize,
-                    //        TargetValue = x.Inventory.TargetLevel.Value,
-                    //        AvailableValue = x.Inventory.Available.Value,
-                    //        BadStockValue = x.Inventory.BadStock.Value,
-                    //        BasePriceAmount = x.Inventory.BasePrice.Amount,
-                    //        WholesalePriceAmount = x.Inventory.WholesalePrice.Amount,
-                    //        RetailPriceAmount = x.Inventory.RetailPrice.Amount,
-                    //        BadStockPriceAmount = x.Inventory.BadStockPrice.Amount,
-                    //        DiscountAmount = 0M
-                    //    })
-                    //    .FirstOrDefault();
-
-                    //dto.MapTo(response);
 
                     transaction.Commit();
                 }

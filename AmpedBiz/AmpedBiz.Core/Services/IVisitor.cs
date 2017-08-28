@@ -7,7 +7,7 @@
         void Visit(T target);
     }
 
-    public interface IVisitor<T, R>
+    public interface IVisitor<T, R> : IVisitor
     {
         R Visit(T target);
     }

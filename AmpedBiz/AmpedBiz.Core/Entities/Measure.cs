@@ -77,23 +77,20 @@ namespace AmpedBiz.Core.Entities
             return new Measure(value1.Value - value2.Value, unit);
         }
 
-        //public static Measure operator <()
+        public static Measure operator *(Measure value1, Measure value2)
+        {
+            if (value1 == null && value2 == null)
+                return null;
 
-        //public static Measure operator *(Measure value1, Measure value2)
-        //{
-        //    if (value1 == null && value2 == null)
-        //        return null;
+            var unit = value1?.Unit ?? value2?.Unit;
+            if (value1 == null)
+                value1 = new Measure(0M, unit);
 
-        //    var unit = value1?.Unit ?? value2?.Unit;
-        //    if (value1 == null)
-        //        value1 = new Measure(0M, unit);
+            if (value2 == null)
+                value2 = new Measure(0M, unit);
 
-        //    if (value2 == null)
-        //        value2 = new Measure(0M, unit);
-
-        //    return new Measure(value1.Value * value2.Value, unit);
-        //}
-
+            return new Measure(value1.Value * value2.Value, unit);
+        }
 
         //public static Measure operator /(Measure value1, Measure value2)
         //{

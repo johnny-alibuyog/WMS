@@ -36,6 +36,22 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Define(x => x.Unit)
                     .IsValid();
+
+                this.ValidateInstance.By((instance, context) =>
+                {
+                    var valid = true;
+
+                    if (instance != null && instance.Unit == null)
+                    {
+                        context.AddInvalid<Measure, UnitOfMeasure>(
+                            message: $"Unit should not be null.",
+                            property: x => x.Unit
+                        );
+                        valid = false;
+                    }
+
+                    return valid;
+                });
             }
         }
     }

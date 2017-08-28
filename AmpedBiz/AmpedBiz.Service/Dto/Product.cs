@@ -115,14 +115,20 @@ namespace AmpedBiz.Service.Dto
 
         public string Name { get; set; }
 
-        public List<ProductInventoryUnitOfMeasure> UnitOfMeasure { get; set; } = new List<ProductInventoryUnitOfMeasure>();
+        public List<ProductInventoryUnitOfMeasure> UnitOfMeasures { get; set; } = new List<ProductInventoryUnitOfMeasure>();
     }
 
     public class ProductInventoryUnitOfMeasure
     {
-        public Lookup<string> UnitOfMeasure { get; set; }
+        public bool IsStandard { get; set; }
 
-        public decimal? AvailableValue { get; set; }
+        public bool IsDefault { get; set; }
+
+        public UnitOfMeasure UnitOfMeasure { get; set; }
+
+        public Measure Available { get; set; }
+
+        public Measure Standard { get; set; }
 
         public List<ProductInventoryUnitOfMeasurePrice> Prices { get; set; } = new List<ProductInventoryUnitOfMeasurePrice>();
     }

@@ -127,41 +127,85 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Define(x => x.BadStockPrice);
 
-                Define(x => x.BadStock);
+                Define(x => x.BadStock)
+                    .IsValid();
 
-                Define(x => x.Received);
+                Define(x => x.Received)
+                    .IsValid();
 
-                Define(x => x.OnOrder);
+                Define(x => x.OnOrder)
+                    .IsValid();
 
-                Define(x => x.OnHand);
+                Define(x => x.OnHand)
+                    .IsValid();
 
-                Define(x => x.Allocated);
+                Define(x => x.Allocated)
+                    .IsValid();
 
-                Define(x => x.Shipped);
+                Define(x => x.Shipped)
+                    .IsValid();
 
-                Define(x => x.BackOrdered);
+                Define(x => x.BackOrdered)
+                    .IsValid();
 
-                Define(x => x.Returned);
+                Define(x => x.Returned)
+                    .IsValid();
 
-                Define(x => x.Available);
+                Define(x => x.Available)
+                    .IsValid();
 
-                Define(x => x.InitialLevel);
+                Define(x => x.InitialLevel)
+                    .IsValid();
 
-                Define(x => x.Shrinkage);
+                Define(x => x.Shrinkage)
+                    .IsValid();
 
-                Define(x => x.CurrentLevel);
+                Define(x => x.CurrentLevel)
+                    .IsValid();
 
-                Define(x => x.TargetLevel);
+                Define(x => x.TargetLevel)
+                    .IsValid();
 
-                Define(x => x.BelowTargetLevel);
+                Define(x => x.BelowTargetLevel)
+                    .IsValid();
 
-                Define(x => x.ReorderLevel);
+                Define(x => x.ReorderLevel)
+                    .IsValid();
 
-                Define(x => x.ReorderQuantity);
+                Define(x => x.ReorderQuantity)
+                    .IsValid();
 
-                Define(x => x.MinimumReorderQuantity);
+                Define(x => x.MinimumReorderQuantity)
+                    .IsValid();
 
                 Define(x => x.Stocks);
+
+                //this.ValidateInstance.By((instance, context) =>
+                //{
+                //    var valid = true;
+
+                //    var defaultCount = instance.UnitOfMeasures.Where(x => x.IsDefault).Count();
+                //    if (defaultCount > 1)
+                //    {
+                //        context.AddInvalid<Product, IEnumerable<ProductUnitOfMeasure>>(
+                //            message: $"There should be one default UOM for {instance.Name} but has {defaultCount.ToWords()}.",
+                //            property: x => x.UnitOfMeasures
+                //        );
+                //        valid = false;
+                //    }
+
+                //    var standardCount = instance.UnitOfMeasures.Where(x => x.IsStandard).Count();
+                //    if (standardCount != 1)
+                //    {
+                //        context.AddInvalid<Product, IEnumerable<ProductUnitOfMeasure>>(
+                //            message: $"There should be one standard UOM for {instance.Name} but has {standardCount.ToWords()}.",
+                //            property: x => x.UnitOfMeasures
+                //        );
+                //        valid = false;
+                //    }
+
+                //    return valid;
+                //});
             }
         }
     }
