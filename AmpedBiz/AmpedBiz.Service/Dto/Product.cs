@@ -180,7 +180,7 @@ namespace AmpedBiz.Service.Dto
 
         public string CustomerName { get; set; }
 
-        public decimal QuantityValue { get; set; }
+        public Measure Quantity { get; set; }
     }
 
     public class ProductReturnPageItem
@@ -210,7 +210,7 @@ namespace AmpedBiz.Service.Dto
 
         public decimal ReturnedAmount { get; set; }
 
-        public decimal QuantityValue { get; set; }
+        public Measure Quantity { get; set; }
     }
 
     public class ProductPurchasePageItem
@@ -227,9 +227,9 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? UnitCostAmount { get; set; }
 
-        public decimal? QuantityValue { get; set; }
-
         public decimal? ReceivedValue { get; set; }
+
+        public Measure Quantity { get; set; }
     }
 
     public class NeedsReorderingPageItem

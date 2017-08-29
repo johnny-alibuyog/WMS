@@ -62,7 +62,14 @@ namespace AmpedBiz.Service.Products
                             : query.OrderByDescending(x => x.Order.Customer.Name);
                     });
 
-                    message.Sorter.Compose("quantity", direction =>
+                    message.Sorter.Compose("quantityUnit", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.Quantity.Unit.Name)
+                            : query.OrderByDescending(x => x.Quantity.Unit.Name);
+                    });
+
+                    message.Sorter.Compose("quantityValue", direction =>
                     {
                         query = direction == SortDirection.Ascending
                             ? query.OrderBy(x => x.Quantity.Value)
@@ -77,7 +84,13 @@ namespace AmpedBiz.Service.Products
                             CreatedOn = x.Order.CreatedOn,
                             Status = x.Order.Status.ToString(),
                             CustomerName = x.Order.Customer.Name,
-                            QuantityValue = x.Quantity.Value,
+                            Quantity = new Dto.Measure(
+                                x.Quantity.Value,
+                                new Dto.UnitOfMeasure(
+                                    x.Quantity.Unit.Id,
+                                    x.Quantity.Unit.Name
+                                )
+                            )
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)

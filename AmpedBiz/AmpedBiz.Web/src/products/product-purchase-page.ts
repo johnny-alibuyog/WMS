@@ -1,10 +1,11 @@
+import { Filter, Pager, PagerRequest, PagerResponse, SortDirection, Sorter } from '../common/models/paging';
 import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
-import { buildQueryString } from 'aurelia-path';
-import { Router } from 'aurelia-router';
-import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
-import { ServiceApi } from '../services/service-api';
+
 import { Dictionary } from '../common/custom_types/dictionary';
 import { ProductPurchasePageItem } from '../common/models/product';
+import { Router } from 'aurelia-router';
+import { ServiceApi } from '../services/service-api';
+import { buildQueryString } from 'aurelia-path';
 
 @autoinject
 @customElement("product-purchase-page")
@@ -33,8 +34,8 @@ export class ProductPurchasePage {
     this.sorter["status"] = SortDirection.None;
     this.sorter["supplier"] = SortDirection.None;
     this.sorter["unitCost"] = SortDirection.None;
-    this.sorter["quantity"] = SortDirection.None;
-    this.sorter["received"] = SortDirection.None;
+    this.sorter["quantityUnit"] = SortDirection.None;
+    this.sorter["quantityValue"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
 
     this.pager = new Pager<ProductPurchasePageItem>();

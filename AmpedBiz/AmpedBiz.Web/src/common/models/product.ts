@@ -124,7 +124,7 @@ export class ProductOrderReturnPageItem {
   returnedOn?: Date;
   returnedByName?: string;
   returnedAmount?: number;
-  quantityValue?: number;
+  quantity?: Measure;
 }
 
 export interface ProductPurchasePageItem {
@@ -144,7 +144,7 @@ export interface ProductOrderPageItem {
   createdOn?: Date;
   status?: string;
   customerName?: string;
-  quantityValue?: number;
+  quantity?: Measure;
 }
 
 export interface NeedsReorderingPageItem {

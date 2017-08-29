@@ -22,12 +22,13 @@
         <th class="col-md-1 text-right" click.delegate="sorter.doSort('unitCost')">
           <i class="fa fa-fw fa-${sorter.class(sorter['unitCost'])}"></i>UnitCost
         </th>
-        <th class="col-md-1 text-right" click.delegate="sorter.doSort('quantity')">
-          <i class="fa fa-fw fa-${sorter.class(sorter['quantity'])}"></i>Quantiy
+        <th class="col-md-1 text-right" click.delegate="sorter.doSort('quantityUnit')">
+          <i class="fa fa-fw fa-${sorter.class(sorter['quantityUnit'])}"></i>Unit
         </th>
-        <th class="col-md-1 text-right" click.delegate="sorter.doSort('received')">
-          <i class="fa fa-fw fa-${sorter.class(sorter['received'])}"></i>Recieved
+        <th class="col-md-1 text-right" click.delegate="sorter.doSort('quantityValue')">
+          <i class="fa fa-fw fa-${sorter.class(sorter['quantityValue'])}"></i>Quantiy
         </th>
+        <th class="col-md-1 text-right">Recieved</th>
       </tr>
     </thead>
 
@@ -43,7 +44,8 @@
         <td>${item.supplierName}</td>
         <td>${item.status}</td>
         <td class="text-right">${item.unitCostAmount | numberFormat}</td>
-        <td class="text-right">${item.quantityValue | numberFormat:'0,0'}</td>
+        <td class="text-right">${item.quantity.unit.name}</td>
+        <td class="text-right">${item.quantity.value | numberFormat:'0,0'}</td>
         <td class="text-right">${item.receivedValue | numberFormat:'0,0'}</td>
       </tr>
     </tbody>

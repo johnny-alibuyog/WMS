@@ -19,7 +19,10 @@
         <th class="col-md-1 text-right" click.delegate="sorter.doSort('returned')">
           <i class="fa fa-fw fa-${sorter.class(sorter['returnedAmount'])}"></i>Amount
         </th>
-        <th class="col-md-1 text-right" click.delegate="sorter.doSort('quantity')">
+        <th class="col-md-1 text-right" click.delegate="sorter.doSort('quantityUnit')">
+          <i class="fa fa-fw fa-${sorter.class(sorter['quantityUnit'])}"></i>Unit
+        </th>
+        <th class="col-md-1 text-right" click.delegate="sorter.doSort('quantityValue')">
           <i class="fa fa-fw fa-${sorter.class(sorter['quantityValue'])}"></i>Quantity
         </th>
       </tr>
@@ -36,7 +39,8 @@
         <td>${item.returnedByName}</td>
         <td>${item.returnedOn | dateFormat}</td>
         <td class="text-right">${item.returnedAmount | numberFormat:'0,0'}</td>
-        <td class="text-right">${item.quantityValue | numberFormat:'0,0'}</td>
+        <td class="text-right">${item.quantity.unit.name}</td>
+        <td class="text-right">${item.quantity.value | numberFormat:'0,0'}</td>
       </tr>
     </tbody>
 

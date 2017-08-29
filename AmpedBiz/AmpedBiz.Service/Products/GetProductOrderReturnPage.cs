@@ -66,12 +66,20 @@ namespace AmpedBiz.Service.Products
                             : query.OrderByDescending(x => x.Returned.Amount);
                     });
 
-                    message.Sorter.Compose("quantity", direction =>
+                    message.Sorter.Compose("quantityUnit", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.Quantity.Unit.Name)
+                            : query.OrderByDescending(x => x.Quantity.Unit.Name);
+                    });
+
+                    message.Sorter.Compose("quantityValue", direction =>
                     {
                         query = direction == SortDirection.Ascending
                             ? query.OrderBy(x => x.Quantity.Value)
                             : query.OrderByDescending(x => x.Quantity.Value);
                     });
+
 
                     var itemsFuture = query
                         .Select(x => new Dto.ProductOrderReturnPageItem()
@@ -83,7 +91,13 @@ namespace AmpedBiz.Service.Products
                                 x.ReturnedBy.Person.FirstName + " " +
                                 x.ReturnedBy.Person.LastName,
                             ReturnedAmount = x.Returned.Amount,
-                            QuantityValue = x.Quantity.Value,
+                            Quantity = new Dto.Measure(
+                                x.Quantity.Value,
+                                new Dto.UnitOfMeasure(
+                                    x.Quantity.Unit.Id,
+                                    x.Quantity.Unit.Name
+                                )
+                            )
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)
