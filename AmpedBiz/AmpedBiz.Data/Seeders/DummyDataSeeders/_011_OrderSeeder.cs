@@ -321,14 +321,11 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                         product: x,
                                         discountRate: _utils.RandomDecimal(0.01M, 0.10M),
                                         quantity: new Measure(
-                                            value: _utils.RandomInteger(1, 15),
-                                            unit: x.UnitOfMeasures.Standard(o => o.UnitOfMeasure)
+                                            value: _utils.RandomInteger(1, 4),
+                                            unit: x.UnitOfMeasures.Default(o => o.UnitOfMeasure)
                                         ),
-                                        standard: new Measure(
-                                            unit: x.UnitOfMeasures.Standard(o => o.UnitOfMeasure),
-                                            value: x.UnitOfMeasures.Standard(o => o.StandardEquivalentValue)
-                                        ),
-                                        unitPrice: x.UnitOfMeasures.Standard(o => o.Prices.Wholesale())
+                                        standard: x.StandardEquivalentMeasureOf(x.UnitOfMeasures.Default(o => o.UnitOfMeasure)),
+                                        unitPrice: x.UnitOfMeasures.Default(o => o.Prices.Wholesale())
                                     )
                                 )
                         });
@@ -482,7 +479,6 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                           .ToList();
 
                         var GetProduct = new Func<Guid, Product>(id => products.First(x => x.Id == id));
-                        var GetUnitOfMeasure = new Func<Guid, UnitOfMeasure>(id => products.First(x => x.Id == id).Inventory.UnitOfMeasure);
 
                         var currency = session.Load<Currency>(Currency.PHP.Id);
 

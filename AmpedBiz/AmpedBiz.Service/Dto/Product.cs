@@ -75,7 +75,7 @@ namespace AmpedBiz.Service.Dto
         public decimal? RetailPriceAmount { get; set; }
     }
 
-    public class ProductInventory
+    public class ProductInventoryOld
     {
         public Guid Id { get; set; }
 
@@ -105,7 +105,6 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? DiscountAmount { get; set; }
     }
-
 
     public class ProductInventory1
     {

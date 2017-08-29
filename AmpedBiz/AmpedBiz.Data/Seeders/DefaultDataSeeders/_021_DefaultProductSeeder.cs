@@ -217,7 +217,10 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                                     }
                                 ),
                             }
-                            .Where(o => o.UnitOfMeasure != null)
+                            .Where(o => 
+                                (o.UnitOfMeasure != null) ||
+                                (o.IsStandard != true && o.StandardEquivalentValue == 1)
+                            )
                         });
 
                         var standard = product.UnitOfMeasures.FirstOrDefault(o => o.IsStandard);
@@ -228,20 +231,6 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                             TargetLevel = new Measure(x.TargetLevel, standard.UnitOfMeasure),
                             ReorderLevel = new Measure(x.ReorderLevel, standard.UnitOfMeasure),
                             MinimumReorderQuantity = new Measure(x.MinimumReorderQuantity, standard.UnitOfMeasure),
-
-                            IndividualBarcode = x.Piece.Barcode,
-                            PackagingBarcode = x.Package.Barcode,
-                            PackagingSize = x.Package.StandardEquivalentValue,
-                            UnitOfMeasure = unitOfMeasure.Individual,
-                            PackagingUnitOfMeasure = unitOfMeasure.Packaging,
-
-                            // TODO: check for correct values
-                            //BasePrice = new Money(amount: 0M, currency: defaults.Currency),
-                            //BadStockPrice = new Money(amount: 0M, currency: defaults.Currency),
-                            BasePrice = new Money(amount: x.Piece.Price.WholesalePrice, currency: defaults.Currency),
-                            BadStockPrice = new Money(amount: x.Piece.Price.WholesalePrice, currency: defaults.Currency),
-                            WholesalePrice = new Money(amount: x.Piece.Price.WholesalePrice, currency: defaults.Currency),
-                            RetailPrice = new Money(amount: x.Piece.Price.RetailPrice, currency: defaults.Currency),
                         });
 
                         product.EnsureValidity();

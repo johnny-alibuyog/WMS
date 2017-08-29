@@ -38,16 +38,16 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("~/product-inventories/{productId}")]
-        public async Task<GetProductInventory.Response> Process([FromUri]GetProductInventory.Request request)
+        public async Task<GetProductInventoryOld.Response> Process([FromUri]GetProductInventoryOld.Request request)
         {
-            return await _mediator.Send(request ?? new GetProductInventory.Request());
+            return await _mediator.Send(request ?? new GetProductInventoryOld.Request());
         }
 
         [HttpGet()]
         [Route("~/product-inventories")]
-        public async Task<GetProductInventoryList.Response> Process([FromUri]GetProductInventoryList.Request request)
+        public async Task<GetProductInventoryOldList.Response> Process([FromUri]GetProductInventoryOldList.Request request)
         {
-            return await _mediator.Send(request ?? new GetProductInventoryList.Request());
+            return await _mediator.Send(request ?? new GetProductInventoryOldList.Request());
         }
 
         [HttpGet()]

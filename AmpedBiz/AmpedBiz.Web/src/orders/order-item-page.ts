@@ -128,7 +128,7 @@ export class OrderItemPage {
     this.items.forEach(item => this.initializeItem(item));
   }
 
-  public computeUnitPriceAmount() {
+  public computeUnitPriceAmount(): void {
     var item = this.selectedItem;
     this.getProductInventory(item.product).then(inventory => {
       var facade = new ProductInventoryFacade(inventory);

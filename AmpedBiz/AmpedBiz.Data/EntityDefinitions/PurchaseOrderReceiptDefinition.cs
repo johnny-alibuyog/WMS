@@ -27,6 +27,12 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Component(x => x.Quantity,
                     MeasureDefinition.Mapping.Map("Quantity_", nameof(PurchaseOrderReceipt)));
+
+                Component(x => x.Standard,
+                    MeasureDefinition.Mapping.Map("Standard_", nameof(PurchaseOrderReceipt)));
+
+                Component(x => x.QuantityStandardEquivalent,
+                    MeasureDefinition.Mapping.Map("QuantityStandardEquivalent_", nameof(PurchaseOrderReceipt)));
             }
         }
 
@@ -54,6 +60,12 @@ namespace AmpedBiz.Data.EntityDefinitions
                     .NotNullable();
 
                 Define(x => x.Quantity)
+                    .NotNullable();
+
+                Define(x => x.Standard)
+                    .NotNullable();
+
+                Define(x => x.QuantityStandardEquivalent)
                     .NotNullable();
             }
         }

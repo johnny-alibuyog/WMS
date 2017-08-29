@@ -1,16 +1,17 @@
-import { Router } from 'aurelia-router';
-import { autoinject } from 'aurelia-framework';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
+import { PurchaseOrder, PurchaseOrderAggregate, PurchaseOrderReceipt, PurchaseOrderReceivable, PurchaseOrderStatus, purchaseOrderEvents, } from '../common/models/purchase-order';
+
+import { AuthService } from "../services/auth-service";
 import { Dictionary } from '../common/custom_types/dictionary';
 import { Lookup } from '../common/custom_types/lookup';
-import { StageDefinition } from '../common/models/stage-definition';
-import { PurchaseOrderReceipt, PurchaseOrder, PurchaseOrderStatus, PurchaseOrderAggregate, PurchaseOrderReceivable, purchaseOrderEvents, } from '../common/models/purchase-order';
-import { ServiceApi } from '../services/service-api';
-import { AuthService } from "../services/auth-service";
 import { NotificationService } from '../common/controls/notification-service';
-import { pricing } from '../common/models/pricing';
-import { formatDate } from '../services/formaters';
+import { Router } from 'aurelia-router';
+import { ServiceApi } from '../services/service-api';
+import { StageDefinition } from '../common/models/stage-definition';
 import { VoucherReport } from './voucher-report';
+import { autoinject } from 'aurelia-framework';
+import { formatDate } from '../services/formaters';
+import { pricing } from '../common/models/pricing';
 import { role } from "../common/models/role";
 
 @autoinject
@@ -203,7 +204,8 @@ export class PurchaseOrderCreate {
     //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
     var arrData = this.purchaseOrder.items.map(x => <any>{
       Product: x.product.name,
-      Quantity: x.quantityValue,
+      Unit: x.quantity.unit.name,
+      Quantity: x.quantity.value,
       Cost: x.unitCostAmount,
       Total: x.totalCostAmount
     });

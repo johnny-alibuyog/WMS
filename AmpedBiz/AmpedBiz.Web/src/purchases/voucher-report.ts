@@ -1,11 +1,13 @@
-import { autoinject } from 'aurelia-framework';
-import { ReportBuilder, Report, DocumentDefinition } from '../services/report-builder';
-import { Lookup } from '../common/custom_types/lookup';
-import { Address } from '../common/models/Address';
-import { Voucher } from '../common/models/purchase-order';
-import { AuthService } from '../services/auth-service';
-import { formatDate, formatNumber, emptyIfNull } from '../services/formaters';
 import * as moment from 'moment';
+
+import { DocumentDefinition, Report, ReportBuilder } from '../services/report-builder';
+import { emptyIfNull, formatDate, formatNumber } from '../services/formaters';
+
+import { Address } from '../common/models/Address';
+import { AuthService } from '../services/auth-service';
+import { Lookup } from '../common/custom_types/lookup';
+import { Voucher } from '../common/models/purchase-order';
+import { autoinject } from 'aurelia-framework';
 
 @autoinject
 export class VoucherReport implements Report<Voucher> {
@@ -26,6 +28,7 @@ export class VoucherReport implements Report<Voucher> {
     let productTableBody: any[] = [
       [
         { text: 'Product', style: 'tableHeader' },
+        { text: 'Unit', style: 'tableHeader', alignment: 'right' },
         { text: 'Quantity', style: 'tableHeader', alignment: 'right' },
         { text: 'Unit Cost', style: 'tableHeader', alignment: 'right' },
         { text: 'Total Cost', style: 'tableHeader', alignment: 'right' },
@@ -36,7 +39,8 @@ export class VoucherReport implements Report<Voucher> {
       data.items.forEach(x =>
         productTableBody.push([
           { text: x.product && x.product.name || '', style: 'tableData' },
-          { text: formatNumber(x.quantityValue, "0"), style: 'tableData', alignment: 'right' },
+          { text: x.quantity && x.quantity.unit && x.quantity.unit.name || '', style: 'tableData' },
+          { text: formatNumber(x.quantity.value, "0"), style: 'tableData', alignment: 'right' },
           { text: formatNumber(x.unitCostAmount), style: 'tableData', alignment: 'right' },
           { text: formatNumber(x.totalCostAmount), style: 'tableData', alignment: 'right' },
         ])
@@ -134,7 +138,7 @@ export class VoucherReport implements Report<Voucher> {
           style: 'tableExample',
           table: {
             headerRows: 1,
-            widths: ['*', 'auto', 'auto', 'auto'],
+            widths: ['*', 'auto', 'auto', 'auto', 'auto'],
             body: productTableBody
           },
           layout: 'lightHorizontalLines'

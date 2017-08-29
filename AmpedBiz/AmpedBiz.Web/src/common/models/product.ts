@@ -55,9 +55,6 @@ export interface DiscontinuedPageItem {
   supplierName?: string;
   categoryName?: string;
   image?: string;
-  basePriceAmount?: number;
-  wholesalePriceAmount?: number;
-  retailPriceAmount?: number;
 }
 
 export interface ProductInventory {

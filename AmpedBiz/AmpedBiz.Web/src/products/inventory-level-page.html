@@ -47,13 +47,11 @@
                   <i class="fa fa-fw fa-${sorter.class(sorter['supplier'])}"></i>Supplier
                 </th>
                 -->
-                <!--
-                <th class="col-md-1" click.delegate="sorter.doSort('unitOfMeasure')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['unitOfMeasure'])}"></i>UOM
+                <th class="col-md-1 text-right" click.delegate="sorter.doSort('unitOfMeasure')">
+                  <i class="fa fa-fw fa-${sorter.class(sorter['unitOfMeasure'])}"></i>Unit
                 </th>
-                -->
                 <th class="col-md-1 text-right" click.delegate="sorter.doSort('onHand')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['onHand'])}"></i>On Hand
+                  <i class="fa fa-fw fa-${sorter.class(sorter['onHand'])}"></i>OnHand
                 </th>
                 <th class="col-md-1 text-right" click.delegate="sorter.doSort('allocated')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['allocated'])}"></i>Allocated
@@ -62,19 +60,19 @@
                   <i class="fa fa-fw fa-${sorter.class(sorter['available'])}"></i>Available
                 </th>
                 <th class="col-md-1 text-right" click.delegate="sorter.doSort('onOrder')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['onOrder'])}"></i>On Order
+                  <i class="fa fa-fw fa-${sorter.class(sorter['onOrder'])}"></i>OnOrder
                 </th>
                 <th class="col-md-1 text-right" click.delegate="sorter.doSort('currentLevel')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['currentLevel'])}"></i>Current Level
+                  <i class="fa fa-fw fa-${sorter.class(sorter['currentLevel'])}"></i>CurrentLvl
                 </th>
                 <th class="col-md-1 text-right" click.delegate="sorter.doSort('reorderLevel')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['reorderLevel'])}"></i>Reorder Level
+                  <i class="fa fa-fw fa-${sorter.class(sorter['reorderLevel'])}"></i>ReorderLvl
                 </th>
                 <th class="col-md-1 text-right" click.delegate="sorter.doSort('targetLevel')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['targetLevel'])}"></i>Target Level
+                  <i class="fa fa-fw fa-${sorter.class(sorter['targetLevel'])}"></i>TargetLvl
                 </th>
                 <th class="col-md-1 text-right" click.delegate="sorter.doSort('belowTargetLevel')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['belowTargetLevel'])}"></i>Below Target
+                  <i class="fa fa-fw fa-${sorter.class(sorter['belowTargetLevel'])}"></i>BelowTarget
                 </th>
               </tr>
             </thead>
@@ -88,7 +86,7 @@
                 </td>
                 <td>${item.name}</td>
                 <!--<td>${item.supplier}</td>-->
-                <!--<td>${item.unitOfMeasure}</td>-->
+                <td class="text-right">${item.unitOfMeasure}</td>
                 <td class="text-right">${item.onHandValue | numberFormat:'0,0'}</td>
                 <td class="text-right">${item.allocatedValue | numberFormat:'0,0'}</td>
                 <td class="text-right">${item.availableValue | numberFormat:'0,0'}</td>

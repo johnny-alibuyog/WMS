@@ -1,17 +1,18 @@
-import { autoinject } from 'aurelia-framework';
+import { AuthService } from './auth-service';
+import { HttpClientFacade } from './http-client-facade';
 import { Lookup } from '../common/custom_types/lookup';
+import { Measure } from "../common/models/measure";
 import { PageRequest } from '../common/models/paging';
 import { PurchaseOrder } from '../common/models/purchase-order';
-import { PurchaseOrderStatus } from '../common/models/purchase-order';
+import { PurchaseOrderPayable } from '../common/models/purchase-order';
 import { PurchaseOrderPayment } from '../common/models/purchase-order';
 import { PurchaseOrderReceipt } from '../common/models/purchase-order';
 import { PurchaseOrderReceivable } from '../common/models/purchase-order';
 import { PurchaseOrderReceiving } from '../common/models/purchase-order';
-import { PurchaseOrderPayable } from '../common/models/purchase-order';
-import { Voucher } from '../common/models/purchase-order';
+import { PurchaseOrderStatus } from '../common/models/purchase-order';
 import { ServiceBase } from './service-base'
-import { AuthService } from './auth-service';
-import { HttpClientFacade } from './http-client-facade';
+import { Voucher } from '../common/models/purchase-order';
+import { autoinject } from 'aurelia-framework';
 
 @autoinject
 export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
@@ -189,6 +190,29 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
       }
     }
 
+    let findUnit = (purchaseOrder: PurchaseOrder, product: Lookup<string>) => {
+      let item = purchaseOrder.items.find(item => item.product.id == product.id);
+      if (!item) {
+        return null;
+      }
+
+      let quantity = item.quantity;
+      if (!quantity) {
+        return null;
+      }
+
+      return quantity.unit;
+    };
+
+    let findStandard = (purchaseOrder: PurchaseOrder, product: Lookup<string>) => {
+      let item = purchaseOrder.items.find(item => item.product.id == product.id);
+      if (!item) {
+        return null;
+      }
+
+      return item.standard;
+    };
+
     return allProducts.map(product => {
       var receivable = <PurchaseOrderReceivable>{
         purchaseOrderId: purchaseOrder.id,
@@ -198,14 +222,18 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
         },
         orderedQuantity: purchaseOrder.items
           .filter(item => item.product.id == product.id)
-          .reduce((prevVal, item) => prevVal + item.quantityValue, 0),
+          .reduce((prevVal, item) => prevVal + item.quantity.value, 0),
         receivedQuantity: purchaseOrder.receipts
           .filter(receipt => receipt.product.id == product.id)
-          .reduce((prevVal, receipt) => prevVal + receipt.quantityValue, 0),
+          .reduce((prevVal, receipt) => prevVal + receipt.quantity.value, 0),
         receiving: <PurchaseOrderReceiving>{
           receivedBy: this._auth.userAsLookup,
           receivedOn: new Date(),
-          quantity: 0
+          quantity: <Measure>{
+            unit: findUnit(purchaseOrder, product),
+            value: 0
+          },
+          standard: findStandard(purchaseOrder, product)
         }
       };
 
@@ -222,8 +250,8 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
     }
 
     let unfulfilledReveiving = purchaseOrder
-      .receivables.filter(x => 
-        x.orderedQuantity == 0 && 
+      .receivables.filter(x =>
+        x.orderedQuantity == 0 &&
         x.receivedQuantity == 0 &&
         x.receiving.quantity == 0
       );
@@ -237,7 +265,9 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
     return purchaseOrder.receivables
       .filter(x =>
         x.receiving &&
-        x.receiving.quantity > 0
+        x.receiving.quantity &&
+        x.receiving.quantity.value > 0 &&
+        x.receiving.quantity.unit != null
       )
       .map(x => <PurchaseOrderReceipt>{
         purchaseOrderId: x.purchaseOrderId,
@@ -246,7 +276,8 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
         receivedBy: x.receiving.receivedBy,
         receivedOn: x.receiving.receivedOn,
         expiresOn: x.receiving.expiresOn,
-        quantityValue: x.receiving.quantity
+        quantity: x.receiving.quantity,
+        standard: x.receiving.standard
       });
   }
 }

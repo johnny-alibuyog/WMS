@@ -41,7 +41,7 @@ namespace AmpedBiz.Service.Dto
 
         public Lookup<Guid> Product { get; set; }
 
-        public decimal QuantityValue { get; set; }
+        public Measure Quantity { get; set; }
 
         public decimal UnitCostAmount { get; set; }
 

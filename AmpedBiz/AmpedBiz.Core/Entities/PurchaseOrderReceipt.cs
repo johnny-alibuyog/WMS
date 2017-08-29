@@ -18,6 +18,10 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Measure Quantity { get; protected set; }
 
+        public virtual Measure Standard { get; protected set; }
+
+        public virtual Measure QuantityStandardEquivalent { get; protected set; }
+
         public PurchaseOrderReceipt() : base(default(Guid)) { }
 
         public PurchaseOrderReceipt(
@@ -25,8 +29,9 @@ namespace AmpedBiz.Core.Entities
             User receivedBy, 
             DateTime? receivedOn, 
             DateTime? expiresOn, 
-            Product product, 
-            Measure quantity, 
+            Product product,
+            Measure quantity,
+            Measure standard,
             Guid? id = null
         ) : base(id ?? default(Guid))
         {
@@ -37,6 +42,10 @@ namespace AmpedBiz.Core.Entities
             this.ExpiresOn = expiresOn;
             this.Product = product;
             this.Quantity = quantity;
+            this.Standard = standard;
+
+            // quantity convertion to standard uom
+            this.QuantityStandardEquivalent = standard * quantity;
         }
     }
 }

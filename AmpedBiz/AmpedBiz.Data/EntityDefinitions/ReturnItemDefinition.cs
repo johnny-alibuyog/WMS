@@ -22,6 +22,12 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Component(x => x.Quantity,
                     MeasureDefinition.Mapping.Map("Quantity_", nameof(ReturnItem)));
 
+                Component(x => x.Standard,
+                    MeasureDefinition.Mapping.Map("Standard_", nameof(ReturnItem)));
+
+                Component(x => x.QuantityStandardEquivalent,
+                    MeasureDefinition.Mapping.Map("QuantityStandardEquivalent_", nameof(ReturnItem)));
+
                 Component(x => x.UnitPrice,
                     MoneyDefinition.Mapping.Map("UnitPrice_", nameof(ReturnItem)));
 
@@ -46,6 +52,12 @@ namespace AmpedBiz.Data.EntityDefinitions
                     .NotNullable();
 
                 Define(x => x.Quantity)
+                    .IsValid();
+
+                Define(x => x.Standard)
+                    .IsValid();
+
+                Define(x => x.QuantityStandardEquivalent)
                     .IsValid();
 
                 Define(x => x.UnitPrice)

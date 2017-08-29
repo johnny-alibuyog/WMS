@@ -72,26 +72,26 @@ namespace AmpedBiz.Service.Products
                             : query.OrderByDescending(x => x.Inventory.OnHand.Value);
                     });
 
-                    message.Sorter.Compose("basePriceAmount", direction =>
-                    {
-                        query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Inventory.BasePrice.Amount)
-                            : query.OrderByDescending(x => x.Inventory.BasePrice.Amount);
-                    });
+                    //message.Sorter.Compose("basePriceAmount", direction =>
+                    //{
+                    //    query = direction == SortDirection.Ascending
+                    //        ? query.OrderBy(x => x.Inventory.BasePrice.Amount)
+                    //        : query.OrderByDescending(x => x.Inventory.BasePrice.Amount);
+                    //});
 
-                    message.Sorter.Compose("wholesalePriceAmount", direction =>
-                    {
-                        query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Inventory.WholesalePrice.Amount)
-                            : query.OrderByDescending(x => x.Inventory.WholesalePrice.Amount);
-                    });
+                    //message.Sorter.Compose("wholesalePriceAmount", direction =>
+                    //{
+                    //    query = direction == SortDirection.Ascending
+                    //        ? query.OrderBy(x => x.Inventory.WholesalePrice.Amount)
+                    //        : query.OrderByDescending(x => x.Inventory.WholesalePrice.Amount);
+                    //});
 
-                    message.Sorter.Compose("retailPriceAmount", direction =>
-                    {
-                        query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Inventory.RetailPrice.Amount)
-                            : query.OrderByDescending(x => x.Inventory.RetailPrice.Amount);
-                    });
+                    //message.Sorter.Compose("retailPriceAmount", direction =>
+                    //{
+                    //    query = direction == SortDirection.Ascending
+                    //        ? query.OrderBy(x => x.Inventory.RetailPrice.Amount)
+                    //        : query.OrderByDescending(x => x.Inventory.RetailPrice.Amount);
+                    //});
 
                     var countFuture = query
                         .ToFutureValue(x => x.Count());
@@ -108,12 +108,12 @@ namespace AmpedBiz.Service.Products
                             CategoryName = x.Category.Name,
                             SupplierName = x.Supplier.Name,
                             OnHandValue = x.Inventory.OnHand.Value,
-                            BasePriceAmount = x.Inventory.BasePrice.Amount,
-                            WholesalePriceAmount = x.Inventory.WholesalePrice.Amount,
-                            RetailPriceAmount = x.Inventory.RetailPrice.Amount,
-                            TotalBasePriceAmount = x.Inventory.OnHand.Value * x.Inventory.BasePrice.Amount,
-                            TotalWholesalePriceAmount = x.Inventory.OnHand.Value * x.Inventory.WholesalePrice.Amount,
-                            TotalRetailPriceAmount = x.Inventory.OnHand.Value * x.Inventory.RetailPrice.Amount
+                            //BasePriceAmount = x.Inventory.BasePrice.Amount,
+                            //WholesalePriceAmount = x.Inventory.WholesalePrice.Amount,
+                            //RetailPriceAmount = x.Inventory.RetailPrice.Amount,
+                            //TotalBasePriceAmount = x.Inventory.OnHand.Value * x.Inventory.BasePrice.Amount,
+                            //TotalWholesalePriceAmount = x.Inventory.OnHand.Value * x.Inventory.WholesalePrice.Amount,
+                            //TotalRetailPriceAmount = x.Inventory.OnHand.Value * x.Inventory.RetailPrice.Amount
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)

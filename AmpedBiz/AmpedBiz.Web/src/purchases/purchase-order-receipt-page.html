@@ -8,6 +8,7 @@
       <tr class="row-no-padding">
         <th class="col-sm-1">Action</th>
         <th class="col-sm-4">Product</th>
+        <th class="col-sm-1">Unit</th>
         <th class="col-sm-1 text-right">Ordered</th>
         <th class="col-sm-1 text-right">Received</th>
         <th class="col-sm-1 text-right">Receivable</th>
@@ -37,6 +38,9 @@
           </select>
         </td>
 
+        <!-- Unit -->
+        <td>${item.receiving.quantity.unit.name}</td>
+
         <!-- Ordered -->
         <td class="text-right">${item.orderedQuantity}</td>
 
@@ -55,9 +59,9 @@
         -->
 
         <!-- Receiving -->
-        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.receiving.quantity}</td>
+        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.receiving.quantity.value}</td>
         <td if.bind="$parent.selectedItem === item" class="text-right">
-          <input class="form-control text-right" type="number" numeric-value.bind="item.receiving.quantity" />
+          <input class="form-control text-right" type="number" numeric-value.bind="item.receiving.quantity.value" />
         </td>
       </tr>
     </tbody>

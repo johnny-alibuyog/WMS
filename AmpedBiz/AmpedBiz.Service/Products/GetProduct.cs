@@ -3,6 +3,7 @@ using AmpedBiz.Core.Entities;
 using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
+using NHibernate.Transform;
 using System;
 using System.Linq;
 
@@ -33,10 +34,11 @@ namespace AmpedBiz.Service.Products
                         .Fetch(x => x.Supplier).Eager
                         .Fetch(x => x.Category).Eager
                         .Fetch(x => x.Inventory).Eager
-                        .Fetch(x => x.Inventory.UnitOfMeasure).Eager
-                        .Fetch(x => x.Inventory.PackagingUnitOfMeasure).Eager
+                        .Fetch(x => x.UnitOfMeasures).Eager
+                        .Fetch(x => x.UnitOfMeasures.First().Prices).Eager
                         .Fetch(x => x.Inventory.Stocks).Eager
                         .Fetch(x => x.Inventory.Stocks.First().ModifiedBy).Eager
+                        .TransformUsing(Transformers.DistinctRootEntity)
                         .FutureValue();
 
                     var entity = query.Value;

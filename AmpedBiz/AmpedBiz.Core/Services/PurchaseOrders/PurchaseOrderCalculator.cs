@@ -40,11 +40,11 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
         {
             var quantity = items
                .Where(x => x.Product == product)
-               .Sum(x => x.Quantity);
+               .Sum(x => x.QuantityStandardEquivalent);
 
             var received = receipts
                 .Where(x => x.Product == product)
-                .Sum(x => x.Quantity);
+                .Sum(x => x.QuantityStandardEquivalent);
 
             var remaining = quantity - received;
 

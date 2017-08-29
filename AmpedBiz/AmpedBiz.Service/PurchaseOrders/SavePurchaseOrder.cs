@@ -71,10 +71,8 @@ namespace AmpedBiz.Service.PurchaseOrders
 
                     Func<Guid, Product> GetProduct = (id) => products.First(x => x.Id == id);
 
-                    Func<Guid, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
-
                     entity.Accept(new PurchaseOrderUpdateVisitor()
-                    { 
+                    {
                         ReferenceNumber = message.ReferenceNumber,
                         CreatedBy = (!message?.CreatedBy?.Id.IsNullOrDefault() ?? false)
                             ? session.Load<User>(message.CreatedBy.Id) : null,
@@ -91,7 +89,8 @@ namespace AmpedBiz.Service.PurchaseOrders
                             id: x.Id,
                             product: GetProduct(x.Product.Id),
                             unitCost: new Money(x.UnitCostAmount, currency),
-                            quantity: new Measure(x.QuantityValue, GetUnitOfMeasure(x.Product.Id))
+                            quantity: new Measure(x.Quantity.Value, session.Load<UnitOfMeasure>(x.Quantity.Unit.Id)),
+                            standard: new Measure(x.Standard.Value, session.Load<UnitOfMeasure>(x.Standard.Unit.Id))
                         )),
                         Payments = message.Payments.Select(x => new PurchaseOrderPayment(
                             id: x.Id,
@@ -107,13 +106,8 @@ namespace AmpedBiz.Service.PurchaseOrders
                             receivedOn: x.ReceivedOn ?? DateTime.Now,
                             expiresOn: x.ExpiresOn,
                             product: products.FirstOrDefault(o => o.Id == x.Product.Id),
-                            quantity: new Measure(
-                                value: x.QuantityValue,
-                                unit: products
-                                    .Where(o => o.Id == x.Product.Id)
-                                    .Select(o => o.Inventory.UnitOfMeasure)
-                                    .FirstOrDefault()
-                            )
+                            quantity: new Measure(x.Quantity.Value, session.Load<UnitOfMeasure>(x.Quantity.Unit.Id)),
+                            standard: new Measure(x.Standard.Value, session.Load<UnitOfMeasure>(x.Standard.Unit.Id))
                         ))
                     });
                     entity.EnsureValidity();

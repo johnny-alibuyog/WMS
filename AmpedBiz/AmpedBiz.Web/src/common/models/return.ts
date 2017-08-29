@@ -1,7 +1,9 @@
-import { Lookup } from '../custom_types/lookup';
-import { ProductInventory } from './product';
-import { Dictionary } from '../custom_types/dictionary';
 import { Address } from './Address';
+import { Dictionary } from '../custom_types/dictionary';
+import { Lookup } from '../custom_types/lookup';
+import { Measure } from "./measure";
+import { ProductInventory } from './product';
+import { UnitOfMeasure } from "./unit-of-measure";
 
 export const returnEvents = {
   item: {
@@ -37,7 +39,9 @@ export interface ReturnItem {
   returnId?: string;
   product?: Lookup<string>;
   returnReason?: Lookup<string>;
-  quantityValue?: number;
+  unitOfMeasures?: UnitOfMeasure[];
+  quantity?: Measure;
+  standard?: Measure;
   unitPriceAmount?: number;
   extendedPriceAmount?: number;
   totalPriceAmount?: number;

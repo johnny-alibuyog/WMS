@@ -1,10 +1,11 @@
-import { Router, RouteConfig, NavigationInstruction } from 'aurelia-router';
-import { autoinject } from 'aurelia-framework';
-import { ProductCreate } from './product-create';
-import { Product, DiscontinuedPageItem } from '../common/models/product';
-import { ServiceApi } from '../services/service-api';
+import { DiscontinuedPageItem, Product } from '../common/models/product';
+import { Filter, Pager, PagerRequest, PagerResponse, SortDirection, Sorter } from '../common/models/paging';
+import { NavigationInstruction, RouteConfig, Router } from 'aurelia-router';
+
 import { NotificationService } from '../common/controls/notification-service';
-import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
+import { ProductCreate } from './product-create';
+import { ServiceApi } from '../services/service-api';
+import { autoinject } from 'aurelia-framework';
 
 @autoinject
 export class ProductPage {
@@ -30,9 +31,6 @@ export class ProductPage {
     this.sorter["name"] = SortDirection.Ascending;
     this.sorter["category"] = SortDirection.None;
     this.sorter["supplier"] = SortDirection.None;
-    this.sorter["basePrice"] = SortDirection.None;
-    this.sorter["wholesalePrice"] = SortDirection.None;
-    this.sorter["retailPrice"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
 
     this.pager = new Pager<DiscontinuedPageItem>();

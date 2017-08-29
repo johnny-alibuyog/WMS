@@ -1,11 +1,13 @@
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
-import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
-import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
-import { Lookup } from '../common/custom_types/lookup';
-import { ServiceApi } from '../services/service-api';
-import { Dictionary } from '../common/custom_types/dictionary';
+import { Filter, Pager, PagerRequest, PagerResponse, SortDirection, Sorter } from '../common/models/paging';
 import { PurchaseOrderReceipt, PurchaseOrderReceivable, PurchaseOrderReceiving, purchaseOrderEvents } from '../common/models/purchase-order';
+import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
+
+import { Dictionary } from '../common/custom_types/dictionary';
+import { Lookup } from '../common/custom_types/lookup';
+import { Measure } from "../common/models/measure";
 import { NotificationService } from '../common/controls/notification-service';
+import { ServiceApi } from '../services/service-api';
 
 @autoinject
 @customElement("purchase-order-receipt-page")
@@ -96,7 +98,7 @@ export class PurchaseOrderReceiptPage {
     if (!this.receivables)
       this.receivables = [];
 
-    var current = this.receivables.find(x => !x.product && x.receiving.quantity == 0);
+    var current = this.receivables.find(x => !x.product && x.receiving.quantity.value == 0);
     if (current) {
       this.selectedItem = current;
       return;
@@ -113,7 +115,14 @@ export class PurchaseOrderReceiptPage {
         receivedBy: this._api.auth.userAsLookup,
         receivedOn: new Date(),
         expiresOn: null,
-        quantity: 0
+        quantity: <Measure>{
+          unit: null,
+          value: 0
+        },
+        standard: <Measure>{
+          unit: null,
+          value: 0
+        }
       }
     };
 

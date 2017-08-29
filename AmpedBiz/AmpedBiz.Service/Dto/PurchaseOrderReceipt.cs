@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Common.CustomTypes;
+using AmpedBiz.Common.Extentions;
 using System;
 using System.Linq;
 
@@ -20,7 +21,9 @@ namespace AmpedBiz.Service.Dto
 
         public Lookup<Guid> Product { get; set; }
 
-        public decimal QuantityValue { get; set; }
+        public Measure Quantity { get; set; }
+
+        public Measure Standard { get; set; }
     }
 
     public class PurchaseOrderReceivable
@@ -38,6 +41,8 @@ namespace AmpedBiz.Service.Dto
         public decimal ReceivableQuantity { get; set; }
 
         public decimal ReceivingQuantity { get; set; }
+
+        public Measure Standard { get; set; }
 
         public DateTime? ReceivingDoneOn { get; set; }
 
@@ -62,6 +67,7 @@ namespace AmpedBiz.Service.Dto
                         ReceivedQuantity = receipts.Sum(x => x.Quantity.Value),
                         ReceivableQuantity = item.Quantity.Value - receipts.Sum(x => x.Quantity.Value),
                         ReceivingQuantity = item.Quantity.Value - receipts.Sum(x => x.Quantity.Value),
+                        Standard = item.Standard.MapTo(default(Dto.Measure))
                     }
                 )
                 .ToArray();

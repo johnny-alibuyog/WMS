@@ -10,6 +10,10 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Measure Quantity { get; protected set; }
 
+        public virtual Measure Standard { get; protected set; }
+
+        public virtual Measure QuantityStandardEquivalent { get; protected set; }
+
         public virtual Money UnitCost { get; protected set; }
 
         public virtual Money TotalCost { get; protected set; }
@@ -18,18 +22,21 @@ namespace AmpedBiz.Core.Entities
 
         public PurchaseOrderItem(
             Product product, 
-            Money unitCost, 
-            Measure quantity, 
+            Money unitCost,
+            Measure quantity,
+            Measure standard,
             Guid? id = null
         ) : base(id ?? default(Guid))
         {
             this.Product = product;
             this.Quantity = quantity;
+            this.Standard = standard;
             this.UnitCost = unitCost;
-            this.TotalCost = new Money(
-                amount: this.UnitCost.Amount * this.Quantity.Value, 
-                currency: this.UnitCost.Currency
-            );
+
+            // quantity convertion to standard uom
+            this.QuantityStandardEquivalent = standard * quantity;
+
+            this.TotalCost = new Money(this.UnitCost.Amount * this.Quantity.Value, this.UnitCost.Currency);
         }
     }
 }

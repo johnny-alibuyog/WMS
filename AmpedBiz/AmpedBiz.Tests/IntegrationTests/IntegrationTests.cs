@@ -486,6 +486,30 @@ namespace AmpedBiz.Tests.IntegrationTests
             return products;
         }
 
+        private IEnumerable<Service.Dto.ProductInventory1> SelectRandomProductInventories(Guid supplierId, int count = 12)
+        {
+            var request = new GetProductInventory1List.Request() { SupplierId = supplierId };
+            var response = new GetProductInventory1List.Handler(this.sessionFactory).Handle(request);
+            var productInventories = response.Cast<Service.Dto.ProductInventory1>();
+
+            var totalProductInventory = productInventories.Count();
+
+            count = totalProductInventory < count ? totalProductInventory : count;
+
+            var randomIndexs = this.dummyData.GenerateUniqueNumbers(0, totalProductInventory, count);
+
+            var result = productInventories
+                .Select((productInventory, index) => new
+                {
+                    Index = index,
+                    ProductInventory = productInventory
+                })
+                .Where(x => randomIndexs.Contains(x.Index))
+                .Select(x => x.ProductInventory);
+
+            return result;
+        }
+
         private IEnumerable<Service.Dto.ProductInventory1> SelectRandomAvailableProductInventories(Guid supplierId, int count = 12)
         {
             var request = new GetProductInventory1List.Request() { SupplierId = supplierId };
@@ -571,17 +595,28 @@ namespace AmpedBiz.Tests.IntegrationTests
         private List<Service.Dto.PurchaseOrderItem> CreatePurchaseOrderItems(SavePurchaseOrder.Request request, int count = 1)
         {
             var poItems = new List<Service.Dto.PurchaseOrderItem>();
-            var selectedProducts = this.SelectRandomProducts(request.Supplier.Id, count);
+            var selectedProductInventories = this.SelectRandomProductInventories(request.Supplier.Id, count);
 
-            foreach (var product in selectedProducts)
+            foreach (var productInventory in selectedProductInventories)
             {
-                poItems.Add(new Service.Dto.PurchaseOrderItem
+                var productInventoryUnitOfMeasure = this.RandomProductUnitOfMeasure(productInventory);
+                var productInventoryUnitOfMeasurePrice = this.RandomProductUnitOfMeasurePrice(productInventoryUnitOfMeasure);
+
+                poItems.Add(new Service.Dto.PurchaseOrderItem()
                 {
-                    //TotalAmount = product.WholesalePriceAmount + 1m,
                     PurchaseOrderId = request.Id,
-                    Product = new Lookup<Guid>(product.Id, product.Name),
-                    QuantityValue = this.random.Next(1, 100),
-                    UnitCostAmount = product.Inventory.WholesalePriceAmount ?? 0M + 1m,
+                    Product = new Lookup<Guid>(productInventory.Id, productInventory.Name),
+                    Quantity = new Service.Dto.Measure()
+                    {
+                        Value = this.random.Next(1, 100),
+                        Unit = productInventoryUnitOfMeasure.UnitOfMeasure
+                    },
+                    Standard = new Service.Dto.Measure()
+                    {
+                        Unit = productInventoryUnitOfMeasure.Standard?.Unit,
+                        Value = productInventoryUnitOfMeasure.Standard?.Value ?? 0M
+                    },
+                    UnitCostAmount = productInventoryUnitOfMeasurePrice.PriceAmount.Value,
                 });
             }
 
@@ -655,7 +690,8 @@ namespace AmpedBiz.Tests.IntegrationTests
                         ReceivedOn = data.ReceivedOn,
                         ExpiresOn = data.ReceivedOn.AddYears(1),
                         Product = x.Product,
-                        QuantityValue = x.QuantityValue
+                        Quantity = x.Quantity,
+                        Standard = x.Standard
                     })
             };
 
@@ -750,9 +786,8 @@ namespace AmpedBiz.Tests.IntegrationTests
             if (selectedProductInventories.Count == 0)
                 goto comeAsYouAre;
 
-            for (var i = 0; i < selectedProductInventories.Count; i++)
+            foreach (var productInventory in selectedProductInventories)
             {
-                var productInventory = selectedProductInventories[i];
                 var productInventoryUnitOfMeasure = this.RandomProductUnitOfMeasure(productInventory);
                 var productInventoryUnitOfMeasurePrice = this.RandomProductUnitOfMeasurePrice(productInventoryUnitOfMeasure);
 

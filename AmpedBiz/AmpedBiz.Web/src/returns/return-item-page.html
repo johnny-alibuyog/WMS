@@ -9,6 +9,7 @@
         <th class="col-sm-1">Action</th>
         <th class="col-sm-4">Product</th>
         <th class="col-sm-2">Reason</th>
+        <th class="col-sm-1 text-right">Unit</th>
         <th class="col-sm-1 text-right">Quantity</th>
         <th class="col-sm-1 text-right">Price</th>
         <th class="col-sm-1 text-right">Total</th>
@@ -29,7 +30,8 @@
         <!-- read-only mode -->
         <td if.bind="$parent.selectedItem !== item">${item.product.name}</td>
         <td if.bind="$parent.selectedItem !== item">${item.returnReason.name}</td>
-        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantityValue}</td>
+        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantity.unit.name}</td>
+        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantity.value}</td>
         <td if.bind="$parent.selectedItem !== item" class="text-right">${item.unitPriceAmount | numberFormat}</td>
         <td if.bind="$parent.selectedItem !== item" class="text-right">${item.totalPriceAmount | numberFormat}</td>
 
@@ -59,7 +61,17 @@
         <td if.bind="$parent.selectedItem === item" class="text-right">
           <div class="row">
             <div class="col-xs-12 pull-right">
-              <input class="form-control input-xs text-right" type="number" numeric-value.bind="item.quantityValue" keyup.delegate="compute(item)" />
+              <select class="form-control input-xs" value.bind="item.quantity.unit | lookupToId:item.unitOfMeasures" change.delegate="computeUnitPriceAmount()">
+                <option repeat.for="unitOfMeasure of item.unitOfMeasures" model.bind="unitOfMeasure.id">${unitOfMeasure.name}</option>
+              </select>
+            </div>
+          </div>
+        </td>
+
+        <td if.bind="$parent.selectedItem === item" class="text-right">
+          <div class="row">
+            <div class="col-xs-12 pull-right">
+              <input class="form-control input-xs text-right" type="number" numeric-value.bind="item.quantity.value" keyup.delegate="compute(item)" />
             </div>
           </div>
         </td>

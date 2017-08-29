@@ -262,7 +262,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
                     Enumerable.Range(0, this.Count).ToList().ForEach(_ =>
                     {
-                        var products = _utils.RandomUninitializedProducts();
+                        var products = _utils.RandomProducts();
                         if (!products.Any())
                             return;
 
@@ -286,9 +286,10 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                     product: x,
                                     quantity: new Measure(
                                         value: _utils.RandomInteger(1, 100),
-                                        unit: x.UnitOfMeasures.Standard(o => o.UnitOfMeasure)
+                                        unit: x.UnitOfMeasures.Default(o => o.UnitOfMeasure)
                                     ),
-                                    unitCost: x.UnitOfMeasures.Standard(o => o.Prices.Base())
+                                    standard: x.StandardEquivalentMeasureOf(x.UnitOfMeasures.Default(o => o.UnitOfMeasure)),
+                                    unitCost: x.UnitOfMeasures.Default(o => o.Prices.Base())
                                 ))
                         });
                         entity.EnsureValidity();
@@ -418,7 +419,9 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                             min: (int)x.Quantity.Value - 2,
                                             max: (int)x.Quantity.Value
                                         ),
-                                        unit: x.Quantity.Unit)
+                                        unit: x.Quantity.Unit
+                                    ),
+                                    standard: x.Standard
                                ))
                         });
                         entity.EnsureValidity();

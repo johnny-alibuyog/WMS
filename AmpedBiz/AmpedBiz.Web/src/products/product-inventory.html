@@ -31,22 +31,6 @@
             </div>
           </div>
 
-          <div class="form-group">
-            <label class="control-label col-sm-4">Individual Barcode:</label>
-            <div class="col-sm-8">
-              <input type="number" class="form-control text-right" placeholder="Enter Individual Barcode" value.bind="inventory.individualBarcode"
-              />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="control-label col-sm-4">Packaging Barcode:</label>
-            <div class="col-sm-8">
-              <input type="number" class="form-control text-right" placeholder="Enter Packaging Barcode" value.bind="inventory.packagingBarcode"
-              />
-            </div>
-          </div>
-
         </div>
 
         <!-- right side -->
@@ -64,34 +48,6 @@
             <label class="control-label col-sm-4">Target Level:</label>
             <div class="col-sm-8">
               <input type="number" class="form-control text-right" placeholder="Enter Target Level" value.bind="inventory.targetLevelValue"
-              />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="control-label col-sm-4">UOM:</label>
-            <div class="col-sm-8">
-              <select class="form-control" value.bind="inventory.unitOfMeasure | lookupToId:unitOfMeasures">
-                <option>Select Unit of Measure</option>
-                <option repeat.for="unitOfMeasure of unitOfMeasures" model.bind="unitOfMeasure.id">${unitOfMeasure.name}</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="control-label col-sm-4">Packaging UOM:</label>
-            <div class="col-sm-8">
-              <select class="form-control" value.bind="inventory.packagingUnitOfMeasure | lookupToId:unitOfMeasures">
-                <option>Select Packaging Unit of Measure</option>
-                <option repeat.for="unitOfMeasure of unitOfMeasures" model.bind="unitOfMeasure.id">${unitOfMeasure.name}</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="control-label col-sm-4">Packaging Size:</label>
-            <div class="col-sm-8">
-              <input type="number" class="form-control text-right" placeholder="Enter Packaging Size" value.bind="inventory.packagingSize"
               />
             </div>
           </div>
@@ -199,108 +155,6 @@
         </div>
 
       </div>
-
-    </div>
-
-  </div>
-
-  <!-- pricing -->
-  <div class="panel panel-default">
-
-    <!-- heading -->
-    <div class="panel-heading">Pricing</div>
-
-    <!-- body -->
-    <div class="panel-body text-center">
-
-      <table class="table table-condensed">
-        <thead>
-          <tr>
-            <th class="col-md-2"></th>
-            <th class="col-md-4 text-center">
-              <label class="control-label" if.bind="inventory.unitOfMeasure">Per ${inventory.unitOfMeasure.name}</label>
-            </th>
-            <th class="col-md-2"></th>
-            <th class="col-md-4  text-center">
-              <label class="control-label" if.bind="inventory.packagingUnitOfMeasure">Per ${inventory.packagingUnitOfMeasure.name}</label>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="text-right">
-              <label class="control-label">Base Price: </label>
-            </td>
-            <td class="text-right">
-              <input type="number" class="form-control text-right" 
-                placeholder="Enter Base Price Per ${inventory.unitOfMeasure.name}" 
-                value.bind="inventory.basePriceAmount"
-              />
-            </td>
-            <td class="text-right"></td>
-            <td class="text-right">
-              <input type="number" class="form-control text-right" disabled 
-                placeholder="Enter Base Price Per${inventory.packagingUnitOfMeasure.name}" 
-                value="${inventory.basePriceAmount * inventory.packagingSize}"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td class="text-right">
-              <label class="control-label">Wholesale Price: </label>
-            </td>
-            <td class="text-right">
-              <input type="number" class="form-control text-right" 
-                placeholder="Enter Wholesale Price Per ${inventory.unitOfMeasure.name}" 
-                value.bind="inventory.wholesalePriceAmount"
-              />
-            </td>
-            <td class="text-right"></td>
-            <td class="text-right">
-              <input type="number" class="form-control text-right" disabled 
-                placeholder="Enter Wholesale Price Per${inventory.packagingUnitOfMeasure.name}" 
-                value="${inventory.wholesalePriceAmount * inventory.packagingSize}"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td class="text-right">
-              <label class="control-label">Retail Price: </label>
-            </td>
-            <td class="text-right">
-              <input type="number" class="form-control text-right" 
-                placeholder="Enter Retail Price Per ${inventory.unitOfMeasure.name}" 
-                value.bind="inventory.retailPriceAmount"
-              />
-            </td>
-            <td class="text-right"></td>
-            <td class="text-right">
-              <input type="number" class="form-control text-right" disabled 
-                placeholder="Enter Retail Price Per${inventory.packagingUnitOfMeasure.name}" 
-                value="${inventory.retailPriceAmount * inventory.packagingSize}"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td class="text-right">
-              <label class="control-label">Bad Stock Price: </label>
-            </td>
-            <td class="text-right">
-              <input type="number" class="form-control text-right" 
-                placeholder="Enter Bad Stock Price Per ${inventory.unitOfMeasure.name}" 
-                value.bind="inventory.badStockPriceAmount"
-              />
-            </td>
-            <td class="text-right"></td>
-            <td class="text-right">
-              <input type="number" class="form-control text-right" disabled 
-                placeholder="Enter Bad Stock Price Per${inventory.packagingUnitOfMeasure.name}" 
-                value="${inventory.badStockPriceAmount * inventory.packagingSize}"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
 
     </div>
 

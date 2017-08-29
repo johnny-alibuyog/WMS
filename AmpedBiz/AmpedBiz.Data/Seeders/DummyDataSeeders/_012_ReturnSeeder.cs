@@ -26,7 +26,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
                 Enumerable.Range(0, 2).ToList().ForEach(_ =>
                 {
-                    var products = _utils.RandomWithShippedProducts();
+                    var products = _utils.RandomShippedProducts();
                     if (!products.Any())
                         return;
 
@@ -48,9 +48,10 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                 returnReason: _utils.Random<ReturnReason>(),
                                 quantity: new Measure(
                                     value: _utils.RandomInteger(1, (int)x.Inventory.Shipped.Value),
-                                    unit: x.Inventory.UnitOfMeasure
+                                    unit: x.UnitOfMeasures.Default(o => o.UnitOfMeasure)
                                 ),
-                                unitPrice: x.Inventory.RetailPrice
+                                standard: x.StandardEquivalentMeasureOf(x.UnitOfMeasures.Default(o => o.UnitOfMeasure)),
+                                unitPrice: x.UnitOfMeasures.Default(o => o.Prices.Retail())
                             ))
                             .ToList()
                     });

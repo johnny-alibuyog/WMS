@@ -1,11 +1,12 @@
-import { Router } from 'aurelia-router';
-import { autoinject } from 'aurelia-framework';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
-import { Lookup } from '../common/custom_types/lookup';
 import { Return, returnEvents } from '../common/models/return';
-import { ProductInventory } from '../common/models/product';
-import { ServiceApi } from '../services/service-api';
+
+import { Lookup } from '../common/custom_types/lookup';
 import { NotificationService } from '../common/controls/notification-service';
+import { ProductInventory } from '../common/models/product';
+import { Router } from 'aurelia-router';
+import { ServiceApi } from '../services/service-api';
+import { autoinject } from 'aurelia-framework';
 
 @autoinject
 export class ReturnCreate {
@@ -92,10 +93,7 @@ export class ReturnCreate {
     }
 
     this._api.returns.create(this._return)
-      .then(data => {
-        this._notification.success("Return has been created.");
-        this._router.navigateBack();
-      })
+      .then(data => this.resetAndNoify(data, "Return has been created."))
       .catch(error => this._notification.warning(error));
   }
 

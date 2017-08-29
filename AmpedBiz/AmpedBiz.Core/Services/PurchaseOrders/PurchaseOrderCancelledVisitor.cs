@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Inventories.PurchaseOrders;
+using AmpedBiz.Core.Services.Products;
 using System;
 
 namespace AmpedBiz.Core.Services.PurchaseOrders
@@ -18,14 +19,18 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
 
             foreach (var item in target.Items)
             {
-                item.Product.Inventory.Accept(new RetractOrderedVisitor()
+                item.Product.Accept(new SearchAndApplyVisitor()
                 {
-                    Status = target.Status,
-                    Remaining = calculator.Remaining(
-                        product: item.Product,
-                        items: target.Items,
-                        receipts: target.Receipts
-                    )
+                    Branch = null,
+                    InventoryVisitor = new RetractOrderedVisitor()
+                    {
+                        Status = target.Status,
+                        Remaining = calculator.Remaining(
+                            product: item.Product,
+                            items: target.Items,
+                            receipts: target.Receipts
+                        )
+                    }
                 });
             }
 

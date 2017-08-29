@@ -31,7 +31,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
                     Branch = null,
                     InventoryVisitor = new ReceiveVisitor()
                     {
-                        Quantity = item.Quantity
+                        QuantityStandardEquivalent = item.QuantityStandardEquivalent
                     }
                 });
                 target.Receipts.Add(item);

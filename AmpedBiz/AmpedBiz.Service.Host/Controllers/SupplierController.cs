@@ -32,9 +32,9 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("{supplierId}/product-inventories")]
-        public async Task<GetProductInventoryList.Response> Process([FromUri]GetProductInventoryList.Request request)
+        public async Task<GetProductInventoryOldList.Response> Process([FromUri]GetProductInventoryOldList.Request request)
         {
-            return await _mediator.Send(request ?? new GetProductInventoryList.Request());
+            return await _mediator.Send(request ?? new GetProductInventoryOldList.Request());
         }
 
         [HttpGet()]

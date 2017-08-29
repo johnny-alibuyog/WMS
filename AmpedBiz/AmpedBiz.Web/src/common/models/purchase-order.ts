@@ -1,6 +1,8 @@
 import { Dictionary } from '../custom_types/dictionary';
 import { Lookup } from '../custom_types/lookup';
+import { Measure } from "./measure";
 import { StageDefinition } from './stage-definition';
+import { UnitOfMeasure } from "./unit-of-measure";
 
 export const purchaseOrderEvents = {
   item: {
@@ -84,7 +86,9 @@ export interface PurchaseOrderPageItem {
 export interface PurchaseOrderItem {
   id?: string;
   product?: Lookup<string>;
-  quantityValue?: number;
+  unitOfMeasures?: UnitOfMeasure[];
+  quantity?: Measure;
+  standard?: Measure;
   unitCostAmount?: number;
   totalCostAmount?: number;
 }
@@ -106,7 +110,8 @@ export interface PurchaseOrderReceipt {
   receivedOn?: Date;
   expiresOn?: Date;
   product?: Lookup<string>;
-  quantityValue?: number;
+  quantity?: Measure;
+  standard?: Measure;
 }
 
 export interface PurchaseOrderReceivable {
@@ -115,6 +120,7 @@ export interface PurchaseOrderReceivable {
   orderedQuantity?: number;
   receivedQuantity?: number;
   receivableQuantity?: number;
+  standard?: Measure;
   receiving: PurchaseOrderReceiving;
 }
 
@@ -123,7 +129,8 @@ export interface PurchaseOrderReceiving {
   receivedBy?: Lookup<string>;
   receivedOn?: Date;
   expiresOn?: Date;
-  quantity?: number;
+  quantity?: Measure;
+  standard?: Measure;
 }
 
 export interface PurchaseOrderPayable {
@@ -160,7 +167,7 @@ export interface Voucher {
 export interface VoucherItem {
   id?: string;
   product?: Lookup<string>;
-  quantityValue?: number;
+  quantity?: Measure;
   unitCostAmount?: number;
   totalCostAmount?: number;
 }

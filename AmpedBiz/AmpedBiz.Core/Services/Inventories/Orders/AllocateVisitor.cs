@@ -5,17 +5,17 @@ namespace AmpedBiz.Core.Services.Inventories.Orders
 {
     public class AllocateVisitor : IVisitor<Inventory>
     {
-        public Measure Quantity { get; set; }
+        public Measure QuantityStandardEquivalent { get; set; }
 
         public virtual void Visit(Inventory target)
         {
-            if (target.Available < this.Quantity)
+            if (target.Available < this.QuantityStandardEquivalent)
             {
                 var summary = new
                 {
                     Product = target.Product.Name,
-                    Unit = Quantity.Unit.Id,
-                    OrderValue = (Quantity.Value).ToString("0.##"),
+                    Unit = QuantityStandardEquivalent.Unit.Id,
+                    OrderValue = (QuantityStandardEquivalent.Value).ToString("0.##"),
                     TargetValue = (target.Available?.Value ?? 0M).ToString("0.##")
                 };
 
@@ -26,7 +26,7 @@ namespace AmpedBiz.Core.Services.Inventories.Orders
                 );
             }
             
-            target.Allocated += Quantity;
+            target.Allocated += QuantityStandardEquivalent;
             target.Accept(new InventoryRecomputeVisitor());
         }
     }

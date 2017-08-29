@@ -4,11 +4,11 @@ namespace AmpedBiz.Core.Services.Inventories.Orders
 {
     public class RetractAllocatedVisitor : IVisitor<Inventory>
     {
-        public Measure Quantity { get; set; }
+        public Measure QuantityStandardEquivalent { get; set; }
 
         public virtual void Visit(Inventory target)
         {
-            target.Allocated -= Quantity;
+            target.Allocated -= QuantityStandardEquivalent;
             target.Accept(new InventoryRecomputeVisitor());
         }
     }

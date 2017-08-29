@@ -63,26 +63,28 @@ namespace AmpedBiz.Service.Products
                             : query.OrderByDescending(x => x.Category.Name);
                     });
 
-                    message.Sorter.Compose("basePrice", direction =>
-                    {
-                        query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Inventory.BasePrice.Amount)
-                            : query.OrderByDescending(x => x.Inventory.BasePrice.Amount);
-                    });
+                    // TODO: Refactor
 
-                    message.Sorter.Compose("wholesalePrice", direction =>
-                    {
-                        query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Inventory.WholesalePrice.Amount)
-                            : query.OrderByDescending(x => x.Inventory.WholesalePrice.Amount);
-                    });
+                    //message.Sorter.Compose("basePrice", direction =>
+                    //{
+                    //    query = direction == SortDirection.Ascending
+                    //        ? query.OrderBy(x => x.Inventory.BasePrice.Amount)
+                    //        : query.OrderByDescending(x => x.Inventory.BasePrice.Amount);
+                    //});
 
-                    message.Sorter.Compose("retailPrice", direction =>
-                    {
-                        query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Inventory.RetailPrice.Amount)
-                            : query.OrderByDescending(x => x.Inventory.RetailPrice.Amount);
-                    });
+                    //message.Sorter.Compose("wholesalePrice", direction =>
+                    //{
+                    //    query = direction == SortDirection.Ascending
+                    //        ? query.OrderBy(x => x.Inventory.WholesalePrice.Amount)
+                    //        : query.OrderByDescending(x => x.Inventory.WholesalePrice.Amount);
+                    //});
+
+                    //message.Sorter.Compose("retailPrice", direction =>
+                    //{
+                    //    query = direction == SortDirection.Ascending
+                    //        ? query.OrderBy(x => x.Inventory.RetailPrice.Amount)
+                    //        : query.OrderByDescending(x => x.Inventory.RetailPrice.Amount);
+                    //});
 
                     var itemsFuture = query
                         .Select(x => new Dto.DiscontinuedPageItem()
@@ -94,9 +96,9 @@ namespace AmpedBiz.Service.Products
                             SupplierName = x.Supplier.Name,
                             CategoryName = x.Category.Name,
                             Image = x.Image,
-                            BasePriceAmount = x.Inventory.BasePrice.Amount,
-                            WholesalePriceAmount = x.Inventory.WholesalePrice.Amount,
-                            RetailPriceAmount = x.Inventory.RetailPrice.Amount,
+                            //BasePriceAmount = x.Inventory.BasePrice.Amount,
+                            //WholesalePriceAmount = x.Inventory.WholesalePrice.Amount,
+                            //RetailPriceAmount = x.Inventory.RetailPrice.Amount,
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)

@@ -63,6 +63,31 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Define(x => x.Prices)
                     .NotNullableAndNotEmpty()
                     .And.HasValidElements();
+
+                this.ValidateInstance.By((instance, context) =>
+                {
+                    var valid = true;
+
+                    if (instance.IsStandard && instance.StandardEquivalentValue != 1M)
+                    {
+                        context.AddInvalid<ProductUnitOfMeasure, decimal>(
+                            message: $"Standard equivalent value for {instance.Product.Name} of standard unit {instance.UnitOfMeasure.Name} should be equat to one (1).",
+                            property: x => x.StandardEquivalentValue
+                        );
+                        valid = false;
+                    }
+                    else if (instance.StandardEquivalentValue <= 0M)
+                    {
+                        context.AddInvalid<ProductUnitOfMeasure, decimal>(
+                            message: $"Standard equivalent value for {instance.Product.Name} of unit {instance.UnitOfMeasure.Name} should be greater than zero(0).",
+                            property: x => x.StandardEquivalentValue
+                        );
+                        valid = false;
+                    }
+
+                    return valid;
+                });
+
             }
         }
     }

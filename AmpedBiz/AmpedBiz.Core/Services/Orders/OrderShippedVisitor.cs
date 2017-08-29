@@ -21,7 +21,7 @@ namespace AmpedBiz.Core.Services.Orders
                     Branch = null,
                     InventoryVisitor = new ShipVisitor()
                     {
-                        Quantity = item.QuantityStandardEquivalent
+                        QuantityStandardEquivalent = item.QuantityStandardEquivalent
                     }
                 });
             }

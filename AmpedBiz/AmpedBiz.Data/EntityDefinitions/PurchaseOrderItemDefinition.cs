@@ -20,6 +20,12 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Component(x => x.Quantity,
                     MeasureDefinition.Mapping.Map("Quantity_", nameof(PurchaseOrderItem)));
 
+                Component(x => x.Standard,
+                    MeasureDefinition.Mapping.Map("Standard_", nameof(PurchaseOrderItem)));
+
+                Component(x => x.QuantityStandardEquivalent,
+                    MeasureDefinition.Mapping.Map("QuantityStandardEquivalent_", nameof(PurchaseOrderItem)));
+
                 Component(x => x.UnitCost,
                     MoneyDefinition.Mapping.Map("UnitCost_", nameof(PurchaseOrderItem)));
 
@@ -40,7 +46,14 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Define(x => x.Product)
                     .NotNullable();
 
-                Define(x => x.Quantity);
+                Define(x => x.Quantity)
+                    .NotNullable();
+
+                Define(x => x.Standard)
+                    .NotNullable();
+
+                Define(x => x.QuantityStandardEquivalent)
+                    .NotNullable();
 
                 Define(x => x.UnitCost)
                     .NotNullable()

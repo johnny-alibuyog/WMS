@@ -12,24 +12,6 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Product Product { get; protected internal set; }
 
-        public virtual string IndividualBarcode { get; protected internal set; }
-
-        public virtual string PackagingBarcode { get; protected internal set; }
-
-        public virtual UnitOfMeasure UnitOfMeasure { get; protected internal set; }
-
-        public virtual UnitOfMeasure PackagingUnitOfMeasure { get; protected internal set; }
-
-        public virtual decimal PackagingSize { get; protected internal set; }
-
-        public virtual Money BasePrice { get; protected internal set; }
-
-        public virtual Money WholesalePrice { get; protected internal set; }
-
-        public virtual Money RetailPrice { get; protected internal set; }
-
-        public virtual Money BadStockPrice { get; protected internal set; }
-
         public virtual Measure BadStock { get; protected internal set; }
 
         public virtual Measure Received { get; protected internal set; }

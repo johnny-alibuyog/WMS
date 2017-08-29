@@ -4,13 +4,13 @@ namespace AmpedBiz.Core.Services.Inventories.Orders
 {
     public class ShipVisitor : IVisitor<Inventory>
     {
-        public Measure Quantity { get; set; }
+        public Measure QuantityStandardEquivalent { get; set; }
 
         public virtual void Visit(Inventory target)
         {
-            target.Shipped += this.Quantity;
-            target.OnHand -= this.Quantity;
-            target.Allocated -= this.Quantity;
+            target.Shipped += this.QuantityStandardEquivalent;
+            target.OnHand -= this.QuantityStandardEquivalent;
+            target.Allocated -= this.QuantityStandardEquivalent;
             target.Accept(new InventoryRecomputeVisitor());
         }
     }

@@ -88,8 +88,6 @@ namespace AmpedBiz.Service.Orders
 
                     Func<Guid, Product> GetProduct = (id) => products.First(x => x.Id == id);
 
-                    Func<Guid, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
-
                     entity.Accept(new OrderUpdateVisitor()
                     {
                         OrderNumber = message.OrderNumber,
@@ -140,7 +138,7 @@ namespace AmpedBiz.Service.Orders
                                 reason: session.Load<ReturnReason>(x.Reason.Id),
                                 returnedOn: message.ReturnedOn ?? DateTime.Now,
                                 returnedBy: session.Load<User>(x.ReturnedBy.Id),
-                                quantity: new Measure(x.QuantityValue, GetUnitOfMeasure(x.Product.Id)),
+                                quantity: new Measure(x.Quantity.Value, session.Load<UnitOfMeasure>(x.Quantity.Unit.Id)),
                                 returned: new Money(x.ReturnedAmount, currency)
                             ))
                             .ToList()

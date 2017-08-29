@@ -16,28 +16,6 @@ namespace AmpedBiz.Data.EntityDefinitions
                 HasOne(x => x.Product)
                     .Constrained();
 
-                Map(x => x.IndividualBarcode);
-
-                Map(x => x.PackagingBarcode);
-
-                References(x => x.UnitOfMeasure);
-
-                References(x => x.PackagingUnitOfMeasure);
-
-                Map(x => x.PackagingSize);
-
-                Component(x => x.BasePrice,
-                    MoneyDefinition.Mapping.Map("BasePrice_", nameof(Inventory)));
-
-                Component(x => x.WholesalePrice,
-                    MoneyDefinition.Mapping.Map("WholesalePrice_", nameof(Inventory)));
-
-                Component(x => x.RetailPrice,
-                    MoneyDefinition.Mapping.Map("RetailPrice_", nameof(Inventory)));
-
-                Component(x => x.BadStockPrice,
-                    MoneyDefinition.Mapping.Map("BadStockPrice_", nameof(Inventory)));
-
                 Component(x => x.BadStock,
                     MeasureDefinition.Mapping.Map("BadStock_", nameof(Inventory)));
 
@@ -106,26 +84,6 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Define(x => x.Product)
                     .IsValid();
-
-                Define(x => x.IndividualBarcode)
-                    .MaxLength(255);
-
-                Define(x => x.PackagingBarcode)
-                    .MaxLength(255);
-
-                Define(x => x.UnitOfMeasure);
-
-                Define(x => x.PackagingUnitOfMeasure);
-
-                Define(x => x.PackagingSize);
-
-                Define(x => x.BasePrice);
-
-                Define(x => x.WholesalePrice);
-
-                Define(x => x.RetailPrice);
-
-                Define(x => x.BadStockPrice);
 
                 Define(x => x.BadStock)
                     .IsValid();

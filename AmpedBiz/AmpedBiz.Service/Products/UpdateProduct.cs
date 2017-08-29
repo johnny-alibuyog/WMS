@@ -5,6 +5,7 @@ using AmpedBiz.Core.Services.Products;
 using AmpedBiz.Data;
 using MediatR;
 using NHibernate;
+using NHibernate.Linq;
 using System.Linq;
 using static AmpedBiz.Common.Extentions.TypeExtentions;
 
@@ -28,7 +29,12 @@ namespace AmpedBiz.Service.Products
                 using (var transaction = session.BeginTransaction())
                 {
                     var currency = session.Load<Currency>(Currency.PHP.Id); // this should be taken from the tenant
-                    var entity = session.Get<Product>(message.Id);
+                    var entity = session.Query<Product>()
+                        .Where(x => x.Id == message.Id)
+                        .Fetch(x => x.Inventory)
+                        .FetchMany(x => x.UnitOfMeasures)
+                        .ThenFetchMany(x => x.Prices)
+                        .ToFutureValue().Value;
 
                     entity.EnsureExistence($"Product with id {message.Id} does not exists.");
 
@@ -54,6 +60,7 @@ namespace AmpedBiz.Service.Products
                                 standardEquivalentValue: x.StandardEquivalentValue ?? 0M,
                                 prices: x.Prices
                                     .Select(o => new ProductUnitOfMeasurePrice(
+                                        id: o.Id,
                                         pricing: session.Load<Pricing>(o.Pricing.Id),
                                         price: new Money(amount: o.PriceAmount ?? 0M, currency: currency)
                                     ))
@@ -62,22 +69,19 @@ namespace AmpedBiz.Service.Products
                             .ToList()
                     });
 
+                    entity.EnsureValidity();
+
+                    var standard = entity.UnitOfMeasures.FirstOrDefault(o => o.IsStandard);
+
                     entity.Inventory.Accept(new InventoryUpdateVisitor()
                     {
-                        UnitOfMeasure = session.Load<UnitOfMeasure>(message.Inventory.UnitOfMeasure.Id),
-                        PackagingUnitOfMeasure = session.Load<UnitOfMeasure>(message.Inventory.PackagingUnitOfMeasure.Id),
-                        PackagingSize = message.Inventory.PackagingSize ?? 1,
-                        BasePrice = new Money(message.Inventory.BasePriceAmount ?? 0M, currency),
-                        WholesalePrice = new Money(message.Inventory.WholesalePriceAmount ?? 0M, currency),
-                        RetailPrice = new Money(message.Inventory.RetailPriceAmount ?? 0M, currency),
-                        BadStockPrice = new Money(message.Inventory.BadStockPriceAmount ?? 0M, currency),
-                        InitialLevel = new Measure(message.Inventory.InitialLevelValue ?? 0M, entity.Inventory.UnitOfMeasure),
-                        TargetLevel = new Measure(message.Inventory.TargetLevelValue ?? 0M, entity.Inventory.UnitOfMeasure),
-                        ReorderLevel = new Measure(message.Inventory.ReorderLevelValue ?? 0M, entity.Inventory.UnitOfMeasure),
-                        MinimumReorderQuantity = new Measure(message.Inventory.MinimumReorderQuantityValue ?? 0M, entity.Inventory.UnitOfMeasure)
+                        InitialLevel = new Measure(message.Inventory.InitialLevelValue ?? 0M, standard.UnitOfMeasure),
+                        TargetLevel = new Measure(message.Inventory.TargetLevelValue ?? 0M, standard.UnitOfMeasure),
+                        ReorderLevel = new Measure(message.Inventory.ReorderLevelValue ?? 0M, standard.UnitOfMeasure),
+                        MinimumReorderQuantity = new Measure(message.Inventory.MinimumReorderQuantityValue ?? 0M, standard.UnitOfMeasure)
                     });
 
-                    entity.EnsureValidity();
+                    entity.Inventory.EnsureValidity();
 
                     transaction.Commit();
 

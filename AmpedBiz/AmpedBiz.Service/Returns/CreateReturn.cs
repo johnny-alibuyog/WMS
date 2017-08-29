@@ -38,8 +38,6 @@ namespace AmpedBiz.Service.Returns
 
                     Func<Guid, Product> GetProduct = (id) => products.First(x => x.Id == id);
 
-                    Func<Guid, UnitOfMeasure> GetUnitOfMeasure = (id) => products.First(x => x.Id == id).Inventory.UnitOfMeasure;
-
                     var entity = new Return();
 
                     entity.Accept(new ReturnSaveVisitor()
@@ -53,7 +51,8 @@ namespace AmpedBiz.Service.Returns
                             .Select(x => new ReturnItem(
                                 product: GetProduct(x.Product.Id),
                                 returnReason: session.Load<ReturnReason>(x.ReturnReason.Id),
-                                quantity: new Measure(x.QuantityValue, GetUnitOfMeasure(x.Product.Id)),
+                                quantity: new Measure(x.Quantity.Value, session.Load<UnitOfMeasure>(x.Quantity.Unit.Id)),
+                                standard: new Measure(x.Standard.Value, session.Load<UnitOfMeasure>(x.Standard.Unit.Id)),
                                 unitPrice: new Money(x.UnitPriceAmount, currency)
                             ))
                             .ToList()

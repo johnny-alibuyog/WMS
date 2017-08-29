@@ -17,7 +17,9 @@ namespace AmpedBiz.Service.Dto
 
         public virtual Lookup<Guid> ReturnedBy { get; set; }
 
-        public decimal QuantityValue { get; set; }
+        public Measure Quantity { get; set; }
+
+        public Measure Standard { get; set; }
 
         public decimal ReturnedAmount { get; set; }
     }

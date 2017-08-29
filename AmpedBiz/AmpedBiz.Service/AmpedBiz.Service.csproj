@@ -140,11 +140,11 @@
     <Compile Include="Products\GetDiscontinuedPage.cs" />
     <Compile Include="Products\GetNeedsReorderingPage.cs" />
     <Compile Include="Products\GetProduct.cs" />
-    <Compile Include="Products\GetProductInventory.cs" />
+    <Compile Include="Products\GetProductInventoryOld.cs" />
     <Compile Include="Products\GetProductInventory1.cs" />
     <Compile Include="Products\GetProductInventoryLevelPage.cs" />
     <Compile Include="Products\GetProductInventory1List.cs" />
-    <Compile Include="Products\GetProductInventoryList.cs" />
+    <Compile Include="Products\GetProductInventoryOldList.cs" />
     <Compile Include="Products\GetProductList.cs" />
     <Compile Include="Products\GetProductLookup.cs" />
     <Compile Include="Products\GetProductOrderPage.cs" />

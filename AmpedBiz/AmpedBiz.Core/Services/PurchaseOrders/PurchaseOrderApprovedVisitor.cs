@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Inventories.PurchaseOrders;
+using AmpedBiz.Core.Services.Products;
 using System;
 
 namespace AmpedBiz.Core.Services.PurchaseOrders
@@ -14,9 +15,13 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
         {
             foreach (var item in target.Items)
             {
-                item.Product.Inventory.Accept(new OrderVisitor() 
+                item.Product.Accept(new SearchAndApplyVisitor()
                 {
-                    Quantity = item.Quantity
+                    Branch = null,
+                    InventoryVisitor = new OrderVisitor()
+                    {
+                        QuantityStandardEquivalent = item.QuantityStandardEquivalent
+                    }
                 });
             }
 

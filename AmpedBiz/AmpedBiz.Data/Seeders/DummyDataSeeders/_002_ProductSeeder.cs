@@ -70,7 +70,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                 new ProductUnitOfMeasure(
                                     size: string.Empty,
                                     barcode: string.Empty,
-                                    isDefault: false,
+                                    isDefault: true,
                                     isStandard: true,
                                     standardEquivalentValue: 1,
                                     unitOfMeasure: UnitOfMeasure.Piece,
@@ -101,22 +101,13 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                             }
                         });
 
+                        var standard = item.UnitOfMeasures.FirstOrDefault(o => o.IsStandard);
+
                         item.Inventory.Accept(new InventoryUpdateVisitor()
                         {
-                            IndividualBarcode = _utils.RandomString(length: 25),
-                            PackagingSize = _utils.RandomInteger(1, 24),
-                            PackagingBarcode = _utils.RandomString(length: 25),
-                            UnitOfMeasure = _utils.Random<UnitOfMeasure>(),
-                            PackagingUnitOfMeasure = _utils.Random<UnitOfMeasure>(),
-
-                            BasePrice = prices.BasePrice,
-                            WholesalePrice = prices.WholesalePrice,
-                            RetailPrice = prices.RetailPrice,
-                            BadStockPrice = prices.BadStockPrice,
-
-                            InitialLevel = new Measure(_utils.RandomDecimal(150M, 300M), item.Inventory.UnitOfMeasure),
-                            TargetLevel = new Measure(_utils.RandomDecimal(150M, 300M), item.Inventory.UnitOfMeasure),
-                            ReorderLevel = item.Inventory.TargetLevel - new Measure(_utils.RandomDecimal(50M, 100M), item.Inventory.UnitOfMeasure),
+                            InitialLevel = new Measure(_utils.RandomDecimal(150M, 300M), standard.UnitOfMeasure),
+                            TargetLevel = new Measure(_utils.RandomDecimal(150M, 300M), standard.UnitOfMeasure),
+                            ReorderLevel = item.Inventory.TargetLevel - new Measure(_utils.RandomDecimal(50M, 100M), standard.UnitOfMeasure),
                             MinimumReorderQuantity = item.Inventory.TargetLevel - item.Inventory.ReorderLevel,
                         });
 

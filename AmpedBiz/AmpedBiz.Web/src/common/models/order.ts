@@ -200,7 +200,7 @@ export class OrderInvoiceDetailItem {
   id?: string;
   orderId?: string;
   product?: Lookup<string>;
-  quantityValue?: number;
+  quantity?: Measure;
   discountRate?: number;
   discountAmount?: number;
   unitPriceAmount?: number;

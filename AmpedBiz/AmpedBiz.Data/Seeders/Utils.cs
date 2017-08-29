@@ -70,7 +70,12 @@ namespace AmpedBiz.Data.Seeders
                 .FirstOrDefault();
         }
 
-        public IEnumerable<Product> RandomWithShippedProducts()
+        public IEnumerable<Product> RandomProducts()
+        {
+            return this.GetProducts();
+        }
+
+        public IEnumerable<Product> RandomShippedProducts()
         {
             return this.GetProducts(x =>
                 x.Inventory != null &&

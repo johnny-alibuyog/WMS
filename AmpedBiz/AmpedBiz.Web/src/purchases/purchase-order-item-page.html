@@ -9,7 +9,8 @@
       <tr class="row-no-padding">
         <th class="col-sm-1">Action</th>
         <th class="col-sm-2">Product</th>
-        <th class="col-sm-2 text-right">Quanity</th>
+        <th class="col-sm-2 text-right">Unit</th>
+        <th class="col-sm-2 text-right">Quantity</th>
         <th class="col-sm-2 text-right">Cost</th>
         <th class="col-sm-1 text-right">Total</th>
       </tr>
@@ -28,7 +29,8 @@
 
         <!-- read-only mode -->
         <td if.bind="$parent.selectedItem !== item">${item.product.name}</td>
-        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantityValue}</td>
+        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantity.unit.name}</td>
+        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantity.value}</td>
         <td if.bind="$parent.selectedItem !== item" class="text-right">${item.unitCostAmount | numberFormat}</td>
         <td if.bind="$parent.selectedItem !== item" class="text-right">${item.totalCostAmount | numberFormat}</td>
 
@@ -39,18 +41,28 @@
             <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
           </select>
         </td>
-        <td if.bind="$parent.selectedItem === item" class="text-right">
-          <input class="form-control text-right" type="number" numeric-value.bind="item.quantityValue" keyup.delegate="compute(item)" />
+
+        <td if.bind="$parent.selectedItem === item">
+          <select class="form-control input-xs" value.bind="item.quantity.unit | lookupToId:item.unitOfMeasures" change.delegate="computeUnitPriceAmount()">
+            <option repeat.for="unitOfMeasure of item.unitOfMeasures" model.bind="unitOfMeasure.id">${unitOfMeasure.name}</option>
+          </select>
         </td>
+
+        <td if.bind="$parent.selectedItem === item" class="text-right">
+          <input class="form-control text-right" type="number" numeric-value.bind="item.quantity.value" keyup.delegate="compute(item)" />
+        </td>
+
         <td if.bind="$parent.selectedItem === item" class="text-right">
           <input class="form-control text-right" type="number" numeric-value.bind="item.unitCostAmount" keyup.delegate="compute(item)" />
         </td>
+
         <td if.bind="$parent.selectedItem === item" class="text-right">${item.totalCostAmount | numberFormat}</td>
       </tr>
     </tbody>
 
     <tfoot>
       <tr>
+        <td></td>
         <td></td>
         <td></td>
         <td></td>
@@ -61,10 +73,12 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
         <td class="text-right">Shipping Fee:</td>
         <td class="text-right">${shippingFeeAmount | numberFormat}</td>
       </tr>
       <tr>
+        <td></td>
         <td></td>
         <td></td>
         <td></td>

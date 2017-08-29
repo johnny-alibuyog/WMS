@@ -1,13 +1,16 @@
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
-import { autoinject, bindable, bindingMode, customElement, computedFrom } from 'aurelia-framework'
-import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
-import { Lookup } from '../common/custom_types/lookup';
-import { ServiceApi } from '../services/service-api';
-import { Dictionary } from '../common/custom_types/dictionary';
+import { Filter, Pager, PagerRequest, PagerResponse, SortDirection, Sorter } from '../common/models/paging';
+import { ProductInventory, ProductInventory1, ProductInventoryFacade } from '../common/models/product';
 import { ReturnItem, returnEvents } from '../common/models/return';
-import { pricing } from '../common/models/pricing';
+import { autoinject, bindable, bindingMode, computedFrom, customElement } from 'aurelia-framework'
+
+import { Dictionary } from '../common/custom_types/dictionary';
+import { Lookup } from '../common/custom_types/lookup';
 import { NotificationService } from '../common/controls/notification-service';
-import { ProductInventory } from '../common/models/product';
+import { ServiceApi } from '../services/service-api';
+import { ensureNumeric } from "../common/utils/ensure-numeric";
+import { getValue } from "../common/models/measure";
+import { pricing } from '../common/models/pricing';
 
 @autoinject
 @customElement("return-item-page")
@@ -19,6 +22,7 @@ export class ReturnItemPage {
 
   private _subscriptions: Subscription[] = [];
   private _productInventories: ProductInventory[] = [];
+  private _productInventories1: ProductInventory1[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public returnId: string = '';
@@ -26,11 +30,16 @@ export class ReturnItemPage {
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public items: ReturnItem[] = [];
 
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
+  public pricing: Lookup<string> = pricing.basePrice;
+
   public selectedItem: ReturnItem;
 
   public products: Lookup<string>[] = [];
 
   public returnReasons: Lookup<string>[] = [];
+
+  public grandTotalAmount: number;
 
   public itemPager: Pager<ReturnItem> = new Pager<ReturnItem>();
 
@@ -42,25 +51,38 @@ export class ReturnItemPage {
     this.itemPager.onPage = () => this.initializePage();
   }
 
-  private getUnitPriceAmount(product: Lookup<string>): Promise<number> {
-    let retailPrice = pricing.retailPrice;
-    let inventory = this._productInventories.find(x => x.id == product.id);
+  private getProductInventory(product: Lookup<string>): Promise<ProductInventory1> {
+    let productInventory = this._productInventories1.find(x => x.id === product.id);
 
-    if (inventory) {
-      let unitPrice = pricing.getPriceAmount(retailPrice, inventory);
-      return Promise.resolve(unitPrice);
+    if (productInventory) {
+      return Promise.resolve(productInventory);
     }
-    else {
-      return this._api.products.getInventory(product.id).then(data => {
-        if (data) {
-          this._productInventories.push(data);
-        }
 
-        let unitPrice = pricing.getPriceAmount(retailPrice, data);
-        return unitPrice;
-      });
-    }
+    return this._api.products.getInventory1(product.id).then(data => {
+      this._productInventories1.push(data);
+      return data;
+    });
   }
+
+  // private getUnitPriceAmount(product: Lookup<string>): Promise<number> {
+  //   let retailPrice = pricing.retailPrice;
+  //   let inventory = this._productInventories.find(x => x.id == product.id);
+
+  //   if (inventory) {
+  //     let unitPrice = pricing.getPriceAmount(retailPrice, inventory);
+  //     return Promise.resolve(unitPrice);
+  //   }
+  //   else {
+  //     return this._api.products.getInventory(product.id).then(data => {
+  //       if (data) {
+  //         this._productInventories.push(data);
+  //       }
+
+  //       let unitPrice = pricing.getPriceAmount(retailPrice, data);
+  //       return unitPrice;
+  //     });
+  //   }
+  // }
 
   public attached(): void {
     this._subscriptions = [
@@ -99,16 +121,41 @@ export class ReturnItemPage {
       .then(result => this._productInventories = result);
   }
 
+  public computeUnitPriceAmount(): void {
+    var item = this.selectedItem;
+    this.getProductInventory(item.product).then(inventory => {
+      var facade = new ProductInventoryFacade(inventory);
+      item.unitPriceAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
+      this.compute(item);
+    });
+  }
+
   public initializeItem(item: ReturnItem): void {
     if (!item.product) {
-      item.quantityValue = 0;
+      item.quantity = {
+        unit: null,
+        value: 0
+      };
+      item.standard = {
+        unit: null,
+        value: 0
+      };
       item.unitPriceAmount = 0;
       item.totalPriceAmount = 0;
+      this.compute(item);
       return;
     }
 
-    this.getUnitPriceAmount(item.product).then(unitPrice => {
-      item.unitPriceAmount = unitPrice;
+    this.getProductInventory(item.product).then(inventory => {
+      var facade = new ProductInventoryFacade(inventory);
+      var current = facade.default;
+
+      item.unitOfMeasures = inventory.unitOfMeasures.map(x => x.unitOfMeasure);
+      item.quantity.unit = current.unitOfMeasure;
+      //item.quantity.value = 0;
+      item.standard.unit = current.standard.unit;
+      item.standard.value = current.standard.value;
+      item.unitPriceAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
       this.compute(item);
     });
   }
@@ -123,6 +170,8 @@ export class ReturnItemPage {
       }
     });
 
+    this.total();
+
     this.itemPager.count = this.items.length;
     this.itemPager.items = this.items.slice(
       this.itemPager.start,
@@ -131,15 +180,23 @@ export class ReturnItemPage {
   }
 
   public addItem(): void {
-    if (!this.items)
+    if (!this.items){
       this.items = [];
+    }
 
-    var item = <ReturnItem>{
-      quantityValue: 0,
+    var item: ReturnItem = {
+      quantity: {
+        unit: {},
+        value: 0
+      },
+      standard: {
+        unit: {},
+        value: 0
+      },
       unitPriceAmount: 0,
     };
 
-    this.items.push(item);
+    this.items.unshift(item);
     this.selectedItem = item;
     this.initializePage();
   }
@@ -166,7 +223,18 @@ export class ReturnItemPage {
   }
 
   public compute(item: ReturnItem): void {
-    item.extendedPriceAmount = item.unitPriceAmount * item.quantityValue;
-    item.totalPriceAmount = item.extendedPriceAmount;
+    item.extendedPriceAmount = ensureNumeric(item.unitPriceAmount) * getValue(item.quantity);
+    item.totalPriceAmount = ensureNumeric(item.extendedPriceAmount);
+
+    this.total();
   }
-}
+
+
+  public total(): void {
+    //this.taxAmount = ensureNumeric(this.taxAmount);
+
+    //this.shippingFeeAmount = ensureNumeric(this.shippingFeeAmount);
+
+    this.grandTotalAmount = this.items
+      .reduce((value, current) => value + ensureNumeric(current.totalPriceAmount), 0) || 0;
+  }}

@@ -41,23 +41,14 @@
                 <th class="col-md-1" click.delegate="sorter.doSort('code')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['code'])}"></i>Code
                 </th>
-                <th class="col-md-2" click.delegate="sorter.doSort('name')">
+                <th class="col-md-4" click.delegate="sorter.doSort('name')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['name'])}"></i>Name
                 </th>
-                <th class="col-md-2" click.delegate="sorter.doSort('category')">
+                <th class="col-md-3" click.delegate="sorter.doSort('category')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['category'])}"></i>Category
                 </th>
-                <th class="col-md-2" click.delegate="sorter.doSort('supplier')">
+                <th class="col-md-3" click.delegate="sorter.doSort('supplier')">
                   <i class="fa fa-fw fa-${sorter.class(sorter['supplier'])}"></i>Supplier
-                </th>
-                <th class="col-md-1 text-right" click.delegate="sorter.doSort('basePrice')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['basePrice'])}"></i>Base
-                </th>
-                <th class="col-md-1 text-right" click.delegate="sorter.doSort('wholesalePrice')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['wholesalePrice'])}"></i>Retail
-                </th>
-                <th class="col-md-1 text-right" click.delegate="sorter.doSort('retailPrice')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['retailPrice'])}"></i>Whole...
                 </th>
               </tr>
             </thead>
@@ -72,9 +63,6 @@
                 <td>${item.name}</td>
                 <td>${item.categoryName}</td>
                 <td>${item.supplierName}</td>
-                <td class="text-right">${item.basePriceAmount | numberFormat}</td>
-                <td class="text-right">${item.wholesalePriceAmount | numberFormat}</td>
-                <td class="text-right">${item.retailPriceAmount | numberFormat}</td>
               </tr>
             </tbody>
           </table>

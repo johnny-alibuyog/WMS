@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace AmpedBiz.Service.Products
 {
-    public class GetProductInventoryList
+    public class GetProductInventoryOldList
     {
         public class Request : IRequest<Response>
         {
@@ -17,11 +17,11 @@ namespace AmpedBiz.Service.Products
             public Guid SupplierId { get; set; }
         }
 
-        public class Response : List<Dto.ProductInventory>
+        public class Response : List<Dto.ProductInventoryOld>
         {
             public Response() { }
 
-            public Response(List<Dto.ProductInventory> items) : base(items) { }
+            public Response(List<Dto.ProductInventoryOld> items) : base(items) { }
         }
 
         public class Handler : RequestHandlerBase<Request, Response>
@@ -48,21 +48,21 @@ namespace AmpedBiz.Service.Products
                     }
 
                     var dtos = query
-                        .Select(x => new Dto.ProductInventory()
+                        .Select(x => new Dto.ProductInventoryOld()
                         {
                             Id = x.Id,
                             Code = x.Code,
                             Name = x.Name,
-                            UnitOfMeasure = x.Inventory.UnitOfMeasure.Name,
-                            PackagingUnitOfMeasure = x.Inventory.PackagingUnitOfMeasure.Name,
-                            PackagingSize = x.Inventory.PackagingSize,
+                            //UnitOfMeasure = x.Inventory.UnitOfMeasure.Name,
+                            //PackagingUnitOfMeasure = x.Inventory.PackagingUnitOfMeasure.Name,
+                            //PackagingSize = x.Inventory.PackagingSize,
                             TargetValue = x.Inventory.TargetLevel.Value,
                             AvailableValue = x.Inventory.Available.Value,
                             BadStockValue = x.Inventory.BadStock.Value,
-                            BasePriceAmount = x.Inventory.BasePrice.Amount,
-                            WholesalePriceAmount = x.Inventory.WholesalePrice.Amount,
-                            RetailPriceAmount = x.Inventory.RetailPrice.Amount,
-                            BadStockPriceAmount = x.Inventory.BadStockPrice.Amount,
+                            //BasePriceAmount = x.Inventory.BasePrice.Amount,
+                            //WholesalePriceAmount = x.Inventory.WholesalePrice.Amount,
+                            //RetailPriceAmount = x.Inventory.RetailPrice.Amount,
+                            //BadStockPriceAmount = x.Inventory.BadStockPrice.Amount,
                             DiscountAmount = 0M
                         })
                         .ToList();

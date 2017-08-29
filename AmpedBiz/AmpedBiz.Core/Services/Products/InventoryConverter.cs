@@ -19,43 +19,29 @@ namespace AmpedBiz.Core.Services.Products
             this._converter = new MeasureConverter();
         }
 
-        public Measure ToStandard()
+        private Measure Materialize(Func<ProductUnitOfMeasure, bool> predicate)
         {
             var measure = this._selector(this._inventory);
 
-            var standard = this._inventory.Product.UnitOfMeasures.FirstOrDefault(x => x.IsStandard);
+            var productUnitOfMeasure = this._inventory.Product.UnitOfMeasures.FirstOrDefault(predicate);
 
             return this._converter.Convert(
                 measure: measure,
                 product: this._inventory.Product,
-                toUnit: standard?.UnitOfMeasure
+                toUnit: productUnitOfMeasure?.UnitOfMeasure
             );
         }
 
-        public Measure ToDefault()
-        {
-            var measure = this._selector(this._inventory);
+        public Measure ToStandard() => this.Materialize(x => x.IsStandard);
 
-            var @default = _inventory.Product.UnitOfMeasures.FirstOrDefault(x => x.IsDefault);
+        public Measure ToDefault() => this.Materialize(x => x.IsDefault);
 
-            return this._converter.Convert(
-                measure: measure,
-                product: this._inventory.Product,
-                toUnit: @default?.UnitOfMeasure
-            );
-        }
+        public Measure To(UnitOfMeasure toUnit) => this.Materialize(x => x.UnitOfMeasure == toUnit);
 
-        public Measure To(UnitOfMeasure toUnit)
-        {
-            var measure = this._selector(this._inventory);
+        public decimal ToStandardValue() => this.ToStandard()?.Value ?? 0;
 
-            var selectedUnit = _inventory.Product.UnitOfMeasures.FirstOrDefault(x => x.UnitOfMeasure == toUnit);
+        public decimal ToDefaultValue() => this.ToDefault()?.Value ?? 0;
 
-            return this._converter.Convert(
-                measure: measure,
-                product: this._inventory.Product,
-                toUnit: selectedUnit?.UnitOfMeasure
-            );
-        }
+        public decimal ToValue(UnitOfMeasure toUnit) => this.To(toUnit)?.Value ?? 0;
     }
 }
