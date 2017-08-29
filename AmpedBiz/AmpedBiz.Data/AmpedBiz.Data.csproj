@@ -108,7 +108,9 @@
     <Compile Include="Configurations\MappingDefinitionConfiguration.cs" />
     <Compile Include="Configurations\SchemaConfiguration.cs" />
     <Compile Include="Configurations\SessionContextConfiguration.cs" />
-    <Compile Include="Configurations\TenancyAssuranceEventListener.cs" />
+    <Compile Include="Configurations\TenancyAssuranceEventListener.cs">
+      <DependentUpon>EventListenerConfiguration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Configurations\ValidationEventListener.cs">
       <DependentUpon>EventListenerConfiguration.cs</DependentUpon>
     </Compile>
@@ -116,6 +118,8 @@
     <Compile Include="Configurations\ValidatorSharedEngineProvider.cs">
       <DependentUpon>ValidatorConfiguration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\DefaultContext.cs" />
+    <Compile Include="Context\IContext.cs" />
     <Compile Include="Conventions\BinaryColumnLengthConvention.cs" />
     <Compile Include="Conventions\CustomCollectionAccessConvention.cs" />
     <Compile Include="Conventions\CustomComponentConvention.cs" />
@@ -152,29 +156,30 @@
     <Compile Include="EntityDefinitions\UnitOfMeasureDefinition.cs" />
     <Compile Include="IAuditProvider.cs" />
     <Compile Include="ISessionFactoryProvider.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_010_DefaultBranchSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_020_DefaultSupplierSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_021_DefaultProductSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_022_DefaultCustomerSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_001_DefaultTenantSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_002_DefaultBranchSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_030_DefaultSupplierSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_031_DefaultProductSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_032_DefaultCustomerSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_000_BranchSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_001_CurrencySeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_011_CurrencySeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_004_CustomerSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_010_PurchaseOrderSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_012_ReturnSeeder.cs" />
     <Compile Include="Seeders\IDefaultDataSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_000_ReturnReasonSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_011_DefaultUserSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_010_ReturnReasonSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_004_DefaultUserSeeder.cs" />
     <Compile Include="Seeders\IDummyDataSeeder.cs" />
     <Compile Include="Seeders\ISeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_011_OrderSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_002_PaymentTypeSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_003_PricingSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_004_ProductCategorySeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_012_PaymentTypeSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_013_PricingSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_014_ProductCategorySeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_002_ProductSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_005_RoleSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_003_RoleSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_003_ShipperSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_001_SupplierSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_006_UnitOfMeasureSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_015_UnitOfMeasureSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_005_UserSeeder.cs" />
     <Compile Include="EntityDefinitions\AddressDefenition.cs" />
     <Compile Include="EntityDefinitions\BranchDefinition.cs" />

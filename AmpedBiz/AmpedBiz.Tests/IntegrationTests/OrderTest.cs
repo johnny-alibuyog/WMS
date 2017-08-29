@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Common.Configurations;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Data;
+using AmpedBiz.Data.Context;
 using AmpedBiz.Data.Seeders;
 using AmpedBiz.Service.Dto.Mappers;
 using AmpedBiz.Service.Tests.Configurations.Database;
@@ -34,7 +35,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                 from t in AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("AmpedBiz.Data")).GetTypes()
                 where t.GetInterfaces().Contains(typeof(IDefaultDataSeeder))
                 orderby t.Name
-                select Activator.CreateInstance(t, this._sessionFactory) as IDefaultDataSeeder
+                select Activator.CreateInstance(t, DefaultContext.Instance, this._sessionFactory) as IDefaultDataSeeder
             );
 
             seeders.ToList().ForEach(x => x.Seed());

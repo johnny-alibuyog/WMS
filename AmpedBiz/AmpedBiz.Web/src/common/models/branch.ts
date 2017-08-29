@@ -1,9 +1,11 @@
-import { Contact } from './contact';
 import { Address } from './address';
+import { Contact } from './contact';
+import { Tenant } from "./tenant";
 
 export interface Branch {
   id?: string;
   name?: string;
+  tenant?: Tenant;
   description?: string;
   taxpayerIdentificationNumber?: string;
   contact?: Contact;

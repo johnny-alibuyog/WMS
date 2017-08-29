@@ -3,6 +3,7 @@ using AmpedBiz.Common.Pipes;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Products;
 using AmpedBiz.Core.Services.PurchaseOrders;
+using AmpedBiz.Data.Context;
 using NHibernate;
 using NHibernate.Linq;
 using NHibernate.Transform;
@@ -16,11 +17,13 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
     public class _010_PurchaseOrderSeeder : IDummyDataSeeder
     {
         private readonly Utils _utils;
+        private readonly IContext _context;
         private readonly ISessionFactory _sessionFactory;
 
-        public _010_PurchaseOrderSeeder(ISessionFactory sessionFactory)
+        public _010_PurchaseOrderSeeder(DefaultContext context, ISessionFactory sessionFactory)
         {
             _utils = new Utils(new Random(), sessionFactory);
+            _context = context;
             _sessionFactory = sessionFactory;
         }
 

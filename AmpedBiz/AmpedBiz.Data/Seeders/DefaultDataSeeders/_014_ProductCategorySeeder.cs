@@ -1,17 +1,20 @@
 ﻿using AmpedBiz.Core.Entities;
+using AmpedBiz.Data.Context;
 using NHibernate;
 using NHibernate.Linq;
 using System.Linq;
 
 namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 {
-    public class _001_CurrencySeeder : IDefaultDataSeeder
+    public class _014_ProductCategorySeeder : IDefaultDataSeeder
     {
+        private readonly IContext _context;
         private readonly ISessionFactory _sessionFactory;
 
-        public _001_CurrencySeeder(ISessionFactory sessionFactory)
+        public _014_ProductCategorySeeder(DefaultContext context, ISessionFactory sessionFactory)
         {
-            _sessionFactory = sessionFactory;
+            this._context = context;
+            this._sessionFactory = sessionFactory;
         }
 
         public void Seed()
@@ -19,10 +22,11 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var entity = session.Query<Currency>().Cacheable().ToList();
-                if (entity.Count == 0)
+                var entities = session.Query<ProductCategory>().Cacheable().ToList();
+
+                foreach (var item in ProductCategory.All)
                 {
-                    foreach (var item in Currency.All)
+                    if (!entities.Contains(item))
                     {
                         item.EnsureValidity();
                         session.Save(item);

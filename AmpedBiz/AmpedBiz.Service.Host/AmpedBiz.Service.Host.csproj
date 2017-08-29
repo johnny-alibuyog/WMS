@@ -237,6 +237,7 @@
     <Compile Include="App_Start\MappingConfig.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Context\RequestContext.cs" />
     <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
@@ -259,6 +260,7 @@
     <Compile Include="Plugins\DependencInjection\Modules\Configurations\Database\PostgresBatcherFactory.cs">
       <DependentUpon>BatcherConfiguration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\DependencInjection\Modules\ContextModule.cs" />
     <Compile Include="Plugins\DependencInjection\Modules\LoggingModule.cs" />
     <Compile Include="Plugins\DependencInjection\Modules\MediatorModule.cs" />
     <Compile Include="Plugins\DependencInjection\Modules\PersistenceModule.cs" />

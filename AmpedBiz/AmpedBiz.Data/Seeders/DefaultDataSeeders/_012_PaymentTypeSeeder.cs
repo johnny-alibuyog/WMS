@@ -1,27 +1,20 @@
 ﻿using AmpedBiz.Core.Entities;
+using AmpedBiz.Data.Context;
 using NHibernate;
 using NHibernate.Linq;
 using System.Linq;
 
 namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 {
-    public class _006_UnitOfMeasureSeeder : IDefaultDataSeeder
+    public class _012_PaymentTypeSeeder : IDefaultDataSeeder
     {
+        private readonly IContext _context;
         private readonly ISessionFactory _sessionFactory;
 
-        public _006_UnitOfMeasureSeeder(ISessionFactory sessionFactory)
+        public _012_PaymentTypeSeeder(DefaultContext context, ISessionFactory sessionFactory)
         {
-            _sessionFactory = sessionFactory;
-        }
-
-        public bool IsDummyData
-        {
-            get { return false; }
-        }
-
-        public int ExecutionOrder
-        {
-            get { return 7; }
+            this._context = context;
+            this._sessionFactory = sessionFactory;
         }
 
         public void Seed()
@@ -29,9 +22,9 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var entities = session.Query<UnitOfMeasure>().Cacheable().ToList();
+                var entities = session.Query<PaymentType>().Cacheable().ToList();
 
-                foreach (var item in UnitOfMeasure.All)
+                foreach(var item in PaymentType.All)
                 {
                     if (!entities.Contains(item))
                     {

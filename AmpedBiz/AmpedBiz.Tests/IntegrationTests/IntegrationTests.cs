@@ -3,6 +3,7 @@ using AmpedBiz.Common.CustomTypes;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Data;
+using AmpedBiz.Data.Context;
 using AmpedBiz.Data.Seeders;
 using AmpedBiz.Service.Branches;
 using AmpedBiz.Service.Customers;
@@ -120,7 +121,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                 from t in AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("AmpedBiz.Data")).GetTypes()
                 where t.GetInterfaces().Contains(typeof(IDefaultDataSeeder))
                 orderby t.Name
-                select Activator.CreateInstance(t, this.sessionFactory) as ISeeder
+                select Activator.CreateInstance(t, DefaultContext.Instance, this.sessionFactory) as ISeeder
             );
 
             foreach (var seeder in seeders)
@@ -250,7 +251,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                 Name = branch.Name
             };
 
-            var handler = new CreateBranch.Handler(this.sessionFactory).Handle(request);
+            var handler = new CreateBranch.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
             return handler as Service.Dto.Branch;
         }
@@ -298,7 +299,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     .ToList()
                 };
 
-                var handler = new CreateUser.Handler(this.sessionFactory).Handle(request);
+                var handler = new CreateUser.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
                 users.Add(handler as Service.Dto.User);
             }
@@ -334,7 +335,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     PricingId = custData.PricingId
                 };
 
-                var handler = new CreateCustomer.Handler(this.sessionFactory).Handle(request);
+                var handler = new CreateCustomer.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
                 customers.Add(handler as Service.Dto.Customer);
             }
@@ -365,7 +366,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     Name = supplierData.Name
                 };
 
-                var handler = new CreateSupplier.Handler(this.sessionFactory).Handle(request);
+                var handler = new CreateSupplier.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
                 suppliers.Add(handler as Service.Dto.Supplier);
             }
@@ -442,7 +443,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     }
                 };
 
-                var handler = new CreateProduct.Handler(this.sessionFactory).Handle(request);
+                var handler = new CreateProduct.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
                 products.Add(handler as Service.Dto.Product);
             }
@@ -464,7 +465,7 @@ namespace AmpedBiz.Tests.IntegrationTests
         private IEnumerable<Service.Dto.Product> SelectRandomAvailableProducts(Guid supplierId, int count = 12)
         {
             var request = new GetProductList.Request() { SupplierId = supplierId };
-            var response = new GetProductList.Handler(this.sessionFactory).Handle(request);
+            var response = new GetProductList.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
             var availableProducts = response
                 .Where(x => x.Inventory.AvailableValue > 0);
 
@@ -489,7 +490,7 @@ namespace AmpedBiz.Tests.IntegrationTests
         private IEnumerable<Service.Dto.ProductInventory1> SelectRandomProductInventories(Guid supplierId, int count = 12)
         {
             var request = new GetProductInventory1List.Request() { SupplierId = supplierId };
-            var response = new GetProductInventory1List.Handler(this.sessionFactory).Handle(request);
+            var response = new GetProductInventory1List.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
             var productInventories = response.Cast<Service.Dto.ProductInventory1>();
 
             var totalProductInventory = productInventories.Count();
@@ -513,7 +514,7 @@ namespace AmpedBiz.Tests.IntegrationTests
         private IEnumerable<Service.Dto.ProductInventory1> SelectRandomAvailableProductInventories(Guid supplierId, int count = 12)
         {
             var request = new GetProductInventory1List.Request() { SupplierId = supplierId };
-            var response = new GetProductInventory1List.Handler(this.sessionFactory).Handle(request);
+            var response = new GetProductInventory1List.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
             var availableProductInventories = response.Where(x =>
                 x.UnitOfMeasures != null &&
                 x.UnitOfMeasures.Any() &&
@@ -541,7 +542,7 @@ namespace AmpedBiz.Tests.IntegrationTests
         private IEnumerable<Service.Dto.Product> SelectRandomProducts(Guid supplierId, int count = 12)
         {
             var request = new GetProductList.Request() { SupplierId = supplierId };
-            var response = new GetProductList.Handler(this.sessionFactory).Handle(request);
+            var response = new GetProductList.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
             var totalProduct = response.Count();
 
@@ -584,7 +585,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                 };
                 request.Items = this.CreatePurchaseOrderItems(request, this.random.Next(20, 90));
 
-                var handler = new SavePurchaseOrder.Handler(this.sessionFactory).Handle(request);
+                var handler = new SavePurchaseOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
                 pOrders.Add(handler as Service.Dto.PurchaseOrder);
             }
@@ -627,7 +628,7 @@ namespace AmpedBiz.Tests.IntegrationTests
         private IEnumerable<Service.Dto.PurchaseOrder> GetPurchaseOrders(Service.Dto.PurchaseOrderStatus status, int count = 1)
         {
             var request = new GetPurchaseOrderList.Request() { };
-            var purchaseOrders = new GetPurchaseOrderList.Handler(this.sessionFactory).Handle(request);
+            var purchaseOrders = new GetPurchaseOrderList.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
             return purchaseOrders.ToList().Where(po => po.Status == Service.Dto.PurchaseOrderStatus.New).Take(count);
         }
@@ -635,7 +636,7 @@ namespace AmpedBiz.Tests.IntegrationTests
         private Service.Dto.PurchaseOrder SubmitPurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
             var request = new SubmitPurchaseOrder.Request() { Id = purchaseOrder.Id, SubmittedBy = this.RandomUser() };
-            var order = new SubmitPurchaseOrder.Handler(this.sessionFactory).Handle(request);
+            var order = new SubmitPurchaseOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
             return order;
         }
@@ -643,7 +644,7 @@ namespace AmpedBiz.Tests.IntegrationTests
         private Service.Dto.PurchaseOrder ApprovePurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
             var request = new ApprovePurchaseOder.Request() { Id = purchaseOrder.Id, ApprovedBy = this.RandomUser() };
-            var order = new ApprovePurchaseOder.Handler(this.sessionFactory).Handle(request);
+            var order = new ApprovePurchaseOder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
             return order;
         }
@@ -665,7 +666,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     }
                 }
             };
-            var order = new SavePurchaseOrder.Handler(this.sessionFactory).Handle(request);
+            var order = new SavePurchaseOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
             return order;
         }
@@ -695,7 +696,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     })
             };
 
-            var order = new SavePurchaseOrder.Handler(this.sessionFactory).Handle(request);
+            var order = new SavePurchaseOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
             return order;
         }
@@ -703,7 +704,7 @@ namespace AmpedBiz.Tests.IntegrationTests
         private Service.Dto.PurchaseOrder CompletePurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
             var request = new CompletePurchaseOder.Request() { Id = purchaseOrder.Id, CompletedBy = this.RandomUser() };
-            var order = new CompletePurchaseOder.Handler(this.sessionFactory).Handle(request);
+            var order = new CompletePurchaseOder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
             return order;
         }
@@ -711,7 +712,7 @@ namespace AmpedBiz.Tests.IntegrationTests
         private Service.Dto.PurchaseOrder CancelPurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
             var request = new CancelPurchaseOder.Request() { Id = purchaseOrder.Id, CancelledBy = this.RandomUser(), CancellationReason = "Products not needed" };
-            var order = new CancelPurchaseOder.Handler(this.sessionFactory).Handle(request);
+            var order = new CancelPurchaseOder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
             return order;
         }
@@ -748,7 +749,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                 if (request.Items.Count() == 0)
                     Console.WriteLine("Hey");
 
-                var handler = new SaveOrder.Handler(this.sessionFactory).Handle(request);
+                var handler = new SaveOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
                 orders.Add(handler as Service.Dto.Order);
             }
@@ -817,7 +818,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             this.AdjustOrderByProductAvailability(order);
 
             var request = new InvoiceOrder.Request() { Id = order.Id, InvoicedBy = RandomUser() };
-            var handler = new InvoiceOrder.Handler(this.sessionFactory).Handle(request);
+            var handler = new InvoiceOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
             return handler;
         }
@@ -828,7 +829,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             using (var transaction = session.BeginTransaction())
             {
                 var productIds = order.Items.Select(x => x.Product.Id).ToArray();
-                var productInventories = new GetProductInventory1List.Handler(this.sessionFactory)
+                var productInventories = new GetProductInventory1List.Handler(this.sessionFactory, DefaultContext.Instance)
                     .Handle(new GetProductInventory1List.Request() { ProductIds = productIds });
 
                 productInventories.ForEach(productInventory =>
@@ -852,7 +853,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             if (order.Items.Count() == 0)
                 Console.WriteLine("Hey");
 
-            var response = new SaveOrder.Handler(this.sessionFactory)
+            var response = new SaveOrder.Handler(this.sessionFactory, DefaultContext.Instance)
                 .Handle(new SaveOrder.Request()
                 {
                     Id = order.Id,
@@ -868,7 +869,7 @@ namespace AmpedBiz.Tests.IntegrationTests
         private Service.Dto.Order StageOrder(Service.Dto.Order order)
         {
             var request = new StageOrder.Request() { Id = order.Id, StagedBy = RandomUser() };
-            var response = new StageOrder.Handler(this.sessionFactory).Handle(request);
+            var response = new StageOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
             return response;
         }
@@ -889,7 +890,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     }
                 }
             };
-            var response = new SaveOrder.Handler(this.sessionFactory).Handle(request);
+            var response = new SaveOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
             return response;
         }
@@ -897,7 +898,7 @@ namespace AmpedBiz.Tests.IntegrationTests
         private Service.Dto.Order ShipOrder(Service.Dto.Order order)
         {
             var request = new ShipOrder.Request() { Id = order.Id, ShippedBy = RandomUser() };
-            var response = new ShipOrder.Handler(this.sessionFactory).Handle(request);
+            var response = new ShipOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
             return response;
         }
@@ -905,7 +906,7 @@ namespace AmpedBiz.Tests.IntegrationTests
         private Service.Dto.Order RouteOrder(Service.Dto.Order order)
         {
             var request = new RouteOrder.Request() { Id = order.Id, RoutedBy = RandomUser() };
-            var response = new RouteOrder.Handler(this.sessionFactory).Handle(request);
+            var response = new RouteOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
             return response;
         }
@@ -913,7 +914,7 @@ namespace AmpedBiz.Tests.IntegrationTests
         private Service.Dto.Order CompleteOrder(Service.Dto.Order order)
         {
             var request = new CompleteOrder.Request() { Id = order.Id, CompletedBy = RandomUser() };
-            var handler = new CompleteOrder.Handler(this.sessionFactory).Handle(request);
+            var handler = new CompleteOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
             return handler;
         }

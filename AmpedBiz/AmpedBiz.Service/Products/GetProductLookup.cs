@@ -1,12 +1,13 @@
 ﻿using AmpedBiz.Common.CustomTypes;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Data.Context;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 
 namespace AmpedBiz.Service.Products
 {
@@ -28,7 +29,7 @@ namespace AmpedBiz.Service.Products
 
         public class Handler : RequestHandlerBase<Request, Response>
         {
-            public Handler(ISessionFactory sessionFactory) : base(sessionFactory) { }
+            public Handler(ISessionFactory sessionFactory, IContext context) : base(sessionFactory, context) { }
 
             public override Response Handle(Request message)
             {

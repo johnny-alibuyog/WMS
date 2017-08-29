@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Core.Entities;
+using AmpedBiz.Data.Context;
 using NHibernate;
 using NHibernate.Linq;
 using System.Collections.Generic;
@@ -8,11 +9,13 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 {
     public class _001_SupplierSeeder : IDummyDataSeeder
     {
+        private readonly IContext _context;
         private readonly ISessionFactory _sessionFactory;
 
-        public _001_SupplierSeeder(ISessionFactory sessionFactory)
+        public _001_SupplierSeeder(DefaultContext context, ISessionFactory sessionFactory)
         {
-            _sessionFactory = sessionFactory;
+            this._context = context;
+            this._sessionFactory = sessionFactory;
         }
 
         public bool IsDummyData

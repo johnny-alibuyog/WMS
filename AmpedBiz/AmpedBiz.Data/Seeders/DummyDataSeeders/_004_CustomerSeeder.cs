@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Core.Entities;
+using AmpedBiz.Data.Context;
 using NHibernate;
 using NHibernate.Linq;
 using System.Linq;
@@ -7,11 +8,13 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 {
     public class _004_CustomerSeeder : IDummyDataSeeder
     {
+        private readonly IContext _context;
         private readonly ISessionFactory _sessionFactory;
 
-        public _004_CustomerSeeder(ISessionFactory sessionFactory)
+        public _004_CustomerSeeder(DefaultContext context, ISessionFactory sessionFactory)
         {
-            _sessionFactory = sessionFactory;
+            this._context = context;
+            this._sessionFactory = sessionFactory;
         }
 
         public void Seed()

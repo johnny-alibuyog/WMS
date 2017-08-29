@@ -3,18 +3,21 @@ using System.Linq;
 using AmpedBiz.Core.Entities;
 using NHibernate;
 using NHibernate.Linq;
+using AmpedBiz.Data.Context;
 
 namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 {
     public class _003_ShipperSeeder : IDummyDataSeeder
     {
+        private readonly IContext _context;
         private readonly ISessionFactory _sessionFactory;
 
-        public _003_ShipperSeeder(ISessionFactory sessionFactory)
+        public _003_ShipperSeeder(DefaultContext context, ISessionFactory sessionFactory)
         {
-            _sessionFactory = sessionFactory;
+            this._context = context;
+            this._sessionFactory = sessionFactory;
         }
-        
+
         public void Seed()
         {
             var data = new List<Shipper>();

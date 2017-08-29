@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Core.Entities;
+using AmpedBiz.Data.Context;
 using AmpedBiz.Service.Common;
 using MediatR;
 using NHibernate;
@@ -16,7 +17,7 @@ namespace AmpedBiz.Service.Products
 
         public class Handler : RequestHandlerBase<Request, Response>
         {
-            public Handler(ISessionFactory sessionFactory) : base(sessionFactory) { }
+            public Handler(ISessionFactory sessionFactory, IContext context) : base(sessionFactory, context) { }
 
             public override Response Handle(Request message)
             {

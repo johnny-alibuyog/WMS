@@ -1,4 +1,5 @@
-﻿using AmpedBiz.Service.Dto;
+﻿using AmpedBiz.Data.Context;
+using AmpedBiz.Service.Dto;
 using MediatR;
 using NHibernate;
 using System;
@@ -20,7 +21,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 
         public class Handler : RequestHandlerBase<Request, Response>
         {
-            public Handler(ISessionFactory sessionFactory) : base(sessionFactory) { }
+            public Handler(ISessionFactory sessionFactory, IContext context) : base(sessionFactory, context) { }
 
             public override Response Handle(Request message)
             {

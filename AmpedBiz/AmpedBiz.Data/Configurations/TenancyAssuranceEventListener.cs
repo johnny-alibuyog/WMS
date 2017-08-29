@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Core;
+using AmpedBiz.Core.Entities;
 using AmpedBiz.Data.EntityDefinitions;
 using NHibernate.Event;
 using NHibernate.Persister.Entity;
@@ -6,32 +7,43 @@ using System;
 
 namespace AmpedBiz.Data.Configurations
 {
-    public class TenancyAssuranceEventListener : 
-        IPostLoadEventListener, 
-        IPreUpdateEventListener, 
-        IPreInsertEventListener, 
+    public class TenancyAssuranceEventListener :
+        IPostLoadEventListener,
+        IPreUpdateEventListener,
+        IPreInsertEventListener,
         IPreDeleteEventListener
     {
         public void OnPostLoad(PostLoadEvent @event)
         {
-            if (@event.Entity is IHaveTenant)
+            if (@event.Entity is IHaveTenant && @event.Session.TenancyFilterEnabled())
             {
                 var tenantId = @event.Entity.GetTenantId();
                 var currentTenantId = @event.Session.GetCurrentTenantId();
-                if (currentTenantId != tenantId)
+                
+                if (!string.IsNullOrWhiteSpace(tenantId) && currentTenantId != tenantId)
+                {
                     throw new InvalidOperationException("Ilegal data access.");
+                }
             }
         }
 
         public bool OnPreUpdate(PreUpdateEvent @event)
         {
-            if (@event.Entity is IHaveTenant)
+            if (@event.Entity is IHaveTenant && @event.Session.TenancyFilterEnabled())
             {
                 var state = @event.OldState ?? @event.State;
                 var tenantId = state.GetTenantId(@event.Persister);
                 var currentTenantId = @event.Session.GetCurrentTenantId();
-                if (currentTenantId != tenantId)
+
+                if (string.IsNullOrWhiteSpace(tenantId))
+                {
+                    ((IHaveTenant)@event.Entity).Tenant = @event.Session.Load<Tenant>(currentTenantId);
+                }
+
+                else if (currentTenantId != tenantId)
+                {
                     throw new InvalidOperationException("Ilegal data access.");
+                }
             }
 
             return false;
@@ -39,12 +51,19 @@ namespace AmpedBiz.Data.Configurations
 
         public bool OnPreInsert(PreInsertEvent @event)
         {
-            if (@event.Entity is IHaveTenant)
+            if (@event.Entity is IHaveTenant && @event.Session.TenancyFilterEnabled())
             {
                 var tenantId = @event.Entity.GetTenantId();
                 var currentTenantId = @event.Session.GetCurrentTenantId();
-                if (currentTenantId != tenantId)
+
+                if (string.IsNullOrWhiteSpace(tenantId))
+                {
+                    ((IHaveTenant)@event.Entity).Tenant = @event.Session.Load<Tenant>(currentTenantId);
+                }
+                else if (currentTenantId != tenantId)
+                {
                     throw new InvalidOperationException("Ilegal data access.");
+                }
             }
 
             return false;
@@ -52,12 +71,15 @@ namespace AmpedBiz.Data.Configurations
 
         public bool OnPreDelete(PreDeleteEvent @event)
         {
-            if (@event.Entity is IHaveTenant)
+            if (@event.Entity is IHaveTenant && @event.Session.TenancyFilterEnabled())
             {
                 var tenantId = @event.Entity.GetTenantId();
                 var currentTenantId = @event.Session.GetCurrentTenantId();
-                if (currentTenantId != tenantId)
+
+                if (!string.IsNullOrWhiteSpace(tenantId) && currentTenantId != tenantId)
+                {
                     throw new InvalidOperationException("Ilegal data access.");
+                }
             }
 
             return false;
@@ -66,19 +88,24 @@ namespace AmpedBiz.Data.Configurations
 
     internal static class TenancyAssuranceEventListenerExtention
     {
-        public static Guid GetTenantId(this object[] state, IEntityPersister persister)
+        public static bool TenancyFilterEnabled(this IEventSource session)
         {
-            return (Guid)state.GetValue(Array.IndexOf(persister.PropertyNames, "TenantId"));
+            return session.EnabledFilters.ContainsKey(TenantDefinition.Filter.FilterName);
         }
 
-        public static Guid GetTenantId(this object source)
+        public static string GetTenantId(this object[] state, IEntityPersister persister)
         {
-            return ((IHaveTenant)source).Tenant.Id;
+            return (string)state.GetValue(Array.IndexOf(persister.PropertyNames, "TenantId"));
         }
 
-        public static Guid GetCurrentTenantId(this IEventSource source)
+        public static string GetTenantId(this object source)
         {
-            return (Guid)source.GetFilterParameterValue(TenantDefinition.Filter.ParameterName);
+            return ((IHaveTenant)source).Tenant?.Id;
+        }
+
+        public static string GetCurrentTenantId(this IEventSource source)
+        {
+            return (string)source.GetFilterParameterValue($"{TenantDefinition.Filter.FilterName}.{TenantDefinition.Filter.ParameterName}");
         }
     }
 }

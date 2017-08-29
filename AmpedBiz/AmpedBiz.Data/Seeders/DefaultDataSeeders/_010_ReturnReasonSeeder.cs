@@ -1,17 +1,20 @@
 ﻿using AmpedBiz.Core.Entities;
+using AmpedBiz.Data.Context;
 using NHibernate;
 using NHibernate.Linq;
 using System.Linq;
 
 namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 {
-    public class _002_PaymentTypeSeeder : IDefaultDataSeeder
+    public class _010_ReturnReasonSeeder : IDefaultDataSeeder
     {
+        private readonly IContext _context;
         private readonly ISessionFactory _sessionFactory;
 
-        public _002_PaymentTypeSeeder(ISessionFactory sessionFactory)
+        public _010_ReturnReasonSeeder(DefaultContext context, ISessionFactory sessionFactory)
         {
-            _sessionFactory = sessionFactory;
+            this._context = context;
+            this._sessionFactory = sessionFactory;
         }
 
         public void Seed()
@@ -19,11 +22,10 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             using (var session = _sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
-                var entities = session.Query<PaymentType>().Cacheable().ToList();
-
-                foreach(var item in PaymentType.All)
+                var entity = session.Query<ReturnReason>().Cacheable().ToList();
+                if (entity.Count == 0)
                 {
-                    if (!entities.Contains(item))
+                    foreach (var item in ReturnReason.All)
                     {
                         item.EnsureValidity();
                         session.Save(item);

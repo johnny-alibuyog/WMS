@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Returns;
+using AmpedBiz.Data.Context;
 using NHibernate;
 using System;
 using System.Linq;
@@ -9,11 +10,13 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
     public class _012_ReturnSeeder : IDummyDataSeeder
     {
         private readonly Utils _utils;
+        private readonly IContext _context;
         private readonly ISessionFactory _sessionFactory;
 
-        public _012_ReturnSeeder(ISessionFactory sessionFactory)
+        public _012_ReturnSeeder(DefaultContext context, ISessionFactory sessionFactory)
         {
             _utils = new Utils(new Random(), sessionFactory);
+            _context = context;
             _sessionFactory = sessionFactory;
         }
 

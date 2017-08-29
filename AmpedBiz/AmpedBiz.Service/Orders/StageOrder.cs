@@ -2,6 +2,7 @@
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Orders;
 using AmpedBiz.Data;
+using AmpedBiz.Data.Context;
 using MediatR;
 using NHibernate;
 using System;
@@ -16,11 +17,11 @@ namespace AmpedBiz.Service.Orders
 
         public class Handler : RequestHandlerBase<Request, Response>
         {
-            public Handler(ISessionFactory sessionFactory) : base(sessionFactory) { }
+            public Handler(ISessionFactory sessionFactory, IContext context) : base(sessionFactory, context) { }
 
             private void Hydrate(Response response)
             {
-                var handler = new GetOrder.Handler(this._sessionFactory);
+                var handler = new GetOrder.Handler(this._sessionFactory, this._context);
                 var hydrated = handler.Handle(new GetOrder.Request(response.Id));
 
                 hydrated.MapTo(response);

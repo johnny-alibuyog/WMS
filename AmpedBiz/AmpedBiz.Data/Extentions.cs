@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Common.Exceptions;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Data.Configurations;
+using AmpedBiz.Data.Context;
 using AmpedBiz.Data.EntityDefinitions;
 using NHibernate;
 using NHibernate.Context;
@@ -10,22 +11,23 @@ using System.Linq;
 
 namespace AmpedBiz.Data
 {
-    public class Context
-    {
-        public Guid? TenantId { get; set; }
-    }
-
     public static class Extentions
     {
-        private static ISession WithFilters(this ISession session, Context context = null)
+        private static ISession WithFilters(this ISession session, IContext context = null)
         {
-            if (context?.TenantId != null)
-                session.ApplyTenantFilter(context.TenantId.Value);
+            if (context != null)
+            {
+                if (!string.IsNullOrWhiteSpace(context.TenantId))
+                    session.ApplyTenantFilter(context.TenantId);
+
+                if (context.BranchId != Guid.Empty)
+                    session.ApplyBranchFilter(context.BranchId);
+            }
 
             return session;
         }
 
-        public static ISession RetrieveSharedSession(this ISessionFactory sessionFactory, Context context = null)
+        public static ISession RetrieveSharedSession(this ISessionFactory sessionFactory, IContext context = null)
         {
             if (!CurrentSessionContext.HasBind(sessionFactory))
             {

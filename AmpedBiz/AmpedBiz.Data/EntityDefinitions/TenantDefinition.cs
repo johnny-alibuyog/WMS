@@ -2,7 +2,6 @@
 using FluentNHibernate.Mapping;
 using NHibernate;
 using NHibernate.Validator.Cfg.Loquacious;
-using System;
 
 namespace AmpedBiz.Data.EntityDefinitions
 {
@@ -13,7 +12,7 @@ namespace AmpedBiz.Data.EntityDefinitions
             public Mapping()
             {
                 Id(x => x.Id)
-                    .GeneratedBy.GuidComb();
+                    .GeneratedBy.Assigned();
 
                 Map(x => x.Name);
 
@@ -46,14 +45,14 @@ namespace AmpedBiz.Data.EntityDefinitions
             {
                 this.WithName(Filter.FilterName)
                     .WithCondition($"TenantId = :{Filter.ParameterName}")
-                    .AddParameter(Filter.ParameterName, NHibernateUtil.Guid);
+                    .AddParameter(Filter.ParameterName, NHibernateUtil.String);
             }
         }
     }
 
     public static class TenantDefinitionExtention
     {
-        public static ISession ApplyTenantFilter(this ISession session, Guid tenantId)
+        public static ISession ApplyTenantFilter(this ISession session, string tenantId)
         {
             session
                 .EnableFilter(TenantDefinition.Filter.FilterName)

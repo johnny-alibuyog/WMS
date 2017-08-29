@@ -1,10 +1,10 @@
-import { autoinject, Aurelia } from 'aurelia-framework';
-import { User } from '../common/models/user';
+import { Aurelia, autoinject } from 'aurelia-framework';
 import { Role, role } from '../common/models/role';
-import { Lookup } from '../common/custom_types/lookup';
-import { HttpClientFacade } from './http-client-facade';
-import { NotificationService } from '../common/controls/notification-service';
 
+import { HttpClientFacade } from './http-client-facade';
+import { Lookup } from '../common/custom_types/lookup';
+import { NotificationService } from '../common/controls/notification-service';
+import { User } from '../common/models/user';
 
 export interface AuthSettings {
   authorize?: boolean;

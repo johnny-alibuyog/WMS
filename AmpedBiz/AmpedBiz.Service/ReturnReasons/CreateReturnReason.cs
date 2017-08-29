@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Data;
+using AmpedBiz.Data.Context;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
-using AmpedBiz.Data;
+using System.Linq;
 
 namespace AmpedBiz.Service.ReturnReasons
 {
@@ -17,7 +17,7 @@ namespace AmpedBiz.Service.ReturnReasons
 
         public class Handler : RequestHandlerBase<Request, Response>
         {
-            public Handler(ISessionFactory sessionFactory) : base(sessionFactory) { }
+            public Handler(ISessionFactory sessionFactory, IContext context) : base(sessionFactory, context) { }
 
             public override Response Handle(Request message)
             {

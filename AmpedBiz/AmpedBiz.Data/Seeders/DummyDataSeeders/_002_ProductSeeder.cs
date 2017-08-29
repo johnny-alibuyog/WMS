@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Inventories;
 using AmpedBiz.Core.Services.Products;
+using AmpedBiz.Data.Context;
 using NHibernate;
 using NHibernate.Linq;
 using System;
@@ -13,11 +14,13 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 {
     public class _002_ProductSeeder : IDummyDataSeeder
     {
+        private readonly IContext _context;
         private readonly ISessionFactory _sessionFactory;
 
-        public _002_ProductSeeder(ISessionFactory sessionFactory)
+        public _002_ProductSeeder(DefaultContext context, ISessionFactory sessionFactory)
         {
-            _sessionFactory = sessionFactory;
+            this._context = context;
+            this._sessionFactory = sessionFactory;
         }
 
         public void Seed()

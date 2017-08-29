@@ -77,7 +77,7 @@ namespace AmpedBiz.Core.Entities
                 Country = "Admin Country",
                 ZipCode = "1870"
             },
-            Branch = Branch.Warehouse,
+            Branch = Branch.Default,
             Roles = new Collection<Role>()
             {
                 Role.Admin
@@ -104,7 +104,7 @@ namespace AmpedBiz.Core.Entities
                 Country = "Manager Country",
                 ZipCode = "1870"
             },
-            Branch = Branch.Warehouse,
+            Branch = Branch.Default,
             Roles = new Collection<Role>()
             {
                 Role.Manger
@@ -131,7 +131,7 @@ namespace AmpedBiz.Core.Entities
                 Country = "Salesclerk Country",
                 ZipCode = "1870"
             },
-            Branch = Branch.Warehouse,
+            Branch = Branch.Default,
             Roles = new Collection<Role>()
             {
                 Role.Salesclerk
@@ -158,7 +158,7 @@ namespace AmpedBiz.Core.Entities
                 Country = "Warehouseman Country",
                 ZipCode = "1870"
             },
-            Branch = Branch.Warehouse,
+            Branch = Branch.Default,
             Roles = new Collection<Role>()
             {
                 Role.Warehouseman

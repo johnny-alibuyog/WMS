@@ -1,6 +1,8 @@
 ﻿using AmpedBiz.Core.Entities;
 using FluentNHibernate.Mapping;
+using NHibernate;
 using NHibernate.Validator.Cfg.Loquacious;
+using System;
 
 namespace AmpedBiz.Data.EntityDefinitions
 {
@@ -13,6 +15,8 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Id(x => x.Id)
                     .GeneratedBy.GuidComb();
 
+                References(x => x.Tenant);
+
                 Map(x => x.Name);
 
                 Map(x => x.Description);
@@ -22,6 +26,8 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Component(x => x.Contact);
 
                 Component(x => x.Address);
+
+                ApplyFilter<TenantDefinition.Filter>();
             }
         }
 
@@ -30,6 +36,8 @@ namespace AmpedBiz.Data.EntityDefinitions
             public Validation()
             {
                 Define(x => x.Id);
+
+                Define(x => x.Tenant);
 
                 Define(x => x.Name)
                     .NotNullableAndNotEmpty()
@@ -42,6 +50,31 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Define(x => x.Address)
                     .IsValid();
             }
+        }
+
+        public class Filter : FilterDefinition
+        {
+            public static string FilterName = "BranchFilter";
+            public static string ParameterName = "branchId";
+
+            public Filter()
+            {
+                this.WithName(Filter.FilterName)
+                    .WithCondition($"BranchId = :{Filter.ParameterName}")
+                    .AddParameter(Filter.ParameterName, NHibernateUtil.Guid);
+            }
+        }
+    }
+
+    public static class BranchDefinitionExtention
+    {
+        public static ISession ApplyBranchFilter(this ISession session, Guid branchId)
+        {
+            session
+                .EnableFilter(BranchDefinition.Filter.FilterName)
+                .SetParameter(BranchDefinition.Filter.ParameterName, branchId);
+
+            return session;
         }
     }
 }

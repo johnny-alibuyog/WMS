@@ -2,6 +2,7 @@
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Inventories;
 using AmpedBiz.Core.Services.Products;
+using AmpedBiz.Data.Context;
 using LinqToExcel;
 using NHibernate;
 using NHibernate.Linq;
@@ -12,14 +13,14 @@ using System.Linq;
 
 namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 {
-    public class _021_DefaultProductSeeder : IDefaultDataSeeder
+    public class _031_DefaultProductSeeder : IDefaultDataSeeder
     {
-        private readonly Utils _utils;
+        private readonly IContext _context;
         private readonly ISessionFactory _sessionFactory;
 
-        public _021_DefaultProductSeeder(ISessionFactory sessionFactory)
+        public _031_DefaultProductSeeder(DefaultContext context, ISessionFactory sessionFactory)
         {
-            _utils = new Utils(new Random(), sessionFactory);
+            this._context = context;
             this._sessionFactory = sessionFactory;
         }
 

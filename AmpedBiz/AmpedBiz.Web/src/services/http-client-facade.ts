@@ -1,7 +1,10 @@
-import { autoinject } from 'aurelia-framework';
-import { HttpClient, json } from 'aurelia-fetch-client';
-import { appConfig } from '../app-config';
 import 'fetch';
+
+import { HttpClient, json } from 'aurelia-fetch-client';
+
+import { AuthService } from "./auth-service";
+import { appConfig } from '../app-config';
+import { autoinject } from 'aurelia-framework';
 
 @autoinject
 export class HttpClientFacade {
@@ -9,27 +12,29 @@ export class HttpClientFacade {
 
   constructor(httpClient: HttpClient) {
     this.httpClient = httpClient;
-    this.httpClient.configure(config => {
-      config
-        .withBaseUrl(appConfig.api.baseUrl)
-        .withDefaults({
-          credentials: 'same-origin',
-          headers: {
-            'Accept': 'application/json',
-            'X-Requested-With': 'Fetch'
-          }
-        })
-        .withInterceptor({
-          request(request) {
-            console.log(`Requesting ${request.method} ${request.url}`);
-            return request; // you can return a modified Request, or you can short-circuit the request by returning a Response
-          },
-          response(response) {
-            console.log(`Received ${response.status} ${response.url}`);
-            return response; // you can return a modified Response
-          }
-        });
-    });
+    this.httpClient.configure(config => config
+      .withBaseUrl(appConfig.api.baseUrl)
+      .withDefaults({
+        credentials: 'same-origin',
+        headers: {
+          'Accept': 'application/json',
+          'X-Requested-With': 'Fetch',
+          //'UserId': auth.user && auth.user.id || '', // TODO: change this to jwt soon
+          'BranchId': 'branchid', // TODO: change this to jwt soon
+          'TenantId': 'tenantid', // TODO: change this to jwt soon
+        }
+      })
+      .withInterceptor({
+        request(request) {
+          console.log(`Requesting ${request.method} ${request.url}`);
+          return request; // you can return a modified Request, or you can short-circuit the request by returning a Response
+        },
+        response(response) {
+          console.log(`Received ${response.status} ${response.url}`);
+          return response; // you can return a modified Response
+        }
+      })
+    );
   }
 
   send(param: SendParameters): Promise<any> {

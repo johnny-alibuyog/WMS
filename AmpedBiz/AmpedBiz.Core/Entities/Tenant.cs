@@ -1,15 +1,20 @@
-﻿using System;
-
-namespace AmpedBiz.Core.Entities
+﻿namespace AmpedBiz.Core.Entities
 {
-    public class Tenant : Entity<Guid, Tenant>
+    public class Tenant : Entity<string, Tenant>
     {
         public virtual string Name { get; set; }
 
         public virtual string Description { get; set; }
 
-        public Tenant() : base(default(Guid)) { }
+        public Tenant() : base(default(string)) { }
 
-        public Tenant(Guid id) : base(id) { }
+        public Tenant(string id, string name, string description) : base(id)
+        {
+            this.Id = id;
+            this.Name = name;
+            this.Description = description;
+        }
+
+        public static readonly Tenant Default = new Tenant(id: "ampbiz", name: "Ampbiz", description: "Ambiz Portal");
     }
 }
