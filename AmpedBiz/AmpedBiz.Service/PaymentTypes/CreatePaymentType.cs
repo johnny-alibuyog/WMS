@@ -24,7 +24,7 @@ namespace AmpedBiz.Service.PaymentTypes
             {
                 var response = new Response();
 
-                using (var session = _sessionFactory.OpenSession())
+                using (var session = _sessionFactory.RetrieveSharedSession(_context))
                 using (var transaction = session.BeginTransaction())
                 {
                     var exists = session.Query<PaymentType>().Any(x => x.Id == message.Id);

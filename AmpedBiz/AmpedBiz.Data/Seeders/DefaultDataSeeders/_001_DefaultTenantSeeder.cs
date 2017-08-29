@@ -17,7 +17,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
         public void Seed()
         {
-            using (var session = _sessionFactory.RetrieveSharedSession())
+            using (var session = _sessionFactory.RetrieveSharedSession(_context))
             using (var transaction = session.BeginTransaction())
             {
                 var entity = session.Get<Tenant>(Tenant.Default.Id);

@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Core.Entities;
+using AmpedBiz.Data;
 using AmpedBiz.Data.Context;
 using MediatR;
 using NHibernate;
@@ -21,7 +22,7 @@ namespace AmpedBiz.Service.Users
             {
                 var response = new Response();
 
-                using (var session = _sessionFactory.OpenSession())
+                using (var session = _sessionFactory.RetrieveSharedSession(_context))
                 using (var transaction = session.BeginTransaction())
                 {
                     var roles = session.Query<Role>().Cacheable().ToList();

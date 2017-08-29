@@ -17,11 +17,11 @@ namespace AmpedBiz.Data
         {
             if (context != null)
             {
-                if (!string.IsNullOrWhiteSpace(context.TenantId))
-                    session.ApplyTenantFilter(context.TenantId);
+                //if (!string.IsNullOrWhiteSpace(context.TenantId))
+                //    session.ApplyTenantFilter(context.TenantId);
 
-                if (context.BranchId != Guid.Empty)
-                    session.ApplyBranchFilter(context.BranchId);
+                //if (context.BranchId != Guid.Empty)
+                //    session.ApplyBranchFilter(context.BranchId);
             }
 
             return session;

@@ -1,5 +1,7 @@
 ﻿using NHibernate.Cfg;
 using NHibernate.Event;
+using NHibernate.Persister.Entity;
+using System;
 
 namespace AmpedBiz.Data.Configurations
 {
@@ -17,6 +19,18 @@ namespace AmpedBiz.Data.Configurations
             configuration.AppendListeners(ListenerType.PostInsert, new IPostInsertEventListener[] { new AuditEventListener(), });
             configuration.AppendListeners(ListenerType.PostUpdate, new IPostUpdateEventListener[] { new AuditEventListener(), });
             configuration.AppendListeners(ListenerType.PostDelete, new IPostDeleteEventListener[] { new AuditEventListener(), });
+        }
+    }
+
+    internal static class PersisterExtention
+    {
+        public static void Set(this IEntityPersister persister, object[] state, string propertyName, object value)
+        {
+            var index = Array.IndexOf(persister.PropertyNames, propertyName);
+            if (index == -1)
+                return;
+
+            state[index] = value;
         }
     }
 }

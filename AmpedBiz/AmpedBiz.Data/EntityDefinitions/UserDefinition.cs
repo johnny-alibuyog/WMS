@@ -33,6 +33,8 @@ namespace AmpedBiz.Data.EntityDefinitions
                    .Cascade.All()
                    .AsSet();
 
+                ApplyFilter<BranchDefinition.Filter>();
+
                 //UseUnionSubclassForInheritanceMapping();
             }
         }

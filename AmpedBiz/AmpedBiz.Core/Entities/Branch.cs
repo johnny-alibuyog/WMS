@@ -2,7 +2,7 @@
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Branch : Entity<Guid, Branch>, IHaveTenant
+    public class Branch : Entity<Guid, Branch>, IHaveTenant, IAuditable
     {
         public virtual Tenant Tenant { get; set; }
 
@@ -15,6 +15,14 @@ namespace AmpedBiz.Core.Entities
         public virtual Contact Contact { get; set; }
 
         public virtual Address Address { get; set; }
+
+        public virtual DateTime? CreatedOn { get; set; }
+
+        public virtual User CreatedBy { get; set; }
+
+        public virtual DateTime? ModifiedOn { get; set; }
+
+        public virtual User ModifiedBy { get; set; }
 
         public Branch() : base(default(Guid)) { }
 

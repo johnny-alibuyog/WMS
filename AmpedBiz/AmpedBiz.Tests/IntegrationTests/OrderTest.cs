@@ -3,7 +3,6 @@ using AmpedBiz.Core.Entities;
 using AmpedBiz.Data;
 using AmpedBiz.Data.Context;
 using AmpedBiz.Data.Seeders;
-using AmpedBiz.Service.Dto.Mappers;
 using AmpedBiz.Service.Tests.Configurations.Database;
 using AmpedBiz.Tests.Configurations;
 using NHibernate;
@@ -58,7 +57,7 @@ namespace AmpedBiz.Tests.IntegrationTests
         //[Test]
         //public void Test1()
         //{
-        //    using (var session = this._sessionFactory.OpenSession())
+        //    using (var session = this._sessionFactory.RetrieveSharedSession(_context))
         //    using (var transaction = session.BeginTransaction())
         //    {
         //        //var entity = new ProductCategory("xxx");

@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Data;
+using System;
 
 namespace AmpedBiz.Service.Host.Plugins.Providers
 {
@@ -6,7 +7,7 @@ namespace AmpedBiz.Service.Host.Plugins.Providers
     {
         public object GetCurrentUserId()
         {
-            return "admin1";
+            return Guid.NewGuid();
         }
     }
 }

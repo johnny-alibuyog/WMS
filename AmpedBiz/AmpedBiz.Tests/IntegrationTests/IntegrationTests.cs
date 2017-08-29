@@ -243,17 +243,21 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         private Service.Dto.Branch CreateBranch(Service.Dto.Branch branch)
         {
-            var request = new CreateBranch.Request()
-            {
-                Address = branch.Address,
-                Description = branch.Description,
-                Id = branch.Id,
-                Name = branch.Name
-            };
+            //var request = new CreateBranch.Request()
+            //{
+            //    Address = branch.Address,
+            //    Description = branch.Description,
+            //    Id = branch.Id,
+            //    Name = branch.Name
+            //};
 
-            var handler = new CreateBranch.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            //var handler = new CreateBranch.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
-            return handler as Service.Dto.Branch;
+            var request = new GetBranch.Request() { Id = Branch.Default.Id };
+            var handler = new GetBranch.Handler(this.sessionFactory, DefaultContext.Instance);
+            var response = handler.Handle(request);
+
+            return response as Service.Dto.Branch;
         }
 
         private List<Service.Dto.User> CreateUsers(int count = 1)

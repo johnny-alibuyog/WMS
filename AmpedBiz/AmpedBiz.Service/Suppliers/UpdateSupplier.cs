@@ -21,7 +21,7 @@ namespace AmpedBiz.Service.Suppliers
             {
                 var response = new Response();
 
-                using (var session = _sessionFactory.OpenSession())
+                using (var session = _sessionFactory.RetrieveSharedSession(_context))
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = session.Get<Supplier>(message.Id);

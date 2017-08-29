@@ -27,6 +27,12 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Component(x => x.Address);
 
+                Map(x => x.CreatedOn);
+
+                Map(x => x.ModifiedOn);
+
+                //OptimisticLock.Dirty();
+
                 ApplyFilter<TenantDefinition.Filter>();
             }
         }
@@ -49,6 +55,10 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Define(x => x.Address)
                     .IsValid();
+
+                Define(x => x.CreatedOn);
+
+                Define(x => x.ModifiedOn);
             }
         }
 
@@ -60,7 +70,7 @@ namespace AmpedBiz.Data.EntityDefinitions
             public Filter()
             {
                 this.WithName(Filter.FilterName)
-                    .WithCondition($"BranchId = :{Filter.ParameterName}")
+                    .WithCondition($"(BranchId = :{Filter.ParameterName} or BranchId is null)")
                     .AddParameter(Filter.ParameterName, NHibernateUtil.Guid);
             }
         }

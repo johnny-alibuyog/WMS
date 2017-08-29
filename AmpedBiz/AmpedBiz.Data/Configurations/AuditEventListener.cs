@@ -1,8 +1,8 @@
-﻿using System;
-using AmpedBiz.Core;
+﻿using AmpedBiz.Core;
 using AmpedBiz.Core.Entities;
 using NHibernate;
 using NHibernate.Event;
+using System;
 
 namespace AmpedBiz.Data.Configurations
 {
@@ -19,7 +19,7 @@ namespace AmpedBiz.Data.Configurations
         public void OnPostInsert(PostInsertEvent @event)
         {
             var auditProvider = SessionFactoryProvider.AuditProvider;
-            var session = @event.Session.GetSession(EntityMode.Poco);
+            //var session = @event.Session.GetSession(EntityMode.Poco);
 
             var entity = @event.Entity as IAuditable;
             if (entity == null)
@@ -29,25 +29,37 @@ namespace AmpedBiz.Data.Configurations
             if (userId == null)
                 return;
 
-            entity.CreatedBy = session.Load<User>(userId);
-            entity.CreatedOn = DateTime.Now;
+            var user = @event.Session.Get<User>(userId);
+            var time = DateTime.Now;
+
+            @event.Persister.Set(@event.State, "CreatedBy", user);
+            @event.Persister.Set(@event.State, "CreatedOn", time);
+
+            entity.CreatedBy = user;
+            entity.CreatedOn = time;
         }
 
         public void OnPostUpdate(PostUpdateEvent @event)
         {
             var auditProvider = SessionFactoryProvider.AuditProvider;
-            var session = @event.Session.GetSession(EntityMode.Poco);
+            //var session = @event.Session.GetSession(EntityMode.Poco);
 
             var entity = @event.Entity as IAuditable;
             if (entity == null)
                 return;
 
-            var currentUser = auditProvider.GetCurrentUserId();
-            if (currentUser == null)
+            var userId = auditProvider.GetCurrentUserId();
+            if (userId == null)
                 return;
 
-            entity.ModifiedBy = session.Load<User>(currentUser);
-            entity.ModifiedOn = DateTime.Now;
+            var user = @event.Session.Get<User>(userId);
+            var time = DateTime.Now;
+
+            @event.Persister.Set(@event.State, "ModifiedBy", user);
+            @event.Persister.Set(@event.State, "ModifiedOn", time);
+
+            entity.ModifiedBy = user;
+            entity.ModifiedOn = time;
         }
     }
     

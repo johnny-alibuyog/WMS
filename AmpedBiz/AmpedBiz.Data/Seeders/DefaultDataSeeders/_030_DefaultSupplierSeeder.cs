@@ -36,7 +36,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 })
                 .ToList();
 
-            using (var session = this._sessionFactory.OpenSession())
+            using (var session = this._sessionFactory.RetrieveSharedSession(_context))
             using (var transaction = session.BeginTransaction())
             {
                 session.SetBatchSize(100);

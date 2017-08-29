@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Data;
+using System;
 
 namespace AmpedBiz.Tests.Configurations
 {
@@ -6,7 +7,7 @@ namespace AmpedBiz.Tests.Configurations
     {
         public object GetCurrentUserId()
         {
-            return "Test User";
+            return Guid.NewGuid();
         }
     }
 }

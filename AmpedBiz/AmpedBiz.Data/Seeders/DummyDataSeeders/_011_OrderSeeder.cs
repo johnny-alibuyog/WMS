@@ -225,8 +225,11 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
     public class OrderActions
     {
+        public static IContext Context;
+
         internal abstract class ActionStep : Step<IEnumerable<Order>>
         {
+            protected readonly IContext _context = Context;
             protected readonly Utils _utils = new Utils(new Random(), SessionFactoryProvider.SessionFactory);
             protected readonly ISessionFactory _sessionFactory = SessionFactoryProvider.SessionFactory;
 
@@ -234,7 +237,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
             protected IEnumerable<Order> ReloadFromSession(IEnumerable<Order> input)
             {
-                var session = this._sessionFactory.RetrieveSharedSession();
+                var session = this._sessionFactory.RetrieveSharedSession(_context);
                 var ids = input.Select(x => x.Id).ToList();
                 return session.QueryOver<Order>()
                     .AndRestrictionOn(x => x.Id).IsIn(ids)
@@ -286,7 +289,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
             protected override IEnumerable<Order> Process(IEnumerable<Order> input)
             {
-                using (var session = this._sessionFactory.RetrieveSharedSession())
+                using (var session = this._sessionFactory.RetrieveSharedSession(_context))
                 using (var transaction = session.BeginTransaction())
                 {
                     var currency = session.Load<Currency>(Currency.PHP.Id);
@@ -351,7 +354,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         {
             protected override IEnumerable<Order> Process(IEnumerable<Order> input)
             {
-                using (var session = this._sessionFactory.RetrieveSharedSession())
+                using (var session = this._sessionFactory.RetrieveSharedSession(_context))
                 using (var transaction = session.BeginTransaction())
                 {
                     input = this.ReloadFromSession(input);
@@ -379,7 +382,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         {
             protected override IEnumerable<Order> Process(IEnumerable<Order> input)
             {
-                using (var session = this._sessionFactory.RetrieveSharedSession())
+                using (var session = this._sessionFactory.RetrieveSharedSession(_context))
                 using (var transaction = session.BeginTransaction())
                 {
                     input = this.ReloadFromSession(input);
@@ -414,7 +417,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         {
             protected override IEnumerable<Order> Process(IEnumerable<Order> input)
             {
-                using (var session = this._sessionFactory.RetrieveSharedSession())
+                using (var session = this._sessionFactory.RetrieveSharedSession(_context))
                 using (var transaction = session.BeginTransaction())
                 {
                     input = this.ReloadFromSession(input);
@@ -442,7 +445,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         {
             protected override IEnumerable<Order> Process(IEnumerable<Order> input)
             {
-                using (var session = this._sessionFactory.RetrieveSharedSession())
+                using (var session = this._sessionFactory.RetrieveSharedSession(_context))
                 using (var transaction = session.BeginTransaction())
                 {
                     input = this.ReloadFromSession(input);
@@ -470,7 +473,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         {
             protected override IEnumerable<Order> Process(IEnumerable<Order> input)
             {
-                using (var session = this._sessionFactory.RetrieveSharedSession())
+                using (var session = this._sessionFactory.RetrieveSharedSession(_context))
                 using (var transaction = session.BeginTransaction())
                 {
                     input = this.ReloadFromSession(input);
@@ -519,7 +522,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         {
             protected override IEnumerable<Order> Process(IEnumerable<Order> input)
             {
-                using (var session = this._sessionFactory.RetrieveSharedSession())
+                using (var session = this._sessionFactory.RetrieveSharedSession(_context))
                 using (var transaction = session.BeginTransaction())
                 {
                     input = this.ReloadFromSession(input);
@@ -548,7 +551,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         {
             protected override IEnumerable<Order> Process(IEnumerable<Order> input)
             {
-                using (var session = this._sessionFactory.RetrieveSharedSession())
+                using (var session = this._sessionFactory.RetrieveSharedSession(_context))
                 using (var transaction = session.BeginTransaction())
                 {
                     input = this.ReloadFromSession(input);

@@ -22,7 +22,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
         public void Seed()
         {
-            using (var session = _sessionFactory.RetrieveSharedSession())
+            using (var session = _sessionFactory.RetrieveSharedSession(_context))
             using (var transaction = session.BeginTransaction())
             {
                 var currency = session.Load<Currency>(Currency.PHP.Id);

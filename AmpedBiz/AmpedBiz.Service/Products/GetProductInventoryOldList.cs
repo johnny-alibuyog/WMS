@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Core.Entities;
+using AmpedBiz.Data;
 using AmpedBiz.Data.Context;
 using MediatR;
 using NHibernate;
@@ -33,7 +34,7 @@ namespace AmpedBiz.Service.Products
             {
                 var response = new Response();
 
-                using (var session = _sessionFactory.OpenSession())
+                using (var session = _sessionFactory.RetrieveSharedSession(_context))
                 using (var transaction = session.BeginTransaction())
                 {
                     var query = session.Query<Product>();

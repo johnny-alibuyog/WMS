@@ -41,7 +41,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                 });
             }
 
-            using (var session = _sessionFactory.OpenSession())
+            using (var session = _sessionFactory.RetrieveSharedSession(_context))
             using (var transaction = session.BeginTransaction())
             {
                 //session.SetBatchSize(100);
