@@ -29,7 +29,6 @@ namespace AmpedBiz.Core.Entities
 
         public virtual void SetRoles(IEnumerable<Role> items)
         {
-
             var rolesToAdd = items.Except(this.Roles).ToList();
 
             var rolesToRemove = this.Roles.Except(items).ToList();

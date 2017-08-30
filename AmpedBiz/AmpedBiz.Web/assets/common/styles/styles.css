@@ -52,6 +52,12 @@ input[type=checkbox] {
   display: inline;
 }
 
+.control-display {
+  font-weight: normal;
+  margin: unset;
+  padding-top: 7px;
+}
+
 ux-dialog-overlay.active {
   /*background-color: black;*/
   opacity: .5;

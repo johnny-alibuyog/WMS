@@ -1,8 +1,9 @@
-import { autoinject } from 'aurelia-framework';
-import { NavigationInstruction, Next, PipelineStep, Redirect, Router, RouterConfiguration } from 'aurelia-router';
 import { AuthService, AuthSettings } from '../services/auth-service';
-import { role } from '../common/models/role';
+import { NavigationInstruction, Next, PipelineStep, Redirect, Router, RouterConfiguration } from 'aurelia-router';
+
 import { NotificationService } from '../common/controls/notification-service';
+import { autoinject } from 'aurelia-framework';
+import { role } from '../common/models/role';
 
 @autoinject
 export class Shell {
@@ -91,9 +92,9 @@ export class Shell {
         },
       },
       {
-        route: ['report_center'],
-        name: 'report_center',
-        moduleId: '../report_center/index',
+        route: ['report-center'],
+        name: 'report-center',
+        moduleId: '../report-center/index',
         nav: true,
         main: true,
         title: 'Report Center',
@@ -118,6 +119,19 @@ export class Shell {
               role.admin,
               role.manager,
             ]
+          }
+        },
+      },
+      {
+        route: ['user-profile'],
+        name: 'user-profile',
+        moduleId: '../users/profiles/index',
+        nav: false,
+        main: true,
+        title: 'User Profile',
+        settings: {
+          auth: <AuthSettings>{
+            roles: role.all()
           }
         },
       },

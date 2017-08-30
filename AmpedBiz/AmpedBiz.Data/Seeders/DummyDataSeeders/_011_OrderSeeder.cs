@@ -301,7 +301,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                             return;
 
                         var validCount = _utils.RandomInteger(1, products.Count());
-                        var randomProductCount = validCount > 50 ? 50 : validCount;
+                        var randomProductCount = validCount > 30 ? 30 : validCount;
 
                         var entity = new Order(Guid.NewGuid());
                         entity.Accept(new OrderUpdateVisitor()

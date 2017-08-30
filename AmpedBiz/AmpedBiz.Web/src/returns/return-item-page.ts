@@ -206,6 +206,14 @@ export class ReturnItemPage {
       return; // do not allow edit of items which is already saved
     }
 
+    if (!item.unitOfMeasures || item.unitOfMeasures.length == 0) {
+      this.getProductInventory(item.product).then(data => {
+        if (data && data.unitOfMeasures) {
+          item.unitOfMeasures = data.unitOfMeasures.map(x => x.unitOfMeasure);
+        }
+      });
+    }
+
     if (this.selectedItem !== item)
       this.selectedItem = item;
   }

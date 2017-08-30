@@ -191,6 +191,14 @@ export class PurchaseOrderItemPage {
       return;
     }
 
+    if (!item.unitOfMeasures || item.unitOfMeasures.length == 0) {
+      this.getProductInventory(item.product).then(data => {
+        if (data && data.unitOfMeasures) {
+          item.unitOfMeasures = data.unitOfMeasures.map(x => x.unitOfMeasure);
+        }
+      });
+    }
+
     if (this.selectedItem !== item)
       this.selectedItem = item;
   }

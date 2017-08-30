@@ -275,7 +275,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                             return;
 
                         var validCount = _utils.RandomInteger(1, products.Count());
-                        var randomProductCount = validCount > 50 ? 50 : validCount;
+                        var randomProductCount = validCount > 30 ? 30 : validCount;
 
                         var entity = new PurchaseOrder(Guid.NewGuid());
                         entity.Accept(new PurchaseOrderUpdateVisitor()
@@ -293,7 +293,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                 .Select(x => new PurchaseOrderItem(
                                     product: x,
                                     quantity: new Measure(
-                                        value: _utils.RandomInteger(1, 100),
+                                        value: _utils.RandomInteger(1, 20),
                                         unit: x.UnitOfMeasures.Default(o => o.UnitOfMeasure)
                                     ),
                                     standard: x.StandardEquivalentMeasureOf(x.UnitOfMeasures.Default(o => o.UnitOfMeasure)),

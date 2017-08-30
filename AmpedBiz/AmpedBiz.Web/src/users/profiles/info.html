@@ -1,0 +1,92 @@
+<template>
+  <require from="common/controls/person-input.html"></require>
+
+  <section class="row row-no-padding">
+
+    <div class="col-md-6">
+
+      <div class="panel panel-default">
+
+        <!-- heading -->
+        <div class="panel-heading">
+
+          <!-- heading label -->
+          <h4 class="panel-title row-fluid">
+            <span>&nbsp ${header} &nbsp</span>
+
+            <!-- transition buttons -->
+            <button show.bind="isEdit" type="button" class="btn btn-default" click.trigger="save()">
+              <i class="fa fa-check"></i> Save
+            </button>
+
+            <button type="button" class="btn btn-default" click.trigger="toggleEdit()">
+              <i class="fa fa-times"></i> ${isEdit ? "Cancel" : "Edit"}
+            </button>
+          </h4>
+
+        </div>
+
+        <!-- body -->
+        <div class="panel-body">
+
+          <br />
+
+          <form class="form-horizontal" role="form">
+
+            <!-- view mode -->
+            <div show.bind="!isEdit">
+              <div class="form-group row" show.bind="user.username">
+                <label class="control-label col-sm-4">Username:</label>
+                <div class="col-sm-8">
+                  <label class="control-display">${user.username}</label>
+                </div>
+              </div>
+              <div class="form-group row" show.bind="user.person.firstName">
+                <label class="control-label col-sm-4">First Name:</label>
+                <div class="col-sm-8">
+                  <label class="control-display">${user.person.firstName}</label>
+                </div>
+              </div>
+              <div class="form-group row" show.bind="user.person.middleName">
+                <label class="control-label col-sm-4">Middle Name:</label>
+                <div class="col-sm-8">
+                  <label class="control-display">${user.person.middleName}</label>
+                </div>
+              </div>
+              <div class="form-group row" show.bind="user.person.lastName">
+                <label class="control-label col-sm-4">Last Name:</label>
+                <div class="col-sm-8">
+                  <label class="control-display">${user.person.lastName}</label>
+                </div>
+              </div>
+              <div class="form-group row" show.bind="user.person.birthDate">
+                <label class="control-label col-sm-4">Birth Date:</label>
+                <div class="col-sm-8">
+                  <label class="control-display">${user.person.birthDate}</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- edit mode -->
+            <div show.bind="isEdit" id="info" class="tab-pane fade in active">
+              <div class="form-group">
+                <label class="control-label col-sm-4">Username:</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" placeholder="Enter Name" value.bind="user.username" />
+                </div>
+              </div>
+
+              <person-input person.two-way="user.person" />
+            </div>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+
+    </div>
+
+  </section>
+
+</template>
