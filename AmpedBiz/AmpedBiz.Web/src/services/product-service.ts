@@ -1,9 +1,9 @@
 import { PageRequest, PagerResponse } from '../common/models/paging';
-import { ProductInventory, ProductInventory1 } from '../common/models/product';
 
 import { HttpClientFacade } from './http-client-facade';
 import { Lookup } from '../common/custom_types/lookup';
 import { Product } from '../common/models/product';
+import { ProductInventory } from '../common/models/product';
 import { ProductOrderPageItem } from '../common/models/product';
 import { ProductOrderReturnPageItem } from '../common/models/product';
 import { ProductPurchasePageItem } from '../common/models/product';
@@ -17,20 +17,6 @@ import { buildQueryString } from 'aurelia-framework';
 export class ProductService extends ServiceBase<Product> {
   constructor(httpClient: HttpClientFacade) {
     super('products', httpClient);
-  }
-
-  getInventory1(productId: string): Promise<ProductInventory1> {
-    var url = 'product-inventories1/' + productId;
-    return this._httpClient.get(url)
-      .then(response => <ProductInventory1>response);
-  }
-
-  getInventory1List(productIds?: string[]): Promise<ProductInventory1[]> {
-    var queryString = (productIds) ? '/?' + buildQueryString({ productIds: productIds }) : '';
-    var url = 'product-inventories1' + queryString;
-
-    return this._httpClient.get(url)
-      .then(response => <ProductInventory1[]>response);
   }
 
   getInventory(productId: string): Promise<ProductInventory> {

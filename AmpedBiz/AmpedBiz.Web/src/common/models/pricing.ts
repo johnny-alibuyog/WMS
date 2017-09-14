@@ -1,6 +1,5 @@
-import { ProductInventory, ProductInventory1 } from './product';
-
 import { Lookup } from '../custom_types/lookup';
+import { ProductInventory } from './product';
 import { UnitOfMeasure } from "./unit-of-measure";
 
 export interface Pricing {
@@ -25,21 +24,7 @@ export let pricing = {
   wholesalePrice: wholesalePrice,
   retailPrice: retailPrice,
   badStockPrice: badStockPrice,
-  getPriceAmount: (pricing: Lookup<string>, product: ProductInventory) => {
-    switch (pricing.id) {
-      case basePrice.id:
-        return product.basePriceAmount;
-      case wholesalePrice.id:
-        return product.wholesalePriceAmount;
-      case retailPrice.id:
-        return product.retailPriceAmount;
-      case badStockPrice.id:
-        return product.badStockPriceAmount;
-      default:
-        return 0;
-    }
-  },
-  getPriceAmount1: (inventory: ProductInventory1, pricing: Pricing, unitOfMeasure: UnitOfMeasure) => {
+  getPriceAmount1: (inventory: ProductInventory, pricing: Pricing, unitOfMeasure: UnitOfMeasure) => {
     if (inventory == null || inventory.unitOfMeasures == null || inventory.unitOfMeasures.length == 0) {
       return 0;
     }

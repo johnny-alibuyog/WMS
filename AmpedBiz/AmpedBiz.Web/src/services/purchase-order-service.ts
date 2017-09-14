@@ -1,8 +1,11 @@
+import { PurchaseOrderItem, Voucher } from '../common/models/purchase-order';
+
 import { AuthService } from './auth-service';
 import { HttpClientFacade } from './http-client-facade';
 import { Lookup } from '../common/custom_types/lookup';
 import { Measure } from "../common/models/measure";
 import { PageRequest } from '../common/models/paging';
+import { Product } from "../common/models/product";
 import { PurchaseOrder } from '../common/models/purchase-order';
 import { PurchaseOrderPayable } from '../common/models/purchase-order';
 import { PurchaseOrderPayment } from '../common/models/purchase-order';
@@ -11,7 +14,7 @@ import { PurchaseOrderReceivable } from '../common/models/purchase-order';
 import { PurchaseOrderReceiving } from '../common/models/purchase-order';
 import { PurchaseOrderStatus } from '../common/models/purchase-order';
 import { ServiceBase } from './service-base'
-import { Voucher } from '../common/models/purchase-order';
+import { UnitOfMeasure } from "../common/models/unit-of-measure";
 import { autoinject } from 'aurelia-framework';
 
 @autoinject
@@ -174,29 +177,46 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
   }
 
   public computeReceivablesFrom(purchaseOrder: PurchaseOrder): PurchaseOrderReceivable[] {
-    var itemProducts = ((purchaseOrder.items && purchaseOrder.items.map(x => x.product)) || []);
-    var receiptProducts = ((purchaseOrder.receipts && purchaseOrder.receipts.map(x => x.product)) || []);
-    var allProducts: Lookup<string>[] = [];
+    type Key = {
+      product: Product,
+      unit: UnitOfMeasure
+    };
 
-    for (var i = 0; i < itemProducts.length; i++) {
-      if (!allProducts.find(x => x.id === itemProducts[i].id)) {
-        allProducts.push(itemProducts[i]);
+    let composeKey = (args: PurchaseOrderItem | PurchaseOrderReceipt) => {
+      return <Key>{
+        product: args.product,
+        unit: args.quantity.unit
+      };
+    };
+
+    let compareKey = (left: Key, right: Key) =>{
+      return left.product.id === right.product.id && left.unit.id === right.unit.id;
+    }
+
+    let itemKeys = ((purchaseOrder.items && purchaseOrder.items.map(composeKey)) || []);
+    let receiptKeys = ((purchaseOrder.receipts && purchaseOrder.receipts.map(composeKey)) || []);
+    let allKeys: Key[] = [];
+
+    for (let i = 0; i < itemKeys.length; i++) {
+      if (!allKeys.find(x => compareKey(x, itemKeys[i]))) {
+        allKeys.push(itemKeys[i]);
       }
     }
 
-    for (var i = 0; i < receiptProducts.length; i++) {
-      if (!allProducts.find(x => x.id === receiptProducts[i].id)) {
-        allProducts.push(receiptProducts[i]);
+    for (let i = 0; i < receiptKeys.length; i++) {
+      if (!allKeys.find(x => compareKey(x, receiptKeys[i]))) {
+        allKeys.push(receiptKeys[i]);
       }
     }
 
     let findUnit = (purchaseOrder: PurchaseOrder, product: Lookup<string>) => {
       let item = purchaseOrder.items.find(item => item.product.id == product.id);
-      if (!item) {
+      let receipt = purchaseOrder.receipts.find(receipt => receipt.product.id == product.id);
+      if (!item && receipt) {
         return null;
       }
 
-      let quantity = item.quantity;
+      let quantity = item.quantity || receipt.quantity;
       if (!quantity) {
         return null;
       }
@@ -204,8 +224,8 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
       return quantity.unit;
     };
 
-    let findStandard = (purchaseOrder: PurchaseOrder, product: Lookup<string>) => {
-      let item = purchaseOrder.items.find(item => item.product.id == product.id);
+    let findStandard = (key: Key, purchaseOrder: PurchaseOrder) => {
+      let item = purchaseOrder.items.find(item => compareKey(key, composeKey(item)));
       if (!item) {
         return null;
       }
@@ -213,27 +233,27 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
       return item.standard;
     };
 
-    return allProducts.map(product => {
-      var receivable = <PurchaseOrderReceivable>{
+    return allKeys.map(key => {
+      let receivable = <PurchaseOrderReceivable>{
         purchaseOrderId: purchaseOrder.id,
         product: <Lookup<string>>{
-          id: product.id,
-          name: product.name
+          id: key.product.id,
+          name: key.product.name
         },
         orderedQuantity: purchaseOrder.items
-          .filter(item => item.product.id == product.id)
+          .filter(item => compareKey(key, composeKey(item)))
           .reduce((prevVal, item) => prevVal + item.quantity.value, 0),
         receivedQuantity: purchaseOrder.receipts
-          .filter(receipt => receipt.product.id == product.id)
+          .filter(item => compareKey(key, composeKey(item)))
           .reduce((prevVal, receipt) => prevVal + receipt.quantity.value, 0),
         receiving: <PurchaseOrderReceiving>{
           receivedBy: this._auth.userAsLookup,
           receivedOn: new Date(),
           quantity: <Measure>{
-            unit: findUnit(purchaseOrder, product),
+            unit: key.unit,
             value: 0
           },
-          standard: findStandard(purchaseOrder, product)
+          standard: findStandard(key, purchaseOrder)
         }
       };
 

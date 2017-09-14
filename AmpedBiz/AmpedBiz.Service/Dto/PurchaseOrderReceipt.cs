@@ -8,7 +8,7 @@ namespace AmpedBiz.Service.Dto
     public class PurchaseOrderReceipt
     {
         public Guid Id { get; set; }
-        
+
         public Guid PurchaseOrderId { get; set; }
 
         public string BatchNumber { get; set; }
@@ -54,8 +54,8 @@ namespace AmpedBiz.Service.Dto
         {
             return purchaseOrder.Items
                 .GroupJoin(purchaseOrder.Receipts,
-                    (x) => x.Product,
-                    (x) => x.Product,
+                    (x) => new { x.Product, x.Quantity.Unit },
+                    (x) => new { x.Product, x.Quantity.Unit },
                     (item, receipts) => new Dto.PurchaseOrderReceivable()
                     {
                         PurchaseOrderId = purchaseOrder.Id,

@@ -1,7 +1,7 @@
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { Filter, Pager, PagerRequest, PagerResponse, SortDirection, Sorter } from '../common/models/paging';
 import { OrderItem, orderEvents } from '../common/models/order';
-import { ProductInventory, ProductInventory1, ProductInventoryFacade } from '../common/models/product';
+import { ProductInventory, ProductInventoryFacade } from '../common/models/product';
 import { autoinject, bindable, bindingMode, computedFrom, customElement } from 'aurelia-framework'
 
 import { Dictionary } from '../common/custom_types/dictionary';
@@ -22,8 +22,7 @@ export class OrderItemPage {
   private readonly _eventAggregator: EventAggregator;
 
   private _subscriptions: Subscription[] = [];
-  //private _productInventories: ProductInventory[] = [];
-  private _productInventories1: ProductInventory1[] = [];
+  private _productInventories1: ProductInventory[] = [];
   private _isPricingInitialized: boolean = false;
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
@@ -65,14 +64,14 @@ export class OrderItemPage {
     this.itemPager.onPage = () => this.initializePage();
   }
 
-  private getProductInventory(product: Lookup<string>): Promise<ProductInventory1> {
+  private getProductInventory(product: Lookup<string>): Promise<ProductInventory> {
     let productInventory = this._productInventories1.find(x => x.id === product.id);
 
     if (productInventory) {
       return Promise.resolve(productInventory);
     }
 
-    return this._api.products.getInventory1(product.id).then(data => {
+    return this._api.products.getInventory(product.id).then(data => {
       this._productInventories1.push(data);
       return data;
     });
@@ -99,7 +98,7 @@ export class OrderItemPage {
     }
 
     let productIds = this.items.map(x => x.product.id);
-    this._api.products.getInventory1List(productIds)
+    this._api.products.getInventoryList(productIds)
       .then(result => this._productInventories1 = result);
   }
 

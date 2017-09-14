@@ -12,14 +12,14 @@ using System.Linq;
 
 namespace AmpedBiz.Service.Products
 {
-    public class GetProductInventory1
+    public class GetProductInventory
     {
         public class Request : IRequest<Response>
         {
             public Guid ProductId { get; set; }
         }
 
-        public class Response : Dto.ProductInventory1 { }
+        public class Response : Dto.ProductInventory { }
 
         public class Handler : RequestHandlerBase<Request, Response>
         {

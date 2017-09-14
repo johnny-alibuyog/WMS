@@ -144,9 +144,6 @@ namespace AmpedBiz.Tests.IntegrationTests
                 Name = "Name_" + this.GenerateRandomString(10),
                 Inventory = new Service.Dto.Inventory()
                 {
-                    BasePriceAmount = basePrice,
-                    RetailPriceAmount = basePrice + 1,
-                    WholesalePriceAmount = basePrice + 2,
                     InitialLevelValue = (decimal)random.Next(300000, 400000),
                 }
             };

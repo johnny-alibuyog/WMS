@@ -2,7 +2,6 @@ import { Address } from './Address';
 import { Dictionary } from '../custom_types/dictionary';
 import { Lookup } from '../custom_types/lookup';
 import { Measure } from "./measure";
-import { ProductInventory } from './product';
 import { UnitOfMeasure } from "./unit-of-measure";
 
 export const returnEvents = {

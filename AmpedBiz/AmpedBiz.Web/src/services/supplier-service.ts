@@ -1,21 +1,15 @@
-import { autoinject } from 'aurelia-framework';
-import { Supplier, SupplierReportPageItem } from '../common/models/supplier'
-import { ProductInventory } from '../common/models/product';
 import { PageRequest, PagerResponse } from '../common/models/paging';
-import { ServiceBase } from './service-base'
+import { Supplier, SupplierReportPageItem } from '../common/models/supplier'
+
 import { HttpClientFacade } from './http-client-facade';
 import { Lookup } from '.././common/custom_types/lookup';
+import { ServiceBase } from './service-base'
+import { autoinject } from 'aurelia-framework';
 
 @autoinject
 export class SupplierService extends ServiceBase<Supplier> {
   constructor(httpClient: HttpClientFacade) {
     super('suppliers', httpClient);
-  }
-
-  getProductInventories(supplierId: string): Promise<ProductInventory[]> {
-    var url = this._resouce + '/' + supplierId + '/product-inventories';
-    return this._httpClient.get(url)
-      .then(response => <ProductInventory[]>response);
   }
 
   getProductLookups(supplierId: string): Promise<Lookup<string>[]> {

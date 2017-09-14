@@ -163,7 +163,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         #region Common Helpers
 
-        private Service.Dto.ProductInventoryUnitOfMeasure RandomProductUnitOfMeasure(Service.Dto.ProductInventory1 productInventory)
+        private Service.Dto.ProductInventoryUnitOfMeasure RandomProductUnitOfMeasure(Service.Dto.ProductInventory productInventory)
         {
             var random = productInventory.UnitOfMeasures[this.random.Next(0, productInventory.UnitOfMeasures.Count - 1)];
             return random;
@@ -410,13 +410,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                     Supplier = productData.Supplier,
                     Inventory = new Service.Dto.Inventory()
                     {
-                        UnitOfMeasure = this.RandomUnitOfMeasure(),
-                        PackagingUnitOfMeasure = this.RandomUnitOfMeasure(),
-                        PackagingSize = 0.30M,
                         InitialLevelValue = productData.Inventory.InitialLevelValue,
-                        BasePriceAmount = productData.Inventory.BasePriceAmount,
-                        WholesalePriceAmount = productData.Inventory.WholesalePriceAmount,
-                        RetailPriceAmount = productData.Inventory.RetailPriceAmount,
                         BackOrderedValue = productData.Inventory.BackOrderedValue,
                     },
                     UnitOfMeasures = new List<Service.Dto.ProductUnitOfMeasure>()
@@ -491,11 +485,11 @@ namespace AmpedBiz.Tests.IntegrationTests
             return products;
         }
 
-        private IEnumerable<Service.Dto.ProductInventory1> SelectRandomProductInventories(Guid supplierId, int count = 12)
+        private IEnumerable<Service.Dto.ProductInventory> SelectRandomProductInventories(Guid supplierId, int count = 12)
         {
-            var request = new GetProductInventory1List.Request() { SupplierId = supplierId };
-            var response = new GetProductInventory1List.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
-            var productInventories = response.Cast<Service.Dto.ProductInventory1>();
+            var request = new GetProductInventoryList.Request() { SupplierId = supplierId };
+            var response = new GetProductInventoryList.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            var productInventories = response.Cast<Service.Dto.ProductInventory>();
 
             var totalProductInventory = productInventories.Count();
 
@@ -515,10 +509,10 @@ namespace AmpedBiz.Tests.IntegrationTests
             return result;
         }
 
-        private IEnumerable<Service.Dto.ProductInventory1> SelectRandomAvailableProductInventories(Guid supplierId, int count = 12)
+        private IEnumerable<Service.Dto.ProductInventory> SelectRandomAvailableProductInventories(Guid supplierId, int count = 12)
         {
-            var request = new GetProductInventory1List.Request() { SupplierId = supplierId };
-            var response = new GetProductInventory1List.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            var request = new GetProductInventoryList.Request() { SupplierId = supplierId };
+            var response = new GetProductInventoryList.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
             var availableProductInventories = response.Where(x =>
                 x.UnitOfMeasures != null &&
                 x.UnitOfMeasures.Any() &&
@@ -833,8 +827,8 @@ namespace AmpedBiz.Tests.IntegrationTests
             using (var transaction = session.BeginTransaction())
             {
                 var productIds = order.Items.Select(x => x.Product.Id).ToArray();
-                var productInventories = new GetProductInventory1List.Handler(this.sessionFactory, DefaultContext.Instance)
-                    .Handle(new GetProductInventory1List.Request() { ProductIds = productIds });
+                var productInventories = new GetProductInventoryList.Handler(this.sessionFactory, DefaultContext.Instance)
+                    .Handle(new GetProductInventoryList.Request() { ProductIds = productIds });
 
                 productInventories.ForEach(productInventory =>
                 {

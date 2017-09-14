@@ -3,7 +3,6 @@ import { Return, returnEvents } from '../common/models/return';
 
 import { Lookup } from '../common/custom_types/lookup';
 import { NotificationService } from '../common/controls/notification-service';
-import { ProductInventory } from '../common/models/product';
 import { Router } from 'aurelia-router';
 import { ServiceApi } from '../services/service-api';
 import { autoinject } from 'aurelia-framework';

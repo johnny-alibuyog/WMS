@@ -37,16 +37,9 @@ namespace AmpedBiz.Service.Products
                             Id = x.Id,
                             Code = x.Code,
                             Name = x.Name,
-                            //UnitOfMeasure = x.Inventory.UnitOfMeasure.Name,
-                            //PackagingUnitOfMeasure = x.Inventory.PackagingUnitOfMeasure.Name,
-                            //PackagingSize = x.Inventory.PackagingSize,
                             TargetValue = x.Inventory.TargetLevel.Value,
                             AvailableValue = x.Inventory.Available.Value,
                             BadStockValue = x.Inventory.BadStock.Value,
-                            //BasePriceAmount = x.Inventory.BasePrice.Amount,
-                            //WholesalePriceAmount = x.Inventory.WholesalePrice.Amount,
-                            //RetailPriceAmount = x.Inventory.RetailPrice.Amount,
-                            //BadStockPriceAmount = x.Inventory.BadStockPrice.Amount,
                             DiscountAmount = 0M
                         })
                         .FirstOrDefault();

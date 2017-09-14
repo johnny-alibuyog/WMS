@@ -198,7 +198,7 @@ export class PurchaseOrderCreate {
       .then(data => this._voucherReport.show(data))
   }
 
-  // NOTE: I HATE THIS METHOD!!!, needed to be refactored when demo is done.
+  // NOTE: I HATE THIS METHOD!!! This looks shit. Needed to be refactored when demo is done.
   // REFERENCE: https://github.com/kinlane/csv-converter/blob/gh-pages/json-to-csv/index.html 
   public downloadVoucherCsv(): void {
     //If JSONData is not an object then JSON.parse will parse the JSON string in an Object

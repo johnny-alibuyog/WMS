@@ -1,5 +1,6 @@
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { Filter, Pager, PagerRequest, PagerResponse, SortDirection, Sorter } from '../common/models/paging';
+import { ProductInventory, ProductInventoryFacade } from "../common/models/product";
 import { PurchaseOrderReceipt, PurchaseOrderReceivable, PurchaseOrderReceiving, purchaseOrderEvents } from '../common/models/purchase-order';
 import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
 
@@ -12,10 +13,13 @@ import { ServiceApi } from '../services/service-api';
 @autoinject
 @customElement("purchase-order-receipt-page")
 export class PurchaseOrderReceiptPage {
-  private _api: ServiceApi;
-  private _notification: NotificationService;
-  private _eventAggregator: EventAggregator;
+
+  private readonly _api: ServiceApi;
+  private readonly _notification: NotificationService;
+  private readonly _eventAggregator: EventAggregator;
+
   private _subscriptions: Subscription[] = [];
+  private _productInventories: ProductInventory[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public purchaseOrderId: string = '';
@@ -60,12 +64,57 @@ export class PurchaseOrderReceiptPage {
     this._subscriptions.forEach(subscription => subscription.dispose());
   }
 
+  private getProductInventory(product: Lookup<string>): Promise<ProductInventory> {
+    if (product == null || product.id == null) {
+      return Promise.resolve(null);
+    }
+
+    let productInventory = this._productInventories.find(x => x.id === product.id);
+
+    if (productInventory) {
+      return Promise.resolve(productInventory);
+    }
+
+    return this._api.products.getInventory(product.id).then(data => {
+      this._productInventories.push(data);
+      return data;
+    });
+  }
+
   public receiptsChanged() {
     this.initializeReceiptPage();
   }
 
   public receivablesChanged() {
     this.initializeReceivablePage();
+  }
+
+  public initializeItem(item: PurchaseOrderReceivable): void {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
+    if (!item.product) {
+      item.receiving.quantity = {
+        unit: null,
+        value: 0
+      };
+      item.receiving.standard = {
+        unit: null,
+        value: 0
+      };
+      return;
+    }
+
+    this.getProductInventory(item.product).then(inventory => {
+      var facade = new ProductInventoryFacade(inventory);
+      var current = facade.default;
+
+      item.unitOfMeasures = inventory.unitOfMeasures.map(x => x.unitOfMeasure);
+      item.receiving.quantity.unit = current.unitOfMeasure;
+      item.receiving.standard.unit = current.standard.unit;
+      item.receiving.standard.value = current.standard.value;
+    });
   }
 
   public initializeReceiptPage(): void {
@@ -136,6 +185,14 @@ export class PurchaseOrderReceiptPage {
   public editItem(_receivable: PurchaseOrderReceivable): void {
     if (this.isModificationDisallowed) {
       return;
+    }
+
+    if (!_receivable.unitOfMeasures || _receivable.unitOfMeasures.length == 0) {
+      this.getProductInventory(_receivable.product).then(data => {
+        if (data && data.unitOfMeasures) {
+          _receivable.unitOfMeasures = data.unitOfMeasures.map(x => x.unitOfMeasure);
+        }
+      });
     }
 
     if (this.selectedItem !== _receivable)

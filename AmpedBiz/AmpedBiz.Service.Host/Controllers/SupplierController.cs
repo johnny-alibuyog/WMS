@@ -31,13 +31,6 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpGet()]
-        [Route("{supplierId}/product-inventories")]
-        public async Task<GetProductInventoryOldList.Response> Process([FromUri]GetProductInventoryOldList.Request request)
-        {
-            return await _mediator.Send(request ?? new GetProductInventoryOldList.Request());
-        }
-
-        [HttpGet()]
         [Route("{supplierId}/product-lookups")]
         public async Task<GetProductLookup.Response> Process([FromUri]GetProductLookup.Request request)
         {

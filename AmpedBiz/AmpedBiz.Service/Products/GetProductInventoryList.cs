@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace AmpedBiz.Service.Products
 {
-    public class GetProductInventory1List
+    public class GetProductInventoryList
     {
         public class Request : IRequest<Response>
         {
@@ -21,11 +21,11 @@ namespace AmpedBiz.Service.Products
             public Guid SupplierId { get; set; }
         }
 
-        public class Response : List<Dto.ProductInventory1>
+        public class Response : List<Dto.ProductInventory>
         {
             public Response() { }
 
-            public Response(List<Dto.ProductInventory1> items) : base(items) { }
+            public Response(List<Dto.ProductInventory> items) : base(items) { }
         }
 
         public class Handler : RequestHandlerBase<Request, Response>
@@ -58,7 +58,7 @@ namespace AmpedBiz.Service.Products
                         .ToList();
 
                     var dtos = productInventories
-                        .Select(productInventory => new Dto.ProductInventory1()
+                        .Select(productInventory => new Dto.ProductInventory()
                         {
                             Id = productInventory.Product.Id,
                             Code = productInventory.Product.Code,
@@ -72,6 +72,14 @@ namespace AmpedBiz.Service.Products
                                         .MapTo(default(Dto.UnitOfMeasure)),
                                     Available = productInventory
                                         .Convert(o => o.Available)
+                                        .To(x.UnitOfMeasure)
+                                        .MapTo(default(Dto.Measure)),
+                                    TargetLevel = productInventory
+                                        .Convert(o => o.TargetLevel)
+                                        .To(x.UnitOfMeasure)
+                                        .MapTo(default(Dto.Measure)),
+                                    BadStock = productInventory
+                                        .Convert(o => o.BadStock)
                                         .To(x.UnitOfMeasure)
                                         .MapTo(default(Dto.Measure)),
                                     Standard = x.Product

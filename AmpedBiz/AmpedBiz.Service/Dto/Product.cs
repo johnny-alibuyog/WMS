@@ -74,39 +74,8 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? RetailPriceAmount { get; set; }
     }
-
-    public class ProductInventoryOld
-    {
-        public Guid Id { get; set; }
-
-        public string Code { get; set; }
-
-        public string Name { get; set; }
-
-        public string UnitOfMeasure { get; set; }
-
-        public string PackagingUnitOfMeasure { get; set; }
-
-        public decimal? PackagingSize { get; set; }
-
-        public decimal? TargetValue { get; set; }
-
-        public decimal? AvailableValue { get; set; }
-
-        public decimal? BadStockValue { get; set; }
-
-        public decimal? BasePriceAmount { get; set; }
-
-        public decimal? WholesalePriceAmount { get; set; }
-
-        public decimal? RetailPriceAmount { get; set; }
-
-        public decimal? BadStockPriceAmount { get; set; }
-
-        public decimal? DiscountAmount { get; set; }
-    }
-
-    public class ProductInventory1
+    
+    public class ProductInventory
     {
         public Guid Id { get; set; }
 
@@ -126,6 +95,10 @@ namespace AmpedBiz.Service.Dto
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
         public Measure Available { get; set; }
+
+        public Measure TargetLevel { get; set; }
+
+        public Measure BadStock { get; set; }
 
         public Measure Standard { get; set; }
 

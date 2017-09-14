@@ -23,32 +23,32 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpGet()]
-        [Route("~/product-inventories1/{productId}")]
-        public async Task<GetProductInventory1.Response> Process([FromUri]GetProductInventory1.Request request)
-        {
-            return await _mediator.Send(request ?? new GetProductInventory1.Request());
-        }
-
-        [HttpGet()]
-        [Route("~/product-inventories1")]
-        public async Task<GetProductInventory1List.Response> Process([FromUri]GetProductInventory1List.Request request)
-        {
-            return await _mediator.Send(request ?? new GetProductInventory1List.Request());
-        }
-
-        [HttpGet()]
         [Route("~/product-inventories/{productId}")]
-        public async Task<GetProductInventoryOld.Response> Process([FromUri]GetProductInventoryOld.Request request)
+        public async Task<GetProductInventory.Response> Process([FromUri]GetProductInventory.Request request)
         {
-            return await _mediator.Send(request ?? new GetProductInventoryOld.Request());
+            return await _mediator.Send(request ?? new GetProductInventory.Request());
         }
 
         [HttpGet()]
         [Route("~/product-inventories")]
-        public async Task<GetProductInventoryOldList.Response> Process([FromUri]GetProductInventoryOldList.Request request)
+        public async Task<GetProductInventoryList.Response> Process([FromUri]GetProductInventoryList.Request request)
         {
-            return await _mediator.Send(request ?? new GetProductInventoryOldList.Request());
+            return await _mediator.Send(request ?? new GetProductInventoryList.Request());
         }
+
+        //[HttpGet()]
+        //[Route("~/product-inventories/{productId}")]
+        //public async Task<GetProductInventoryOld.Response> Process([FromUri]GetProductInventoryOld.Request request)
+        //{
+        //    return await _mediator.Send(request ?? new GetProductInventoryOld.Request());
+        //}
+
+        //[HttpGet()]
+        //[Route("~/product-inventories")]
+        //public async Task<GetProductInventoryOldList.Response> Process([FromUri]GetProductInventoryOldList.Request request)
+        //{
+        //    return await _mediator.Send(request ?? new GetProductInventoryOldList.Request());
+        //}
 
         [HttpGet()]
         [Route("~/product-lookups")]

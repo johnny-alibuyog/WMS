@@ -61,22 +61,6 @@ export interface ProductInventory {
   id?: string;
   code?: string;
   name?: string;
-  unitOfMeasure?: string;
-  packagingSize?: number;
-  targetValue?: number;
-  availableValue?: number;
-  badStockValue?: number;
-  basePriceAmount?: number;
-  wholesalePriceAmount?: number;
-  retailPriceAmount?: number;
-  badStockPriceAmount?: number;
-  discountAmount?: number;
-}
-
-export interface ProductInventory1 {
-  id?: string;
-  code?: string;
-  name?: string;
   unitOfMeasures?: ProductInventoryUnitOfMeasure[];
 }
 
@@ -182,9 +166,9 @@ export class ProductReportPageItem {
 }
 
 export class ProductInventoryFacade {
-  private _inventory: ProductInventory1;
+  private _inventory: ProductInventory;
 
-  constructor(inventory: ProductInventory1) {
+  constructor(inventory: ProductInventory) {
     this._inventory = inventory;
   }
 
@@ -196,7 +180,7 @@ export class ProductInventoryFacade {
     return this._inventory.unitOfMeasures.find(x => x.isDefault);
   }
 
-  public getPrice(inventory: ProductInventory1, unitOfMeasure: UnitOfMeasure, pricing: Lookup<string>) : ProductInventoryUnitOfMeasurePrice {
+  public getPrice(inventory: ProductInventory, unitOfMeasure: UnitOfMeasure, pricing: Lookup<string>) : ProductInventoryUnitOfMeasurePrice {
     var productUnitOfMeasure = inventory.unitOfMeasures.find(x => x.unitOfMeasure.id === unitOfMeasure.id);
     if (!productUnitOfMeasure) {
       return null;
@@ -205,7 +189,7 @@ export class ProductInventoryFacade {
     return productUnitOfMeasure.prices.find(x => x.pricing.id == pricing.id);
   }
 
-  public getPriceAmount(inventory: ProductInventory1, unitOfMeasure: UnitOfMeasure, pricing: Lookup<string>) : number {
+  public getPriceAmount(inventory: ProductInventory, unitOfMeasure: UnitOfMeasure, pricing: Lookup<string>) : number {
     var price = this.getPrice(inventory, unitOfMeasure, pricing);
     return price && price.priceAmount || 0;
   }

@@ -117,6 +117,7 @@ export interface PurchaseOrderReceipt {
 export interface PurchaseOrderReceivable {
   purchaseOrderId?: string;
   product?: Lookup<string>;
+  unitOfMeasures?: UnitOfMeasure[];
   orderedQuantity?: number;
   receivedQuantity?: number;
   receivableQuantity?: number;

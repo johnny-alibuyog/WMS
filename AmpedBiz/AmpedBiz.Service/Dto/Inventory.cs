@@ -7,24 +7,6 @@ namespace AmpedBiz.Service.Dto
     {
         public virtual Guid Id { get; set; }
 
-        public virtual string IndividualBarcode { get; set; }
-
-        public virtual string PackagingBarcode { get; set; }
-
-        public virtual Lookup<string> UnitOfMeasure { get; set; }
-
-        public virtual Lookup<string> PackagingUnitOfMeasure { get; set; }
-
-        public virtual decimal? PackagingSize { get; set; }
-
-        public decimal? BasePriceAmount { get; set; }
-
-        public decimal? WholesalePriceAmount { get; set; }
-
-        public decimal? RetailPriceAmount { get; set; }
-
-        public decimal? BadStockPriceAmount { get; set; }
-
         public virtual decimal? BadStockValue { get; set; }
 
         public virtual decimal? ReceivedValue { get; set; }
