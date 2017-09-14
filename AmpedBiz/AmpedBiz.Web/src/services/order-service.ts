@@ -1,3 +1,4 @@
+import { Measure, getValue } from "../common/models/measure";
 import { Order, OrderInvoiceDetail, OrderPayable, OrderReportPageItem, OrderReturn, OrderReturnable, OrderReturning, OrderStatus } from '../common/models/order';
 import { PageRequest, PagerResponse } from '../common/models/paging';
 
@@ -6,7 +7,6 @@ import { HttpClientFacade } from './http-client-facade';
 import { Lookup } from '../common/custom_types/lookup';
 import { ServiceBase } from './service-base'
 import { autoinject } from 'aurelia-framework';
-import { getValue } from "../common/models/measure";
 
 @autoinject
 export class OrderService extends ServiceBase<Order> {
@@ -154,7 +154,7 @@ export class OrderService extends ServiceBase<Order> {
     var products = order.items.map(x => x.product);
 
     return products.map(product => {
-      var returnable = <OrderReturnable>{
+      var returnable: OrderReturnable = {
         orderId: order.id,
         product: <Lookup<string>>{
           id: product.id,
@@ -170,11 +170,14 @@ export class OrderService extends ServiceBase<Order> {
           .reduce((prevVal, item) => prevVal + getValue(item.quantity), 0),
         returnedQuantity: order.returns
           .filter(receipt => receipt.product.id == product.id)
-          .reduce((prevVal, receipt) => prevVal + receipt.quantityValue, 0),
-        returning: <OrderReturning>{
+          .reduce((prevVal, receipt) => prevVal + receipt.quantity.value, 0),
+        returning: {
           returnedBy: this._auth.userAsLookup,
           returnedOn: new Date(),
-          quantity: 0
+          quantity: {
+            value: 0,
+            unit: order.items.find(x => x.product.id == product.id).quantity.unit
+          }
         }
       };
 
@@ -190,7 +193,8 @@ export class OrderService extends ServiceBase<Order> {
       .filter(x =>
         x.returning &&
         x.returning.reason &&
-        x.returning.quantity  > 0 &&
+        x.returning.quantity &&
+        x.returning.quantity.value  > 0 &&
         x.returning.amount > 0
       )
       .map(x => <OrderReturn>{
@@ -199,7 +203,7 @@ export class OrderService extends ServiceBase<Order> {
         reason: x.returning.reason,
         returnedBy: this._auth.userAsLookup,
         returnedOn: new Date(),
-        quantityValue: x.returning.quantity,
+        quantity: x.returning.quantity,
         returnedAmount: x.returning.amount
       });
   }

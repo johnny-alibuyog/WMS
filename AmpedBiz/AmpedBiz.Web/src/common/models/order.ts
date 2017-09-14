@@ -119,7 +119,7 @@ export interface OrderReturn {
   reason?: Lookup<string>;
   returnedOn?: Date;
   returnedBy?: Lookup<string>;
-  quantityValue?: number;
+  quantity?: Measure;
   returnedAmount?: number;
 }
 
@@ -141,7 +141,7 @@ export interface OrderReturning {
   reason?: Lookup<string>;
   returnedOn?: Date;
   returnedBy?: Lookup<string>;
-  quantity?: number;
+  quantity?: Measure;
   amount?: number;
 }
 

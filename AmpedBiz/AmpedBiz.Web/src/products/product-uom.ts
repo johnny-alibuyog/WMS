@@ -60,12 +60,14 @@ export class ProductUOM {
       return;
     }
 
-    let item = <ProductUnitOfMeasure>{
+    let item: ProductUnitOfMeasure = {
       unitOfMeasure: this.lookups.unitOfMeasure.selected,
+      isStandard: this.items.length === 0,
+      isDefault: this.items.length === 0,
       prices: this.lookups.pricing.items
         .map(x => <ProductUnitOfMeasurePrice>{
           pricing: x,
-          priceAmount: 0
+          priceAmount: 0,
         }),
     };
 

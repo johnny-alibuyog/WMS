@@ -1,11 +1,11 @@
-import { role } from '../common/models/role';
 import { AuthService } from '../services/auth-service';
-import { Router } from 'aurelia-router';
-import { autoinject } from 'aurelia-framework';
-import { Product } from '../common/models/product';
 import { Lookup } from '../common/custom_types/lookup';
-import { ServiceApi } from '../services/service-api';
 import { NotificationService } from '../common/controls/notification-service';
+import { Product } from '../common/models/product';
+import { Router } from 'aurelia-router';
+import { ServiceApi } from '../services/service-api';
+import { autoinject } from 'aurelia-framework';
+import { role } from '../common/models/role';
 
 @autoinject
 export class ProductCreate {
@@ -45,7 +45,7 @@ export class ProductCreate {
       this._api.productCategories.getLookups(),
       this.isEdit
         ? this._api.products.get(product.id)
-        : Promise.resolve(<Product>{})
+        : Promise.resolve(<Product>{ unitOfMeasures: [] })
     ];
 
     Promise.all(requests)

@@ -1,13 +1,15 @@
+import { BindingEngine, autoinject, bindable, bindingMode, computedFrom, customElement } from 'aurelia-framework'
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
-import { BindingEngine, autoinject, bindable, bindingMode, customElement, computedFrom } from 'aurelia-framework'
-import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
-import { Lookup } from '../common/custom_types/lookup';
-import { ServiceApi } from '../services/service-api';
-import { Dictionary } from '../common/custom_types/dictionary';
+import { Filter, Pager, PagerRequest, PagerResponse, SortDirection, Sorter } from '../common/models/paging';
 import { OrderReturn, OrderReturnable, OrderReturning, orderEvents } from '../common/models/order';
-import { pricing } from '../common/models/pricing';
-import { ensureNumeric } from '../common/utils/ensure-numeric';
+
+import { Dictionary } from '../common/custom_types/dictionary';
+import { Lookup } from '../common/custom_types/lookup';
+import { Measure } from "../common/models/measure";
 import { NotificationService } from '../common/controls/notification-service';
+import { ServiceApi } from '../services/service-api';
+import { ensureNumeric } from '../common/utils/ensure-numeric';
+import { pricing } from '../common/models/pricing';
 
 @autoinject
 @customElement("order-return-page")
@@ -179,7 +181,7 @@ export class OrderReturnPage {
       this.returnables = [];
     }
 
-    var _returnable = <OrderReturnable>{
+    var _returnable: OrderReturnable ={
       orderId: this.orderId,
       product: null,
       discountRate: 0,
@@ -190,11 +192,14 @@ export class OrderReturnPage {
       orderedQuantity: 0,
       returnedQuantity: 0,
       returnableQuantity: 0,
-      returning: <OrderReturning>{
+      returning: {
         reason: null,
         returnedOn: new Date(),
         returnedBy: this._api.auth.userAsLookup,
-        quantity: 0,
+        quantity: {
+          value: 0,
+          unit: {}
+        },
         amount: 0
       }
     };
@@ -236,7 +241,7 @@ export class OrderReturnPage {
 
   public compute(item: OrderReturnable): void {
     var unitPrice = item.totalPriceAmount / item.orderedQuantity;
-    item.returning.amount = unitPrice * item.returning.quantity;
+    item.returning.amount = unitPrice * item.returning.quantity.value;
     this.total();
   }
 

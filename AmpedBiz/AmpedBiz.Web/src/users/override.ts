@@ -1,15 +1,17 @@
-import { User } from '../common/models/user'
-import { autoinject } from 'aurelia-framework';
-import { DialogController } from 'aurelia-dialog';
 import { AuthService } from '../services/auth-service';
+import { DialogController } from 'aurelia-dialog';
 import { NotificationService } from '../common/controls/notification-service';
 import { Pager } from '../common/controls/pager';
+import { User } from '../common/models/user'
+import { autoinject } from 'aurelia-framework';
 
 @autoinject
 export class Override {
   private _auth: AuthService;
   private _controller: DialogController;
   private _notification: NotificationService;
+
+  public header: string = 'Override';
 
   public user: User;
 
@@ -36,8 +38,8 @@ export class Override {
 
   activate() {
     this.user = {
-      username: 'super_user',
-      password: '123!@#qweASD'
+      username: '',
+      password: ''
     };
   }
 }
