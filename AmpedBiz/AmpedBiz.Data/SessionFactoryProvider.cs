@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Data.Configurations;
+using AmpedBiz.Data.Context;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
@@ -12,6 +13,8 @@ namespace AmpedBiz.Data
     public class SessionFactoryProvider : ISessionFactoryProvider
     {
         private readonly ConfigurationContainer _configuration;
+
+        public static Func<IContext> GetContext { get; private set; }
 
         public static ValidatorEngine Validator { get; private set; }
 
@@ -36,16 +39,18 @@ namespace AmpedBiz.Data
                         .ExposeConfiguration(this._configuration.IndexForeignKey)
                         .ExposeConfiguration(this._configuration.Schema)
                         .ExposeConfiguration(this._configuration.SessionContext)
+                        .ExposeConfiguration(this._configuration.Interceptor)
                         .BuildSessionFactory();
                 }
             }
             return SessionFactoryProvider.SessionFactory;
         }
 
-        public SessionFactoryProvider(ValidatorEngine validator, IAuditProvider auditProvider)
+        public SessionFactoryProvider(ValidatorEngine validator, IAuditProvider auditProvider, Func<IContext> getContext = null)
         {
             SessionFactoryProvider.Validator = validator;
             SessionFactoryProvider.AuditProvider = auditProvider;
+            SessionFactoryProvider.GetContext = getContext;
             _configuration = new ConfigurationContainer();
         }
 
@@ -103,6 +108,12 @@ namespace AmpedBiz.Data
             return this;
         }
 
+        public SessionFactoryProvider WithInterceptors(Action<Configuration> configurer)
+        {
+            this._configuration.Interceptor = configurer;
+            return this;
+        }
+
         private class ConfigurationContainer
         {
             public IPersistenceConfigurer Database { get; set; } = DatabaseConfiguration.Configure();
@@ -122,6 +133,8 @@ namespace AmpedBiz.Data
             public Action<Configuration> Schema { get; set; } = SchemaConfiguration.Configure;
 
             public Action<Configuration> SessionContext { get; set; } = SessionContextConfiguration.Configure;
+
+            public Action<Configuration> Interceptor { get; set; } = InterceptorConfiguration.Configure;
         }
     }
 }

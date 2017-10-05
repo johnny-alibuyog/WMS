@@ -18,5 +18,6 @@ namespace AmpedBiz.Data
         SessionFactoryProvider WithSchema(Action<Configuration> configurer);
         SessionFactoryProvider WithSessionContext(Action<Configuration> configurer);
         SessionFactoryProvider WithValidator(Action<Configuration> configurer);
+        SessionFactoryProvider WithInterceptors(Action<Configuration> configurer);
     }
 }

@@ -34,7 +34,19 @@ namespace AmpedBiz.Common.Extentions
 
             return !items.Any();
         }
-            
+
+        public static IEnumerable<IEnumerable<T>> Batch<T>(this IEnumerable<T> items, int size)
+        {
+            return items
+                .Select((item, index) => new
+                {
+                    Item = item,
+                    Index = index
+                })
+                .GroupBy(x => x.Index / size)
+                .Select(x => x.Select(o => o.Item));
+        }
+
         public static T RandomElement<T>(this IEnumerable<T> enumerable)
         {
             return enumerable.RandomElementUsing(new Random());

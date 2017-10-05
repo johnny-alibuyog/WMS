@@ -7,9 +7,9 @@ namespace AmpedBiz.Core
     {
         DateTime? CreatedOn { get; set; }
 
-        User CreatedBy { get; set; }
-
         DateTime? ModifiedOn { get; set; }
+
+        User CreatedBy { get; set; }
 
         User ModifiedBy { get; set; }
     }

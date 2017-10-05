@@ -9,12 +9,12 @@ using System.Linq;
 
 namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 {
-    public class _032_DefaultCustomerSeeder : IDefaultDataSeeder
+    public class _033_DefaultCustomerSeeder : IDefaultDataSeeder
     {
         private readonly IContext _context;
         private readonly ISessionFactory _sessionFactory;
 
-        public _032_DefaultCustomerSeeder(DefaultContext context, ISessionFactory sessionFactory)
+        public _033_DefaultCustomerSeeder(DefaultContext context, ISessionFactory sessionFactory)
         {
             this._context = context;
             this._sessionFactory = sessionFactory;

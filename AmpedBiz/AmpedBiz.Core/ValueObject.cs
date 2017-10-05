@@ -6,6 +6,22 @@ namespace AmpedBiz.Core
 {
     public abstract class ValueObject<T> : IEquatable<T> where T : ValueObject<T>
     {
+        private static IDictionary<Type, FieldInfo[]> _fieldInfos = new Dictionary<Type, FieldInfo[]>();
+
+        private FieldInfo[] Fields
+        {
+            get
+            {
+                if (!_fieldInfos.ContainsKey(this.GetType()))
+                {
+                    var bindingFlag = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+                    _fieldInfos[this.GetType()] = this.GetType().GetFields(bindingFlag);
+                }
+
+                return _fieldInfos[this.GetType()];
+            }
+        }
+
         public override bool Equals(object obj)
         {
             if (obj == null)
@@ -40,15 +56,13 @@ namespace AmpedBiz.Core
             if (other == null)
                 return false;
 
-            var type = GetType();
+            var type = this.GetType();
             var otherType = other.GetType();
 
             if (type != otherType)
                 return false;
 
-            var fields = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-
-            foreach (var field in fields)
+            foreach (var field in this.Fields)
             {
                 var value1 = field.GetValue(other);
                 var value2 = field.GetValue(this);
@@ -67,7 +81,7 @@ namespace AmpedBiz.Core
 
         private IEnumerable<FieldInfo> GetFields()
         {
-            var type = GetType();
+            var type = this.GetType();
             var fields = new List<FieldInfo>();
 
             while (type != typeof(object))

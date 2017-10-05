@@ -31,6 +31,10 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Map(x => x.ModifiedOn);
 
+                References(x => x.CreatedBy);
+
+                References(x => x.ModifiedBy);
+
                 //OptimisticLock.Dirty();
 
                 ApplyFilter<TenantDefinition.Filter>();
@@ -59,6 +63,10 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Define(x => x.CreatedOn);
 
                 Define(x => x.ModifiedOn);
+
+                Define(x => x.CreatedBy);
+
+                Define(x => x.ModifiedBy);
             }
         }
 

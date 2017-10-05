@@ -105,6 +105,7 @@
     <Compile Include="Configurations\DatabaseConfiguration.cs" />
     <Compile Include="Configurations\EventListenerConfiguration.cs" />
     <Compile Include="Configurations\IndexForeignKeyConfiguration.cs" />
+    <Compile Include="Configurations\InterceptorConfiguration.cs" />
     <Compile Include="Configurations\MappingDefinitionConfiguration.cs" />
     <Compile Include="Configurations\SchemaConfiguration.cs" />
     <Compile Include="Configurations\SessionContextConfiguration.cs" />
@@ -155,12 +156,16 @@
     <Compile Include="EntityDefinitions\TenantDefinition.cs" />
     <Compile Include="EntityDefinitions\UnitOfMeasureDefinition.cs" />
     <Compile Include="IAuditProvider.cs" />
+    <Compile Include="Inteceptors\AuditInterceptor.cs" />
+    <Compile Include="Inteceptors\CompositeInterceptor.cs" />
+    <Compile Include="Inteceptors\TenancyInterceptor.cs" />
     <Compile Include="ISessionFactoryProvider.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_001_DefaultTenantSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_002_DefaultBranchSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_030_DefaultSupplierSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_031_DefaultProductSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_032_DefaultCustomerSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_033_DefaultCustomerSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_032_DefaultInventoryEnding.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_000_BranchSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_011_CurrencySeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_004_CustomerSeeder.cs" />

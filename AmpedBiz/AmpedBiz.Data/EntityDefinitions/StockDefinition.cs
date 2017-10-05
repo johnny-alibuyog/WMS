@@ -15,9 +15,9 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Map(x => x.CreatedOn);
 
-                References(x => x.CreatedBy);
-
                 Map(x => x.ModifiedOn);
+
+                References(x => x.CreatedBy);
 
                 References(x => x.ModifiedBy);
 
@@ -43,11 +43,11 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Define(x => x.CreatedOn);
 
+                Define(x => x.ModifiedOn);
+
                 Define(x => x.CreatedBy)
                     .NotNullable()
                     .And.IsValid();
-
-                Define(x => x.ModifiedOn);
 
                 Define(x => x.ModifiedBy);
 

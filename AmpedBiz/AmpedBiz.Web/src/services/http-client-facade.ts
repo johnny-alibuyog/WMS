@@ -2,7 +2,7 @@ import 'fetch';
 
 import { HttpClient, json } from 'aurelia-fetch-client';
 
-import { AuthService } from "./auth-service";
+import { AuthStorage } from "./auth-service";
 import { appConfig } from '../app-config';
 import { autoinject } from 'aurelia-framework';
 
@@ -19,9 +19,9 @@ export class HttpClientFacade {
         headers: {
           'Accept': 'application/json',
           'X-Requested-With': 'Fetch',
-          //'UserId': auth.user && auth.user.id || '', // TODO: change this to jwt soon
-          'BranchId': 'branchid', // TODO: change this to jwt soon
-          'TenantId': 'tenantid', // TODO: change this to jwt soon
+          // 'UserId': AuthStorage.userId,     // TODO: change this to jwt soon
+          // 'BranchId': AuthStorage.branchId, // TODO: change this to jwt soon
+          // 'TenantId': AuthStorage.tenantId, // TODO: change this to jwt soon
         }
       })
       .withInterceptor({

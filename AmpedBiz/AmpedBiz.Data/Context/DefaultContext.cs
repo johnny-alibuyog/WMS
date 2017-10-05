@@ -5,7 +5,7 @@ namespace AmpedBiz.Data.Context
 {
     public class DefaultContext : IContext
     {
-        public Guid UserId => Guid.Empty;
+        public Guid UserId => User.Admin.Id;
 
         public Guid BranchId => Branch.Default.Id;
 

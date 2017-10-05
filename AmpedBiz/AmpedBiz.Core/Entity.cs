@@ -1,12 +1,16 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace AmpedBiz.Core
 {
     public abstract class Entity<TId, TEntity> where TEntity : Entity<TId, TEntity>
     {
+        private static IDictionary<Type, FieldInfo[]> _fieldInfos = new Dictionary<Type, FieldInfo[]>();
+
         private int? _oldHashCode;
 
-        private bool IsTransient
+        private bool IsTransient 
         {
             get { return Equals(this.Id, default(TId)); }
         }
@@ -18,11 +22,23 @@ namespace AmpedBiz.Core
             this.Id = id;
         }
 
+        private FieldInfo[] Fields
+        {
+            get
+            {
+                if (!_fieldInfos.ContainsKey(this.GetType()))
+                {
+                    var bindingFlag = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+                    _fieldInfos[this.GetType()] = this.GetType().GetFields(bindingFlag);
+                }
+
+                return _fieldInfos[this.GetType()];
+            }
+        }
+
         public virtual void SerializeWith(TEntity other)
         {
-            var fields = this.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-
-            foreach (var field in fields)
+            foreach (var field in this.Fields)
             {
                 var value = field.GetValue(other);
                 field.SetValue(this, value);

@@ -1,14 +1,48 @@
 import { Aurelia, autoinject } from 'aurelia-framework';
 import { Role, role } from '../common/models/role';
 
+import { Branch } from "../common/models/branch";
 import { HttpClientFacade } from './http-client-facade';
 import { Lookup } from '../common/custom_types/lookup';
 import { NotificationService } from '../common/controls/notification-service';
+import { Tenant } from "../common/models/tenant";
 import { User } from '../common/models/user';
 
 export interface AuthSettings {
   authorize?: boolean;
   roles?: Role | Role[];
+}
+
+export abstract class AuthStorage {
+  private static readonly AUTH_TOKEN: string = 'token:auth-user';
+
+  public static set user(user: User) {
+    localStorage[this.AUTH_TOKEN] = JSON.stringify(user);
+  }
+
+  public static get user(): User {
+    return <User>JSON.parse(localStorage[this.AUTH_TOKEN] || '{}');
+  }
+
+  public static get userId(): string {
+    return this.user && this.user.id || '';
+  }
+
+  public static get branch(): Branch {
+    return this.user && this.user.branch || null;
+  }
+
+  public static get branchId(): string {
+    return this.branch && this.branch.id || '';
+  }
+
+  public static get tenant(): Tenant {
+    return this.branch && this.branch.tenant || null;
+  }
+
+  public static get tenantId(): string{
+    return this.tenant && this.tenant.id || '';
+  }
 }
 
 @autoinject
@@ -21,11 +55,11 @@ export class AuthService {
   private readonly AUTH_TOKEN: string = 'token:auth-user';
 
   public get user(): User {
-    return <User>JSON.parse(localStorage[this.AUTH_TOKEN] || '{}');
+    return AuthStorage.user;
   };
 
   public set user(user: User) {
-    localStorage[this.AUTH_TOKEN] = JSON.stringify(user);
+    AuthStorage.user = user;
   };
 
   public get userFullname(): string {
