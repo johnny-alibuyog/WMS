@@ -170,7 +170,7 @@ export interface RouteConfig {
     * Add to specify an activation strategy if it is always the same and you do not want that
     * to be in your view-model code. Available values are 'replace' and 'invoke-lifecycle'.
     */
-  activationStrategy?: string;
+  activationStrategy?: 'no-change' | 'invoke-lifecycle' | 'replace';
   
   /**
      * specifies the file name of a layout view to use.
@@ -264,7 +264,7 @@ export interface RoutableComponentDetermineActivationStrategy {
     * Implement this hook if you want to give hints to the router about the activation strategy, when reusing
     * a view model for different routes. Available values are 'replace' and 'invoke-lifecycle'.
     */
-  determineActivationStrategy(params: any, routeConfig: RouteConfig, navigationInstruction: NavigationInstruction): string;
+  determineActivationStrategy(params: any, routeConfig: RouteConfig, navigationInstruction: NavigationInstruction): 'no-change' | 'invoke-lifecycle' | 'replace';
 }
 
 /**
@@ -279,6 +279,30 @@ export interface ConfiguresRouter {
     * Implement this hook if you want to configure a router.
     */
   configureRouter(config: RouterConfiguration, router: Router): Promise<void> | PromiseLike<void> | void;
+}
+
+/**
+* An optional interface describing the available activation strategies.
+*/
+/**
+* An optional interface describing the available activation strategies.
+*/
+export interface ActivationStrategy {
+  
+  /**
+    * Reuse the existing view model, without invoking Router lifecycle hooks.
+    */
+  noChange: 'no-change';
+  
+  /**
+    * Reuse the existing view model, invoking Router lifecycle hooks.
+    */
+  invokeLifecycle: 'invoke-lifecycle';
+  
+  /**
+    * Replace the existing view model, invoking Router lifecycle hooks.
+    */
+  replace: 'replace';
 }
 
 /**
@@ -503,6 +527,11 @@ export function isNavigationCommand(obj: any): boolean;
 * Used during the activation lifecycle to cause a redirect.
 */
 export class Redirect {
+  
+  /**
+     * @param url The URL fragment to use as the navigation destination.
+     * @param options The navigation options.
+     */
   constructor(url: string, options?: any);
   
   /**
@@ -522,11 +551,14 @@ export class Redirect {
 
 /**
 * Used during the activation lifecycle to cause a redirect to a named route.
-  * @param route The name of the route.
-  * @param params The parameters to be sent to the activation method.
-  * @param options The options to use for navigation.
 */
 export class RedirectToRoute {
+  
+  /**
+     * @param route The name of the route.
+     * @param params The parameters to be sent to the activation method.
+     * @param options The options to use for navigation.
+     */
   constructor(route: string, params?: any, options?: any);
   
   /**
@@ -641,7 +673,7 @@ export class RouterConfiguration {
 /**
 * The strategy to use when activating modules during navigation.
 */
-export const activationStrategy: any;
+export const activationStrategy: ActivationStrategy;
 export class BuildNavigationPlanStep {
   run(navigationInstruction: NavigationInstruction, next: Function): any;
 }

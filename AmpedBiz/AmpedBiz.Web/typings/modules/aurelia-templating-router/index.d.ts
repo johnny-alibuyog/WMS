@@ -38,7 +38,7 @@ import {
 } from 'aurelia-path';
 export class RouteHref {
   constructor(router?: any, element?: any);
-  bind(): any;
+  attached(): any;
   unbind(): any;
   attributeChanged(value?: any, previous?: any): any;
   processChange(): any;

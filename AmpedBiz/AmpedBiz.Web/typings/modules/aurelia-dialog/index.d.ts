@@ -883,7 +883,7 @@ export class TemplateRegistryViewStrategy {
 }
 
 /**
-* A view strategy that allows the component authore to inline the html for the view.
+* A view strategy that allows the component author to inline the html for the view.
 */
 export class InlineViewStrategy {
   
@@ -1166,6 +1166,11 @@ export class View {
     * The override context which contains properties capable of overriding those found on the binding context.
     */
   overrideContext: Object;
+  
+  /**
+    * The Controller instance that owns this View.
+    */
+  controller: Controller;
   
   /**
     * Creates a View instance.

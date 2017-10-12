@@ -51,7 +51,7 @@ namespace AmpedBiz.Service.Products
                         .TransformUsing(Transformers.DistinctRootEntity);
 
                     if (message.Id.IsNullOrEmpty() != true)
-                        query = query.Where(x => message.Id.Contains(x.Id));
+                        query = query.WhereRestrictionOn(x => x.Id).IsIn(message.Id);
                     
                     if (message.SupplierId != Guid.Empty)
                         query = query.Where(x => x.Supplier.Id == message.SupplierId);

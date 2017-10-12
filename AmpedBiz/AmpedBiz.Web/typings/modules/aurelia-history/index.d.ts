@@ -60,5 +60,19 @@ export class History {
      * Updates the title associated with the current location.
      */
   setTitle(title: string): void;
+  
+  /**
+     * Sets a key in the history page state.
+     * @param key The key for the value.
+     * @param value The value to set.
+     */
+  setState(key: string, value: any): void;
+  
+  /**
+     * Gets a key in the history page state.
+     * @param key The key for the value.
+     * @returns The value for the key.
+     */
+  getState(key: string): any;
 }
 }

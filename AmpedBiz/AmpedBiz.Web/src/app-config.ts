@@ -3,6 +3,7 @@ import {PageConfig} from './common/controls/pager';
 
 var apiHosts = {
   'localhost': 'http://localhost:49561',
+  'ampbiz': 'http://ampbiz/api', 
   'ampbiz.local': 'http://ampbiz-api.local', 
   'ampbiz.gear.host': 'http://ampbiz-api.gear.host', 
 };

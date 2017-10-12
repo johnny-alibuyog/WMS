@@ -19,21 +19,5 @@ namespace AmpedBiz.Core.Entities
         {
             return this.Id;
         }
-
-        public static readonly UnitOfMeasure Piece = new UnitOfMeasure("PC", "Piece");
-
-        public static readonly UnitOfMeasure Strips = new UnitOfMeasure("ST", "Strips");
-
-        public static readonly UnitOfMeasure Box = new UnitOfMeasure("BX", "Box");
-
-        public static readonly UnitOfMeasure Case = new UnitOfMeasure("CS", "Case");
-
-        public static readonly IEnumerable<UnitOfMeasure> All = new[]
-        {
-            UnitOfMeasure.Piece,
-            UnitOfMeasure.Strips,
-            UnitOfMeasure.Box,
-            UnitOfMeasure.Case,
-        };
     }
 }

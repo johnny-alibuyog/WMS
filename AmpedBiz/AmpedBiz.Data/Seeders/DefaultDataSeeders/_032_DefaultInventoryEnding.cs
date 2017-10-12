@@ -5,12 +5,9 @@ using AmpedBiz.Data.Context;
 using LinqToExcel;
 using NHibernate;
 using NHibernate.Criterion;
-using NHibernate.Linq;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 {

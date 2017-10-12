@@ -153,5 +153,19 @@ export class BrowserHistory extends History {
      * Sets the document title.
      */
   setTitle(title: string): void;
+  
+  /**
+     * Sets a key in the history page state.
+     * @param key The key for the value.
+     * @param value The value to set.
+     */
+  setState(key: string, value: any): void;
+  
+  /**
+     * Gets a key in the history page state.
+     * @param key The key for the value.
+     * @return The value for the key.
+     */
+  getState(key: string): any;
 }
 }

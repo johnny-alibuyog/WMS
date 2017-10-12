@@ -77,7 +77,8 @@ export class SyntaxInterpreter {
   options(resources?: any, element?: any, info?: any, existingInstruction?: any, context?: any): any;
   'for'(resources?: any, element?: any, info?: any, existingInstruction?: any): any;
   'two-way'(resources?: any, element?: any, info?: any, existingInstruction?: any): any;
-  'one-way'(resources?: any, element?: any, info?: any, existingInstruction?: any): any;
+  'to-view'(resources?: any, element?: any, info?: any, existingInstruction?: any): any;
+  'from-view'(resources?: any, element?: any, info?: any, existingInstruction?: any): any;
   'one-time'(resources?: any, element?: any, info?: any, existingInstruction?: any): any;
 }
 export class TemplatingBindingLanguage extends BindingLanguage {

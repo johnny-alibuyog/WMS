@@ -318,6 +318,9 @@
     <Content Include="Data\Default\default_ending_inventory.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\Default\default_uom.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -326,6 +329,7 @@
     <None Include="Properties\PublishProfiles\staging-mywindowshosting.pubxml" />
     <None Include="Properties\PublishProfiles\dev-localhost.pubxml" />
     <None Include="Properties\PublishProfiles\staging-gear.host.pubxml" />
+    <None Include="Properties\PublishProfiles\staging-preprod-package.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -76,7 +76,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                     isDefault: true,
                                     isStandard: true,
                                     standardEquivalentValue: 1,
-                                    unitOfMeasure: UnitOfMeasure.Piece,
+                                    unitOfMeasure: _utils.Random<UnitOfMeasure>(),
                                     prices: new Collection<ProductUnitOfMeasurePrice>()
                                     {
                                         new ProductUnitOfMeasurePrice(
