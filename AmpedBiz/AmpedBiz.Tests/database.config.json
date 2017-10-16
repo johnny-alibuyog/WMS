@@ -1,12 +1,12 @@
 ﻿{
-  "Database": "MsSql",
-  "Port": 3306,
-  "HostServer": "PHMADJALIBUYOG2",
-  "Name": "ampbizdb",
-  "Username": "sa",
+  "Database": "MySql",
+  "Port": 5432,
+  "HostServer": "localhost",
+  "Name": "ampedbizdb",
+  "Username": "root",
   "Password": "6jPbwQtZ8N52WRJ5rEWv2g==",
   "BatchSize": 50,
   "UseDummyData": true,
   "RecreateDb": true,
-  "DefaultSeedDataPath":  "..\\..\\..\\AmpedBiz.Service.Host\\Data\\Default"
+  "DefaultSeedDataPath": "..\\..\\..\\AmpedBiz.Service.Host\\Data\\Default"
 }

@@ -70,7 +70,7 @@
                   <div class="form-group">
 
                     <!-- Standard Equivalent -->
-                    <label class="control-label col-sm-3">Item(s) Per ${item.unitOfMeasure.name}:</label>
+                    <label class="control-label col-sm-3">${$parent.standardName}(s) Per ${item.unitOfMeasure.name}:</label>
                     <div class="col-sm-4">
                       <input type="number" class="form-control text-right" placeholder="Enter Standard Equivalent" value.bind="item.standardEquivalentValue" disabled.bind="item.isStandard"/>
                     </div>

@@ -11,5 +11,5 @@ $port = 49561
 " 32-bit version C:\Program Files (x86)\IIS Express "
 " 64-bit version C:\Program Files\IIS Express "
 "=============================================="
-cd '\Program Files (x86)\IIS Express'
+cd '\Program Files\IIS Express'
 .\iisexpress.exe -path:$path -port:$port

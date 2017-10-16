@@ -23,6 +23,16 @@ export class ProductUOM {
 
   public selectedPrice: ProductUnitOfMeasurePrice;
 
+  public get standardName() : string {
+    var standardItem = this.items && this.items.find(x => x.isStandard) || null;
+    return standardItem && standardItem.unitOfMeasure && standardItem.unitOfMeasure.name || 'Item';
+  }
+
+  public get defaultName() : string {
+    var defaultItem = this.items && this.items.find(x => x.isDefault) || null;
+    return defaultItem && defaultItem.unitOfMeasure && defaultItem.unitOfMeasure.name || 'Package';
+  }
+
   public lookups = {
     pricing: {
       original: <Lookup<string>[]>[],
@@ -64,6 +74,7 @@ export class ProductUOM {
       unitOfMeasure: this.lookups.unitOfMeasure.selected,
       isStandard: this.items.length === 0,
       isDefault: this.items.length === 0,
+      standardEquivalentValue: this.items.length === 0 ? 1 : 0,
       prices: this.lookups.pricing.items
         .map(x => <ProductUnitOfMeasurePrice>{
           pricing: x,

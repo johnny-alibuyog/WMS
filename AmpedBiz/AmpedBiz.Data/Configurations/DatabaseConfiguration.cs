@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Common.Configurations;
 using FluentNHibernate.Cfg.Db;
+using NHibernate.Dialect;
 
 namespace AmpedBiz.Data.Configurations
 {
@@ -62,6 +63,7 @@ namespace AmpedBiz.Data.Configurations
         private static IPersistenceConfigurer ConfigureMySql()
         {
             return MySQLConfiguration.Standard
+                .Dialect<MySQL55Dialect>()
                 .ConnectionString(x => x
                     .Server(DatabaseConfig.Instance.HostServer)
                     .Database(DatabaseConfig.Instance.Name)
@@ -77,20 +79,18 @@ namespace AmpedBiz.Data.Configurations
 
         private static IPersistenceConfigurer ConfigureSqlLite()
         {
-            return MySQLConfiguration.Standard
-                .ConnectionString(x => x
-                    .Server(DatabaseConfig.Instance.HostServer)
-                    .Database(DatabaseConfig.Instance.Name)
-                    .Username(DatabaseConfig.Instance.Username)
-                    .Password(DatabaseConfig.Instance.Password)
-                )
+            return SQLiteConfiguration.Standard.InMemory()
+                //.ConnectionString(x => x
+                //    .Database(DatabaseConfig.Instance.Name)
+                //    .Username(DatabaseConfig.Instance.Username)
+                //    .Password(DatabaseConfig.Instance.Password)
+                //)
                 .QuerySubstitutions("true 1, false 0, yes y, no n")
                 .DefaultSchema(DatabaseConfig.Instance.Name)
                 .AdoNetBatchSize(1)
                 .FormatSql()
                 .ShowSql();
         }
-
 
         private static IPersistenceConfigurer ConfigureInMemory()
         {
