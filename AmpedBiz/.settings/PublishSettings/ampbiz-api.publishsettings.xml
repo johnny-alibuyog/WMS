@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <publishData>
   <publishProfile 
     profileName="ampbiz-api - Web Deploy" 
@@ -5,14 +6,14 @@
     publishUrl="ampbiz-api.scm.gear.host:443" 
     msdeploySite="ampbiz-api" 
     userName="$ampbiz-api" 
-    userPWD=" qmLbwLTNRK3b87hksGgd75QmHdq7jQGdoBLtAi3p2MWKiKY14GcHlh1ekJy6" 
+    userPWD="iQ3D0FfLBETDGzA7RWmWGX6DiGYMf7wqfia5raZrnWdbwkJg7Zij0v9c2fvt" 
     destinationAppUrl="http://ampbiz-api.gear.host" 
     SQLServerDBConnectionString="" 
     mySQLDBConnectionString="" 
     hostingProviderForumLink="" 
     controlPanelLink="" 
     webSystem="MgmtSvcCloud">
-    <databases/>
+    <databases />
   </publishProfile>
   <publishProfile 
     profileName="ampbiz-api - FTP" 
@@ -20,13 +21,13 @@
     publishUrl="ftp://ftp.gear.host/site/wwwroot" 
     ftpPassiveMode="True" 
     userName="ampbiz-api$ampbiz-api" 
-    userPWD=" qmLbwLTNRK3b87hksGgd75QmHdq7jQGdoBLtAi3p2MWKiKY14GcHlh1ekJy6" 
+    userPWD="iQ3D0FfLBETDGzA7RWmWGX6DiGYMf7wqfia5raZrnWdbwkJg7Zij0v9c2fvt" 
     destinationAppUrl="http://ampbiz-api.gear.host" 
     SQLServerDBConnectionString="" 
     mySQLDBConnectionString="" 
     hostingProviderForumLink="" 
     controlPanelLink="" 
     webSystem="MgmtSvcCloud">
-    <databases/>
+    <databases />
   </publishProfile>
 </publishData>

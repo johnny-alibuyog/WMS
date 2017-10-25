@@ -97,11 +97,11 @@ export class PurchaseOrderReceiptPage {
     if (!item.product) {
       item.receiving.quantity = {
         unit: null,
-        value: 0
+        value: null
       };
       item.receiving.standard = {
         unit: null,
-        value: 0
+        value: null
       };
       return;
     }
@@ -166,11 +166,11 @@ export class PurchaseOrderReceiptPage {
         expiresOn: null,
         quantity: <Measure>{
           unit: null,
-          value: 0
+          value: null
         },
         standard: <Measure>{
           unit: null,
-          value: 0
+          value: null
         }
       }
     };

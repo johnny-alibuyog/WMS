@@ -9,7 +9,6 @@ using NHibernate;
 using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 
@@ -138,7 +137,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                             Code = x.Code,
                             Name = x.Name,
                             Supplier = defaults.Supplier,
-                            Category = session.Load<ProductCategory>(x.Category),
+                            Category = session.Query<ProductCategory>().FirstOrDefault(o => o.Name == x.Category),
                             UnitOfMeasures = new List<ProductUnitOfMeasure>()
                             {
                                 // Individual
@@ -361,7 +360,11 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 })
                 .ToList()
                 .Where(x => 
-                    !string.IsNullOrWhiteSpace(x.Code) &&
+                    (
+                        !string.IsNullOrWhiteSpace(x.Code) ||
+                        !string.IsNullOrWhiteSpace(x.Name)
+                    ) 
+                    &&
                     !string.IsNullOrWhiteSpace(x.QuantityStore) 
                 )
                 .Select(x => new DefaultEndingInventory(

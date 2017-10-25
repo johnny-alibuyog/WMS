@@ -172,13 +172,13 @@ export class PurchaseOrderItemPage {
     var item: PurchaseOrderItem = {
       quantity: {
         unit: {},
-        value: 0
+        value: null
       },
       standard: {
         unit: {},
-        value: 0
+        value: null
       },
-      unitCostAmount: 0,
+      unitCostAmount: null,
     };
 
     this.items.unshift(item);

@@ -45,7 +45,6 @@
     </Reference>
     <Reference Include="LinqToExcel, Version=1.11.0.0, Culture=neutral, PublicKeyToken=9c8ea65a58f03f1f, processorArchitecture=MSIL">
       <HintPath>..\packages\LinqToExcel.1.11.0\lib\LinqToExcel.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -69,15 +68,12 @@
     </Reference>
     <Reference Include="Remotion, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
       <HintPath>..\packages\LinqToExcel.1.11.0\lib\Remotion.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Remotion.Data.Linq, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
       <HintPath>..\packages\LinqToExcel.1.11.0\lib\Remotion.Data.Linq.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Remotion.Interfaces, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
       <HintPath>..\packages\LinqToExcel.1.11.0\lib\Remotion.Interfaces.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -162,10 +158,11 @@
     <Compile Include="ISessionFactoryProvider.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_001_DefaultTenantSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_002_DefaultBranchSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_015_UnitOfMeasureSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_030_DefaultSupplierSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_031_DefaultProductSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_033_DefaultCustomerSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_032_DefaultInventoryEnding.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_033_DefaultCustomerSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_000_BranchSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_011_CurrencySeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_004_CustomerSeeder.cs" />
@@ -184,7 +181,6 @@
     <Compile Include="Seeders\DefaultDataSeeders\_003_RoleSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_003_ShipperSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_001_SupplierSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_015_UnitOfMeasureSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_005_UserSeeder.cs" />
     <Compile Include="EntityDefinitions\AddressDefenition.cs" />
     <Compile Include="EntityDefinitions\BranchDefinition.cs" />

@@ -111,6 +111,10 @@ export class OrderItemPage {
   }
 
   public pricingChanged(newValue: Lookup<string>, oldValue: Lookup<string>): void {
+    if (newValue && oldValue && newValue.id == oldValue.id) {
+      return;
+    }
+
     if (!this._isPricingInitialized) {
       this._isPricingInitialized = true;
       return;
@@ -225,17 +229,17 @@ export class OrderItemPage {
     var item: OrderItem = {
       quantity: {
         unit: {},
-        value: 0
+        value: null
       },
       standard: {
         unit: {},
-        value: 0
+        value: null
       },
-      discountRate: 0,
-      discountAmount: 0,
-      unitPriceAmount: 0,
-      extendedPriceAmount: 0,
-      totalPriceAmount: 0,
+      discountRate: null,
+      discountAmount: null,
+      unitPriceAmount: null,
+      extendedPriceAmount: null,
+      totalPriceAmount: null,
     };
 
     this.items.unshift(item);
@@ -274,9 +278,9 @@ export class OrderItemPage {
   }
 
   public compute(item: OrderItem): void {
-    if (!item.discountRate) {
-      item.discountRate = 0;
-    }
+    // if (!item.discountRate) {
+    //   item.discountRate = 0;
+    // }
     item.extendedPriceAmount = ensureNumeric(item.unitPriceAmount) * getValue(item.quantity);
     item.discountAmount = ensureNumeric(item.discountRate) * ensureNumeric(item.extendedPriceAmount);
     item.totalPriceAmount = ensureNumeric(item.extendedPriceAmount) - ensureNumeric(item.discountAmount);
