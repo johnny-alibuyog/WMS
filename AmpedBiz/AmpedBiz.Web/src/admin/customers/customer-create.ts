@@ -3,6 +3,7 @@ import { autoinject } from 'aurelia-framework';
 import { Customer } from '../../common/models/customer';
 import { ServiceApi } from '../../services/service-api';
 import { NotificationService } from '../../common/controls/notification-service';
+import { ActionResult } from '../../common/controls/notification';
 
 @autoinject
 export class CustomerCreate {
@@ -41,16 +42,21 @@ export class CustomerCreate {
   }
 
   public save(): void {
-    if (this.isEdit) {
-      this._api.customers.update(this.customer)
-        .then(data => this.resetAndNoify(data, "Customer has been saved."))
-        .catch(error => this._notification.warning(error));
-    }
-    else {
-      this._api.customers.create(this.customer)
-        .then(data => this.resetAndNoify(data, "Customer has been saved."))
-        .catch(error => this._notification.warning(error));
-    }
+    this._notification.confirm('Do you want to save?').whenClosed(result => {
+      if (result.output === ActionResult.Yes) {
+
+        if (this.isEdit) {
+          this._api.customers.update(this.customer)
+            .then(data => this.resetAndNoify(data, "Customer has been saved."))
+            .catch(error => this._notification.warning(error));
+        }
+        else {
+          this._api.customers.create(this.customer)
+            .then(data => this.resetAndNoify(data, "Customer has been saved."))
+            .catch(error => this._notification.warning(error));
+        }
+      }
+    });
   }
 
   private resetAndNoify(customer: Customer, notificationMessage: string) {

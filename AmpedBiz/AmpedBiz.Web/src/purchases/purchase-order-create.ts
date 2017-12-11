@@ -13,6 +13,7 @@ import { autoinject } from 'aurelia-framework';
 import { formatDate } from '../services/formaters';
 import { pricing } from '../common/models/pricing';
 import { role } from "../common/models/role";
+import { ActionResult } from '../common/controls/notification';
 
 @autoinject
 export class PurchaseOrderCreate {
@@ -165,32 +166,47 @@ export class PurchaseOrderCreate {
   }
 
   public save(): void {
-    // generate new receipts from receivables >> receiving items
-    let newReceipts: PurchaseOrderReceipt[] = [];
-    try {
-      newReceipts = this._api.purchaseOrders.generateNewReceiptsFrom(this.purchaseOrder);
-      newReceipts.forEach(newReceipt => this.purchaseOrder.receipts.push(newReceipt));
-    } catch (error) {
-      this._notification.warning(error);
-      return;
-    }
+    this._notification.confirm('Do you want to save the purchase order?').whenClosed(result => {
+      if (result.output === ActionResult.Yes) {
 
-    this._api.purchaseOrders.save(this.purchaseOrder)
-      .then(data => this.resetAndNoify(data, "Purchase order has been saved."))
-      .catch(error => this._notification.warning(error));
+        // generate new receipts from receivables >> receiving items
+        let newReceipts: PurchaseOrderReceipt[] = [];
+        try {
+          newReceipts = this._api.purchaseOrders.generateNewReceiptsFrom(this.purchaseOrder);
+          newReceipts.forEach(newReceipt => this.purchaseOrder.receipts.push(newReceipt));
+        } catch (error) {
+          this._notification.warning(error);
+          return;
+        }
+
+        this._api.purchaseOrders.save(this.purchaseOrder)
+          .then(data => this.resetAndNoify(data, "Purchase order has been saved."))
+          .catch(error => this._notification.warning(error));
+      }
+    });
   }
 
   public submit(): void {
-    this._api.purchaseOrders.submit(this.purchaseOrder)
-      .then(data => this.resetAndNoify(data, "Purchase order has been submitted."))
-      .catch(error => this._notification.warning(error));
+    this._notification.confirm('Do you want to submit the purchase order?').whenClosed(result => {
+      if (result.output === ActionResult.Yes) {
+
+        this._api.purchaseOrders.submit(this.purchaseOrder)
+          .then(data => this.resetAndNoify(data, "Purchase order has been submitted."))
+          .catch(error => this._notification.warning(error));
+      }
+    });
   }
 
   public approve(): void {
-    this._api.purchaseOrders.approve(this.purchaseOrder)
-      .then(data => this.resetAndNoify(data, "Purchase order has been approved."))
-      .then(_ => this.showVoucher())
-      .catch(error => this._notification.warning(error));
+    this._notification.confirm('Do you want to approve the purchase order?').whenClosed(result => {
+      if (result.output === ActionResult.Yes) {
+
+        this._api.purchaseOrders.approve(this.purchaseOrder)
+          .then(data => this.resetAndNoify(data, "Purchase order has been approved."))
+          .then(_ => this.showVoucher())
+          .catch(error => this._notification.warning(error));
+      }
+    });
   }
 
   public showVoucher(): void {
@@ -280,21 +296,37 @@ export class PurchaseOrderCreate {
   }
 
   public reject(): void {
-    this._api.purchaseOrders.reject(this)
-      .then(data => this.resetAndNoify(data, "Purchase order has been rejected."))
-      .catch(error => this._notification.warning(error));
+    this._notification.confirm('Do you want to reject the purchase order?').whenClosed(result => {
+      if (result.output === ActionResult.Yes) {
+
+        this._api.purchaseOrders.reject(this.purchaseOrder)
+          .then(data => this.resetAndNoify(data, "Purchase order has been rejected."))
+          .catch(error => this._notification.warning(error));
+      }
+    });
   }
 
   public complete(): void {
-    this._api.purchaseOrders.complete(this.purchaseOrder)
-      .then(data => this.resetAndNoify(data, "Purchase order has been completed."))
-      .catch(error => this._notification.warning(error));
+    this._notification.confirm('Do you want to complete the purchase order?').whenClosed(result => {
+      if (result.output === ActionResult.Yes) {
+
+        this._api.purchaseOrders.complete(this.purchaseOrder)
+          .then(data => this.resetAndNoify(data, "Purchase order has been completed."))
+          .catch(error => this._notification.warning(error));
+      }
+    });
   }
 
+
   public cancel(): void {
-    this._api.purchaseOrders.cancel(this.purchaseOrder)
-      .then(data => this.resetAndNoify(data, "Purchase order has been cancelled."))
-      .catch(error => this._notification.warning(error));
+    this._notification.confirm('Do you want to cancel the purchase order?').whenClosed(result => {
+      if (result.output === ActionResult.Yes) {
+
+        this._api.purchaseOrders.cancel(this.purchaseOrder)
+          .then(data => this.resetAndNoify(data, "Purchase order has been cancelled."))
+          .catch(error => this._notification.warning(error));
+      }
+    });
   }
 
   public refresh() {

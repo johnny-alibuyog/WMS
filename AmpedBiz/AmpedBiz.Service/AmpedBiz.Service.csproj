@@ -108,6 +108,7 @@
     <Compile Include="Dto\Voucher.cs" />
     <Compile Include="Orders\CancelOrder.cs" />
     <Compile Include="Orders\CompleteOrder.cs" />
+    <Compile Include="Orders\GetCompletedOrderReportPage.cs" />
     <Compile Include="Orders\SaveOrder.cs" />
     <Compile Include="Orders\GetActiveOrderPage.cs" />
     <Compile Include="Orders\GetOrder.cs" />

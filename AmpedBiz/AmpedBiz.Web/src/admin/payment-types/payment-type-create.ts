@@ -3,9 +3,11 @@ import { DialogController } from 'aurelia-dialog';
 import { PaymentType } from '../../common/models/payment-type';
 import { PaymentTypeService } from '../../services/payment-type-service';
 import { NotificationService } from '../../common/controls/notification-service';
+import { ActionResult } from '../../common/controls/notification';
 
 @autoinject
 export class PaymentTypeCreate {
+  private _notification: NotificationService;
   private _controller: DialogController;
   private _service: PaymentTypeService;
 
@@ -13,10 +15,9 @@ export class PaymentTypeCreate {
   public isEdit: boolean = false;
   public canSave: boolean = true;
   public paymentType: PaymentType;
-  public notificaton: NotificationService;
 
   constructor(notification: NotificationService, controller: DialogController, service: PaymentTypeService) {
-    this.notificaton = notification;
+    this._notification = notification;
     this._controller = controller;
     this._service = service;
   }
@@ -27,7 +28,7 @@ export class PaymentTypeCreate {
       this.isEdit = true;
       this._service.get(paymentType.id)
         .then(data => this.paymentType = <PaymentType>data)
-        .catch(error => this.notificaton.warning(error));
+        .catch(error => this._notification.warning(error));
     }
     else {
       this.header = "Create Payment Type";
@@ -41,28 +42,31 @@ export class PaymentTypeCreate {
   }
 
   save() {
+    this._notification.confirm('Do you want to save?').whenClosed(result => {
+      if (result.output === ActionResult.Yes) {
 
-    if (this.isEdit) {
+        if (this.isEdit) {
+          this._service.update(this.paymentType)
+            .then(data => {
+              this._notification.success("Payment Type has been saved.")
+                .then((data) => this._controller.ok({ wasCancelled: true, output: <PaymentType>data }));
+            })
+            .catch(error => {
+              this._notification.warning(error)
+            });
+        }
+        else {
 
-      this._service.update(this.paymentType)
-        .then(data => {
-          this.notificaton.success("Payment Type has been saved.")
-            .then((data) => this._controller.ok({ wasCancelled: true, output: <PaymentType>data }));
-        })
-        .catch(error => {
-          this.notificaton.warning(error)
-        });
-    }
-    else {
-
-      this._service.create(this.paymentType)
-        .then(data => {
-          this.notificaton.success("Payment Type has been saved.")
-            .then((data) => this._controller.ok({ wasCancelled: true, output: <PaymentType>data }));
-        })
-        .catch(error => {
-          this.notificaton.warning(error)
-        });
-    }
+          this._service.create(this.paymentType)
+            .then(data => {
+              this._notification.success("Payment Type has been saved.")
+                .then((data) => this._controller.ok({ wasCancelled: true, output: <PaymentType>data }));
+            })
+            .catch(error => {
+              this._notification.warning(error)
+            });
+        }
+      }
+    });
   }
 }

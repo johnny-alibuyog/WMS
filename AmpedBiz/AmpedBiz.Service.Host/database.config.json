@@ -1,12 +1,12 @@
 ﻿{
   "Database": "MySql",
-  "Port": 5432,
+  "Port": 3306,
   "HostServer": "localhost",
   "Name": "ampedbizdb",
   "Username": "root",
   "Password": "6jPbwQtZ8N52WRJ5rEWv2g==",
   "BatchSize": 50,
-  "UseDummyData": false,
-  "RecreateDb": true,
+  "UseDummyData": true,
+  "RecreateDb": false,
   "DefaultSeedDataPath": ".\\Data\\Default"
 }

@@ -48,7 +48,9 @@ namespace AmpedBiz.Core.Entities
 
         public virtual IEnumerable<Stock> Stocks { get; protected internal set; } = new Collection<Stock>();
 
-        public virtual InventoryConverter Convert(Func<Inventory, Measure> selector) => new InventoryConverter(this, selector);
+        public virtual InventoryMeasureConverter Convert(Func<Inventory, Measure> selector) => new InventoryMeasureConverter(this, selector);
+
+        public virtual IEnumerable<Measure> BreakDown(Func<Inventory, Measure> selector) => new InventoryMeasureBreaker(this, selector).BreakDown();
 
         public virtual void Accept(IVisitor<Inventory> visitor)
         {

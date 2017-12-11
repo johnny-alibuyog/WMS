@@ -3,6 +3,7 @@ import { DialogController } from 'aurelia-dialog';
 import { Supplier } from '../../common/models/supplier';
 import { ServiceApi } from '../../services/service-api';
 import { NotificationService } from '../../common/controls/notification-service';
+import { ActionResult } from '../../common/controls/notification';
 
 @autoinject
 export class SupplierCreate {
@@ -36,33 +37,37 @@ export class SupplierCreate {
     }
   }
 
-  cancel() {
+  public cancel(): void {
     this._controller.cancel({ wasCancelled: true, output: null });
   }
 
-  save() {
+  public save(): void {
+    this._notification.confirm('Do you want to save?').whenClosed(result => {
+      if (result.output === ActionResult.Yes) {
 
-    if (this.isEdit) {
+        if (this.isEdit) {
 
-      this._api.suppliers.update(this.supplier)
-        .then(data => {
-          this._notification.success("Supplier has been saved.")
-            .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <Supplier>data }));
-        })
-        .catch(error => {
-          this._notification.warning(error)
-        });
-    }
-    else {
+          this._api.suppliers.update(this.supplier)
+            .then(data => {
+              this._notification.success("Supplier has been saved.")
+                .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <Supplier>data }));
+            })
+            .catch(error => {
+              this._notification.warning(error)
+            });
+        }
+        else {
 
-      this._api.suppliers.create(this.supplier)
-        .then(data => {
-          this._notification.success("Supplier has been saved.")
-            .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <Supplier>data }));
-        })
-        .catch(error => {
-          this._notification.warning(error)
-        });
-    }
+          this._api.suppliers.create(this.supplier)
+            .then(data => {
+              this._notification.success("Supplier has been saved.")
+                .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <Supplier>data }));
+            })
+            .catch(error => {
+              this._notification.warning(error)
+            });
+        }
+      }
+    });
   }
 }

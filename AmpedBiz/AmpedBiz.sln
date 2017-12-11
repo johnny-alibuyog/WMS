@@ -43,6 +43,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseConfigs", "Database
 		.settings\DatabaseConfigs\database.local.mysql.config.json = .settings\DatabaseConfigs\database.local.mysql.config.json
 		.settings\DatabaseConfigs\database.local.postgres.config.json = .settings\DatabaseConfigs\database.local.postgres.config.json
 		.settings\DatabaseConfigs\database.ref.config.json = .settings\DatabaseConfigs\database.ref.config.json
+		.settings\DatabaseConfigs\database.staging.clientmachine.config.json = .settings\DatabaseConfigs\database.staging.clientmachine.config.json
 		.settings\DatabaseConfigs\database.staging.gear.host.config.json = .settings\DatabaseConfigs\database.staging.gear.host.config.json
 		.settings\DatabaseConfigs\database.staging.mywindowshosting.config.json = .settings\DatabaseConfigs\database.staging.mywindowshosting.config.json
 	EndProjectSection

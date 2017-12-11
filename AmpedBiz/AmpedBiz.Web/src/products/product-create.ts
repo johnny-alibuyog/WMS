@@ -6,6 +6,7 @@ import { Router } from 'aurelia-router';
 import { ServiceApi } from '../services/service-api';
 import { autoinject } from 'aurelia-framework';
 import { role } from '../common/models/role';
+import { ActionResult } from '../common/controls/notification';
 
 @autoinject
 export class ProductCreate {
@@ -64,16 +65,21 @@ export class ProductCreate {
   }
 
   public save(): void {
-    if (this.isEdit) {
-      this._api.products.update(this.product)
-        .then(data => this.resetAndNoify(data, "Product has been saved."))
-        .catch(error => this._notification.warning(error));
-    }
-    else {
-      this._api.products.create(this.product)
-        .then(data => this.resetAndNoify(data, "Product has been saved."))
-        .catch(error => this._notification.warning(error));
-    }
+    this._notification.confirm('Do you want to save?').whenClosed(result => {
+      if (result.output === ActionResult.Yes) {
+
+        if (this.isEdit) {
+          this._api.products.update(this.product)
+            .then(data => this.resetAndNoify(data, "Product has been saved."))
+            .catch(error => this._notification.warning(error));
+        }
+        else {
+          this._api.products.create(this.product)
+            .then(data => this.resetAndNoify(data, "Product has been saved."))
+            .catch(error => this._notification.warning(error));
+        }
+      }
+    });
   }
 
   private resetAndNoify(product: Product, notificationMessage: string) {

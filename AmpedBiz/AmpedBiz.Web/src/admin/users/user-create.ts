@@ -5,11 +5,12 @@ import { User } from '../../common/models/user';
 import { Branch } from '../../common/models/branch';
 import { ServiceApi } from '../../services/service-api';
 import { NotificationService } from '../../common/controls/notification-service';
+import { ActionResult } from '../../common/controls/notification';
 
 @autoinject
 export class UserCreate {
   private readonly _api: ServiceApi;
-  private readonly _notificaton: NotificationService;
+  private readonly _notification: NotificationService;
   private readonly _controller: DialogController;
 
   public header: string = 'Create User';
@@ -19,7 +20,7 @@ export class UserCreate {
   public branches: Branch[];
 
   constructor(notification: NotificationService, controller: DialogController, api: ServiceApi) {
-    this._notificaton = notification;
+    this._notification = notification;
     this._controller = controller;
     this._api = api;
   }
@@ -27,21 +28,21 @@ export class UserCreate {
   public activate(user: User): void {
     this._api.branches.getList()
       .then(data => this.branches = <Branch[]>data)
-      .catch(error => this._notificaton.warning(error));
+      .catch(error => this._notification.warning(error));
 
     if (user) {
       this.header = "Edit User";
       this.isEdit = true;
       this._api.users.get(user.id)
         .then(data => this.user = <User>data)
-        .catch(error => this._notificaton.warning(error));
+        .catch(error => this._notification.warning(error));
     }
     else {
       this.header = "Create User";
       this.isEdit = false;
       this._api.users.getInitialUser(null)
         .then(data => this.user = <User>data)
-        .catch(error => this._notificaton.warning(error));
+        .catch(error => this._notification.warning(error));
     }
   }
 
@@ -71,27 +72,32 @@ export class UserCreate {
   }
 
   public save(): void {
-    if (this.isEdit) {
+    this._notification.confirm('Do you want to save?').whenClosed(result => {
+      if (result.output === ActionResult.Yes) {
 
-      this._api.users.update(this.user)
-        .then(data => {
-          this._notificaton.success("User  has been saved.")
-            .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <User>data }));
-        })
-        .catch(error => {
-          this._notificaton.warning(error);
-        });
-    }
-    else {
+        if (this.isEdit) {
 
-      this._api.users.create(this.user)
-        .then(data => {
-          this._notificaton.success("User has been saved.")
-            .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <User>data }));
-        })
-        .catch(error => {
-          this._notificaton.warning(error);
-        });
-    }
+          this._api.users.update(this.user)
+            .then(data => {
+              this._notification.success("User  has been saved.")
+                .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <User>data }));
+            })
+            .catch(error => {
+              this._notification.warning(error);
+            });
+        }
+        else {
+
+          this._api.users.create(this.user)
+            .then(data => {
+              this._notification.success("User has been saved.")
+                .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <User>data }));
+            })
+            .catch(error => {
+              this._notification.warning(error);
+            });
+        }
+      }
+    });
   }
 }

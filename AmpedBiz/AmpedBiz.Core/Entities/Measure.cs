@@ -27,6 +27,11 @@ namespace AmpedBiz.Core.Entities
             return $"{this.Value.ToString("0.##")} {this.Unit}";
         }
 
+        public virtual string ToStringIntegral()
+        {
+            return $"{Math.Truncate(this.Value)} {this.Unit}";
+        }
+
         public static bool operator >(Measure operand1, Measure operand2)
         {
             return operand1.CompareTo(operand2) == 1;

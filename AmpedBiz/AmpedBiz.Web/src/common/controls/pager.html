@@ -4,19 +4,19 @@
   </div>
   <ul class="pagination pagination-sm">
     <li if.bind="boundaryLinks" disabled.bind="noPrevious">
-      <a href="javascript:undefined" click.delegate="selectPage(1)">${getText('first')}</a>
+      <a href="javascript:undefined" click.delegate="selectFirst()">${getText('first')}</a>
     </li>
     <li if.bind="directionLinks" disabled.bind="noPrevious">
-      <a href="javascript:undefined" disabled.bind="noPrevious" click.delegate="selectPage(currentPage - 1)">${getText('previous')}</a>
+      <a href="javascript:undefined" disabled.bind="noPrevious" click.delegate="selectPrevious()">${getText('previous')}</a>
     </li>
     <li repeat.for="page of pages" class="${page.isActive ? 'active' : ''}">
       <a href="javascript:undefined" click.delegate="selectPage(page.number)">${page.text}</a>
     </li>
     <li if.bind="directionLinks" disabled.bind="noNext">
-      <a href="javascript:undefined" click.delegate="selectPage(currentPage + 1)">${getText('next')}</a>
+      <a href="javascript:undefined" click.delegate="selectNext()">${getText('next')}</a>
     </li>
     <li if.bind="boundaryLinks" disabled.bind="noNext">
-      <a href="javascript:undefined" click.delegate="selectPage(totalPages)">${getText('last')}</a>
+      <a href="javascript:undefined" click.delegate="selectLast()">${getText('last')}</a>
     </li>
   </ul>
 </template>

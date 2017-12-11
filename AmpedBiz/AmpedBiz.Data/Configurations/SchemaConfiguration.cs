@@ -21,6 +21,7 @@ namespace AmpedBiz.Data.Configurations
             var path = Path.Combine(DatabaseConfig.Instance.GetWorkingPath("Schemas"), "schema.sql");
 
             var schema = new SchemaExport(config);
+            schema.SetDelimiter(";");
             schema.SetOutputFile(path);
             schema.Create(x => Debug.WriteLine(x), true);
         }

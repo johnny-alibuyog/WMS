@@ -3,6 +3,7 @@ import { DialogController } from 'aurelia-dialog';
 import { ProductCategory } from '../../common/models/product-category';
 import { ServiceApi } from '../../services/service-api';
 import { NotificationService } from '../../common/controls/notification-service';
+import { ActionResult } from '../../common/controls/notification';
 
 @autoinject
 export class ProductCategoryCreate {
@@ -41,28 +42,32 @@ export class ProductCategoryCreate {
   }
 
   save() {
+    this._notification.confirm('Do you want to save?').whenClosed(result => {
+      if (result.output === ActionResult.Yes) {
 
-    if (this.isEdit) {
+        if (this.isEdit) {
 
-      this._api.productCategories.update(this.productCategory)
-        .then(data => {
-          this._notification.success("Product Category has been saved.")
-            .whenClosed((data) => this._controller.ok(<ProductCategory>data));
-        })
-        .catch(error => {
-          this._notification.warning(error)
-        });
-    }
-    else {
+          this._api.productCategories.update(this.productCategory)
+            .then(data => {
+              this._notification.success("Product Category has been saved.")
+                .whenClosed((data) => this._controller.ok(<ProductCategory>data));
+            })
+            .catch(error => {
+              this._notification.warning(error)
+            });
+        }
+        else {
 
-      this._api.productCategories.create(this.productCategory)
-        .then(data => {
-          this._notification.success("Product Category has been saved.")
-            .whenClosed((data) => this._controller.ok(<ProductCategory>data));
-        })
-        .catch(error => {
-          this._notification.warning(error)
-        });
-    }
+          this._api.productCategories.create(this.productCategory)
+            .then(data => {
+              this._notification.success("Product Category has been saved.")
+                .whenClosed((data) => this._controller.ok(<ProductCategory>data));
+            })
+            .catch(error => {
+              this._notification.warning(error)
+            });
+        }
+      }
+    });
   }
 }

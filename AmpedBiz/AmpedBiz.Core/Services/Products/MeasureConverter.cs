@@ -15,6 +15,7 @@ namespace AmpedBiz.Core.Services.Products
                 return new Measure(0M, toUnit);
 
             Ensure.That(() => !product.IsNullOrDefault(), $"{nameof(product)} should not be null.");
+
             Ensure.That(() => !measure.Unit.IsNullOrDefault(), $"Product(({nameof(product.Name)})) convertion with value {measure.Value} should have a unit");
 
 

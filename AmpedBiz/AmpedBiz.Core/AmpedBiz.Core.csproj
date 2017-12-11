@@ -111,8 +111,10 @@
     <Compile Include="Services\Orders\OrderUpdatePaymentsVisitor.cs" />
     <Compile Include="Services\Orders\OrderUpdateReturnsVisitor.cs" />
     <Compile Include="Services\Orders\OrderUpdateVisitor.cs" />
-    <Compile Include="Services\Products\InventoryConverter.cs" />
+    <Compile Include="Services\Products\InventoryMeasureBreaker.cs" />
+    <Compile Include="Services\Products\InventoryMeasureConverter.cs" />
     <Compile Include="Services\Products\GetAvailableVisitor.cs" />
+    <Compile Include="Services\Products\MeasureBreaker.cs" />
     <Compile Include="Services\Products\MeasureConverter.cs" />
     <Compile Include="Services\Products\ProductUpdateVisitor.cs" />
     <Compile Include="Services\Inventories\PurchaseOrders\OrderVisitor.cs" />
@@ -138,6 +140,7 @@
     <Compile Include="Services\Returns\ReturnSaveVisitor.cs" />
     <Compile Include="Services\Returns\ReturnUpdateItemVisitor.cs" />
     <Compile Include="Entities\StageDefinition.cs" />
+    <Compile Include="Services\UnitOfMeasures\UnitBreaker.cs" />
     <Compile Include="ValueObject.cs" />
   </ItemGroup>
   <ItemGroup>

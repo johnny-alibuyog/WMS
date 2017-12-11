@@ -14,6 +14,7 @@ import { InvoiceReport } from './invoice-report';
 import { AuthService } from '../services/auth-service';
 import { pricing } from '../common/models/pricing';
 import { role } from '../common/models/role';
+import { ActionResult } from '../common/controls/notification';
 
 @autoinject
 export class OrderCreate {
@@ -199,22 +200,31 @@ export class OrderCreate {
 
     if (newReturns && newReturns.length > 0) {
       // if there are new returns, require override
-      this._dialog
-        .open({ viewModel: Override, model: {} })
-        .whenClosed(response => { if (!response.wasCancelled) _save(); });
+      this._dialog.open({ viewModel: Override, model: {} }).whenClosed(response => {
+        if (!response.wasCancelled) {
+          _save();
+        }
+      });
     }
     else {
-      _save();
+      this._notification.confirm('Do you want to save the order?').whenClosed(result => {
+        if (result.output === ActionResult.Yes) {
+          _save();
+        }
+      });
     }
-
-
   }
 
   public invoice(): void {
-    this._api.orders.invoice(this.order)
-      .then(data => this.resetAndNoify(data, null))
-      .then(_ => this.showInvoice())
-      .catch(error => this._notification.warning(error));
+    this._notification.confirm('Do you want to invoice the order?').whenClosed(result => {
+      if (result.output === ActionResult.Yes) {
+
+        this._api.orders.invoice(this.order)
+          .then(data => this.resetAndNoify(data, null))
+          .then(_ => this.showInvoice())
+          .catch(error => this._notification.warning(error));
+      }
+    });
   }
 
   public showInvoice(): void {
@@ -227,33 +237,58 @@ export class OrderCreate {
   }
 
   public stage(): void {
-    this._api.orders.stage(this.order)
-      .then(data => this.resetAndNoify(data, "Order has been staged."))
-      .catch(error => this._notification.warning(error));
+    this._notification.confirm('Do you want to stage the order?').whenClosed(result => {
+      if (result.output === ActionResult.Yes) {
+
+        this._api.orders.stage(this.order)
+          .then(data => this.resetAndNoify(data, "Order has been staged."))
+          .catch(error => this._notification.warning(error));
+      }
+    });
   }
 
   public route(): void {
-    this._api.orders.route(this.order)
-      .then(data => this.resetAndNoify(data, "Order has been routed."))
-      .catch(error => this._notification.warning(error));
+    this._notification.confirm('Do you want to route the order?').whenClosed(result => {
+      if (result.output === ActionResult.Yes) {
+
+        this._api.orders.route(this.order)
+          .then(data => this.resetAndNoify(data, "Order has been routed."))
+          .catch(error => this._notification.warning(error));
+      }
+    });
   }
 
   public ship(): void {
-    this._api.orders.ship(this.order)
-      .then(data => this.resetAndNoify(data, "Order has been shipped."))
-      .catch(error => this._notification.warning(error));
+    this._notification.confirm('Do you want to ship the order?').whenClosed(result => {
+      if (result.output === ActionResult.Yes) {
+
+        this._api.orders.ship(this.order)
+          .then(data => this.resetAndNoify(data, "Order has been shipped."))
+          .catch(error => this._notification.warning(error));
+      }
+    });
   }
 
   public complete(): void {
-    this._api.orders.complete(this.order)
-      .then(data => this.resetAndNoify(data, "Order has been completed."))
-      .catch(error => this._notification.warning(error));
+    this._notification.confirm('Do you want to complete the order?').whenClosed(result => {
+      if (result.output === ActionResult.Yes) {
+
+        this._api.orders.complete(this.order)
+          .then(data => this.resetAndNoify(data, "Order has been completed."))
+          .catch(error => this._notification.warning(error));
+      }
+    });
   }
 
   public cancel(): void {
-    this._api.orders.cancel(this.order)
-      .then(data => this.resetAndNoify(data, "Order has been cancelled."))
-      .catch(error => this._notification.warning(error));
+    this._notification.confirm('Do you want to cancel the order?').whenClosed(result => {
+      if (result.output === ActionResult.Yes) {
+
+        this._api.orders.cancel(this.order)
+          .then(data => this.resetAndNoify(data, "Order has been cancelled."))
+          .catch(error => this._notification.warning(error));
+      }
+    });
   }
 
   public back(): void {

@@ -44,7 +44,7 @@ namespace AmpedBiz.Tests.IntegrationTests
         {
             return new Service.Dto.Contact()
             {
-                Email = string.Format("{0}@{1}.com", this.GenerateRandomString(25), this.GenerateRandomString(8)),
+                Email = string.Format("{0}@{1}.com", this.GenerateRandomString(5), this.GenerateRandomString(5)),
                 Web = string.Format("http://www.{0}.com", this.GenerateRandomString(15)),
                 Fax = string.Format("({0}){1}-{2}-{3}", this.random.Next(10, 99), this.random.Next(100, 999), this.random.Next(10, 99), this.random.Next(10, 99)),
                 Landline = string.Format("({0}){1}-{2}-{3}", this.random.Next(10, 99), this.random.Next(100, 999), this.random.Next(10, 99), this.random.Next(10, 99)),
@@ -72,7 +72,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             {
                 Address = this.GenerateAddress(),
                 Description = "Description_" + Guid.NewGuid().ToString(),
-                Name = "Name_" + this.GenerateRandomString(25)
+                Name = "Name_" + this.GenerateRandomString(5)
             };
         }
 
@@ -80,9 +80,9 @@ namespace AmpedBiz.Tests.IntegrationTests
         {
             return new Service.Dto.Person()
             {
-                FirstName = "FirstName_" + this.GenerateRandomString(10),
-                LastName = "LastName_" + this.GenerateRandomString(10),
-                MiddleName = "MiddleNam_" + this.GenerateRandomString(10),
+                FirstName = "FirstName_" + this.GenerateRandomString(2),
+                LastName = "LastName_" + this.GenerateRandomString(2),
+                MiddleName = "MiddleNam_" + this.GenerateRandomString(2),
                 BirthDate = new DateTime(this.random.Next(1930, 1995), this.random.Next(1, 12), this.random.Next(1, 28))
             };
         }
@@ -92,8 +92,8 @@ namespace AmpedBiz.Tests.IntegrationTests
             return new Service.Dto.User()
             {
                 //Id = "Id_" + this.GenerateRandomString(25),
-                Password = "Password_" + this.GenerateRandomString(15),
-                Username = "Username_" + this.GenerateRandomString(15),
+                Password = "Password_" + this.GenerateRandomString(5),
+                Username = "Username_" + this.GenerateRandomString(5),
                 Address = this.GenerateAddress(),
                 BranchId = this.GenerateBranch().Id,
                 Person = this.GeneratePerson(),
@@ -127,7 +127,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             {
                 Address = this.GenerateAddress(),
                 Contact = this.GenerateContact(),
-                Name = "Name_" + this.GenerateRandomString(25)
+                Name = "Name_" + this.GenerateRandomString(5)
             };
         }
 
@@ -138,10 +138,10 @@ namespace AmpedBiz.Tests.IntegrationTests
             {
                 Category = category,
                 Supplier = supplier,
-                Description = "Description_" + this.GenerateRandomString(25),
+                Description = "Description_" + this.GenerateRandomString(5),
                 Discontinued = false,
                 Image = "",
-                Name = "Name_" + this.GenerateRandomString(10),
+                Name = "Name_" + this.GenerateRandomString(5),
                 Inventory = new Service.Dto.Inventory()
                 {
                     InitialLevelValue = (decimal)random.Next(300000, 400000),

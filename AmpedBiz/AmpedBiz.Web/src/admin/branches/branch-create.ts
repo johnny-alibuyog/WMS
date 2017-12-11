@@ -7,6 +7,7 @@ import { ServiceApi } from '../../services/service-api';
 import { NotificationService } from '../../common/controls/notification-service';
 import { ValidationRules, ValidationController, ValidationControllerFactory } from 'aurelia-validation';
 import { BootstrapFormRenderer } from '../../common/controls/validations/bootstrap-form-renderer';
+import { ActionResult } from '../../common/controls/notification';
 
 @autoinject()
 export class BranchCreate {
@@ -82,31 +83,35 @@ export class BranchCreate {
     }
   }
 
-  public cancel(): void  {
+  public cancel(): void {
     this._dialogController.cancel({ wasCancelled: true, output: null });
   }
 
   public save(): void {
-    if (this.isEdit) {
+    this._notification.confirm('Do you want to save?').whenClosed(result => {
+      if (result.output === ActionResult.Yes) {
 
-      this._api.branches.update(this.branch)
-        .then(data => {
-          this._notification.success("Branch  has been saved.")
-            .whenClosed((data) => this._dialogController.ok({ wasCancelled: true, output: <Branch>data }));
-        })
-        .catch(error => {
-          this._notification.warning(error)
-        });
-    }
-    else {
-      this._api.branches.create(this.branch)
-        .then(data => {
-          this._notification.success("Branch has been saved.")
-            .whenClosed((data) => this._dialogController.ok({ wasCancelled: true, output: <Branch>data }));
-        })
-        .catch(error => {
-          this._notification.warning(error)
-        });
-    }
+        if (this.isEdit) {
+          this._api.branches.update(this.branch)
+            .then(data => {
+              this._notification.success("Branch  has been saved.")
+                .whenClosed((data) => this._dialogController.ok({ wasCancelled: true, output: <Branch>data }));
+            })
+            .catch(error => {
+              this._notification.warning(error)
+            });
+        }
+        else {
+          this._api.branches.create(this.branch)
+            .then(data => {
+              this._notification.success("Branch has been saved.")
+                .whenClosed((data) => this._dialogController.ok({ wasCancelled: true, output: <Branch>data }));
+            })
+            .catch(error => {
+              this._notification.warning(error)
+            });
+        }
+      }
+    });
   }
 }

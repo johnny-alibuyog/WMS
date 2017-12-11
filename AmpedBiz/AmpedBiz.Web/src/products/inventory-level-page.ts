@@ -28,13 +28,13 @@ export class ProuctInventoryLevelPage {
     this.sorter["name"] = SortDirection.Ascending;
     this.sorter["supplier"] = SortDirection.None;
     this.sorter["unitOfMeasure"] = SortDirection.None;
-    this.sorter["onHand"] = SortDirection.None;
-    this.sorter["allocated"] = SortDirection.None;
-    this.sorter["available"] = SortDirection.None;
-    this.sorter["onOrder"] = SortDirection.None;
-    this.sorter["currentLevel"] = SortDirection.None;
-    this.sorter["targetLevel"] = SortDirection.None;
-    this.sorter["belowTargetLevel"] = SortDirection.None;
+    // this.sorter["onHand"] = SortDirection.None;
+    // this.sorter["allocated"] = SortDirection.None;
+    // this.sorter["available"] = SortDirection.None;
+    // this.sorter["onOrder"] = SortDirection.None;
+    // this.sorter["currentLevel"] = SortDirection.None;
+    // this.sorter["targetLevel"] = SortDirection.None;
+    // this.sorter["belowTargetLevel"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
 
     this.pager = new Pager<InventoryLevelPageItem>();

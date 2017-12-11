@@ -1,10 +1,8 @@
 ﻿using AmpedBiz.Common.CustomTypes;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Services.Products;
 using AmpedBiz.Data;
 using AmpedBiz.Data.Context;
-using ExpressMapper.Extensions;
 using MediatR;
 using NHibernate;
 using System;

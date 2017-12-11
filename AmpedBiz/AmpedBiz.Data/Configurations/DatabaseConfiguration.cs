@@ -63,7 +63,7 @@ namespace AmpedBiz.Data.Configurations
         private static IPersistenceConfigurer ConfigureMySql()
         {
             return MySQLConfiguration.Standard
-                .Dialect<MySQL55Dialect>()
+                .Dialect<MySQL55InnoDBDialect>()
                 .ConnectionString(x => x
                     .Server(DatabaseConfig.Instance.HostServer)
                     .Database(DatabaseConfig.Instance.Name)

@@ -157,4 +157,13 @@ namespace AmpedBiz.Service.Dto
 
         public decimal TotalAmount { get; set; }
     }
+
+    public class CompletedOrderReportPageItem
+    {
+        public string ProductName { get; set; }
+
+        public string TotalItemSold { get; set; }
+
+        public string TotalPriceReceived { get; set; }
+    }
 }

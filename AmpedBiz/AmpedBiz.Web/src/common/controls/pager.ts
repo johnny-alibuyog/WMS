@@ -1,6 +1,7 @@
 import { autoinject, bindable, bindingMode, customElement, computedFrom } from 'aurelia-framework'
 import { LogManager } from 'aurelia-framework';
 import { appConfig } from '../../app-config';
+import { BranchService } from '../../services/branch-service';
 const logger = LogManager.getLogger('pager');
 
 @autoinject
@@ -42,6 +43,32 @@ export class Pager {
 
   attached(): void {
     this.buildPages();
+    window.addEventListener('keydown', this.handleKeyInput, false);
+  }
+
+  dettached(): void {
+    window.removeEventListener('keydown', this.handleKeyInput);
+  }
+
+  handleKeyInput = (event: KeyboardEvent) => {
+    if (event.code === 'ArrowLeft' || event.code === 'ArrowUp') {
+      if (event.ctrlKey && event.shiftKey) {
+        this.selectFirst();
+      }
+      else if (event.ctrlKey) {
+        this.selectPrevious();
+      }
+    }
+    else if (event.code === 'ArrowRight' || event.code === 'ArrowDown') {
+      if (event.ctrlKey && event.shiftKey) {
+        this.selectLast();
+      }
+      else if (event.ctrlKey) {
+        this.selectNext();
+      }
+    }
+
+    console.log(event);
   }
 
   currentPageChanged(): void {
@@ -86,6 +113,34 @@ export class Pager {
   @computedFrom('currentPage', 'totalPage')
   get noNext(): boolean {
     return this.currentPage === this.totalPages;
+  }
+
+  selectFirst(): void {
+    if (this.noPrevious) {
+      return;
+    }
+    this.selectPage(1);
+  }
+
+  selectPrevious(): void {
+    if (this.noPrevious) {
+      return;
+    }
+    this.selectPage(this.currentPage - 1);
+  }
+
+  selectNext(): void {
+    if (this.noNext) {
+      return;
+    }
+    this.selectPage(this.currentPage + 1);
+  }
+
+  selectLast(): void {
+    if (this.noNext) {
+      return;
+    }
+    this.selectPage(this.totalPages);
   }
 
   selectPage(pageNumber: number) {
@@ -143,7 +198,9 @@ export class Pager {
         number: pageNumber,
         text: pageNumber.toString()
       };
-      this.pages.push(page);
+      if (!this.pages.some(x => x.number === page.number)) {
+        this.pages.push(page);
+      }
     }
 
     // Add links to move between page sets

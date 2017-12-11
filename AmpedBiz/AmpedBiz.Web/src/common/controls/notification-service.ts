@@ -1,6 +1,6 @@
 import { autoinject, noView } from 'aurelia-framework';
 import { DialogService, DialogOpenPromise, DialogOpenResult, DialogCancelResult } from 'aurelia-dialog';
-import { Notification, Alert } from './notification';
+import { Notification, Prompt, Action, ActionResult } from './notification';
 
 @autoinject
 export class NotificationService {
@@ -19,10 +19,17 @@ export class NotificationService {
 
     return this._dialog.open({
       viewModel: Notification,
-      model: <Alert>{
+      model: <Prompt>{
         type: 'info',
         emphasis: 'Info!',
-        message: message
+        message: message,
+        actions: [
+          <Action>{
+            text: 'Close',
+            type: 'primary',
+            result: ActionResult.Close
+          }
+        ]
       }
     });
   }
@@ -36,10 +43,17 @@ export class NotificationService {
 
     return this._dialog.open({
       viewModel: Notification,
-      model: <Alert>{
+      model: <Prompt>{
         type: 'success',
         emphasis: 'Success!',
-        message: message
+        message: message,
+        actions: [
+          <Action>{
+            text: 'Close',
+            type: 'primary',
+            result: ActionResult.Close
+          }
+        ]
       }
     });
   }
@@ -53,10 +67,17 @@ export class NotificationService {
 
     return this._dialog.open({
       viewModel: Notification,
-      model: <Alert>{
+      model: <Prompt>{
         type: 'warning',
         emphasis: 'Warning!',
-        message: message
+        message: message,
+        actions: [
+          <Action>{
+            text: 'Close',
+            type: 'primary',
+            result: ActionResult.Close
+          }
+        ]
       }
     });
   }
@@ -70,11 +91,46 @@ export class NotificationService {
 
     return this._dialog.open({
       viewModel: Notification,
-      model: <Alert>{
+      model: <Prompt>{
         type: 'danger',
         emphasis: 'Error!',
-        message: message
+        message: message,
+        actions: [
+          <Action>{
+            text: 'Close',
+            type: 'primary',
+            result: ActionResult.Close
+          }
+        ]
       }
     });
   }
-}
+
+  public confirm(message: string): DialogOpenPromise<DialogOpenResult | DialogCancelResult> {
+    //TODO: there is an issue currently with aurelia-dialog, 
+    // return implementaion as soon as fix is available
+    // https://github.com/aurelia/dialog/issues/180
+
+    //return Promise.resolve(<DialogResult>{ wasCancelled: false, output: null });
+
+    return this._dialog.open({
+      viewModel: Notification,
+      model: <Prompt>{
+        type: 'info',
+        emphasis: 'Confirm!',
+        message: message,
+        actions: [
+          <Action>{
+            text: 'Yes',
+            type: 'primary',
+            result: ActionResult.Yes
+          },
+          <Action>{
+            text: 'No',
+            type: 'danger',
+            result: ActionResult.No
+          }
+        ]
+      }
+    });
+  }}

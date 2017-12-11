@@ -124,6 +124,22 @@ namespace AmpedBiz.Service.Dto
 
         public string UnitOfMeasure { get; set; }
 
+        public string OnHand { get; set; }
+
+        public string Allocated { get; set; }
+
+        public string Available { get; set; }
+
+        public string OnOrder { get; set; }
+
+        public string CurrentLevel { get; set; }
+
+        public string ReorderLevel { get; set; }
+
+        public string TargetLevel { get; set; }
+
+        public string BelowTargetLevel { get; set; }
+
         public decimal? OnHandValue { get; set; }
 
         public decimal? AllocatedValue { get; set; }

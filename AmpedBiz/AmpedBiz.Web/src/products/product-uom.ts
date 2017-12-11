@@ -95,13 +95,13 @@ export class ProductUOM {
   }
 
   public toggleDefault(item: ProductUnitOfMeasure): boolean {
-    /* only one item should be default, the reset is not  */
+    /* only one item should be default, the rest is not  */
     this.items.filter(x => x !== item).forEach(x => x.isDefault = false);
     return true; // continue propagtion to UI
   }
 
   public toggleStandard(item: ProductUnitOfMeasure): boolean {
-    /* only one item should be standard, the reset is not  */
+    /* only one item should be standard, the rest is not  */
     item.standardEquivalentValue = 1;
     this.items.filter(x => x !== item).forEach(x => x.isStandard = false);
     return true; // continue propagtion to UI
@@ -130,7 +130,7 @@ export class ProductUOM {
       ? this.lookups.unitOfMeasure.items[0] : null;
   }
 
-  public attached() {
+  public attached(): void {
     var requests: [
       Promise<Lookup<string>[]>,
       Promise<Lookup<string>[]>

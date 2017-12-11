@@ -3,6 +3,7 @@ import { DialogController } from 'aurelia-dialog';
 import { UnitOfMeasure } from '../../common/models/unit-of-measure';
 import { ServiceApi } from '../../services/service-api';
 import { NotificationService } from '../../common/controls/notification-service';
+import { ActionResult } from '../../common/controls/notification';
 
 @autoinject
 export class UnitOfMeasureCreate {
@@ -36,33 +37,37 @@ export class UnitOfMeasureCreate {
     }
   }
 
-  cancel() {
+  public cancel(): void {
     this._controller.cancel({ wasCancelled: true, output: null });
   }
 
-  save() {
+  public save(): void {
+    this._notification.confirm('Do you want to save?').whenClosed(result => {
+      if (result.output === ActionResult.Yes) {
 
-    if (this.isEdit) {
+        if (this.isEdit) {
 
-      this._api.unitOfMeasures.update(this.unitOfMeasure)
-        .then(data => {
-          this._notification.success("Unit of Measure has been saved.")
-            .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <UnitOfMeasure>data }));
-        })
-        .catch(error => {
-          this._notification.warning(error)
-        });
-    }
-    else {
+          this._api.unitOfMeasures.update(this.unitOfMeasure)
+            .then(data => {
+              this._notification.success("Unit of Measure has been saved.")
+                .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <UnitOfMeasure>data }));
+            })
+            .catch(error => {
+              this._notification.warning(error)
+            });
+        }
+        else {
 
-      this._api.unitOfMeasures.create(this.unitOfMeasure)
-        .then(data => {
-          this._notification.success("Unit of Measure has been saved.")
-            .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <UnitOfMeasure>data }));
-        })
-        .catch(error => {
-          this._notification.warning(error)
-        });
-    }
+          this._api.unitOfMeasures.create(this.unitOfMeasure)
+            .then(data => {
+              this._notification.success("Unit of Measure has been saved.")
+                .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <UnitOfMeasure>data }));
+            })
+            .catch(error => {
+              this._notification.warning(error)
+            });
+        }
+      }
+    });
   }
 }

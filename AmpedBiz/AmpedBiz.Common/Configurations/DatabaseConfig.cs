@@ -65,6 +65,8 @@ namespace AmpedBiz.Common.Configurations
             //this.BatchSize = 50;
             //this.UseDummyData = true;
             //this.RecreateDb = true;
+            //this.DefaultSeedDataPath = ".\\Data\\Default";
+
 
             // staging.mywindowshosting
             //this.Database = DatabaseProvider.MySql;
@@ -76,29 +78,31 @@ namespace AmpedBiz.Common.Configurations
             //this.BatchSize = 50;
             //this.UseDummyData = true;
             //this.RecreateDb = true;
+            //this.DefaultSeedDataPath = ".\\Data\\Default";
 
             // local.mysql
-            //this.Database = DatabaseProvider.MySql;
-            //this.Port = 3306;
-            //this.HostServer = "localhost";
-            //this.Name = "ampedbizdb";
-            //this.Username = "root";
-            //this.Password = "123!@#qwe";
-            //this.BatchSize = 50;
-            //this.UseDummyData = true;
-            //this.RecreateDb = true;
-
-            // local.postgres
-            this.Database = DatabaseProvider.Postgres;
-            this.Port = 5432;
+            this.Database = DatabaseProvider.MySql;
+            this.Port = 3306;
             this.HostServer = "localhost";
             this.Name = "ampedbizdb";
-            this.Username = "postgres";
+            this.Username = "root";
             this.Password = "123!@#qwe";
             this.BatchSize = 50;
             this.UseDummyData = true;
             this.RecreateDb = true;
             this.DefaultSeedDataPath = ".\\Data\\Default";
+
+            // local.postgres
+            //this.Database = DatabaseProvider.Postgres;
+            //this.Port = 5432;
+            //this.HostServer = "localhost";
+            //this.Name = "ampedbizdb";
+            //this.Username = "postgres";
+            //this.Password = "123!@#qwe";
+            //this.BatchSize = 50;
+            //this.UseDummyData = true;
+            //this.RecreateDb = true;
+            //this.DefaultSeedDataPath = ".\\Data\\Default";
         }
 
         private static DatabaseConfig Create()

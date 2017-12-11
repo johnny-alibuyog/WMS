@@ -1,20 +1,25 @@
 <template>
+  <require from="common/controls/notification.css"></require>
+
   <ux-dialog>
-    
+
     <ux-dialog-body>
       <div class="cl-lg-12">
         <div class="panel panel-default">
-            <div class="alert alert-$(alert.type)">
-              <strong>${alert.emphasis}</strong> ${alert.message}
+          <div class="alert alert-${prompt.type}">
+            <strong>${prompt.emphasis}</strong> ${prompt.message}
           </div>
         </div>
       </div>
     </ux-dialog-body>
 
     <ux-dialog-footer>
-      <button click.trigger="ok()" class="text-danger">
-        <i class="fa fa-times-circle"></i> Ok</button>
+      <a repeat.for="action of prompt.actions" 
+        click.trigger="$parent.confirm(action.result)" 
+        class="btn btn-${action.type}" 
+        role="button"
+        href="#">${action.text}</a>
     </ux-dialog-footer>
-    
+
   </ux-dialog>
 </template>
