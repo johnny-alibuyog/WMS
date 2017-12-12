@@ -1,5 +1,6 @@
 <template>
   <require from="common/controls/pager"></require>
+  <require from="common/controls/select2"></require>
   <require from="common/converters/lookup-to-id-value-converter"></require>
 
   <!-- list -->
@@ -8,7 +9,7 @@
     <thead>
       <tr class="row-no-padding">
         <th class="col-sm-1">Action</th>
-        <th class="col-sm-2">Product</th>
+        <th class="col-sm-4">Product</th>
         <th class="col-sm-2 text-right">Unit</th>
         <th class="col-sm-2 text-right">Quantity</th>
         <th class="col-sm-2 text-right">Cost</th>
@@ -36,10 +37,19 @@
 
         <!-- edit mode -->
         <td if.bind="$parent.selectedItem === item">
+          <select2 selected.bind="item.product | lookupToId:$parent.products" options.bind="products" placeholder="Select Product"
+            allow_clear="true" selected:change.delegate="propagateProductChange(item, $event.detail.selected)">
+            <tempalte replace-part="suggestions">
+              <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
+            </tempalte>
+          </select2>
+
+          <!--
           <select class="form-control" value.bind="item.product | lookupToId:$parent.products" change.delegate="initializeItem(item)">
             <option>Select Product</option>
             <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
           </select>
+        -->
         </td>
 
         <td if.bind="$parent.selectedItem === item">
@@ -49,11 +59,13 @@
         </td>
 
         <td if.bind="$parent.selectedItem === item" class="text-right">
-          <input class="form-control text-right" type="number" numeric-value.bind="item.quantity.value" keyup.delegate="compute(item)" />
+          <input class="form-control text-right" type="number" numeric-value.bind="item.quantity.value" keyup.delegate="compute(item)"
+          />
         </td>
 
         <td if.bind="$parent.selectedItem === item" class="text-right">
-          <input class="form-control text-right" type="number" numeric-value.bind="item.unitCostAmount" keyup.delegate="compute(item)" />
+          <input class="form-control text-right" type="number" numeric-value.bind="item.unitCostAmount" keyup.delegate="compute(item)"
+          />
         </td>
 
         <td if.bind="$parent.selectedItem === item" class="text-right">${item.totalCostAmount | numberFormat}</td>
@@ -89,7 +101,9 @@
         <td></td>
         <td></td>
         <td></td>
-        <td class="text-right"><label>Grand Total:</label></td>
+        <td class="text-right">
+          <label>Grand Total:</label>
+        </td>
         <td class="text-right">${grandTotalAmount | numberFormat}</td>
       </tr>
     </tfoot>
@@ -97,6 +111,7 @@
   </table>
 
   <!-- pager -->
-  <pager current-page.bind="itemPager.offset" total-items.bind="itemPager.count" change.delegate="itemPager.doPage($event)" />
+  <pager current-page.bind="itemPager.offset" total-items.bind="itemPager.count" change.delegate="itemPager.doPage($event)"
+  />
 
 </template>

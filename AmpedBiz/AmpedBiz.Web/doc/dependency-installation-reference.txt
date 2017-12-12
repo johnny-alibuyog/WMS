@@ -5,6 +5,9 @@ npm install -g npm-windows-upgrade
 npm-windows-upgrade
 */
 
+/* fixed timeout issue: "warn TypeError: "timeout" must be an unsigned integer" */
+npm install jspm-github@0.13.18
+
 /* use choco install instead */
 cinst nodejs
 # or for full install with npm
@@ -30,3 +33,10 @@ typings install dt~numeraljs --global --save
 /* jspdf */ https://mrrio.github.io/
 jspm install npm:jspdf
 typings install dt~jspdf --global --save
+
+/* 
+select2 
+https://github.com/aurelia/documentation/issues/202
+https://github.com/jspm/registry/issues/132
+*/
+jspm install select2 -o "{ format: 'global' } 

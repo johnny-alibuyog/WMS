@@ -1,5 +1,6 @@
 <template>
   <require from="common/controls/pager"></require>
+  <require from="common/controls/select2"></require>
   <require from="orders/state-verification-value-converter"></require>
 
   <!-- list -->
@@ -42,10 +43,11 @@
         <td if.bind="$parent.selectedItem === item">
           <div class="row">
             <div class="col-xs-12">
-              <select class="form-control input-xs" value.bind="item.product | lookupToId:$parent.products" change.delegate="initializeItem(item)">
-                <option>Select Product</option>
-                <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
-              </select>
+              <select2 selected.bind="item.product | lookupToId:$parent.products" options.bind="products" placeholder="Select Product" allow_clear="true" selected:change.delegate="propagateProductChange(item, $event.detail.selected)">
+                <tempalte replace-part="suggestions">
+                  <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
+                </tempalte>
+              </select2>
             </div>
           </div>
         </td>
@@ -72,7 +74,8 @@
         <td if.bind="$parent.selectedItem === item" class="text-right">
           <div class="row">
             <div class="col-xs-12 pull-right">
-              <input class="form-control input-xs text-right" type="number" numeric-value.bind="item.unitPriceAmount" keyup.delegate="compute(item)" />
+              <input class="form-control input-xs text-right" type="number" numeric-value.bind="item.unitPriceAmount" keyup.delegate="compute(item)"
+              />
             </div>
           </div>
         </td>
@@ -80,7 +83,8 @@
         <td if.bind="$parent.selectedItem === item" class="text-right">
           <div class="row">
             <div class="col-xs-12 pull-right">
-              <input class="form-control input-xs text-right" type="number" numeric-value.bind="item.discountRate | percentage" keyup.delegate="compute(item)" />
+              <input class="form-control input-xs text-right" type="number" numeric-value.bind="item.discountRate | percentage" keyup.delegate="compute(item)"
+              />
             </div>
           </div>
         </td>
@@ -163,7 +167,9 @@
           <td></td>
           <td></td>
           <td></td>
-          <td class="text-right"><label>Grand Total:</label></td>
+          <td class="text-right">
+            <label>Grand Total:</label>
+          </td>
           <td class="text-right">${grandTotalAmount | numberFormat}</td>
         </tr>
       </tfoot>

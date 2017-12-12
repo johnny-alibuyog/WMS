@@ -109,6 +109,11 @@ export class PurchaseOrderItemPage {
     });
   }
 
+  public propagateProductChange(item: PurchaseOrderItem, productId: string) {
+    item.product = this.products.find(x => x.id === productId);
+    this.initializeItem(item);
+  }
+
   public initializeItem(item: PurchaseOrderItem): void {
     if (this.isModificationDisallowed) {
       return;

@@ -56,6 +56,21 @@ export class Index {
         },
       },
       {
+        route: ['sales-report-page'],
+        name: 'sales-report-page',
+        moduleId: './sales-report-page',
+        nav: true,
+        title: 'Sales Reports',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+            ]
+          }
+        },
+      },
+      {
         route: ['product-report-page'],
         name: 'product-report-page',
         moduleId: './product-report-page',

@@ -158,12 +158,27 @@ namespace AmpedBiz.Service.Dto
         public decimal TotalAmount { get; set; }
     }
 
-    public class CompletedOrderReportPageItem
+    public class SalesReportPageItem
     {
+        public Guid ProductId { get; set; }
+
         public string ProductName { get; set; }
 
-        public string TotalItemSold { get; set; }
+        public string TotalSoldItems { get; set; }
 
-        public string TotalPriceReceived { get; set; }
+        public string TotalSoldPrice { get; set; }
+
+        public List<SalesReportPageDetailItem> Details { get; set; } = new List<SalesReportPageDetailItem>();
+    }
+
+    public class SalesReportPageDetailItem
+    {
+        public string CustomerName { get; set; }
+
+        public string InvoiceNumber { get; set; }
+
+        public string SoldItems { get; set; }
+
+        public string SoldPrice { get; set; }
     }
 }

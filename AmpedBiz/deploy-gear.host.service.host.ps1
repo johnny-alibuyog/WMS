@@ -1,5 +1,5 @@
 $env:username="`$ampbiz-api"
-$env:password="iQ3D0FfLBETDGzA7RWmWGX6DiGYMf7wqfia5raZrnWdbwkJg7Zij0v9c2fvt"
+$env:password="7XhRchMowBKY9feulRobaCkSnBE5FDi8ZL55nedcp6ESAu7YmCcfFhEvrRlm"
 $env:publish_profile="staging-gear.host.pubxml"
 $env:database_config="database.staging.gear.host.config.json"
 

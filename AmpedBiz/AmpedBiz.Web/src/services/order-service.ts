@@ -1,5 +1,5 @@
 import { Measure, getValue } from "../common/models/measure";
-import { Order, OrderInvoiceDetail, OrderPayable, OrderReportPageItem, OrderReturn, OrderReturnable, OrderReturning, OrderStatus } from '../common/models/order';
+import { Order, OrderInvoiceDetail, OrderPayable, OrderReportPageItem, OrderReturn, OrderReturnable, OrderReturning, OrderStatus, SalesReportPageItem } from '../common/models/order';
 import { PageRequest, PagerResponse } from '../common/models/paging';
 
 import { AuthService } from './auth-service';
@@ -51,6 +51,12 @@ export class OrderService extends ServiceBase<Order> {
     var url = this._resouce + '/report/page';
     return this._httpClient.post(url, page)
       .then(response => <PagerResponse<OrderReportPageItem>>response);
+  }
+
+  public getSalesReportPage(page: PageRequest): Promise<PagerResponse<SalesReportPageItem>> {
+    var url = this._resouce + '/sales-report/page';
+    return this._httpClient.post(url, page)
+      .then(response => <PagerResponse<SalesReportPageItem>>response);
   }
 
   public save(order: Order): Promise<Order> {

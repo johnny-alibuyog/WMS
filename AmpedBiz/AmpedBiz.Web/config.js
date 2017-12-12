@@ -32,17 +32,20 @@ System.config({
     "aurelia-templating-router": "npm:aurelia-templating-router@1.1.0",
     "aurelia-validation": "npm:aurelia-validation@1.1.1",
     "bootstrap": "github:twbs/bootstrap@3.3.7",
+    "css": "github:systemjs/plugin-css@0.1.36",
     "fetch": "github:github/fetch@1.1.1",
     "font-awesome": "npm:font-awesome@4.6.3",
     "moment": "npm:moment@2.18.1",
     "numeral": "npm:numeral@1.5.6",
     "pdfmake": "github:bpampuch/pdfmake@0.1.31",
-    "text": "github:systemjs/plugin-text@0.0.8",
+    "select2": "github:select2/select2@4.0.5",
+    "select2-bootstrap-theme": "npm:select2-bootstrap-theme@0.1.0-beta.10",
+    "text": "github:systemjs/plugin-text@0.0.8/text",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
     },
     "github:jspm/nodelibs-buffer@0.1.1": {
-      "buffer": "npm:buffer@5.0.6"
+      "buffer": "npm:buffer@5.0.8"
     },
     "github:jspm/nodelibs-process@0.1.2": {
       "process": "npm:process@0.11.10"
@@ -53,8 +56,11 @@ System.config({
     "github:jspm/nodelibs-vm@0.1.0": {
       "vm-browserify": "npm:vm-browserify@0.0.4"
     },
+    "github:select2/select2@4.0.5": {
+      "jquery": "npm:jquery@2.2.4"
+    },
     "github:twbs/bootstrap@3.3.7": {
-      "jquery": "npm:jquery@3.2.1"
+      "jquery": "npm:jquery@2.2.4"
     },
     "npm:assert@1.4.1": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
@@ -196,12 +202,12 @@ System.config({
       "aurelia-task-queue": "npm:aurelia-task-queue@1.2.0",
       "aurelia-templating": "npm:aurelia-templating@1.4.2"
     },
-    "npm:buffer@5.0.6": {
+    "npm:buffer@5.0.8": {
       "base64-js": "npm:base64-js@1.2.1",
       "ieee754": "npm:ieee754@1.1.8"
     },
     "npm:font-awesome@4.6.3": {
-      "css": "github:systemjs/plugin-css@0.1.35"
+      "css": "github:systemjs/plugin-css@0.1.36"
     },
     "npm:inherits@2.0.1": {
       "util": "github:jspm/nodelibs-util@0.1.0"
@@ -214,6 +220,9 @@ System.config({
       "assert": "github:jspm/nodelibs-assert@0.1.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
+    },
+    "npm:select2-bootstrap-theme@0.1.0-beta.10": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:util@0.10.3": {
       "inherits": "npm:inherits@2.0.1",

@@ -217,3 +217,20 @@ export class OrderReportPageItem {
   status?: OrderStatus;
   totalAmount?: number;
 }
+
+export interface SalesReportPageItem
+{
+    productId?: string;
+    productName?: string;
+    totalSoldItems?: string;
+    totalSoldPrice?: string;
+    details?: SalesReportPageDetailItem[];
+}
+
+export interface SalesReportPageDetailItem
+{
+    customerName?: string;
+    invoiceNumber?: string;
+    soldItems?: string;
+    soldPrice?: string;
+}

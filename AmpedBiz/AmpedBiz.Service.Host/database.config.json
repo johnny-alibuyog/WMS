@@ -1,6 +1,6 @@
 ﻿{
   "Database": "MySql",
-  "Port": 3306,
+  "Port": 5432,
   "HostServer": "localhost",
   "Name": "ampedbizdb",
   "Username": "root",

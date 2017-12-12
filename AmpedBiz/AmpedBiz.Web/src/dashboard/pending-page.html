@@ -1,11 +1,25 @@
 <template>
   <require from="common/controls/pager"></require>
+  <require from="common/controls/select2"></require>
   <require from="orders/active-order-page"></require>
   <require from="products/needs-reordering-page"></require>
 
   <section class="au-animate">
 
     <div class="container col-md-12">
+
+      <!--
+      <select select2="value.bind: selected; allow-clear: false" name="program" id="program" style="width: 100%;" class="form-control"
+        value.bind="selected">
+        <option repeat.for="option of options" value.bind="option.id">${option.name}</option>
+      </select>
+
+      <select2 name="options" selected.bind="selected" options.bind="options" placeholder="Enter a selection" allow_clear="true">
+        <template replace-part="suggestions">
+          <option repeat.for="option of options" value.bind="option.id">${option.name}</option>
+        </template>
+      </select2>
+      -->
 
       <!-- needs reordering -->
       <div class="row">
@@ -24,5 +38,5 @@
     </div>
 
   </section>
-  
+
 </template>

@@ -34,7 +34,7 @@ gulp.task('deploy', ['export'], function () {
  * Watch deploy task.
  * Watches the local copy for changes and copies the new files to the server whenever an update is detected
  *
- * Usage: `gulp deploy --target gear_host`
+ * Usage: `gulp deploy-watch --target gear_host`
  */
 gulp.task('deploy-watch', ['export'], function () {
   var conn = ftp.create(config.options);

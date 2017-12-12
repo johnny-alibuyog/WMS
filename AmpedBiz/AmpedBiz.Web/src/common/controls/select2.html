@@ -1,0 +1,12 @@
+<template>
+  <require from="select2/css/select2.min.css"></require>
+
+  <!-- add "multiple" attribute for multiple election -->
+  <select class="form-control" value.two-way="selected" name.one-way="name" id.one-way="name" data-placeholder.one-way="placeholder"
+    data-allow-clear.one-way="allow_clear" size="1">
+    <!-- https://dustindavis.me/aurelia-replaceable-parts-html-only-templates/ -->
+    <template replaceable part="suggestions">
+      <option repeat.for="option of options" value.bind="option.id">${option.name}</option>
+    </template>
+  </select>
+</template>

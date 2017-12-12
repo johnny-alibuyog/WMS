@@ -159,6 +159,11 @@ export class OrderItemPage {
     return productUnitOfMeasures.map(x => x.unitOfMeasure);
   }
 
+  public propagateProductChange(item: OrderItem, productId: string) {
+    item.product = this.products.find(x => x.id === productId);
+    this.initializeItem(item);
+  }
+
   public initializeItem(item: OrderItem): void {
     if (this.isModificationDisallowed) {
       return;
@@ -252,6 +257,10 @@ export class OrderItemPage {
       return;
     }
 
+    if (this.selectedItem === item) {
+      return;
+    }
+
     if (!item.unitOfMeasures || item.unitOfMeasures.length == 0) {
       this.getProductInventory(item.product).then(data => {
         if (data && data.unitOfMeasures) {
@@ -260,9 +269,7 @@ export class OrderItemPage {
       });
     }
 
-    if (this.selectedItem !== item) {
-      this.selectedItem = item;
-    }
+    this.selectedItem = item;
   }
 
   public deleteItem(item: OrderItem): void {
