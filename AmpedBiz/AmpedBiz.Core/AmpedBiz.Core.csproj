@@ -48,6 +48,9 @@
     <Compile Include="Entities\Currency.cs" />
     <Compile Include="Entities\Delivery.cs" />
     <Compile Include="Entities\DeliveryItem.cs" />
+    <Compile Include="Entities\InvoiceReportSetting.cs">
+      <DependentUpon>Setting.cs</DependentUpon>
+    </Compile>
     <Compile Include="Entities\ProductUnitOfMeasure.cs" />
     <Compile Include="Entities\ProductUnitOfMeasurePrice.cs" />
     <Compile Include="Entities\Measure.cs" />

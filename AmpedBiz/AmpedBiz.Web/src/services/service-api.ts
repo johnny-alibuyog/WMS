@@ -13,6 +13,7 @@ import { OrderService } from './order-service';
 import { SupplierService } from './supplier-service';
 import { UserService } from './user-service';
 import { UnitOfMeasureService } from './unit-of-measure';
+import { SettingService } from './setting-service';
 
 @autoinject
 export class ServiceApi {
@@ -27,6 +28,7 @@ export class ServiceApi {
   private _returnReasons: ReturnReasonService;
   private _returns: ReturnService;
   private _orders: OrderService;
+  private _settings: SettingService;
   private _suppliers: SupplierService;
   private _users: UserService;
   private _unitOfMeasures: UnitOfMeasureService;
@@ -75,6 +77,10 @@ export class ServiceApi {
     return this._orders;
   }
 
+  public get settings(): SettingService {
+    return this._settings;
+  }
+
   public get suppliers(): SupplierService {
     return this._suppliers;
   }
@@ -87,10 +93,22 @@ export class ServiceApi {
     return this._unitOfMeasures;
   }
 
-  constructor(auth: AuthService, branches: BranchService, customers: CustomerService, paymentTypes: PaymentTypeService,
-    pricings: PricingService, products: ProductService, productCategories: ProductCategoryService,
-    purchaseOrders: PurchaseOrderService, returnReasons: ReturnReasonService, returns: ReturnService,
-    orders: OrderService, suppliers: SupplierService, users: UserService, unitOfMeasures: UnitOfMeasureService) {
+  constructor(
+    auth: AuthService,
+    branches: BranchService,
+    customers: CustomerService,
+    paymentTypes: PaymentTypeService,
+    pricings: PricingService,
+    products: ProductService,
+    productCategories: ProductCategoryService,
+    purchaseOrders: PurchaseOrderService,
+    returnReasons: ReturnReasonService,
+    returns: ReturnService,
+    orders: OrderService,
+    settings: SettingService,
+    suppliers: SupplierService,
+    users: UserService,
+    unitOfMeasures: UnitOfMeasureService) {
 
     this._auth = auth;
     this._branches = branches;
@@ -103,6 +121,7 @@ export class ServiceApi {
     this._returnReasons = returnReasons;
     this._returns = returns;
     this._orders = orders;
+    this._settings = settings;
     this._suppliers = suppliers;
     this._users = users;
     this._unitOfMeasures = unitOfMeasures;

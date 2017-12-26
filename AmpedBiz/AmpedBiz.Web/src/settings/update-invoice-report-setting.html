@@ -1,0 +1,66 @@
+<template>
+    <require from="common/controls/address-input.html"></require>
+    <require from="common/controls/contact-input.html"></require>
+  
+    <section class="row row-no-padding">
+  
+      <div class="col-md-11">
+  
+        <div class="panel panel-default">
+  
+          <!-- heading -->
+          <div class="panel-heading">
+  
+            <!-- heading label -->
+            <h4 class="panel-title row-fluid">
+              <span>&nbsp ${header} &nbsp</span>
+  
+              <!-- transition buttons -->
+              <button type="button" class="btn btn-default" click.trigger="save()">
+                <i class="fa fa-check"></i> Save
+              </button>
+  
+              <button type="button" class="btn btn-default" click.trigger="back()">
+                <i class="fa fa-times"></i> Back
+              </button>
+            </h4>
+  
+          </div>
+  
+          <!-- body -->
+          <div class="panel-body">
+  
+            <form class="form-horizontal" role="form">
+  
+              <!-- inputs -->
+              <div class="row">
+  
+                <!-- left side -->
+                <div class="col-lg-6">
+  
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Page Item Size:</label>
+                    <div class="col-sm-8">
+                      <input type="number" class="form-control" placeholder="Enter Page Item Size" value.bind="settings.pageItemSize" />
+                    </div>
+                  </div>
+  
+                </div>
+  
+                <!-- right side -->
+                <div class="col-lg-6">
+  
+  
+                </div>
+  
+              </div>
+  
+          </div>
+  
+        </div>
+  
+      </div>
+  
+    </section>
+  
+  </template>

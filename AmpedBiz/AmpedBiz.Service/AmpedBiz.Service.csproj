@@ -77,6 +77,7 @@
     <Compile Include="Dto\Customer.cs" />
     <Compile Include="Dto\Contact.cs" />
     <Compile Include="Dto\Inventory.cs" />
+    <Compile Include="Dto\InvoiceReportSetting.cs" />
     <Compile Include="Dto\Mappers\IMapper.cs" />
     <Compile Include="Dto\Mappers\Mapper.cs" />
     <Compile Include="Dto\Measure.cs" />
@@ -182,6 +183,8 @@
     <Compile Include="Returns\GetReturnsByCustomerPage.cs" />
     <Compile Include="Returns\GetReturnsByProductPage.cs" />
     <Compile Include="Returns\GetReturnsByReasonPage.cs" />
+    <Compile Include="Settings\GetInvoiceReportSetting.cs" />
+    <Compile Include="Settings\UpdateInvoiceReportSetting.cs" />
     <Compile Include="Suppliers\CreateSupplier.cs" />
     <Compile Include="Suppliers\GetSupplier.cs" />
     <Compile Include="Suppliers\GetSupplierLookup.cs" />

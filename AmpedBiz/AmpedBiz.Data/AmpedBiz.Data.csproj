@@ -46,9 +46,8 @@
     <Reference Include="LinqToExcel, Version=1.11.0.0, Culture=neutral, PublicKeyToken=9c8ea65a58f03f1f, processorArchitecture=MSIL">
       <HintPath>..\packages\LinqToExcel.1.11.0\lib\LinqToExcel.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=4.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\packages\NHibernate.4.1.1.4000\lib\net40\NHibernate.dll</HintPath>
@@ -147,6 +146,7 @@
     <Compile Include="EntityDefinitions\ReturnItemDefinition.cs" />
     <Compile Include="EntityDefinitions\ReturnDefinition.cs" />
     <Compile Include="EntityDefinitions\ReturnReasonDefinition.cs" />
+    <Compile Include="EntityDefinitions\SettingDefinition.cs" />
     <Compile Include="EntityDefinitions\ShipperDefinition.cs" />
     <Compile Include="EntityDefinitions\StockDefinition.cs" />
     <Compile Include="EntityDefinitions\TenantDefinition.cs" />
@@ -159,6 +159,7 @@
     <Compile Include="Seeders\DefaultDataSeeders\_001_DefaultTenantSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_002_DefaultBranchSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_015_UnitOfMeasureSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_020_InvoiceReportSettingSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_030_DefaultSupplierSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_031_DefaultProductSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_032_DefaultInventoryEnding.cs" />

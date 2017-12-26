@@ -4,12 +4,19 @@ using System.Data.Common;
 using Newtonsoft.Json;
 using NHibernate.SqlTypes;
 using NHibernate.UserTypes;
+using Newtonsoft.Json.Serialization;
 
 namespace AmpedBiz.Data.CustomTypes
 {
     [Serializable]
     public class JsonType<T> : IUserType where T : class
     {
+        private readonly JsonSerializerSettings _settings = new JsonSerializerSettings()
+        {
+            Formatting = Formatting.Indented,
+            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+        };
+
         public new bool Equals(object x, object y)
         {
             if (x == null && y == null)
@@ -18,8 +25,8 @@ namespace AmpedBiz.Data.CustomTypes
             if (x == null || y == null)
                 return false;
 
-            var xdocX = JsonConvert.SerializeObject(x);
-            var xdocY = JsonConvert.SerializeObject(y);
+            var xdocX = JsonConvert.SerializeObject(x, this._settings);
+            var xdocY = JsonConvert.SerializeObject(y, this._settings);
 
             return xdocY == xdocX;
         }
@@ -41,7 +48,7 @@ namespace AmpedBiz.Data.CustomTypes
 
             if (val != null && !string.IsNullOrWhiteSpace(val))
             {
-                return JsonConvert.DeserializeObject<T>(val);
+                return JsonConvert.DeserializeObject<T>(val, this._settings);
             }
 
             return null;
@@ -57,7 +64,7 @@ namespace AmpedBiz.Data.CustomTypes
             }
             else
             {
-                parameter.Value = JsonConvert.SerializeObject(value);
+                parameter.Value = JsonConvert.SerializeObject(value, this._settings);
             }
         }
 
@@ -70,9 +77,9 @@ namespace AmpedBiz.Data.CustomTypes
             //have to mark the class as serializable. Most likely slower
             //but only done for convenience. 
 
-            var serialized = JsonConvert.SerializeObject(value);
+            var serialized = JsonConvert.SerializeObject(value, this._settings);
 
-            return JsonConvert.DeserializeObject<T>(serialized);
+            return JsonConvert.DeserializeObject<T>(serialized, this._settings);
         }
 
         public object Replace(object original, object target, object owner)
@@ -87,7 +94,7 @@ namespace AmpedBiz.Data.CustomTypes
             if (string.IsNullOrWhiteSpace(str))
                 return null;
 
-            return JsonConvert.DeserializeObject<T>(str);
+            return JsonConvert.DeserializeObject<T>(str, this._settings);
         }
 
         public object Disassemble(object value)
@@ -95,7 +102,7 @@ namespace AmpedBiz.Data.CustomTypes
             if (value == null)
                 return null;
 
-            return JsonConvert.SerializeObject(value);
+            return JsonConvert.SerializeObject(value, this._settings);
         }
 
         public SqlType[] SqlTypes

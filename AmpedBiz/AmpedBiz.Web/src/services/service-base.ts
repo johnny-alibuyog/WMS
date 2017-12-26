@@ -24,22 +24,22 @@ export class ServiceBase<TEntity> {
       .then(data => <TEntity[]>data);
   }
 
-  public getPage(page: PageRequest): Promise<any> {
+  public getPage(page: PageRequest): Promise<TEntity> {
     var url = this._resouce + '/page';
     return this._httpClient.post(url, page);
   }
 
-  public create(entity: TEntity): Promise<any> {
+  public create(entity: TEntity): Promise<TEntity> {
     var url = this._resouce;
     return this._httpClient.post(url, entity);
   }
 
-  public update(entity: TEntity): Promise<any> {
+  public update(entity: TEntity): Promise<TEntity> {
     var url = this._resouce;
     return this._httpClient.put(url, entity);
   }
 
-  public delete(id: any, entity?: TEntity): Promise<any> {
+  public delete(id: any, entity?: TEntity): Promise<TEntity> {
     var url = this._resouce + "/" + id;
     return this._httpClient.delete(url, entity);
   }

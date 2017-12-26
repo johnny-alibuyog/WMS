@@ -123,6 +123,22 @@ export class Shell {
         },
       },
       {
+        route: ['settings'],
+        name: 'settings',
+        moduleId: '../settings/index',
+        nav: false,
+        main: true,
+        title: 'Settings',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+            ]
+          }
+        },
+      },
+      {
         route: ['user-profile'],
         name: 'user-profile',
         moduleId: '../users/profiles/index',
