@@ -81,7 +81,7 @@
     </ux-dialog-body>
 
     <ux-dialog-footer>
-      <button type="button" class="btn btn-primary" click.trigger="save()" disabled.bind="!canSave">
+      <button type="button" class="btn btn-primary" click.trigger="save()" disabled.bind="!canSave" attach-focus="true">
         <i class="fa fa-check-circle"></i> Save
       </button>
       <button type="button" class="btn btn-danger" click.trigger="cancel()">

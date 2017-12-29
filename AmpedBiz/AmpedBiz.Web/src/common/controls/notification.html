@@ -15,6 +15,7 @@
 
     <ux-dialog-footer>
       <a repeat.for="action of prompt.actions" 
+        attach-focus="${action.type == 'primary' ? true: false}"
         click.trigger="$parent.confirm(action.result)" 
         class="btn btn-${action.type}" 
         role="button"
