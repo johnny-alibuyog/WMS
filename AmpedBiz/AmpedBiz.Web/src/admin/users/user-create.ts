@@ -72,6 +72,7 @@ export class UserCreate {
   }
 
   public save(): void {
+    debugger;
     this._notification.confirm('Do you want to save?').whenClosed(result => {
       if (result.output === ActionResult.Yes) {
 

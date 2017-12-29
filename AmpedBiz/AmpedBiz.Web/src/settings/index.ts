@@ -3,10 +3,10 @@ import { AuthSettings } from '../services/auth-service';
 import { role } from '../common/models/role';
 
 export class Index {
-  heading: string = "Settings";
-  router: Router;
+  public heading: string = "Settings";
+  public router: Router;
 
-  configureRouter(config: RouterConfiguration, router: Router) {
+  public configureRouter(config: RouterConfiguration, router: Router) {
     config.title = "Settings";
     config.map([
       {
@@ -28,4 +28,3 @@ export class Index {
     this.router = router;
   }
 }
-

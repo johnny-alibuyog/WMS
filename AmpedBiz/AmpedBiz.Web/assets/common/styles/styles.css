@@ -397,6 +397,7 @@ div.au-stagger {
 .login-form {
   width: 20vw;
   margin: 20vh auto;
+  min-width: 400px;
 }
 
 .login-form .panel-body > * {
