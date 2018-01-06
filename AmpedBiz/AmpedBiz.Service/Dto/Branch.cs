@@ -6,6 +6,8 @@ namespace AmpedBiz.Service.Dto
     {
         public Guid Id { get; set; }
 
+        public Tenant Tenant { get; set; }
+
         public string Name { get; set; }
 
         public string Description { get; set; }

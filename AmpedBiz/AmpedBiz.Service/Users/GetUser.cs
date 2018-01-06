@@ -40,7 +40,6 @@ namespace AmpedBiz.Service.Users
 
                     response.Id = entity.Id;
                     response.Username = entity.Username;
-                    response.Password = entity.Password;
                     response.Person = entity.Person.MapTo(default(Dto.Person));
                     response.Address = entity.Address.MapTo(default(Dto.Address));
                     response.BranchId = entity.Branch.Id;

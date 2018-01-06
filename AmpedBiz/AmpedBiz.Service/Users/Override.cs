@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Services.Users;
 using AmpedBiz.Data;
 using AmpedBiz.Data.Context;
 using MediatR;
@@ -25,15 +26,31 @@ namespace AmpedBiz.Service.Users
                 using (var transaction = session.BeginTransaction())
                 {
                     var user = session.QueryOver<User>()
-                        .Where(x =>
-                            x.Username == message.Username &&
-                            x.Password == message.Password
-                        )
+                        .Where(x => x.Username == message.Username)
                         .Fetch(x => x.Branch).Eager
                         .Fetch(x => x.Roles).Eager
                         .SingleOrDefault();
 
-                    user.EnsureExistence("Invalid username or password!");
+
+                    user.Ensure(
+                        that: instance =>
+                        {
+                            if (instance == null)
+                                return false;
+
+                            var verfied = default(bool);
+
+                            instance.Accept(new VerifyPasswordVisitor()
+                            {
+                                Password = message.Password,
+                                ResultCallback = (result) => verfied = result
+                            });
+
+                            return verfied;
+                        },
+                        message: "Invalid user or password!"
+                    );
+
                     user.IsManager().Assert("You do not have overriding rights.");
                     user.MapTo(response);
 

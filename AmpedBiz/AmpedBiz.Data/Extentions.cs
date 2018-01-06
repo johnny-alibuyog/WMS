@@ -56,19 +56,6 @@ namespace AmpedBiz.Data
             new ValidationEventListener().PerformValidation(entity);
         }
 
-        public static void Assert(this bool exists, string message)
-        {
-            if (string.IsNullOrWhiteSpace(message))
-            {
-                message = "Already exists.";
-            }
-
-            if (exists)
-            {
-                throw new ResourceNotFoundException(message);
-            }
-        }
-
         public static TValue GetValueSafely<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key)
         {
             if (key.IsNullOrDefault())
@@ -81,32 +68,6 @@ namespace AmpedBiz.Data
                 return default(TValue);
 
             return source[key];
-        }
-
-        public static void EnsureExistence<T>(this T entity, string message)
-        {
-            if (string.IsNullOrWhiteSpace(message))
-            {
-                message = $"{typeof(T).Name} does not exists";
-            }
-
-            if (entity == null)
-            {
-                throw new ResourceNotFoundException(message);
-            }
-        }
-
-        public static void EnsureExistence<T>(this IEnumerable<T> entities, string message)
-        {
-            if (string.IsNullOrWhiteSpace(message))
-            {
-                message = $"{typeof(T).Name} does not exists";
-            }
-
-            if (entities == null || !entities.Any())
-            {
-                throw new ResourceNotFoundException(message);
-            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Services.Users;
 using AmpedBiz.Data.Context;
 using NHibernate;
 using NHibernate.Linq;
@@ -25,28 +26,38 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
             for (int i = 0; i < 2; i++)
             {
-                data.Add(new User() //new User($"user{i}")
+                data.Add(new Func<User>(() =>
                 {
-                    Username = $"Username{i}",
-                    Password = $"Password{i}",
-                    Person = new Person()
+                    var user = new User() //new User($"user{i}")
                     {
-                        FirstName = $"FirstName {i}",
-                        MiddleName = $"MiddleName {i}",
-                        LastName = $"LastName {i}",
-                        BirthDate = DateTime.UtcNow
-                    },
-                    Address = new Address()
+                        Username = $"Username{i}",
+                        Person = new Person()
+                        {
+                            FirstName = $"FirstName {i}",
+                            MiddleName = $"MiddleName {i}",
+                            LastName = $"LastName {i}",
+                            BirthDate = DateTime.UtcNow
+                        },
+                        Address = new Address()
+                        {
+                            Street = $"Street {i}",
+                            Barangay = $"Barangay {i}",
+                            City = $"City {i}",
+                            Province = $"Province {i}",
+                            Region = $"Region {i}",
+                            Country = $"Country {i}",
+                            ZipCode = $"Zip Code {i}"
+                        },
+                    };
+
+                    user.Accept(new SetPasswordVisitor()
                     {
-                        Street = $"Street {i}",
-                        Barangay = $"Barangay {i}",
-                        City = $"City {i}",
-                        Province = $"Province {i}",
-                        Region = $"Region {i}",
-                        Country = $"Country {i}",
-                        ZipCode = $"Zip Code {i}"
-                    },
-                });
+                        NewPassword = $"Password{i}",
+                        ConfirmPassword = $"Password{i}"
+                    });
+
+                    return user;
+                })());
             }
 
             using (var session = _sessionFactory.RetrieveSharedSession(_context))
@@ -60,7 +71,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     foreach (var item in data)
                     {
                         item.Branch = branch;
-                        item.Roles = roles;
+                        item.Accept(new SetRoleVisitor(roles));
                         item.EnsureValidity();
 
                         session.Save(item);

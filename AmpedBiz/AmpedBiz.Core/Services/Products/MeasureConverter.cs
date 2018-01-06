@@ -14,10 +14,15 @@ namespace AmpedBiz.Core.Services.Products
             if (measure == null)
                 return new Measure(0M, toUnit);
 
-            Ensure.That(() => !product.IsNullOrDefault(), $"{nameof(product)} should not be null.");
+            product.Ensure(
+                that: instance => !instance.IsNullOrDefault(),
+                message: $"{nameof(product)} should not be null."
+            );
 
-            Ensure.That(() => !measure.Unit.IsNullOrDefault(), $"Product(({nameof(product.Name)})) convertion with value {measure.Value} should have a unit");
-
+            measure.Ensure(
+                that: instance => !instance.Unit.IsNullOrDefault(),
+                message: $"Product(({nameof(product.Name)})) convertion with value {measure.Value} should have a unit"
+            );
 
             var fromStandardEquivalentValue = product.UnitOfMeasures
                 .Where(x => x.UnitOfMeasure == measure.Unit)

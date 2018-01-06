@@ -24,6 +24,21 @@ export class Index {
           }
         },
       },
+      {
+        route: ['update-user-setting'],
+        name: 'update-user-setting',
+        moduleId: './update-user-setting',
+        nav: true,
+        title: 'User',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager
+            ]
+          }
+        },
+      },
     ]);
     this.router = router;
   }

@@ -31,6 +31,7 @@ namespace AmpedBiz.Core.Entities
         public static Branch Default = new Branch(new Guid("406A71D8-4DFD-4D34-821E-A5E52E144E50"))
         {
             Name = "Nicon",
+            Tenant = Tenant.Default,
             Description = "Nicon Services",
             TaxpayerIdentificationNumber = "102-7078388",
             Contact = new Contact()

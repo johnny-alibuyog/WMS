@@ -78,6 +78,11 @@ namespace AmpedBiz.Data.Configurations
                 {
                     x.Strategy = EntityCacheUsage.ReadWrite;
                     x.RegionName = CacheConfiguration.RegionName;
+                })
+                .EntityCache<Setting>(x =>
+                {
+                    x.Strategy = EntityCacheUsage.ReadWrite;
+                    x.RegionName = CacheConfiguration.RegionName;
                 });
         }
     }

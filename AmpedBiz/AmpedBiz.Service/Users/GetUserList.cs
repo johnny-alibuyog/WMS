@@ -42,7 +42,6 @@ namespace AmpedBiz.Service.Users
                         {
                             Id = x.Id,
                             Username = x.Username,
-                            Password = x.Password,
                             Person = x.Person.MapTo(default(Dto.Person)),
                             Address = x.Address.MapTo(default(Dto.Address)),
                             BranchId = x.Branch.Id

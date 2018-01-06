@@ -19,14 +19,15 @@ export class HttpClientFacade {
         headers: {
           'Accept': 'application/json',
           'X-Requested-With': 'Fetch',
-          // 'UserId': AuthStorage.userId,     // TODO: change this to jwt soon
-          // 'BranchId': AuthStorage.branchId, // TODO: change this to jwt soon
-          // 'TenantId': AuthStorage.tenantId, // TODO: change this to jwt soon
         }
       })
       .withInterceptor({
         request(request) {
           console.log(`Requesting ${request.method} ${request.url}`);
+          request.headers.append('UserId', AuthStorage.userId);     // TODO: change this to jwt soon
+          request.headers.append('BranchId', AuthStorage.branchId); // TODO: change this to jwt soon
+          request.headers.append('TenantId',  AuthStorage.tenantId); // TODO: change this to jwt soon
+
           return request; // you can return a modified Request, or you can short-circuit the request by returning a Response
         },
         response(response) {

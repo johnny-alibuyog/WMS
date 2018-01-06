@@ -15,10 +15,12 @@ namespace AmpedBiz.Core.Services.Generators
         bool VerifyHashString(string data, string hash, string salt);
     }
 
-    public class HashProvider
+    public class HashProvider : IHashProvider
     {
         private readonly int _salthLength;
         private readonly HashAlgorithm _hashAlgorithm;
+
+        public static IHashProvider New() => new HashProvider();
 
         public HashProvider() : this((HashAlgorithm)new SHA256Managed(), 4) { }
 

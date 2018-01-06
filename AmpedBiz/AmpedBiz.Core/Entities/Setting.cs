@@ -22,5 +22,11 @@ namespace AmpedBiz.Core.Entities
         public Setting() : this(default(Guid)) { }
 
         public Setting(Guid id) : base(id) { }
+
+        public static Setting<TValue> Default(Tenant tenant) => new Setting<TValue>()
+        {
+            Tenant = tenant,
+            Value = Activator.CreateInstance<TValue>()
+        };
     }
 }

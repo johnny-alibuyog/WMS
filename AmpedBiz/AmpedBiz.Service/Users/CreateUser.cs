@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Services.Users;
 using AmpedBiz.Data;
 using AmpedBiz.Data.Context;
 using MediatR;
@@ -30,19 +31,24 @@ namespace AmpedBiz.Service.Users
                     var exists = session.Query<User>().Any(x => x.Username == message.Username);
                     exists.Assert($"Username {message.Username} already exists.");
 
-                    var entity = new User();
-                    entity.Username = message.Username;
-                    entity.Password = message.Password;
-                    entity.Person = message.Person.MapTo(default(Person));
-                    entity.Address = message.Address.MapTo(default(Address));
-                    entity.Branch = message.BranchId != Guid.Empty
-                            ? session.Load<Branch>(message.BranchId)
-                            : default(Branch);
-                    entity.SetRoles(message.Roles
+                    var roles = message.Roles
                         .Where(x => x.Assigned)
                         .Select(x => session.Get<Role>(x.Id))
-                        .ToList()
-                    );
+                        .ToList();
+                    var entity = new User();
+                    entity.Username = message.Username;
+                    entity.Person = message.Person.MapTo(default(Person));
+                    entity.Address = message.Address.MapTo(default(Address));
+                    entity.Branch = session.Get<Branch>(message.BranchId);
+                    entity.Accept(new SetRoleVisitor(roles));
+                    entity.Accept(new SetPasswordVisitor() 
+                    {
+                        // use username on creation. 
+                        // the user himself/herself would be the one 
+                        // to set the password on when he logs in
+                        NewPassword = message.Username,
+                        ConfirmPassword = message.Username
+                    });
                     entity.EnsureValidity();
 
                     session.Save(entity);

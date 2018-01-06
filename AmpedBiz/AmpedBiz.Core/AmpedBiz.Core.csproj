@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Humanizer, Version=2.2.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Humanizer.Core.2.2.0\lib\netstandard1.0\Humanizer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -84,6 +87,9 @@
     <Compile Include="Entities\Tenant.cs" />
     <Compile Include="Entities\UnitOfMeasure.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\UserSetting.cs">
+      <DependentUpon>Setting.cs</DependentUpon>
+    </Compile>
     <Compile Include="Entity.cs" />
     <Compile Include="IAuditable.cs" />
     <Compile Include="Event.cs" />
@@ -144,6 +150,9 @@
     <Compile Include="Services\Returns\ReturnUpdateItemVisitor.cs" />
     <Compile Include="Entities\StageDefinition.cs" />
     <Compile Include="Services\UnitOfMeasures\UnitBreaker.cs" />
+    <Compile Include="Services\Users\SetPasswordVisitor.cs" />
+    <Compile Include="Services\Users\SetRoleVisitor.cs" />
+    <Compile Include="Services\Users\VerifyPasswordVisitor.cs" />
     <Compile Include="ValueObject.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -152,7 +161,9 @@
       <Name>AmpedBiz.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -131,6 +131,9 @@
     <Compile Include="CustomTypes\JsonType.cs" />
     <Compile Include="CustomTypes\XmlType.cs" />
     <Compile Include="EntityDefinitions\InventoryDefinition.cs" />
+    <Compile Include="EntityDefinitions\InvoiceReportSettingDefinition.cs">
+      <DependentUpon>SettingDefinition.cs</DependentUpon>
+    </Compile>
     <Compile Include="EntityDefinitions\OrderPaymentDefinition.cs" />
     <Compile Include="EntityDefinitions\MeasureDefinition.cs" />
     <Compile Include="EntityDefinitions\OrderItemDefinition.cs" />
@@ -151,6 +154,9 @@
     <Compile Include="EntityDefinitions\StockDefinition.cs" />
     <Compile Include="EntityDefinitions\TenantDefinition.cs" />
     <Compile Include="EntityDefinitions\UnitOfMeasureDefinition.cs" />
+    <Compile Include="EntityDefinitions\UserSettingDefinition.cs">
+      <DependentUpon>SettingDefinition.cs</DependentUpon>
+    </Compile>
     <Compile Include="IAuditProvider.cs" />
     <Compile Include="Inteceptors\AuditInterceptor.cs" />
     <Compile Include="Inteceptors\CompositeInterceptor.cs" />
@@ -158,12 +164,12 @@
     <Compile Include="ISessionFactoryProvider.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_001_DefaultTenantSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_002_DefaultBranchSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_004_DefaultSettings.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_015_UnitOfMeasureSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_020_InvoiceReportSettingSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_030_DefaultSupplierSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_031_DefaultProductSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_032_DefaultInventoryEnding.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_033_DefaultCustomerSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_020_DefaultSupplierSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_021_DefaultProductSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_022_DefaultInventoryEnding.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_023_DefaultCustomerSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_000_BranchSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_011_CurrencySeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_004_CustomerSeeder.cs" />
@@ -171,7 +177,7 @@
     <Compile Include="Seeders\DummyDataSeeders\_012_ReturnSeeder.cs" />
     <Compile Include="Seeders\IDefaultDataSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_010_ReturnReasonSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_004_DefaultUserSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_005_DefaultUserSeeder.cs" />
     <Compile Include="Seeders\IDummyDataSeeder.cs" />
     <Compile Include="Seeders\ISeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_011_OrderSeeder.cs" />

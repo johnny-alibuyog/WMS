@@ -16,7 +16,9 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Map(x => x.Username)
                     .Unique();
 
-                Map(x => x.Password);
+                Map(x => x.PasswordSalt);
+
+                Map(x => x.PasswordHash);
 
                 Component(x => x.Person);
 
@@ -49,9 +51,13 @@ namespace AmpedBiz.Data.EntityDefinitions
                     .NotNullableAndNotEmpty()
                     .And.MaxLength(50);
 
-                Define(x => x.Password)
+                Define(x => x.PasswordSalt)
                     .NotNullableAndNotEmpty()
-                    .And.MaxLength(50);
+                    .And.MaxLength(255);
+
+                Define(x => x.PasswordHash)
+                    .NotNullableAndNotEmpty()
+                    .And.MaxLength(255);
 
                 Define(x => x.Person)
                     .IsValid();

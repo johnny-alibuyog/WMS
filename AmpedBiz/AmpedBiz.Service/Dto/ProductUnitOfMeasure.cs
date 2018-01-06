@@ -5,7 +5,7 @@ namespace AmpedBiz.Service.Dto
 {
     public class ProductUnitOfMeasure
     {
-        public virtual Guid Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Size { get; set; }
 

@@ -31,5 +31,19 @@ namespace AmpedBiz.Service.Host.Controllers
         {
             return await _mediator.Send(request ?? new UpdateInvoiceReportSetting.Request());
         }
+
+        [HttpGet()]
+        [Route("user")]
+        public async Task<GetUserSetting.Response> Process([FromUri]GetUserSetting.Request request)
+        {
+            return await _mediator.Send(request ?? new GetUserSetting.Request());
+        }
+
+        [HttpPost()]
+        [Route("user")]
+        public async Task<UpdateUserSetting.Response> Process([FromBody]UpdateUserSetting.Request request)
+        {
+            return await _mediator.Send(request ?? new UpdateUserSetting.Request());
+        }
     }
 }

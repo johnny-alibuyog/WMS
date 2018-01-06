@@ -103,9 +103,11 @@
     <Compile Include="Dto\Role.cs" />
     <Compile Include="Dto\StageDefinition.cs" />
     <Compile Include="Dto\Supplier.cs" />
+    <Compile Include="Dto\Tenant.cs" />
     <Compile Include="Dto\UnitOfMeasure.cs" />
     <Compile Include="Dto\User.cs" />
     <Compile Include="Dto\UserRole.cs" />
+    <Compile Include="Dto\UserSetting.cs" />
     <Compile Include="Dto\Voucher.cs" />
     <Compile Include="Orders\CancelOrder.cs" />
     <Compile Include="Orders\CompleteOrder.cs" />
@@ -184,7 +186,9 @@
     <Compile Include="Returns\GetReturnsByProductPage.cs" />
     <Compile Include="Returns\GetReturnsByReasonPage.cs" />
     <Compile Include="Settings\GetInvoiceReportSetting.cs" />
+    <Compile Include="Settings\GetUserSetting.cs" />
     <Compile Include="Settings\UpdateInvoiceReportSetting.cs" />
+    <Compile Include="Settings\UpdateUserSetting.cs" />
     <Compile Include="Suppliers\CreateSupplier.cs" />
     <Compile Include="Suppliers\GetSupplier.cs" />
     <Compile Include="Suppliers\GetSupplierLookup.cs" />
