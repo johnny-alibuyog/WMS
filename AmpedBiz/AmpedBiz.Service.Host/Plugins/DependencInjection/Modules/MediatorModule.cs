@@ -15,10 +15,12 @@ namespace AmpedBiz.Service.Host.Plugins.DependencInjection.Modules
             builder.RegisterSource(new ContravariantRegistrationSource());
 
             builder.RegisterAssemblyTypes(typeof(IMediator).Assembly)
-                .AsImplementedInterfaces();
+                .AsImplementedInterfaces()
+                .PropertiesAutowired();
 
             builder.RegisterAssemblyTypes(typeof(GetPaymentType).Assembly)
-                .AsImplementedInterfaces();
+                .AsImplementedInterfaces()
+                .PropertiesAutowired();
 
             builder.RegisterInstance(Console.Out).As<TextWriter>();
 

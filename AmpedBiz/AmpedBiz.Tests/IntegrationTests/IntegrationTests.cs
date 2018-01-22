@@ -5,6 +5,7 @@ using AmpedBiz.Core.Entities;
 using AmpedBiz.Data;
 using AmpedBiz.Data.Context;
 using AmpedBiz.Data.Seeders;
+using AmpedBiz.Service;
 using AmpedBiz.Service.Branches;
 using AmpedBiz.Service.Customers;
 using AmpedBiz.Service.Dto.Mappers;
@@ -12,9 +13,10 @@ using AmpedBiz.Service.Orders;
 using AmpedBiz.Service.Products;
 using AmpedBiz.Service.PurchaseOrders;
 using AmpedBiz.Service.Suppliers;
-using AmpedBiz.Service.Tests.Configurations.Database;
 using AmpedBiz.Service.Users;
-using AmpedBiz.Tests.Configurations;
+using AmpedBiz.Tests.Bootstrap;
+using Autofac;
+using MediatR;
 using NHibernate;
 using NHibernate.Linq;
 using NHibernate.Validator.Engine;
@@ -22,6 +24,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AmpedBiz.Tests.IntegrationTests
 {
@@ -70,7 +73,8 @@ namespace AmpedBiz.Tests.IntegrationTests
         private readonly DummyData dummyData = new DummyData();
         private readonly Random random = new Random();
 
-        private ISessionFactory sessionFactory;
+        private ISessionFactory sessionFactory = Ioc.Container.Resolve<ISessionFactory>();
+        private IMediator mediator = Ioc.Container.Resolve<IMediator>();
 
         private List<Role> _roles = new List<Role>();
         private List<User> _users = new List<User>();
@@ -97,13 +101,6 @@ namespace AmpedBiz.Tests.IntegrationTests
         public void SetupTest()
         {
             new Mapper().Initialze();
-
-            this.sessionFactory = new SessionFactoryProvider(
-                    validator: new ValidatorEngine(),
-                    auditProvider: new AuditProvider()
-                )
-                .WithBatcher(BatcherConfiguration.Configure)
-                .GetSessionFactory();
 
             this.SetupDefaultSeeders();
             //this.SetupDummySeeders();
@@ -241,36 +238,20 @@ namespace AmpedBiz.Tests.IntegrationTests
             return new Lookup<string>(random.Id, random.Name);
         }
 
-        private Service.Dto.Branch CreateBranch(Service.Dto.Branch branch)
+        private async Task<Service.Dto.Branch> CreateBranch(Service.Dto.Branch branch)
         {
-            //var request = new CreateBranch.Request()
-            //{
-            //    Address = branch.Address,
-            //    Description = branch.Description,
-            //    Id = branch.Id,
-            //    Name = branch.Name
-            //};
-
-            //var handler = new CreateBranch.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
-
-            var request = new GetBranch.Request() { Id = Branch.Default.Id };
-            var handler = new GetBranch.Handler(this.sessionFactory, DefaultContext.Instance);
-            var response = handler.Handle(request);
+            var response = await this.mediator.Send(new GetBranch.Request() { Id = Branch.Default.Id });
 
             return response as Service.Dto.Branch;
         }
 
-        private List<Service.Dto.User> CreateUsers(int count = 1)
+        private async Task<List<Service.Dto.User>> CreateUsers(int count = 1)
         {
             var users = new List<Service.Dto.User>();
-            var branch = this.CreateBranch(this.dummyData.GenerateBranch());
+            var branch = await this.CreateBranch(this.dummyData.GenerateBranch());
 
-            var empTypeIndex = -1;
-            for (var i = 0; i < count; i++)
-            {
-                empTypeIndex++;
-
-                var request = new CreateUser.Request()
+            var tasks = Enumerable.Range(0, count)
+                .Select(index => this.mediator.Send(new CreateUser.Request()
                 {
                     //Id = dummyData.GenerateUniqueString("Id"),
                     //Contact = dummyData.GenerateContact(),
@@ -300,13 +281,12 @@ namespace AmpedBiz.Tests.IntegrationTests
                         Name = x.Name,
                         Assigned = true
                     })
-                    .ToList()
-                };
+                .ToList()
+                }));
 
-                var handler = new CreateUser.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            var response = await Task.WhenAll(tasks);
 
-                users.Add(handler as Service.Dto.User);
-            }
+            users = response.Cast<Service.Dto.User>().ToList();
 
             using (var session = sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
@@ -318,31 +298,51 @@ namespace AmpedBiz.Tests.IntegrationTests
             return users;
         }
 
-        private List<Service.Dto.Customer> CreateCustomers(int count = 1)
+        private async Task<List<Service.Dto.Customer>> CreateCustomers(int count = 1)
         {
             var customers = new List<Service.Dto.Customer>();
 
-            for (var i = 0; i < count; i++)
-            {
-                var custData = this.dummyData.GenerateCustomer();
-                custData.PricingId = this._pricings[this.random.Next(0, this._pricings.Count - 1)].Id;
+            //var tasks = new List<Task<CreateCustomer.Response>>();
 
-                var request = new CreateCustomer.Request()
+            //for (var i = 0; i < count; i++)
+            //{
+            //    var custData = this.dummyData.GenerateCustomer();
+            //    custData.PricingId = this._pricings[this.random.Next(0, this._pricings.Count - 1)].Id;
+
+            //    tasks.Add(this.mediator.Send(new CreateCustomer.Request()
+            //    {
+            //        Id = custData.Id,
+            //        Contact = custData.Contact,
+            //        BillingAddress = custData.BillingAddress,
+            //        CreditLimitAmount = custData.CreditLimitAmount,
+            //        Name = custData.Name,
+            //        Code = custData.Code,
+            //        OfficeAddress = custData.OfficeAddress,
+            //        PricingId = custData.PricingId
+            //    }));
+
+            //    //var customer = await mediator.Send(request);
+
+            //    //customers.Add(customer as Service.Dto.Customer);
+            //}
+
+            var tasks = Enumerable.Range(0, count)
+                .Select(x => this.dummyData.GenerateCustomer())
+                .Select(x => this.mediator.Send(new CreateCustomer.Request()
                 {
-                    Id = custData.Id,
-                    Contact = custData.Contact,
-                    BillingAddress = custData.BillingAddress,
-                    CreditLimitAmount = custData.CreditLimitAmount,
-                    Name = custData.Name,
-                    Code = custData.Code,
-                    OfficeAddress = custData.OfficeAddress,
-                    PricingId = custData.PricingId
-                };
+                    Id = x.Id,
+                    Contact = x.Contact,
+                    BillingAddress = x.BillingAddress,
+                    CreditLimitAmount = x.CreditLimitAmount,
+                    Name = x.Name,
+                    Code = x.Code,
+                    OfficeAddress = x.OfficeAddress,
+                    PricingId = this._pricings[this.random.Next(0, this._pricings.Count - 1)].Id
+                }));
 
-                var handler = new CreateCustomer.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            var responses = await Task.WhenAll(tasks);
 
-                customers.Add(handler as Service.Dto.Customer);
-            }
+            customers = responses.Cast<Service.Dto.Customer>().ToList();
 
             using (var session = sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
@@ -354,26 +354,37 @@ namespace AmpedBiz.Tests.IntegrationTests
             return customers;
         }
 
-        private List<Service.Dto.Supplier> CreateSuppliers(int count = 1)
+        private async Task<List<Service.Dto.Supplier>> CreateSuppliers(int count = 1)
         {
             var suppliers = new List<Service.Dto.Supplier>();
 
-            for (var i = 0; i < count; i++)
-            {
-                var supplierData = this.dummyData.GenerateSupplier();
-
-                var request = new CreateSupplier.Request()
+            var tasks = Enumerable.Range(0, count)
+                .Select(x => this.dummyData.GenerateSupplier())
+                .Select(x => this.mediator.Send(new CreateSupplier.Request()
                 {
-                    Id = supplierData.Id,
-                    Address = supplierData.Address,
-                    Contact = supplierData.Contact,
-                    Name = supplierData.Name
-                };
+                    Id = x.Id,
+                    Address = x.Address,
+                    Contact = x.Contact,
+                    Name = x.Name
+                }));
 
-                var handler = new CreateSupplier.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
 
-                suppliers.Add(handler as Service.Dto.Supplier);
-            }
+            //for (var i = 0; i < count; i++)
+            //{
+            //    var supplierData = this.dummyData.GenerateSupplier();
+
+            //    tasks.Add(this.mediator.Send(new CreateSupplier.Request()
+            //    {
+            //        Id = supplierData.Id,
+            //        Address = supplierData.Address,
+            //        Contact = supplierData.Contact,
+            //        Name = supplierData.Name
+            //    }));
+            //}
+
+            var responses = await Task.WhenAll(tasks);
+
+            suppliers = responses.Cast<Service.Dto.Supplier>().ToList();
 
             using (var session = sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
@@ -385,7 +396,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             return suppliers;
         }
 
-        private List<Service.Dto.Product> CreateProducts(int count = 1)
+        private async Task<List<Service.Dto.Product>> CreateProducts(int count = 1)
         {
             var products = new List<Service.Dto.Product>();
             var suppliers = new List<Supplier>();
@@ -395,11 +406,12 @@ namespace AmpedBiz.Tests.IntegrationTests
                 suppliers = session.Query<Supplier>().Cacheable().ToList();
             }
 
-            for (var i = 0; i < count; i++)
-            {
-                var productData = this.dummyData.GenerateProduct(this.RandomProductCategory(), this.RandomSupplier());
-
-                var request = new CreateProduct.Request()
+            var tasks = Enumerable.Range(0, count)
+                .Select(x => this.dummyData.GenerateProduct(
+                    category: this.RandomProductCategory(),
+                    supplier: this.RandomSupplier()
+                ))
+                .Select(productData => this.mediator.Send(new CreateProduct.Request()
                 {
                     Id = productData.Id,
                     Category = productData.Category,
@@ -439,31 +451,19 @@ namespace AmpedBiz.Tests.IntegrationTests
                                 .ToList()
                         },
                     }
-                };
+                }));
 
-                var handler = new CreateProduct.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            var response = await Task.WhenAll(tasks);
 
-                products.Add(handler as Service.Dto.Product);
-            }
-
-            //using (var session = sessionFactory.OpenSession())
-            //using (var transaction = session.BeginTransaction())
-            //{
-            //    var ids = products.Select(x => x.Id);
-            //    var fromDb = session.Query<Product>()
-            //        .Where(x => ids.Contains(x.Id))
-            //        .ToList();
-
-            //    this._products.Concat(fromDb);
-            //}
+            products = response.Cast<Service.Dto.Product>().ToList();
 
             return products;
         }
 
-        private IEnumerable<Service.Dto.Product> SelectRandomAvailableProducts(Guid supplierId, int count = 12)
+        private async Task<IEnumerable<Service.Dto.Product>> SelectRandomAvailableProducts(Guid supplierId, int count = 12)
         {
-            var request = new GetProductList.Request() { SupplierId = supplierId };
-            var response = new GetProductList.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            var response = await this.mediator.Send(new GetProductList.Request() { SupplierId = supplierId });
+
             var availableProducts = response
                 .Where(x => x.Inventory.AvailableValue > 0);
 
@@ -485,10 +485,9 @@ namespace AmpedBiz.Tests.IntegrationTests
             return products;
         }
 
-        private IEnumerable<Service.Dto.ProductInventory> SelectRandomProductInventories(Guid supplierId, int count = 12)
+        private async Task<IEnumerable<Service.Dto.ProductInventory>> SelectRandomProductInventories(Guid supplierId, int count = 12)
         {
-            var request = new GetProductInventoryList.Request() { SupplierId = supplierId };
-            var response = new GetProductInventoryList.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            var response = await this.mediator.Send(new GetProductInventoryList.Request() { SupplierId = supplierId });
             var productInventories = response.Cast<Service.Dto.ProductInventory>();
 
             var totalProductInventory = productInventories.Count();
@@ -509,14 +508,13 @@ namespace AmpedBiz.Tests.IntegrationTests
             return result;
         }
 
-        private IEnumerable<Service.Dto.ProductInventory> SelectRandomAvailableProductInventories(Guid supplierId, int count = 12)
+        private async Task<IEnumerable<Service.Dto.ProductInventory>> SelectRandomAvailableProductInventories(Guid supplierId, int count = 12)
         {
-            var request = new GetProductInventoryList.Request() { SupplierId = supplierId };
-            var response = new GetProductInventoryList.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            var response = await this.mediator.Send(new GetProductInventoryList.Request() { SupplierId = supplierId });
             var availableProductInventories = response.Where(x =>
                 x.UnitOfMeasures != null &&
                 x.UnitOfMeasures.Any() &&
-                x.UnitOfMeasures.All(o => o.Available?.Value > 0)
+                x.UnitOfMeasures.All(o => o.Available?.Value >= 1)
             );
 
             var totalProductInventory = availableProductInventories.Count();
@@ -532,15 +530,15 @@ namespace AmpedBiz.Tests.IntegrationTests
                     ProductInventory = productInventory
                 })
                 .Where(x => randomIndexs.Contains(x.Index))
-                .Select(x => x.ProductInventory);
+                .Select(x => x.ProductInventory)
+                .ToList();
 
             return productInventories;
         }
 
-        private IEnumerable<Service.Dto.Product> SelectRandomProducts(Guid supplierId, int count = 12)
+        private async Task<IEnumerable<Service.Dto.Product>> SelectRandomProducts(Guid supplierId, int count = 12)
         {
-            var request = new GetProductList.Request() { SupplierId = supplierId };
-            var response = new GetProductList.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            var response = await this.mediator.Send(new GetProductList.Request() { SupplierId = supplierId });
 
             var totalProduct = response.Count();
 
@@ -564,13 +562,12 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         #region PurchaseOrders Helper
 
-        private List<Service.Dto.PurchaseOrder> CreatePurchaseOrders(int count = 1)
+        private async Task<List<Service.Dto.PurchaseOrder>> CreatePurchaseOrders(int count = 1)
         {
-            var pOrders = new List<Service.Dto.PurchaseOrder>();
+            var orders = new List<Service.Dto.PurchaseOrder>();
 
-            for (var i = 0; i < count; i++)
-            {
-                var request = new SavePurchaseOrder.Request()
+            var tasks = Enumerable.Range(0, count)
+                .Select(x => new SavePurchaseOrder.Request()
                 {
                     CreatedBy = this.RandomUser(),
                     CreatedOn = DateTime.Now,
@@ -580,23 +577,52 @@ namespace AmpedBiz.Tests.IntegrationTests
                     ShippingFeeAmount = 0M,
                     TaxAmount = 0M,
                     PaymentType = RandomPaymentType(),
-                };
-                request.Items = this.CreatePurchaseOrderItems(request, this.random.Next(20, 90));
+                })
+                .Select(async x =>
+                {
+                    x.Items = await this.CreatePurchaseOrderItems(
+                        request: x,
+                        count: this.random.Next(20, 90)
+                    );
 
-                var handler = new SavePurchaseOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+                    return x;
+                })
+                .Select(async x => await this.mediator.Send(await x));
 
-                pOrders.Add(handler as Service.Dto.PurchaseOrder);
-            }
+            //for (var i = 0; i < count; i++)
+            //{
+            //    tasks.Add(this.mediator.Send(new SavePurchaseOrder.Request()
+            //    {
+            //        CreatedBy = this.RandomUser(),
+            //        CreatedOn = DateTime.Now,
+            //        ExpectedOn = DateTime.Now.AddDays(10),
+            //        Supplier = RandomSupplier(),
+            //        Shipper = null,
+            //        ShippingFeeAmount = 0M,
+            //        TaxAmount = 0M,
+            //        PaymentType = RandomPaymentType(),
+            //    }))
+            //    ;
+            //    request.Items = this.CreatePurchaseOrderItems(request, this.random.Next(20, 90));
 
-            return pOrders;
+            //    var handler = new SavePurchaseOrder.Handler().With(this.sessionFactory, DefaultContext.Instance).Execute(request);
+
+            //    orders.Add(handler as Service.Dto.PurchaseOrder);
+            //}
+
+            var response = await Task.WhenAll(tasks);
+
+            orders = response.Cast<Service.Dto.PurchaseOrder>().ToList();
+
+            return orders;
         }
 
-        private List<Service.Dto.PurchaseOrderItem> CreatePurchaseOrderItems(SavePurchaseOrder.Request request, int count = 1)
+        private async Task<List<Service.Dto.PurchaseOrderItem>> CreatePurchaseOrderItems(SavePurchaseOrder.Request request, int count = 1)
         {
             var poItems = new List<Service.Dto.PurchaseOrderItem>();
-            var selectedProductInventories = this.SelectRandomProductInventories(request.Supplier.Id, count);
+            var productInventories = await this.SelectRandomProductInventories(request.Supplier.Id, count);
 
-            foreach (var productInventory in selectedProductInventories)
+            foreach (var productInventory in productInventories)
             {
                 var productInventoryUnitOfMeasure = this.RandomProductUnitOfMeasure(productInventory);
                 var productInventoryUnitOfMeasurePrice = this.RandomProductUnitOfMeasurePrice(productInventoryUnitOfMeasure);
@@ -623,34 +649,38 @@ namespace AmpedBiz.Tests.IntegrationTests
             return poItems;
         }
 
-        private IEnumerable<Service.Dto.PurchaseOrder> GetPurchaseOrders(Service.Dto.PurchaseOrderStatus status, int count = 1)
+        private async Task<IEnumerable<Service.Dto.PurchaseOrder>> GetPurchaseOrders(Service.Dto.PurchaseOrderStatus status, int count = 1)
         {
-            var request = new GetPurchaseOrderList.Request() { };
-            var purchaseOrders = new GetPurchaseOrderList.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            var purchaseOrders = await this.mediator.Send(new GetPurchaseOrderList.Request() { });
 
-            return purchaseOrders.ToList().Where(po => po.Status == Service.Dto.PurchaseOrderStatus.New).Take(count);
+            return purchaseOrders.Where(po => po.Status == status).Take(count).ToList();
         }
 
-        private Service.Dto.PurchaseOrder SubmitPurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
+        private async Task<Service.Dto.PurchaseOrder> SubmitPurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
-            var request = new SubmitPurchaseOrder.Request() { Id = purchaseOrder.Id, SubmittedBy = this.RandomUser() };
-            var order = new SubmitPurchaseOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            var order = await this.mediator.Send(new SubmitPurchaseOrder.Request()
+            {
+                Id = purchaseOrder.Id,
+                SubmittedBy = this.RandomUser()
+            });
 
             return order;
         }
 
-        private Service.Dto.PurchaseOrder ApprovePurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
+        private async Task<Service.Dto.PurchaseOrder> ApprovePurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
-            var request = new ApprovePurchaseOder.Request() { Id = purchaseOrder.Id, ApprovedBy = this.RandomUser() };
-            var order = new ApprovePurchaseOder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            var order = await this.mediator.Send(new ApprovePurchaseOder.Request()
+            {
+                Id = purchaseOrder.Id,
+                ApprovedBy = this.RandomUser()
+            });
 
             return order;
         }
 
-        private Service.Dto.PurchaseOrder PayPurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
+        private async Task<Service.Dto.PurchaseOrder> PayPurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
-
-            var request = new SavePurchaseOrder.Request()
+            var order = await this.mediator.Send(new SavePurchaseOrder.Request()
             {
                 Id = purchaseOrder.Id,
                 Payments = new Service.Dto.PurchaseOrderPayment[]
@@ -663,54 +693,51 @@ namespace AmpedBiz.Tests.IntegrationTests
                         PaymentAmount = purchaseOrder.TotalAmount
                     }
                 }
-            };
-            var order = new SavePurchaseOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            });
 
             return order;
         }
 
-        private Service.Dto.PurchaseOrder ReceivePurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
+        private async Task<Service.Dto.PurchaseOrder> ReceivePurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
-            var data = new
-            {
-                BatchNumber = "XL001",
-                ReceivedBy = this.RandomUser(),
-                ReceivedOn = DateTime.Now
-            };
-
-            var request = new SavePurchaseOrder.Request()
+            var order = await this.mediator.Send(new SavePurchaseOrder.Request()
             {
                 Id = purchaseOrder.Id,
                 Receipts = purchaseOrder.Items
                     .Select(x => new Service.Dto.PurchaseOrderReceipt()
                     {
                         PurchaseOrderId = purchaseOrder.Id,
-                        ReceivedBy = data.ReceivedBy,
-                        ReceivedOn = data.ReceivedOn,
-                        ExpiresOn = data.ReceivedOn.AddYears(1),
+                        ReceivedBy = this.RandomUser(),
+                        ReceivedOn = DateTime.Now,
+                        ExpiresOn = DateTime.Now.AddYears(1),
                         Product = x.Product,
                         Quantity = x.Quantity,
                         Standard = x.Standard
                     })
-            };
-
-            var order = new SavePurchaseOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            });
 
             return order;
         }
 
-        private Service.Dto.PurchaseOrder CompletePurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
+        private async Task<Service.Dto.PurchaseOrder> CompletePurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
-            var request = new CompletePurchaseOder.Request() { Id = purchaseOrder.Id, CompletedBy = this.RandomUser() };
-            var order = new CompletePurchaseOder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            var order = await this.mediator.Send(new CompletePurchaseOder.Request()
+            {
+                Id = purchaseOrder.Id,
+                CompletedBy = this.RandomUser()
+            });
 
             return order;
         }
 
-        private Service.Dto.PurchaseOrder CancelPurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
+        private async Task<Service.Dto.PurchaseOrder> CancelPurchaseOrder(Service.Dto.PurchaseOrder purchaseOrder)
         {
-            var request = new CancelPurchaseOder.Request() { Id = purchaseOrder.Id, CancelledBy = this.RandomUser(), CancellationReason = "Products not needed" };
-            var order = new CancelPurchaseOder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            var order = await this.mediator.Send(new CancelPurchaseOder.Request()
+            {
+                Id = purchaseOrder.Id,
+                CancelledBy = this.RandomUser(),
+                CancellationReason = "Products not needed"
+            });
 
             return order;
         }
@@ -719,12 +746,13 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         #region Orders Helper
 
-        private List<Service.Dto.Order> CreateOrders(int count = 1)
+        private async Task<List<Service.Dto.Order>> CreateOrders(int count = 1)
         {
             var orders = new List<Service.Dto.Order>();
             var users = new List<User>();
             var branches = new List<Branch>();
-            var customers = this.CreateCustomers(10);
+            var customers = await this.CreateCustomers(10);
+            var tasks = new List<Task<SaveOrder.Response>>();
 
             using (var session = this.sessionFactory.OpenSession())
             {
@@ -734,28 +762,45 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             for (var i = 0; i < count; i++)
             {
-                var request = new SaveOrder.Request()
+                tasks.Add(this.mediator.Send(new SaveOrder.Request()
                 {
                     CreatedBy = RandomUser(),
                     Branch = RandomBranch(),
                     Customer = RandomCustomer(),
                     TaxRate = .12M,
                     PaymentType = RandomPaymentType(),
-                    Items = this.CreateOrderItems(this.random.Next(3, 6))
-                };
+                    Items = await this.CreateOrderItems(this.random.Next(3, 6))
+                }));
 
-                if (request.Items.Count() == 0)
-                    Console.WriteLine("Hey");
+                //if (request.Items.Count() == 0)
+                //    Console.WriteLine("Hey");
 
-                var handler = new SaveOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+                //tasks.Add(this.mediator.Send(request));
 
-                orders.Add(handler as Service.Dto.Order);
+                //var handler = new SaveOrder.Handler().With(this.sessionFactory, DefaultContext.Instance).Execute(request);
+
+                //orders.Add(handler as Service.Dto.Order);
             }
+
+            //var tasks = Enumerable.Range(0, count)
+            //    .Select(x => this.mediator.Send(new SaveOrder.Request()
+            //    {
+            //        CreatedBy = RandomUser(),
+            //        Branch = RandomBranch(),
+            //        Customer = RandomCustomer(),
+            //        TaxRate = .12M,
+            //        PaymentType = RandomPaymentType(),
+            //        Items = await this.CreateOrderItems(this.random.Next(3, 6))
+            //    }));
+
+            var responses = await Task.WhenAll(tasks);
+
+            orders = responses.Cast<Service.Dto.Order>().ToList();
 
             return orders;
         }
 
-        private List<Service.Dto.OrderItem> CreateOrderItems(int count = 1)
+        private async Task<List<Service.Dto.OrderItem>> CreateOrderItems(int count = 1)
         {
             var orderItems = new List<Service.Dto.OrderItem>();
 
@@ -766,13 +811,15 @@ namespace AmpedBiz.Tests.IntegrationTests
                 suppliersId = session
                     .Query<Supplier>()
                     .Where(x => x.Products.Any())
-                    .Select(s => s.Id)
+                    .Select(x => x.Id)
                     .ToList();
 
                 if (suppliersId.Count < 1)
                 {
-                    suppliersId = this.CreateSuppliers(10)
-                        .Select(s => s.Id)
+                    var suppliers = await this.CreateSuppliers(10);
+
+                    suppliersId = suppliers
+                        .Select(x => x.Id)
                         .ToList();
                 }
             }
@@ -780,9 +827,9 @@ namespace AmpedBiz.Tests.IntegrationTests
             var randomProductIndexes = this.dummyData.GenerateUniqueNumbers(0, count, count).ToArray();
 
             comeAsYouAre:
-            var selectedProductInventories = this.SelectRandomAvailableProductInventories(suppliersId[this.random.Next(0, suppliersId.Count - 1)], 10).ToList();
+            var selectedProductInventories = await this.SelectRandomAvailableProductInventories(suppliersId[this.random.Next(0, suppliersId.Count - 1)], 10);
 
-            if (selectedProductInventories.Count == 0)
+            if (selectedProductInventories.Count() == 0)
                 goto comeAsYouAre;
 
             foreach (var productInventory in selectedProductInventories)
@@ -811,24 +858,26 @@ namespace AmpedBiz.Tests.IntegrationTests
             return orderItems;
         }
 
-        private Service.Dto.Order InvoiceOrder(Service.Dto.Order order)
+        private async Task<Service.Dto.Order> InvoiceOrder(Service.Dto.Order order)
         {
-            this.AdjustOrderByProductAvailability(order);
+            await this.AdjustOrderByProductAvailability(order);
 
-            var request = new InvoiceOrder.Request() { Id = order.Id, InvoicedBy = RandomUser() };
-            var handler = new InvoiceOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            var response = await this.mediator.Send(new InvoiceOrder.Request()
+            {
+                Id = order.Id,
+                InvoicedBy = RandomUser()
+            });
 
-            return handler;
+            return response;
         }
 
-        private void AdjustOrderByProductAvailability(Service.Dto.Order order)
+        private async Task AdjustOrderByProductAvailability(Service.Dto.Order order)
         {
             using (var session = sessionFactory.OpenSession())
             using (var transaction = session.BeginTransaction())
             {
                 var productIds = order.Items.Select(x => x.Product.Id).ToArray();
-                var productInventories = new GetProductInventoryList.Handler(this.sessionFactory, DefaultContext.Instance)
-                    .Handle(new GetProductInventoryList.Request() { ProductIds = productIds });
+                var productInventories = await this.mediator.Send(new GetProductInventoryList.Request() { ProductIds = productIds });
 
                 productInventories.ForEach(productInventory =>
                 {
@@ -851,30 +900,32 @@ namespace AmpedBiz.Tests.IntegrationTests
             if (order.Items.Count() == 0)
                 Console.WriteLine("Hey");
 
-            var response = new SaveOrder.Handler(this.sessionFactory, DefaultContext.Instance)
-                .Handle(new SaveOrder.Request()
-                {
-                    Id = order.Id,
-                    CreatedBy = order.CreatedBy,
-                    Branch = order.Branch,
-                    Customer = order.Customer,
-                    TaxRate = order.TaxRate,
-                    PaymentType = order.PaymentType,
-                    Items = order.Items
-                });
+            var response = await this.mediator.Send(new SaveOrder.Request()
+            {
+                Id = order.Id,
+                CreatedBy = order.CreatedBy,
+                Branch = order.Branch,
+                Customer = order.Customer,
+                TaxRate = order.TaxRate,
+                PaymentType = order.PaymentType,
+                Items = order.Items
+            });
         }
 
-        private Service.Dto.Order StageOrder(Service.Dto.Order order)
+        private async Task<Service.Dto.Order> StageOrder(Service.Dto.Order order)
         {
-            var request = new StageOrder.Request() { Id = order.Id, StagedBy = RandomUser() };
-            var response = new StageOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            var response = await this.mediator.Send(new StageOrder.Request()
+            {
+                Id = order.Id,
+                StagedBy = RandomUser()
+            });
 
             return response;
         }
 
-        private Service.Dto.Order PayOrder(Service.Dto.Order order)
+        private async Task<Service.Dto.Order> PayOrder(Service.Dto.Order order)
         {
-            var request = new SaveOrder.Request()
+            var response = await this.mediator.Send(new SaveOrder.Request()
             {
                 Id = order.Id,
                 Payments = new Service.Dto.OrderPayment[]
@@ -887,62 +938,69 @@ namespace AmpedBiz.Tests.IntegrationTests
                         PaymentAmount = order.TotalAmount
                     }
                 }
-            };
-            var response = new SaveOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            });
 
             return response;
         }
 
-        private Service.Dto.Order ShipOrder(Service.Dto.Order order)
+        private async Task<Service.Dto.Order> ShipOrder(Service.Dto.Order order)
         {
-            var request = new ShipOrder.Request() { Id = order.Id, ShippedBy = RandomUser() };
-            var response = new ShipOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            var response = await this.mediator.Send(new ShipOrder.Request()
+            {
+                Id = order.Id,
+                ShippedBy = RandomUser()
+            });
 
             return response;
         }
 
-        private Service.Dto.Order RouteOrder(Service.Dto.Order order)
+        private async Task<Service.Dto.Order> RouteOrder(Service.Dto.Order order)
         {
-            var request = new RouteOrder.Request() { Id = order.Id, RoutedBy = RandomUser() };
-            var response = new RouteOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            var response = await this.mediator.Send(new RouteOrder.Request()
+            {
+                Id = order.Id,
+                RoutedBy = RandomUser()
+            });
 
             return response;
         }
 
-        private Service.Dto.Order CompleteOrder(Service.Dto.Order order)
+        private async Task<Service.Dto.Order> CompleteOrder(Service.Dto.Order order)
         {
-            var request = new CompleteOrder.Request() { Id = order.Id, CompletedBy = RandomUser() };
-            var handler = new CompleteOrder.Handler(this.sessionFactory, DefaultContext.Instance).Handle(request);
+            var response = await this.mediator.Send(new CompleteOrder.Request()
+            {
+                Id = order.Id,
+                CompletedBy = RandomUser()
+            });
 
-            return handler;
+            return response;
         }
 
         #endregion
 
         [Test]
-        public void CommonScenarioTests()
+        public async Task CommonScenarioTests()
         {
             //-----Create Users -----
-            var users = this.CreateUsers(5);
+            var users = await this.CreateUsers(5);
             CollectionAssert.IsNotEmpty(users);
             CollectionAssert.AllItemsAreNotNull(users);
 
             //-----Create Customers-----
-            var customers = this.CreateCustomers(10);
+            var customers = await this.CreateCustomers(10);
             CollectionAssert.IsNotEmpty(customers);
             CollectionAssert.AllItemsAreNotNull(customers);
 
             //Create Suppliers
-            var suppliers = this.CreateSuppliers(10);
+            var suppliers = await this.CreateSuppliers(10);
             CollectionAssert.IsNotEmpty(suppliers);
             CollectionAssert.AllItemsAreNotNull(suppliers);
-
 
             //Create Product Categories
             //provided by default seeder
 
             //Create Products
-            var products = this.CreateProducts(20);
+            var products = await this.CreateProducts(20);
             CollectionAssert.IsNotEmpty(products);
             CollectionAssert.AllItemsAreNotNull(products);
 
@@ -963,43 +1021,43 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             //Select Products for Purchase Order (New, add to cart functionality)
             var expected = 10;
-            var purchaseOrders = this.CreatePurchaseOrders(expected);
+            var purchaseOrders = await this.CreatePurchaseOrders(expected);
 
             //Create Purchase Order(s) - Assert Status, it should be NEW orders
             var actual = purchaseOrders.Count(p => p.Status == Service.Dto.PurchaseOrderStatus.New);
             Assert.AreEqual(expected, expected);
 
             //Get list of created purchaseorders
-            var purchaseOrderList = this.GetPurchaseOrders(Service.Dto.PurchaseOrderStatus.New, 2);
+            var purchaseOrderList = await this.GetPurchaseOrders(Service.Dto.PurchaseOrderStatus.New, 2);
 
             var purchaseOrder1 = purchaseOrderList.First();
             var purchaseOrder2 = purchaseOrderList.Last();
 
             //- Submit PO - Assert Status, it should be Submitted
-            var submittedPurchaseOrder1 = this.SubmitPurchaseOrder(purchaseOrder1);
+            var submittedPurchaseOrder1 = await this.SubmitPurchaseOrder(purchaseOrder1);
             Assert.IsTrue(submittedPurchaseOrder1.Status == Service.Dto.PurchaseOrderStatus.Submitted);
 
-            var submittedPurchaseOrder2 = this.SubmitPurchaseOrder(purchaseOrder2);
+            var submittedPurchaseOrder2 = await this.SubmitPurchaseOrder(purchaseOrder2);
             Assert.IsTrue(submittedPurchaseOrder2.Status == Service.Dto.PurchaseOrderStatus.Submitted);
 
             //- Approve PO - Assert Status, it should be APPROVED
-            var approvedPurchaseOrder = this.ApprovePurchaseOrder(purchaseOrder1);
+            var approvedPurchaseOrder = await this.ApprovePurchaseOrder(purchaseOrder1);
             Assert.IsTrue(approvedPurchaseOrder.Status == Service.Dto.PurchaseOrderStatus.Approved);
 
             //- Reject Submit PO - Assert Status, it should be rejected
-            var rejectedPurchaseOrder = this.CancelPurchaseOrder(purchaseOrder2);
+            var rejectedPurchaseOrder = await this.CancelPurchaseOrder(purchaseOrder2);
             Assert.IsTrue(rejectedPurchaseOrder.Status == Service.Dto.PurchaseOrderStatus.Cancelled);
 
             //- Pay PO - Assert Status, it should be PAID
-            var paidPurchaseOrder = this.PayPurchaseOrder(purchaseOrder1);
+            var paidPurchaseOrder = await this.PayPurchaseOrder(purchaseOrder1);
             //Assert.IsTrue(paidPurchaseOrder.Status == Service.Dto.PurchaseOrderStatus.Paid);
 
             //- Receive PO - Assert Status, it should be RECEIVED
-            var receivePurchaseOrder = this.ReceivePurchaseOrder(purchaseOrder1);
+            var receivePurchaseOrder = await this.ReceivePurchaseOrder(purchaseOrder1);
             //Assert.IsTrue(receivePurchaseOrder.Status == Service.Dto.PurchaseOrderStatus.Received);
 
             //- Complete Purchases - Assert Status, it should be completed
-            var completedPurchaseOrder = this.CompletePurchaseOrder(purchaseOrder1);
+            var completedPurchaseOrder = await this.CompletePurchaseOrder(purchaseOrder1);
             Assert.IsTrue(completedPurchaseOrder.Status == Service.Dto.PurchaseOrderStatus.Completed);
 
             //todo: implement inventory checking
@@ -1021,7 +1079,7 @@ namespace AmpedBiz.Tests.IntegrationTests
             */
 
             //Assert: Orders = New, Items = Allocated
-            var newOrders = this.CreateOrders(expected);
+            var newOrders = await this.CreateOrders(expected);
             Assert.GreaterOrEqual(expected, newOrders.Count(o => o.Status == Service.Dto.OrderStatus.New));
             //Assert.False(newOrders.SelectMany(o => o.Items.Where(x => x != null))
             //    .Any(i => i.Status != Service.Dto.OrderItemStatus.Allocated));
@@ -1033,44 +1091,34 @@ namespace AmpedBiz.Tests.IntegrationTests
                 order4 = newOrders[3];
 
             // invoice
-            var invoicedOrder = this.InvoiceOrder(order1);
+            var invoicedOrder = await this.InvoiceOrder(order1);
             Assert.IsTrue(invoicedOrder.Status == Service.Dto.OrderStatus.Invoiced);
 
             // pay
-            var paidOrder = this.PayOrder(invoicedOrder);
+            var paidOrder = await this.PayOrder(invoicedOrder);
             Assert.IsTrue(paidOrder.Payments.Any());
 
             // staged
-            var stagedOrder = this.StageOrder(paidOrder);
+            var stagedOrder = await this.StageOrder(paidOrder);
             Assert.IsTrue(stagedOrder.Status == Service.Dto.OrderStatus.Staged);
 
             //var routedOrder = this.RouteOrder(stagedOrder);
             //Assert.IsTrue(routedOrder.Status == Service.Dto.OrderStatus.Routed);
 
             //invoice from payment
-            var invoicedOrder2 = this.PayOrder(this.InvoiceOrder(order2));
+            var invoicedOrder2 = await this.PayOrder(await this.InvoiceOrder(order2));
             Assert.IsTrue(invoicedOrder2.Payments.Any());
 
             //invoice from payment
-            var invoicedOrder3 = this.PayOrder(this.InvoiceOrder(order3));
+            var invoicedOrder3 = await this.PayOrder(await this.InvoiceOrder(order3));
             Assert.IsTrue(invoicedOrder3.Payments.Any());
 
             //complete all
-            var completeOrder = this.CompleteOrder(this.ShipOrder(paidOrder));
+            var completeOrder = await this.CompleteOrder(await this.ShipOrder(paidOrder));
             Assert.IsTrue(completeOrder.Status == Service.Dto.OrderStatus.Completed);
 
             //todo: implement inventory checking
 
-        }
-
-        [Test]
-        public void Testing()
-        {
-            //var p = this.SelectProducts(1);
-
-            //var hash = this.dummyData.GenerateUniqueNumbers(0, 20, 10);
-
-            // var purchaseOrders = this.CreatePurchaseOrders(10);
         }
     }
 }

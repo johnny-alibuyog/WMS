@@ -8,9 +8,11 @@ namespace AmpedBiz.Service
 {
     public abstract class RequestHandlerBase<TRequest, TResponse> : IRequestHandler<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {
-        protected readonly ISessionFactory _sessionFactory;
+        // dependency of properties will be injected via property injection (Autofac.PropertiesAutowired)
 
-        protected readonly IContext _context;
+        public ISessionFactory sessionFactory { get; set; }
+
+        public IContext context { get; set; }
 
         //protected ISession session;
 
@@ -19,7 +21,12 @@ namespace AmpedBiz.Service
         //protected readonly Lazy<User> User = new Lazy<User>(() => );
 
 
-        public abstract TResponse Handle(TRequest message);
+        public abstract TResponse Execute(TRequest request);
+
+        public TResponse Handle(TRequest message)
+        {
+            return this.Execute(message);
+        }
 
         //public TResponse Handle(TRequest message)
         //{
@@ -36,10 +43,23 @@ namespace AmpedBiz.Service
         //    return response;
         //}
 
-        public RequestHandlerBase(ISessionFactory sessionFactory, IContext context)
-        {
-            this._context = context;
-            this._sessionFactory = sessionFactory;
-        }
+        //public RequestHandlerBase() { }
+
+        //public RequestHandlerBase(ISessionFactory sessionFactory, IContext context)
+        //{
+        //    this.context = context;
+        //    this.sessionFactory = sessionFactory;
+        //}
     }
+
+    public static class RequestHandlerExtention
+    {
+        public static RequestHandlerBase<TRequest, TResponse> With<TRequest, TResponse>(this RequestHandlerBase<TRequest, TResponse> handler, ISessionFactory sessionFactory, IContext context) 
+            where TRequest : IRequest<TResponse>
+        {
+            handler.sessionFactory = sessionFactory;
+            handler.context = context;
+            return handler;
+        }
+    } 
 }

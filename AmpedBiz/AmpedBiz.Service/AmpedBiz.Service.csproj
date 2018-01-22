@@ -172,6 +172,7 @@
     <Compile Include="PurchaseOrders\GetPurchaseOrderStatusLookup.cs" />
     <Compile Include="PurchaseOrders\SubmitPurchaseOrder.cs" />
     <Compile Include="RequestHandlerBase.cs" />
+    <Compile Include="RequestPostProcessorBase.cs" />
     <Compile Include="ReturnReasons\CreateReturnReason.cs" />
     <Compile Include="ReturnReasons\GetReturnReason.cs" />
     <Compile Include="ReturnReasons\GetReturnReasonList.cs" />

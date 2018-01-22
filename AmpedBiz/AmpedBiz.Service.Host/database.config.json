@@ -7,6 +7,6 @@
   "Password": "6jPbwQtZ8N52WRJ5rEWv2g==",
   "BatchSize": 50,
   "UseDummyData": true,
-  "RecreateDb": false,
+  "RecreateDb": true,
   "DefaultSeedDataPath": ".\\Data\\Default"
 }

@@ -1,12 +1,11 @@
 ﻿using AmpedBiz.Common.Configurations;
 using AmpedBiz.Core.Entities;
-using AmpedBiz.Data;
 using AmpedBiz.Data.Context;
 using AmpedBiz.Data.Seeders;
-using AmpedBiz.Service.Tests.Configurations.Database;
-using AmpedBiz.Tests.Configurations;
+using AmpedBiz.Tests.Bootstrap;
+using Autofac;
+using MediatR;
 using NHibernate;
-using NHibernate.Validator.Engine;
 using NUnit.Framework;
 using System;
 using System.Linq;
@@ -16,20 +15,12 @@ namespace AmpedBiz.Tests.IntegrationTests
     [TestFixture]
     public class OrderTest
     {
-        private ISessionFactory _sessionFactory;
+        private readonly ISessionFactory _sessionFactory = Ioc.Container.Resolve<ISessionFactory>();
+        private readonly IMediator _mediator = Ioc.Container.Resolve<IMediator>();
 
         [OneTimeSetUp]
         public void Setup()
         {
-            //new Mapper().Initialze();
-
-            this._sessionFactory = new SessionFactoryProvider(
-                    validator: new ValidatorEngine(),
-                    auditProvider: new AuditProvider()
-                )
-                .WithBatcher(BatcherConfiguration.Configure)
-                .GetSessionFactory();
-
             var seeders = (
                 from t in AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("AmpedBiz.Data")).GetTypes()
                 where t.GetInterfaces().Contains(typeof(IDefaultDataSeeder))

@@ -1,5 +1,4 @@
-﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Data.Context;
+﻿using AmpedBiz.Data.Context;
 using System;
 using System.Web;
 

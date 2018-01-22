@@ -1,9 +1,7 @@
 ﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Data;
-using AmpedBiz.Data.Context;
 using MediatR;
-using NHibernate;
 
 namespace AmpedBiz.Service.ProductCategories
 {
@@ -18,13 +16,11 @@ namespace AmpedBiz.Service.ProductCategories
 
         public class Handler : RequestHandlerBase<Request, Response>
         {
-            public Handler(ISessionFactory sessionFactory, IContext context) : base(sessionFactory, context) { }
-
-            public override Response Handle(Request message)
+           public override Response Execute(Request message)
             {
                 var response = new Response();
 
-                using (var session = _sessionFactory.RetrieveSharedSession(_context))
+                using (var session = sessionFactory.RetrieveSharedSession(context))
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = session.Get<ProductCategory>(message.Id);
