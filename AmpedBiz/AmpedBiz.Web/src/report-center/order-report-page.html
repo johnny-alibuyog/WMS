@@ -93,47 +93,49 @@
           </form>
 
           <!-- content -->
-          <table class="table table-striped table-condensed table-hover">
+          <div class="table-responsive">
+            <table class="table table-striped table-condensed table-hover">
 
-            <thead>
-              <tr>
-                <th class="col-md-2" click.delegate="sorter.doSort('customerName')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['customerName'])}"></i>Customer
-                </th>
-                <th class="col-md-2" click.delegate="sorter.doSort('branchName')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['branchName'])}"></i>Branch
-                </th>
-                <th class="col-md-2" click.delegate="sorter.doSort('pricingName')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['pricingName'])}"></i>Pricing
-                </th>
-                <th class="col-md-2" click.delegate="sorter.doSort('status')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['status'])}"></i>Status
-                </th>
-                <th class="col-md-1 text-right" click.delegate="sorter.doSort('orderedByName')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['orderedByName'])}"></i>Staff
-                </th>
-                <th class="col-md-1" click.delegate="sorter.doSort('orderedOn')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['orderedOn'])}"></i>Date
-                </th>
-                <th class="col-md-1 text-right" click.delegate="sorter.doSort('totalAmount')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['totalAmount'])}"></i>Total
-                </th>
-              </tr>
-            </thead>
+              <thead>
+                <tr>
+                  <th class="col-md-2" click.delegate="sorter.doSort('customerName')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['customerName'])}"></i>Customer
+                  </th>
+                  <th class="col-md-2" click.delegate="sorter.doSort('branchName')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['branchName'])}"></i>Branch
+                  </th>
+                  <th class="col-md-2" click.delegate="sorter.doSort('pricingName')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['pricingName'])}"></i>Pricing
+                  </th>
+                  <th class="col-md-2" click.delegate="sorter.doSort('status')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['status'])}"></i>Status
+                  </th>
+                  <th class="col-md-1 text-right" click.delegate="sorter.doSort('orderedByName')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['orderedByName'])}"></i>Staff
+                  </th>
+                  <th class="col-md-1" click.delegate="sorter.doSort('orderedOn')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['orderedOn'])}"></i>Date
+                  </th>
+                  <th class="col-md-1 text-right" click.delegate="sorter.doSort('totalAmount')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['totalAmount'])}"></i>Total
+                  </th>
+                </tr>
+              </thead>
 
-            <tbody>
-              <tr repeat.for="item of pager.items" click.delegate="edit(item)">
-                <td>${item.customerName}</td>
-                <td>${item.branchName}</td>
-                <td>${item.pricingName}</td>
-                <td>${item.status | lookupIdToName:statuses}</td>
-                <td>${item.orderedByName}</td>
-                <td>${item.orderedOn | dateFormat}</td>
-                <td class="text-right">${item.totalAmount | numberFormat}</td>
-              </tr>
-            </tbody>
+              <tbody>
+                <tr repeat.for="item of pager.items" click.delegate="edit(item)">
+                  <td>${item.customerName}</td>
+                  <td>${item.branchName}</td>
+                  <td>${item.pricingName}</td>
+                  <td>${item.status | lookupIdToName:statuses}</td>
+                  <td>${item.orderedByName}</td>
+                  <td>${item.orderedOn | dateFormat}</td>
+                  <td class="text-right">${item.totalAmount | numberFormat}</td>
+                </tr>
+              </tbody>
 
-          </table>
+            </table>
+          </div>
 
           <!-- pager -->
           <pager current-page.bind="pager.offset" total-items.bind="pager.count" change.delegate="pager.doPage($event)" />

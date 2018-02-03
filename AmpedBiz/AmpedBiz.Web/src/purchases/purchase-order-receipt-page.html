@@ -2,76 +2,78 @@
   <require from="common/controls/pager"></require>
   <require from="purchases/state-verification-value-converter"></require>
 
-  <table class="table table-striped table-hover table-condensed">
+  <div class="table-responsive">
+    <table class="table table-striped table-hover table-condensed">
 
-    <thead>
-      <tr class="row-no-padding">
-        <th class="col-sm-1">Action</th>
-        <th class="col-sm-4">Product</th>
-        <th class="col-sm-1">Unit</th>
-        <th class="col-sm-1 text-right">Ordered</th>
-        <th class="col-sm-1 text-right">Received</th>
-        <th class="col-sm-1 text-right">Receivable</th>
-        <!--<th class="col-sm-1 text-right">Expiry</th>-->
-        <th class="col-sm-1 text-right">Receiving</th>
-      </tr>
-    </thead>
+      <thead>
+        <tr class="row-no-padding">
+          <th class="col-sm-1">Action</th>
+          <th class="col-sm-4">Product</th>
+          <th class="col-sm-1">Unit</th>
+          <th class="col-sm-1 text-right">Ordered</th>
+          <th class="col-sm-1 text-right">Received</th>
+          <th class="col-sm-1 text-right">Receivable</th>
+          <!--<th class="col-sm-1 text-right">Expiry</th>-->
+          <th class="col-sm-1 text-right">Receiving</th>
+        </tr>
+      </thead>
 
-    <tbody>
-      <tr repeat.for="item of receivablePager.items" click.delegate="editItem(item)">
-        <!-- Action -->
-        <td>
-          <a href="javascript:undefined" class="text-info" click.delegate="editItem(item)">
-            <i class="fa fa-pencil"></i>
-          </a>
-          <a href="javascript:undefined" class="text-danger" click.delegate="deleteItem(item)">
-            <i class="fa fa-times"></i>
-          </a>
-        </td>
+      <tbody>
+        <tr repeat.for="item of receivablePager.items" click.delegate="editItem(item)">
+          <!-- Action -->
+          <td>
+            <a href="javascript:undefined" class="text-info" click.delegate="editItem(item)">
+              <i class="fa fa-pencil"></i>
+            </a>
+            <a href="javascript:undefined" class="text-danger" click.delegate="deleteItem(item)">
+              <i class="fa fa-times"></i>
+            </a>
+          </td>
 
-        <!-- Product -->
-        <td if.bind="item | productCannotBeChanged:$parent.selectedItem">${item.product.name}</td>
-        <td if.bind="item | productCanBeChanged:$parent.selectedItem">
-          <select class="form-control" value.bind="item.product | lookupToId:$parent.products" change.delegate="initializeItem(item)">
-            <option>Select Product</option>
-            <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
-          </select>
-        </td>
+          <!-- Product -->
+          <td if.bind="item | productCannotBeChanged:$parent.selectedItem">${item.product.name}</td>
+          <td if.bind="item | productCanBeChanged:$parent.selectedItem">
+            <select class="form-control" value.bind="item.product | lookupToId:$parent.products" change.delegate="initializeItem(item)">
+              <option>Select Product</option>
+              <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
+            </select>
+          </td>
 
-        <!-- Unit -->
-        <td if.bind="item | productCannotBeChanged:$parent.selectedItem">${item.receiving.quantity.unit.name}</td>
-        <td if.bind="item | productCanBeChanged:$parent.selectedItem">
-          <select class="form-control input-xs" value.bind="item.receiving.quantity.unit | lookupToId:item.unitOfMeasures">
-            <option repeat.for="unitOfMeasure of item.unitOfMeasures" model.bind="unitOfMeasure.id">${unitOfMeasure.name}</option>
-          </select>
-        </td>
+          <!-- Unit -->
+          <td if.bind="item | productCannotBeChanged:$parent.selectedItem">${item.receiving.quantity.unit.name}</td>
+          <td if.bind="item | productCanBeChanged:$parent.selectedItem">
+            <select class="form-control input-xs" value.bind="item.receiving.quantity.unit | lookupToId:item.unitOfMeasures">
+              <option repeat.for="unitOfMeasure of item.unitOfMeasures" model.bind="unitOfMeasure.id">${unitOfMeasure.name}</option>
+            </select>
+          </td>
 
-        <!-- Ordered -->
-        <td class="text-right">${item.orderedQuantity}</td>
+          <!-- Ordered -->
+          <td class="text-right">${item.orderedQuantity}</td>
 
-        <!-- Received -->
-        <td class="text-right">${item.receivedQuantity}</td>
-        
-        <!-- Receivable -->
-        <td class="text-right">${item.receivableQuantity}</td>
+          <!-- Received -->
+          <td class="text-right">${item.receivedQuantity}</td>
+          
+          <!-- Receivable -->
+          <td class="text-right">${item.receivableQuantity}</td>
 
-        <!-- Expiry -->
-        <!--
-        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.receiving.expiresOn | dateFormat}</td>
-        <td if.bind="$parent.selectedItem === item" class="text-right">
-          <input class="form-control text-right" type="date" value.bind="item.receiving.expiresOn | dateInputFormat" />
-        </td>
-        -->
+          <!-- Expiry -->
+          <!--
+          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.receiving.expiresOn | dateFormat}</td>
+          <td if.bind="$parent.selectedItem === item" class="text-right">
+            <input class="form-control text-right" type="date" value.bind="item.receiving.expiresOn | dateInputFormat" />
+          </td>
+          -->
 
-        <!-- Receiving -->
-        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.receiving.quantity.value}</td>
-        <td if.bind="$parent.selectedItem === item" class="text-right">
-          <input class="form-control text-right" type="number" numeric-value.bind="item.receiving.quantity.value" />
-        </td>
-      </tr>
-    </tbody>
+          <!-- Receiving -->
+          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.receiving.quantity.value}</td>
+          <td if.bind="$parent.selectedItem === item" class="text-right">
+            <input class="form-control text-right" type="number" numeric-value.bind="item.receiving.quantity.value" />
+          </td>
+        </tr>
+      </tbody>
 
-  </table>
+    </table>
+  </div>
 
   <!-- pager -->
   <pager current-page.bind="receivablePager.offset" total-items.bind="receivablePager.count" change.delegate="receivablePager.doPage($event)"/>

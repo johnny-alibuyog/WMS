@@ -3,109 +3,111 @@
   <require from="orders/state-verification-value-converter"></require>
 
   <!-- list -->
-  <table class="table table-striped table-hover table-condensed">
+  <div class="table-responsive">
+    <table class="table table-striped table-hover table-condensed">
 
-    <thead>
-      <tr class="row-no-padding">
-        <th rowspan="2" class="col-sm-1 vertical-middle">Action</th>
-        <th rowspan="2" class="col-sm-3 vertical-middle">Product</th>
-        <th rowspan="2" class="col-sm-1 vertical-middle text-right">Price</th>
-        <th rowspan="2" class="col-sm-1 vertical-middle text-right">Returned</th>
-        <th rowspan="2" class="col-sm-1 vertical-middle text-right">Returnable</th>
-        <th colspan="3" class="col-sm-5 text-center">Returning</th>
-      </tr>
-      <tr>
-        <th class="col-sm-2">Reason</th>
-        <th class="col-sm-1 text-right">Unit</th>
-        <th class="col-sm-1 text-right">Quantity</th>
-        <th class="col-sm-1 text-right">Amount</th>
-      </tr>
-    </thead>
+      <thead>
+        <tr class="row-no-padding">
+          <th rowspan="2" class="col-sm-1 vertical-middle">Action</th>
+          <th rowspan="2" class="col-sm-3 vertical-middle">Product</th>
+          <th rowspan="2" class="col-sm-1 vertical-middle text-right">Price</th>
+          <th rowspan="2" class="col-sm-1 vertical-middle text-right">Returned</th>
+          <th rowspan="2" class="col-sm-1 vertical-middle text-right">Returnable</th>
+          <th colspan="3" class="col-sm-5 text-center">Returning</th>
+        </tr>
+        <tr>
+          <th class="col-sm-2">Reason</th>
+          <th class="col-sm-1 text-right">Unit</th>
+          <th class="col-sm-1 text-right">Quantity</th>
+          <th class="col-sm-1 text-right">Amount</th>
+        </tr>
+      </thead>
 
-    <tbody>
-      <tr repeat.for="item of returnablePager.items" click.delegate="editItem(item)">
-        <!-- Action -->
-        <td>
-          <a href="javascript:undefined" class="text-info" click.delegate="editItem(item)">
-            <i class="fa fa-pencil"></i>
-          </a>
-          <a href="javascript:undefined" class="text-danger" click.delegate="deleteItem(item)">
-            <i class="fa fa-times"></i>
-          </a>
-        </td>
+      <tbody>
+        <tr repeat.for="item of returnablePager.items" click.delegate="editItem(item)">
+          <!-- Action -->
+          <td>
+            <a href="javascript:undefined" class="text-info" click.delegate="editItem(item)">
+              <i class="fa fa-pencil"></i>
+            </a>
+            <a href="javascript:undefined" class="text-danger" click.delegate="deleteItem(item)">
+              <i class="fa fa-times"></i>
+            </a>
+          </td>
 
-        <!-- Product -->
-        <td>${item.product.name}</td>
-        <!-- Do not allow editing of products to return
-        <td if.bind="item | productCannotBeChanged:$parent.selectedItem">${item.product.name}</td>
-        <td if.bind="item | productCanBeChanged:$parent.selectedItem">
-          <select class="form-control" value.bind="item.product | lookupToId:$parent.products" change.delegate="$parent.initializeItem(item)">
-            <option>Select Product</option>
-            <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
-          </select>
-        </td>
-        -->
+          <!-- Product -->
+          <td>${item.product.name}</td>
+          <!-- Do not allow editing of products to return
+          <td if.bind="item | productCannotBeChanged:$parent.selectedItem">${item.product.name}</td>
+          <td if.bind="item | productCanBeChanged:$parent.selectedItem">
+            <select class="form-control" value.bind="item.product | lookupToId:$parent.products" change.delegate="$parent.initializeItem(item)">
+              <option>Select Product</option>
+              <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
+            </select>
+          </td>
+          -->
 
-        <!-- Price -->
-        <td class="text-right">${item.totalPriceAmount / item.orderedQuantity | numberFormat}</td>
+          <!-- Price -->
+          <td class="text-right">${item.totalPriceAmount / item.orderedQuantity | numberFormat}</td>
 
-        <!-- Returned -->
-        <td class="text-right">${item.returnedQuantity}</td>
+          <!-- Returned -->
+          <td class="text-right">${item.returnedQuantity}</td>
 
-        <!-- Returnable -->
-        <td class="text-right">${item.returnableQuantity}</td>
+          <!-- Returnable -->
+          <td class="text-right">${item.returnableQuantity}</td>
 
-        <!-- Reason -->
-        <td if.bind="$parent.selectedItem !== item">${item.returning.reason.name}</td>
-        <td if.bind="$parent.selectedItem === item">
-          <select class="form-control" value.bind="item.returning.reason | lookupToId:$parent.reasons">
-            <option>Select Reason</option>
-            <option repeat.for="reason of $parent.reasons" model.bind="reason.id">${reason.name}</option>
-          </select>
-        </td>
+          <!-- Reason -->
+          <td if.bind="$parent.selectedItem !== item">${item.returning.reason.name}</td>
+          <td if.bind="$parent.selectedItem === item">
+            <select class="form-control" value.bind="item.returning.reason | lookupToId:$parent.reasons">
+              <option>Select Reason</option>
+              <option repeat.for="reason of $parent.reasons" model.bind="reason.id">${reason.name}</option>
+            </select>
+          </td>
 
-        <!-- Unit -->
-        <td class="text-right">${item.returning.quantity.unit.name}</td>
+          <!-- Unit -->
+          <td class="text-right">${item.returning.quantity.unit.name}</td>
 
-        <!-- Returning -->
-        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.returning.quantity.value}</td>
-        <td if.bind="$parent.selectedItem === item" class="text-right">
-          <input class="form-control text-right" type="number" numeric-value.bind="item.returning.quantity.value" keyup.delegate="compute(item)"
-          />
-        </td>
+          <!-- Returning -->
+          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.returning.quantity.value}</td>
+          <td if.bind="$parent.selectedItem === item" class="text-right">
+            <input class="form-control text-right" type="number" numeric-value.bind="item.returning.quantity.value" keyup.delegate="compute(item)"
+            />
+          </td>
 
-        <!-- Amount -->
-        <td if.bind="$parent.selectedItem !== item" class="text-right">${item.returning.amount | numberFormat}</td>
-        <td if.bind="$parent.selectedItem === item" class="text-right">
-          <input class="form-control text-right" type="number" numeric-value.bind="item.returning.amount" keyup.delegate="compute(item)" />
-        </td>
-      </tr>
-    </tbody>
+          <!-- Amount -->
+          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.returning.amount | numberFormat}</td>
+          <td if.bind="$parent.selectedItem === item" class="text-right">
+            <input class="form-control text-right" type="number" numeric-value.bind="item.returning.amount" keyup.delegate="compute(item)" />
+          </td>
+        </tr>
+      </tbody>
 
-    <tfoot>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td class="text-right"><label>Returned:</label></td>
-        <td class="text-right">${totalReturnedAmount | numberFormat}</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td class="text-right"><label>Returning:</label></td>
-        <td class="text-right">${totalReturningAmount | numberFormat}</td>
-      </tr>
-    </tfoot>
+      <tfoot>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="text-right"><label>Returned:</label></td>
+          <td class="text-right">${totalReturnedAmount | numberFormat}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="text-right"><label>Returning:</label></td>
+          <td class="text-right">${totalReturningAmount | numberFormat}</td>
+        </tr>
+      </tfoot>
 
-  </table>
+    </table>
+  </div>
 
   <!-- pager -->
   <pager current-page.bind="returnablePager.offset" total-items.bind="returnablePager.count" change.delegate="returnablePager.doPage($event)"

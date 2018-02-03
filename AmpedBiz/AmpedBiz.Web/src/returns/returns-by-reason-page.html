@@ -2,7 +2,7 @@
   <require from="common/controls/pager"></require>
 
   <section class="row row-no-padding">
-    
+
     <div class="col-md-6">
 
       <div class="panel panel-default">
@@ -23,13 +23,13 @@
                   <option repeat.for="item of returnReasons" model.bind="item.id">${item.name}</option>
                 </select>
               </div>
-              
+
               <div class="search-form input">
                 <button class="btn btn-default" type="submit">
                   <i class="fa fa-search"></i>
                 </button>
               </div>
-              
+
             </form>
 
           </h4>
@@ -40,33 +40,35 @@
         <div class="panel-body">
 
           <!-- content -->
-          <table class="table table-striped table-condensed table-hover">
+          <div class="table-responsive">
+            <table class="table table-striped table-condensed table-hover">
 
-            <thead>
-              <tr>
-                <th class="col-md-1">Action</th>
-                <th class="col-md-2" click.delegate="sorter.doSort('returnReason')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['returnReason'])}"></i>Reason
-                </th>
-                <th class="col-md-1 text-right" click.delegate="sorter.doSort('totalAmount')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['totalAmount'])}"></i>Amount
-                </th>
-              </tr>
-            </thead>
+              <thead>
+                <tr>
+                  <th class="col-md-1">Action</th>
+                  <th class="col-md-2" click.delegate="sorter.doSort('returnReason')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['returnReason'])}"></i>Reason
+                  </th>
+                  <th class="col-md-1 text-right" click.delegate="sorter.doSort('totalAmount')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['totalAmount'])}"></i>Amount
+                  </th>
+                </tr>
+              </thead>
 
-            <tbody>
-              <tr repeat.for="item of pager.items" click.delegate="show(item)">
-                <td>
-                  <a href="javascript:undefined" class="text-info" click.delegate="show(item)">
-                    <i class="fa fa-search"></i>
-                  </a>
-                </td>
-                <td>${item.returnReasonName}</td>
-                <td class="text-right">${item.totalAmount | numberFormat}</td>
-              </tr>
-            </tbody>
-            
-          </table>
+              <tbody>
+                <tr repeat.for="item of pager.items" click.delegate="show(item)">
+                  <td>
+                    <a href="javascript:undefined" class="text-info" click.delegate="show(item)">
+                      <i class="fa fa-search"></i>
+                    </a>
+                  </td>
+                  <td>${item.returnReasonName}</td>
+                  <td class="text-right">${item.totalAmount | numberFormat}</td>
+                </tr>
+              </tbody>
+
+            </table>
+          </div>
 
           <!-- pager -->
           <pager current-page.bind="pager.offset" total-items.bind="pager.count" change.delegate="pager.doPage($event)" />

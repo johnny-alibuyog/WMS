@@ -52,6 +52,23 @@ input[type=checkbox] {
   display: inline;
 }
 
+.table-responsive {
+  width: 100%;
+  margin-bottom: 15px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  border: 1px solid #DDD;
+}
+
+th,td{
+  /*use this property to disbale soft wrap*/
+  white-space: nowrap;
+  /*To make extra certain,add this css property*/
+  word-break: keep-all;
+}
+
 .control-display {
   font-weight: normal;
   margin: unset;

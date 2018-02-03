@@ -26,27 +26,29 @@
         <div class="panel-body">
 
           <!-- content -->
-          <table class="table table-condensed">
+          <div class="table-responsive">
+            <table class="table table-condensed">
 
-            <thead>
-              <tr>
-                <th class="col-md-2" click.delegate="sorter.doSort('code')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['code'])}"></i>Class
-                </th>
-                <th class="col-md-10" click.delegate="sorter.doSort('name')">
-                  <i class="fa fa-fw fa-${sorter.class(sorter['name'])}"></i>Name
-                </th>
-              </tr>
-            </thead>
+              <thead>
+                <tr>
+                  <th class="col-md-2" click.delegate="sorter.doSort('code')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['code'])}"></i>Class
+                  </th>
+                  <th class="col-md-10" click.delegate="sorter.doSort('name')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['name'])}"></i>Name
+                  </th>
+                </tr>
+              </thead>
 
-            <tbody>
-              <tr repeat.for="item of pager.items">
-                <td>${item.id}</td>
-                <td>${item.name}</td>
-              </tr>
-            </tbody>
+              <tbody>
+                <tr repeat.for="item of pager.items">
+                  <td>${item.id}</td>
+                  <td>${item.name}</td>
+                </tr>
+              </tbody>
 
-          </table>
+            </table>
+          </div>
 
           <!-- pager -->
           <pager current-page.bind="pager.offset" total-items.bind="pager.count" change.delegate="pager.doPage($event)" />
