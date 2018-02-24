@@ -17,7 +17,7 @@ namespace AmpedBiz.Service.Branches
             {
                 var response = new Response();
 
-                using (var session = sessionFactory.RetrieveSharedSession(context))
+                using (var session = SessionFactory.RetrieveSharedSession(Context))
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = session.Get<Branch>(message.Id);

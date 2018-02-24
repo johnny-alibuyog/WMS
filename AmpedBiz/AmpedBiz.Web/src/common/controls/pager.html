@@ -2,7 +2,7 @@
   <div if.bind="totalItems === 0" class="pager-no-items">
     <label>There are no items to display</label>
   </div>
-  <ul class="pagination pagination-sm">
+  <ul else class="pagination pagination-sm">
     <li if.bind="boundaryLinks" disabled.bind="noPrevious">
       <a href="javascript:undefined" click.delegate="selectFirst()">${getText('first')}</a>
     </li>

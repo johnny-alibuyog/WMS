@@ -50,13 +50,6 @@ export class NeedsReorderingPage {
     this.pager = new Pager<NeedsReorderingPageItem>();
     this.pager.onPage = () => this.getPage();
 
-    /*
-    this.forPurchasing = <ForPurchasing>{
-      supplierId: '',
-      selectedProductIds: [],
-      purchaseAllBelowTarget: false
-    };
-    */
     this.forPurchasing = this._sessionData.forPurchasing;
     this.forPurchasing.selectedProductIds = this.forPurchasing.selectedProductIds || [];
   }
@@ -66,9 +59,6 @@ export class NeedsReorderingPage {
       this._bindingEngine
         .collectionObserver(this.forPurchasing.selectedProductIds)
         .subscribe((changeRecords) => this.computeSelectAll(changeRecords)),
-      //this._bindingEngine
-      //  .propertyObserver(this.forPurchasing, 'purchaseAllBelowTarget')
-      //  .subscribe((newValue, oldValue) => this.selectAll(newValue))
     ];
 
     let requests: [Promise<Lookup<string>[]>, Promise<Lookup<string>[]>] = [
@@ -86,6 +76,7 @@ export class NeedsReorderingPage {
 
   public detached(): void {
     this._subscriptions.forEach(x => x.dispose());
+    this._sessionData.forPurchasing = this.forPurchasing;
   }
 
   public getPage(): void {
@@ -108,6 +99,8 @@ export class NeedsReorderingPage {
         this._notification.error("Error encountered during search!");
       });
   }
+
+
 
   public toggleSelectAll(selectAll?: boolean): boolean {
     if (selectAll == null) {
@@ -137,11 +130,6 @@ export class NeedsReorderingPage {
     this.forPurchasing.purchaseAllBelowTarget = selectAll;
     return true;
   }
-
-
-  //public edit(item: NeedsReorderingPageItem): void {
-  //  this._router.navigateToRoute('product-create', <Product>{ id: item.id });
-  //}
 
   private computeSelectAll(changeRecords: any) {
     if (changeRecords[0].removed.length > 0) {

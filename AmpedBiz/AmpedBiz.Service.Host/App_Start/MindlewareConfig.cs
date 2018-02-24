@@ -1,4 +1,4 @@
-﻿using AmpedBiz.Service.Host.Plugins.MiddleWare;
+﻿using AmpedBiz.Service.Host.Bootstrap.MiddleWare;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
 

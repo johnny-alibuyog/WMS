@@ -23,7 +23,7 @@ namespace AmpedBiz.Service.Products
             {
                 var response = default(Response);
 
-                using (var session = sessionFactory.RetrieveSharedSession(context))
+                using (var session = SessionFactory.RetrieveSharedSession(Context))
                 using (var transaction = session.BeginTransaction())
                 {
                     var inventory = session.QueryOver<Inventory>()

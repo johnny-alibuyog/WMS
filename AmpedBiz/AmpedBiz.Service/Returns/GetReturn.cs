@@ -34,7 +34,7 @@ namespace AmpedBiz.Service.Returns
                     return response;
                 }
 
-                using (var session = sessionFactory.RetrieveSharedSession(context))
+                using (var session = SessionFactory.RetrieveSharedSession(Context))
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = session.QueryOver<Return>()

@@ -54,15 +54,14 @@ export class ActiveOrderPage {
 
   private getPage(): void {
     this._api.orders
-      .getPage({
+      .getActiveOrderPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager
       })
       .then(data => {
-        var response = <PagerResponse<OrderPageItem>>data;
-        this.pager.count = response.count;
-        this.pager.items = response.items;
+        this.pager.count = data.count;
+        this.pager.items = data.items;
       })
       .catch(error => {
         this._notification.error("Error encountered during search!");

@@ -1,4 +1,4 @@
-import { ProductUnitOfMeasurePrice } from "../common/models/product";
+import { ProductUnitOfMeasurePrice, ProductUnitOfMeasure } from "../common/models/product";
 
 export class SortPriceValueConverter {
   toView(array: ProductUnitOfMeasurePrice[] = [], direction: string = 'asc') {
@@ -12,4 +12,67 @@ export class SortPriceValueConverter {
     });
     return retvalue;
   }
+}
+
+export class DefaultValueConverter {
+
+  toView(value: number, items: ProductUnitOfMeasure[]): number {
+    // "value" is standard unit, we should display the "default" equivalent
+    return value;
+
+    /*
+    if (!value) {
+      return null;
+    }
+
+    if (!items || items.length === 0) {
+      return null;
+    }
+
+    let tefault = items.find(x => x.isDefault);
+
+    if (!tefault) {
+      return null;
+    }
+
+    return value / tefault.standardEquivalentValue;
+    */
+  }
+
+  fromView(value: number, items: ProductUnitOfMeasure[]): number {
+    // "value" is standard unit, we should display the "default" equivalent
+    return value;
+
+    /*
+    if (!value) {
+      return null;
+    }
+
+    if (!items || items.length === 0) {
+      return null;
+    }
+
+    let tefault = items.find(x => x.isDefault);
+
+    if (!tefault) {
+      return null;
+    }
+
+    return value * tefault.standardEquivalentValue;
+    */
+  }
+}
+
+export class DefaultUnitOfMeasureNameValueConverter {
+
+  toView(items: ProductUnitOfMeasure[]): string {
+    if (!items || items.length === 0) {
+      return null;
+    }
+
+    let tefault = items.find(x => x.isDefault);
+
+    return tefault && tefault.unitOfMeasure && tefault.unitOfMeasure.name || '';
+  }
+
 }

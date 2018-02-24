@@ -21,7 +21,7 @@ namespace AmpedBiz.Service.Products
             {
                 var response = new Response();
 
-                using (var session = sessionFactory.RetrieveSharedSession(context))
+                using (var session = SessionFactory.RetrieveSharedSession(Context))
                 using (var transaction = session.BeginTransaction())
                 {
                     var exists = session.Query<Product>().Any(x => x.Id == message.Id);
@@ -63,14 +63,15 @@ namespace AmpedBiz.Service.Products
 
                     entity.EnsureValidity();
 
-                    var standard = entity.UnitOfMeasures.FirstOrDefault(o => o.IsStandard);
+                    var @default = entity.UnitOfMeasures.FirstOrDefault(o => o.IsDefault);
 
                     entity.Inventory.Accept(new InventoryUpdateVisitor()
                     {
-                        InitialLevel = new Measure(message.Inventory.InitialLevelValue ?? 0M, standard.UnitOfMeasure),
-                        TargetLevel = new Measure(message.Inventory.TargetLevelValue ?? 0M, standard.UnitOfMeasure),
-                        ReorderLevel = new Measure(message.Inventory.ReorderLevelValue ?? 0M, standard.UnitOfMeasure),
-                        MinimumReorderQuantity = new Measure(message.Inventory.MinimumReorderQuantityValue ?? 0M, standard.UnitOfMeasure),
+                        Product = entity,
+                        InitialLevel = new Measure(message.Inventory.InitialLevelValue ?? 0M, @default.UnitOfMeasure),
+                        TargetLevel = new Measure(message.Inventory.TargetLevelValue ?? 0M, @default.UnitOfMeasure),
+                        ReorderLevel = new Measure(message.Inventory.ReorderLevelValue ?? 0M, @default.UnitOfMeasure),
+                        MinimumReorderQuantity = new Measure(message.Inventory.MinimumReorderQuantityValue ?? 0M, @default.UnitOfMeasure),
                     });
 
                     entity.Inventory.EnsureValidity();

@@ -48,11 +48,35 @@ namespace AmpedBiz.Core.Services.Products
             return converter.Convert(product, measure, toUnit);
         }
 
+        public static Measure ConvertToDefault(this Product product, Measure measure)
+        {
+            var uom = product.UnitOfMeasures.Default(x => x.UnitOfMeasure);
+            return product.Convert(measure, uom);
+        }
+
+        public static Measure ConvertToStandard(this Product product, Measure measure)
+        {
+            var uom = product.UnitOfMeasures.Standard(x => x.UnitOfMeasure);
+            return product.Convert(measure, uom);
+        }
+
         public static decimal ConvertValue(this Product product, Measure measure, UnitOfMeasure toUnit)
         {
             var converter = new MeasureConverter();
             var result = converter.Convert(product, measure, toUnit);
             return result.Value;
+        }
+
+        public static decimal ConvertToDefaultValue(this Product product, Measure measure)
+        {
+            var uom = product.UnitOfMeasures.Default(x => x.UnitOfMeasure);
+            return product.ConvertValue(measure, uom);
+        }
+
+        public static decimal ConverToStandardValue(this Product product, Measure measure)
+        {
+            var uom = product.UnitOfMeasures.Standard(x => x.UnitOfMeasure);
+            return product.ConvertValue(measure, uom);
         }
     }
 }

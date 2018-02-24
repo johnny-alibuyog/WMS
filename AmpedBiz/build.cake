@@ -150,7 +150,7 @@ Task("Run-Test")
     {
 		var test = new 
 		{
-			AssemblyPath = path + "/**/bin/" + args.BuildConfiguration + "/*Test*.dll",
+			AssemblyPath = path + "/**/bin/" + args.BuildConfiguration + "/AmpedBiz.Test*.dll",
 			ResultFile = "./result.xml",
 			CoverageOutput = ".coverage"
 		};

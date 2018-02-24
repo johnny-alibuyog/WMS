@@ -31,7 +31,7 @@ namespace AmpedBiz.Service.Orders
                 if (message.Id == Guid.Empty)
                     return response;
 
-                using (var session = sessionFactory.RetrieveSharedSession(context))
+                using (var session = SessionFactory.RetrieveSharedSession(Context))
                 using (var transaction = session.BeginTransaction())
                 {
                     var orderItems = session.QueryOver<OrderItem>()

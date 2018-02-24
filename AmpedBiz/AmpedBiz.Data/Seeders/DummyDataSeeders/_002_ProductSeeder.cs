@@ -104,13 +104,14 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                             }
                         });
 
-                        var standard = item.UnitOfMeasures.FirstOrDefault(o => o.IsStandard);
+                        var @default = item.UnitOfMeasures.FirstOrDefault(o => o.IsDefault);
 
                         item.Inventory.Accept(new InventoryUpdateVisitor()
                         {
-                            InitialLevel = new Measure(_utils.RandomDecimal(150M, 300M), standard.UnitOfMeasure),
-                            TargetLevel = new Measure(_utils.RandomDecimal(150M, 300M), standard.UnitOfMeasure),
-                            ReorderLevel = item.Inventory.TargetLevel - new Measure(_utils.RandomDecimal(50M, 100M), standard.UnitOfMeasure),
+                            Product = item,
+                            InitialLevel = new Measure(_utils.RandomDecimal(150M, 300M), @default.UnitOfMeasure),
+                            TargetLevel = new Measure(_utils.RandomDecimal(150M, 300M), @default.UnitOfMeasure),
+                            ReorderLevel = item.Inventory.TargetLevel - new Measure(_utils.RandomDecimal(50M, 100M), @default.UnitOfMeasure),
                             MinimumReorderQuantity = item.Inventory.TargetLevel - item.Inventory.ReorderLevel,
                         });
 

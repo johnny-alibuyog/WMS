@@ -1,10 +1,15 @@
 <template>
 
+  <require from="products/value-converters"></require>
+  <require from="common/converters/number-format-value-converter"></require>
+
+
+
   <!-- inventory settings -->
   <div class="panel panel-default">
 
     <!-- heading -->
-    <div class="panel-heading">Inventory Settings</div>
+    <div class="panel-heading">Inventory Settings (${ unitOfMeasures | defaultUnitOfMeasureName })</div>
 
     <!-- body -->
     <div class="panel-body">
@@ -18,7 +23,7 @@
           <div class="form-group">
             <label class="control-label col-sm-4">Initial Level:</label>
             <div class="col-sm-8">
-              <input type="number" class="form-control text-right" placeholder="Enter Initial Level" value.bind="inventory.initialLevelValue"
+              <input type="number" class="form-control text-right" placeholder="Enter Initial Level" value.bind="inventory.initialLevelValue | default : unitOfMeasures | numberFormat"
               />
             </div>
           </div>
@@ -26,7 +31,7 @@
           <div class="form-group">
             <label class="control-label col-sm-4">Reorder Level:</label>
             <div class="col-sm-8">
-              <input type="number" class="form-control text-right" placeholder="Enter Reorder Level" value.bind="inventory.reorderLevelValue"
+              <input type="number" class="form-control text-right" placeholder="Enter Reorder Level" value.bind="inventory.reorderLevelValue | default : unitOfMeasures | numberFormat"
               />
             </div>
           </div>
@@ -39,7 +44,7 @@
           <div class="form-group">
             <label class="control-label col-sm-4">Min Reorder Qty:</label>
             <div class="col-sm-8">
-              <input type="number" class="form-control text-right" placeholder="Enter Minimum Reorder Quantity" value.bind="inventory.minimumReorderQuantityValue"
+              <input type="number" class="form-control text-right" placeholder="Enter Minimum Reorder Quantity" value.bind="inventory.minimumReorderQuantityValue | default : unitOfMeasures | numberFormat"
               />
             </div>
           </div>
@@ -47,7 +52,7 @@
           <div class="form-group">
             <label class="control-label col-sm-4">Target Level:</label>
             <div class="col-sm-8">
-              <input type="number" class="form-control text-right" placeholder="Enter Target Level" value.bind="inventory.targetLevelValue"
+              <input type="number" class="form-control text-right" placeholder="Enter Target Level" value.bind="inventory.targetLevelValue | default : unitOfMeasures | numberFormat"
               />
             </div>
           </div>
@@ -64,7 +69,7 @@
   <div class="panel panel-default">
 
     <!-- heading -->
-    <div class="panel-heading">Inventory Status</div>
+    <div class="panel-heading">Inventory Status (${ unitOfMeasures | defaultUnitOfMeasureName })</div>
 
     <!-- body -->
     <div class="panel-body">
@@ -75,42 +80,48 @@
         <div class="form-group">
           <label class="control-label col-sm-4">Received:</label>
           <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.receivedValue" disabled />
+            <input type="number" class="form-control text-right" value.bind="inventory.receivedValue | default : unitOfMeasures | numberFormat"
+              disabled />
           </div>
         </div>
 
         <div class="form-group">
           <label class="control-label col-sm-4">On Order:</label>
           <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.onOrderValue" disabled />
+            <input type="number" class="form-control text-right" value.bind="inventory.onOrderValue | default : unitOfMeasures | numberFormat"
+              disabled />
           </div>
         </div>
 
         <div class="form-group">
           <label class="control-label col-sm-4">Allocated:</label>
           <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.allocatedValue" disabled />
+            <input type="number" class="form-control text-right" value.bind="inventory.allocatedValue | default : unitOfMeasures | numberFormat"
+              disabled />
           </div>
         </div>
 
         <div class="form-group">
           <label class="control-label col-sm-4">Shipped:</label>
           <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.shippedValue" disabled />
+            <input type="number" class="form-control text-right" value.bind="inventory.shippedValue | default : unitOfMeasures | numberFormat"
+              disabled />
           </div>
         </div>
 
         <div class="form-group">
           <label class="control-label col-sm-4">Returned:</label>
           <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.returnedValue" disabled />
+            <input type="number" class="form-control text-right" value.bind="inventory.returnedValue | default : unitOfMeasures | numberFormat"
+              disabled />
           </div>
         </div>
 
         <div class="form-group">
           <label class="control-label col-sm-4">Back Ordered:</label>
           <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.backOrderedValue" disabled />
+            <input type="number" class="form-control text-right" value.bind="inventory.backOrderedValue | default : unitOfMeasures | numberFormat"
+              disabled />
           </div>
         </div>
 
@@ -122,35 +133,40 @@
         <div class="form-group">
           <label class="control-label col-sm-4">On Hand:</label>
           <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.onHandValue" disabled />
+            <input type="number" class="form-control text-right" value.bind="inventory.onHandValue | default : unitOfMeasures | numberFormat"
+              disabled />
           </div>
         </div>
 
         <div class="form-group">
           <label class="control-label col-sm-4">Available:</label>
           <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.availableValue" disabled />
+            <input type="number" class="form-control text-right" value.bind="inventory.availableValue | default : unitOfMeasures | numberFormat"
+              disabled />
           </div>
         </div>
 
         <div class="form-group">
           <label class="control-label col-sm-4">Current Level:</label>
           <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.currentLevelValue" disabled />
+            <input type="number" class="form-control text-right" value.bind="inventory.currentLevelValue | default : unitOfMeasures | numberFormat"
+              disabled />
           </div>
         </div>
 
         <div class="form-group">
           <label class="control-label col-sm-4">Below Target:</label>
           <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.belowTargetLevelValue" disabled />
+            <input type="number" class="form-control text-right" value.bind="inventory.belowTargetLevelValue | default : unitOfMeasures | numberFormat"
+              disabled />
           </div>
         </div>
 
         <div class="form-group">
           <label class="control-label col-sm-4">Total Shrinkage:</label>
           <div class="col-sm-8">
-            <input type="number" class="form-control text-right" value.bind="inventory.shrinkageValue" disabled />
+            <input type="number" class="form-control text-right" value.bind="inventory.shrinkageValue | default : unitOfMeasures | numberFormat"
+              disabled />
           </div>
         </div>
 

@@ -1,9 +1,7 @@
 ﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Data;
-using AmpedBiz.Data.Context;
 using MediatR;
-using NHibernate;
 using System;
 using System.Linq;
 
@@ -24,7 +22,7 @@ namespace AmpedBiz.Service.PurchaseOrders
             {
                 var response = new Response();
 
-                using (var session = sessionFactory.RetrieveSharedSession(context))
+                using (var session = SessionFactory.RetrieveSharedSession(Context))
                 using (var transaction = session.BeginTransaction())
                 {
                     var query = session.QueryOver<PurchaseOrder>()

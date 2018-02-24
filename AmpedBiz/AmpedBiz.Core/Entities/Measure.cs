@@ -24,12 +24,12 @@ namespace AmpedBiz.Core.Entities
 
         public virtual string ToStringWithSymbol()
         {
-            return $"{this.Value.ToString("0.##")} {this.Unit}";
+            return $"{this.Value.ToString("0.##")} {this.Unit.Id}";
         }
 
         public virtual string ToStringIntegral()
         {
-            return $"{Math.Truncate(this.Value)} {this.Unit}";
+            return $"{Math.Truncate(this.Value)} {this.Unit.Id}";
         }
 
         public static bool operator >(Measure operand1, Measure operand2)
@@ -147,7 +147,7 @@ namespace AmpedBiz.Core.Entities
                 return 1;
 
             if (left.Unit != null && right.Unit != null && left.Unit != right.Unit)
-                throw new InvalidOperationException($"You cannot compare measure of unit {left.Unit.Name} to {right.Unit.Name}");
+                throw new InvalidOperationException($"You cannot compare measure of unit {left.Unit.Id} to {right.Unit.Id}");
 
             return left.Value.CompareTo(right.Value);
         }

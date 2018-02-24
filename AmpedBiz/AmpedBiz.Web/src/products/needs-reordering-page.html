@@ -50,7 +50,7 @@
               <thead>
                 <tr>
                   <th class="col-md-4">
-                    <input type="checkbox" click.delegate="toggleSelectAll()" checked.one-way="forPurchasing.purchaseAllBelowTarget" />
+                    <input type="checkbox" click.delegate="toggleSelectAll()" checked.to-view="forPurchasing.purchaseAllBelowTarget" />
                     <span click.delegate="sorter.doSort('productName')">
                       <i class="fa fa-fw fa-${sorter.class(sorter['productName'])}"></i>Product
                     </span>

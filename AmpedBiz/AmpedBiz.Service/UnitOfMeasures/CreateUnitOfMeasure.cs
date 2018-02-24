@@ -19,7 +19,7 @@ namespace AmpedBiz.Service.UnitOfMeasures
             {
                 var response = new Response();
 
-                using (var session = sessionFactory.RetrieveSharedSession(context))
+                using (var session = SessionFactory.RetrieveSharedSession(Context))
                 using (var transaction = session.BeginTransaction())
                 {
                     var exists = session.Query<UnitOfMeasure>().Any(x => x.Id == message.Id);

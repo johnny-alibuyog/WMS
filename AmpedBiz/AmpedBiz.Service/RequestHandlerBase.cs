@@ -1,8 +1,8 @@
-﻿using AmpedBiz.Core.Entities;
-using AmpedBiz.Data.Context;
+﻿using AmpedBiz.Data.Context;
 using MediatR;
 using NHibernate;
-using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AmpedBiz.Service
 {
@@ -10,9 +10,9 @@ namespace AmpedBiz.Service
     {
         // dependency of properties will be injected via property injection (Autofac.PropertiesAutowired)
 
-        public ISessionFactory sessionFactory { get; set; }
+        public ISessionFactory SessionFactory { get; set; }
 
-        public IContext context { get; set; }
+        public IContext Context { get; set; }
 
         //protected ISession session;
 
@@ -20,13 +20,17 @@ namespace AmpedBiz.Service
 
         //protected readonly Lazy<User> User = new Lazy<User>(() => );
 
-
         public abstract TResponse Execute(TRequest request);
 
-        public TResponse Handle(TRequest message)
+        public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken)
         {
-            return this.Execute(message);
+            return Task.FromResult(this.Execute(request));
         }
+
+        //public TResponse Handle(TRequest message)
+        //{
+        //    return this.Execute(message);
+        //}
 
         //public TResponse Handle(TRequest message)
         //{
@@ -54,11 +58,14 @@ namespace AmpedBiz.Service
 
     public static class RequestHandlerExtention
     {
-        public static RequestHandlerBase<TRequest, TResponse> With<TRequest, TResponse>(this RequestHandlerBase<TRequest, TResponse> handler, ISessionFactory sessionFactory, IContext context) 
+        public static RequestHandlerBase<TRequest, TResponse> With<TRequest, TResponse>(
+            this RequestHandlerBase<TRequest, TResponse> handler, 
+            ISessionFactory sessionFactory, 
+            IContext context) 
             where TRequest : IRequest<TResponse>
         {
-            handler.sessionFactory = sessionFactory;
-            handler.context = context;
+            handler.SessionFactory = sessionFactory;
+            handler.Context = context;
             return handler;
         }
     } 

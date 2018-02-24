@@ -29,7 +29,7 @@ namespace AmpedBiz.Service.Customers
             {
                 var response = new Response();
 
-                using (var session = sessionFactory.RetrieveSharedSession(context))
+                using (var session = SessionFactory.RetrieveSharedSession(Context))
                 using (var transaction = session.BeginTransaction())
                 {
                     var entites = session.Query<Customer>().Cacheable().ToList();

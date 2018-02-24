@@ -1,0 +1,12 @@
+﻿{
+  "Database": "MsSql",
+  "Port": 3306,
+  "HostServer": "PHMADJALIBUYOG2",
+  "Name": "ampbizdb",
+  "Username": "sa",
+  "Password": "6jPbwQtZ8N52WRJ5rEWv2g==",
+  "BatchSize": 50,
+  "UseDummyData": true,
+  "RecreateDb": true,
+  "DefaultSeedDataPath":  "..\\..\\..\\AmpedBiz.Service.Host\\Data\\Default"
+}

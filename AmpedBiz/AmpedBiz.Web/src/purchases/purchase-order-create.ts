@@ -14,18 +14,22 @@ import { formatDate } from '../services/formaters';
 import { pricing } from '../common/models/pricing';
 import { role } from "../common/models/role";
 import { ActionResult } from '../common/controls/notification';
+import { SessionData } from '../services/session-data';
+import { Session } from 'protractor';
 
 @autoinject
 export class PurchaseOrderCreate {
-  private _api: ServiceApi;
-  private _auth: AuthService;
-  private _router: Router;
-  private _notification: NotificationService;
-  private _eventAggegator: EventAggregator;
-  private _subscriptions: Subscription[] = [];
-  private _voucherReport: VoucherReport;
 
   public header: string = 'Purchase Order';
+
+  private readonly _api: ServiceApi;
+  private readonly _auth: AuthService;
+  private readonly _router: Router;
+  private readonly _notification: NotificationService;
+  private readonly _eventAggegator: EventAggregator;
+  private readonly _subscriptions: Subscription[] = [];
+  private readonly _voucherReport: VoucherReport;
+  private readonly _sessionData: SessionData;
 
   public readonly canSave: boolean = true;
   public readonly canAddItem: boolean = true;
@@ -48,7 +52,8 @@ export class PurchaseOrderCreate {
     router: Router,
     notification: NotificationService,
     eventAggegator: EventAggregator,
-    voucherReport: VoucherReport
+    voucherReport: VoucherReport,
+    sessionData: SessionData,
   ) {
     this._api = api;
     this._auth = auth;
@@ -56,6 +61,7 @@ export class PurchaseOrderCreate {
     this._notification = notification;
     this._eventAggegator = eventAggegator;
     this._voucherReport = voucherReport;
+    this._sessionData = sessionData;
 
     this.canSave = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
     this.canAddItem = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);

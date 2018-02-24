@@ -1,4 +1,5 @@
-﻿using AmpedBiz.Service.Customers;
+﻿using AmpedBiz.Core.Services.Products;
+using AmpedBiz.Service.Customers;
 using AmpedBiz.Service.Orders;
 using AmpedBiz.Service.Products;
 using AmpedBiz.Service.PurchaseOrders;
@@ -41,7 +42,25 @@ namespace AmpedBiz.Service.Dto.Mappers
         private void RegisterProductsMap()
         {
             ExpressMapper.Mapper.Register<Entity.Product, Dto.Product>().Flatten();
-            ExpressMapper.Mapper.Register<Entity.Inventory, Dto.Inventory>().Flatten();
+            ExpressMapper.Mapper.Register<Entity.Inventory, Dto.Inventory>()
+                .Member(x => x.BadStockValue, x => x.Product.ConvertToDefaultValue(x.BadStock))
+                .Member(x => x.ReceivedValue, x => x.Product.ConvertToDefaultValue(x.Received))
+                .Member(x => x.OnOrderValue, x => x.Product.ConvertToDefaultValue(x.OnOrder))
+                .Member(x => x.OnHandValue, x => x.Product.ConvertToDefaultValue(x.OnHand))
+                .Member(x => x.AllocatedValue, x => x.Product.ConvertToDefaultValue(x.Allocated))
+                .Member(x => x.ShippedValue, x => x.Product.ConvertToDefaultValue(x.Shipped))
+                .Member(x => x.BackOrderedValue, x => x.Product.ConvertToDefaultValue(x.BackOrdered))
+                .Member(x => x.ReturnedValue, x => x.Product.ConvertToDefaultValue(x.Returned))
+                .Member(x => x.AvailableValue, x => x.Product.ConvertToDefaultValue(x.Available))
+                .Member(x => x.InitialLevelValue, x => x.Product.ConvertToDefaultValue(x.InitialLevel))
+                .Member(x => x.ShrinkageValue, x => x.Product.ConvertToDefaultValue(x.Shrinkage))
+                .Member(x => x.CurrentLevelValue, x => x.Product.ConvertToDefaultValue(x.CurrentLevel))
+                .Member(x => x.TargetLevelValue, x => x.Product.ConvertToDefaultValue(x.TargetLevel))
+                .Member(x => x.BelowTargetLevelValue, x => x.Product.ConvertToDefaultValue(x.BelowTargetLevel))
+                .Member(x => x.ReorderLevelValue, x => x.Product.ConvertToDefaultValue(x.ReorderLevel))
+                .Member(x => x.ReorderQuantityValue, x => x.Product.ConvertToDefaultValue(x.ReorderQuantity))
+                .Member(x => x.MinimumReorderQuantityValue, x => x.Product.ConvertToDefaultValue(x.MinimumReorderQuantity)) ;
+                
             ExpressMapper.Mapper.Register<Entity.ProductUnitOfMeasure, Dto.ProductUnitOfMeasure>().Flatten();
             ExpressMapper.Mapper.Register<Entity.ProductUnitOfMeasurePrice, Dto.ProductUnitOfMeasurePrice>().Flatten();
             ExpressMapper.Mapper.Register<Entity.Product, GetProduct.Response>().Flatten();

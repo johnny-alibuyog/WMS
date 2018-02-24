@@ -144,7 +144,7 @@ namespace AmpedBiz.Tests.IntegrationTests
                 Name = "Name_" + this.GenerateRandomString(5),
                 Inventory = new Service.Dto.Inventory()
                 {
-                    InitialLevelValue = (decimal)random.Next(300000, 400000),
+                    InitialLevelValue = (decimal)random.Next(300, 400),
                 }
             };
         }

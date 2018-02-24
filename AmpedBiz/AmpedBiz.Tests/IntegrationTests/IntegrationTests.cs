@@ -100,7 +100,8 @@ namespace AmpedBiz.Tests.IntegrationTests
         [OneTimeSetUp]
         public void SetupTest()
         {
-            new Mapper().Initialze();
+            var mapper = Ioc.Container.Resolve<IMapper>();
+            mapper.Initialze();
 
             this.SetupDefaultSeeders();
             //this.SetupDummySeeders();

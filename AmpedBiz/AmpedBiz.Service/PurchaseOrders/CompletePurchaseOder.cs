@@ -1,11 +1,8 @@
-﻿using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.PurchaseOrders;
 using AmpedBiz.Data;
-using AmpedBiz.Data.Context;
 using MediatR;
-using NHibernate;
 using System;
 using System.Threading.Tasks;
 
@@ -23,7 +20,7 @@ namespace AmpedBiz.Service.PurchaseOrders
             {
                 var response = new Response();
 
-                using (var session = sessionFactory.RetrieveSharedSession(context))
+                using (var session = SessionFactory.RetrieveSharedSession(Context))
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = session.Get<PurchaseOrder>(request.Id);
@@ -42,11 +39,6 @@ namespace AmpedBiz.Service.PurchaseOrders
                     //entity.MapTo(response);
                 }
 
-                // TODO: make use of the decorator soon
-                new PostProcess()
-                    .With(this.sessionFactory, this.context)
-                    .Execute(request, response);
-
                 return response;
             }
         }
@@ -59,8 +51,8 @@ namespace AmpedBiz.Service.PurchaseOrders
 
                 var hydrationHandler = new GetPurchaseOrder.Handler()
                 {
-                    sessionFactory = this.sessionFactory,
-                    context = this.context
+                    SessionFactory = this.sessionFactory,
+                    Context = this.context
                 };
 
                 var hydrated = hydrationHandler.Execute(new GetPurchaseOrder.Request(response.Id));

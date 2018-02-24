@@ -20,7 +20,7 @@ namespace AmpedBiz.Service.Orders
             {
                 var response = new Response();
 
-                using (var session = sessionFactory.RetrieveSharedSession(context))
+                using (var session = SessionFactory.RetrieveSharedSession(Context))
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = session.Get<Order>(request.Id);
@@ -40,11 +40,6 @@ namespace AmpedBiz.Service.Orders
                     //entity.MapTo(response);
                 }
 
-                // TODO: make use of the decorator soon
-                new PostProcess()
-                    .With(this.sessionFactory, this.context)
-                    .Execute(request, response);
-
                 return response;
             }
         }
@@ -57,8 +52,8 @@ namespace AmpedBiz.Service.Orders
 
                 var hydrationHandler = new GetOrder.Handler()
                 {
-                    sessionFactory = this.sessionFactory,
-                    context = this.context
+                    SessionFactory = this.sessionFactory,
+                    Context = this.context
                 };
 
                 var hydrated = hydrationHandler.Execute(new GetOrder.Request(response.Id));
