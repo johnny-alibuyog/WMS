@@ -29,7 +29,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual string ToStringIntegral()
         {
-            return $"{Math.Truncate(this.Value)} {this.Unit.Id}";
+            return $"{Math.Round(this.Value)} {this.Unit.Id}";
         }
 
         public static bool operator >(Measure operand1, Measure operand2)

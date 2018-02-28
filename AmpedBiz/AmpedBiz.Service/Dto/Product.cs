@@ -74,7 +74,7 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? RetailPriceAmount { get; set; }
     }
-    
+
     public class ProductInventory
     {
         public Guid Id { get; set; }
@@ -242,6 +242,18 @@ namespace AmpedBiz.Service.Dto
         public decimal? TargetLevelValue { get; set; }
 
         public decimal? BelowTargetValue { get; set; }
+
+        public decimal? MinimumReorderQuantity { get; set; }
+
+        public decimal? ReorderQuantity
+        {
+            get
+            {
+                return this.BelowTargetValue > this.MinimumReorderQuantity
+                  ? this.BelowTargetValue
+                  : this.MinimumReorderQuantity;
+            }
+        }
     }
 
     public class ProductReportPageItem

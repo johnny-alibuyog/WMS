@@ -142,6 +142,8 @@ export interface NeedsReorderingPageItem {
   currentLevelValue?: number;
   targetLevelValue?: number;
   belowTargetValue?: number;
+  minimumReorderQuantity?: number;
+  reorderQuantity?: number;
 }
 
 export interface ForPurchasing {
@@ -180,7 +182,18 @@ export class ProductInventoryFacade {
     return this._inventory.unitOfMeasures.find(x => x.isDefault);
   }
 
-  public getPrice(inventory: ProductInventory, unitOfMeasure: UnitOfMeasure, pricing: Lookup<string>) : ProductInventoryUnitOfMeasurePrice {
+  public getProduct(): Lookup<string> {
+    return {
+      id: this._inventory.id,
+      name: this._inventory.name,
+    };
+  }
+
+  public getUnitOfMeasures(): UnitOfMeasure[] {
+    return this._inventory.unitOfMeasures.map(x => x.unitOfMeasure);
+  }
+
+  public getPrice(inventory: ProductInventory, unitOfMeasure: UnitOfMeasure, pricing: Lookup<string>): ProductInventoryUnitOfMeasurePrice {
     var productUnitOfMeasure = inventory.unitOfMeasures.find(x => x.unitOfMeasure.id === unitOfMeasure.id);
     if (!productUnitOfMeasure) {
       return null;
@@ -189,7 +202,7 @@ export class ProductInventoryFacade {
     return productUnitOfMeasure.prices.find(x => x.pricing.id == pricing.id);
   }
 
-  public getPriceAmount(inventory: ProductInventory, unitOfMeasure: UnitOfMeasure, pricing: Lookup<string>) : number {
+  public getPriceAmount(inventory: ProductInventory, unitOfMeasure: UnitOfMeasure, pricing: Lookup<string>): number {
     var price = this.getPrice(inventory, unitOfMeasure, pricing);
     return price && price.priceAmount || 0;
   }

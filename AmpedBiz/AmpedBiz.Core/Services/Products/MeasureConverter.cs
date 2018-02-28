@@ -73,7 +73,7 @@ namespace AmpedBiz.Core.Services.Products
             return product.ConvertValue(measure, uom);
         }
 
-        public static decimal ConverToStandardValue(this Product product, Measure measure)
+        public static decimal ConvertToStandardValue(this Product product, Measure measure)
         {
             var uom = product.UnitOfMeasures.Standard(x => x.UnitOfMeasure);
             return product.ConvertValue(measure, uom);

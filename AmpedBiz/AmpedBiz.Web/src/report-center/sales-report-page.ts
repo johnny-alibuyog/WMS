@@ -8,7 +8,7 @@ import { SalesReport, SalesReportModel, SalesReportModelItem } from './sales-rep
 import { LookupIdToNameValueConverter } from '../common/converters/lookup-id-to-name-value-converter';
 
 @autoinject
-export class ProductReportPage {
+export class SalesReportPage {
   private readonly _api: ServiceApi;
   private readonly _report: SalesReport;
   private readonly _notification: NotificationService;

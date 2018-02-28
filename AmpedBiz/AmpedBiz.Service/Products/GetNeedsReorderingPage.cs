@@ -3,6 +3,7 @@ using AmpedBiz.Core.Services.Products;
 using AmpedBiz.Data;
 using AmpedBiz.Service.Common;
 using MediatR;
+using Newtonsoft.Json.Linq;
 using NHibernate.Linq;
 using NHibernate.Transform;
 using System;
@@ -12,7 +13,10 @@ namespace AmpedBiz.Service.Products
 {
     public class GetNeedsReorderingPage
     {
-        public class Request : PageRequest, IRequest<Response> { }
+        public class Request : PageRequest, IRequest<Response>
+        {
+            public bool? UseDefaultUnitOfMeasure { get; set; }
+        }
 
         public class Response : PageResponse<Dto.NeedsReorderingPageItem> { }
 
@@ -37,17 +41,17 @@ namespace AmpedBiz.Service.Products
                         query = query.Where(x => x.Product.Supplier.Id == value);
                     });
 
-                    message.Filter.Compose<bool>("purchaseAllBelowTarget", purchaseAllBelowTarget =>
-                    {
-                        if (!purchaseAllBelowTarget)
-                        {
-                            message.Filter.Compose<Guid[]>("selectedProductIds", value =>
-                            {
-                                query = query.Where(x => value.Contains(x.Product.Id));
-                            });
-                        }
-                    });
+                    var purchaseAllBellowTarget = message.Filter.ContainsKey("purchaseAllBelowTarget")
+                        ? (bool)message.Filter["purchaseAllBelowTarget"] : true;
 
+                    var selectedProductIds = message.Filter.ContainsKey("selectedProductIds")
+                        ? ((JArray)message.Filter["selectedProductIds"]).Select(x => Guid.Parse(((string)x)))
+                        : new Guid[] { };
+                    
+                    if (purchaseAllBellowTarget != true && selectedProductIds.Any())
+                    {
+                        query = query.Where(x => selectedProductIds.Contains(x.Product.Id));
+                    }
 
                     // compose sort
                     message.Sorter.Compose("code", direction =>
@@ -106,6 +110,12 @@ namespace AmpedBiz.Service.Products
                             : query.OrderByDescending(x => x.BelowTargetLevel.Value);
                     });
 
+                    var countFuture = query
+                        .ToFutureValue(x => x.Count());
+
+                    if (message.Pager.IsPaged() != true)
+                        message.Pager.RetrieveAll(countFuture.Value);
+
                     var itemsRawFuture = query
                         .Select(x => new
                         {
@@ -118,14 +128,12 @@ namespace AmpedBiz.Service.Products
                             Available = x.Available,
                             CurrentLevel = x.CurrentLevel,
                             TargetLevel = x.TargetLevel,
-                            BelowTargetLevel = x.BelowTargetLevel
+                            BelowTargetLevel = x.BelowTargetLevel,
+                            MinimumReorderQuantity = x.MinimumReorderQuantity
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)
                         .ToFuture();
-
-                    var countFuture = query
-                        .ToFutureValue(x => x.Count());
 
                     var productIds = itemsRawFuture.Select(o => o.ProductId).ToArray();
 
@@ -139,8 +147,12 @@ namespace AmpedBiz.Service.Products
                         .List().ToDictionary(x => x.Id);
 
 
-                    var getDefaultValue = new Func<Guid, Measure, decimal?>((key, measure) 
-                        => products[key].ConvertToDefaultValue(measure));
+                    var getConvertedValue = new Func<Guid, Measure, decimal?>((key, measure) =>
+                    {
+                        return (message.UseDefaultUnitOfMeasure == null || message.UseDefaultUnitOfMeasure.Value)
+                            ? products[key].ConvertToDefaultValue(measure)
+                            : products[key].ConvertToStandardValue(measure);
+                    });
 
                     var items = itemsRawFuture
                         .Select(x => new Dto.NeedsReorderingPageItem()
@@ -150,11 +162,12 @@ namespace AmpedBiz.Service.Products
                             ProductCode = x.ProductCode,
                             SupplierName = x.SupplierName,
                             CategoryName = x.CategoryName,
-                            ReorderLevelValue = getDefaultValue(x.ProductId, x.ReorderLevel),
-                            AvailableValue = getDefaultValue(x.ProductId, x.Available),
-                            CurrentLevelValue = getDefaultValue(x.ProductId, x.CurrentLevel),
-                            TargetLevelValue = getDefaultValue(x.ProductId, x.TargetLevel),
-                            BelowTargetValue = getDefaultValue(x.ProductId, x.BelowTargetLevel),
+                            ReorderLevelValue = getConvertedValue(x.ProductId, x.ReorderLevel),
+                            AvailableValue = getConvertedValue(x.ProductId, x.Available),
+                            CurrentLevelValue = getConvertedValue(x.ProductId, x.CurrentLevel),
+                            TargetLevelValue = getConvertedValue(x.ProductId, x.TargetLevel),
+                            BelowTargetValue = getConvertedValue(x.ProductId, x.BelowTargetLevel),
+                            MinimumReorderQuantity = getConvertedValue(x.ProductId, x.MinimumReorderQuantity),
                         });
 
                     response = new Response()

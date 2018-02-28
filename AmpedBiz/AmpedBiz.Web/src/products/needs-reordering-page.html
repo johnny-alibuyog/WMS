@@ -15,9 +15,11 @@
             <span>&nbsp Needs Reordering &nbsp</span>
 
             <!-- create purchase order -->
-            <button if.bind="filter['supplierId']" type="button" class="btn btn-default" click.delegate="create()">
-              <i class="fa fa-plus"></i> Purchase from ${filter['supplierId'] | lookupIdToName:suppliers}
-            </button>
+            <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="${filter['supplierId'] ? 'Create Purchase Order' : 'Select Supplier' }">
+              <button type="button" class="btn btn-default" click.trigger="create()" disabled.bind="!filter['supplierId']">
+                <i class="fa fa-plus"></i> Create Purchase Order
+              </button>
+            </span>
 
             <!-- search -->
             <form class="form-horizontal col-md-4 pull-right" role="form" submit.delegate="filter.doFilter()">

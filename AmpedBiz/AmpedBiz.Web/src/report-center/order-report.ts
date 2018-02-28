@@ -9,10 +9,10 @@ export interface OrderReportModel {
   pricingName?: string;
   fromDate?: Date;
   toDate?: Date;
-  items: OrderReportModelItem[];
+  items: OrderReportItemModel[];
 }
 
-export interface OrderReportModelItem {
+export interface OrderReportItemModel {
   id?: string;
   branchName?: string;
   customerName?: string;

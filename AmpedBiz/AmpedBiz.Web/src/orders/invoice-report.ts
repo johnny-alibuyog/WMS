@@ -280,62 +280,53 @@ export class InvoiceReport implements Report<OrderInvoiceDetail> {
               ]
           },
         ],
-      styles:
-        {
-          title:
-            {
-              fontSize: 28,
-              bold: true,
-            },
-          header:
-            {
-              fontSize: 18,
-              bold: true,
-              margin: [0, 10, 0, 10]
-            },
-          header3:
-            {
-              bold: true,
-              fontSize: 10,
-              alignment: 'left',
-            },
-          label:
-            {
-              fontSize: 10,
-              alignment: 'right',
-            },
-          spacer:
-            {
-              margin: [0, 0, 0, 2]
-            },
-          value:
-            {
-              fontSize: 10,
-              color: 'gray',
-              alignment: 'left',
-            },
-          tablePlain:
-            {
-              alignment: 'right',
-              margin: [0, 0, 0, 0]
-            },
-          tableHeader: {
-            bold: true,
-            fontSize: 10,
-            color: 'black'
-          },
-          tableData: {
-            fontSize: 10,
-            color: 'gray'
-          },
-          footer:
-            {
-              color: 'gray',
-              fontSize: 10,
-              alignment: 'right',
-              margin: [40, 0]
-            },
+      styles: {
+        title: {
+          fontSize: 28,
+          bold: true,
         },
+        header: {
+          fontSize: 18,
+          bold: true,
+          margin: [0, 10, 0, 10]
+        },
+        header3: {
+          bold: true,
+          fontSize: 10,
+          alignment: 'left',
+        },
+        label: {
+          fontSize: 10,
+          alignment: 'right',
+        },
+        spacer: {
+          margin: [0, 0, 0, 2]
+        },
+        value: {
+          fontSize: 10,
+          color: 'gray',
+          alignment: 'left',
+        },
+        tablePlain: {
+          alignment: 'right',
+          margin: [0, 0, 0, 0]
+        },
+        tableHeader: {
+          bold: true,
+          fontSize: 10,
+          color: 'black'
+        },
+        tableData: {
+          fontSize: 10,
+          color: 'gray'
+        },
+        footer: {
+          color: 'gray',
+          fontSize: 10,
+          alignment: 'right',
+          margin: [40, 0]
+        },
+      },
     };
   }
 }

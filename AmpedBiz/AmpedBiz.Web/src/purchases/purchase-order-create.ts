@@ -1,5 +1,6 @@
+import { Filter, Sorter, PagerResponse, PageRequest } from './../common/models/paging';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
-import { PurchaseOrder, PurchaseOrderAggregate, PurchaseOrderReceipt, PurchaseOrderReceivable, PurchaseOrderStatus, purchaseOrderEvents, } from '../common/models/purchase-order';
+import { PurchaseOrder, PurchaseOrderAggregate, PurchaseOrderReceipt, PurchaseOrderReceivable, PurchaseOrderStatus, purchaseOrderEvents, PurchaseOrderItem, } from '../common/models/purchase-order';
 
 import { AuthService } from "../services/auth-service";
 import { Dictionary } from '../common/custom_types/dictionary';
@@ -16,6 +17,7 @@ import { role } from "../common/models/role";
 import { ActionResult } from '../common/controls/notification';
 import { SessionData } from '../services/session-data';
 import { Session } from 'protractor';
+import { NeedsReorderingPageItem, ProductInventoryFacade } from '../common/models/product';
 
 @autoinject
 export class PurchaseOrderCreate {
@@ -73,48 +75,99 @@ export class PurchaseOrderCreate {
     this.canCancel = this._auth.isAuthorized([role.admin, role.manager]);
   }
 
-  public getInitializedPurchaseOrder(): PurchaseOrder {
-    return <PurchaseOrder>{
+  private async newPurchaseOrder(): Promise<PurchaseOrder> {
+    return Promise.resolve(<PurchaseOrder>{
       createdOn: new Date(),
       createdBy: this._auth.userAsLookup,
-      pricing: pricing.wholesalePrice,
+      items: [],
       stage: <StageDefinition<PurchaseOrderStatus, PurchaseOrderAggregate>>{
         allowedTransitions: [],
         allowedModifications: [
           PurchaseOrderAggregate.items,
         ]
       }
-    };
+    });
   }
 
+  private async initializeForPurchasing(): Promise<PurchaseOrder> {
+    let newPurchaseOrder = await this.newPurchaseOrder();
+    let forPurchasing = await this.getProductsForPurchasing();
+    let inventories = await this._api.products.getInventoryList(forPurchasing.items.map(x => x.id));
+
+    newPurchaseOrder.supplier = this.suppliers.find(x => x.id === this._sessionData.forPurchasing.supplierId);
+
+    if (forPurchasing != null && forPurchasing.items != null) {
+      forPurchasing.items.forEach(item => {
+        let inventory = inventories.find(x => x.id == item.id);
+        let facade = new ProductInventoryFacade(inventory);
+        let current = facade.default;
+        let purchaseOrderItem = <PurchaseOrderItem>{
+          product: facade.getProduct(),
+          unitOfMeasures: facade.getUnitOfMeasures(),
+          quantity: {
+            unit: current.unitOfMeasure,
+            value: item.reorderQuantity
+          },
+          standard: {
+            unit: current.standard.unit,
+            value: current.standard.value,
+          },
+          unitCostAmount: facade.getPriceAmount(inventory, current.unitOfMeasure, pricing.basePrice),
+        };
+
+        newPurchaseOrder.items.push(purchaseOrderItem);
+      });
+    }
+
+    return newPurchaseOrder;
+  }
+
+  private async getProductsForPurchasing(): Promise<PagerResponse<NeedsReorderingPageItem>> {
+    var request = <PageRequest>{
+      sorter: new Sorter(),
+      filter: new Filter(),
+      pager: { offset: 0, size: 0 }  // fetch all
+    };
+
+    request.filter["supplierId"] = this._sessionData.forPurchasing.supplierId;
+    request.filter["selectedProductIds"] = this._sessionData.forPurchasing.selectedProductIds;
+    request.filter["purchaseAllBelowTarget"] = this._sessionData.forPurchasing.purchaseAllBelowTarget;
+
+    return await this._api.products.getNeedsReorderingPage(request);
+  }
+
+  private async getInitializedPurchaseOrder(purchaseOrderId: string): Promise<PurchaseOrder> {
+    if (purchaseOrderId) {
+      return await this._api.purchaseOrders.get(purchaseOrderId);
+    }
+    else if (this._sessionData.forPurchasing && this._sessionData.forPurchasing.supplierId || null) {
+      return await this.initializeForPurchasing();
+    }
+    else {
+      return await this.newPurchaseOrder();
+    }
+  }
+  
   public get isPurchaseOrderApproved(): boolean {
     return this.purchaseOrder && this.purchaseOrder.status >= PurchaseOrderStatus.approved;
   }
 
-  public activate(purchaseOrder: PurchaseOrder): void {
-    let requests: [
-      Promise<Lookup<string>[]>,
-      Promise<Lookup<string>[]>,
-      Promise<Lookup<PurchaseOrderStatus>[]>,
-      Promise<PurchaseOrder>] = [
+  public async activate(purchaseOrder: PurchaseOrder): Promise<void> {
+    try {
+      let data = await Promise.all([
         this._api.paymentTypes.getLookups(),
         this._api.suppliers.getLookups(),
         this._api.purchaseOrders.getStatusLookup(),
-        purchaseOrder.id
-          ? this._api.purchaseOrders.get(purchaseOrder.id)
-          : Promise.resolve(this.getInitializedPurchaseOrder())
-      ];
+      ]);
+      this.paymentTypes = data[0];
+      this.suppliers = data[1];
+      this.statuses = data[2];
 
-    Promise.all(requests)
-      .then(data => {
-        this.paymentTypes = data[0];
-        this.suppliers = data[1];
-        this.statuses = data[2];
-        this.setPurchaseOrder(data[3]);
-      })
-      .catch(error =>
-        this._notification.warning(error)
-      );
+      let intializedPurchaseOrder = await this.getInitializedPurchaseOrder(purchaseOrder.id);
+      this.setPurchaseOrder(intializedPurchaseOrder);
+    } catch (error) {
+      this._notification.warning(error);
+    }
   }
 
   public deactivate(): void {
@@ -150,13 +203,13 @@ export class PurchaseOrderCreate {
     this.hydrateSupplierProducts(supplier);
   }
 
-  public hydrateSupplierProducts(supplier: Lookup<string>): void {
+  public async hydrateSupplierProducts(supplier: Lookup<string>): Promise<void> {
     if (supplier == null || supplier.id == null) {
       return;
     }
 
-    this._api.suppliers.getProductLookups(this.purchaseOrder.supplier.id)
-      .then(data => this.products = data);
+    let data = await this._api.suppliers.getProductLookups(supplier.id);
+    this.products = data;
   }
 
   public addItem(): void {
@@ -188,6 +241,8 @@ export class PurchaseOrderCreate {
         this._api.purchaseOrders.save(this.purchaseOrder)
           .then(data => this.resetAndNoify(data, "Purchase order has been saved."))
           .catch(error => this._notification.warning(error));
+
+          this._sessionData.forPurchasing = {};
       }
     });
   }
@@ -220,7 +275,7 @@ export class PurchaseOrderCreate {
       .then(data => this._voucherReport.show(data))
   }
 
-  // NOTE: I HATE THIS METHOD!!! This looks shit. Needed to be refactored when demo is done.
+  // NOTE: I HATE THIS METHOD!!! This looks like a disaster. Needed to be refactored when demo is done.
   // REFERENCE: https://github.com/kinlane/csv-converter/blob/gh-pages/json-to-csv/index.html 
   public downloadVoucherCsv(): void {
     //If JSONData is not an object then JSON.parse will parse the JSON string in an Object

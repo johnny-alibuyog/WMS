@@ -33,7 +33,7 @@ export class NeedsReorderingPage {
     this._bindingEngine = bindingEngine;
 
     this.filter = new Filter();
-    this.filter["supplierId"] = '';
+    this.filter["supplierId"] = this._sessionData.forPurchasing && this._sessionData.forPurchasing.supplierId || '';
     this.filter.onFilter = () => this.getPage();
 
     this.sorter = new Sorter();
@@ -52,6 +52,7 @@ export class NeedsReorderingPage {
 
     this.forPurchasing = this._sessionData.forPurchasing;
     this.forPurchasing.selectedProductIds = this.forPurchasing.selectedProductIds || [];
+    this._sessionData.forPurchasing = {};
   }
 
   public attached(): void {
@@ -76,10 +77,20 @@ export class NeedsReorderingPage {
 
   public detached(): void {
     this._subscriptions.forEach(x => x.dispose());
-    this._sessionData.forPurchasing = this.forPurchasing;
+  }
+
+  public create(): void {
+    this._sessionData.forPurchasing = {
+      supplierId: this.filter['supplierId'],
+      selectedProductIds: this.forPurchasing.selectedProductIds,
+      purchaseAllBelowTarget: this.forPurchasing.purchaseAllBelowTarget || false
+    };
+    this._router.navigateToRoute('new-purchase-order');
   }
 
   public getPage(): void {
+    this.forPurchasing.supplierId = this.filter['supplierId'] || '';
+
     this._api.products
       .getNeedsReorderingPage({
         filter: this.filter,
@@ -99,8 +110,6 @@ export class NeedsReorderingPage {
         this._notification.error("Error encountered during search!");
       });
   }
-
-
 
   public toggleSelectAll(selectAll?: boolean): boolean {
     if (selectAll == null) {

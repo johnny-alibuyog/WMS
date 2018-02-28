@@ -2,7 +2,7 @@ import { PageRequest, PagerResponse } from '../common/models/paging';
 
 import { HttpClientFacade } from './http-client-facade';
 import { Lookup } from '../common/custom_types/lookup';
-import { Product } from '../common/models/product';
+import { Product, NeedsReorderingPageItem, InventoryLevelPageItem } from '../common/models/product';
 import { ProductInventory } from '../common/models/product';
 import { ProductOrderPageItem } from '../common/models/product';
 import { ProductOrderReturnPageItem } from '../common/models/product';
@@ -19,64 +19,60 @@ export class ProductService extends ServiceBase<Product> {
     super('products', httpClient);
   }
 
-  getInventory(productId: string): Promise<ProductInventory> {
+  public getInventory(productId: string): Promise<ProductInventory> {
     var url = 'product-inventories/' + productId;
-    return this._httpClient.get(url)
-      .then(response => <ProductInventory>response);
+    return this._httpClient.get(url);
   }
 
-  getInventoryList(productIds?: string[]): Promise<ProductInventory[]> {
+  public getInventoryList(productIds?: string[]): Promise<ProductInventory[]> {
     var queryString = (productIds) ? '/?' + buildQueryString({ productIds: productIds }) : '';
     var url = 'product-inventories' + queryString;
 
-    return this._httpClient.get(url)
-      .then(response => <ProductInventory[]>response);
+    return this._httpClient.get(url);
   }
 
-  getInventoryLevelPage(page: PageRequest): Promise<any> {
+  public getInventoryLevelPage(page: PageRequest): Promise<PagerResponse<InventoryLevelPageItem>> {
     var url = this._resouce + '/inventory-level/page';
     return this._httpClient.post(url, page);
   }
 
-  getDiscontinuedPage(page: PageRequest): Promise<any> {
+  public getDiscontinuedPage(page: PageRequest): Promise<any> {
     var url = this._resouce + '/discontinued/page';
     return this._httpClient.post(url, page);
   }
 
-  getLookups(): Promise<Lookup<string>[]> {
+  public getLookups(): Promise<Lookup<string>[]> {
     var url = "product-lookups";
-    return this._httpClient.get(url)
-      .then(data => <Lookup<string>[]>data);
+    return this._httpClient.get(url);
   }
 
-  getNeedsReorderingPage(page: PageRequest): Promise<any> {
+  public getNeedsReorderingPage(page: PageRequest): Promise<PagerResponse<NeedsReorderingPageItem>> {
     var url = this._resouce + '/needs-reordering/page';
     return this._httpClient.post(url, page);
   }
 
-  getOrderPage(page: PageRequest): Promise<ProductOrderPageItem> {
+  public getOrderPage(page: PageRequest): Promise<ProductOrderPageItem> {
     var url = this._resouce + '/' + page.filter["id"] + '/orders/page';
     return this._httpClient.post(url, page);
   }
 
-  getOrderReturnPage(page: PageRequest): Promise<ProductOrderReturnPageItem> {
+  public getOrderReturnPage(page: PageRequest): Promise<ProductOrderReturnPageItem> {
     var url = this._resouce + '/' + page.filter["id"] + '/order-returns/page';
     return this._httpClient.post(url, page);
   }
 
-  getReturnPage(page: PageRequest): Promise<ProductReturnPageItem> {
+  public getReturnPage(page: PageRequest): Promise<ProductReturnPageItem> {
     var url = this._resouce + '/' + page.filter["id"] + '/returns/page';
     return this._httpClient.post(url, page);
   }
 
-  getPurchasePage(page: PageRequest): Promise<ProductPurchasePageItem> {
+  public getPurchasePage(page: PageRequest): Promise<ProductPurchasePageItem> {
     var url = this._resouce + '/' + page.filter["id"] + '/purchases/page';
     return this._httpClient.post(url, page);
   }
 
-  getProductReportPage(page: PageRequest): Promise<PagerResponse<ProductReportPageItem>> {
+  public getProductReportPage(page: PageRequest): Promise<PagerResponse<ProductReportPageItem>> {
     var url = this._resouce + '/report/page';
-    return this._httpClient.post(url, page)
-      .then(response => <PagerResponse<ProductReportPageItem>>response);
+    return this._httpClient.post(url, page);
   }
 }

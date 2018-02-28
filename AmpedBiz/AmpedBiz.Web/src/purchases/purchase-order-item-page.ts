@@ -106,6 +106,7 @@ export class PurchaseOrderItemPage {
       var facade = new ProductInventoryFacade(inventory);
       item.unitCostAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
       this.compute(item);
+      this.total()
     });
   }
 
@@ -136,7 +137,7 @@ export class PurchaseOrderItemPage {
       var facade = new ProductInventoryFacade(inventory);
       var current = facade.default;
 
-      item.unitOfMeasures = inventory.unitOfMeasures.map(x => x.unitOfMeasure);
+      item.unitOfMeasures = facade.getUnitOfMeasures();
       item.quantity.unit = current.unitOfMeasure;
       //item.quantity.value = 0;
       item.standard.unit = current.standard.unit;
@@ -149,6 +150,12 @@ export class PurchaseOrderItemPage {
     if (!this.items) {
       this.items = [];
     }
+
+    this.items.forEach(item => {
+      if (!item.totalCostAmount || item.totalCostAmount == 0) {
+        this.compute(item);
+      }
+    });
 
     this.total();
 
@@ -222,8 +229,6 @@ export class PurchaseOrderItemPage {
 
   public compute(item: PurchaseOrderItem): void {
     item.totalCostAmount = ensureNumeric(item.unitCostAmount) * getValue(item.quantity);
-
-    this.total();
   }
 
   public total(): void {

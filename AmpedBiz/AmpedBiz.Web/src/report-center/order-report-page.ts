@@ -1,5 +1,5 @@
 import { autoinject } from 'aurelia-framework';
-import { OrderReport, OrderReportModel, OrderReportModelItem } from './order-report';
+import { OrderReport, OrderReportModel, OrderReportItemModel } from './order-report';
 import { OrderStatus, OrderReportPageItem } from '../common/models/order';
 import { ServiceApi } from '../services/service-api';
 import { Lookup } from '../common/custom_types/lookup';
@@ -12,7 +12,7 @@ export class OrderReportPage {
   private _report: OrderReport;
   private _notification: NotificationService;
 
-  public header: string = ' Order Report';
+  public header: string = ' Customer Order';
 
   public filter: Filter;
   public sorter: Sorter;
@@ -31,7 +31,7 @@ export class OrderReportPage {
     this.filter = new Filter();
     this.filter["customerId"] = null;
     this.filter["branchId"] = null;
-    this.filter["pricingShemeId"] = null;
+    this.filter["pricingId"] = null;
     this.filter["fromDate"] = null;
     this.filter["toDate"] = null;
     this.filter["status"] = null;
@@ -91,9 +91,22 @@ export class OrderReportPage {
         }
       })
       .then(data => {
-        var response = <PagerResponse<OrderReportPageItem>>data;
-        var reportModel = <OrderReportModel>{
-          items: response.items.map(x => <OrderReportModelItem>{
+        let header = {
+          customer: this.customers.find(x => x.id == this.filter["customerId"]),
+          branch: this.branches.find(x => x.id == this.filter["branchId"]),
+          pricing: this.pricings.find(x => x.id == this.filter["pricingId"]),
+          fromDate: this.filter["fromDate"],
+          toDate: this.filter["toDate"],
+          status: this.filter["status"]
+        };
+
+        let reportModel = <OrderReportModel>{
+          branchName: header.branch && header.branch.name || '',
+          customerName: header.customer && header.customer.name || '',
+          pricingName: header.pricing && header.pricing.name || '',
+          fromDate: header.fromDate,
+          toDate: header.toDate,
+          items: data.items.map(x => <OrderReportItemModel>{
             id: x.id,
             branchName: x.branchName,
             customerName: x.customerName,

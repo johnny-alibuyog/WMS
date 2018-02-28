@@ -11,41 +11,11 @@ export class Index {
     config.title = "Report Center";
     config.map([
       {
-        route: ['', 'customer-report-page'],
-        name: 'customer-report-page',
-        moduleId: './customer-report-page',
-        nav: true,
-        title: 'Customer Reports',
-        settings: {
-          auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-            ]
-          }
-        },
-      },
-      {
-        route: ['supplier-report-page'],
-        name: 'supplier-report-page',
-        moduleId: './supplier-report-page',
-        nav: true,
-        title: 'Supplier Reports',
-        settings: {
-          auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-            ]
-          }
-        },
-      },
-      {
-        route: ['order-report-page'],
+        route: ['', 'order-report-page'],
         name: 'order-report-page',
         moduleId: './order-report-page',
         nav: true,
-        title: 'Orders Reports',
+        title: 'Customer Orders',
         settings: {
           auth: <AuthSettings>{
             roles: [
@@ -60,7 +30,7 @@ export class Index {
         name: 'sales-report-page',
         moduleId: './sales-report-page',
         nav: true,
-        title: 'Sales Reports',
+        title: 'Customer Sales',
         settings: {
           auth: <AuthSettings>{
             roles: [
@@ -75,7 +45,37 @@ export class Index {
         name: 'product-report-page',
         moduleId: './product-report-page',
         nav: true,
-        title: 'Products Reports',
+        title: 'Products Listings',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+            ]
+          }
+        },
+      },
+      {
+        route: ['customer-report-page'],
+        name: 'customer-report-page',
+        moduleId: './customer-report-page',
+        nav: true,
+        title: 'Customer Listings',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+            ]
+          }
+        },
+      },
+      {
+        route: ['supplier-report-page'],
+        name: 'supplier-report-page',
+        moduleId: './supplier-report-page',
+        nav: true,
+        title: 'Supplier Listings',
         settings: {
           auth: <AuthSettings>{
             roles: [
@@ -90,7 +90,7 @@ export class Index {
         name: 'unit-of-measure-report-page',
         moduleId: './unit-of-measure-report-page',
         nav: true,
-        title: 'Unit of Measure Reports',
+        title: 'Unit of Measure Listings',
         settings: {
           auth: <AuthSettings>{
             roles: [

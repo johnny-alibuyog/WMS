@@ -68,18 +68,20 @@ export class BranchCreate {
       .on(this.branch);*/
   }
 
-  public activate(branch: Branch): void {
-    if (branch) {
-      this.header = "Edit Branch";
-      this.isEdit = true;
-      this._api.branches.get(branch.id)
-        .then(data => this.branch = <Branch>data)
-        .catch(error => this._notification.warning(error));
-    }
-    else {
-      this.header = "Create Branch";
-      this.isEdit = false;
-      this.branch = this.initializeBranch();
+  public async activate(branch: Branch): Promise<void> {
+    try {
+      if (branch) {
+        this.header = "Edit Branch";
+        this.isEdit = true;
+        this.branch = await this._api.branches.get(branch.id)
+      }
+      else {
+        this.header = "Create Branch";
+        this.isEdit = false;
+        this.branch = this.initializeBranch();
+      }
+    } catch (error) {
+      this._notification.warning(error)
     }
   }
 
@@ -87,31 +89,25 @@ export class BranchCreate {
     this._dialogController.cancel({ wasCancelled: true, output: null });
   }
 
-  public save(): void {
-    this._notification.confirm('Do you want to save?').whenClosed(result => {
-      if (result.output === ActionResult.Yes) {
+  public async save(): Promise<void> {
+    try {
+      this._notification.confirm('Do you want to save?').whenClosed(async result => {
+        if (result.output === ActionResult.Yes) {
 
-        if (this.isEdit) {
-          this._api.branches.update(this.branch)
-            .then(data => {
-              this._notification.success("Branch  has been saved.")
-                .whenClosed((data) => this._dialogController.ok({ wasCancelled: true, output: <Branch>data }));
-            })
-            .catch(error => {
-              this._notification.warning(error)
-            });
+          if (this.isEdit) {
+            let data = await this._api.branches.update(this.branch);
+            this._notification.success("Branch  has been saved.")
+              .whenClosed((data) => this._dialogController.ok({ wasCancelled: true, output: <Branch>data }));
+          }
+          else {
+            let data = await this._api.branches.create(this.branch)
+            this._notification.success("Branch has been saved.")
+              .whenClosed((data) => this._dialogController.ok({ wasCancelled: true, output: <Branch>data }));
+          }
         }
-        else {
-          this._api.branches.create(this.branch)
-            .then(data => {
-              this._notification.success("Branch has been saved.")
-                .whenClosed((data) => this._dialogController.ok({ wasCancelled: true, output: <Branch>data }));
-            })
-            .catch(error => {
-              this._notification.warning(error)
-            });
-        }
-      }
-    });
+      });
+    } catch (error) {
+      this._notification.warning(error)
+    }
   }
 }
