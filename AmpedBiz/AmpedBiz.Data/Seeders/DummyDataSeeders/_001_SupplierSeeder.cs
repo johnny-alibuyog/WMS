@@ -38,6 +38,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                 {
                     Code = $"Code {i}",
                     Name = $"Supplier {i}",
+                    ContactPerson = $"Contact Person {i}",
                     Address = new Address()
                     {
                         Street = $"Street {i}",

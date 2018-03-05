@@ -1,6 +1,6 @@
 import { autoinject } from 'aurelia-framework';
 import { HttpClientFacade } from './http-client-facade';
-import { PageRequest } from '../common/models/paging';
+import { PageRequest, PagerResponse } from '../common/models/paging';
 
 //@autoinject
 export class ServiceBase<TEntity> {
@@ -24,7 +24,7 @@ export class ServiceBase<TEntity> {
       .then(data => <TEntity[]>data);
   }
 
-  public getPage(page: PageRequest): Promise<TEntity> {
+  public getPage(page: PageRequest): Promise<PagerResponse<any>> {
     var url = this._resouce + '/page';
     return this._httpClient.post(url, page);
   }

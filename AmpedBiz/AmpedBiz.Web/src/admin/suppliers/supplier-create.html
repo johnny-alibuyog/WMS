@@ -41,7 +41,13 @@
                     <input type="text" class="form-control" placeholder="Enter Name" value.bind="supplier.name" />
                   </div>
                 </div>
-              </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4">Contact Person:</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" placeholder="Enter Contact Person" value.bind="supplier.contactPerson" />
+                    </div>
+                  </div>
+                </div>
               <div id="address" class="tab-pane fade">
                 <br />
                 <address-input address.two-way="supplier.address" />

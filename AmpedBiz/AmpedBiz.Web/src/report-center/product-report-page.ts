@@ -5,6 +5,7 @@ import { ServiceApi } from '../services/service-api';
 import { Lookup } from '../common/custom_types/lookup';
 import { NotificationService } from '../common/controls/notification-service';
 import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
+import { LookupIdToNameValueConverter } from '../common/converters/lookup-id-to-name-value-converter';
 
 @autoinject
 export class ProductReportPage {
@@ -21,6 +22,7 @@ export class ProductReportPage {
   public products: Lookup<string>[];
   public suppliers?: Lookup<string>[];
   public categories?: Lookup<string>[];
+  public measureTypes?: Lookup<string>[];
 
   constructor(api: ServiceApi, report: ProductReport, notification: NotificationService) {
     this._api = api;
@@ -31,16 +33,18 @@ export class ProductReportPage {
     this.filter["productId"] = null;
     this.filter["categoryId"] = null;
     this.filter["supplierId"] = null;
-    this.filter.onFilter = () => this.getPage();
+    this.filter["mesureTypes"] = null;
+    this.filter.onFilter = () => {
+      // if filter is changed, reset the page to first
+      this.pager.offset = 1;
+      this.getPage();
+    }
 
     this.sorter = new Sorter();
     this.sorter["productName"] = SortDirection.Ascending;
     this.sorter["categoryName"] = SortDirection.None;
     this.sorter["supplierName"] = SortDirection.None;
     this.sorter["onHandValue"] = SortDirection.None;
-    this.sorter["basePriceAmount"] = SortDirection.None;
-    this.sorter["wholesalePriceAmount"] = SortDirection.None;
-    this.sorter["retailPriceAmount"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
 
     this.pager = new Pager<ProductReportPageItem>();
@@ -67,6 +71,11 @@ export class ProductReportPage {
       this.products = responses[0];
       this.categories = responses[1];
       this.suppliers = responses[2];
+      this.measureTypes = [
+        { id: "default", name: "Default" },
+        { id: "standard", name: "Standard" },
+      ];
+      this.filter["measureType"] = this.measureTypes[0];
 
       this.getPage();
     });
@@ -109,13 +118,14 @@ export class ProductReportPage {
             productName: x.productName,
             categoryName: x.categoryName,
             supplierName: x.supplierName,
+            onHandUnit: x.onHandUnit,
             onHandValue: x.onHandValue,
             basePriceAmount: x.basePriceAmount,
             wholesalePriceAmount: x.wholesalePriceAmount,
             retailPriceAmount: x.retailPriceAmount,
             totalBasePriceAmount: x.totalBasePriceAmount,
-            totalDistributorPriceAmount: x.totalDistributorPriceAmount,
-            totalListPriceAmount: x.totalListPriceAmount,
+            totalWholesalePriceAmount: x.totalWholesalePriceAmount,
+            totalRetailPriceAmount: x.totalRetailPriceAmount,
           })
         };
 

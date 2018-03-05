@@ -35,38 +35,38 @@ export class BranchPage {
     this.pager.onPage = () => this.getPage();
   }
 
-  activate() {
+  public activate(): void {
     this.getPage();
   }
 
-  getPage(): void {
-    this._api.branches
-      .getPage({
+  public async getPage(): Promise<void> {
+    try {
+      let data = await this._api.branches.getPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager
-      })
-      .then(data => {
-        var response = <PagerResponse<BranchPageItem>>data;
-        this.pager.count = response.count;
-        this.pager.items = response.items;
-      })
-      .catch(error => {
-        this._notification.error("Error encountered during search!");
       });
+
+      var response = <PagerResponse<BranchPageItem>>data;
+      this.pager.count = response.count;
+      this.pager.items = response.items;
+    }
+    catch (error) {
+      this._notification.error("Error encountered during search!");
+    }
   }
 
-  create() {
+  public create(): void {
     this._dialog.open({ viewModel: BranchCreate, model: null })
       .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
-  edit(item: BranchPageItem) {
+  public edit(item: BranchPageItem): void {
     this._dialog.open({ viewModel: BranchCreate, model: <Branch>{ id: item.id } })
       .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
-  delete(item: any) {
+  public delete(item: any): void {
     /*
     var index = this.mockData.indexOf(item);
     if (index > -1) {

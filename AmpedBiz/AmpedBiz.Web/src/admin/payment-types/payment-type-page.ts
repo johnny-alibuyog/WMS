@@ -34,38 +34,37 @@ export class PaymentTypePage {
     this.pager.onPage = () => this.getPage();
   }
 
-  activate() {
+  public activate(): void {
     this.getPage();
   }
 
-  getPage() {
-    this._api.paymentTypes
-      .getPage({
+  public async getPage(): Promise<void> {
+    try {
+      let data = await this._api.paymentTypes.getPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager
-      })
-      .then(data => {
-        var response = <PagerResponse<PaymentTypePageItem>>data;
-        this.pager.count = response.count;
-        this.pager.items = response.items;
-      })
-      .catch(error => {
-        this._notification.error("Error encountered during search!");
       });
+      let response = <PagerResponse<PaymentTypePageItem>>data;
+      this.pager.count = response.count;
+      this.pager.items = response.items;
+    }
+    catch (error) {
+      this._notification.error("Error encountered during search!");
+    }
   }
 
-  create() {
+  public create(): void {
     this._dialog.open({ viewModel: PaymentTypeCreate, model: null })
       .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
-  edit(item: PaymentTypePageItem) {
+  public edit(item: PaymentTypePageItem): void {
     this._dialog.open({ viewModel: PaymentTypeCreate, model: <PaymentType>{ id: item.id } })
       .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
-  delete(item: any) {
+  public delete(item: any): void {
     /*
     var index = this.mockData.indexOf(item);
     if (index > -1) {

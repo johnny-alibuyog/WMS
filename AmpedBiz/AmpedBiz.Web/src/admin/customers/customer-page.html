@@ -25,17 +25,11 @@
             <form class="search-form form-horizontal pull-right" role="form" submit.delegate="filter.doFilter()">
 
               <div class="search-form input">
-                <select class="form-control" value.bind="filter['status']" change.delegate="filter.doFilter()">
-                  <option value="">All Status</option>
-                  <option repeat.for="item of statuses" model.bind="item.id">${item.name}</option>
-                </select>
+                <input class="form-control" type="text" placeholder="Customer Name" value.bind="filter['name']" change.delegate="filter.doFilter() & debounce:400">
               </div>
 
               <div class="search-form input">
-                <select class="form-control" value.bind="filter['customer']" change.delegate="filter.doFilter()">
-                  <option value="">All Suppliers</option>
-                  <option repeat.for="item of customers" model.bind="item.id">${item.name}</option>
-                </select>
+                <input class="form-control" type="text" placeholder="Contact Person" value.bind="filter['contactPerson']" change.delegate="filter.doFilter() & debounce:400">
               </div>
 
               <div class="search-form input">
@@ -65,7 +59,10 @@
                   <th class="col-md-3" click.delegate="sorter.doSort('name')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['name'])}"></i>Name
                   </th>
-                  <th class="col-md-5">Address</th>
+                  <th class="col-md-3" click.delegate="sorter.doSort('contactPerson')">
+                      <i class="fa fa-fw fa-${sorter.class(sorter['contactPerson'])}"></i>Contact Person
+                    </th>
+                    <th class="col-md-5">Address</th>
                 </tr>
               </thead>
               <tbody>
@@ -80,6 +77,7 @@
                   </td>
                   <td>${item.code}</td>
                   <td>${item.name}</td>
+                  <td>${item.contactPerson}</td>
                   <td>
                     <address-display address.bind="item.officeAddress" />
                   </td>

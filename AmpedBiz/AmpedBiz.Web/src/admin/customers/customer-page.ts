@@ -41,21 +41,20 @@ export class CustomerPage {
     this.getPage();
   }
 
-  private getPage(): void {
-    this._api.customers
-      .getPage({
+  private async getPage(): Promise<void> {
+    try {
+      let data = await this._api.customers.getPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager
-      })
-      .then(data => {
-        var response = <PagerResponse<CustomerPageItem>>data;
-        this.pager.count = response.count;
-        this.pager.items = response.items;
-      })
-      .catch(error => {
-        this._notification.error("Error encountered during search!");
       });
+      let response = <PagerResponse<CustomerPageItem>>data;
+      this.pager.count = response.count;
+      this.pager.items = response.items;
+    }
+    catch (error) {
+      this._notification.error("Error encountered during search!");
+    }
   }
 
   public create(): void {

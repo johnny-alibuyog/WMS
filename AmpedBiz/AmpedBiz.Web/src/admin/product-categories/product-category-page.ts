@@ -34,38 +34,38 @@ export class ProductCategoryPage {
     this.pager.onPage = () => this.getPage();
   }
 
-  activate() {
+  public activate(): void {
     this.getPage();
   }
 
-  getPage() {
-    this._api.productCategories
-      .getPage({
+  public async getPage(): Promise<void> {
+    try {
+      let data = await this._api.productCategories.getPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager
-      })
-      .then(data => {
-        var response = <PagerResponse<ProductCategoryPageItem>>data;
-        this.pager.count = response.count;
-        this.pager.items = response.items;
-      })
-      .catch(error => {
-        this._notification.error("Error encountered during search!");
       });
+
+      let response = <PagerResponse<ProductCategoryPageItem>>data;
+      this.pager.count = response.count;
+      this.pager.items = response.items;
+    }
+    catch (error) {
+      this._notification.error("Error encountered during search!");
+    }
   }
 
-  create() {
+  public create(): void {
     this._dialog.open({ viewModel: ProductCategoryCreate, model: null })
       .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
-  edit(item: ProductCategoryPageItem) {
+  public edit(item: ProductCategoryPageItem): void {
     this._dialog.open({ viewModel: ProductCategoryCreate, model: <ProductCategory>{ id: item.id } })
       .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
   }
 
-  delete(item: any) {
+  public delete(item: any): void {
     /*
     var index = this.mockData.indexOf(item);
     if (index > -1) {

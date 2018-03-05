@@ -1,88 +1,52 @@
-import * as moment from 'moment';
-
-import { DocumentDefinition, Report, ReportBuilder, ReportBuilderConfig } from '../services/report-builder';
+import { DocumentDefinition, ReportBuilder, Report, Content, } from '../report-center/report';
 import { emptyIfNull, formatDate, formatNumber } from '../services/formaters';
 
-import { Address } from '../common/models/Address';
-import { AuthService } from '../services/auth-service';
-import { Lookup } from '../common/custom_types/lookup';
 import { OrderInvoiceDetail } from '../common/models/order';
-import { OrderItem } from '../common/models/order';
-import { autoinject } from 'aurelia-framework';
 import { ServiceApi } from '../services/service-api';
 import { InvoiceReportSetting } from '../common/models/invoice-report-setting';
-import { buildQueryString } from 'aurelia-path';
+import { autoinject } from 'aurelia-framework';
+import { AuthService } from '../services/auth-service';
 
 @autoinject
-export class InvoiceReport implements Report<OrderInvoiceDetail> {
-  private _settings: InvoiceReportSetting;
-
+export class InvoiceReport extends Report<OrderInvoiceDetail> {
   private readonly _api: ServiceApi;
-  private readonly _authService: AuthService;
-  private readonly _reportBuilder: ReportBuilder;
 
-  constructor(api: ServiceApi, authService: AuthService, reportBuilder: ReportBuilder) {
+  constructor(api: ServiceApi) {
+    super();
     this._api = api;
-    this._authService = authService;
-    this._reportBuilder = reportBuilder;
   }
 
-  public show(data: OrderInvoiceDetail): void {
+  protected async buildBody(data: OrderInvoiceDetail): Promise<any[] | Content[]> {
 
-    let buildReport = () => {
-      var document = this.buildDocument(data);
-      this._reportBuilder.build({ title: 'Invoice', document: document });
-    };
+    let settings = await this._api.settings.getInvoiceReportSetting();
 
-    // always getB settings before building report
-    this._api.settings
-      .getInvoiceReportSetting()
-      .then(data => {
-        this._settings = data;
-        buildReport();
-      })
-      .catch(error => {
-        this._settings = <InvoiceReportSetting>{
-          pageItemSize: 5
-        };
-        buildReport();
-      })
-
-  }
-
-  private buildDocument(data: OrderInvoiceDetail): DocumentDefinition {
     let productTableBody: any[] = [
       [
-        { text: 'Product', style: 'tableHeader' },
-        { text: 'Unit', style: 'tableHeader', alignment: 'right' },
-        { text: 'Qty', style: 'tableHeader', alignment: 'right' },
-        { text: 'Unit Price', style: 'tableHeader', alignment: 'right' },
-        { text: 'Discount', style: 'tableHeader', alignment: 'right' },
-        { text: 'Price', style: 'tableHeader', alignment: 'right' }
+        { text: "Product", style: "tableHeader" },
+        { text: "Unit", style: "tableHeader", alignment: "right" },
+        { text: "Qty", style: "tableHeader", alignment: "right" },
+        { text: "Unit Price", style: "tableHeader", alignment: "right" },
+        { text: "Discount", style: "tableHeader", alignment: "right" },
+        { text: "Price", style: "tableHeader", alignment: "right" }
       ],
     ];
 
     if (data && data.items && data.items.length > 0) {
       data.items.forEach(x =>
         productTableBody.push([
-          { text: x.product && x.product.name || '', style: 'tableData' },
-          { text: x.quantity && x.quantity.unit && x.quantity.unit.name || '', style: 'tableData' },
-          { text: formatNumber(x.quantity.value, "0"), style: 'tableData', alignment: 'right' },
-          { text: formatNumber(x.unitPriceAmount), style: 'tableData', alignment: 'right' },
-          { text: formatNumber(x.discountAmount), style: 'tableData', alignment: 'right' },
-          { text: formatNumber(x.totalPriceAmount), style: 'tableData', alignment: 'right' },
+          { text: x.product && x.product.name || "", style: "tableData" },
+          { text: x.quantity && x.quantity.unit && x.quantity.unit.name || "", style: "tableData" },
+          { text: formatNumber(x.quantity.value, "0"), style: "tableData", alignment: "right" },
+          { text: formatNumber(x.unitPriceAmount), style: "tableData", alignment: "right" },
+          { text: formatNumber(x.discountAmount), style: "tableData", alignment: "right" },
+          { text: formatNumber(x.totalPriceAmount), style: "tableData", alignment: "right" },
         ])
       );
     }
 
-    let branch = this._authService.user.branch;
-    let branchAddress = branch && branch.address && `${branch.address.barangay || ''}, ${branch.address.city || ''}, ${branch.address.province || ''}`;
-    let telephoneNumber = branch && branch.contact && branch.contact.landline || '';
-    let tinNumber = branch && branch.taxpayerIdentificationNumber || '';
-
     let pagedTables = [];
 
-    let pageSize = this._settings.pageItemSize;
+    let pageSize = settings.pageItemSize;
     let total = data.items.length;
 
     for (let i = 0; i < total; i += pageSize) {
@@ -91,245 +55,156 @@ export class InvoiceReport implements Report<OrderInvoiceDetail> {
 
       // table header
       tableBody.push([
-        { text: 'Product', style: 'tableHeader' },
-        { text: 'Unit', style: 'tableHeader', alignment: 'right' },
-        { text: 'Qty', style: 'tableHeader', alignment: 'right' },
-        { text: 'Unit Price', style: 'tableHeader', alignment: 'right' },
-        { text: 'Discount', style: 'tableHeader', alignment: 'right' },
-        { text: 'Price', style: 'tableHeader', alignment: 'right' }
+        { text: "Product", style: "tableHeader" },
+        { text: "Unit", style: "tableHeader", alignment: "right" },
+        { text: "Qty", style: "tableHeader", alignment: "right" },
+        { text: "Unit Price", style: "tableHeader", alignment: "right" },
+        { text: "Discount", style: "tableHeader", alignment: "right" },
+        { text: "Price", style: "tableHeader", alignment: "right" }
       ]);
 
       // table content
       tableBody.push(...pageItems.map(x => [
-        { text: x.product && x.product.name || '', style: 'tableData' },
-        { text: x.quantity && x.quantity.unit && x.quantity.unit.name || '', style: 'tableData' },
-        { text: formatNumber(x.quantity.value, "0"), style: 'tableData', alignment: 'right' },
-        { text: formatNumber(x.unitPriceAmount), style: 'tableData', alignment: 'right' },
-        { text: formatNumber(x.discountAmount), style: 'tableData', alignment: 'right' },
-        { text: formatNumber(x.totalPriceAmount), style: 'tableData', alignment: 'right' },
+        { text: x.product && x.product.name || "", style: "tableData" },
+        { text: x.quantity && x.quantity.unit && x.quantity.unit.name || "", style: "tableData" },
+        { text: formatNumber(x.quantity.value, "0"), style: "tableData", alignment: "right" },
+        { text: formatNumber(x.unitPriceAmount), style: "tableData", alignment: "right" },
+        { text: formatNumber(x.discountAmount), style: "tableData", alignment: "right" },
+        { text: formatNumber(x.totalPriceAmount), style: "tableData", alignment: "right" },
       ]));
 
       // table footer
       tableBody.push([
-        { text: '', style: 'tableData' },
-        { text: '', style: 'tableData' },
-        { text: '', style: 'tableData' },
-        { text: formatNumber(pageItems.map(o => o.unitPriceAmount).reduce((pre, cur) => pre + cur)), style: 'tableData', alignment: 'right' },
-        { text: formatNumber(pageItems.map(o => o.discountAmount).reduce((pre, cur) => pre + cur)), style: 'tableData', alignment: 'right' },
-        { text: formatNumber(pageItems.map(o => o.totalPriceAmount).reduce((pre, cur) => pre + cur)), style: 'tableData', alignment: 'right' },
+        { text: "", style: "tableData" },
+        { text: "", style: "tableData" },
+        { text: "", style: "tableData" },
+        { text: formatNumber(pageItems.map(o => o.unitPriceAmount).reduce((pre, cur) => pre + cur)), style: "tableData", alignment: "right" },
+        { text: formatNumber(pageItems.map(o => o.discountAmount).reduce((pre, cur) => pre + cur)), style: "tableData", alignment: "right" },
+        { text: formatNumber(pageItems.map(o => o.totalPriceAmount).reduce((pre, cur) => pre + cur)), style: "tableData", alignment: "right" },
       ]);
 
       pagedTables.push({
-        style: 'tableExample',
+        style: "tableExample",
         table: {
           headerRows: 1,
-          widths: ['*', 'auto', 'auto', 'auto', 'auto', 'auto'],
+          widths: ["*", "auto", "auto", "auto", "auto", "auto"],
           body: tableBody
         },
-        layout: 'lightHorizontalLines',
-        pageBreak: 'after'
+        layout: "lightHorizontalLines",
+        pageBreak: "after"
       });
 
     }
 
-    return <DocumentDefinition>{
-      footer: (currentPage: number, pageCount: number) => [
-        {
-          text: `Page ${currentPage} of ${pageCount}`,
-          style: "footer"
-        }
-      ],
-      content:
+    let body = [{
+      columns:
         [
           {
-            text: branch.description,
-            style: 'title'
+            style: "tablePlain",
+            layout: "noBorders",
+            table:
+              {
+                body:
+                  [
+                    [
+                      { text: "Customer: ", style: "label" },
+                      { text: emptyIfNull(data.customerName), style: "value" }
+                    ],
+                    [
+                      { text: "Invoice Number: ", style: "label" },
+                      { text: data.invoiceNumber || "", style: "value" }
+                    ],
+                    [
+                      { text: "Inviced On: ", style: "label" },
+                      { text: formatDate(data.invoicedOn), style: "value" }
+                    ],
+                    [
+                      { text: "Invoiced By: ", style: "label" },
+                      { text: data.invoicedByName || "", style: "value" }
+                    ],
+                  ],
+              }
           },
           {
-            text: branchAddress,
-            style: 'header3'
+            style: "tablePlain",
+            layout: "noBorders",
+            table:
+              {
+                body:
+                  [
+                    [
+                      { text: "Branch Name: ", style: "label" },
+                      { text: data.branchName || "", style: "value" }
+                    ],
+                    [
+                      { text: "Ordered On: ", style: "label" },
+                      { text: formatDate(data.orderedOn), style: "value" }
+                    ],
+                    [
+                      { text: "Staff: ", style: "label" },
+                      { text: data.orderedByName || "", style: "value" }
+                    ],
+                    [
+                      { text: "Delivery Address: ", style: "label" },
+                      { text: data.shippingAddress || "", style: "value" }
+                    ],
+                  ],
+              }
           },
+        ]
+    },
+    {
+      text: " ",
+      style: "spacer"
+    },
+    ...pagedTables,
+    {
+      columns:
+        [
+          { text: "" },
+          { text: "" },
+          { text: "" },
           {
-            text: `TEL NO. ${telephoneNumber}`,
-            style: 'header3'
+            style: "tablePlain",
+            layout: "noBorders",
+            table:
+              {
+                body:
+                  [
+                    // [
+                    //   { text: 'Tax: ', style: 'label' },
+                    //   { text: formatNumber(data.taxAmount), style: 'value', alignment: 'right' }
+                    // ],
+                    [
+                      { text: "Shipping Fee: ", style: "label" },
+                      { text: formatNumber(data.shippingFeeAmount), style: "value", alignment: "right" }
+                    ],
+                    [
+                      { text: "Discount: ", style: "label" },
+                      { text: formatNumber(data.discountAmount), style: "value", alignment: "right" }
+                    ],
+                    [
+                      { text: "Sub Total: ", style: "label" },
+                      { text: formatNumber(data.subTotalAmount), style: "value", alignment: "right" }
+                    ],
+                    [
+                      { text: "Grand Total: ", style: "label" },
+                      { text: formatNumber(data.totalAmount), style: "value", alignment: "right" }
+                    ],
+                    [
+                      { text: "Returned: ", style: "label" },
+                      { text: formatNumber(data.returnedAmount), style: "value", alignment: "right" }
+                    ],
+                  ],
+              }
           },
-          {
-            text: `TIN ${tinNumber}`,
-            style: 'header3'
-          },
-          {
-            text: ' ',
-            style: 'spacer'
-          },
-          {
-            columns:
-              [
-                {
-                  style: 'tablePlain',
-                  layout: 'noBorders',
-                  table:
-                    {
-                      body:
-                        [
-                          [
-                            { text: 'Customer: ', style: 'label' },
-                            { text: emptyIfNull(data.customerName), style: 'value' }
-                          ],
-                          [
-                            { text: 'Invoice Number: ', style: 'label' },
-                            { text: data.invoiceNumber || '', style: 'value' }
-                          ],
-                          [
-                            { text: 'Inviced On: ', style: 'label' },
-                            { text: formatDate(data.invoicedOn), style: 'value' }
-                          ],
-                          [
-                            { text: 'Invoiced By: ', style: 'label' },
-                            { text: data.invoicedByName || '', style: 'value' }
-                          ],
-                          [
-                            { text: 'Payment Type: ', style: 'label' },
-                            { text: data.paymentTypeName || '', style: 'value' }
-                          ],
-                        ],
-                    }
-                },
-                {
-                  style: 'tablePlain',
-                  layout: 'noBorders',
-                  table:
-                    {
-                      body:
-                        [
-                          [
-                            { text: 'Branch Name: ', style: 'label' },
-                            { text: data.branchName || '', style: 'value' }
-                          ],
-                          [
-                            { text: 'Ordered On: ', style: 'label' },
-                            { text: formatDate(data.orderedOn), style: 'value' }
-                          ],
-                          [
-                            { text: 'Staff: ', style: 'label' },
-                            { text: data.orderedByName || '', style: 'value' }
-                          ],
-                          [
-                            { text: 'Delivery Address: ', style: 'label' },
-                            { text: data.shippingAddress || '', style: 'value' }
-                          ],
-                        ],
-                    }
-                },
-              ]
-          },
-          {
-            text: ' ',
-            style: 'spacer'
-          },
-          // {
-          //   style: 'tableExample',
-          //   table: {
-          //     headerRows: 1,
-          //     widths: ['*', 'auto', 'auto', 'auto', 'auto'],
-          //     body: productTableBody
-          //   },
-          //   layout: 'lightHorizontalLines',
-          //   pageBreak: 'after'
-          // },
-          ...pagedTables,
-          {
-            columns:
-              [
-                { text: "" },
-                { text: "" },
-                { text: "" },
-                {
-                  style: 'tablePlain',
-                  layout: 'noBorders',
-                  table:
-                    {
-                      body:
-                        [
-                          // [
-                          //   { text: 'Tax: ', style: 'label' },
-                          //   { text: formatNumber(data.taxAmount), style: 'value', alignment: 'right' }
-                          // ],
-                          [
-                            { text: 'Shipping Fee: ', style: 'label' },
-                            { text: formatNumber(data.shippingFeeAmount), style: 'value', alignment: 'right' }
-                          ],
-                          [
-                            { text: 'Discount: ', style: 'label' },
-                            { text: formatNumber(data.discountAmount), style: 'value', alignment: 'right' }
-                          ],
-                          [
-                            { text: 'Sub Total: ', style: 'label' },
-                            { text: formatNumber(data.subTotalAmount), style: 'value', alignment: 'right' }
-                          ],
-                          [
-                            { text: 'Grand Total: ', style: 'label' },
-                            { text: formatNumber(data.totalAmount), style: 'value', alignment: 'right' }
-                          ],
-                          [
-                            { text: 'Returned: ', style: 'label' },
-                            { text: formatNumber(data.returnedAmount), style: 'value', alignment: 'right' }
-                          ],
-                        ],
-                    }
-                },
-              ]
-          },
-        ],
-      styles: {
-        title: {
-          fontSize: 28,
-          bold: true,
-        },
-        header: {
-          fontSize: 18,
-          bold: true,
-          margin: [0, 10, 0, 10]
-        },
-        header3: {
-          bold: true,
-          fontSize: 10,
-          alignment: 'left',
-        },
-        label: {
-          fontSize: 10,
-          alignment: 'right',
-        },
-        spacer: {
-          margin: [0, 0, 0, 2]
-        },
-        value: {
-          fontSize: 10,
-          color: 'gray',
-          alignment: 'left',
-        },
-        tablePlain: {
-          alignment: 'right',
-          margin: [0, 0, 0, 0]
-        },
-        tableHeader: {
-          bold: true,
-          fontSize: 10,
-          color: 'black'
-        },
-        tableData: {
-          fontSize: 10,
-          color: 'gray'
-        },
-        footer: {
-          color: 'gray',
-          fontSize: 10,
-          alignment: 'right',
-          margin: [40, 0]
-        },
-      },
-    };
+        ]
+    }];
+
+    return body;
   }
 }
+
 
 /* page break sample */
 /*

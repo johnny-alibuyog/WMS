@@ -268,6 +268,8 @@ namespace AmpedBiz.Service.Dto
 
         public string SupplierName { get; set; }
 
+        public string OnHandUnit { get; set; }
+
         public decimal? OnHandValue { get; set; }
 
         public decimal? BasePriceAmount { get; set; }
@@ -276,10 +278,10 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? RetailPriceAmount { get; set; }
 
-        public decimal? TotalBasePriceAmount { get; set; }
+        public decimal? TotalBasePriceAmount => this.OnHandValue * this.BasePriceAmount;
 
-        public decimal? TotalWholesalePriceAmount { get; set; }
+        public decimal? TotalWholesalePriceAmount => this.OnHandValue * this.WholesalePriceAmount;
 
-        public decimal? TotalRetailPriceAmount { get; set; }
+        public decimal? TotalRetailPriceAmount => this.OnHandValue * this.RetailPriceAmount;
     }
 }

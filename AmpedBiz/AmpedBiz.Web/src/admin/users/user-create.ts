@@ -68,37 +68,22 @@ export class UserCreate {
   }
 
   public cancel(): void {
-    this._controller.cancel({ wasCancelled: true, output: null });
+    this._controller.cancel();
   }
 
-  public save(): void {
-    debugger;
-    this._notification.confirm('Do you want to save?').whenClosed(result => {
+  public async save(): Promise<void> {
+    try {
+      let result = await this._notification.confirm('Do you want to save?').whenClosed();
       if (result.output === ActionResult.Yes) {
-
-        if (this.isEdit) {
-
-          this._api.users.update(this.user)
-            .then(data => {
-              this._notification.success("User  has been saved.")
-                .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <User>data }));
-            })
-            .catch(error => {
-              this._notification.warning(error);
-            });
-        }
-        else {
-
-          this._api.users.create(this.user)
-            .then(data => {
-              this._notification.success("User has been saved.")
-                .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <User>data }));
-            })
-            .catch(error => {
-              this._notification.warning(error);
-            });
-        }
+        let data = (this.isEdit)
+          ? await this._api.users.update(this.user)
+          : await this._api.users.create(this.user);
+        await this._notification.success("User  has been saved.").whenClosed();
+        this._controller.ok(<User>data);
       }
-    });
+    }
+    catch (error) {
+      this._notification.warning(error);
+    }
   }
 }

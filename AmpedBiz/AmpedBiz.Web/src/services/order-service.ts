@@ -200,8 +200,8 @@ export class OrderService extends ServiceBase<Order> {
     });
   }
 
-  public generateNewReturnsFrom(order: Order): OrderReturn[] {
-    return order.returnables
+  public generateNewReturns(order: Order): boolean {
+    let returns = order.returnables
       .filter(x =>
         x.returning &&
         x.returning.reason &&
@@ -218,5 +218,11 @@ export class OrderService extends ServiceBase<Order> {
         quantity: x.returning.quantity,
         returnedAmount: x.returning.amount
       });
+
+    let withReturns = returns && returns.length > 0;
+    if (withReturns) {
+      order.returns.push(...returns);
+    }
+    return withReturns;
   }
 }

@@ -31,33 +31,26 @@ export class ProductCreate {
     this.canSave = this._auth.isAuthorized([role.admin, role.manager]);
   }
 
-  public activate(product: Product): void {
-    if (product && product.id) {
-      this.header = "Edit Product";
-      this.isEdit = true;
-    }
-    else {
-      this.header = "Create Product";
-      this.isEdit = false;
-    }
+  public async activate(product: Product): Promise<void> {
+    try {
+      this.isEdit = ((product && product.id)) ? true : false;
+      this.header = (this.isEdit) ? "Edit Product" : "Create Product";
 
-    let requests: [Promise<Lookup<string>[]>, Promise<Lookup<string>[]>, Promise<Product>] = [
-      this._api.suppliers.getLookups(),
-      this._api.productCategories.getLookups(),
-      this.isEdit
-        ? this._api.products.get(product.id)
-        : Promise.resolve(<Product>{ unitOfMeasures: [] })
-    ];
+      let responses = await Promise.all([
+        this._api.suppliers.getLookups(),
+        this._api.productCategories.getLookups(),
+        this.isEdit
+          ? this._api.products.get(product.id)
+          : Promise.resolve(<Product>{ unitOfMeasures: [] })
+      ]);
 
-    Promise.all(requests)
-      .then(responses => {
-        this.suppliers = responses[0];
-        this.categories = responses[1];
-        this.product = responses[2];
-      })
-      .catch(error => {
-        this._notification.error(error);
-      });
+      this.suppliers = responses[0];
+      this.categories = responses[1];
+      this.product = responses[2];
+    }
+    catch (error) {
+      this._notification.error(error);
+    }
   }
 
   public back(): void {

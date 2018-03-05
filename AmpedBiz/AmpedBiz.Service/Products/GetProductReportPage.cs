@@ -1,8 +1,10 @@
 ﻿using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Services.Products;
 using AmpedBiz.Data;
 using AmpedBiz.Service.Common;
 using MediatR;
 using NHibernate.Linq;
+using NHibernate.Transform;
 using System;
 using System.Linq;
 
@@ -24,6 +26,10 @@ namespace AmpedBiz.Service.Products
                 using (var transaction = session.BeginTransaction())
                 {
                     var query = session.Query<Product>();
+
+                    //var pricingId = message.Filter.GetValueOrDefault("pricingId") as string ?? Pricing.BasePrice.Id;
+
+                    var useDefault = (message.Filter.GetValueOrDefault("measureType") as string == "default" /* values: "default" or "standard" */); 
 
                     // compose filter
                     message.Filter.Compose<Guid>("productId", value =>
@@ -70,27 +76,6 @@ namespace AmpedBiz.Service.Products
                             : query.OrderByDescending(x => x.Inventory.OnHand.Value);
                     });
 
-                    //message.Sorter.Compose("basePriceAmount", direction =>
-                    //{
-                    //    query = direction == SortDirection.Ascending
-                    //        ? query.OrderBy(x => x.Inventory.BasePrice.Amount)
-                    //        : query.OrderByDescending(x => x.Inventory.BasePrice.Amount);
-                    //});
-
-                    //message.Sorter.Compose("wholesalePriceAmount", direction =>
-                    //{
-                    //    query = direction == SortDirection.Ascending
-                    //        ? query.OrderBy(x => x.Inventory.WholesalePrice.Amount)
-                    //        : query.OrderByDescending(x => x.Inventory.WholesalePrice.Amount);
-                    //});
-
-                    //message.Sorter.Compose("retailPriceAmount", direction =>
-                    //{
-                    //    query = direction == SortDirection.Ascending
-                    //        ? query.OrderBy(x => x.Inventory.RetailPrice.Amount)
-                    //        : query.OrderByDescending(x => x.Inventory.RetailPrice.Amount);
-                    //});
-
                     var countFuture = query
                         .ToFutureValue(x => x.Count());
 
@@ -98,29 +83,76 @@ namespace AmpedBiz.Service.Products
                         message.Pager.RetrieveAll(countFuture.Value);
 
                     var itemsFuture = query
-                        .Select(x => new Dto.ProductReportPageItem()
+                        .Select(x => new
                         {
                             Id = x.Id,
                             ProductCode = x.Code,
                             ProductName = x.Name,
                             CategoryName = x.Category.Name,
                             SupplierName = x.Supplier.Name,
-                            OnHandValue = x.Inventory.OnHand.Value,
-                            //BasePriceAmount = x.Inventory.BasePrice.Amount,
-                            //WholesalePriceAmount = x.Inventory.WholesalePrice.Amount,
-                            //RetailPriceAmount = x.Inventory.RetailPrice.Amount,
-                            //TotalBasePriceAmount = x.Inventory.OnHand.Value * x.Inventory.BasePrice.Amount,
-                            //TotalWholesalePriceAmount = x.Inventory.OnHand.Value * x.Inventory.WholesalePrice.Amount,
-                            //TotalRetailPriceAmount = x.Inventory.OnHand.Value * x.Inventory.RetailPrice.Amount
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)
                         .ToFuture();
 
+                    var productIds = itemsFuture.Select(x => x.Id).ToArray();
+
+                    var products = session.QueryOver<Product>()
+                        .WhereRestrictionOn(x => x.Id).IsIn(productIds)
+                        .Fetch(x => x.UnitOfMeasures).Eager
+                        .Fetch(x => x.UnitOfMeasures.First().Prices).Eager
+                        .Fetch(x => x.UnitOfMeasures.First().Prices.First().Price).Eager
+                        .Fetch(x => x.UnitOfMeasures.First().Prices.First().Pricing).Eager
+                        .TransformUsing(Transformers.DistinctRootEntity)
+                        .Future();
+
+                    var inventories = session.Query<Inventory>()
+                        .Where(x => productIds.Contains(x.Product.Id))
+                        .Fetch(x => x.OnHand)
+                        .ToFuture();
+
+                    var inventoryLookup = inventories.ToList()
+                        .ToDictionary(x => x.Product.Id);
+
+                    var lookup = products.ToList()
+                        .ToDictionary(x => x.Id, product => new
+                        {
+                            OnHand = useDefault
+                                ? product.ConvertToDefault(inventoryLookup[product.Id].OnHand)
+                                : product.ConvertToStandard(inventoryLookup[product.Id].OnHand),
+                            UnitOfMeasure = useDefault
+                                ? product.UnitOfMeasures.Default(o => o.UnitOfMeasure)
+                                : product.UnitOfMeasures.Standard(o => o.UnitOfMeasure),
+                            BasePrice = useDefault 
+                                ? product.UnitOfMeasures.Default(o => o.Prices.Base())
+                                : product.UnitOfMeasures.Standard(o => o.Prices.Base()),
+                            WholesalePrice = useDefault
+                                ? product.UnitOfMeasures.Default(o => o.Prices.Wholesale())
+                                : product.UnitOfMeasures.Standard(o => o.Prices.Wholesale()),
+                            RetailPrice = useDefault
+                                ? product.UnitOfMeasures.Default(o => o.Prices.Retail())
+                                : product.UnitOfMeasures.Standard(o => o.Prices.Retail()),
+                        });
+
+                    var items = itemsFuture
+                        .Select(x => new Dto.ProductReportPageItem()
+                        {
+                            Id = x.Id,
+                            ProductCode = x.ProductCode,
+                            ProductName = x.ProductName,
+                            CategoryName = x.CategoryName,
+                            SupplierName = x.SupplierName,
+                            OnHandUnit = lookup[x.Id].OnHand?.Unit?.Id,
+                            OnHandValue = lookup[x.Id].OnHand?.Value,
+                            BasePriceAmount = lookup[x.Id].BasePrice?.Amount,
+                            WholesalePriceAmount = lookup[x.Id].WholesalePrice?.Amount,
+                            RetailPriceAmount = lookup[x.Id].RetailPrice?.Amount,
+                        });
+
                     response = new Response()
                     {
                         Count = countFuture.Value,
-                        Items = itemsFuture.ToList()
+                        Items = items.ToList()
                     };
 
                     transaction.Commit();

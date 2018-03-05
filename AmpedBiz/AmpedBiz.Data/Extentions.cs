@@ -56,7 +56,7 @@ namespace AmpedBiz.Data
             new ValidationEventListener().PerformValidation(entity);
         }
 
-        public static TValue GetValueSafely<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key)
+        public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> source, TKey key)
         {
             if (key.IsNullOrDefault())
                 return default(TValue);

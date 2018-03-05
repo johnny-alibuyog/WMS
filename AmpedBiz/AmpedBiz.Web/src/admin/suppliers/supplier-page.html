@@ -1,5 +1,7 @@
 <template>
   <require from="common/controls/pager"></require>
+  <require from="common/controls/address-display.html"></require>
+  <require from="common/controls/contact-display.html"></require>
 
   <section class="row row-no-padding">
 
@@ -50,7 +52,10 @@
                   <th class="col-md-3" click.delegate="sorter.doSort('name')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['name'])}"></i>Name
                   </th>
-                  <th class="col-md-3">Contact</th>
+                  <th class="col-md-3" click.delegate="sorter.doSort('contactPerson')">
+                      <i class="fa fa-fw fa-${sorter.class(sorter['contactPerson'])}"></i>Contact Person
+                    </th>
+                    <th class="col-md-3">Contact</th>
                   <th class="col-md-3">Address</th>
                 </tr>
               </thead>
@@ -66,12 +71,9 @@
                   </td>
                   <td>${item.code}</td>
                   <td>${item.name}</td>
-                  <td>
-                    <contact-display contact.bind="item.contact" />
-                  </td>
-                  <td>
-                    <address-display address.bind="item.address" />
-                  </td>
+                  <td>${item.contactPerson}</td>
+                  <td><contact-display contact.bind="item.contact" /></td>
+                  <td><address-display address.bind="item.address" /></td>
                 </tr>
               </tbody>
             </table>

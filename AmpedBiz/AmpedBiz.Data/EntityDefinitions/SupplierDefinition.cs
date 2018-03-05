@@ -17,6 +17,8 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Map(x => x.Name);
 
+                Map(x => x.ContactPerson);
+
                 Component(x => x.Address);
 
                 Component(x => x.Contact);
@@ -44,6 +46,9 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Define(x => x.Name)
                     .NotNullableAndNotEmpty()
                     .And.MaxLength(150);
+
+                Define(x => x.ContactPerson)
+                    .MaxLength(150);
 
                 Define(x => x.Address)
                     .IsValid();

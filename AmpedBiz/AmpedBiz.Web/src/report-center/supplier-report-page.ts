@@ -53,6 +53,7 @@ export class SupplierReportPage {
           items: response.items.map(x => <SupplierReportModelItem>{
             id: x.id,
             name: x.name,
+            contactPerson: x.contactPerson,
             contact: x.contact,
             address: x.address,
           })

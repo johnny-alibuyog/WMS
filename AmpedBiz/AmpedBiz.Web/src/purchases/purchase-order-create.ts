@@ -243,6 +243,9 @@ export class PurchaseOrderCreate {
           .catch(error => this._notification.warning(error));
 
           this._sessionData.forPurchasing = {};
+
+          let ccc: string;
+
       }
     });
   }

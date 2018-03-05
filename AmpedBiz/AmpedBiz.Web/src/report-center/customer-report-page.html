@@ -36,34 +36,24 @@
                   <th class="col-md-2" click.delegate="sorter.doSort('customerName')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['customerName'])}"></i>Customer
                   </th>
+                  <th class="col-md-2" click.delegate="sorter.doSort('contactPerson')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['contactPerson'])}"></i>Contact Person
+                  </th>
                   <th class="col-md-1" click.delegate="sorter.doSort('creditLimitAmount')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['creditLimitAmount'])}"></i>Credit Limit
                   </th>
-                  <th class="col-md-3">
-                    Contact
-                  </th>
-                  <th class="col-md-3">
-                    Office Address
-                  </th>
-                  <th class="col-md-3">
-                    Billing Address
-                  </th>
+                  <th class="col-md-3">Contact Number</th>
+                  <th class="col-md-3">Address</th>
                 </tr>
               </thead>
 
               <tbody>
                 <tr repeat.for="item of pager.items">
                   <td>${item.name}</td>
+                  <td>${item.contactPerson}</td>
                   <td class="text-right">${item.creditLimitAmount | numberFormat}</td>
-                  <td>
-                    <contact-display contact.bind="item.contact" />
-                  </td>
-                  <td>
-                    <address-display address.bind="item.officeAddress" />
-                  </td>
-                  <td>
-                    <address-display address.bind="item.billingAddress" />
-                  </td>
+                  <td><contact-display contact.bind="item.contact" /></td>
+                  <td><address-display address.bind="item.officeAddress" /></td>
                 </tr>
               </tbody>
 

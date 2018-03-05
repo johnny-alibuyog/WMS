@@ -22,52 +22,41 @@ export class UnitOfMeasureCreate {
     this._notification = notification;
   }
 
-  activate(unitOfMeasure: UnitOfMeasure) {
-    if (unitOfMeasure) {
-      this.header = "Edit Unit of Measure";
-      this.isEdit = true;
-      this._api.unitOfMeasures.get(unitOfMeasure.id)
-        .then(data => this.unitOfMeasure = <UnitOfMeasure>data)
-        .catch(error => this._notification.warning(error));
+  public async activate(unitOfMeasure: UnitOfMeasure): Promise<void> {
+    try {
+      if (unitOfMeasure) {
+        this.header = "Edit Unit of Measure";
+        this.isEdit = true;
+        this.unitOfMeasure = await this._api.unitOfMeasures.get(unitOfMeasure.id);
+      }
+      else {
+        this.header = "Create Unit of Measure";
+        this.isEdit = false;
+        this.unitOfMeasure = <UnitOfMeasure>{};
+      }
     }
-    else {
-      this.header = "Create Unit of Measure";
-      this.isEdit = false;
-      this.unitOfMeasure = <UnitOfMeasure>{};
+    catch (error) {
+      this._notification.warning(error);
     }
   }
 
   public cancel(): void {
-    this._controller.cancel({ wasCancelled: true, output: null });
+    this._controller.cancel();
   }
 
-  public save(): void {
-    this._notification.confirm('Do you want to save?').whenClosed(result => {
+  public async save(): Promise<void> {
+    try {
+      let result = await this._notification.confirm('Do you want to save?').whenClosed();
       if (result.output === ActionResult.Yes) {
-
-        if (this.isEdit) {
-
-          this._api.unitOfMeasures.update(this.unitOfMeasure)
-            .then(data => {
-              this._notification.success("Unit of Measure has been saved.")
-                .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <UnitOfMeasure>data }));
-            })
-            .catch(error => {
-              this._notification.warning(error)
-            });
-        }
-        else {
-
-          this._api.unitOfMeasures.create(this.unitOfMeasure)
-            .then(data => {
-              this._notification.success("Unit of Measure has been saved.")
-                .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <UnitOfMeasure>data }));
-            })
-            .catch(error => {
-              this._notification.warning(error)
-            });
-        }
+        let data = (this.isEdit)
+          ? await this._api.unitOfMeasures.update(this.unitOfMeasure)
+          : await this._api.unitOfMeasures.create(this.unitOfMeasure);
+        await this._notification.success("Unit of Measure has been saved.").whenClosed();
+        this._controller.ok(<UnitOfMeasure>data);
       }
-    });
+    }
+    catch (error) {
+      this._notification.warning(error);
+    }
   }
 }

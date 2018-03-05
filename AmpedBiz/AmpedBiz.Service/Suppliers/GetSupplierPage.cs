@@ -36,6 +36,11 @@ namespace AmpedBiz.Service.Suppliers
                         query = query.Where(x => x.Name.ToLower().Contains(value.ToLower()));
                     });
 
+                    message.Filter.Compose<string>("contactPerson", value =>
+                    {
+                        query = query.Where(x => x.ContactPerson.ToLower().Contains(value.ToLower()));
+                    });
+
                     // compose sort
                     message.Sorter.Compose("code", direction =>
                     {
@@ -51,12 +56,20 @@ namespace AmpedBiz.Service.Suppliers
                             : query.OrderByDescending(x => x.Name);
                     });
 
+                    message.Sorter.Compose("contactPerson", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.ContactPerson)
+                            : query.OrderByDescending(x => x.ContactPerson);
+                    });
+
                     var itemsFuture = query
                         .Select(x => new Dto.SupplierPageItem()
                         {
                             Id = x.Id,
                             Code = x.Code,
                             Name = x.Name,
+                            ContactPerson = x.ContactPerson,
                             Address = x.Address.MapTo(default(Dto.Address)),
                             Contact = x.Contact.MapTo(default(Dto.Contact)),
                         })

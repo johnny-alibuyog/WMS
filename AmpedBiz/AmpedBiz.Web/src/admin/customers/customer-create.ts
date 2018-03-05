@@ -22,18 +22,21 @@ export class CustomerCreate {
     this._notification = notification;
   }
 
-  public activate(customer: Customer): void {
-    if (customer && customer.id) {
-      this.header = "Edit Customer";
-      this.isEdit = true;
-      this._api.customers.get(customer.id)
-        .then(data => this.customer = <Customer>data)
-        .catch(error => this._notification.warning(error));
+  public async activate(customer: Customer): Promise<void> {
+    try {
+      if (customer && customer.id) {
+        this.header = "Edit Customer";
+        this.isEdit = true;
+        this.customer = await this._api.customers.get(customer.id);
+      }
+      else {
+        this.header = "Create Customer";
+        this.isEdit = false;
+        this.customer = <Customer>{};
+      }
     }
-    else {
-      this.header = "Create Customer";
-      this.isEdit = false;
-      this.customer = <Customer>{};
+    catch (error) {
+      this._notification.warning(error);
     }
   }
 
@@ -41,22 +44,19 @@ export class CustomerCreate {
     return this._router.navigateBack();
   }
 
-  public save(): void {
-    this._notification.confirm('Do you want to save?').whenClosed(result => {
+  public async save(): Promise<void> {
+    try {
+      let result = await this._notification.confirm('Do you want to save?').whenClosed();
       if (result.output === ActionResult.Yes) {
-
-        if (this.isEdit) {
-          this._api.customers.update(this.customer)
-            .then(data => this.resetAndNoify(data, "Customer has been saved."))
-            .catch(error => this._notification.warning(error));
-        }
-        else {
-          this._api.customers.create(this.customer)
-            .then(data => this.resetAndNoify(data, "Customer has been saved."))
-            .catch(error => this._notification.warning(error));
-        }
+        let data = (this.isEdit)
+          ? await this._api.customers.update(this.customer)
+          : await this._api.customers.create(this.customer);
+        this.resetAndNoify(data, "Customer has been saved.");
       }
-    });
+    }
+    catch (error) {
+      this._notification.warning(error);
+    }
   }
 
   private resetAndNoify(customer: Customer, notificationMessage: string) {

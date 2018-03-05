@@ -32,6 +32,13 @@ namespace AmpedBiz.Service.Suppliers
                             : query.OrderByDescending(x => x.Name);
                     });
 
+                    message.Sorter.Compose("contactPerson", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.ContactPerson)
+                            : query.OrderByDescending(x => x.ContactPerson);
+                    });
+
                     var countFuture = query
                         .ToFutureValue(x => x.Count());
 
@@ -44,6 +51,7 @@ namespace AmpedBiz.Service.Suppliers
                             Id = x.Id,
                             Code = x.Code,
                             Name = x.Name,
+                            ContactPerson = x.ContactPerson,
                             Contact = new Dto.Contact()
                             {
                                 Email = x.Contact.Email,

@@ -22,52 +22,40 @@ export class SupplierCreate {
     this._notification = notification;
   }
 
-  activate(supplier: Supplier) {
-    if (supplier) {
-      this.header = "Edit Supplier";
-      this.isEdit = true;
-      this._api.suppliers.get(supplier.id)
-        .then(data => this.supplier = <Supplier>data)
-        .catch(error => this._notification.warning(error));
-    }
-    else {
-      this.header = "Create Supplier";
-      this.isEdit = false;
-      this.supplier = <Supplier>{};
+  public async activate(supplier: Supplier): Promise<void> {
+    try {
+      if (supplier) {
+        this.header = "Edit Supplier";
+        this.isEdit = true;
+        this.supplier = await this._api.suppliers.get(supplier.id);
+      }
+      else {
+        this.header = "Create Supplier";
+        this.isEdit = false;
+        this.supplier = <Supplier>{};
+      }
+    } catch (error) {
+      this._notification.warning(error);
     }
   }
 
   public cancel(): void {
-    this._controller.cancel({ wasCancelled: true, output: null });
+    this._controller.cancel();
   }
 
-  public save(): void {
-    this._notification.confirm('Do you want to save?').whenClosed(result => {
+  public async save(): Promise<void> {
+    try {
+      let result = await this._notification.confirm('Do you want to save?').whenClosed();
       if (result.output === ActionResult.Yes) {
-
-        if (this.isEdit) {
-
-          this._api.suppliers.update(this.supplier)
-            .then(data => {
-              this._notification.success("Supplier has been saved.")
-                .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <Supplier>data }));
-            })
-            .catch(error => {
-              this._notification.warning(error)
-            });
-        }
-        else {
-
-          this._api.suppliers.create(this.supplier)
-            .then(data => {
-              this._notification.success("Supplier has been saved.")
-                .whenClosed((data) => this._controller.ok({ wasCancelled: true, output: <Supplier>data }));
-            })
-            .catch(error => {
-              this._notification.warning(error)
-            });
-        }
+        let data = (this.isEdit)
+          ? await this._api.suppliers.update(this.supplier)
+          : await this._api.suppliers.create(this.supplier);
+        await this._notification.success("Supplier has been saved.").whenClosed();
+        this._controller.ok(<Supplier>data);
       }
-    });
+    }
+    catch (error) {
+      this._notification.warning(error);
+    }
   }
 }

@@ -104,7 +104,8 @@ namespace AmpedBiz.Tests.IntegrationTests
             mapper.Initialze();
 
             this.SetupDefaultSeeders();
-            //this.SetupDummySeeders();
+            this.SetupDummySeeders();
+            this.LoadLookups();
         }
 
         [OneTimeTearDown]
@@ -113,21 +114,8 @@ namespace AmpedBiz.Tests.IntegrationTests
             this.sessionFactory = null;
         }
 
-        private void SetupDefaultSeeders()
+        private void LoadLookups()
         {
-            var seeders = (
-                from t in AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("AmpedBiz.Data")).GetTypes()
-                where t.GetInterfaces().Contains(typeof(IDefaultDataSeeder))
-                orderby t.Name
-                select Activator.CreateInstance(t, DefaultContext.Instance, this.sessionFactory) as ISeeder
-            );
-
-            foreach (var seeder in seeders)
-            {
-                seeder.Seed();
-            }
-
-            //load data
             using (var session = this.sessionFactory.OpenSession())
             {
                 this._roles = session.Query<Role>().Cacheable().ToList();
@@ -144,13 +132,28 @@ namespace AmpedBiz.Tests.IntegrationTests
             }
         }
 
+        private void SetupDefaultSeeders()
+        {
+            var seeders = (
+                from t in AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("AmpedBiz.Data")).GetTypes()
+                where t.GetInterfaces().Contains(typeof(IDefaultDataSeeder))
+                orderby t.Name
+                select Activator.CreateInstance(t, DefaultContext.Instance, this.sessionFactory) as ISeeder
+            );
+
+            foreach (var seeder in seeders)
+            {
+                seeder.Seed();
+            }
+        }
+
         private void SetupDummySeeders()
         {
             var seeders = (
                 from t in AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("AmpedBiz.Data")).GetTypes()
                 where t.GetInterfaces().Contains(typeof(IDummyDataSeeder))
                 orderby t.Name
-                select Activator.CreateInstance(t, this.sessionFactory) as ISeeder
+                select Activator.CreateInstance(t, DefaultContext.Instance, this.sessionFactory) as ISeeder
             );
 
             foreach (var seeder in seeders)

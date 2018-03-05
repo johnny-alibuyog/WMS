@@ -54,6 +54,7 @@ export class CustomerReportPage {
           items: response.items.map(x => <CustomerReportModelItem>{
             id: x.id,
             name: x.name,
+            contactPerson: x.contactPerson,
             creditLimitAmount: x.creditLimitAmount,
             contact: x.contact,
             officeAddress: x.officeAddress,

@@ -10,6 +10,8 @@ namespace AmpedBiz.Service.Dto
 
         public string Name { get; set; }
 
+        public string ContactPerson { get; set; }
+
         public decimal CreditLimitAmount { get; set; }
 
         public string PricingId { get; set; }
@@ -29,6 +31,8 @@ namespace AmpedBiz.Service.Dto
 
         public string Name { get; set; }
 
+        public string ContactPerson { get; set; }
+
         public string CreditLimitAmount { get; set; }
 
         public string PricingName { get; set; }
@@ -47,6 +51,8 @@ namespace AmpedBiz.Service.Dto
         public string Code { get; set; }
 
         public string Name { get; set; }
+
+        public string ContactPerson { get; set; }
 
         public decimal CreditLimitAmount { get; set; }
 

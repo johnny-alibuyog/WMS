@@ -10,6 +10,8 @@ namespace AmpedBiz.Service.Dto
 
         public virtual string Name { get; set; }
 
+        public virtual string ContactPerson { get; set; }
+
         public virtual Address Address { get; set; }
 
         public virtual Contact Contact { get; set; }
@@ -23,6 +25,8 @@ namespace AmpedBiz.Service.Dto
 
         public virtual string Name { get; set; }
 
+        public virtual string ContactPerson { get; set; }
+
         public virtual Address Address { get; set; }
 
         public virtual Contact Contact { get; set; }
@@ -35,6 +39,8 @@ namespace AmpedBiz.Service.Dto
         public virtual string Code { get; set; }
 
         public virtual string Name { get; set; }
+
+        public virtual string ContactPerson { get; set; }
 
         public virtual Address Address { get; set; }
 

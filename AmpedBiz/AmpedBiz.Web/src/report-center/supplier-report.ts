@@ -1,6 +1,6 @@
 import { autoinject } from 'aurelia-framework';
 import { formatDate, formatNumber, emptyIfNull, contactAsString, addressAsTring } from '../services/formaters';
-import { ReportBuilder, Report, DocumentDefinition } from '../services/report-builder';
+import { Report, Content } from './report';
 import { Address } from '../common/models/address';
 import { Contact } from '../common/models/contact';
 
@@ -11,28 +11,22 @@ export interface SupplierReportModel {
 export interface SupplierReportModelItem {
   id?: string;
   name?: string;
+  contactPerson?: string;
   contact?: Contact;
   address?: Address;
 }
 
 @autoinject
-export class SupplierReport implements Report<SupplierReportModel> {
-  private readonly _reportBuilder: ReportBuilder;
+export class SupplierReport extends Report<SupplierReportModel> {
 
-  constructor(reportBuilder: ReportBuilder) {
-    this._reportBuilder = reportBuilder;
-  }
+  protected buildBody(data: SupplierReportModel): Promise<any[] | Content[]> {
 
-  public show(data: SupplierReportModel): void {
-    var document = this.buildDocument(data);
-    this._reportBuilder.build({ title: 'Suppliers', document: document });
-  }
-
-  private buildDocument(data: SupplierReportModel): DocumentDefinition {
     let orderTableBody: any[] = [
+
       [
-        { text: 'Supplier', style: 'tableHeader' },
-        { text: 'Contacts', style: 'tableHeader' },
+        { text: 'Supplier Name', style: 'tableHeader' },
+        { text: 'Contact Person', style: 'tableHeader' },
+        { text: 'Contact Number', style: 'tableHeader' },
         { text: 'Address', style: 'tableHeader' },
       ],
     ];
@@ -41,69 +35,29 @@ export class SupplierReport implements Report<SupplierReportModel> {
       data.items.forEach(x =>
         orderTableBody.push([
           { text: emptyIfNull(x.name), style: 'tableData' },
+          { text: emptyIfNull(x.contactPerson), style: 'tableData' },
           { text: contactAsString(x.contact), style: 'tableData' },
           { text: addressAsTring(x.address), style: 'tableData' },
         ])
       );
     }
 
-    return <DocumentDefinition>{
-      content:
-      [
-        {
-          text: 'Suppliers',
-          style: 'title'
-        },
-        {
-          table: {
-            headerRows: 1,
-            widths: ['*', 'auto', 'auto'],
-            body: orderTableBody
-          },
-          layout: 'lightHorizontalLines',
-          style: 'tableExample',
-        },
-      ],
-      styles:
+    let body = <Content[]>[
       {
-        title:
-        {
-          fontSize: 28,
-          bold: true,
-          margin: [0, 0, 0, 10]
-        },
-        header:
-        {
-          fontSize: 18,
-          bold: true,
-          margin: [0, 10, 0, 10]
-        },
-        label:
-        {
-          fontSize: 10,
-          alignment: 'right',
-        },
-        value:
-        {
-          fontSize: 10,
-          color: 'gray',
-          alignment: 'left',
-        },
-        tablePlain:
-        {
-          alignment: 'right',
-          margin: [0, 0, 0, 0]
-        },
-        tableHeader: {
-          bold: true,
-          fontSize: 10,
-          color: 'black'
-        },
-        tableData: {
-          fontSize: 10,
-          color: 'gray'
-        }
+        text: 'Suppliers',
+        style: 'title'
       },
-    };
+      {
+        table: {
+          headerRows: 1,
+          widths: ['*', 'auto', 'auto', 'auto'],
+          body: orderTableBody
+        },
+        layout: 'lightHorizontalLines',
+        style: 'tableExample',
+      },
+    ];
+
+    return  Promise.resolve(body);
   }
 }

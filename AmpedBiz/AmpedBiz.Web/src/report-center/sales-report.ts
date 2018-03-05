@@ -1,6 +1,6 @@
 import { autoinject } from 'aurelia-framework';
 import { formatDate, formatNumber, emptyIfNull } from '../services/formaters';
-import { ReportBuilder, Report, DocumentDefinition } from '../services/report-builder';
+import { Report, Content } from './report';
 
 export interface SalesReportModel {
   productName?: string;
@@ -24,90 +24,28 @@ export interface SalesReportPageDetailModelItem {
 }
 
 @autoinject
-export class SalesReport implements Report<SalesReportModel> {
-  private readonly _reportBuilder: ReportBuilder;
+export class SalesReport extends Report<SalesReportModel> {
 
-  constructor(reportBuilder: ReportBuilder) {
-    this._reportBuilder = reportBuilder;
-  }
+  protected buildBody(data: SalesReportModel): Promise<any[] | Content[]> {
+    
+    var body = <Content[]>[
+      {
+        text: 'Customer Sales On ' + formatDate(data.date),
+        style: 'title'
+      },
+      {
+        text: ' ',
+        style: 'spacer'
+      },
+      ...this.buildItems(data)
+    ];
 
-  public show(data: SalesReportModel): void {
-    var document = this.buildDocument(data);
-    this._reportBuilder.build({ title: 'Products', document: document });
-  }
-
-  private buildDocument(data: SalesReportModel): DocumentDefinition {
-    var document = <DocumentDefinition>{
-      content:
-        [
-          {
-            text: 'Sales On ' + formatDate(data.date),
-            style: 'title'
-          },
-          ...this.buildItems(data)
-        ],
-      styles:
-        {
-          title:
-            {
-              fontSize: 28,
-              bold: true,
-              margin: [0, 0, 0, 10]
-            },
-          header:
-            {
-              fontSize: 18,
-              bold: true,
-              margin: [0, 10, 0, 10]
-            },
-          itemHeaderLabel:
-            {
-              fontSize: 10,
-              bold: true
-            },
-          itemHeaderInfo:
-            {
-              fontSize: 12,
-              bold: true,
-              italics: true
-            },
-          label:
-            {
-              fontSize: 10,
-              alignment: 'right',
-            },
-          value:
-            {
-              fontSize: 10,
-              color: 'gray',
-              alignment: 'left',
-            },
-          tablePlain:
-            {
-              alignment: 'right',
-              margin: [0, 0, 0, 0]
-            },
-          tableHeader: {
-            bold: true,
-            fontSize: 10,
-            color: 'black'
-          },
-          tableData: {
-            fontSize: 10,
-            color: 'gray'
-          }
-        },
-    };
-
-    return document;
+    return Promise.resolve(body);
   }
 
   private buildItems(data: SalesReportModel): any[] {
     var items = data.items.map(x => {
       return [
-        {
-          text: '\n\n'
-        },
         {
           text: [
             { text: 'Product: ', style: 'itemHeaderLabel' },

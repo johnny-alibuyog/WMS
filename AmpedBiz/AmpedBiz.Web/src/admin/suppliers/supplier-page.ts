@@ -34,7 +34,7 @@ export class SupplierPage {
     this.pager.onPage = () => this.getPage();
   }
 
-  activate() {
+  public activate(): void {
     this.getPage();
   }
 

@@ -1,6 +1,6 @@
 import { autoinject } from 'aurelia-framework';
 import { formatDate, formatNumber, emptyIfNull } from '../services/formaters';
-import { ReportBuilder, Report, DocumentDefinition } from '../services/report-builder';
+import { Report, Content } from './report';
 import { OrderStatus } from '../common/models/order';
 
 export interface OrderReportModel {
@@ -23,21 +23,10 @@ export interface OrderReportItemModel {
   totalAmount?: number;
 }
 
-
 @autoinject
-export class OrderReport implements Report<OrderReportModel> {
-  private readonly _reportBuilder: ReportBuilder;
+export class OrderReport extends Report<OrderReportModel> {
 
-  constructor(reportBuilder: ReportBuilder) {
-    this._reportBuilder = reportBuilder;
-  }
-
-  public show(data: OrderReportModel): void {
-    var document = this.buildDocument(data);
-    this._reportBuilder.build({ title: 'Orders', document: document });
-  }
-
-  private buildDocument(data: OrderReportModel): DocumentDefinition {
+  protected async buildBody(data: OrderReportModel): Promise<any[] | Content[]> {
     let orderTableBody: any[] = [
       [
         { text: 'Customer', style: 'tableHeader' },
@@ -64,94 +53,53 @@ export class OrderReport implements Report<OrderReportModel> {
       );
     }
 
-    return <DocumentDefinition>{
-      content:
-      [
-        {
-          text: 'Orders',
-          style: 'title'
-        },
-        {
-          table:
+    let body = [
+      {
+        text: 'Customer Orders',
+        style: 'title'
+      },
+      {
+        table:
           {
             body:
-            [
               [
-                { text: 'Branch Name: ', style: 'label' },
-                { text: emptyIfNull(data.branchName), style: 'value' }
+                [
+                  { text: 'Branch Name: ', style: 'label' },
+                  { text: emptyIfNull(data.branchName), style: 'value' }
+                ],
+                [
+                  { text: 'Customer: ', style: 'label' },
+                  { text: emptyIfNull(data.customerName), style: 'value' }
+                ],
+                [
+                  { text: 'Pricing: ', style: 'label' },
+                  { text: emptyIfNull(data.pricingName), style: 'value' }
+                ],
+                [
+                  { text: 'From Date: ', style: 'label' },
+                  { text: formatDate(data.fromDate), style: 'value' }
+                ],
+                [
+                  { text: 'To Date: ', style: 'label' },
+                  { text: formatDate(data.toDate), style: 'value' }
+                ],
               ],
-              [
-                { text: 'Customer: ', style: 'label' },
-                { text: emptyIfNull(data.customerName), style: 'value' }
-              ],
-              [
-                { text: 'Pricing: ', style: 'label' },
-                { text: emptyIfNull(data.pricingName), style: 'value' }
-              ],
-              [
-                { text: 'From Date: ', style: 'label' },
-                { text: formatDate(data.fromDate), style: 'value' }
-              ],
-              [
-                { text: 'To Date: ', style: 'label' },
-                { text: formatDate(data.toDate), style: 'value' }
-              ],
-            ],
           },
-          style: 'tablePlain',
-          layout: 'noBorders',
-        },
-        {
-          table: {
-            headerRows: 1,
-            //widths: ['*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
-            widths: ['*', 'auto', 'auto', 'auto', 'auto', 'auto'],
-            body: orderTableBody
-          },
-          layout: 'lightHorizontalLines',
-          style: 'tableExample',
-        },
-      ],
-      styles:
-      {
-        title:
-        {
-          fontSize: 28,
-          bold: true,
-          margin: [0, 0, 0, 10]
-        },
-        header:
-        {
-          fontSize: 18,
-          bold: true,
-          margin: [0, 10, 0, 10]
-        },
-        label:
-        {
-          fontSize: 10,
-          alignment: 'right',
-        },
-        value:
-        {
-          fontSize: 10,
-          color: 'gray',
-          alignment: 'left',
-        },
-        tablePlain:
-        {
-          alignment: 'right',
-          margin: [0, 0, 0, 0]
-        },
-        tableHeader: {
-          bold: true,
-          fontSize: 10,
-          color: 'black'
-        },
-        tableData: {
-          fontSize: 10,
-          color: 'gray'
-        }
+        style: 'tablePlain',
+        layout: 'noBorders',
       },
-    };
+      {
+        table: {
+          headerRows: 1,
+          //widths: ['*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+          widths: ['*', 'auto', 'auto', 'auto', 'auto', 'auto'],
+          body: orderTableBody
+        },
+        layout: 'lightHorizontalLines',
+        style: 'tableExample',
+      },
+    ];
+
+    return Promise.resolve(body);
   }
 }

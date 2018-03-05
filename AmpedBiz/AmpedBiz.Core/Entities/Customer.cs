@@ -10,6 +10,8 @@ namespace AmpedBiz.Core.Entities
 
         public virtual string Name { get; set; }
 
+        public virtual string ContactPerson { get; set; }
+
         public virtual Pricing Pricing { get; set; }
 
         public virtual Contact Contact { get; set; }

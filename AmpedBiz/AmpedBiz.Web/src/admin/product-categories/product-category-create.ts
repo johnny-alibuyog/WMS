@@ -22,52 +22,42 @@ export class ProductCategoryCreate {
     this._notification = notification;
   }
 
-  activate(productCategory: ProductCategory) {
-    if (productCategory) {
-      this.header = "Edit Product Category";
-      this.isEdit = true;
-      this._api.productCategories.get(productCategory.id)
-        .then(data => this.productCategory = <ProductCategory>data)
-        .catch(error => this._notification.warning(error));
-    }
-    else {
-      this.header = "Create Product Category";
-      this.isEdit = false;
-      this.productCategory = <ProductCategory>{};
-    }
-  }
-
-  cancel() {
-    this._controller.cancel({ wasCancelled: true, output: null });
-  }
-
-  save() {
-    this._notification.confirm('Do you want to save?').whenClosed(result => {
-      if (result.output === ActionResult.Yes) {
-
-        if (this.isEdit) {
-
-          this._api.productCategories.update(this.productCategory)
-            .then(data => {
-              this._notification.success("Product Category has been saved.")
-                .whenClosed((data) => this._controller.ok(<ProductCategory>data));
-            })
-            .catch(error => {
-              this._notification.warning(error)
-            });
-        }
-        else {
-
-          this._api.productCategories.create(this.productCategory)
-            .then(data => {
-              this._notification.success("Product Category has been saved.")
-                .whenClosed((data) => this._controller.ok(<ProductCategory>data));
-            })
-            .catch(error => {
-              this._notification.warning(error)
-            });
-        }
+  public async activate(productCategory: ProductCategory): Promise<void> {
+    try {
+      if (productCategory) {
+        this.header = "Edit Product Category";
+        this.isEdit = true;
+        this.productCategory = await this._api.productCategories.get(productCategory.id);
       }
-    });
+      else {
+        this.header = "Create Product Category";
+        this.isEdit = false;
+        this.productCategory = <ProductCategory>{};
+      }
+
+    }
+    catch (error) {
+      this._notification.warning(error);
+    }
+  }
+
+  public cancel(): void {
+    this._controller.cancel();
+  }
+
+  public async save(): Promise<void> {
+    try {
+      let result = await this._notification.confirm('Do you want to save?').whenClosed();
+      if (result.output === ActionResult.Yes) {
+        let data = (this.isEdit)
+          ? await this._api.productCategories.update(this.productCategory)
+          : await this._api.productCategories.create(this.productCategory);
+        await this._notification.success("Product Category has been saved.").whenClosed();
+        this._controller.ok(<ProductCategory>data);
+      }
+    }
+    catch (error) {
+      this._notification.warning(error);
+    }
   }
 }

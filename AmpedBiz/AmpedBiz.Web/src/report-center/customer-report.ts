@@ -1,6 +1,6 @@
 import { autoinject } from 'aurelia-framework';
 import { formatDate, formatNumber, emptyIfNull, contactAsString, addressAsTring } from '../services/formaters';
-import { ReportBuilder, Report, DocumentDefinition } from '../services/report-builder';
+import { Report, Content } from './report';
 import { Address } from '../common/models/address';
 import { Contact } from '../common/models/contact';
 
@@ -11,6 +11,7 @@ export interface CustomerReportModel {
 export interface CustomerReportModelItem {
   id?: string;
   name?: string;
+  contactPerson?: string;
   creditLimitAmount?: number;
   contact?: Contact;
   officeAddress?: Address;
@@ -18,26 +19,15 @@ export interface CustomerReportModelItem {
 }
 
 @autoinject
-export class CustomerReport implements Report<CustomerReportModel> {
-  private readonly _reportBuilder: ReportBuilder;
-
-  constructor(reportBuilder: ReportBuilder) {
-    this._reportBuilder = reportBuilder;
-  }
-
-  public show(data: CustomerReportModel): void {
-    var document = this.buildDocument(data);
-    this._reportBuilder.build({ title: 'Customers', document: document });
-  }
-
-  private buildDocument(data: CustomerReportModel): DocumentDefinition {
+export class CustomerReport extends Report<CustomerReportModel> {
+  protected async buildBody(data: CustomerReportModel): Promise<any[] | Content[]> {
     let orderTableBody: any[] = [
       [
         { text: 'Customer', style: 'tableHeader' },
+        { text: 'Contact Person', style: 'tableHeader' },
         { text: 'Credit Limit', style: 'tableHeader', alignment: 'right' },
         { text: 'Contacts', style: 'tableHeader' },
-        { text: 'Office Address', style: 'tableHeader' },
-        { text: 'Billing Address', style: 'tableHeader' },
+        { text: 'Address', style: 'tableHeader' },
       ],
     ];
 
@@ -45,71 +35,30 @@ export class CustomerReport implements Report<CustomerReportModel> {
       data.items.forEach(x =>
         orderTableBody.push([
           { text: emptyIfNull(x.name), style: 'tableData' },
+          { text: emptyIfNull(x.contactPerson), style: 'tableData' },
           { text: formatNumber(x.creditLimitAmount), style: 'tableData', alignment: 'right' },
           { text: contactAsString(x.contact), style: 'tableData' },
           { text: addressAsTring(x.officeAddress), style: 'tableData' },
-          { text: addressAsTring(x.billingAddress), style: 'tableData' },
         ])
       );
     }
 
-    return <DocumentDefinition>{
-      content:
-      [
-        {
-          text: 'Customers',
-          style: 'title'
-        },
-        {
-          table: {
-            headerRows: 1,
-            widths: ['*', 'auto', 'auto', 'auto', 'auto'],
-            body: orderTableBody
-          },
-          layout: 'lightHorizontalLines',
-          style: 'tableExample',
-        },
-      ],
-      styles:
+    let body = [
       {
-        title:
-        {
-          fontSize: 28,
-          bold: true,
-          margin: [0, 0, 0, 10]
-        },
-        header:
-        {
-          fontSize: 18,
-          bold: true,
-          margin: [0, 10, 0, 10]
-        },
-        label:
-        {
-          fontSize: 10,
-          alignment: 'right',
-        },
-        value:
-        {
-          fontSize: 10,
-          color: 'gray',
-          alignment: 'left',
-        },
-        tablePlain:
-        {
-          alignment: 'right',
-          margin: [0, 0, 0, 0]
-        },
-        tableHeader: {
-          bold: true,
-          fontSize: 10,
-          color: 'black'
-        },
-        tableData: {
-          fontSize: 10,
-          color: 'gray'
-        }
+        text: 'Customers',
+        style: 'title'
       },
-    };
+      {
+        table: {
+          headerRows: 1,
+          widths: ['*', 'auto', 'auto', 'auto', 'auto'],
+          body: orderTableBody
+        },
+        layout: 'lightHorizontalLines',
+        style: 'tableExample',
+      },
+    ];
+
+    return Promise.resolve(body);
   }
 }

@@ -158,13 +158,14 @@ export class ProductReportPageItem {
   productName?: string;
   categoryName?: string;
   supplierName?: string;
+  onHandUnit?: string;
   onHandValue?: number;
   basePriceAmount?: number;
   wholesalePriceAmount?: number;
   retailPriceAmount?: number;
   totalBasePriceAmount?: number;
-  totalDistributorPriceAmount?: number;
-  totalListPriceAmount?: number;
+  totalWholesalePriceAmount?: number;
+  totalRetailPriceAmount?: number;
 }
 
 export class ProductInventoryFacade {

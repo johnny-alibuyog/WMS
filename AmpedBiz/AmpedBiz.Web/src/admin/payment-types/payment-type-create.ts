@@ -22,51 +22,41 @@ export class PaymentTypeCreate {
     this._service = service;
   }
 
-  activate(paymentType: PaymentType) {
-    if (paymentType) {
-      this.header = "Edit Payment Type";
-      this.isEdit = true;
-      this._service.get(paymentType.id)
-        .then(data => this.paymentType = <PaymentType>data)
-        .catch(error => this._notification.warning(error));
-    }
-    else {
-      this.header = "Create Payment Type";
-      this.isEdit = false;
-      this.paymentType = <PaymentType>{};
-    }
-  }
-
-  cancel() {
-    this._controller.cancel({ wasCancelled: true, output: null });
-  }
-
-  save() {
-    this._notification.confirm('Do you want to save?').whenClosed(result => {
-      if (result.output === ActionResult.Yes) {
-
-        if (this.isEdit) {
-          this._service.update(this.paymentType)
-            .then(data => {
-              this._notification.success("Payment Type has been saved.")
-                .then((data) => this._controller.ok({ wasCancelled: true, output: <PaymentType>data }));
-            })
-            .catch(error => {
-              this._notification.warning(error)
-            });
-        }
-        else {
-
-          this._service.create(this.paymentType)
-            .then(data => {
-              this._notification.success("Payment Type has been saved.")
-                .then((data) => this._controller.ok({ wasCancelled: true, output: <PaymentType>data }));
-            })
-            .catch(error => {
-              this._notification.warning(error)
-            });
-        }
+  public async activate(paymentType: PaymentType): Promise<void> {
+    try {
+      if (paymentType) {
+        this.header = "Edit Payment Type";
+        this.isEdit = true;
+        this.paymentType = await this._service.get(paymentType.id);
       }
-    });
+      else {
+        this.header = "Create Payment Type";
+        this.isEdit = false;
+        this.paymentType = <PaymentType>{};
+      }
+    }
+    catch (error) {
+      this._notification.warning(error);
+    }
+  }
+
+  public cancel(): void {
+    this._controller.cancel();
+  }
+
+  public async save(): Promise<void> {
+    try {
+      let result = await this._notification.confirm('Do you want to save?').whenClosed();
+      if (result.output === ActionResult.Yes) {
+        let data = (this.isEdit)
+          ? await this._service.update(this.paymentType)
+          : await this._service.create(this.paymentType);
+        await this._notification.success("Payment Type has been saved.").whenClosed();
+        this._controller.ok(<PaymentType>data)
+      }
+    }
+    catch (error) {
+      this._notification.warning(error)
+    }
   }
 }

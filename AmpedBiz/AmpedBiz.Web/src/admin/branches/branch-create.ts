@@ -86,27 +86,21 @@ export class BranchCreate {
   }
 
   public cancel(): void {
-    this._dialogController.cancel({ wasCancelled: true, output: null });
+    this._dialogController.cancel();
   }
 
   public async save(): Promise<void> {
     try {
-      this._notification.confirm('Do you want to save?').whenClosed(async result => {
-        if (result.output === ActionResult.Yes) {
-
-          if (this.isEdit) {
-            let data = await this._api.branches.update(this.branch);
-            this._notification.success("Branch  has been saved.")
-              .whenClosed((data) => this._dialogController.ok({ wasCancelled: true, output: <Branch>data }));
-          }
-          else {
-            let data = await this._api.branches.create(this.branch)
-            this._notification.success("Branch has been saved.")
-              .whenClosed((data) => this._dialogController.ok({ wasCancelled: true, output: <Branch>data }));
-          }
-        }
-      });
-    } catch (error) {
+      let result = await this._notification.confirm("Do you want to save?").whenClosed();
+      if (result.output === ActionResult.Yes) {
+        let data = (this.isEdit)
+          ? await this._api.branches.update(this.branch)
+          : await this._api.branches.create(this.branch);
+        await this._notification.success("Branch  has been saved.").whenClosed();
+        this._dialogController.ok(data);
+      }
+    }
+    catch (error) {
       this._notification.warning(error)
     }
   }

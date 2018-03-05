@@ -21,7 +21,7 @@ export class Override {
     this._notification = notification;
   }
 
-  override() {
+  public override(): void {
     if (this.user.username && this.user.password) {
       this._auth.override(this.user)
         .then(data => this._controller.ok({ output: <User>data }))
@@ -33,7 +33,7 @@ export class Override {
   }
 
   cancel() {
-    this._controller.cancel({ wasCancelled: true, output: null });
+    this._controller.cancel();
   }
 
   activate() {

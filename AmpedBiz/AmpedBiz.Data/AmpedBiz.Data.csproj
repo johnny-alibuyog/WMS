@@ -172,7 +172,8 @@
     <Compile Include="Seeders\DefaultDataSeeders\_023_DefaultCustomerSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_000_BranchSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_011_CurrencySeeder.cs" />
-    <Compile Include="Seeders\DummyDataSeeders\_004_CustomerSeeder.cs" />
+    <Compile Include="Seeders\DummyDataSeeders\_001_UnitOfMeasureSeeder.cs" />
+    <Compile Include="Seeders\DummyDataSeeders\_005_CustomerSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_010_PurchaseOrderSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_012_ReturnSeeder.cs" />
     <Compile Include="Seeders\IDefaultDataSeeder.cs" />
@@ -184,11 +185,11 @@
     <Compile Include="Seeders\DefaultDataSeeders\_012_PaymentTypeSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_013_PricingSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_014_ProductCategorySeeder.cs" />
-    <Compile Include="Seeders\DummyDataSeeders\_002_ProductSeeder.cs" />
+    <Compile Include="Seeders\DummyDataSeeders\_003_ProductSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_003_RoleSeeder.cs" />
-    <Compile Include="Seeders\DummyDataSeeders\_003_ShipperSeeder.cs" />
+    <Compile Include="Seeders\DummyDataSeeders\_004_ShipperSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_001_SupplierSeeder.cs" />
-    <Compile Include="Seeders\DummyDataSeeders\_005_UserSeeder.cs" />
+    <Compile Include="Seeders\DummyDataSeeders\_006_UserSeeder.cs" />
     <Compile Include="EntityDefinitions\AddressDefenition.cs" />
     <Compile Include="EntityDefinitions\BranchDefinition.cs" />
     <Compile Include="EntityDefinitions\CurrencyDefenition.cs" />
