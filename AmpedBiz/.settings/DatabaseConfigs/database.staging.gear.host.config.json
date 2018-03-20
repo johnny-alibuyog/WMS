@@ -6,7 +6,11 @@
   "Username": "ampbizdb",
   "Password": "6jPbwQtZ8N52WRJ5rEWv2g==",
   "BatchSize": 50,
-  "UseDummyData": false,
   "RecreateDb": false,
-  "DefaultSeedDataPath": ".\\Data\\Default"
+  "Seeder": {
+    "Enabled": false,
+    "UseDummyData": false,
+    "UseExternalFiles": false,
+    "ExternalFilesPath": ".\\Data\\ImportFiles\\Nicon"
+  }
 }

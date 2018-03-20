@@ -284,4 +284,36 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? TotalRetailPriceAmount => this.OnHandValue * this.RetailPriceAmount;
     }
+
+    public class ProductSalesReportPageItem
+    {
+        public int Year { get; set; }
+
+        public int Month { get; set; }
+
+        public int Day { get; set; }
+
+        public DateTime? CompletedOn => new DateTime(this.Year, this.Month, this.Day);
+
+        public string BranchName { get; set; }
+
+        public string SupplierName { get; set; }
+
+        public string CategoryName { get; set; }
+
+        public string ProductName { get; set; }
+
+        public string QuantityUnit { get; set; }
+
+        public decimal? QuantityValue { get; set; }
+
+        public decimal? UnitPriceAmount { get; set; }
+
+        public decimal? DiscountAmount { get; set; }
+
+        public decimal? ExtendedPriceAmount { get; set; }
+
+        public decimal? TotalPriceAmount { get; set; }
+    }
+
 }

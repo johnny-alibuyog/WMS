@@ -1,5 +1,5 @@
 import { autoinject } from 'aurelia-framework';
-import { Customer, CustomerReportPageItem } from '../common/models/customer'
+import { Customer, CustomerReportPageItem, CustomerSalesReportPageItem } from '../common/models/customer'
 import { PageRequest, PagerResponse } from '../common/models/paging';
 import { ServiceBase } from './service-base'
 import { HttpClientFacade } from './http-client-facade';
@@ -21,5 +21,11 @@ export class CustomerService extends ServiceBase<Customer> {
     var url = this._resouce + '/report/page';
     return this._httpClient.post(url, page)
       .then(response => <PagerResponse<CustomerReportPageItem>>response);
+  }
+
+  getCustomerSalesReportPage(page: PageRequest): Promise<PagerResponse<CustomerSalesReportPageItem>> {
+    var url = this._resouce + '/sales-report/page';
+    return this._httpClient.post(url, page)
+      .then(response => <PagerResponse<CustomerSalesReportPageItem>>response);
   }
 }

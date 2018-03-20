@@ -1,10 +1,8 @@
 ﻿using AmpedBiz.Data;
-using AmpedBiz.Data.Seeders;
-using AmpedBiz.Service.Host.Bootstrap.DependencInjection.Modules.Configurations.Database;
+using AmpedBiz.Test.Bootstrap.DependencInjection.Modules.Configurations.Database;
 using AmpedBiz.Tests.Bootstrap.Providers;
 using Autofac;
 using NHibernate.Validator.Engine;
-using System;
 
 namespace AmpedBiz.Tests.Bootstrap.DependencInjection.Modules
 {
@@ -29,11 +27,6 @@ namespace AmpedBiz.Tests.Bootstrap.DependencInjection.Modules
                     .GetSessionFactory()
                 )
                 .SingleInstance();
-
-            builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
-                .Where(type => type.IsAssignableTo<ISeeder>())
-                .AsImplementedInterfaces()
-                .AsSelf();
         }
     }
 }

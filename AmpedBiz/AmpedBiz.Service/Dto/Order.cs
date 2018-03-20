@@ -147,6 +147,8 @@ namespace AmpedBiz.Service.Dto
 
         public string CustomerName { get; set; }
 
+        public string InvoiceNumber { get; set; }
+
         public string PricingName { get; set; }
 
         public DateTime? OrderedOn { get; set; }
@@ -156,6 +158,10 @@ namespace AmpedBiz.Service.Dto
         public OrderStatus Status { get; set; }
 
         public decimal TotalAmount { get; set; }
+
+        public decimal PaidAmount { get; set; }
+
+        public decimal BalanceAmount => this.TotalAmount - this.PaidAmount;
     }
 
     public class SalesReportPageItem

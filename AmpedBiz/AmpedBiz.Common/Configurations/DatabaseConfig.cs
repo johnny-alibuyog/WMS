@@ -17,41 +17,23 @@ namespace AmpedBiz.Common.Configurations
     {
         public static DatabaseConfig Instance = Create();
 
-        public virtual DatabaseProvider Database { get; set; }
+        public DatabaseProvider Database { get; set; }
 
-        public virtual int Port { get; set; }
+        public int Port { get; set; }
 
-        public virtual string HostServer { get; set; }
+        public string HostServer { get; set; }
 
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
 
-        public virtual string Username { get; set; }
+        public string Username { get; set; }
 
-        public virtual string Password { get; set; }
+        public string Password { get; set; }
 
-        public virtual short BatchSize { get; set; }
+        public short BatchSize { get; set; }
 
-        public virtual bool UseDummyData { get; set; }
+        public bool RecreateDb { get; set; }
 
-        public virtual bool RecreateDb { get; set; }
-
-        public virtual string DefaultSeedDataPath { get; set; }
-
-        public virtual string GetDefaultSeederDataAbsolutePath()
-        {
-            return Path.Combine(this.AssemblyPath, this.DefaultSeedDataPath);
-        }
-
-        private string AssemblyPath
-        {
-            get
-            {
-                var codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                var uri = new UriBuilder(codeBase);
-                var path = Uri.UnescapeDataString(uri.Path);
-                return Path.GetDirectoryName(path);
-            }
-        }
+        public SeederConfig Seeder { get; set; } = new SeederConfig();
 
         public DatabaseConfig()
         {
@@ -63,9 +45,14 @@ namespace AmpedBiz.Common.Configurations
             //this.Username = "ampbizdb";
             //this.Password = "123!@#qwe";
             //this.BatchSize = 50;
-            //this.UseDummyData = true;
             //this.RecreateDb = true;
-            //this.DefaultSeedDataPath = ".\\Data\\Default";
+            //this.Seeder = new SeederConfig()
+            //{
+            //    Enabled = true,
+            //    UseDummyData = true,
+            //    UseExternalFiles = true,
+            //    ExternalFilesPath = ".\\Data\\Default"
+            //};
 
 
             // staging.mywindowshosting
@@ -76,9 +63,14 @@ namespace AmpedBiz.Common.Configurations
             //this.Username = "a123b7_ampbiz";
             //this.Password = "123!@#qwe";
             //this.BatchSize = 50;
-            //this.UseDummyData = true;
             //this.RecreateDb = true;
-            //this.DefaultSeedDataPath = ".\\Data\\Default";
+            //this.Seeder = new SeederConfig()
+            //{
+            //    Enabled = true,
+            //    UseDummyData = true,
+            //    UseExternalFiles = true,
+            //    ExternalFilesPath = ".\\Data\\Default"
+            //};
 
             // local.mysql
             this.Database = DatabaseProvider.MySql;
@@ -88,9 +80,14 @@ namespace AmpedBiz.Common.Configurations
             this.Username = "root";
             this.Password = "123!@#qwe";
             this.BatchSize = 50;
-            this.UseDummyData = true;
             this.RecreateDb = true;
-            this.DefaultSeedDataPath = ".\\Data\\Default";
+            this.Seeder = new SeederConfig()
+            {
+                Enabled = true,
+                UseDummyData = true,
+                UseExternalFiles = true,
+                ExternalFilesPath = ".\\Data\\Default"
+            };
 
             // local.postgres
             //this.Database = DatabaseProvider.Postgres;
@@ -100,9 +97,14 @@ namespace AmpedBiz.Common.Configurations
             //this.Username = "postgres";
             //this.Password = "123!@#qwe";
             //this.BatchSize = 50;
-            //this.UseDummyData = true;
             //this.RecreateDb = true;
-            //this.DefaultSeedDataPath = ".\\Data\\Default";
+            //this.Seeder = new SeederConfig()
+            //{
+            //    Enabled = true,
+            //    UseDummyData = true,
+            //    UseExternalFiles = true,
+            //    ExternalFilesPath = ".\\Data\\Default"
+            //};
         }
 
         private static DatabaseConfig Create()
@@ -134,6 +136,27 @@ namespace AmpedBiz.Common.Configurations
                 Directory.CreateDirectory(workingPath);
 
             return workingPath;
+        }
+
+        public class SeederConfig
+        {
+            public virtual bool Enabled { get; set; }
+
+            public virtual bool UseDummyData { get; set; }
+
+            public virtual bool UseExternalFiles { get; set; }
+
+            public virtual string ExternalFilesPath { get; set; }
+
+            public virtual string GetExternalFilesPath() => Path.Combine(this.AssemblyPath(), this.ExternalFilesPath);
+
+            private string AssemblyPath()
+            {
+                var codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                var uri = new UriBuilder(codeBase);
+                var path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
+            }
         }
     }
 }

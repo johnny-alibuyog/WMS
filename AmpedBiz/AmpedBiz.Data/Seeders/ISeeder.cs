@@ -2,6 +2,7 @@
 {
     public interface ISeeder
     {
+        bool IsSourceExternalFile { get; }
         void Seed();
     }
 }

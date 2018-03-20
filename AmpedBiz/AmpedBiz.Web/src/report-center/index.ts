@@ -11,7 +11,7 @@ export class Index {
     config.title = "Report Center";
     config.map([
       {
-        route: ['', 'order-report-page'],
+        route: ['order-report-page'],
         name: 'order-report-page',
         moduleId: './order-report-page',
         nav: true,
@@ -26,9 +26,9 @@ export class Index {
         },
       },
       {
-        route: ['sales-report-page'],
-        name: 'sales-report-page',
-        moduleId: './sales-report-page',
+        route: ['customer-sales-report-page'],
+        name: 'customer-sales-report-page',
+        moduleId: './customer-sales-report-page',
         nav: true,
         title: 'Customer Sales',
         settings: {
@@ -46,6 +46,21 @@ export class Index {
         moduleId: './product-report-page',
         nav: true,
         title: 'Products Listings',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+            ]
+          }
+        },
+      },
+      {
+        route: ['product-sales-report-page'],
+        name: 'product-sales-report-page',
+        moduleId: './product-sales-report-page',
+        nav: true,
+        title: 'Products Sales',
         settings: {
           auth: <AuthSettings>{
             roles: [
@@ -99,7 +114,11 @@ export class Index {
             ]
           }
         },
-      }
+      },
+      {
+        route: [""],
+        redirect: "order-report-page"
+      },
     ]);
 
     this.router = router;

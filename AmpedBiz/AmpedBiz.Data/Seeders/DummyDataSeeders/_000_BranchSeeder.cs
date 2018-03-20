@@ -18,6 +18,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
             this._sessionFactory = sessionFactory;
         }
 
+        public bool IsSourceExternalFile => false;
+
         public void Seed()
         {
             var data = new List<Branch>();

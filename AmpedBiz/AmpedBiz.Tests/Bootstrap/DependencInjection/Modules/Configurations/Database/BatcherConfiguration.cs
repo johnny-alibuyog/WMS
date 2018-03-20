@@ -2,7 +2,7 @@
 using NHibernate.AdoNet;
 using NHibernate.Cfg;
 
-namespace AmpedBiz.Service.Host.Bootstrap.DependencInjection.Modules.Configurations.Database
+namespace AmpedBiz.Test.Bootstrap.DependencInjection.Modules.Configurations.Database
 {
     // https://github.com/jraristi/NHibernate.PostgresBatcher
     internal static class BatcherConfiguration

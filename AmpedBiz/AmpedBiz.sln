@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Common", "AmpedBiz.Common\AmpedBiz.Common.csproj", "{B7363F6D-0C87-4352-98CC-8798C968E7B5}"
 EndProject
@@ -15,12 +15,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Tests", "AmpedBiz.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".tasks", ".tasks", "{70BE7ED3-4A64-47C4-96DB-9B96FA08846D}"
 	ProjectSection(SolutionItems) = preProject
+		32-bit-test.ps1 = 32-bit-test.ps1
 		build.cake = build.cake
 		build.ps1 = build.ps1
 		cake.config = cake.config
 		deploy-gear.host.ps1 = deploy-gear.host.ps1
 		deploy-gear.host.service.host.ps1 = deploy-gear.host.service.host.ps1
 		deploy-gear.host.web.ps1 = deploy-gear.host.web.ps1
+		run-app-data.seeder.ps1 = run-app-data.seeder.ps1
 		run-app-service.host.ps1 = run-app-service.host.ps1
 		run-app-web.ps1 = run-app-web.ps1
 		run-test.ps1 = run-test.ps1
@@ -53,6 +55,21 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Test.Unit", "AmpedBiz.Test.Unit\AmpedBiz.Test.Unit.csproj", "{6A332A94-7B93-4A2B-B6DF-35CB496EA799}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FE60FB7D-11A2-4A8E-ACC6-0C3217EE8BFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Data.Seeder", "AmpedBiz.Data.Seeder\AmpedBiz.Data.Seeder.csproj", "{2D3D68A8-AE82-47A7-ADD0-C4422BA23C1F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".data", ".data", "{6FC46504-330B-4BFA-AA46-13CE64E12B3A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ImportFiles", "ImportFiles", "{36B35E72-4C26-48D8-A078-84C688570CAA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nicon", "Nicon", "{DEA4A980-D975-4D7D-A6FA-49072826516B}"
+	ProjectSection(SolutionItems) = preProject
+		.data\ImportFiles\Nicon\default_customers.xlsx = .data\ImportFiles\Nicon\default_customers.xlsx
+		.data\ImportFiles\Nicon\default_ending_inventory.xlsx = .data\ImportFiles\Nicon\default_ending_inventory.xlsx
+		.data\ImportFiles\Nicon\default_products.xlsx = .data\ImportFiles\Nicon\default_products.xlsx
+		.data\ImportFiles\Nicon\default_suppliers.xlsx = .data\ImportFiles\Nicon\default_suppliers.xlsx
+		.data\ImportFiles\Nicon\default_uom.xlsx = .data\ImportFiles\Nicon\default_uom.xlsx
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,6 +109,10 @@ Global
 		{6A332A94-7B93-4A2B-B6DF-35CB496EA799}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A332A94-7B93-4A2B-B6DF-35CB496EA799}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A332A94-7B93-4A2B-B6DF-35CB496EA799}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D3D68A8-AE82-47A7-ADD0-C4422BA23C1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D3D68A8-AE82-47A7-ADD0-C4422BA23C1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D3D68A8-AE82-47A7-ADD0-C4422BA23C1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D3D68A8-AE82-47A7-ADD0-C4422BA23C1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,5 +123,10 @@ Global
 		{BC11990C-B580-4CBB-BF7D-A247CE0DCE04} = {41FDA416-8041-40EE-A524-003221C39330}
 		{FDB8EBA6-B55D-4D57-9DF6-0CD66AFDD73D} = {FE60FB7D-11A2-4A8E-ACC6-0C3217EE8BFD}
 		{6A332A94-7B93-4A2B-B6DF-35CB496EA799} = {FE60FB7D-11A2-4A8E-ACC6-0C3217EE8BFD}
+		{36B35E72-4C26-48D8-A078-84C688570CAA} = {6FC46504-330B-4BFA-AA46-13CE64E12B3A}
+		{DEA4A980-D975-4D7D-A6FA-49072826516B} = {36B35E72-4C26-48D8-A078-84C688570CAA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {844E83D7-B7EF-482E-B46C-22561C5A782A}
 	EndGlobalSection
 EndGlobal

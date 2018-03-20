@@ -13,7 +13,7 @@ export class SalesReportPage {
   private readonly _report: SalesReport;
   private readonly _notification: NotificationService;
 
-  public header: string = ' Sales Report';
+  public header: string = ' Customer Sales';
 
   public filter: Filter;
   public sorter: Sorter;

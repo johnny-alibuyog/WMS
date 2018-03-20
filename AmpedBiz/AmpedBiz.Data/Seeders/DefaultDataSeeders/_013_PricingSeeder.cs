@@ -17,6 +17,8 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             this._sessionFactory = sessionFactory;
         }
 
+        public bool IsSourceExternalFile => false;
+
         public void Seed()
         {
             using (var session = _sessionFactory.RetrieveSharedSession(_context))

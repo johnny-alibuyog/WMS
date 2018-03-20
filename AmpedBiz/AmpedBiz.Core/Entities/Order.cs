@@ -51,7 +51,7 @@ namespace AmpedBiz.Core.Entities
         public virtual Money Discount { get; internal protected set; }
 
         public virtual Money Returned { get; internal protected set; }
-
+        
         public virtual Money SubTotal { get; internal protected set; }
 
         public virtual Money Total { get; internal protected set; }

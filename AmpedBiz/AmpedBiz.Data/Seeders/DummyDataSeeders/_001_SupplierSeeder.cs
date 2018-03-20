@@ -18,15 +18,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
             this._sessionFactory = sessionFactory;
         }
 
-        public bool IsDummyData
-        {
-            get { return true; }
-        }
-
-        public int ExecutionOrder
-        {
-            get { return 6; }
-        }
+        public bool IsSourceExternalFile => false;
 
         public void Seed()
         {

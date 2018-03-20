@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <UseMsdeployExe>true</UseMsdeployExe>
@@ -49,7 +49,7 @@
     <IncludeIisSettings>false</IncludeIisSettings>
     <DeployEncryptKey>Encryption password is used only if any deployment setting is marked as secure</DeployEncryptKey>
   </PropertyGroup>
-  <PropertyGroup>
+  <!--<PropertyGroup>
     <CopyAllFilesToSingleFolderForPackageDependsOn>
       CustomCollectFiles;
       $(CopyAllFilesToSingleFolderForPackageDependsOn);
@@ -66,7 +66,7 @@
         <DestinationRelativePath>%(Filename)%(Extension)</DestinationRelativePath>
       </FilesForPackagingFromProject>
     </ItemGroup>
-  </Target>
+  </Target>-->
   <ItemGroup>
     <Reference Include="Autofac, Version=4.6.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.4.6.2\lib\net45\Autofac.dll</HintPath>
@@ -236,6 +236,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Bootstrap\DependencInjection\Modules\MapperModule.cs" />
+    <Compile Include="Bootstrap\DependencInjection\Modules\SeederModule.cs" />
     <Compile Include="Context\RequestContext.cs" />
     <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
@@ -317,19 +318,28 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Data\Default\default_customers.xlsx">
+    <Content Include="..\.data\importfiles\nicon\default_customers.xlsx">
+      <Link>Data\ImportFiles\Nicon\default_customers.xlsx</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Default\default_products.xlsx">
+    <Content Include="..\.data\importfiles\nicon\default_ending_inventory.xlsx">
+      <Link>Data\ImportFiles\Nicon\default_ending_inventory.xlsx</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Default\default_suppliers.xlsx">
+    <Content Include="..\.data\importfiles\nicon\default_products.xlsx">
+      <Link>Data\ImportFiles\Nicon\default_products.xlsx</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Default\default_ending_inventory.xlsx">
+    <Content Include="..\.data\importfiles\nicon\default_suppliers.xlsx">
+      <Link>Data\ImportFiles\Nicon\default_suppliers.xlsx</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Default\default_uom.xlsx">
+    <Content Include="..\.data\importfiles\nicon\default_uom.xlsx">
+      <Link>Data\ImportFiles\Nicon\default_uom.xlsx</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\.settings\DatabaseConfigs\database.config.json">
+      <Link>database.config.json</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="NLog.xsd">
@@ -364,7 +374,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>49561</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
@@ -387,9 +397,13 @@
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="BeforeBuild">
+    <ItemGroup>
+      <DatabaseConfig Include="..\.settings\DatabaseConfigs\database.config.json"></DatabaseConfig>
+    </ItemGroup>
+    <Copy SourceFiles="@(DatabaseConfig)" DestinationFolder=".\" SkipUnchangedFiles="True" OverwriteReadOnlyFiles="True" />
+  </Target>
 </Project>

@@ -6,7 +6,11 @@
   "Username": "root",
   "Password": "6jPbwQtZ8N52WRJ5rEWv2g==",
   "BatchSize": 50,
-  "UseDummyData": false,
   "RecreateDb": false,
-  "DefaultSeedDataPath": ".\\Data\\Default"
+  "Seeder": {
+    "Enabled": true,
+    "UseDummyData": false,
+    "UseExternalFiles": false,
+    "ExternalFilesPath": ".\\Data\\ImportFiles\\Nicon"
+  }
 }

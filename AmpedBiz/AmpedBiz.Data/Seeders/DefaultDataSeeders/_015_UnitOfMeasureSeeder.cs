@@ -22,15 +22,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             this._sessionFactory = sessionFactory;
         }
 
-        public bool IsDummyData
-        {
-            get { return false; }
-        }
-
-        public int ExecutionOrder
-        {
-            get { return 7; }
-        }
+        public bool IsSourceExternalFile => true;
 
         public void Seed()
         {
@@ -61,7 +53,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
         {
             var uoms = new List<UnitOfMeasure>();
 
-            var filename = Path.Combine(DatabaseConfig.Instance.GetDefaultSeederDataAbsolutePath(), @"default_uom.xlsx");
+            var filename = Path.Combine(DatabaseConfig.Instance.Seeder.GetExternalFilesPath(), @"default_uom.xlsx");
 
             if (File.Exists(filename))
             {
@@ -81,7 +73,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
         {
             var uoms = new List<UnitOfMeasure>();
 
-            var filename = Path.Combine(DatabaseConfig.Instance.GetDefaultSeederDataAbsolutePath(), @"default_products.xlsx");
+            var filename = Path.Combine(DatabaseConfig.Instance.Seeder.GetExternalFilesPath(), @"default_products.xlsx");
 
             if (File.Exists(filename))
             {

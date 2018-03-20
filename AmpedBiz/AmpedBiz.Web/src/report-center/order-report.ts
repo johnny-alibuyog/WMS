@@ -9,6 +9,7 @@ export interface OrderReportModel {
   pricingName?: string;
   fromDate?: Date;
   toDate?: Date;
+  status?: string,
   items: OrderReportItemModel[];
 }
 
@@ -16,11 +17,14 @@ export interface OrderReportItemModel {
   id?: string;
   branchName?: string;
   customerName?: string;
+  invoiceNumber?: string
   pricingName?: string;
   orderedOn?: Date;
   orderedByName?: string;
   status?: OrderStatus;
   totalAmount?: number;
+  paidAmount?: number;
+  balanceAmount?: number;
 }
 
 @autoinject
@@ -29,26 +33,30 @@ export class OrderReport extends Report<OrderReportModel> {
   protected async buildBody(data: OrderReportModel): Promise<any[] | Content[]> {
     let orderTableBody: any[] = [
       [
-        { text: 'Customer', style: 'tableHeader' },
-        { text: 'Branch', style: 'tableHeader' },
-        //{ text: 'Pricing', style: 'tableHeader' },
-        { text: 'Staff', style: 'tableHeader' },
         { text: 'Date', style: 'tableHeader' },
+        { text: 'Branch', style: 'tableHeader' },
+        { text: 'Customer', style: 'tableHeader' },
+        { text: 'Invoice', style: 'tableHeader' },
+        { text: 'Pricing', style: 'tableHeader' },
+        { text: 'Staff', style: 'tableHeader' },
         { text: 'Status', style: 'tableHeader' },
         { text: 'Total', style: 'tableHeader', alignment: 'right' },
+        { text: 'Balance', style: 'tableHeader', alignment: 'right' },
       ],
     ];
 
     if (data && data.items && data.items.length > 0) {
       data.items.forEach(x =>
         orderTableBody.push([
-          { text: emptyIfNull(x.customerName), style: 'tableData' },
-          { text: emptyIfNull(x.branchName), style: 'tableData' },
-          //{ text: emptyIfNull(x.pricingName), style: 'tableData' },
-          { text: emptyIfNull(x.orderedByName), style: 'tableData' },
           { text: formatDate(x.orderedOn), style: 'tableData' },
+          { text: emptyIfNull(x.branchName), style: 'tableData' },
+          { text: emptyIfNull(x.customerName), style: 'tableData' },
+          { text: emptyIfNull(x.invoiceNumber), style: 'tableData' },
+          { text: emptyIfNull(x.pricingName), style: 'tableData' },
+          { text: emptyIfNull(x.orderedByName), style: 'tableData' },
           { text: OrderStatus[x.status], style: 'tableData' },
           { text: formatNumber(x.totalAmount), style: 'tableData', alignment: 'right' },
+          { text: formatNumber(x.balanceAmount), style: 'tableData', alignment: 'right' },
         ])
       );
     }
@@ -59,40 +67,66 @@ export class OrderReport extends Report<OrderReportModel> {
         style: 'title'
       },
       {
-        table:
+        columns: [
           {
-            body:
-              [
-                [
-                  { text: 'Branch Name: ', style: 'label' },
-                  { text: emptyIfNull(data.branchName), style: 'value' }
-                ],
-                [
-                  { text: 'Customer: ', style: 'label' },
-                  { text: emptyIfNull(data.customerName), style: 'value' }
-                ],
-                [
-                  { text: 'Pricing: ', style: 'label' },
-                  { text: emptyIfNull(data.pricingName), style: 'value' }
-                ],
-                [
-                  { text: 'From Date: ', style: 'label' },
-                  { text: formatDate(data.fromDate), style: 'value' }
-                ],
-                [
-                  { text: 'To Date: ', style: 'label' },
-                  { text: formatDate(data.toDate), style: 'value' }
-                ],
-              ],
+            table:
+              {
+                body:
+                  [
+                    [
+                      { text: 'Branch Name: ', style: 'label' },
+                      { text: emptyIfNull(data.branchName), style: 'value' }
+                    ],
+                    [
+                      { text: 'Customer: ', style: 'label' },
+                      { text: emptyIfNull(data.customerName), style: 'value' }
+                    ],
+                    [
+                      { text: 'Order Date: ', style: 'label' },
+                      { text: formatDate(data.fromDate) + ' - ' + formatDate(data.toDate), style: 'value' }
+                    ],
+                    // [
+                    //   { text: 'From Date: ', style: 'label' },
+                    //   { text: formatDate(data.fromDate), style: 'value' }
+                    // ],
+                    // [
+                    //   { text: 'To Date: ', style: 'label' },
+                    //   { text: formatDate(data.toDate), style: 'value' }
+                    // ],
+                  ],
+              },
+            style: 'tablePlain',
+            layout: 'noBorders',
           },
-        style: 'tablePlain',
-        layout: 'noBorders',
+          {
+            table:
+              {
+                body:
+                  [
+                    [
+                      { text: 'Pricing: ', style: 'label' },
+                      { text: emptyIfNull(data.pricingName), style: 'value' }
+                    ],
+                    [
+                      { text: 'Status: ', style: 'label' },
+                      { text: emptyIfNull(data.status), style: 'value' }
+                    ],
+                  ],
+              },
+            style: 'tablePlain',
+            layout: 'noBorders',
+          },
+        ]
+      },
+      {
+        text: ' ',
+        style: 'separator'
       },
       {
         table: {
           headerRows: 1,
           //widths: ['*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
-          widths: ['*', 'auto', 'auto', 'auto', 'auto', 'auto'],
+          widths: ['auto', 'auto', '*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
           body: orderTableBody
         },
         layout: 'lightHorizontalLines',

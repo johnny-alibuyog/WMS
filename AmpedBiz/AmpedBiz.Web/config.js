@@ -544,6 +544,9 @@ System.config({
       "report-center/customer-report-page.html!github:systemjs/plugin-text@0.0.8.js",
       "report-center/customer-report-page.js",
       "report-center/customer-report.js",
+      "report-center/customer-sales-report-page.html!github:systemjs/plugin-text@0.0.8.js",
+      "report-center/customer-sales-report-page.js",
+      "report-center/customer-sales-report.js",
       "report-center/index.html!github:systemjs/plugin-text@0.0.8.js",
       "report-center/index.js",
       "report-center/order-report-page.html!github:systemjs/plugin-text@0.0.8.js",
@@ -552,6 +555,9 @@ System.config({
       "report-center/product-report-page.html!github:systemjs/plugin-text@0.0.8.js",
       "report-center/product-report-page.js",
       "report-center/product-report.js",
+      "report-center/product-sales-report-page.html!github:systemjs/plugin-text@0.0.8.js",
+      "report-center/product-sales-report-page.js",
+      "report-center/product-sales-report.js",
       "report-center/report-page.html!github:systemjs/plugin-text@0.0.8.js",
       "report-center/report-page.js",
       "report-center/report.js",
@@ -1053,6 +1059,18 @@ System.config({
       "../services/formaters",
       "./report"
     ],
+    "report-center/customer-sales-report-page.js": [
+      "aurelia-framework",
+      "../services/service-api",
+      "../common/controls/notification-service",
+      "../common/models/paging",
+      "./customer-sales-report"
+    ],
+    "report-center/customer-sales-report.js": [
+      "aurelia-framework",
+      "../services/formaters",
+      "./report"
+    ],
     "report-center/index.js": [
       "../common/models/role"
     ],
@@ -1077,6 +1095,18 @@ System.config({
       "../common/models/paging"
     ],
     "report-center/product-report.js": [
+      "aurelia-framework",
+      "../services/formaters",
+      "./report"
+    ],
+    "report-center/product-sales-report-page.js": [
+      "aurelia-framework",
+      "../services/service-api",
+      "../common/controls/notification-service",
+      "../common/models/paging",
+      "./product-sales-report"
+    ],
+    "report-center/product-sales-report.js": [
       "aurelia-framework",
       "../services/formaters",
       "./report"

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -132,6 +132,7 @@
     <Compile Include="Bootstrap\DependencInjection\Modules\MapperModule.cs" />
     <Compile Include="Bootstrap\DependencInjection\Modules\MediatorModule.cs" />
     <Compile Include="Bootstrap\DependencInjection\Modules\PersistenceModule.cs" />
+    <Compile Include="Bootstrap\DependencInjection\Modules\SeederModule.cs" />
     <Compile Include="Bootstrap\Ioc.cs" />
     <Compile Include="Bootstrap\Providers\AuditProvider.cs" />
     <Compile Include="IntegrationTests\DummyData.cs" />
@@ -143,6 +144,26 @@
     <Compile Include="UnitTests\MockData.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\.data\importfiles\nicon\default_customers.xlsx">
+      <Link>Data\ImportFiles\Nicon\default_customers.xlsx</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\.data\importfiles\nicon\default_ending_inventory.xlsx">
+      <Link>Data\ImportFiles\Nicon\default_ending_inventory.xlsx</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\.data\importfiles\nicon\default_products.xlsx">
+      <Link>Data\ImportFiles\Nicon\default_products.xlsx</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\.data\importfiles\nicon\default_suppliers.xlsx">
+      <Link>Data\ImportFiles\Nicon\default_suppliers.xlsx</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\.data\importfiles\nicon\default_uom.xlsx">
+      <Link>Data\ImportFiles\Nicon\default_uom.xlsx</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="app.config" />
     <Content Include="database.config.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -178,6 +199,10 @@
     <ProjectReference Include="..\AmpedBiz.Core\AmpedBiz.Core.csproj">
       <Project>{884d49ea-500b-4ad5-995a-22e48558b1f9}</Project>
       <Name>AmpedBiz.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AmpedBiz.Data.Seeder\AmpedBiz.Data.Seeder.csproj">
+      <Project>{2d3d68a8-ae82-47a7-add0-c4422ba23c1f}</Project>
+      <Name>AmpedBiz.Data.Seeder</Name>
     </ProjectReference>
     <ProjectReference Include="..\AmpedBiz.Data\AmpedBiz.Data.csproj">
       <Project>{8eb5c9f9-c188-4f56-9fd1-9aeae6a9a177}</Project>

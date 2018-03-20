@@ -26,6 +26,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
             _sessionFactory = sessionFactory;
         }
 
+        public bool IsSourceExternalFile => false;
+
         public void Seed()
         {
             var min = 1;

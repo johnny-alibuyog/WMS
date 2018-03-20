@@ -168,6 +168,20 @@ export class ProductReportPageItem {
   totalRetailPriceAmount?: number;
 }
 
+export class ProductSalesReportPageItem{
+  completedOn?: Date;
+  branchName?: string;
+  supplierName?: string;
+  categoryName?: string;
+  productName?: string;
+  quantityUnit?: string;
+  quantityValue?: number;
+  unitPriceAmount?: number;
+  discountAmount?: number;
+  extendedPriceAmount?: number;
+  totalPriceAmount?: number;
+}
+
 export class ProductInventoryFacade {
   private _inventory: ProductInventory;
 

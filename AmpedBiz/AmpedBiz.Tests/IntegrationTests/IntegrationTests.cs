@@ -2,10 +2,7 @@
 using AmpedBiz.Common.CustomTypes;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using AmpedBiz.Data;
-using AmpedBiz.Data.Context;
 using AmpedBiz.Data.Seeders;
-using AmpedBiz.Service;
 using AmpedBiz.Service.Branches;
 using AmpedBiz.Service.Customers;
 using AmpedBiz.Service.Dto.Mappers;
@@ -16,10 +13,10 @@ using AmpedBiz.Service.Suppliers;
 using AmpedBiz.Service.Users;
 using AmpedBiz.Tests.Bootstrap;
 using Autofac;
+using Common.Logging;
 using MediatR;
 using NHibernate;
 using NHibernate.Linq;
-using NHibernate.Validator.Engine;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -94,17 +91,20 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         public IntegrationTests()
         {
-            Console.WriteLine(DatabaseConfig.Instance.GetDefaultSeederDataAbsolutePath());
+            Console.WriteLine(DatabaseConfig.Instance.Seeder.GetExternalFilesPath());
         }
 
         [OneTimeSetUp]
         public void SetupTest()
         {
-            var mapper = Ioc.Container.Resolve<IMapper>();
-            mapper.Initialze();
+            var log = LogManager.GetLogger<IntegrationTests>();
+            log.Error("log me like you do");
 
-            this.SetupDefaultSeeders();
-            this.SetupDummySeeders();
+            var config = DatabaseConfig.Instance.Seeder;
+
+            Ioc.Container.Resolve<IMapper>().Initialze();
+            Ioc.Container.Resolve<Runner>().Run(config);
+
             this.LoadLookups();
         }
 
@@ -129,36 +129,6 @@ namespace AmpedBiz.Tests.IntegrationTests
                 this._productCategories = session.Query<ProductCategory>().Cacheable().ToList();
                 this._unitOfMeasures = session.Query<UnitOfMeasure>().Cacheable().ToList();
                 this._suppliers = session.Query<Supplier>().Where(x => x.Products.Count() > 0).ToList();
-            }
-        }
-
-        private void SetupDefaultSeeders()
-        {
-            var seeders = (
-                from t in AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("AmpedBiz.Data")).GetTypes()
-                where t.GetInterfaces().Contains(typeof(IDefaultDataSeeder))
-                orderby t.Name
-                select Activator.CreateInstance(t, DefaultContext.Instance, this.sessionFactory) as ISeeder
-            );
-
-            foreach (var seeder in seeders)
-            {
-                seeder.Seed();
-            }
-        }
-
-        private void SetupDummySeeders()
-        {
-            var seeders = (
-                from t in AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("AmpedBiz.Data")).GetTypes()
-                where t.GetInterfaces().Contains(typeof(IDummyDataSeeder))
-                orderby t.Name
-                select Activator.CreateInstance(t, DefaultContext.Instance, this.sessionFactory) as ISeeder
-            );
-
-            foreach (var seeder in seeders)
-            {
-                seeder.Seed();
             }
         }
 

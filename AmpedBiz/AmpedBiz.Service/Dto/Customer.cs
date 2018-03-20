@@ -62,4 +62,21 @@ namespace AmpedBiz.Service.Dto
 
         public Address BillingAddress { get; set; }
     }
+
+    public class CustomerSalesReportPageItem
+    {
+        public DateTime? CompletedOn { get; set; }
+
+        public string BranchName { get; set; }
+
+        public string CustomerName { get; set; }
+
+        public string InvoiceNumber { get; set; }
+
+        public decimal? TotalAmount { get; set; }
+
+        public decimal? PaidAmount { get; set; }
+
+        public decimal? BalanceAmount => (this.TotalAmount ?? 0M) - (this.PaidAmount ?? 0M);
+    }
 }

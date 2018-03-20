@@ -8,6 +8,7 @@
 #tool "nuget:?package=NUnit.ConsoleRunner"
 
 //using Cake.IISExpress;
+using System;
 using System.Diagnostics;
 using System.IO;
 
@@ -123,7 +124,6 @@ Task("Build")
     .Description("Builds all the different parts of the project.")
     .IsDependentOn("Clean")
     .IsDependentOn("Restore")
-	.IsDependentOn("Prepare Config")
     .Does(() =>
 {
     // Build all solutions.
@@ -209,8 +209,25 @@ Task("Run-Test")
 //	};
 //});
 
+Task("Seed-Data")
+    .Description("Seed data")
+    .IsDependentOn("Build")
+	.Does(() =>
+{
+	var projectName = "AmpedBiz.Data.Initializer";
+
+	var seedingCommand = gbl.SolutionPaths.FirstOrDefault() + "/" + projectName + "/bin/" + args.BuildConfiguration + "/" + projectName + ".exe";
+	
+	Information("Seeding Data Started: {0}", seedingCommand);
+
+	var process = StartProcess(seedingCommand);
+	
+	Information("Seeding Data Finished: {0}", process);
+});
+
 Task("Deploy")
     .Description("Deploy website")
+	.IsDependentOn("Prepare Config")
     .IsDependentOn("Run-Test")
     .Does(() =>
 {

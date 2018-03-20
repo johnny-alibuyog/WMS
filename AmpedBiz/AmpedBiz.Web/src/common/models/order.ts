@@ -211,11 +211,14 @@ export class OrderReportPageItem {
   id?: string;
   branchName?: string;
   customerName?: string;
+  invoiceNumber?: string
   pricingName?: string;
   orderedOn?: Date;
   orderedByName?: string;
   status?: OrderStatus;
   totalAmount?: number;
+  paidAmount?: number;
+  balanceAmount?: number;
 }
 
 export interface SalesReportPageItem

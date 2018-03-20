@@ -29,3 +29,14 @@ export interface CustomerReportPageItem {
   officeAddress?: Address;
   billingAddress?: Address;
 }
+
+export class CustomerSalesReportPageItem
+{
+  completedOn?: Date;
+  branchName?: string;
+  customerName?: string;
+  invoiceNumber?: string;
+  totalAmount?: number;
+  paidAmount?: number;
+  balanceAmount?: number;
+}

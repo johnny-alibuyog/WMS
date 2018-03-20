@@ -58,6 +58,13 @@ namespace AmpedBiz.Service.Orders
                     });
 
                     // compose order
+                    message.Sorter.Compose("orderedOn", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.OrderedOn)
+                            : query.OrderByDescending(x => x.OrderedOn);
+                    });
+
                     message.Sorter.Compose("branchName", direction =>
                     {
                         query = direction == SortDirection.Ascending
@@ -72,6 +79,13 @@ namespace AmpedBiz.Service.Orders
                             : query.OrderByDescending(x => x.Customer.Name);
                     });
 
+                    message.Sorter.Compose("invoiceNumber", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.InvoiceNumber)
+                            : query.OrderByDescending(x => x.InvoiceNumber);
+                    });
+
                     message.Sorter.Compose("pricingName", direction =>
                     {
                         query = direction == SortDirection.Ascending
@@ -79,11 +93,11 @@ namespace AmpedBiz.Service.Orders
                             : query.OrderByDescending(x => x.Pricing.Name);
                     });
 
-                    message.Sorter.Compose("orderedOn", direction =>
+                    message.Sorter.Compose("status", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.OrderedOn)
-                            : query.OrderByDescending(x => x.OrderedOn);
+                            ? query.OrderBy(x => x.Status)
+                            : query.OrderByDescending(x => x.Status);
                     });
 
                     message.Sorter.Compose("orderedByName", direction =>
@@ -97,13 +111,6 @@ namespace AmpedBiz.Service.Orders
                                 x.OrderedBy.Person.FirstName + " " +
                                 x.OrderedBy.Person.LastName
                             );
-                    });
-
-                    message.Sorter.Compose("status", direction =>
-                    {
-                        query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Status)
-                            : query.OrderByDescending(x => x.Status);
                     });
 
                     message.Sorter.Compose("totalAmount", direction =>
@@ -125,13 +132,15 @@ namespace AmpedBiz.Service.Orders
                             Id = x.Id,
                             BranchName = x.Branch.Name,
                             CustomerName = x.Customer.Name,
+                            InvoiceNumber = x.InvoiceNumber,
                             PricingName = x.Pricing.Name,
                             OrderedOn = x.OrderedOn,
                             OrderedByName = 
                                 x.OrderedBy.Person.FirstName + " " +
                                 x.OrderedBy.Person.LastName,
                             Status = x.Status.As<Dto.OrderStatus>(),
-                            TotalAmount = x.Total.Amount
+                            TotalAmount = x.Total != null ? x.Total.Amount : 0M,
+                            PaidAmount = x.Paid != null ? x.Paid.Amount : 0M
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)

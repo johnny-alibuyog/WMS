@@ -7,7 +7,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Text;
 
-namespace AmpedBiz.Service.Host.Bootstrap.DependencInjection.Modules.Configurations.Database
+namespace AmpedBiz.Test.Bootstrap.DependencInjection.Modules.Configurations.Database
 {
     /// <summary> Custom Postgres batcher implementation </summary>
     public class PostgresBatcher : AbstractBatcher

@@ -2,7 +2,7 @@
 using NHibernate.AdoNet;
 using NHibernate.Engine;
 
-namespace AmpedBiz.Service.Host.Bootstrap.DependencInjection.Modules.Configurations.Database
+namespace AmpedBiz.Test.Bootstrap.DependencInjection.Modules.Configurations.Database
 {
     /// <summary> Postgres batcher factory </summary>
     public class PostgresBatcherFactory : IBatcherFactory

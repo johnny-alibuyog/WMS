@@ -95,26 +95,30 @@ export class OrderReportPage {
           customer: this.customers.find(x => x.id == this.filter["customerId"]),
           branch: this.branches.find(x => x.id == this.filter["branchId"]),
           pricing: this.pricings.find(x => x.id == this.filter["pricingId"]),
+          status: this.statuses.find(x => x.id == this.filter["status"]),
           fromDate: this.filter["fromDate"],
           toDate: this.filter["toDate"],
-          status: this.filter["status"]
         };
 
         let reportModel = <OrderReportModel>{
-          branchName: header.branch && header.branch.name || '',
-          customerName: header.customer && header.customer.name || '',
-          pricingName: header.pricing && header.pricing.name || '',
+          branchName: header.branch && header.branch.name || "All Branches",
+          customerName: header.customer && header.customer.name || "All Customers",
+          pricingName: header.pricing && header.pricing.name || "All Pricings",
+          status: header.status && header.status.name || "All Status", 
           fromDate: header.fromDate,
           toDate: header.toDate,
           items: data.items.map(x => <OrderReportItemModel>{
             id: x.id,
             branchName: x.branchName,
             customerName: x.customerName,
+            invoiceNumber: x.invoiceNumber,
             pricingName: x.pricingName,
             orderedOn: x.orderedOn,
             orderedByName: x.orderedByName,
             status: x.status,
-            totalAmount: x.totalAmount
+            totalAmount: x.totalAmount,
+            paidAmount: x.paidAmount,
+            balanceAmount: x.balanceAmount,
           })
         };
 

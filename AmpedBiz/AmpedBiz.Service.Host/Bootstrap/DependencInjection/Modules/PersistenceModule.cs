@@ -1,5 +1,5 @@
 ﻿using AmpedBiz.Data;
-using AmpedBiz.Data.Seeders;
+//using AmpedBiz.Data.Seeder.Seeders;
 using AmpedBiz.Service.Host.Bootstrap.DependencInjection.Modules.Configurations.Database;
 using AmpedBiz.Service.Host.Bootstrap.Providers;
 using Autofac;
@@ -29,11 +29,6 @@ namespace AmpedBiz.Service.Host.Bootstrap.DependencInjection.Modules
                     .GetSessionFactory()
                 )
                 .SingleInstance();
-
-            builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
-                .Where(type => type.IsAssignableTo<ISeeder>())
-                .AsImplementedInterfaces()
-                .AsSelf();
         }
     }
 }
