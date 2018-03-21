@@ -316,4 +316,28 @@ namespace AmpedBiz.Service.Dto
         public decimal? TotalPriceAmount { get; set; }
     }
 
+    public class ProductListingReportPageItem
+    {
+        public string BranchName { get; set; }
+
+        public string SupplierName { get; set; }
+
+        public string CategoryName { get; set; }
+
+        public string ProductName { get; set; }
+
+        public string QuantityUnit { get; set; }
+
+        public decimal? OnHandValue { get; set; }
+
+        public decimal? AvailableValue { get; set; }
+
+        public decimal? BasePriceAmount { get; set; }
+
+        public decimal? WholesalePriceAmount { get; set; }
+
+        public decimal? RetailPriceAmount { get; set; }
+
+        public decimal? SuggestedRetailPriceAmount { get; set; }
+    }
 }

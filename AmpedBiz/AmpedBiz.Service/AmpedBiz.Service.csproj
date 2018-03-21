@@ -155,6 +155,7 @@
     <Compile Include="Products\GetProductInventoryLevelPage.cs" />
     <Compile Include="Products\GetProductInventoryList.cs" />
     <Compile Include="Products\GetProductList.cs" />
+    <Compile Include="Products\GetProductListingReportPage.cs" />
     <Compile Include="Products\GetProductLookup.cs" />
     <Compile Include="Products\GetProductOrderPage.cs" />
     <Compile Include="Products\GetProductReturnPage.cs" />

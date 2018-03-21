@@ -2,7 +2,7 @@ import { PageRequest, PagerResponse } from '../common/models/paging';
 
 import { HttpClientFacade } from './http-client-facade';
 import { Lookup } from '../common/custom_types/lookup';
-import { Product, NeedsReorderingPageItem, InventoryLevelPageItem, ProductSalesReportPageItem } from '../common/models/product';
+import { Product, NeedsReorderingPageItem, InventoryLevelPageItem, ProductSalesReportPageItem, ProductListingReportPageItem } from '../common/models/product';
 import { ProductInventory } from '../common/models/product';
 import { ProductOrderPageItem } from '../common/models/product';
 import { ProductOrderReturnPageItem } from '../common/models/product';
@@ -78,6 +78,11 @@ export class ProductService extends ServiceBase<Product> {
 
   public getProductSalesReportPage(page: PageRequest): Promise<PagerResponse<ProductSalesReportPageItem>> {
     var url = this._resouce + '/sales-report/page';
+    return this._httpClient.post(url, page);
+  }
+
+  public getProductListingReportPage(page: PageRequest): Promise<PagerResponse<ProductListingReportPageItem>> {
+    var url = this._resouce + '/listing-report/page';
     return this._httpClient.post(url, page);
   }
 }

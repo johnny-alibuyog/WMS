@@ -40,10 +40,25 @@ export class Index {
           }
         },
       },
-      {
+      /*{
         route: ['product-report-page'],
         name: 'product-report-page',
         moduleId: './product-report-page',
+        nav: true,
+        title: 'Products Listings',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+            ]
+          }
+        },
+      },*/
+      {
+        route: ['product-listing-report-page'],
+        name: 'product-listing-report-page',
+        moduleId: './product-listing-report-page',
         nav: true,
         title: 'Products Listings',
         settings: {

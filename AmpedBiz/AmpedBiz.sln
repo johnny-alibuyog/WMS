@@ -56,8 +56,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Test.Unit", "Amped
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FE60FB7D-11A2-4A8E-ACC6-0C3217EE8BFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Data.Seeder", "AmpedBiz.Data.Seeder\AmpedBiz.Data.Seeder.csproj", "{2D3D68A8-AE82-47A7-ADD0-C4422BA23C1F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".data", ".data", "{6FC46504-330B-4BFA-AA46-13CE64E12B3A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ImportFiles", "ImportFiles", "{36B35E72-4C26-48D8-A078-84C688570CAA}"
@@ -70,6 +68,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nicon", "Nicon", "{DEA4A980
 		.data\ImportFiles\Nicon\default_suppliers.xlsx = .data\ImportFiles\Nicon\default_suppliers.xlsx
 		.data\ImportFiles\Nicon\default_uom.xlsx = .data\ImportFiles\Nicon\default_uom.xlsx
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Data.Initializer", "AmpedBiz.Data.Initializer\AmpedBiz.Data.Initializer.csproj", "{2D3D68A8-AE82-47A7-ADD0-C4422BA23C1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

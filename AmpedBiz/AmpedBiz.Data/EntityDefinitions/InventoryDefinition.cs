@@ -13,6 +13,8 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Id(x => x.Id)
                     .GeneratedBy.Foreign("Product");
 
+                References(x => x.Branch);
+
                 HasOne(x => x.Product)
                     .Constrained();
 
@@ -81,6 +83,9 @@ namespace AmpedBiz.Data.EntityDefinitions
             public Validation()
             {
                 Define(x => x.Id);
+
+                Define(x => x.Branch)
+                    .IsValid();
 
                 Define(x => x.Product)
                     .IsValid();

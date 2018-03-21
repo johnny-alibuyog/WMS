@@ -168,7 +168,7 @@ export class ProductReportPageItem {
   totalRetailPriceAmount?: number;
 }
 
-export class ProductSalesReportPageItem{
+export class ProductSalesReportPageItem {
   completedOn?: Date;
   branchName?: string;
   supplierName?: string;
@@ -180,6 +180,20 @@ export class ProductSalesReportPageItem{
   discountAmount?: number;
   extendedPriceAmount?: number;
   totalPriceAmount?: number;
+}
+
+export class ProductListingReportPageItem {
+  branchName?: string;
+  supplierName?: string;
+  categoryName?: string;
+  productName?: string;
+  quantityUnit?: string;
+  onHandValue?: number;
+  availableValue?: number;
+  basePriceAmount?: number;
+  wholeSalePriceAmount?: number;
+  retailPriceAmount?: number;
+  suggestedRetailPriceAmount?: number;
 }
 
 export class ProductInventoryFacade {
