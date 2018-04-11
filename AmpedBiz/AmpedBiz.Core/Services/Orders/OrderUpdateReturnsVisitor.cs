@@ -9,11 +9,14 @@ namespace AmpedBiz.Core.Services.Orders
 {
     public class OrderUpdateReturnsVisitor : IVisitor<Order>
     {
-        public virtual IEnumerable<OrderReturn> Returns { get; set; }
+        public Branch Branch { get; set; }
 
-        public OrderUpdateReturnsVisitor(IEnumerable<OrderReturn> returns)
+        public IEnumerable<OrderReturn> Returns { get; set; }
+
+        public OrderUpdateReturnsVisitor(IEnumerable<OrderReturn> returns, Branch branch)
         {
             this.Returns = returns;
+            this.Branch = branch;
         }
 
         public virtual void Visit(Order target)
@@ -29,7 +32,7 @@ namespace AmpedBiz.Core.Services.Orders
                 item.Order = target;
                 item.Product.Accept(new SearchAndApplyVisitor()
                 {
-                    Branch = null,
+                    Branch = Branch,
                     InventoryVisitor = new ReturnVisitor()
                     {
                         Reason = item.Reason,

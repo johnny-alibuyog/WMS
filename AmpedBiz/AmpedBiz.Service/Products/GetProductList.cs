@@ -37,11 +37,7 @@ namespace AmpedBiz.Service.Products
                     var query = session.QueryOver<Product>()
                         .Fetch(x => x.Supplier).Eager
                         .Fetch(x => x.Category).Eager
-                        .Fetch(x => x.Inventory).Eager
-                        //.Fetch(x => x.Inventory.UnitOfMeasure).Eager
-                        //.Fetch(x => x.Inventory.PackagingUnitOfMeasure).Eager
-                        .Fetch(x => x.Inventory.Stocks).Eager
-                        .Fetch(x => x.Inventory.Stocks.First().ModifiedBy).Eager
+                        .Fetch(x => x.Inventories).Eager
                         .Fetch(x => x.UnitOfMeasures).Eager
                         .Fetch(x => x.UnitOfMeasures.First().Prices).Eager
                         .TransformUsing(Transformers.DistinctRootEntity);

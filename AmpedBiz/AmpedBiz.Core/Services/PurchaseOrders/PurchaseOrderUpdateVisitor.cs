@@ -6,33 +6,35 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
 {
     public class PurchaseOrderUpdateVisitor : IVisitor<PurchaseOrder>
     {
-        public virtual string PurchaseOrderNumber { get; set; }
+        public Branch Branch { get; set; }
 
-        public virtual string ReferenceNumber { get; set; }
+        public string PurchaseOrderNumber { get; set; }
 
-        public virtual User CreatedBy { get; set; }
+        public string ReferenceNumber { get; set; }
 
-        public virtual DateTime? CreatedOn { get; set; }
+        public User CreatedBy { get; set; }
 
-        public virtual DateTime? ExpectedOn { get; set; }
+        public DateTime? CreatedOn { get; set; }
 
-        public virtual PaymentType PaymentType { get; set; }
+        public DateTime? ExpectedOn { get; set; }
 
-        public virtual Shipper Shipper { get; set; }
+        public PaymentType PaymentType { get; set; }
 
-        public virtual Money ShippingFee { get; set; }
+        public Shipper Shipper { get; set; }
 
-        public virtual Money Tax { get; set; }
+        public Money ShippingFee { get; set; }
 
-        public virtual Supplier Supplier { get; set; }
+        public Money Tax { get; set; }
 
-        public virtual IEnumerable<PurchaseOrderItem> Items { get; set; }
+        public Supplier Supplier { get; set; }
 
-        public virtual IEnumerable<PurchaseOrderPayment> Payments { get; set; }
+        public IEnumerable<PurchaseOrderItem> Items { get; set; }
 
-        public virtual IEnumerable<PurchaseOrderReceipt> Receipts { get; set; }
+        public IEnumerable<PurchaseOrderPayment> Payments { get; set; }
 
-        public virtual void Visit(PurchaseOrder target)
+        public IEnumerable<PurchaseOrderReceipt> Receipts { get; set; }
+
+        public void Visit(PurchaseOrder target)
         {
             if (string.IsNullOrWhiteSpace(target.VoucherNumber))
                 target.VoucherNumber = new VoucherGenerator().Generate();
@@ -55,7 +57,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
                 target.Accept(new PurchaseOrderUpdatePaymentsVisitor(this.Payments));
 
             if (target.State.Stage.IsModificationAllowedTo(PurchaseOrderAggregate.Receipts))
-                target.Accept(new PurchaseOrderUpdateReceiptsVisitor(this.Receipts));
+                target.Accept(new PurchaseOrderUpdateReceiptsVisitor(this.Receipts, this.Branch));
 
             target.Accept(new PurchaseOrderCalculateVisitor());
         }

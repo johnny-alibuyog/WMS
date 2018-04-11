@@ -25,7 +25,7 @@ namespace AmpedBiz.Core.Services.Returns
             target.ReturnedBy = this.ReturnedBy;
             target.ReturnedOn = this.ReturnedOn;
             target.Remarks = this.Remarks;
-            target.Accept(new ReturnUpdateItemVisitor() { Items = this.Items });
+            target.Accept(new ReturnUpdateItemVisitor(this.Items, this.Branch));
             target.Accept(new ReturnCalculateTotalVisitor());
         }
     }

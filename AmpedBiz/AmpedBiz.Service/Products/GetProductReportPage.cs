@@ -25,7 +25,7 @@ namespace AmpedBiz.Service.Products
                 using (var session = SessionFactory.RetrieveSharedSession(Context))
                 using (var transaction = session.BeginTransaction())
                 {
-                    var query = session.Query<Product>();
+                    var query = session.Query<Inventory>();
 
                     //var pricingId = message.Filter.GetValueOrDefault("pricingId") as string ?? Pricing.BasePrice.Id;
 
@@ -34,46 +34,46 @@ namespace AmpedBiz.Service.Products
                     // compose filter
                     message.Filter.Compose<Guid>("productId", value =>
                     {
-                        query = query.Where(x => x.Id == value);
+                        query = query.Where(x => x.Product.Id == value);
                     });
 
                     message.Filter.Compose<string>("categoryId", value =>
                     {
-                        query = query.Where(x => x.Category.Id == value);
+                        query = query.Where(x => x.Product.Category.Id == value);
                     });
 
                     message.Filter.Compose<Guid>("supplierId", value =>
                     {
-                        query = query.Where(x => x.Supplier.Id == value);
+                        query = query.Where(x => x.Product.Supplier.Id == value);
                     });
 
                     // compose order
                     message.Sorter.Compose("productName", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Name)
-                            : query.OrderByDescending(x => x.Name);
+                            ? query.OrderBy(x => x.Product.Name)
+                            : query.OrderByDescending(x => x.Product.Name);
                     });
 
                     message.Sorter.Compose("categoryName", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Category.Name)
-                            : query.OrderByDescending(x => x.Category.Name);
+                            ? query.OrderBy(x => x.Product.Category.Name)
+                            : query.OrderByDescending(x => x.Product.Category.Name);
                     });
 
                     message.Sorter.Compose("supplierName", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Supplier.Name)
-                            : query.OrderByDescending(x => x.Supplier.Name);
+                            ? query.OrderBy(x => x.Product.Supplier.Name)
+                            : query.OrderByDescending(x => x.Product.Supplier.Name);
                     });
 
                     message.Sorter.Compose("onHandValue", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Inventory.OnHand.Value)
-                            : query.OrderByDescending(x => x.Inventory.OnHand.Value);
+                            ? query.OrderBy(x => x.OnHand.Value)
+                            : query.OrderByDescending(x => x.OnHand.Value);
                     });
 
                     var countFuture = query
@@ -85,11 +85,11 @@ namespace AmpedBiz.Service.Products
                     var itemsFuture = query
                         .Select(x => new
                         {
-                            Id = x.Id,
-                            ProductCode = x.Code,
-                            ProductName = x.Name,
-                            CategoryName = x.Category.Name,
-                            SupplierName = x.Supplier.Name,
+                            Id = x.Product.Id,
+                            ProductCode = x.Product.Code,
+                            ProductName = x.Product.Name,
+                            CategoryName = x.Product.Category.Name,
+                            SupplierName = x.Product.Supplier.Name,
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)

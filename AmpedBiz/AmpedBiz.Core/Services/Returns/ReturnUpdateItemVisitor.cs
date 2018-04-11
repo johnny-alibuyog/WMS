@@ -8,9 +8,17 @@ namespace AmpedBiz.Core.Services.Returns
 {
     public class ReturnUpdateItemVisitor : IVisitor<Return>
     {
-        public virtual IEnumerable<ReturnItem> Items { get; set; }
+        public Branch Branch { get; private set; }
 
-        public virtual void Visit(Return target)
+        public IEnumerable<ReturnItem> Items { get; private set; }
+
+        public ReturnUpdateItemVisitor(IEnumerable<ReturnItem> items, Branch branch)
+        {
+            this.Items = items;
+            this.Branch = branch;
+        }
+
+        public void Visit(Return target)
         {
             if (this.Items.IsNullOrEmpty())
                 return;
@@ -23,7 +31,7 @@ namespace AmpedBiz.Core.Services.Returns
                 item.Return = target;
                 item.Product.Accept(new SearchAndApplyVisitor()
                 {
-                    Branch = null,
+                    Branch = this.Branch,
                     InventoryVisitor = new Inventories.Orders.ReturnVisitor()
                     {
                         Reason = item.ReturnReason,

@@ -37,7 +37,7 @@ namespace AmpedBiz.Service.Orders
                     var orderItems = session.QueryOver<OrderItem>()
                         .Where(x => x.Order.Id == message.Id)
                         .Fetch(x => x.Product).Eager
-                        .Fetch(x => x.Product.Inventory).Eager
+                        .Fetch(x => x.Product.Inventories).Eager
                         .TransformUsing(Transformers.DistinctRootEntity)
                         .List();
 

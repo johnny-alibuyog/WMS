@@ -122,7 +122,6 @@
     <Compile Include="Services\Orders\OrderUpdateVisitor.cs" />
     <Compile Include="Services\Products\InventoryMeasureBreaker.cs" />
     <Compile Include="Services\Products\InventoryMeasureConverter.cs" />
-    <Compile Include="Services\Products\GetAvailableVisitor.cs" />
     <Compile Include="Services\Products\MeasureBreaker.cs" />
     <Compile Include="Services\Products\MeasureConverter.cs" />
     <Compile Include="Services\Products\ProductUpdateVisitor.cs" />

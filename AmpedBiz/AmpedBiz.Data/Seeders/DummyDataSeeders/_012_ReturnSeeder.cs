@@ -2,6 +2,7 @@
 using AmpedBiz.Core.Services.Returns;
 using AmpedBiz.Data.Context;
 using NHibernate;
+using NHibernate.Linq;
 using System;
 using System.Linq;
 
@@ -15,7 +16,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
         public _012_ReturnSeeder(DefaultContext context, ISessionFactory sessionFactory)
         {
-            _utils = new Utils(new Random(), sessionFactory);
+            _utils = new Utils(new Random(), context, sessionFactory);
             _context = context;
             _sessionFactory = sessionFactory;
         }
@@ -32,6 +33,16 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                 Enumerable.Range(0, 2).ToList().ForEach(_ =>
                 {
                     var products = _utils.RandomShippedProducts();
+                    var productIds = products.Select(x => x.Id);
+                    var inventories = session.Query<Inventory>()
+                        .Where(x =>
+                            x.Branch.Id == this._context.BranchId &&
+                            productIds.Contains(x.Product.Id)
+                        )
+                        .ToList()
+                        .ToDictionary(x => x.Product);
+
+
                     if (!products.Any())
                         return;
 
@@ -41,7 +52,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     var entity = new Return();
                     entity.Accept(new ReturnSaveVisitor()
                     {
-                        Branch = _utils.Random<Branch>(),
+                        Branch = session.Load<Branch>(_context.BranchId),
                         Customer = _utils.Random<Customer>(),
                         ReturnedBy = _utils.Random<User>(),
                         ReturnedOn = DateTime.Now.AddDays(_utils.RandomInteger(-36, -1)),
@@ -52,7 +63,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                 product: x,
                                 returnReason: _utils.Random<ReturnReason>(),
                                 quantity: new Measure(
-                                    value: _utils.RandomInteger(1, (int)x.Inventory.Shipped.Value),
+                                    value: _utils.RandomInteger(1, (int)inventories[x].Shipped.Value),
                                     unit: x.UnitOfMeasures.Default(o => o.UnitOfMeasure)
                                 ),
                                 standard: x.StandardEquivalentMeasureOf(x.UnitOfMeasures.Default(o => o.UnitOfMeasure)),

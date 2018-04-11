@@ -59,8 +59,9 @@ namespace AmpedBiz.Core.Entities
 
         public Inventory() : base(default(Guid)) { }
 
-        public Inventory(Product product, Guid id = default(Guid)) : base(id)
+        public Inventory(Branch branch, Product product, Guid id = default(Guid)) : base(id)
         {
+            this.Branch = branch;
             this.Product = product;
         }
     }

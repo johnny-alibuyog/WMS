@@ -68,7 +68,7 @@ namespace AmpedBiz.Core.Services.Orders
                 target.Accept(new OrderUpdatePaymentsVisitor(this.Payments));
 
             if (target.State.Stage.IsModificationAllowedTo(OrderAggregate.Returns))
-                target.Accept(new OrderUpdateReturnsVisitor(this.Returns));
+                target.Accept(new OrderUpdateReturnsVisitor(this.Returns, this.Branch));
 
             target.Accept(new OrderCalculateVisitor());
         }

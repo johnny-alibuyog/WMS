@@ -30,7 +30,7 @@ namespace AmpedBiz.Service.Returns
 
                     var products = session.Query<Product>()
                         .Where(x => productIds.Contains(x.Id))
-                        .Fetch(x => x.Inventory)
+                        .Fetch(x => x.Inventories)
                         .ToList();
 
                     Func<Guid, Product> GetProduct = (id) => products.First(x => x.Id == id);

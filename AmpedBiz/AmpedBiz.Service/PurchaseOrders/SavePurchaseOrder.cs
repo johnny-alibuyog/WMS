@@ -38,13 +38,13 @@ namespace AmpedBiz.Service.PurchaseOrders
                             .Fetch(x => x.Tax).Eager
                             .Fetch(x => x.Items).Eager
                             .Fetch(x => x.Items.First().Product).Eager
-                            .Fetch(x => x.Items.First().Product.Inventory).Eager
+                            .Fetch(x => x.Items.First().Product.Inventories).Eager
                             .Fetch(x => x.Payments).Eager
                             .Fetch(x => x.Payments.First().PaidBy).Eager
                             .Fetch(x => x.Payments.First().PaymentType).Eager
                             .Fetch(x => x.Receipts).Eager
                             .Fetch(x => x.Receipts.First().Product).Eager
-                            .Fetch(x => x.Receipts.First().Product.Inventory).Eager
+                            .Fetch(x => x.Receipts.First().Product.Inventories).Eager
                             .SingleOrDefault();
 
                         entity.EnsureExistence($"Order with id {message.Id} does not exists.");
@@ -63,13 +63,14 @@ namespace AmpedBiz.Service.PurchaseOrders
 
                     var products = session.Query<Product>()
                         .Where(x => productIds.Contains(x.Id))
-                        .Fetch(x => x.Inventory)
+                        .Fetch(x => x.Inventories)
                         .ToList();
 
                     Func<Guid, Product> GetProduct = (id) => products.First(x => x.Id == id);
 
                     entity.Accept(new PurchaseOrderUpdateVisitor()
                     {
+                        Branch = session.Load<Branch>(Context.BranchId),
                         ReferenceNumber = message.ReferenceNumber,
                         CreatedBy = (!message?.CreatedBy?.Id.IsNullOrDefault() ?? false)
                             ? session.Load<User>(message.CreatedBy.Id) : null,

@@ -9,11 +9,14 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
 {
     public class PurchaseOrderUpdateReceiptsVisitor : IVisitor<PurchaseOrder>
     {
-        public virtual IEnumerable<PurchaseOrderReceipt> Receipts { get; set; }
+        public Branch Branch { get; set; }
 
-        public PurchaseOrderUpdateReceiptsVisitor(IEnumerable<PurchaseOrderReceipt> receipts)
+        public IEnumerable<PurchaseOrderReceipt> Receipts { get; set; }
+
+        public PurchaseOrderUpdateReceiptsVisitor(IEnumerable<PurchaseOrderReceipt> receipts, Branch branch)
         {
-            Receipts = receipts;
+            this.Receipts = receipts;
+            this.Branch = branch;
         }
 
         public virtual void Visit(PurchaseOrder target)
@@ -28,7 +31,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
                 item.PurchaseOrder = target;
                 item.Product.Accept(new SearchAndApplyVisitor()
                 {
-                    Branch = null,
+                    Branch = this.Branch,
                     InventoryVisitor = new ReceiveVisitor()
                     {
                         QuantityStandardEquivalent = item.QuantityStandardEquivalent

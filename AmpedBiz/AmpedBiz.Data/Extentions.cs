@@ -1,5 +1,4 @@
-﻿using AmpedBiz.Common.Exceptions;
-using AmpedBiz.Common.Extentions;
+﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Data.Configurations;
 using AmpedBiz.Data.Context;
 using AmpedBiz.Data.EntityDefinitions;
@@ -7,7 +6,6 @@ using NHibernate;
 using NHibernate.Context;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AmpedBiz.Data
 {
@@ -17,14 +15,19 @@ namespace AmpedBiz.Data
         {
             if (context != null)
             {
-                //if (!string.IsNullOrWhiteSpace(context.TenantId))
-                //    session.ApplyTenantFilter(context.TenantId);
+                if (!string.IsNullOrWhiteSpace(context.TenantId))
+                    session.ApplyTenantFilter(context.TenantId);
 
-                //if (context.BranchId != Guid.Empty)
-                //    session.ApplyBranchFilter(context.BranchId);
+                if (context.BranchId != Guid.Empty)
+                    session.ApplyBranchFilter(context.BranchId);
             }
 
             return session;
+        }
+
+        public static void DisableFilter(this ISession session, string filterName)
+        {
+            session.DisableFilter(filterName);
         }
 
         public static ISession RetrieveSharedSession(this ISessionFactory sessionFactory, IContext context = null)

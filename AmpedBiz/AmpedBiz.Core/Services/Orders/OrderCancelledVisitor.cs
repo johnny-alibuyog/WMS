@@ -7,13 +7,15 @@ namespace AmpedBiz.Core.Services.Orders
 {
     public class OrderCancelledVisitor : IVisitor<Order>
     {
-        public virtual DateTime? CancelledOn { get; set; }
+        public Branch Branch { get; set; }
 
-        public virtual User CancelledBy { get; set; }
+        public DateTime? CancelledOn { get; set; }
 
-        public virtual string CancellationReason { get; set; }
+        public User CancelledBy { get; set; }
 
-        public virtual void Visit(Order target)
+        public string CancellationReason { get; set; }
+                       
+        public void Visit(Order target)
         {
             switch (target.Status)
             {
@@ -23,17 +25,12 @@ namespace AmpedBiz.Core.Services.Orders
                     {
                         item.Product.Accept(new SearchAndApplyVisitor()
                         {
-                            Branch = null,
+                            Branch = Branch,
                             InventoryVisitor = new RetractAllocatedVisitor()
                             {
                                 QuantityStandardEquivalent = item.QuantityStandardEquivalent
                             }
                         });
-
-                        //item.Product.Inventory.Accept(new DeallocateVisitor()
-                        //{
-                        //    Quantity = item.Quantity
-                        //});
                     }
                     break;
 

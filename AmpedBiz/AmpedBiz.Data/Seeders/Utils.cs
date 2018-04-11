@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using AmpedBiz.Data.Context;
 using NHibernate;
 using NHibernate.Linq;
 using System;
@@ -11,11 +12,13 @@ namespace AmpedBiz.Data.Seeders
 {
     internal class Utils
     {
+        private readonly IContext _context;
         private readonly Random _random = new Random();
         private readonly ISessionFactory _sessionFactory = SessionFactoryProvider.SessionFactory;
 
-        public Utils(Random random = null, ISessionFactory sessionFactory = null)
+        public Utils(Random random = null, IContext context = null, ISessionFactory sessionFactory = null)
         {
+            _context = context ?? DefaultContext.Instance;
             _random = random ?? new Random();
             _sessionFactory = sessionFactory ?? SessionFactoryProvider.SessionFactory;
         }
@@ -45,11 +48,16 @@ namespace AmpedBiz.Data.Seeders
                 query = query.Where(condition);
             }
 
-            return query
-                .Fetch(x => x.Inventory)
+            query
+                .FetchMany(x => x.Inventories)
+                .ToFuture();
+
+            var future = query
                 .FetchMany(x => x.UnitOfMeasures)
                 .ThenFetchMany(x => x.Prices)
-                .ToList();
+                .ToFuture();
+
+            return future.ToList();
 
             //return (condition != null)
             //    ? this._products.Where(condition)
@@ -78,28 +86,35 @@ namespace AmpedBiz.Data.Seeders
         public IEnumerable<Product> RandomShippedProducts()
         {
             return this.GetProducts(x =>
-                x.Inventory != null &&
-                x.Inventory.Shipped != null &&
-                x.Inventory.Shipped.Value > 0
+                //x.Inventories != null &&
+                x.Inventories.Any(o => 
+                    o.Branch.Id == this._context.BranchId &&
+                    o.Shipped != null &&
+                    o.Shipped.Value > 0
+                )
             );
         }
 
         public IEnumerable<Product> RandomAvailableProducts()
         {
             return this.GetProducts(x =>
-                x.Inventory != null &&
-                x.Inventory.Available != null &&
-                x.Inventory.Available.Value > 0
+                //x.Inventories != null &&
+                x.Inventories.Any(o =>
+                    o.Branch.Id == this._context.BranchId &&
+                    o.Available != null &&
+                    o.Available.Value > 0
+                )
             );
         }
 
         public IEnumerable<Product> RandomUninitializedProducts()
         {
             return this.GetProducts(x =>
-                x.Inventory != null &&
-                (
-                    x.Inventory.OnHand == null ||
-                    x.Inventory.OnHand.Value <= 0
+                //x.Inventories != null &&
+                x.Inventories.Any(o =>
+                    o.Branch.Id == this._context.BranchId &&
+                    o.OnHand == null ||
+                    o.OnHand.Value <= 0
                 )
             );
         }

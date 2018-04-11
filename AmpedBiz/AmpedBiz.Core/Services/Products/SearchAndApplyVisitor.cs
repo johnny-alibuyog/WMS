@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Core.Entities;
+using System.Linq;
 
 namespace AmpedBiz.Core.Services.Products
 {
@@ -12,7 +13,7 @@ namespace AmpedBiz.Core.Services.Products
         {
             // search for the inventory. this is in preparation of product 
             // having multiple inventories based on the branch.
-            var inventory = target.Inventory; 
+            var inventory = target.Inventories.FirstOrDefault(x => x.Branch == this.Branch); 
 
             inventory.Accept(this.InventoryVisitor);
         }

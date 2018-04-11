@@ -200,14 +200,18 @@ export class OrderCreate {
       let result = await this._notification.confirm('Do you want to invoice the order?').whenClosed();
       if (result.output === ActionResult.Yes) {
         let data = await this._api.orders.invoice(this.order);
-        let invoice = await this._api.orders.getInvoiceDetail(this.order.id);
         this.resetAndNoify(data, null);
-        this._invoiceReport.show(data);
+        await this.showInvoice();
       }
     }
     catch (error) {
       this._notification.warning(error);
     }
+  }
+
+  public async showInvoice(): Promise<void> {
+    let data = await this._api.orders.getInvoiceDetail(this.order.id);
+    this._invoiceReport.show(data);
   }
 
   public signalPricingChanged(): void {

@@ -7,11 +7,13 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
 {
     public class PurchaseOrderCompletedVisitor : IVisitor<PurchaseOrder>
     {
-        public virtual User CompletedBy { get; set; }
+        public Branch Branch { get; set; }
 
-        public virtual DateTime? CompletedOn { get; set; }
+        public User CompletedBy { get; set; }
 
-        public virtual void Visit(PurchaseOrder target)
+        public DateTime? CompletedOn { get; set; }
+
+        public void Visit(PurchaseOrder target)
         {
             var calculator = new PurchaseOrderCalculator();
 
@@ -19,7 +21,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             {
                 item.Product.Accept(new SearchAndApplyVisitor()
                 {
-                    Branch = null,
+                    Branch = this.Branch,
                     InventoryVisitor = new RetractOrderedVisitor()
                     {
                         Status = target.Status,

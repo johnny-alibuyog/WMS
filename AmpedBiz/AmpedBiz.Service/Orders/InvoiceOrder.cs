@@ -2,7 +2,6 @@
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Orders;
 using AmpedBiz.Data;
-using AmpedBiz.Service.Middlewares;
 using MediatR;
 using System;
 using System.Threading.Tasks;
@@ -29,6 +28,7 @@ namespace AmpedBiz.Service.Orders
                     entity.EnsureExistence($"Order with id {request.Id} does not exists.");
                     entity.State.Process(new OrderInvoicedVisitor()
                     {
+                        Branch = session.Load<Branch>(this.Context.BranchId),
                         InvoicedOn = request.InvoicedOn ?? DateTime.Now,
                         InvoicedBy = session.Load<User>(request.InvoicedBy.Id)
                     });

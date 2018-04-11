@@ -7,18 +7,19 @@ namespace AmpedBiz.Core.Services.Orders
 {
     public class OrderInvoicedVisitor : IVisitor<Order>
     {
-        public virtual DateTime? InvoicedOn { get; set; }
+        public Branch Branch { get; set; }
 
-        public virtual User InvoicedBy { get; set; }
+        public DateTime? InvoicedOn { get; set; }
 
-        public virtual void Visit(Order target)
+        public User InvoicedBy { get; set; }
+
+        public void Visit(Order target)
         {
             foreach (var item in target.Items)
             {
-                //item.Product.Inventory.Allocate(item.Quantity);
                 item.Product.Accept(new SearchAndApplyVisitor()
                 {
-                    Branch = null,
+                    Branch = Branch,
                     InventoryVisitor = new AllocateVisitor()
                     {
                         QuantityStandardEquivalent = item.QuantityStandardEquivalent

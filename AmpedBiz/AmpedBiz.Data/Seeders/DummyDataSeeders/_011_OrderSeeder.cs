@@ -21,9 +21,11 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
         public _011_OrderSeeder(DefaultContext context, ISessionFactory sessionFactory)
         {
-            _utils = new Utils(new Random(), sessionFactory);
+            _utils = new Utils(new Random(), _context, sessionFactory);
             _context = context;
             _sessionFactory = sessionFactory;
+
+            OrderActions.Context = context;
         }
 
         public bool IsSourceExternalFile => false;
@@ -232,7 +234,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         internal abstract class ActionStep : Step<IEnumerable<Order>>
         {
             protected readonly IContext _context = Context;
-            protected readonly Utils _utils = new Utils(new Random(), SessionFactoryProvider.SessionFactory);
+            protected readonly Utils _utils = new Utils(new Random(), Context, SessionFactoryProvider.SessionFactory);
             protected readonly ISessionFactory _sessionFactory = SessionFactoryProvider.SessionFactory;
 
             protected abstract override IEnumerable<Order> Process(IEnumerable<Order> input);
@@ -264,7 +266,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     .Fetch(x => x.CancelledBy).Eager
                     .Fetch(x => x.Items).Eager
                     .Fetch(x => x.Items.First().Product).Eager
-                    .Fetch(x => x.Items.First().Product.Inventory).Eager
+                    .Fetch(x => x.Items.First().Product.Inventories).Eager
                     .Fetch(x => x.Items.First().Product.UnitOfMeasures).Eager
                     .Fetch(x => x.Items.First().Product.UnitOfMeasures.First().Prices).Eager
                     .Fetch(x => x.Payments).Eager
@@ -274,7 +276,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     .Fetch(x => x.Returns.First().Reason).Eager
                     .Fetch(x => x.Returns.First().ReturnedBy).Eager
                     .Fetch(x => x.Returns.First().Product).Eager
-                    .Fetch(x => x.Returns.First().Product.Inventory).Eager
+                    .Fetch(x => x.Returns.First().Product.Inventories).Eager
                     .TransformUsing(Transformers.DistinctRootEntity)
                     .List();
             }
@@ -364,6 +366,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     {
                         entity.State.Process(new OrderInvoicedVisitor()
                         {
+                            Branch = session.Load<Branch>(_context.BranchId),
                             InvoicedOn = DateTime.Now,
                             InvoicedBy = _utils.Random<User>()
                         });
@@ -393,6 +396,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         var currency = session.Load<Currency>(Currency.PHP.Id);
                         entity.Accept(new OrderUpdateVisitor()
                         {
+                            Branch = session.Load<Branch>(_context.BranchId),
                             Payments = Enumerable
                                 .Range(0, _utils.RandomInteger(1, 1))
                                 .Select(x => new OrderPayment(
@@ -455,6 +459,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     {
                         entity.State.Process(new OrderShippedVisitor()
                         {
+                            Branch = session.Load<Branch>(this._context.BranchId),
                             ShippedOn = DateTime.Now,
                             ShippedBy = _utils.Random<User>()
                         });
@@ -491,6 +496,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
                         entity.Accept(new OrderUpdateVisitor()
                         {
+                            Branch = session.Load<Branch>(_context.BranchId),
                             Returns = entity.Items
                                 .Take(_utils.RandomInteger(1, entity.Items.Count()))
                                 .Select(x => new OrderReturn(
@@ -562,6 +568,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         var currency = session.Load<Currency>(Currency.PHP.Id);
                         entity.State.Process(new OrderCancelledVisitor()
                         {
+                            Branch = session.Load<Branch>(this._context.BranchId),
                             CancelledBy = _utils.Random<User>(),
                             CancelledOn = DateTime.Now,
                             CancellationReason = "Cancellation Reason"

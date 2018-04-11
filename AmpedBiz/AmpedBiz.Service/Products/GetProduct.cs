@@ -30,11 +30,9 @@ namespace AmpedBiz.Service.Products
                         .Where(x => x.Id == message.Id)
                         .Fetch(x => x.Supplier).Eager
                         .Fetch(x => x.Category).Eager
-                        .Fetch(x => x.Inventory).Eager
+                        .Fetch(x => x.Inventories).Eager
                         .Fetch(x => x.UnitOfMeasures).Eager
                         .Fetch(x => x.UnitOfMeasures.First().Prices).Eager
-                        .Fetch(x => x.Inventory.Stocks).Eager
-                        .Fetch(x => x.Inventory.Stocks.First().ModifiedBy).Eager
                         .TransformUsing(Transformers.DistinctRootEntity)
                         .FutureValue();
 

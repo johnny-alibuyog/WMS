@@ -54,7 +54,7 @@ namespace AmpedBiz.Service.Orders
                             .Fetch(x => x.CancelledBy).Eager
                             .Fetch(x => x.Items).Eager
                             .Fetch(x => x.Items.First().Product).Eager
-                            .Fetch(x => x.Items.First().Product.Inventory).Eager
+                            .Fetch(x => x.Items.First().Product.Inventories).Eager
                             .Fetch(x => x.Payments).Eager
                             .Fetch(x => x.Payments.First().PaidTo).Eager
                             .Fetch(x => x.Payments.First().PaymentType).Eager
@@ -62,7 +62,7 @@ namespace AmpedBiz.Service.Orders
                             .Fetch(x => x.Returns.First().Reason).Eager
                             .Fetch(x => x.Returns.First().ReturnedBy).Eager
                             .Fetch(x => x.Returns.First().Product).Eager
-                            .Fetch(x => x.Returns.First().Product.Inventory).Eager
+                            .Fetch(x => x.Returns.First().Product.Inventories).Eager
                             .SingleOrDefault();
 
                         entity.EnsureExistence($"Order with id {message.Id} does not exists.");
@@ -78,7 +78,7 @@ namespace AmpedBiz.Service.Orders
 
                     var products = session.Query<Product>()
                         .Where(x => productIds.Contains(x.Id))
-                        .Fetch(x => x.Inventory)
+                        .Fetch(x => x.Inventories)
                         .FetchMany(x => x.UnitOfMeasures)
                         .ThenFetchMany(x => x.Prices)
                         .ToList();

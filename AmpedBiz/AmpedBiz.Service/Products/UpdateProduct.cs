@@ -26,16 +26,16 @@ namespace AmpedBiz.Service.Products
                 using (var transaction = session.BeginTransaction())
                 {
                     var currency = session.Load<Currency>(Currency.PHP.Id); // this should be taken from the tenant
-                    var entity = session.Query<Product>()
+                    var product = session.Query<Product>()
                         .Where(x => x.Id == message.Id)
-                        .Fetch(x => x.Inventory)
+                        .Fetch(x => x.Inventories)
                         .FetchMany(x => x.UnitOfMeasures)
                         .ThenFetchMany(x => x.Prices)
                         .ToFutureValue().Value;
 
-                    entity.EnsureExistence($"Product with id {message.Id} does not exists.");
+                    product.EnsureExistence($"Product with id {message.Id} does not exists.");
 
-                    entity.Accept(new ProductUpdateVisitor()
+                    product.Accept(new ProductUpdateVisitor()
                     {
                         Code = message.Code,
                         Name = message.Name,
@@ -66,24 +66,30 @@ namespace AmpedBiz.Service.Products
                             .ToList()
                     });
 
-                    entity.EnsureValidity();
-
-                    var @default = entity.UnitOfMeasures.FirstOrDefault(o => o.IsDefault);
-
-                    entity.Inventory.Accept(new InventoryUpdateVisitor()
+                    var @default = product.UnitOfMeasures.FirstOrDefault(o => o.IsDefault);
+                    var branch = session.Load<Branch>(this.Context.BranchId);
+                    var inventory = session.Query<Inventory>().FirstOrDefault(x => x.Product == product && x.Branch == branch);
+                    if (inventory == null)
                     {
-                        Product = entity,
+                        inventory = new Inventory(branch, product);
+                        session.Save(inventory);
+                    }
+
+                    inventory.Accept(new InventoryUpdateVisitor()
+                    {
+                        Product = product,
                         InitialLevel = new Measure(message.Inventory.InitialLevelValue ?? 0M, @default.UnitOfMeasure),
                         TargetLevel = new Measure(message.Inventory.TargetLevelValue ?? 0M, @default.UnitOfMeasure),
                         ReorderLevel = new Measure(message.Inventory.ReorderLevelValue ?? 0M, @default.UnitOfMeasure),
                         MinimumReorderQuantity = new Measure(message.Inventory.MinimumReorderQuantityValue ?? 0M, @default.UnitOfMeasure)
                     });
 
-                    entity.Inventory.EnsureValidity();
+                    product.EnsureValidity();
+                    inventory.EnsureValidity();
 
                     transaction.Commit();
 
-                    entity.MapTo(response);
+                    product.MapTo(response);
                 }
 
                 return response;

@@ -85,14 +85,17 @@ namespace AmpedBiz.Service.Products
                         .WhereRestrictionOn(x => x.Product.Id).IsIn(idsFuture.ToArray())
                         .Fetch(x => x.Product).Eager
                         .Fetch(x => x.Product.Supplier).Eager
-                        .Fetch(x => x.Product.Inventory).Eager
+                        .Fetch(x => x.Product.Inventories).Eager
                         .Fetch(x => x.Product.UnitOfMeasures).Eager
                         .Fetch(x => x.Product.UnitOfMeasures.First().UnitOfMeasure).Eager
                         .Future();
 
                     var Hydrate = new Func<Guid, Dto.ProductInventoryLevelPageItem>((productId) =>
                     {
-                        var inventory = inventories.FirstOrDefault(o => o.Product.Id == productId);
+                        var inventory = inventories.FirstOrDefault(o => 
+                            o.Product.Id == productId &&
+                            o.Branch.Id == this.Context.BranchId
+                        );
                         var unitOfMeasure = inventory.Product.UnitOfMeasures.Default(o => o.UnitOfMeasure);
                         var item = new Dto.ProductInventoryLevelPageItem()
                         {
@@ -100,28 +103,28 @@ namespace AmpedBiz.Service.Products
                             Code = inventory.Product.Code,
                             Name = inventory.Product.Name,
                             Supplier = inventory.Product.Supplier.Name,
-                            OnHand = inventory.Product.Inventory
+                            OnHand = inventory
                                 .BreakDown(i => i.OnHand)
                                 .InterpretAsString(),
-                            Allocated = inventory.Product.Inventory
+                            Allocated = inventory
                                 .BreakDown(i => i.Allocated)
                                 .InterpretAsString(),
-                            Available = inventory.Product.Inventory
+                            Available = inventory
                                 .BreakDown(i => i.Available)
                                 .InterpretAsString(),
-                            OnOrder = inventory.Product.Inventory
+                            OnOrder = inventory
                                 .BreakDown(i => i.OnOrder)
                                 .InterpretAsString(),
-                            CurrentLevel = inventory.Product.Inventory
+                            CurrentLevel = inventory
                                 .BreakDown(i => i.CurrentLevel)
                                 .InterpretAsString(),
-                            ReorderLevel = inventory.Product.Inventory
+                            ReorderLevel = inventory
                                 .BreakDown(i => i.ReorderLevel)
                                 .InterpretAsString(),
-                            TargetLevel = inventory.Product.Inventory
+                            TargetLevel = inventory
                                 .BreakDown(i => i.TargetLevel)
                                 .InterpretAsString(),
-                            BelowTargetLevel = inventory.Product.Inventory
+                            BelowTargetLevel = inventory
                                 .BreakDown(i => i.BelowTargetLevel)
                                 .InterpretAsString(),
                         };

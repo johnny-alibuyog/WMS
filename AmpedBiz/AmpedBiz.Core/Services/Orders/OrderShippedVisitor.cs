@@ -7,18 +7,19 @@ namespace AmpedBiz.Core.Services.Orders
 {
     public class OrderShippedVisitor : IVisitor<Order>
     {
-        public virtual DateTime? ShippedOn { get; set; }
+        public Branch Branch { get; set; }
 
-        public virtual User ShippedBy { get; set; }
+        public DateTime? ShippedOn { get; set; }
 
-        public virtual void Visit(Order target)
+        public User ShippedBy { get; set; }
+
+        public void Visit(Order target)
         {
             foreach (var item in target.Items)
             {
-                //item.Product.Inventory.Ship(item.Quantity);
                 item.Product.Accept(new SearchAndApplyVisitor()
                 {
-                    Branch = null,
+                    Branch = this.Branch,
                     InventoryVisitor = new ShipVisitor()
                     {
                         QuantityStandardEquivalent = item.QuantityStandardEquivalent

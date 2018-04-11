@@ -15,7 +15,7 @@ namespace AmpedBiz.Core.Services.Products
 
         public Measure Visit(Product target)
         {
-            return this._converter.Convert(target, target.Inventory.Available, this._byUnitOfMeasure);
+            return this._converter.Convert(target, target.Inventories.Available, this._byUnitOfMeasure);
         }
     }
 
@@ -32,7 +32,7 @@ namespace AmpedBiz.Core.Services.Products
 
         public decimal Visit(Product target)
         {
-            var measure = this._converter.Convert(target, target.Inventory.Available, this._byUnitOfMeasure);
+            var measure = this._converter.Convert(target, target.Inventories.Available, this._byUnitOfMeasure);
 
             return measure?.Value ?? 0M;
         }

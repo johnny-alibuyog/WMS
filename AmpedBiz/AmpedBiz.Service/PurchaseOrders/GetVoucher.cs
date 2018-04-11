@@ -29,7 +29,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                         .Where(x => x.Id == message.Id)
                         .Fetch(x => x.Items).Eager
                         .Fetch(x => x.Items.First().Product).Eager
-                        .Fetch(x => x.Items.First().Product.Inventory).Eager
+                        .Fetch(x => x.Items.First().Product.Inventories).Eager
                         .FutureValue();
 
                     var entity = query.Value;

@@ -36,12 +36,12 @@ namespace AmpedBiz.Service.PurchaseOrders
                         .Fetch(x => x.Items.First().Product).Eager
                         .Fetch(x => x.Items.First().Product.Supplier).Eager
                         .Fetch(x => x.Items.First().Product.Category).Eager
-                        .Fetch(x => x.Items.First().Product.Inventory).Eager
+                        .Fetch(x => x.Items.First().Product.Inventories).Eager
                         .Fetch(x => x.Receipts).Eager
                         .Fetch(x => x.Receipts.First().Product).Eager
                         .Fetch(x => x.Receipts.First().Product.Supplier).Eager
                         .Fetch(x => x.Receipts.First().Product.Category).Eager
-                        .Fetch(x => x.Receipts.First().Product.Inventory).Eager
+                        .Fetch(x => x.Receipts.First().Product.Inventories).Eager
                         .FutureValue();
 
                     //var query = session.Query<PurchaseOrder>()

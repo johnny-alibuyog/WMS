@@ -38,7 +38,7 @@ namespace AmpedBiz.Service.Returns
                         .Fetch(x => x.ReturnedBy).Eager
                         .Fetch(x => x.Items).Eager
                         .Fetch(x => x.Items.First().Product).Eager
-                        .Fetch(x => x.Items.First().Product.Inventory).Eager
+                        .Fetch(x => x.Items.First().Product.Inventories).Eager
                         .Fetch(x => x.Items.First().ReturnReason).Eager
                         .TransformUsing(Transformers.DistinctRootEntity)
                         .List();

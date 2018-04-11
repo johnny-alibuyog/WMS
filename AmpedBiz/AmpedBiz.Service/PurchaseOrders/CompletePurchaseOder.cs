@@ -27,6 +27,7 @@ namespace AmpedBiz.Service.PurchaseOrders
                     entity.EnsureExistence($"PurchaseOrder with id {request.Id} does not exists.");
                     entity.State.Process(new PurchaseOrderCompletedVisitor()
                     { 
+                        Branch = session.Load<Branch>(Context.BranchId),
                         CompletedBy = session.Load<User>(request.CompletedBy.Id),
                         CompletedOn = request.CompletedOn ?? DateTime.Now
                     });

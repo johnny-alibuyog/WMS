@@ -22,7 +22,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
         public _010_PurchaseOrderSeeder(DefaultContext context, ISessionFactory sessionFactory)
         {
-            _utils = new Utils(new Random(), sessionFactory);
+            _utils = new Utils(new Random(), _context, sessionFactory);
             _context = context;
             _sessionFactory = sessionFactory;
         }
@@ -209,7 +209,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         internal abstract class ActionStep : Step<IEnumerable<PurchaseOrder>>
         {
             protected readonly IContext _context = Context;
-            protected readonly Utils _utils = new Utils(new Random(), SessionFactoryProvider.SessionFactory);
+            protected readonly Utils _utils = new Utils(new Random(), Context, SessionFactoryProvider.SessionFactory);
             protected readonly ISessionFactory _sessionFactory = SessionFactoryProvider.SessionFactory;
 
             protected abstract override IEnumerable<PurchaseOrder> Process(IEnumerable<PurchaseOrder> input);
@@ -239,7 +239,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     .Fetch(x => x.Items.First().Product).Eager
                     .Fetch(x => x.Items.First().Product.Supplier).Eager
                     .Fetch(x => x.Items.First().Product.Category).Eager
-                    .Fetch(x => x.Items.First().Product.Inventory).Eager
+                    .Fetch(x => x.Items.First().Product.Inventories).Eager
                     .Fetch(x => x.Items.First().Product.UnitOfMeasures).Eager
                     .Fetch(x => x.Items.First().Product.UnitOfMeasures.First().Prices).Eager
                     .Fetch(x => x.Payments).Eager
@@ -248,7 +248,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     .Fetch(x => x.Receipts.First().Product).Eager
                     .Fetch(x => x.Receipts.First().Product.Supplier).Eager
                     .Fetch(x => x.Receipts.First().Product.Category).Eager
-                    .Fetch(x => x.Receipts.First().Product.Inventory).Eager
+                    .Fetch(x => x.Receipts.First().Product.Inventories).Eager
                     .TransformUsing(Transformers.DistinctRootEntity)
                     .List();
             }
@@ -282,6 +282,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         var entity = new PurchaseOrder(Guid.NewGuid());
                         entity.Accept(new PurchaseOrderUpdateVisitor()
                         {
+                            Branch = session.Load<Branch>(_context.BranchId),
                             CreatedBy = _utils.Random<User>(),
                             CreatedOn = DateTime.Now,
                             ExpectedOn = DateTime.Now.AddMonths(5),
@@ -355,6 +356,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     {
                         entity.State.Process(new PurchaseOrderApprovedVisitor()
                         {
+                            Branch = session.Load<Branch>(_context.BranchId),
                             ApprovedOn = DateTime.Now,
                             ApprovedBy = _utils.Random<User>()
                         });
@@ -384,6 +386,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 
                         entity.Accept(new PurchaseOrderUpdateVisitor()
                         {
+                            Branch = session.Load<Branch>(_context.BranchId),
                             Payments = Enumerable
                                 .Range(0, _utils.RandomInteger(1, 1))
                                 .Select(x => new PurchaseOrderPayment(
@@ -417,6 +420,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     {
                         entity.Accept(new PurchaseOrderUpdateVisitor()
                         {
+                            Branch = session.Load<Branch>(_context.BranchId),
                             Receipts = entity.Items
                                 .Select(x => new PurchaseOrderReceipt(
                                     batchNumber: this._utils.RandomString(255),
@@ -458,6 +462,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     {
                         entity.State.Process(new PurchaseOrderCompletedVisitor()
                         {
+                            Branch = session.Load<Branch>(_context.BranchId),
                             CompletedOn = DateTime.Now,
                             CompletedBy = _utils.Random<User>()
                         });
@@ -485,6 +490,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     {
                         entity.State.Process(new PurchaseOrderCancelledVisitor()
                         {
+                            Branch = session.Load<Branch>(_context.BranchId),
                             CancelledOn = DateTime.Now,
                             CancelledBy = _utils.Random<User>()
                         });

@@ -6,13 +6,15 @@ using System.Linq;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Product : Entity<Guid, Product>, IAccept<IVisitor<Product>>
+    public class Product : Entity<Guid, Product>, IAccept<IVisitor<Product>>, IHaveTenant
     {
         public virtual string Code { get; protected internal set; }
 
         public virtual string Name { get; protected internal set; }
 
         public virtual string Description { get; protected internal set; }
+
+        public virtual Tenant Tenant { get; set; }
 
         public virtual Supplier Supplier { get; protected internal set; }
 
@@ -22,19 +24,15 @@ namespace AmpedBiz.Core.Entities
 
         public virtual bool Discontinued { get; protected internal set; }
 
-        public virtual Inventory Inventory { get; protected internal set; }
+        public virtual IEnumerable<Inventory> Inventories { get; protected internal set; }
 
         public virtual IEnumerable<ProductUnitOfMeasure> UnitOfMeasures { get; protected internal set; }
 
-        public Product() : base(default(Guid))
-        {
-            this.Inventory = new Inventory(this);
-            this.UnitOfMeasures = new Collection<ProductUnitOfMeasure>();
-        }
+        public Product() : this(default(Guid)) { }
 
         public Product(Guid id) : base(id)
         {
-            this.Inventory = new Inventory(this);
+            this.Inventories = new Collection<Inventory>();
             this.UnitOfMeasures = new Collection<ProductUnitOfMeasure>();
         }
 

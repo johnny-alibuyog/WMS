@@ -26,13 +26,18 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Map(x => x.Discontinued);
 
-                References(x => x.Category);
+                References(x => x.Tenant);
 
                 References(x => x.Supplier);
 
-                HasOne(x => x.Inventory)
-                    .Cascade.All()
-                    .Fetch.Join();
+                References(x => x.Category);
+
+                HasMany(x => x.Inventories)
+                    .Cascade.AllDeleteOrphan()
+                    .Not.KeyNullable()
+                    .Not.KeyUpdate()
+                    .Inverse()
+                    .AsSet();
 
                 HasMany(x => x.UnitOfMeasures)
                     .Cascade.AllDeleteOrphan()
@@ -63,13 +68,16 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Define(x => x.Discontinued);
 
-                Define(x => x.Category);
+                Define(x => x.Tenant);
 
                 Define(x => x.Supplier)
                     .NotNullable()
                     .And.IsValid();
 
-                Define(x => x.Inventory);
+                Define(x => x.Category);
+
+                Define(x => x.Inventories)
+                    .HasValidElements();
 
                 Define(x => x.UnitOfMeasures)
                     .HasValidElements();
@@ -83,7 +91,7 @@ namespace AmpedBiz.Data.EntityDefinitions
                     if (defaultCount != 1)
                     {
                         context.AddInvalid<Product, IEnumerable<ProductUnitOfMeasure>>(
-                            message: $"There should be one default UOM for {instance.Name} but has {defaultCount.ToWords()}.", 
+                            message: $"There should be one default UOM for {instance.Name} but has {defaultCount.ToWords()}.",
                             property: x => x.UnitOfMeasures
                         );
                         valid = false;
@@ -93,7 +101,7 @@ namespace AmpedBiz.Data.EntityDefinitions
                     if (standardCount != 1)
                     {
                         context.AddInvalid<Product, IEnumerable<ProductUnitOfMeasure>>(
-                            message: $"There should be one standard UOM for {instance.Name} but has {standardCount.ToWords()}.", 
+                            message: $"There should be one standard UOM for {instance.Name} but has {standardCount.ToWords()}.",
                             property: x => x.UnitOfMeasures
                         );
                         valid = false;

@@ -15,8 +15,7 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 References(x => x.Branch);
 
-                HasOne(x => x.Product)
-                    .Constrained();
+                References(x => x.Product);
 
                 Component(x => x.BadStock,
                     MeasureDefinition.Mapping.Map("BadStock_", nameof(Inventory)));

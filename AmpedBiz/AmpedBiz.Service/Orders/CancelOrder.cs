@@ -27,6 +27,7 @@ namespace AmpedBiz.Service.Orders
                     entity.EnsureExistence($"Order with id {request.Id} does not exists.");
                     entity.State.Process(new OrderCancelledVisitor()
                     {
+                        Branch = session.Load<Branch>(this.Context.BranchId),
                         CancelledBy = session.Load<User>(request.CancelledBy.Id),
                         CancelledOn = request.CancelledOn ?? DateTime.Now,
                         CancellationReason = request.CancellationReason
