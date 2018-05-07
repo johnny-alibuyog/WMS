@@ -49,11 +49,17 @@
     <Compile Include="Entities\Branch.cs" />
     <Compile Include="Entities\Contact.cs" />
     <Compile Include="Entities\Currency.cs" />
+    <Compile Include="Entities\CurrencySetting.cs">
+      <DependentUpon>Setting.cs</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Delivery.cs" />
     <Compile Include="Entities\DeliveryItem.cs" />
+    <Compile Include="Entities\InventoryAdjustment.cs" />
+    <Compile Include="Entities\InventoryAdjustmentReason.cs" />
     <Compile Include="Entities\InvoiceReportSetting.cs">
       <DependentUpon>Setting.cs</DependentUpon>
     </Compile>
+    <Compile Include="Entities\OrderTransaction.cs" />
     <Compile Include="Entities\ProductUnitOfMeasure.cs" />
     <Compile Include="Entities\ProductUnitOfMeasurePrice.cs" />
     <Compile Include="Entities\Measure.cs" />
@@ -74,8 +80,6 @@
     <Compile Include="Entities\Return.cs" />
     <Compile Include="Entities\ReturnItem.cs" />
     <Compile Include="Entities\ReturnReason.cs" />
-    <Compile Include="Entities\ShrinkageCause.cs" />
-    <Compile Include="Entities\Stock.cs" />
     <Compile Include="Entities\PurchaseOrderItem.cs" />
     <Compile Include="Entities\PurchaseOrderPayment.cs" />
     <Compile Include="Entities\PurchaseOrderReceipt.cs" />
@@ -93,7 +97,8 @@
     <Compile Include="Entity.cs" />
     <Compile Include="IAuditable.cs" />
     <Compile Include="Event.cs" />
-    <Compile Include="IHaveTenant.cs" />
+    <Compile Include="IHasBranch.cs" />
+    <Compile Include="IHasTenant.cs" />
     <Compile Include="IVersionable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Generators\CodeGenerator.cs" />
@@ -116,6 +121,7 @@
     <Compile Include="Services\Orders\OrderRoutedVisitor.cs" />
     <Compile Include="Services\Orders\OrderShippedVisitor.cs" />
     <Compile Include="Services\Orders\OrderStagedVisitor.cs" />
+    <Compile Include="Services\Orders\OrderLogTransactionVisitor.cs" />
     <Compile Include="Services\Orders\OrderUpdateItemsVisitor.cs" />
     <Compile Include="Services\Orders\OrderUpdatePaymentsVisitor.cs" />
     <Compile Include="Services\Orders\OrderUpdateReturnsVisitor.cs" />
@@ -148,6 +154,7 @@
     <Compile Include="Services\Returns\ReturnSaveVisitor.cs" />
     <Compile Include="Services\Returns\ReturnUpdateItemVisitor.cs" />
     <Compile Include="Entities\StageDefinition.cs" />
+    <Compile Include="Services\Settings\ISettingsFacade.cs" />
     <Compile Include="Services\UnitOfMeasures\UnitBreaker.cs" />
     <Compile Include="Services\Users\SetPasswordVisitor.cs" />
     <Compile Include="Services\Users\SetRoleVisitor.cs" />

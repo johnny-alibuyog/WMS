@@ -1,4 +1,5 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Entities;
 using System;
 
 namespace AmpedBiz.Core.Services.Orders
@@ -14,6 +15,11 @@ namespace AmpedBiz.Core.Services.Orders
             target.CompletedBy = this.CompletedBy;
             target.CompletedOn = this.CompletedOn;
             target.Status = OrderStatus.Completed;
+            target.Accept(new OrderLogTransactionVisitor(
+                transactedBy: this.CompletedBy,
+                transactedOn: this.CompletedOn ?? DateTime.Now
+            ));
+
         }
     }
 }

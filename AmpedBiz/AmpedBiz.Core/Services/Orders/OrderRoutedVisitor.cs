@@ -14,6 +14,10 @@ namespace AmpedBiz.Core.Services.Orders
             target.RoutedBy = this.RoutedBy ?? target.RoutedBy;
             target.RoutedOn = this.RoutedOn ?? target.RoutedOn;
             target.Status = OrderStatus.Routed;
+            target.Accept(new OrderLogTransactionVisitor(
+                transactedBy: this.RoutedBy,
+                transactedOn: this.RoutedOn ?? DateTime.Now
+            ));
         }
     }
 }

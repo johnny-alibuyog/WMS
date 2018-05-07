@@ -1,16 +1,15 @@
 ﻿using AmpedBiz.Common.Configurations;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Data;
-using AmpedBiz.Data.Context;
 using AmpedBiz.Data.Seeders;
+using AmpedBiz.Service.Dto.Mappers;
 using AmpedBiz.Tests.Bootstrap;
 using Autofac;
+using Common.Logging;
 using MediatR;
 using NHibernate;
 using NUnit.Framework;
-using System;
 using System.Data.Common;
-using System.Linq;
 using System.Transactions;
 
 namespace AmpedBiz.Tests.IntegrationTests
@@ -24,14 +23,13 @@ namespace AmpedBiz.Tests.IntegrationTests
         [OneTimeSetUp]
         public void Setup()
         {
-            var seeders = (
-                from t in AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("AmpedBiz.Data")).GetTypes()
-                where t.GetInterfaces().Contains(typeof(IDefaultDataSeeder))
-                orderby t.Name
-                select Activator.CreateInstance(t, DefaultContext.Instance, this._sessionFactory) as IDefaultDataSeeder
-            );
+            var log = LogManager.GetLogger<OrderTest>();
+            log.Error("log me like you do");
 
-            seeders.ToList().ForEach(x => x.Seed());
+            var config = DatabaseConfig.Instance.Seeder;
+
+            Ioc.Container.Resolve<IMapper>().Initialze();
+            Ioc.Container.Resolve<Runner>().Run(config);
         }
 
         [Test]

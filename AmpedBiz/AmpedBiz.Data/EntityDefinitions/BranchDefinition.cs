@@ -86,11 +86,18 @@ namespace AmpedBiz.Data.EntityDefinitions
 
     public static class BranchDefinitionExtention
     {
-        public static ISession ApplyBranchFilter(this ISession session, Guid branchId)
+        public static ISession EnableBranchFilter(this ISession session, Guid branchId)
         {
             session
                 .EnableFilter(BranchDefinition.Filter.FilterName)
                 .SetParameter(BranchDefinition.Filter.ParameterName, branchId);
+
+            return session;
+        }
+
+        public static ISession DisableBranchFilter(this ISession session)
+        {
+            session.DisableFilter(BranchDefinition.Filter.FilterName);
 
             return session;
         }

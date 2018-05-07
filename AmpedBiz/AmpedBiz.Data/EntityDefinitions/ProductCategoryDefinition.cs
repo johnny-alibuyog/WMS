@@ -13,7 +13,11 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Id(x => x.Id)
                     .GeneratedBy.Assigned();
 
+                References(x => x.Tenant);
+
                 Map(x => x.Name);
+
+                ApplyFilter<TenantDefinition.Filter>();
             }
         }
 
@@ -24,6 +28,9 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Define(x => x.Id)
                     .NotNullableAndNotEmpty()
                     .And.MaxLength(30);
+
+                Define(x => x.Tenant)
+                    .IsValid();
 
                 Define(x => x.Name)
                     .NotNullableAndNotEmpty()

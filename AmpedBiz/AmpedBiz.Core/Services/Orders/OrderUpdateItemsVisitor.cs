@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -40,6 +41,17 @@ namespace AmpedBiz.Core.Services.Orders
             {
                 item.Order = null;
                 target.Items.Remove(item);
+            }
+
+            if (itemsToInsert.Any() || 
+                itemsToUpdate.Any() ||
+                itemsToRemove.Any())
+            {
+                target.Accept(new OrderLogTransactionVisitor(
+                    transactedBy: target.CreatedBy,
+                    transactedOn: target.CreatedOn ?? DateTime.Now,
+                    type: OrderTransactionType.ItemModification
+                ));
             }
         }
     }

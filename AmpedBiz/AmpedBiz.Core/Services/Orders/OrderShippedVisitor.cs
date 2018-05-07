@@ -30,6 +30,10 @@ namespace AmpedBiz.Core.Services.Orders
             target.ShippedOn = this.ShippedOn;
             target.ShippedBy = this.ShippedBy;
             target.Status = OrderStatus.Shipped;
+            target.Accept(new OrderLogTransactionVisitor(
+                transactedBy: this.ShippedBy,
+                transactedOn: this.ShippedOn ?? DateTime.Now
+            ));
         }
     }
 }

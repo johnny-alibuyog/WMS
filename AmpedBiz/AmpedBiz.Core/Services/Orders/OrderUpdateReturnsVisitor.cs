@@ -2,6 +2,7 @@
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Inventories.Orders;
 using AmpedBiz.Core.Services.Products;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -40,6 +41,17 @@ namespace AmpedBiz.Core.Services.Orders
                     }
                 });
                 target.Returns.Add(item);
+            }
+
+            var lastReturn = target.Returns.OrderBy(x => x.ReturnedOn).Last();
+
+            if (itemsToInsert.Any())
+            {
+                target.Accept(new OrderLogTransactionVisitor(
+                    transactedBy: lastReturn.ReturnedBy,
+                    transactedOn: lastReturn.ReturnedOn ?? DateTime.Now,
+                    type: OrderTransactionType.ReturnCreation
+                ));
             }
         }
     }

@@ -16,10 +16,10 @@ namespace AmpedBiz.Data
             if (context != null)
             {
                 if (!string.IsNullOrWhiteSpace(context.TenantId))
-                    session.ApplyTenantFilter(context.TenantId);
+                    session.EnableTenantFilter(context.TenantId);
 
                 if (context.BranchId != Guid.Empty)
-                    session.ApplyBranchFilter(context.BranchId);
+                    session.EnableBranchFilter(context.BranchId);
             }
 
             return session;

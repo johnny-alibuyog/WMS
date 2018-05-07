@@ -2,8 +2,10 @@
 
 namespace AmpedBiz.Core.Entities
 {
-    public class ReturnReason : Entity<string, ReturnReason>
+    public class ReturnReason : Entity<string, ReturnReason>, IHasTenant
     {
+        public virtual Tenant Tenant { get; set; }
+
         public virtual string Name { get; set; }
 
         public ReturnReason() : base(default(string)) { }

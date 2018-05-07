@@ -15,6 +15,6 @@
             this.Description = description;
         }
 
-        public static readonly Tenant Default = new Tenant(id: "ampbiz", name: "Ampbiz", description: "Ambiz Portal");
+        public static readonly Tenant Default = new Tenant(id: "nicon", name: "Nicon", description: "Nicon Services");
     }
 }

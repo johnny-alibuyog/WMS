@@ -16,10 +16,14 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 References(x => x.ProductUnitOfMeasure);
 
+                //References(x => x.Branch);
+
                 References(x => x.Pricing);
 
                 Component(x => x.Price,
                     MoneyDefinition.Mapping.Map("Price_", nameof(ProductUnitOfMeasurePrice)));
+
+                ApplyFilter<BranchDefinition.Filter>();
             }
         }
 
@@ -31,6 +35,10 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Define(x => x.ProductUnitOfMeasure)
                     .NotNullable();
+
+                //Define(x => x.Branch)
+                //    .NotNullable()
+                //    .And.IsValid();
 
                 Define(x => x.Pricing)
                     .NotNullable()

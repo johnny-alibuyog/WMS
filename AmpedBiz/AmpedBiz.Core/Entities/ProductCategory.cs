@@ -2,8 +2,10 @@
 
 namespace AmpedBiz.Core.Entities
 {
-    public class ProductCategory : Entity<string, ProductCategory>
+    public class ProductCategory : Entity<string, ProductCategory>, IHasTenant
     {
+        public virtual Tenant Tenant { get; set; }
+
         public virtual string Name { get; set; }
 
         public ProductCategory() : base(default(string)) { }

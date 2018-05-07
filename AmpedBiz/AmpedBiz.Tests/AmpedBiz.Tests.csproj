@@ -34,6 +34,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <!-- copy files to be impored -->
+  <ItemGroup>
+    <Content Include="..\.data\**\*.*">
+      <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=4.6.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.4.6.2\lib\net45\Autofac.dll</HintPath>
@@ -134,7 +141,9 @@
     <Compile Include="Bootstrap\DependencInjection\Modules\PersistenceModule.cs" />
     <Compile Include="Bootstrap\DependencInjection\Modules\SeederModule.cs" />
     <Compile Include="Bootstrap\Ioc.cs" />
-    <Compile Include="Bootstrap\Providers\AuditProvider.cs" />
+    <Compile Include="Context\AuditProvider.cs" />
+    <Compile Include="Context\ContextProvider.cs" />
+    <Compile Include="Context\RequestContext.cs" />
     <Compile Include="IntegrationTests\DummyData.cs" />
     <Compile Include="IntegrationTests\IntegrationTests.cs" />
     <Compile Include="IntegrationTests\OrderTest.cs" />
@@ -144,26 +153,6 @@
     <Compile Include="UnitTests\MockData.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\.data\importfiles\nicon\default_customers.xlsx">
-      <Link>Data\ImportFiles\Nicon\default_customers.xlsx</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\.data\importfiles\nicon\default_ending_inventory.xlsx">
-      <Link>Data\ImportFiles\Nicon\default_ending_inventory.xlsx</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\.data\importfiles\nicon\default_products.xlsx">
-      <Link>Data\ImportFiles\Nicon\default_products.xlsx</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\.data\importfiles\nicon\default_suppliers.xlsx">
-      <Link>Data\ImportFiles\Nicon\default_suppliers.xlsx</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\.data\importfiles\nicon\default_uom.xlsx">
-      <Link>Data\ImportFiles\Nicon\default_uom.xlsx</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="app.config" />
     <Content Include="database.config.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

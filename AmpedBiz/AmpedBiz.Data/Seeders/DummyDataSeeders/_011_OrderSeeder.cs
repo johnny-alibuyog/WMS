@@ -16,16 +16,15 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
     public class _011_OrderSeeder : IDummyDataSeeder
     {
         private readonly Utils _utils;
-        private readonly IContext _context;
+        private readonly IContextProvider _contextProvider;
         private readonly ISessionFactory _sessionFactory;
 
-        public _011_OrderSeeder(DefaultContext context, ISessionFactory sessionFactory)
+        public _011_OrderSeeder(IContextProvider contextProvider, ISessionFactory sessionFactory)
         {
-            _utils = new Utils(new Random(), _context, sessionFactory);
-            _context = context;
+            _utils = new Utils(new Random(), contextProvider.Build(), sessionFactory);
+            _contextProvider = contextProvider;
             _sessionFactory = sessionFactory;
 
-            OrderActions.Context = context;
         }
 
         public bool IsSourceExternalFile => false;
@@ -34,6 +33,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         {
             var min = 1;
             var max = 3;
+
+            OrderActions.Context = this._contextProvider.Build();
 
             CreateNewOrders(_utils.RandomInteger(min, max));
             CreateInvoicedOrders(_utils.RandomInteger(min, max));

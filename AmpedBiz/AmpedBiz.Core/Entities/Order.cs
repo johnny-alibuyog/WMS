@@ -24,6 +24,20 @@ namespace AmpedBiz.Core.Entities
         Returns = 3
     }
 
+    public enum OrderTransactionType
+    {
+        Creation,
+        Invoicing,
+        Staging,
+        Routing,
+        Shipping,
+        Completion,
+        Cancellation,
+        ItemModification,
+        PaymentCreation,
+        ReturnCreation
+    }
+
     public class Order : Entity<Guid, Order>, IAccept<IVisitor<Order>>
     {
         public virtual string OrderNumber  { get; internal protected set; }
@@ -109,6 +123,8 @@ namespace AmpedBiz.Core.Entities
         public virtual IEnumerable<OrderReturn> Returns { get; internal protected set; } = new Collection<OrderReturn>();
 
         public virtual IEnumerable<OrderPayment> Payments { get; internal protected set; } = new Collection<OrderPayment>();
+
+        public virtual IEnumerable<OrderTransaction> Transactions { get; internal protected set; } = new Collection<OrderTransaction>();
 
         public virtual StateDispatcher State
         {

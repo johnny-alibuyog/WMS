@@ -14,6 +14,10 @@ namespace AmpedBiz.Core.Services.Orders
             target.StagedBy = this.StagedBy ?? target.StagedBy;
             target.StagedOn = this.StagedOn ?? target.StagedOn;
             target.Status = OrderStatus.Staged;
+            target.Accept(new OrderLogTransactionVisitor(
+                transactedBy: this.StagedBy,
+                transactedOn: this.StagedOn ?? DateTime.Now
+            ));
         }
     }
 }

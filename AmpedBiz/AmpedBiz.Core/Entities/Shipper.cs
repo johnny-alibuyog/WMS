@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Shipper : Entity<string, Shipper>
+    public class Shipper : Entity<string, Shipper>, IHasTenant
     {
         public virtual string Name { get; set; }
 

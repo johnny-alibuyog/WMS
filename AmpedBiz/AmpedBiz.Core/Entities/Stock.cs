@@ -46,13 +46,13 @@ namespace AmpedBiz.Core.Entities
 
     public class ShrinkedStock : Stock
     {
-        public virtual ShrinkageCause Cause { get; protected set; }
+        public virtual InventoryShrinkageReason Cause { get; protected set; }
 
         public virtual string Remarks { get; protected set; }
 
         public ShrinkedStock() : base(default(Guid)) { }
 
-        public ShrinkedStock(Inventory inventory, Measure quantity, ShrinkageCause cause, 
+        public ShrinkedStock(Inventory inventory, Measure quantity, InventoryShrinkageReason cause, 
             string remarks, DateTime? expiresOn = null, bool bad = false, Guid? id = null)
             : base(inventory, quantity, expiresOn, bad, id)
         {

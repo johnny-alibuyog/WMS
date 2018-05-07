@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Data;
+using AmpedBiz.Data.Helpers;
 using MediatR;
 using NHibernate.Linq;
 using System.Linq;
@@ -25,9 +26,9 @@ namespace AmpedBiz.Service.Customers
                     var exists = session.Query<Customer>().Any(x => x.Id == message.Id);
                     exists.Assert($"Customer with id {message.Id} already exists.");
 
-                    var currency = session.Load<Currency>(Currency.PHP.Id);
+                    var settings = new SettingsFacade(session);
                     var entity = message.MapTo(new Customer(message.Id));
-                    entity.CreditLimit = new Money(message.CreditLimitAmount, currency);
+                    entity.CreditLimit = new Money(message.CreditLimitAmount, settings.DefaultCurrency);
                     entity.Pricing = session.Load<Pricing>(
                         string.IsNullOrEmpty(message.PricingId)
                             ? Pricing.RetailPrice.Id 

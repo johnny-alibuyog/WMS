@@ -45,6 +45,8 @@ namespace AmpedBiz.Data.EntityDefinitions
                     .Not.KeyUpdate()
                     .Inverse()
                     .AsSet();
+
+                ApplyFilter<TenantDefinition.Filter>();
             }
         }
 

@@ -7,6 +7,7 @@ namespace AmpedBiz.Data.Configurations
     internal class ValidationEventListener : 
         IPreInsertEventListener, 
         IPreUpdateEventListener, 
+        IPreDeleteEventListener,
         IPreCollectionRecreateEventListener, 
         IPreCollectionUpdateEventListener, 
         IPreCollectionRemoveEventListener
@@ -41,6 +42,12 @@ namespace AmpedBiz.Data.Configurations
         {
             PerformValidation(@event.Entity);
             return false;
+        }
+
+        public bool OnPreDelete(PreDeleteEvent @event)
+        {
+            // no implemetation yet
+            return true;
         }
 
         public void OnPreRemoveCollection(PreCollectionRemoveEvent @event)

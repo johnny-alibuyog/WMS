@@ -91,7 +91,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
         public IntegrationTests()
         {
-            Console.WriteLine(DatabaseConfig.Instance.Seeder.GetExternalFilesPath());
+            Console.WriteLine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath);
         }
 
         [OneTimeSetUp]

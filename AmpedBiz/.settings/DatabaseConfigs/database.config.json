@@ -1,9 +1,9 @@
 ﻿{
-  "Database": "MySql",
-  "Port": 5432,
+  "Database": "MsSql",
+  "Port": 3306,
   "HostServer": "localhost",
-  "Name": "ampedbizdb",
-  "Username": "root",
+  "Name": "ampbizdb",
+  "Username": "sa",
   "Password": "6jPbwQtZ8N52WRJ5rEWv2g==",
   "BatchSize": 50,
   "RecreateDb": true,
@@ -11,6 +11,6 @@
     "Enabled": true,
     "UseDummyData": true,
     "UseExternalFiles": true,
-    "ExternalFilesPath": ".\\Data\\ImportFiles\\Nicon"
+    "ExternalFilesPath": ".\\ImportFiles"
   }
 }

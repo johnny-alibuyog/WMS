@@ -1,5 +1,4 @@
-﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Services;
+﻿using AmpedBiz.Core.Services;
 using AmpedBiz.Core.Services.Users;
 using System;
 using System.Collections.Generic;

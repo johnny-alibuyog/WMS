@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Data.Context;
+using AmpedBiz.Tests.Context;
 using Autofac;
 
 namespace AmpedBiz.Tests.Bootstrap.DependencInjection.Modules
@@ -7,13 +8,16 @@ namespace AmpedBiz.Tests.Bootstrap.DependencInjection.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<DefaultContext>()
+            builder.RegisterType<ContextProvider>()
+                .As<IContextProvider>()
+                .SingleInstance();
+
+            builder.Register(context => context
+                    .Resolve<IContextProvider>()
+                    .Build()
+                )
                 .As<IContext>()
                 .InstancePerLifetimeScope();
-
-            builder.RegisterType<DefaultContext>()
-                .AsSelf()
-                .SingleInstance();
         }
     }
 }

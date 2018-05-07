@@ -67,6 +67,7 @@ namespace AmpedBiz.Service.Products
 
                     inventory.Accept(new InventoryUpdateVisitor()
                     {
+                        Branch = branch,
                         Product = product,
                         InitialLevel = new Measure(message.Inventory.InitialLevelValue ?? 0M, @default.UnitOfMeasure),
                         TargetLevel = new Measure(message.Inventory.TargetLevelValue ?? 0M, @default.UnitOfMeasure),

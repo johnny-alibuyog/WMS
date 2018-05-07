@@ -5,6 +5,9 @@ using Newtonsoft.Json;
 using NHibernate.SqlTypes;
 using NHibernate.UserTypes;
 using Newtonsoft.Json.Serialization;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Linq;
 
 namespace AmpedBiz.Data.CustomTypes
 {
@@ -14,7 +17,7 @@ namespace AmpedBiz.Data.CustomTypes
         private readonly JsonSerializerSettings _settings = new JsonSerializerSettings()
         {
             Formatting = Formatting.Indented,
-            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            ContractResolver = new CustomContractResolver(),
         };
 
         public new bool Equals(object x, object y)
@@ -118,6 +121,45 @@ namespace AmpedBiz.Data.CustomTypes
         public bool IsMutable
         {
             get { return true; }
+        }
+
+        private class CustomContractResolver : CamelCasePropertyNamesContractResolver
+        {
+            protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+            {
+                var properties = type
+                    .GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                    .Select(x => base.CreateProperty(x, memberSerialization))
+                    .ToList();
+
+                properties.ForEach(x =>
+                {
+                    x.Writable = true;
+                    x.Readable = true;
+                });
+                
+                return properties;
+
+                //var bindingFlag = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+
+                //var members = (type
+                //        .GetProperties(bindingFlag)
+                //        .Select(x => base.CreateProperty(x, memberSerialization))
+                //    )
+                //    .Union(type
+                //        .GetFields(bindingFlag)
+                //        .Select(x => base.CreateProperty(x, memberSerialization))
+                //    )
+                //    .ToList();
+
+                //members.ForEach(x => 
+                //{
+                //    x.Writable = true;
+                //    x.Readable = true;
+                //});
+
+                //return members;
+            }
         }
     }
 }

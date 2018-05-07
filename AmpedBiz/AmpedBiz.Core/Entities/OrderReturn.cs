@@ -1,5 +1,4 @@
 ﻿using System;
-using AmpedBiz.Common.Extentions;
 
 namespace AmpedBiz.Core.Entities
 {

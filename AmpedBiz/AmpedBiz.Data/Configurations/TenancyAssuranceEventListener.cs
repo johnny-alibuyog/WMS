@@ -15,7 +15,7 @@ namespace AmpedBiz.Data.Configurations
     {
         public void OnPostLoad(PostLoadEvent @event)
         {
-            if (@event.Entity is IHaveTenant && @event.Session.TenancyFilterEnabled())
+            if (@event.Entity is IHasTenant && @event.Session.TenancyFilterEnabled())
             {
                 var tenantId = @event.Entity.GetTenantId();
                 var currentTenantId = @event.Session.GetCurrentTenantId();
@@ -29,7 +29,7 @@ namespace AmpedBiz.Data.Configurations
 
         public bool OnPreUpdate(PreUpdateEvent @event)
         {
-            if (@event.Entity is IHaveTenant && @event.Session.TenancyFilterEnabled())
+            if (@event.Entity is IHasTenant && @event.Session.TenancyFilterEnabled())
             {
                 var state = @event.OldState ?? @event.State;
                 var tenantId = state.GetTenantId(@event.Persister);
@@ -37,7 +37,7 @@ namespace AmpedBiz.Data.Configurations
 
                 if (string.IsNullOrWhiteSpace(tenantId))
                 {
-                    ((IHaveTenant)@event.Entity).Tenant = @event.Session.Load<Tenant>(currentTenantId);
+                    ((IHasTenant)@event.Entity).Tenant = @event.Session.Load<Tenant>(currentTenantId);
                 }
 
                 else if (currentTenantId != tenantId)
@@ -51,14 +51,14 @@ namespace AmpedBiz.Data.Configurations
 
         public bool OnPreInsert(PreInsertEvent @event)
         {
-            if (@event.Entity is IHaveTenant && @event.Session.TenancyFilterEnabled())
+            if (@event.Entity is IHasTenant && @event.Session.TenancyFilterEnabled())
             {
                 var tenantId = @event.Entity.GetTenantId();
                 var currentTenantId = @event.Session.GetCurrentTenantId();
 
                 if (string.IsNullOrWhiteSpace(tenantId))
                 {
-                    ((IHaveTenant)@event.Entity).Tenant = @event.Session.Load<Tenant>(currentTenantId);
+                    ((IHasTenant)@event.Entity).Tenant = @event.Session.Load<Tenant>(currentTenantId);
                 }
                 else if (currentTenantId != tenantId)
                 {
@@ -71,7 +71,7 @@ namespace AmpedBiz.Data.Configurations
 
         public bool OnPreDelete(PreDeleteEvent @event)
         {
-            if (@event.Entity is IHaveTenant && @event.Session.TenancyFilterEnabled())
+            if (@event.Entity is IHasTenant && @event.Session.TenancyFilterEnabled())
             {
                 var tenantId = @event.Entity.GetTenantId();
                 var currentTenantId = @event.Session.GetCurrentTenantId();
@@ -100,7 +100,7 @@ namespace AmpedBiz.Data.Configurations
 
         public static string GetTenantId(this object source)
         {
-            return ((IHaveTenant)source).Tenant?.Id;
+            return ((IHasTenant)source).Tenant?.Id;
         }
 
         public static string GetCurrentTenantId(this IEventSource source)

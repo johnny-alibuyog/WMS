@@ -1,4 +1,5 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Inventories.Orders;
 using AmpedBiz.Core.Services.Products;
 using System;
@@ -44,6 +45,10 @@ namespace AmpedBiz.Core.Services.Orders
             target.CancelledOn = this.CancelledOn ?? target.CancelledOn;
             target.CancellationReason = this.CancellationReason ?? target.CancellationReason;
             target.Status = OrderStatus.Cancelled;
+            target.Accept(new OrderLogTransactionVisitor(
+                transactedBy: this.CancelledBy,
+                transactedOn: this.CancelledOn ?? DateTime.Now
+            ));
         }
     }
 }

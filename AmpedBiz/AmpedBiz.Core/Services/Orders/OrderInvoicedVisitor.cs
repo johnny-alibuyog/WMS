@@ -1,4 +1,5 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Inventories.Orders;
 using AmpedBiz.Core.Services.Products;
 using System;
@@ -31,6 +32,10 @@ namespace AmpedBiz.Core.Services.Orders
             target.InvoicedOn = this.InvoicedOn;
             target.InvoicedBy = this.InvoicedBy;
             target.Status = OrderStatus.Invoiced;
+            target.Accept(new OrderLogTransactionVisitor(
+                transactedBy: this.InvoicedBy,
+                transactedOn: this.InvoicedOn ?? DateTime.Now
+            ));
         }
     }
 }

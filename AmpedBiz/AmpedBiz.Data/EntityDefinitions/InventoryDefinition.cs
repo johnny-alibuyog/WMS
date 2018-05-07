@@ -11,7 +11,7 @@ namespace AmpedBiz.Data.EntityDefinitions
             public Mapping()
             {
                 Id(x => x.Id)
-                    .GeneratedBy.Foreign("Product");
+                    .GeneratedBy.GuidComb();
 
                 References(x => x.Branch);
 
@@ -68,7 +68,14 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Component(x => x.MinimumReorderQuantity,
                     MeasureDefinition.Mapping.Map("MinimumReorderQuantity_", nameof(Inventory)));
 
-                HasMany(x => x.Stocks)
+                //HasMany(x => x.Stocks)
+                //    .Cascade.AllDeleteOrphan()
+                //    .Not.KeyNullable()
+                //    .Not.KeyUpdate()
+                //    .Inverse()
+                //    .AsBag();
+
+                HasMany(x => x.Adjustments)
                     .Cascade.AllDeleteOrphan()
                     .Not.KeyNullable()
                     .Not.KeyUpdate()
@@ -140,7 +147,7 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Define(x => x.MinimumReorderQuantity)
                     .IsValid();
 
-                Define(x => x.Stocks);
+                //Define(x => x.Stocks);
 
                 //this.ValidateInstance.By((instance, context) =>
                 //{

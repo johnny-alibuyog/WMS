@@ -8,14 +8,21 @@ namespace AmpedBiz.Core.Entities
     {
         public virtual ProductUnitOfMeasure ProductUnitOfMeasure { get; protected internal set; }
 
+        //public virtual Branch Branch { get; protected set; }
+
         public virtual Pricing Pricing { get; protected set; }
 
         public virtual Money Price { get; protected set; }
 
         public ProductUnitOfMeasurePrice() : base(default(Guid)) { }
 
-        public ProductUnitOfMeasurePrice(Pricing pricing, Money price, Guid? id = null) : base(id ?? default(Guid))
+        public ProductUnitOfMeasurePrice(
+            //Branch branch, 
+            Pricing pricing, 
+            Money price, 
+            Guid? id = null) : base(id ?? default(Guid))
         {
+            //this.Branch = branch;
             this.Pricing = pricing;
             this.Price = price;
         }

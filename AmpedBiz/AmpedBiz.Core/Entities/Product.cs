@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Product : Entity<Guid, Product>, IAccept<IVisitor<Product>>, IHaveTenant
+    public class Product : Entity<Guid, Product>, IAccept<IVisitor<Product>>, IHasTenant
     {
         public virtual string Code { get; protected internal set; }
 

@@ -1,6 +1,5 @@
-﻿ using AmpedBiz.Core;
+﻿using AmpedBiz.Core;
 using AmpedBiz.Core.Entities;
-using NHibernate;
 using NHibernate.Event;
 using System;
 

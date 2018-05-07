@@ -17,13 +17,13 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
     public class _010_PurchaseOrderSeeder : IDummyDataSeeder
     {
         private readonly Utils _utils;
-        private readonly IContext _context;
+        private readonly IContextProvider _contextProvider;
         private readonly ISessionFactory _sessionFactory;
 
-        public _010_PurchaseOrderSeeder(DefaultContext context, ISessionFactory sessionFactory)
+        public _010_PurchaseOrderSeeder(IContextProvider contextProvider, ISessionFactory sessionFactory)
         {
-            _utils = new Utils(new Random(), _context, sessionFactory);
-            _context = context;
+            _utils = new Utils(new Random(), contextProvider.Build(), sessionFactory);
+            _contextProvider = contextProvider;
             _sessionFactory = sessionFactory;
         }
 
@@ -34,7 +34,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
             var min = 1;
             var max = 3;
 
-            PurchaseOrderActions.Context = this._context;
+            PurchaseOrderActions.Context = this._contextProvider.Build();
 
             CreateNewPurchaseOrders(_utils.RandomInteger(min, max));
             CreateSubmittedPurchaseOrder(_utils.RandomInteger(min, max));

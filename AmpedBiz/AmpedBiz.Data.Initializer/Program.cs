@@ -1,8 +1,10 @@
 ﻿using AmpedBiz.Common.Configurations;
+using AmpedBiz.Core.Entities;
 using AmpedBiz.Data.Initializer.Bootstrap;
 using AmpedBiz.Data.Seeders;
 using AmpedBiz.Service.Dto.Mappers;
 using Autofac;
+using System.Linq;
 
 namespace AmpedBiz.Data.Initializer
 {
@@ -14,8 +16,9 @@ namespace AmpedBiz.Data.Initializer
             config.Enabled = true;          // enforce seeding
             config.UseExternalFiles = true; // enforce seeding
 
-            Ioc.Container.Resolve<IMapper>().Initialze();
-            Ioc.Container.Resolve<Runner>().Run(config);
+            var container = Ioc.BuildContainer(args.Any() ? args[0] : Tenant.Default.Id);
+            container.Resolve<IMapper>().Initialze();
+            container.Resolve<Runner>().Run(config);
         }
     }
 }

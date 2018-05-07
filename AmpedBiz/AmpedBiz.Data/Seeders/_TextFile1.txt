@@ -1,0 +1,19 @@
+﻿TASK: make entities tenant specific and include in external seeding 
+
+Tenant:
+*Currency
+*PaymentType
+*Pricing
+*Role
+
+-Branch
+-Product
+-Settings
+-Shipper
+-Product Category
+-Return Reason
+-Shrinkage Cause
+-Inventory Adjustment Reason
+
+Branch:
+User

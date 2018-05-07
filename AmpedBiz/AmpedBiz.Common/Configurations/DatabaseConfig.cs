@@ -148,7 +148,7 @@ namespace AmpedBiz.Common.Configurations
 
             public virtual string ExternalFilesPath { get; set; }
 
-            public virtual string GetExternalFilesPath() => Path.Combine(this.AssemblyPath(), this.ExternalFilesPath);
+            public virtual string ExternalFilesAbsolutePath => Path.Combine(this.AssemblyPath(), this.ExternalFilesPath);
 
             private string AssemblyPath()
             {

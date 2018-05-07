@@ -8,13 +8,24 @@ namespace AmpedBiz.Service.Host.Bootstrap.DependencInjection.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<RequestContext>()
+            builder.RegisterType<ContextProvider>()
+                .As<IContextProvider>()
+                .SingleInstance();
+
+            builder.Register(context => context
+                    .Resolve<IContextProvider>()
+                    .Build()
+                )
                 .As<IContext>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<DefaultContext>()
-                .AsSelf()
-                .SingleInstance();
+            //builder.RegisterType<RequestContext>()
+            //    .As<IContext>()
+            //    .InstancePerLifetimeScope();
+
+            //builder.RegisterType<DefaultContext>()
+            //    .AsSelf()
+            //    .SingleInstance();
         }
     }
 }

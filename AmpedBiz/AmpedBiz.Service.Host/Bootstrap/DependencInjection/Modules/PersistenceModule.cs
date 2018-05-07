@@ -1,10 +1,8 @@
 ﻿using AmpedBiz.Data;
-//using AmpedBiz.Data.Seeder.Seeders;
 using AmpedBiz.Service.Host.Bootstrap.DependencInjection.Modules.Configurations.Database;
-using AmpedBiz.Service.Host.Bootstrap.Providers;
+using AmpedBiz.Service.Host.Context;
 using Autofac;
 using NHibernate.Validator.Engine;
-using System;
 
 namespace AmpedBiz.Service.Host.Bootstrap.DependencInjection.Modules
 {

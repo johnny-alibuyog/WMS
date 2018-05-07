@@ -2,7 +2,7 @@
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Branch : Entity<Guid, Branch>, IHaveTenant, IAuditable
+    public class Branch : Entity<Guid, Branch>, IHasTenant, IAuditable
     {
         public virtual Tenant Tenant { get; set; }
 

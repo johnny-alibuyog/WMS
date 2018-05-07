@@ -2,6 +2,7 @@
 using AmpedBiz.Common.Extentions;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace AmpedBiz.Core.Services.Orders
 {
@@ -32,6 +33,15 @@ namespace AmpedBiz.Core.Services.Orders
 
             target.PaidOn = lastPayment.PaidOn;
             target.PaidTo = lastPayment.PaidTo;
+
+            if (itemsToInsert.Any())
+            {
+                target.Accept(new OrderLogTransactionVisitor(
+                    transactedBy: lastPayment.PaidTo,
+                    transactedOn: lastPayment.PaidOn ?? DateTime.Now,
+                    type: OrderTransactionType.PaymentCreation
+                ));
+            }
         }
     }
 }

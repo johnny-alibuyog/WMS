@@ -16,7 +16,7 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Map(x => x.Name);
 
-                //References(x => x.Tenant);
+                References(x => x.Tenant);
 
                 Component(x => x.Address);
 
@@ -27,6 +27,8 @@ namespace AmpedBiz.Data.EntityDefinitions
                     .Not.KeyUpdate()
                     .Inverse()
                     .AsBag();
+
+                ApplyFilter<TenantDefinition.Filter>();
             }
         }
 
@@ -40,9 +42,8 @@ namespace AmpedBiz.Data.EntityDefinitions
                     .NotNullableAndNotEmpty()
                     .And.MaxLength(255);
 
-                //Define(x => x.Tenant);
-                //    .NotNullable()
-                //    .And.IsValid();
+                Define(x => x.Tenant)
+                    .IsValid();
 
                 Define(x => x.Address)
                     .IsValid();

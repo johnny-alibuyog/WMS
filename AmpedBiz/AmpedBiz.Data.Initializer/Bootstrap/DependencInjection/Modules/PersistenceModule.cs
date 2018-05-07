@@ -1,5 +1,5 @@
 ﻿using AmpedBiz.Data.Initializer.Bootstrap.DependencInjection.Modules.Configurations.Database;
-using AmpedBiz.Data.Initializer.Bootstrap.Providers;
+using AmpedBiz.Data.Initializer.Context;
 using Autofac;
 using NHibernate.Validator.Engine;
 

@@ -8,7 +8,7 @@ namespace AmpedBiz.Core.Entities
 {
     public class Inventory : Entity<Guid, Inventory>, IAccept<IVisitor<Inventory>>
     {
-        public virtual Branch Branch { get; protected internal set; } // TODO: implement
+        public virtual Branch Branch { get; protected internal set; }
 
         public virtual Product Product { get; protected internal set; }
 
@@ -46,7 +46,9 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Measure MinimumReorderQuantity { get; protected internal set; }
 
-        public virtual IEnumerable<Stock> Stocks { get; protected internal set; } = new Collection<Stock>();
+        //public virtual IEnumerable<Stock> Stocks { get; protected internal set; } = new Collection<Stock>();
+
+        public virtual IEnumerable<InventoryAdjustment> Adjustments { get; protected internal set; } = new Collection<InventoryAdjustment>();
 
         public virtual InventoryMeasureConverter Convert(Func<Inventory, Measure> selector) => new InventoryMeasureConverter(this, selector);
 

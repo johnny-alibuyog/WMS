@@ -44,7 +44,7 @@ namespace AmpedBiz.Data.EntityDefinitions
             public Filter()
             {
                 this.WithName(Filter.FilterName)
-                    .WithCondition($"TenantId = :{Filter.ParameterName}")
+                    .WithCondition($"(TenantId = :{Filter.ParameterName} or TenantId is null)")
                     .AddParameter(Filter.ParameterName, NHibernateUtil.String);
             }
         }
@@ -52,11 +52,18 @@ namespace AmpedBiz.Data.EntityDefinitions
 
     public static class TenantDefinitionExtention
     {
-        public static ISession ApplyTenantFilter(this ISession session, string tenantId)
+        public static ISession EnableTenantFilter(this ISession session, string tenantId)
         {
             session
                 .EnableFilter(TenantDefinition.Filter.FilterName)
                 .SetParameter(TenantDefinition.Filter.ParameterName, tenantId);
+
+            return session;
+        }
+
+        public static ISession DisableTenantFilter(this ISession session)
+        {
+            session.DisableFilter(TenantDefinition.Filter.FilterName);
 
             return session;
         }
