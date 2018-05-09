@@ -4,16 +4,16 @@ using NHibernate.Validator.Cfg.Loquacious;
 
 namespace AmpedBiz.Data.EntityDefinitions
 {
-    public class OrderTransactionDefinition
+    public class PurchaseOrderTransactionDefinition
     {
-        public class Mapping : ClassMap<OrderTransaction>
+        public class Mapping : ClassMap<PurchaseOrderTransaction>
         {
             public Mapping()
             {
                 Id(x => x.Id)
                     .GeneratedBy.GuidComb();
 
-                References(x => x.Order);
+                References(x => x.PurchaseOrder);
 
                 References(x => x.TransactedBy);
 
@@ -25,13 +25,13 @@ namespace AmpedBiz.Data.EntityDefinitions
             }
         }
 
-        public class Validation : ValidationDef<OrderTransaction>
+        public class Validation : ValidationDef<PurchaseOrderTransaction>
         {
             public Validation()
             {
                 Define(x => x.Id);
 
-                Define(x => x.Order)
+                Define(x => x.PurchaseOrder)
                     .NotNullable()
                     .And.IsValid();
 

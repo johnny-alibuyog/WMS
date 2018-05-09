@@ -2,6 +2,7 @@
 using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Inventories.PurchaseOrders;
 using AmpedBiz.Core.Services.Products;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -44,6 +45,16 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
 
             target.ReceivedBy = lastReceipt.ReceivedBy;
             target.ReceivedOn = lastReceipt.ReceivedOn;
+
+            if (itemsToInsert.Any())
+            {
+                target.Accept(new PurchaseOrderLogTransactionVisitor(
+                    transactedBy: lastReceipt.ReceivedBy,
+                    transactedOn: lastReceipt.ReceivedOn ?? DateTime.Now,
+                    type: PurchaseOrderTransactionType.ReceivingCreation
+                ));
+            }
+
         }
     }
 }

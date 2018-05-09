@@ -60,6 +60,11 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
                 target.Accept(new PurchaseOrderUpdateReceiptsVisitor(this.Receipts, this.Branch));
 
             target.Accept(new PurchaseOrderCalculateVisitor());
+
+            target.Accept(new PurchaseOrderLogTransactionVisitor(
+                transactedBy: target.CreatedBy,
+                transactedOn: target.CreatedOn ?? DateTime.Now
+            ));
         }
     }
 }

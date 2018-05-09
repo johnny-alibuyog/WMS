@@ -40,6 +40,10 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             target.CancelledOn = this.CancelledOn;
             target.CancellationReason = this.CancellationReason;
             target.Status = PurchaseOrderStatus.Cancelled;
+            target.Accept(new PurchaseOrderLogTransactionVisitor(
+                transactedBy: this.CancelledBy,
+                transactedOn: this.CancelledOn ?? DateTime.Now
+            ));
         }
     }
 }

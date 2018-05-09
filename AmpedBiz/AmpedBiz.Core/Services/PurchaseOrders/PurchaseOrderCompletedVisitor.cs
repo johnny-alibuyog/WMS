@@ -37,6 +37,10 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             target.CompletedBy = this.CompletedBy;
             target.CompletedOn = this.CompletedOn;
             target.Status = PurchaseOrderStatus.Completed;
+            target.Accept(new PurchaseOrderLogTransactionVisitor(
+                transactedBy: this.CompletedBy,
+                transactedOn: this.CompletedOn ?? DateTime.Now
+            ));
         }
     }
 }

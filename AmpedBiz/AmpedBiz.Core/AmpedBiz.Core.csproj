@@ -77,6 +77,7 @@
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\PaymentType.cs" />
     <Compile Include="Entities\PurchaseOrder.cs" />
+    <Compile Include="Entities\PurchaseOrderTransaction.cs" />
     <Compile Include="Entities\Return.cs" />
     <Compile Include="Entities\ReturnItem.cs" />
     <Compile Include="Entities\ReturnReason.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Services\PurchaseOrders\PurchaseOrderCalculator.cs" />
     <Compile Include="Services\PurchaseOrders\PurchaseOrderCancelledVisitor.cs" />
     <Compile Include="Services\PurchaseOrders\PurchaseOrderCompletedVisitor.cs" />
+    <Compile Include="Services\PurchaseOrders\PurchaseOrderLogTransactionVisitor.cs" />
     <Compile Include="Services\PurchaseOrders\PurchaseOrderSubmittedVisitor.cs" />
     <Compile Include="Services\PurchaseOrders\PurchaseOrderUpdateItemsVisitor.cs" />
     <Compile Include="Services\PurchaseOrders\PurchaseOrderUpdatePaymentsVisitor.cs" />

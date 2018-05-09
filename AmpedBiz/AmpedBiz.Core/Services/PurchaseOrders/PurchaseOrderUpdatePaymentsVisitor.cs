@@ -34,6 +34,15 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             target.PaidOn = lastPayment.PaidOn;
             target.PaidBy = lastPayment.PaidBy;
 
+            if (itemsToInsert.Any())
+            {
+                target.Accept(new PurchaseOrderLogTransactionVisitor(
+                    transactedBy: lastPayment.PaidBy,
+                    transactedOn: lastPayment.PaidOn ?? DateTime.Now,
+                    type: PurchaseOrderTransactionType.PaymentCreation
+                ));
+            }
+
         }
     }
 }

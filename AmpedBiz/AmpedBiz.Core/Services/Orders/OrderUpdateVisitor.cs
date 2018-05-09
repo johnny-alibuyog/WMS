@@ -71,6 +71,11 @@ namespace AmpedBiz.Core.Services.Orders
                 target.Accept(new OrderUpdateReturnsVisitor(this.Returns, this.Branch));
 
             target.Accept(new OrderCalculateVisitor());
+
+            target.Accept(new OrderLogTransactionVisitor(
+                transactedBy: target.CreatedBy,
+                transactedOn: target.CreatedOn ?? DateTime.Now
+            ));
         }
     }
 }

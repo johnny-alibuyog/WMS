@@ -30,6 +30,10 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             target.ApprovedBy = this.ApprovedBy;
             target.ApprovedOn = this.ApprovedOn;
             target.Status = PurchaseOrderStatus.Approved;
+            target.Accept(new PurchaseOrderLogTransactionVisitor(
+                transactedBy: this.ApprovedBy,
+                transactedOn: this.ApprovedOn ?? DateTime.Now
+            ));
         }
     }
 }

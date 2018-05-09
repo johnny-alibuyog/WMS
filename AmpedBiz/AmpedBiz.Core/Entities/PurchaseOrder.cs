@@ -22,6 +22,19 @@ namespace AmpedBiz.Core.Entities
         Receipts = 3
     }
 
+    public enum PurchaseOrderTransactionType
+    {
+        Creation,
+        Submittion,
+        Approval,
+        Completion,
+        Cancellation,
+        ItemModification,
+        PaymentCreation,
+        ReceivingCreation
+    }
+
+
     public class PurchaseOrder : Entity<Guid, PurchaseOrder>, IAccept<IVisitor<PurchaseOrder>>
     {
         public virtual string PurchaseOrderNumber { get; internal protected set; }
@@ -89,6 +102,8 @@ namespace AmpedBiz.Core.Entities
         public virtual IEnumerable<PurchaseOrderPayment> Payments { get; internal protected set; } = new Collection<PurchaseOrderPayment>();
 
         public virtual IEnumerable<PurchaseOrderReceipt> Receipts { get; internal protected set; } = new Collection<PurchaseOrderReceipt>();
+
+        public virtual IEnumerable<PurchaseOrderTransaction> Transactions { get; internal protected set; } = new Collection<PurchaseOrderTransaction>();
 
         public virtual StateDispatcher State => new StateDispatcher(this);
 

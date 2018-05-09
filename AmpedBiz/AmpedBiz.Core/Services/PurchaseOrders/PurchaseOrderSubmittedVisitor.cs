@@ -14,6 +14,10 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             target.SubmittedBy = this.SubmittedBy;
             target.SubmittedOn = this.SubmittedOn;
             target.Status = PurchaseOrderStatus.Submitted;
+            target.Accept(new PurchaseOrderLogTransactionVisitor(
+                transactedBy: this.SubmittedBy,
+                transactedOn: this.SubmittedOn ?? DateTime.Now
+            ));
         }
     }
 }

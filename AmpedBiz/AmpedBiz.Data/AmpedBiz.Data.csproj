@@ -147,6 +147,7 @@
     <Compile Include="EntityDefinitions\PurchaseOrderDefinition.cs" />
     <Compile Include="EntityDefinitions\PurchaseOrderPaymentDefinition.cs" />
     <Compile Include="EntityDefinitions\PurchaseOrderReceiptDefinition.cs" />
+    <Compile Include="EntityDefinitions\PurchaseOrderTransactionDefinition.cs" />
     <Compile Include="EntityDefinitions\ReturnItemDefinition.cs" />
     <Compile Include="EntityDefinitions\ReturnDefinition.cs" />
     <Compile Include="EntityDefinitions\ReturnReasonDefinition.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="Seeders\DefaultDataSeeders\_013_PricingSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_014_ProductCategorySeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_015_UnitOfMeasureSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_016_InventoryAdjustmentReasonSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_020_DefaultSupplierSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_021_DefaultProductSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_022_DefaultInventoryEnding.cs" />
