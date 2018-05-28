@@ -248,6 +248,7 @@
     <Compile Include="Context\RequestContext.cs" />
     <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\PricingController.cs" />
     <Compile Include="Controllers\ProductCategoryController.cs" />

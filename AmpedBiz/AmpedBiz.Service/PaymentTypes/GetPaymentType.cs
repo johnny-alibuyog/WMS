@@ -30,6 +30,8 @@ namespace AmpedBiz.Service.PaymentTypes
                     entity.MapTo(response);
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

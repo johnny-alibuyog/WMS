@@ -130,6 +130,7 @@
       <DependentUpon>SettingDefinition.cs</DependentUpon>
     </Compile>
     <Compile Include="EntityDefinitions\InventoryAdjustmentDefinition.cs" />
+    <Compile Include="EntityDefinitions\InventoryAdjustmentReasonDefinition.cs" />
     <Compile Include="EntityDefinitions\InventoryDefinition.cs" />
     <Compile Include="EntityDefinitions\InvoiceReportSettingDefinition.cs">
       <DependentUpon>SettingDefinition.cs</DependentUpon>
@@ -179,12 +180,13 @@
     <Compile Include="EntityDefinitions\UserDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extentions.cs" />
-    <Compile Include="Seeders\DataProviders\ExcelDataProvider.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_001_DefaultTenantSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_002_DefaultBranchSeeder.cs" />
+    <Compile Include="Seeders\DataProviders\DataProvider.cs" />
+    <Compile Include="Seeders\DataProviders\ExcelDataImporter.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_001_TenantSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_002_BranchSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_003_RoleSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_004_DefaultSettingSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_005_DefaultUserSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_004_SettingSeeder.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_005_UserSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_010_ReturnReasonSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_011_CurrencySeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_012_PaymentTypeSeeder.cs" />
@@ -206,6 +208,7 @@
     <Compile Include="Seeders\DummyDataSeeders\_010_PurchaseOrderSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_011_OrderSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_012_ReturnSeeder.cs" />
+    <Compile Include="Seeders\DummyDataSeeders\_013_InventoryAdjustementSeeder.cs" />
     <Compile Include="Seeders\IDefaultDataSeeder.cs" />
     <Compile Include="Seeders\IDummyDataSeeder.cs" />
     <Compile Include="Seeders\ISeeder.cs" />

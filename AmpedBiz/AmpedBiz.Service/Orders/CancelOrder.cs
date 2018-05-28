@@ -39,6 +39,8 @@ namespace AmpedBiz.Service.Orders
 
                     response.Id = request.Id;
                     //entity.MapTo(response);
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

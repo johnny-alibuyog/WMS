@@ -68,6 +68,12 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Component(x => x.MinimumReorderQuantity,
                     MeasureDefinition.Mapping.Map("MinimumReorderQuantity_", nameof(Inventory)));
 
+                Component(x => x.IncreaseAdjustment,
+                    MeasureDefinition.Mapping.Map("IncreaseAdjustment_", nameof(Inventory)));
+
+                Component(x => x.DecreaseAdjustment,
+                    MeasureDefinition.Mapping.Map("DecreaseAdjustment_", nameof(Inventory)));
+
                 //HasMany(x => x.Stocks)
                 //    .Cascade.AllDeleteOrphan()
                 //    .Not.KeyNullable()
@@ -145,6 +151,12 @@ namespace AmpedBiz.Data.EntityDefinitions
                     .IsValid();
 
                 Define(x => x.MinimumReorderQuantity)
+                    .IsValid();
+
+                Define(x => x.IncreaseAdjustment)
+                    .IsValid();
+
+                Define(x => x.DecreaseAdjustment)
                     .IsValid();
 
                 //Define(x => x.Stocks);

@@ -71,6 +71,10 @@ namespace AmpedBiz.Service.UnitOfMeasures
                         Count = countFuture.Value,
                         Items = itemsFuture.ToList()
                     };
+
+                    transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

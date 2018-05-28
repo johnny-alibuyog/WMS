@@ -59,6 +59,7 @@ export interface DiscontinuedPageItem {
 
 export interface ProductInventory {
   id?: string;
+  inventoryId?: string;
   code?: string;
   name?: string;
   unitOfMeasures?: ProductInventoryUnitOfMeasure[];
@@ -191,7 +192,7 @@ export class ProductListingReportPageItem {
   onHandValue?: number;
   availableValue?: number;
   basePriceAmount?: number;
-  wholeSalePriceAmount?: number;
+  wholesalePriceAmount?: number;
   retailPriceAmount?: number;
   suggestedRetailPriceAmount?: number;
 }

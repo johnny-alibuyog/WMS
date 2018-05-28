@@ -29,6 +29,8 @@ namespace AmpedBiz.Service.Suppliers
                     entity.MapTo(response);
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

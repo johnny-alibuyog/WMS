@@ -11,6 +11,6 @@
     "Enabled": false,
     "UseDummyData": false,
     "UseExternalFiles": false,
-    "ExternalFilesPath": ".\\Data\\ImportFiles\\Nicon"
+    "ExternalFilesPath": ".\\ImportFiles"
   }
 }

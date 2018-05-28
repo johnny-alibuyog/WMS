@@ -156,6 +156,8 @@ namespace AmpedBiz.Service.Products
                     };
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

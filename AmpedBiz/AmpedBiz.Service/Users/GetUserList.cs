@@ -47,6 +47,8 @@ namespace AmpedBiz.Service.Users
                     response = new Response(result);
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

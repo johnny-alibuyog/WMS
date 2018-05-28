@@ -22,6 +22,7 @@ namespace AmpedBiz.Data.Inteceptors
         public override void SetSession(ISession session)
         {
             this._session = session;
+            base.SetSession(session);
         }
 
         public override bool OnSave(object entity, object id, object[] state, string[] propertyNames, IType[] types)

@@ -29,19 +29,21 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
         public void Seed()
         {
-            var filename = Path.Combine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath, @"default_products.xlsx");
+            var context = this._contextProvider.Build();
+
+            var filename = Path.Combine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath, context.TenantId, @"default_products.xlsx");
 
             if (!File.Exists(filename))
                 return;
 
-            var endingInventoryData = DefaultEndingInventory.Read();
+            var endingInventoryData = DefaultEndingInventory.Read(context);
 
             var productData = new ExcelQueryFactory(filename).Worksheet()
                 .Select(x => new
                 {                                                
                     Code = x["Product Id"].ToString(),
                     Name = x["Product Name"].ToString(),
-                    Category = x["Category"].ToString(),
+                    Category = x["Category"].ToString().ToUpper(),
                     InitialLevel = Convert.ToDecimal(x["Initial Level"].Cast<double>()),
                     TargetLevel = Convert.ToDecimal(x["Target Level"].Cast<double>()),
                     ReorderLevel = Convert.ToDecimal(x["Reorder Level"].Cast<double>()),
@@ -102,8 +104,6 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 .Distinct()
                 .ToList();
 
-            var context = this._contextProvider.Build();
-
             using (var session = this._sessionFactory.RetrieveSharedSession(context))
             using (var transaction = session.BeginTransaction())
             {
@@ -133,8 +133,6 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                         //       One option is to name the product seeding source with the supplier id (default_products-SMIS.xlsx)
                     };
 
-                    var categories = session.Query<ProductCategory>().Cacheable().ToList();
-
                     // products
                     productData.ForEach(x =>
                     {
@@ -144,7 +142,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                             Code = x.Code,
                             Name = x.Name,
                             Supplier = defaults.Supplier,
-                            Category = categories.FirstOrDefault(o => o.Name == x.Category),
+                            Category = session.Load<ProductCategory>(x.Category),
                             UnitOfMeasures = new List<ProductUnitOfMeasure>()
                             {
                                 // Individual
@@ -253,7 +251,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                                 ),
                             }
                             .Where(o =>
-                                (o.UnitOfMeasure != null)  &&
+                                (o.UnitOfMeasure != null) &&
                                 (o.IsStandard
                                     ? o.StandardEquivalentValue == 1
                                     : o.StandardEquivalentValue > 1
@@ -320,6 +318,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 }
 
                 transaction.Commit();
+                _sessionFactory.ReleaseSharedSession();
             }
         }
     }
@@ -372,9 +371,9 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             return parsedQuantity;
         }
 
-        public static IReadOnlyList<DefaultEndingInventory> Read()
+        public static IReadOnlyList<DefaultEndingInventory> Read(IContext context)
         {
-            var filename = Path.Combine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath, @"default_ending_inventory.xlsx");
+            var filename = Path.Combine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath, context.TenantId, @"default_ending_inventory.xlsx");
 
             if (!File.Exists(filename))
                 return new List<DefaultEndingInventory>();

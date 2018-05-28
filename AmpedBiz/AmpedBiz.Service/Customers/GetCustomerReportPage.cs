@@ -99,6 +99,8 @@ namespace AmpedBiz.Service.Customers
                     };
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

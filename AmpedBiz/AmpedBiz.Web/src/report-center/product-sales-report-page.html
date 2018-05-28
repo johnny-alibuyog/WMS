@@ -114,7 +114,7 @@
                   <th class="col-md-2" click.delegate="sorter.doSort('productName')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['productName'])}"></i>Product
                   </th>
-                  <th class="col-md-2" click.delegate="sorter.doSort('quantityUnit')">
+                  <th class="col-md-2 text-right" click.delegate="sorter.doSort('quantityUnit')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['quantityUnit'])}"></i>Quantity
                   </th>
                   <th class="col-md-1 text-right" click.delegate="sorter.doSort('unitPriceAmount')">
@@ -139,7 +139,7 @@
                   <td>${item.supplierName}</td>
                   <td>${item.categoryName}</td>
                   <td>${item.productName}</td>
-                  <td>${item.quantityValue} ${item.quantityUnit}</td>
+                  <td class="text-right">${item.quantityValue} ${item.quantityUnit}</td>
                   <td class="text-right">${item.unitPriceAmount | numberFormat}</td>
                   <td class="text-right">${item.discountAmount | numberFormat}</td>
                   <td class="text-right">${item.extendedPriceAmount | numberFormat}</td>

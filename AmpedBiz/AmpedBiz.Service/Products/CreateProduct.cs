@@ -83,7 +83,9 @@ namespace AmpedBiz.Service.Products
 
                     transaction.Commit();
 
-                    product.MapTo(response);;
+                    product.MapTo(response);
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

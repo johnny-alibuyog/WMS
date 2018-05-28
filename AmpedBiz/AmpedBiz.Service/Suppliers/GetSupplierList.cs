@@ -38,6 +38,8 @@ namespace AmpedBiz.Service.Suppliers
                     response = new Response(dtos);
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

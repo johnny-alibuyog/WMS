@@ -20,13 +20,19 @@ export interface ProductListingReportItemModel {
   onHandValue?: number;
   availableValue?: number;
   basePriceAmount?: number;
-  wholeSalePriceAmount?: number;
+  wholesalePriceAmount?: number;
   retailPriceAmount?: number;
   suggestedRetailPriceAmount?: number;
 }
 
 @autoinject
 export class ProductListingReport extends Report<ProductListingReportModel> {
+
+  public constructor() {
+    super();
+
+    this.option.pageOrientation = 'landscape';
+  }
 
   protected async buildBody(data: ProductListingReportModel): Promise<any[] | Content[]> {
     let orderTableBody: any[] = [
@@ -46,26 +52,24 @@ export class ProductListingReport extends Report<ProductListingReportModel> {
     ];
 
     if (data && data.items && data.items.length > 0) {
-      data.items.forEach(x =>
-        orderTableBody.push([
-          { text: emptyIfNull(x.branchName), style: 'tableData' },
-          { text: emptyIfNull(x.supplierName), style: 'tableData' },
-          { text: emptyIfNull(x.categoryName), style: 'tableData' },
-          { text: emptyIfNull(x.productName), style: 'tableData' },
-          { text: emptyIfNull(x.quantityUnit), style: 'tableData' },
-          { text: formatNumber(x.onHandValue), style: 'tableData', alignment: 'right' },
-          { text: formatNumber(x.availableValue), style: 'tableData', alignment: 'right' },
-          { text: formatNumber(x.basePriceAmount), style: 'tableData', alignment: 'right' },
-          { text: formatNumber(x.wholeSalePriceAmount), style: 'tableData', alignment: 'right' },
-          { text: formatNumber(x.retailPriceAmount), style: 'tableData', alignment: 'right' },
-          { text: formatNumber(x.suggestedRetailPriceAmount), style: 'tableData', alignment: 'right' },
-        ])
-      );
+      orderTableBody.push(...data.items.map(x => [
+        { text: emptyIfNull(x.branchName), style: 'tableData' },
+        { text: emptyIfNull(x.supplierName), style: 'tableData' },
+        { text: emptyIfNull(x.categoryName), style: 'tableData' },
+        { text: emptyIfNull(x.productName), style: 'tableData' },
+        { text: emptyIfNull(x.quantityUnit), style: 'tableData' },
+        { text: formatNumber(x.onHandValue), style: 'tableData', alignment: 'right' },
+        { text: formatNumber(x.availableValue), style: 'tableData', alignment: 'right' },
+        { text: formatNumber(x.basePriceAmount), style: 'tableData', alignment: 'right' },
+        { text: formatNumber(x.wholesalePriceAmount), style: 'tableData', alignment: 'right' },
+        { text: formatNumber(x.retailPriceAmount), style: 'tableData', alignment: 'right' },
+        { text: formatNumber(x.suggestedRetailPriceAmount), style: 'tableData', alignment: 'right' },
+      ]));
     }
 
     let body = [
       {
-        text: 'Customer Orders',
+        text: 'Product Listing',
         style: 'title'
       },
       {
@@ -116,7 +120,7 @@ export class ProductListingReport extends Report<ProductListingReportModel> {
       {
         table: {
           headerRows: 1,
-          widths: ['auto', 'auto', 'auto', '*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', ],
+          widths: ['auto', 'auto', 'auto', '*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto',],
           body: orderTableBody
         },
         layout: 'lightHorizontalLines',

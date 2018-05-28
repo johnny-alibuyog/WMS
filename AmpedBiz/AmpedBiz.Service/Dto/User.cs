@@ -5,35 +5,62 @@ namespace AmpedBiz.Service.Dto
 {
     public class User
     {
-        public virtual Guid Id { get; set; }
+        public Guid Id { get; set; }
 
-        public virtual string Username { get; set; }
+        public string Username { get; set; }
 
-        public virtual string Password { get; set; }
+        public string Password { get; set; }
 
-        public virtual Person Person { get; set; }
+        public Person Person { get; set; }
 
-        public virtual Address Address { get; set; }
+        public Address Address { get; set; }
 
-        public virtual Branch Branch { get; set; }
+        public Branch Branch { get; set; }
 
-        public virtual Guid BranchId { get; set; }
+        public Guid BranchId { get; set; }
 
-        public virtual List<Role> Roles { get; set; }
+        public List<Role> Roles { get; set; }
     }
 
     public class UserPageItem
     {
-        public virtual Guid Id { get; set; }
+        public Guid Id { get; set; }
 
-        public virtual string Username { get; set; }
+        public string Username { get; set; }
 
-        public virtual string BranchName { get; set; }
+        public string BranchName { get; set; }
 
-        public virtual Person Person { get; set; }
+        public Person Person { get; set; }
 
-        public virtual Address Address { get; set; }
+        public Address Address { get; set; }
 
-        public virtual List<Role> Roles { get; set; }
+        public List<Role> Roles { get; set; }
+    }
+
+    public class UserInfo
+    {
+        public Guid Id { get; set; }
+
+        public string Username { get; set; }
+
+        public Person Person { get; set; }
+    }
+
+    public class UserPassword
+    {
+        public Guid Id { get; set; }
+
+        public string OldPassword { get; set; }
+
+        public string NewPassword { get; set; }
+
+        public string ConfirmPassword { get; set; }
+    }
+
+    public class UserAddress
+    {
+        public Guid Id { get; set; }
+
+        public Address Address { get; set; }
     }
 }

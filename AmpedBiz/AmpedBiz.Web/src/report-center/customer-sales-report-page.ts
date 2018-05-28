@@ -34,7 +34,7 @@ export class CustomerSalesReportPage {
     this.filter.onFilter = () => this.getPage();
 
     this.sorter = new Sorter();
-    this.sorter["completedOn"] = SortDirection.Ascending;
+    this.sorter["paidOn"] = SortDirection.Ascending;
     this.sorter["branchName"] = SortDirection.None;
     this.sorter["customerName"] = SortDirection.None;
     this.sorter["invoice"] = SortDirection.None;
@@ -79,7 +79,7 @@ export class CustomerSalesReportPage {
         fromDate: header.fromDate,
         toDate: header.toDate,
         items: data.items.map(x => <CustomerSalesReportItemModel>{
-          completedOn: x.completedOn,
+          paidOn: x.paidOn,
           branchName: x.branchName,
           customerName: x.customerName,
           invoiceNumber: x.invoiceNumber,

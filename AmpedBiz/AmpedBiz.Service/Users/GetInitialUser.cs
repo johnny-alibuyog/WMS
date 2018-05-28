@@ -33,6 +33,8 @@ namespace AmpedBiz.Service.Users
                         .ToList();
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

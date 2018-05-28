@@ -79,6 +79,8 @@ namespace AmpedBiz.Service.Dto
     {
         public Guid Id { get; set; }
 
+        public Guid InventoryId { get; set; }
+
         public string Code { get; set; }
 
         public string Name { get; set; }

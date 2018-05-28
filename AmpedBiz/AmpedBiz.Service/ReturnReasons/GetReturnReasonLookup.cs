@@ -43,6 +43,8 @@ namespace AmpedBiz.Service.ReturnReasons
                     response = new Response(pairs);
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

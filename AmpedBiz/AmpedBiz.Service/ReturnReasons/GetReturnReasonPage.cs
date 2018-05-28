@@ -70,6 +70,10 @@ namespace AmpedBiz.Service.ReturnReasons
                         Count = countFuture.Value,
                         Items = itemsFuture.ToList()
                     };
+
+                    transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

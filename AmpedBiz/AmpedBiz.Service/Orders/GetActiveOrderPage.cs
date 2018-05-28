@@ -123,6 +123,10 @@ namespace AmpedBiz.Service.Orders
                         Count = countFuture.Value,
                         Items = itemsFuture.ToList()
                     };
+
+                    transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

@@ -12,7 +12,7 @@ namespace AmpedBiz.Data.Inteceptors
     {
         private ISession _session;
 
-        private bool IsTenantFilterEnabled => this._session.GetEnabledFilter(TenantDefinition.Filter.FilterName) != null;
+        private bool IsTenantFilterEnabled => !string.IsNullOrWhiteSpace(GetContext()?.TenantId); //this._session.GetEnabledFilter(TenantDefinition.Filter.FilterName) != null;
 
         private Func<IContext> GetContext { get; }
 

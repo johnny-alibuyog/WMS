@@ -11,11 +11,41 @@ export class Index {
     config.title = "Report Center";
     config.map([
       {
-        route: ['order-report-page'],
-        name: 'order-report-page',
-        moduleId: './order-report-page',
+        route: ['customer-report-page'],
+        name: 'customer-report-page',
+        moduleId: './customer-report-page',
         nav: true,
-        title: 'Customer Orders',
+        title: 'Customer Listings',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+            ]
+          }
+        },
+      },
+      {
+        route: ['product-listing-report-page'],
+        name: 'product-listing-report-page',
+        moduleId: './product-listing-report-page',
+        nav: true,
+        title: 'Products Listings',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+            ]
+          }
+        },
+      },
+      {
+        route: ['supplier-report-page'],
+        name: 'supplier-report-page',
+        moduleId: './supplier-report-page',
+        nav: true,
+        title: 'Supplier Listings',
         settings: {
           auth: <AuthSettings>{
             roles: [
@@ -40,27 +70,12 @@ export class Index {
           }
         },
       },
-      /*{
-        route: ['product-report-page'],
-        name: 'product-report-page',
-        moduleId: './product-report-page',
-        nav: true,
-        title: 'Products Listings',
-        settings: {
-          auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-            ]
-          }
-        },
-      },*/
       {
-        route: ['product-listing-report-page'],
-        name: 'product-listing-report-page',
-        moduleId: './product-listing-report-page',
+        route: ['customer-order-delivery-report-page'],
+        name: 'customer-order-delivery-report-page',
+        moduleId: './customer-order-delivery-report-page',
         nav: true,
-        title: 'Products Listings',
+        title: 'Customer Order Delivery',
         settings: {
           auth: <AuthSettings>{
             roles: [
@@ -70,12 +85,42 @@ export class Index {
           }
         },
       },
+      {
+        route: ['customer-payments-report-page'],
+        name: 'customer-payments-report-page',
+        moduleId: './customer-payments-report-page',
+        nav: true,
+        title: 'Customer Payments',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+            ]
+          }
+        },
+      },
+      // {
+      //   route: ['customer-order-report-page'],
+      //   name: 'customer-order-report-page',
+      //   moduleId: './customer-order-report-page',
+      //   nav: true,
+      //   title: 'Customer Orders',
+      //   settings: {
+      //     auth: <AuthSettings>{
+      //       roles: [
+      //         role.admin,
+      //         role.manager,
+      //       ]
+      //     }
+      //   },
+      // },
       {
         route: ['product-sales-report-page'],
         name: 'product-sales-report-page',
         moduleId: './product-sales-report-page',
         nav: true,
-        title: 'Products Sales',
+        title: 'Product Sales',
         settings: {
           auth: <AuthSettings>{
             roles: [
@@ -86,26 +131,11 @@ export class Index {
         },
       },
       {
-        route: ['customer-report-page'],
-        name: 'customer-report-page',
-        moduleId: './customer-report-page',
+        route: ['product-invoice-movement-report-page'],
+        name: 'product-invoice-movement-report-page',
+        moduleId: './product-invoice-movement-report-page',
         nav: true,
-        title: 'Customer Listings',
-        settings: {
-          auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-            ]
-          }
-        },
-      },
-      {
-        route: ['supplier-report-page'],
-        name: 'supplier-report-page',
-        moduleId: './supplier-report-page',
-        nav: true,
-        title: 'Supplier Listings',
+        title: 'Product Invoice Movement',
         settings: {
           auth: <AuthSettings>{
             roles: [
@@ -132,7 +162,7 @@ export class Index {
       },
       {
         route: [""],
-        redirect: "order-report-page"
+        redirect: "customer-report-page"
       },
     ]);
 

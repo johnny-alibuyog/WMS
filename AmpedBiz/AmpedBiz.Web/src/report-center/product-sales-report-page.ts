@@ -29,7 +29,7 @@ export class ProductSalesReportPage {
     this._notification = notification;
 
     this.filter = new Filter();
-    this.filter["customerId"] = null;
+    this.filter["branchId"] = null;
     this.filter["categoryId"] = null;
     this.filter["supplierId"] = null;
     this.filter["productId"] = null;
@@ -82,15 +82,19 @@ export class ProductSalesReportPage {
       });
 
       let header = {
-        customer: this.categories.find(x => x.id == this.filter["customerId"]),
         branch: this.branches.find(x => x.id == this.filter["branchId"]),
+        category: this.categories.find(x => x.id == this.filter["customerId"]),
+        supplier: this.suppliers.find(x => x.id == this.filter["supplierId"]),
+        product: this.products.find(x => x.id == this.filter["productId"]),
         fromDate: this.filter["fromDate"],
         toDate: this.filter["toDate"],
       };
 
       let reportModel = <ProductSalesReportModel>{
         branchName: header.branch && header.branch.name || "All Branches",
-        customerName: header.customer && header.customer.name || "All Customers",
+        supplierName: header.supplier && header.supplier.name || "All Supplier",
+        categoryName: header.category && header.category.name || "All Category",
+        productName: header.product && header.product.name || "All Product",
         fromDate: header.fromDate,
         toDate: header.toDate,
         items: data.items.map(x => <ProductSalesReportItemModel>{

@@ -57,23 +57,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Test.Unit", "Amped
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FE60FB7D-11A2-4A8E-ACC6-0C3217EE8BFD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".data", ".data", "{6FC46504-330B-4BFA-AA46-13CE64E12B3A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ImportFiles", "ImportFiles", "{36B35E72-4C26-48D8-A078-84C688570CAA}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nicon", "Nicon", "{DEA4A980-D975-4D7D-A6FA-49072826516B}"
-	ProjectSection(SolutionItems) = preProject
-		.data\ImportFiles\Nicon\default_customers.xlsx = .data\ImportFiles\Nicon\default_customers.xlsx
-		.data\ImportFiles\Nicon\default_ending_inventory.xlsx = .data\ImportFiles\Nicon\default_ending_inventory.xlsx
-		.data\ImportFiles\Nicon\default_products.xlsx = .data\ImportFiles\Nicon\default_products.xlsx
-		.data\ImportFiles\Nicon\default_suppliers.xlsx = .data\ImportFiles\Nicon\default_suppliers.xlsx
-		.data\ImportFiles\Nicon\default_uom.xlsx = .data\ImportFiles\Nicon\default_uom.xlsx
-		.data\ImportFiles\Nicon\tenant.xlsx = .data\ImportFiles\Nicon\tenant.xlsx
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Data.Initializer", "AmpedBiz.Data.Initializer\AmpedBiz.Data.Initializer.csproj", "{2D3D68A8-AE82-47A7-ADD0-C4422BA23C1F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{86DCD0FE-D79E-4166-A531-41BA91D35D29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,9 +111,6 @@ Global
 		{BC11990C-B580-4CBB-BF7D-A247CE0DCE04} = {41FDA416-8041-40EE-A524-003221C39330}
 		{FDB8EBA6-B55D-4D57-9DF6-0CD66AFDD73D} = {FE60FB7D-11A2-4A8E-ACC6-0C3217EE8BFD}
 		{6A332A94-7B93-4A2B-B6DF-35CB496EA799} = {FE60FB7D-11A2-4A8E-ACC6-0C3217EE8BFD}
-		{36B35E72-4C26-48D8-A078-84C688570CAA} = {6FC46504-330B-4BFA-AA46-13CE64E12B3A}
-		{DEA4A980-D975-4D7D-A6FA-49072826516B} = {36B35E72-4C26-48D8-A078-84C688570CAA}
-		{86DCD0FE-D79E-4166-A531-41BA91D35D29} = {36B35E72-4C26-48D8-A078-84C688570CAA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {844E83D7-B7EF-482E-B46C-22561C5A782A}

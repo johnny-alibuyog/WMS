@@ -36,6 +36,8 @@ namespace AmpedBiz.Service.Settings
                     entity.Value.MapTo(response);
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

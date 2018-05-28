@@ -38,6 +38,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 }
 
                 transaction.Commit();
+                _sessionFactory.ReleaseSharedSession();
             }
         }
     }

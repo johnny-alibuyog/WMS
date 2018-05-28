@@ -28,6 +28,8 @@ namespace AmpedBiz.Service.ReturnReasons
                     entity.MapTo(response);
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

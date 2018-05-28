@@ -4,6 +4,12 @@ using System;
 
 namespace AmpedBiz.Service.Dto
 {
+    public enum InventoryAdjustmentType
+    {
+        Increase = 1,
+        Decrease = 2
+    }
+
     public class Inventory
     {
         public virtual Guid Id { get; set; }
@@ -42,6 +48,10 @@ namespace AmpedBiz.Service.Dto
 
         public virtual decimal? MinimumReorderQuantityValue { get; set; }
 
+        public virtual decimal? IncreaseAdjustmentValue { get; set; }
+
+        public virtual decimal? DecreaseAdjustmentValue { get; set; }
+
         public void Load(Core.Entities.Inventory inventory, Core.Entities.UnitOfMeasure uom)
         {
             this.Id = inventory.Id;
@@ -62,6 +72,8 @@ namespace AmpedBiz.Service.Dto
             this.ReorderLevelValue = inventory.Product.ConvertValue(inventory.ReorderLevel, uom);
             this.ReorderQuantityValue = inventory.Product.ConvertValue(inventory.ReorderQuantity, uom);
             this.MinimumReorderQuantityValue = inventory.Product.ConvertValue(inventory.MinimumReorderQuantity, uom);
+            this.IncreaseAdjustmentValue = inventory.Product.ConvertValue(inventory.IncreaseAdjustment, uom);
+            this.DecreaseAdjustmentValue = inventory.Product.ConvertValue(inventory.DecreaseAdjustment, uom);
         }
 
         public void LoadAsDefault(Core.Entities.Inventory inventory)
@@ -75,5 +87,55 @@ namespace AmpedBiz.Service.Dto
             var uom = inventory.Product.UnitOfMeasures.Standard(x => x.UnitOfMeasure);
             this.Load(inventory, uom);
         }
+    }
+
+    public class InventoryAdjustment
+    {
+        public Guid Id { get; set; }
+
+        public Guid InventoryId { get; set; }
+
+        public User AdjustedBy { get; set; }
+
+        public DateTime AdjustedOn { get; set; }
+
+        public InventoryAdjustmentReason Reason { get; set; }
+
+        public string Remarks { get; set; }
+
+        public InventoryAdjustmentType Type { get; set; }
+
+        public Measure Quantity { get; set; }
+
+        public Measure Standard { get; set; }
+    }
+
+    public class InventoryAdjustmentPageItem
+    {
+        public Guid Id { get; set; }
+
+        public string AdjustedBy { get; set; }
+
+        public DateTime AdjustedOn { get; set; }
+
+        public string Reason { get; set; }
+
+        public string Remarks { get; set; }
+
+        public string Type { get; set; }
+
+        public string Quantity { get; set; }
+    }
+
+    public class InventoryAdjustmentReason
+    {
+        public Guid Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public InventoryAdjustmentType Type { get; set; }
+
     }
 }

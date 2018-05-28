@@ -73,7 +73,6 @@ namespace AmpedBiz.Service.Products
                             ProductName = x.Product.Name,
                             QuantityUnitName = x.Quantity.Unit.Name,
                             UnitPriceAmount = x.UnitPrice.Amount,
-                            DiscountRate = x.DiscountRate,
                         })
                         .Select(x => new Dto.ProductSalesReportPageItem()
                         {
@@ -84,8 +83,8 @@ namespace AmpedBiz.Service.Products
                             SupplierName = x.Key.SupplierName,
                             CategoryName = x.Key.CategoryName,
                             ProductName = x.Key.ProductName,
-                            QuantityUnit = x.Key.QuantityUnitName,
                             UnitPriceAmount = x.Key.UnitPriceAmount,
+                            QuantityUnit = x.Key.QuantityUnitName,
                             QuantityValue = x.Sum(o => o.Quantity.Value),
                             DiscountAmount = x.Sum(o => o.Discount.Amount),
                             ExtendedPriceAmount = x.Sum(o => o.ExtendedPrice.Amount),
@@ -196,6 +195,8 @@ namespace AmpedBiz.Service.Products
                     };
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

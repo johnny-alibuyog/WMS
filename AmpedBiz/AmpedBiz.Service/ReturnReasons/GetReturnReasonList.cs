@@ -37,6 +37,8 @@ namespace AmpedBiz.Service.ReturnReasons
                     response = new Response(dtos);
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

@@ -24,7 +24,9 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
         public void Seed()
         {
-            var filename = Path.Combine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath, @"default_suppliers.xlsx");
+            var context = this._contextProvider.Build();
+
+            var filename = Path.Combine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath, context.TenantId, @"default_suppliers.xlsx");
 
             if (!File.Exists(filename))
                 return; //throw new FileNotFoundException($"File {filename} not found", filename);
@@ -38,8 +40,6 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                     ContactPerson = x["Contact Person"],
                 })
                 .ToList();
-
-            var context = this._contextProvider.Build();
 
             using (var session = this._sessionFactory.RetrieveSharedSession(context))
             using (var transaction = session.BeginTransaction())
@@ -58,6 +58,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 }
 
                 transaction.Commit();
+                _sessionFactory.ReleaseSharedSession();
             }
         }
     }

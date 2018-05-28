@@ -32,6 +32,8 @@ namespace AmpedBiz.Service.UnitOfMeasures
                     transaction.Commit();
 
                     entity.MapTo(response);
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

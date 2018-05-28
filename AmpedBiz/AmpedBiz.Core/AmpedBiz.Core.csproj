@@ -105,6 +105,7 @@
     <Compile Include="Services\Generators\CodeGenerator.cs" />
     <Compile Include="Services\Generators\HashProvider.cs" />
     <Compile Include="Services\IAccept.cs" />
+    <Compile Include="Services\Inventories\InventoryAdjustVisitor.cs" />
     <Compile Include="Services\Inventories\InventoryCalculator.cs" />
     <Compile Include="Services\Inventories\InventoryRecomputeVisitor.cs" />
     <Compile Include="Services\Inventories\InventoryUpdateVisitor.cs" />

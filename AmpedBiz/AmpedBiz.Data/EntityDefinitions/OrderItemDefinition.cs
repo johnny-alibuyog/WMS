@@ -21,10 +21,10 @@ namespace AmpedBiz.Data.EntityDefinitions
                     MeasureDefinition.Mapping.Map("Quantity_", nameof(OrderItem)));
 
                 Component(x => x.Standard,
-                    MeasureDefinition.Mapping.Map("Standard", nameof(OrderItem)));
+                    MeasureDefinition.Mapping.Map("Standard_", nameof(OrderItem)));
 
                 Component(x => x.QuantityStandardEquivalent,
-                    MeasureDefinition.Mapping.Map("QuantityStandardEquivalent", nameof(OrderItem)));
+                    MeasureDefinition.Mapping.Map("QuantityStandardEquivalent_", nameof(OrderItem)));
 
                 Map(x => x.DiscountRate);
 

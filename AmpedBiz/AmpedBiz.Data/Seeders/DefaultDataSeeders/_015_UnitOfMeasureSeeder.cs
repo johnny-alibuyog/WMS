@@ -26,12 +26,18 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
         public void Seed()
         {
-            var items = (this.GetUOMsFromDefaultFile()).Concat(this.GetUOMsFromProductList()).Distinct();
+            var context = this._contextProvider.Build();
+
+            var items = (
+                    this.GetUOMsFromDefaultFile(context)
+                )
+                .Concat(
+                    this.GetUOMsFromProductList(context)
+                )
+                .Distinct();
 
             if (items.IsNullOrEmpty())
                 return;
-
-            var context = this._contextProvider.Build();
 
             using (var session = _sessionFactory.RetrieveSharedSession(context))
             using (var transaction = session.BeginTransaction())
@@ -48,14 +54,15 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 }
 
                 transaction.Commit();
+                _sessionFactory.ReleaseSharedSession();
             }
         }
 
-        public IEnumerable<UnitOfMeasure> GetUOMsFromDefaultFile()
+        public IEnumerable<UnitOfMeasure> GetUOMsFromDefaultFile(IContext context)
         {
             var uoms = new List<UnitOfMeasure>();
 
-            var filename = Path.Combine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath, @"default_uom.xlsx");
+            var filename = Path.Combine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath, context.TenantId, @"default_uom.xlsx");
 
             if (File.Exists(filename))
             {
@@ -71,11 +78,11 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             return uoms;
         }
 
-        public IEnumerable<UnitOfMeasure> GetUOMsFromProductList()
+        public IEnumerable<UnitOfMeasure> GetUOMsFromProductList(IContext context)
         {
             var uoms = new List<UnitOfMeasure>();
 
-            var filename = Path.Combine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath, @"default_products.xlsx");
+            var filename = Path.Combine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath, context.TenantId, @"default_products.xlsx");
 
             if (File.Exists(filename))
             {

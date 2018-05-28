@@ -61,6 +61,8 @@ namespace AmpedBiz.Tests.IntegrationTests
                         session.Save(new Pricing("XX", "XXXXX"));
 
                         transaction.Commit();
+
+                        _sessionFactory.ReleaseSharedSession();
                     }
 
                     //using (var session = this._sessionFactory.RetrieveSharedSession())

@@ -160,6 +160,8 @@ namespace AmpedBiz.Service.Orders
                     };
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

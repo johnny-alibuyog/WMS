@@ -24,13 +24,16 @@ namespace AmpedBiz.Service.Users
                 using (var transaction = session.BeginTransaction())
                 {
                     var exists = session.Query<User>().Any(x => x.Username == message.Username);
+
                     exists.Assert($"Username {message.Username} already exists.");
 
                     var roles = message.Roles
                         .Where(x => x.Assigned)
                         .Select(x => session.Get<Role>(x.Id))
                         .ToList();
+
                     var entity = new User();
+
                     entity.Username = message.Username;
                     entity.Person = message.Person.MapTo(default(Person));
                     entity.Address = message.Address.MapTo(default(Address));
@@ -44,6 +47,7 @@ namespace AmpedBiz.Service.Users
                         NewPassword = message.Username,
                         ConfirmPassword = message.Username
                     });
+
                     entity.EnsureValidity();
 
                     session.Save(entity);
@@ -52,6 +56,7 @@ namespace AmpedBiz.Service.Users
 
                     message.MapTo(response);
 
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

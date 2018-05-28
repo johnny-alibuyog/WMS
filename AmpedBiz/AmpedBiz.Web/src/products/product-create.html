@@ -5,6 +5,7 @@
   <require from="products/product-purchase-page"></require>
   <require from="products/product-order-return-page"></require>
   <require from="products/product-return-page"></require>
+  <require from="products/product-inventory-adjustment-page"></require>
   <require from="products/product-uom"></require>
 
   <section class="row row-no-padding">
@@ -109,19 +110,48 @@
               <div class="col-lg-12">
 
                 <ul class="nav nav-tabs">
-                  <li class="active"><a data-toggle="tab" href="#inventoryTab"><span>Inventory</span></a></li>
-                  <li><a data-toggle="tab" href="#uomTab"><span>UOM Pricing</span></a></li>
-                  <li><a data-toggle="tab" href="#purchaseHistoryTab"><span>Purchase History</span></a></li>
-                  <li><a data-toggle="tab" href="#orderHistoryTab"><span>Order History</span></a></li>
-                  <li><a data-toggle="tab" href="#orderReturnHistoryTab"><span>Order Return History</span></a></li>
-                  <li><a data-toggle="tab" href="#returnHistoryTab"><span>Return History</span></a></li>
+                  <li class="active">
+                    <a data-toggle="tab" href="#inventoryTab">
+                      <span>Inventory</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a data-toggle="tab" href="#uomTab">
+                      <span>UOM Pricing</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a data-toggle="tab" href="#purchaseHistoryTab">
+                      <span>Purchase History</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a data-toggle="tab" href="#orderHistoryTab">
+                      <span>Order History</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a data-toggle="tab" href="#orderReturnHistoryTab">
+                      <span>Order Return History</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a data-toggle="tab" href="#returnHistoryTab">
+                      <span>Return History</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a data-toggle="tab" href="#adjustmentTab">
+                      <span>Adjustments</span>
+                    </a>
+                  </li>
                 </ul>
                 <div class="tab-content">
 
                   <!-- inventory -->
                   <div id="inventoryTab" class="tab-pane fade in active">
                     <br />
-                    
+
                     <product-inventory inventory.bind="product.inventory" unit-of-measures.bind="product.unitOfMeasures">
                     </product-inventory>
                   </div>
@@ -129,7 +159,7 @@
                   <!-- product uom -->
                   <div id="uomTab" class="tab-pane fade">
                     <br />
-                    
+
                     <product-uom items.bind="product.unitOfMeasures">
                     </product-uom>
                   </div>
@@ -164,6 +194,14 @@
 
                     <product-return-page product-id.bind="product.id">
                     </product-return-page>
+                  </div>
+
+                  <!-- adjustment -->
+                  <div id="adjustmentTab" class="tab-pane fade">
+                    <br />
+
+                    <product-inventory-adjustment-page inventory-id.bind="product.inventory.id" product-id.bind="product.id">
+                    </product-inventory-adjustment-page>
                   </div>
 
                 </div>

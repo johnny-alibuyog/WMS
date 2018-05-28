@@ -115,6 +115,8 @@ namespace AmpedBiz.Service.PurchaseOrders
                     response.Receivables = Dto.PurchaseOrderReceivable.Evaluate(entity);
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

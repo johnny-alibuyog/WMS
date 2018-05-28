@@ -33,11 +33,14 @@ namespace AmpedBiz.Service.Customers
                 using (var transaction = session.BeginTransaction())
                 {
                     var entites = session.Query<Customer>().Cacheable().ToList();
+
                     var dtos = entites.MapTo(default(List<Dto.Customer>));
 
                     response = new Response(dtos);
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

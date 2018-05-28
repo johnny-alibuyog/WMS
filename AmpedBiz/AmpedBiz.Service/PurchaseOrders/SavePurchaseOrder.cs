@@ -114,6 +114,8 @@ namespace AmpedBiz.Service.PurchaseOrders
                     transaction.Commit();
 
                     entity.MapTo(response);
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

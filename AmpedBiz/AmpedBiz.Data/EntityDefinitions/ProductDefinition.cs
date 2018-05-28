@@ -76,7 +76,9 @@ namespace AmpedBiz.Data.EntityDefinitions
                     .NotNullable()
                     .And.IsValid();
 
-                Define(x => x.Category);
+                Define(x => x.Category)
+                    .NotNullable()
+                    .And.IsValid();
 
                 Define(x => x.Inventories)
                     .HasValidElements();

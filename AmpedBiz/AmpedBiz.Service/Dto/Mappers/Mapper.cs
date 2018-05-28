@@ -59,8 +59,10 @@ namespace AmpedBiz.Service.Dto.Mappers
                 .Member(x => x.BelowTargetLevelValue, x => x.Product.ConvertToDefaultValue(x.BelowTargetLevel))
                 .Member(x => x.ReorderLevelValue, x => x.Product.ConvertToDefaultValue(x.ReorderLevel))
                 .Member(x => x.ReorderQuantityValue, x => x.Product.ConvertToDefaultValue(x.ReorderQuantity))
-                .Member(x => x.MinimumReorderQuantityValue, x => x.Product.ConvertToDefaultValue(x.MinimumReorderQuantity)) ;
-                
+                .Member(x => x.MinimumReorderQuantityValue, x => x.Product.ConvertToDefaultValue(x.MinimumReorderQuantity))
+                .Member(x => x.IncreaseAdjustmentValue, x => x.Product.ConvertToDefaultValue(x.IncreaseAdjustment))
+                .Member(x => x.DecreaseAdjustmentValue, x => x.Product.ConvertToDefaultValue(x.DecreaseAdjustment));
+
             ExpressMapper.Mapper.Register<Entity.ProductUnitOfMeasure, Dto.ProductUnitOfMeasure>().Flatten();
             ExpressMapper.Mapper.Register<Entity.ProductUnitOfMeasurePrice, Dto.ProductUnitOfMeasurePrice>().Flatten();
             ExpressMapper.Mapper.Register<Entity.Product, GetProduct.Response>().Flatten();

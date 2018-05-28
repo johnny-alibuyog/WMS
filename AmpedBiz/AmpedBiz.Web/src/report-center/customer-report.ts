@@ -45,7 +45,7 @@ export class CustomerReport extends Report<CustomerReportModel> {
 
     let body = [
       {
-        text: 'Customers',
+        text: 'Customer List',
         style: 'title'
       },
       {

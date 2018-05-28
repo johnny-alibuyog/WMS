@@ -50,6 +50,20 @@ namespace AmpedBiz.Service.Host.Controllers
             return await _mediator.Send(request ?? new GetCustomerSalesReportPage.Request());
         }
 
+        [HttpPost()]
+        [Route("payments-report/page")]
+        public async Task<GetCustomerPaymentsReportPage.Response> Process([FromBody]GetCustomerPaymentsReportPage.Request request)
+        {
+            return await _mediator.Send(request ?? new GetCustomerPaymentsReportPage.Request());
+        }
+
+        [HttpPost()]
+        [Route("order-delivery-report/page")]
+        public async Task<GetCustomerOrderDeliveryReportPage.Response> Process([FromBody]GetCustomerOrderDeliveryReportPage.Request request)
+        {
+            return await _mediator.Send(request ?? new GetCustomerOrderDeliveryReportPage.Request());
+        }
+
         [HttpGet()]
         [Route("~/customer-lookups")]
         public async Task<GetCustomerLookup.Response> Process([FromBody]GetCustomerLookup.Request request)

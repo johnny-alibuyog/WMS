@@ -102,6 +102,8 @@ namespace AmpedBiz.Service.Products
                     response = new Response(dtos);
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

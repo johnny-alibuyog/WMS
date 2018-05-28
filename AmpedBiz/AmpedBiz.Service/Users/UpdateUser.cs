@@ -22,13 +22,15 @@ namespace AmpedBiz.Service.Users
                 using (var session = SessionFactory.RetrieveSharedSession(Context))
                 using (var transaction = session.BeginTransaction())
                 {
-
                     var roles = message.Roles
                         .Where(x => x.Assigned)
                         .Select(x => session.Get<Role>(x.Id))
                         .ToList();
+
                     var entity = session.Get<User>(message.Id);
+
                     entity.EnsureExistence($"User with id {message.Id} does not exists.");
+
                     entity.Username = message.Username;
                     entity.Person = message.Person.MapTo(default(Person));
                     entity.Address = message.Address.MapTo(default(Address));
@@ -38,6 +40,8 @@ namespace AmpedBiz.Service.Users
                     entity.EnsureValidity();
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

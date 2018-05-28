@@ -44,6 +44,8 @@ namespace AmpedBiz.Service.Suppliers
                     response = new Response(pairs);
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

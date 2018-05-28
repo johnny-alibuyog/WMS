@@ -5,7 +5,7 @@ import { Branch } from '../../common/models/branch';
 import { DialogController } from 'aurelia-dialog';
 import { NotificationService } from '../../common/controls/notification-service';
 import { ServiceApi } from '../../services/service-api';
-import { User } from '../../common/models/user';
+import { User, UserPassword } from '../../common/models/user';
 import { autoinject } from 'aurelia-framework';
 import { ActionResult } from '../../common/controls/notification';
 
@@ -16,9 +16,7 @@ export class ChangePassword {
   private readonly _notificaton: NotificationService;
 
   public header: string = 'Change Password';
-  public newPassword: string;
-  public confirmPassword: string;
-  public user: User;
+  public user: UserPassword;
   public branches: Branch[];
 
   constructor(api: ServiceApi, auth: AuthService, notification: NotificationService) {
@@ -28,45 +26,45 @@ export class ChangePassword {
   }
 
   public activate(): void {
-
-    this.newPassword = '';
-
-    this.confirmPassword = '';
-
-    this._api.branches.getList()
-      .then(data => this.branches = <Branch[]>data)
-      .catch(error => this._notificaton.warning(error));
-
-    this._api.users.get(this._auth.user.id)
-      .then(data => this.user = <User>data)
-      .catch(error => this._notificaton.warning(error));
+    this.user = <UserPassword>{
+      id: this._api.auth.user.id
+    }
   }
 
-  public save(): void {
-    // TODO: add api functionality specific to operation (change info)
-    if (!this.newPassword || this.newPassword.trim() === '') {
-      this._notificaton.warning('New password not set.');
-      return;
-    }
-
-    if (!this.confirmPassword || this.confirmPassword.trim() === '') {
-      this._notificaton.warning('Confirm password not set.');
-      return;
-    }
-
-    if (this.newPassword !== this.confirmPassword) {
-      this._notificaton.warning('Confirm password does not match.');
-      return;
-    }
-
-    this.user.password = this.newPassword;
-
-    this._notificaton.confirm('Do you want to change your password?').whenClosed(result => {
-      if (result.output === ActionResult.Yes) {
-        this._api.users.update(this.user)
-          .then(data => this._notificaton.success('Password has been changed succesfully.'))
-          .catch(error => this._notificaton.warning(error));
+  public async save(): Promise<void> {
+    try {
+      if (!this.user.oldPassword || this.user.oldPassword.trim() === '') {
+        this._notificaton.warning('Old password not set.');
+        return;
       }
-    });
+
+      if (!this.user.newPassword || this.user.newPassword.trim() === '') {
+        this._notificaton.warning('New password not set.');
+        return;
+      }
+
+      if (!this.user.confirmPassword || this.user.confirmPassword.trim() === '') {
+        this._notificaton.warning('Confirm password not set.');
+        return;
+      }
+
+      if (this.user.newPassword !== this.user.confirmPassword) {
+        this._notificaton.warning('Confirm password does not match.');
+        return;
+      }
+
+      let result = await this._notificaton.confirm('Do you want to change your password?').whenClosed();
+      if (result.output === ActionResult.Yes) {
+        await this._api.users.updatePassword(this.user);
+        await this._notificaton.success('Password has been changed succesfully.').whenClosed();
+      }
+
+      this.user.oldPassword = '';
+      this.user.newPassword = '';
+      this.user.confirmPassword = '';
+    }
+    catch (error) {
+      await this._notificaton.warning(error).whenClosed();
+    }
   }
 }

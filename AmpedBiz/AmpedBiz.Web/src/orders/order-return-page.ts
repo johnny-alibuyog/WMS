@@ -151,7 +151,7 @@ export class OrderReturnPage {
     returnable.returning.reason = reference && reference.returning && reference.returning.reason || null;
     returnable.returning.returnedOn = reference && reference.returning && reference.returning.returnedOn || new Date();
     returnable.returning.returnedBy = reference && reference.returning && reference.returning.returnedBy || this._api.auth.userAsLookup;
-    returnable.returning.quantity = reference && reference.returning && reference.returning.quantity || 0;
+    returnable.returning.quantity = reference && reference.returning && reference.returning.quantity;
     returnable.returning.amount = reference && reference.returning && reference.returning.amount || 0;
 
     /*

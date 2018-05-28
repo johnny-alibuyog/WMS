@@ -76,6 +76,10 @@ namespace AmpedBiz.Service.Branches
                         Count = countFuture.Value,
                         Items = itemsFuture.ToList()
                     };
+
+                    transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

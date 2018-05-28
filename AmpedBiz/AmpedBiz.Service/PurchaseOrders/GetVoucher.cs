@@ -36,6 +36,8 @@ namespace AmpedBiz.Service.PurchaseOrders
                     entity.MapTo(response);
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

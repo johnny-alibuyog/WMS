@@ -10,9 +10,8 @@ export class PaymentTypeService extends ServiceBase<PaymentType> {
     super('payment-types', httpClient);
   }
 
-  getLookups(): Promise<Lookup<string>[]> {
+  public getLookups(): Promise<Lookup<string>[]> {
     var url = "payment-type-lookups";
-    return this._httpClient.get(url)
-      .then(data => <Lookup<string>[]>data);
+    return this._httpClient.get(url);
   }
 }

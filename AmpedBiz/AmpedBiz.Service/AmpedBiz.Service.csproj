@@ -68,11 +68,13 @@
     <Compile Include="Common\PageRequest.cs" />
     <Compile Include="Common\PageResponse.cs" />
     <Compile Include="Customers\CreateCustomer.cs" />
+    <Compile Include="Customers\GetCustomerOrderDeliveryReportPage.cs" />
     <Compile Include="Customers\GetCustomerLookup.cs" />
     <Compile Include="Customers\GetCustomerPage.cs" />
     <Compile Include="Customers\GetCustomer.cs" />
     <Compile Include="Customers\GetCustomerList.cs" />
     <Compile Include="Customers\GetCustomerReportPage.cs" />
+    <Compile Include="Customers\GetCustomerPaymentsReportPage.cs" />
     <Compile Include="Customers\GetCustomerSalesReportPage.cs" />
     <Compile Include="Customers\UpdateCustomer.cs" />
     <Compile Include="Dto\Address.cs" />
@@ -113,6 +115,8 @@
     <Compile Include="Dto\UserRole.cs" />
     <Compile Include="Dto\UserSetting.cs" />
     <Compile Include="Dto\Voucher.cs" />
+    <Compile Include="Inventories\CreateInventoryAdjustment.cs" />
+    <Compile Include="Inventories\GetInventoryAdjustmentPage.cs" />
     <Compile Include="Middlewares\LogginPipeline.cs" />
     <Compile Include="Middlewares\TransactionPipeline.cs" />
     <Compile Include="Orders\CancelOrder.cs" />
@@ -152,6 +156,9 @@
     <Compile Include="Products\GetNeedsReorderingPage.cs" />
     <Compile Include="Products\GetProduct.cs" />
     <Compile Include="Products\GetProductInventory.cs" />
+    <Compile Include="Inventories\GetInventoryAdjustmentReasonList.cs" />
+    <Compile Include="Inventories\GetInventoryAdjustmentTypeList.cs" />
+    <Compile Include="Inventories\GetInventoryAdjustmentTypeLookup.cs" />
     <Compile Include="Products\GetProductInventoryLevelPage.cs" />
     <Compile Include="Products\GetProductInventoryList.cs" />
     <Compile Include="Products\GetProductList.cs" />
@@ -214,6 +221,8 @@
     <Compile Include="UnitOfMeasures\GetUnitOfMeasurePage.cs" />
     <Compile Include="UnitOfMeasures\UpdateUnitOfMeasure.cs" />
     <Compile Include="Users\CreateUser.cs" />
+    <Compile Include="Users\GetUserAddress.cs" />
+    <Compile Include="Users\GeUserInfo.cs" />
     <Compile Include="Users\GetUserLookup.cs" />
     <Compile Include="Users\GetInitialUser.cs" />
     <Compile Include="Users\GetUser.cs" />
@@ -222,6 +231,9 @@
     <Compile Include="Users\Login.cs" />
     <Compile Include="Users\Override.cs" />
     <Compile Include="Users\UpdateUser.cs" />
+    <Compile Include="Users\UpdateUserAddress.cs" />
+    <Compile Include="Users\UpdateUserInfo.cs" />
+    <Compile Include="Users\UpdateUserPassword.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AmpedBiz.Common\AmpedBiz.Common.csproj">

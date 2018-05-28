@@ -1,5 +1,5 @@
 import { autoinject } from 'aurelia-framework';
-import { Customer, CustomerReportPageItem, CustomerSalesReportPageItem } from '../common/models/customer'
+import { Customer, CustomerReportPageItem, CustomerSalesReportPageItem, CustomerOrderDeliveryReportPageItem, CustomerPaymentsReportPageItem } from '../common/models/customer'
 import { PageRequest, PagerResponse } from '../common/models/paging';
 import { ServiceBase } from './service-base'
 import { HttpClientFacade } from './http-client-facade';
@@ -11,21 +11,30 @@ export class CustomerService extends ServiceBase<Customer> {
     super('customers', httpClient);
   }
 
-  getLookups(): Promise<Lookup<string>[]> {
-    var url = "customer-lookups";
-    return this._httpClient.get(url)
-      .then(data => <Lookup<string>[]>data);
+  public getLookups(): Promise<Lookup<string>[]> {
+    let url = "customer-lookups";
+    return this._httpClient.get(url);
   }
 
-  getCustomerReportPage(page: PageRequest): Promise<PagerResponse<CustomerReportPageItem>> {
-    var url = this._resouce + '/report/page';
-    return this._httpClient.post(url, page)
-      .then(response => <PagerResponse<CustomerReportPageItem>>response);
+  public getCustomerReportPage(page: PageRequest): Promise<PagerResponse<CustomerReportPageItem>> {
+    let url = this._resouce + '/report/page';
+    return this._httpClient.post(url, page);
   }
 
-  getCustomerSalesReportPage(page: PageRequest): Promise<PagerResponse<CustomerSalesReportPageItem>> {
-    var url = this._resouce + '/sales-report/page';
-    return this._httpClient.post(url, page)
-      .then(response => <PagerResponse<CustomerSalesReportPageItem>>response);
+  public getCustomerSalesReportPage(page: PageRequest): Promise<PagerResponse<CustomerSalesReportPageItem>> {
+    let url = this._resouce + '/sales-report/page';
+    return this._httpClient.post(url, page);
   }
+
+  public getCustomerPaymentsReportPage(page: PageRequest): Promise<PagerResponse<CustomerPaymentsReportPageItem>> {
+    let url = this._resouce + '/payments-report/page';
+    return this._httpClient.post(url, page);
+  }
+
+  public getCustomerOrderDeliveryReportPage(page: PageRequest): Promise<PagerResponse<CustomerOrderDeliveryReportPageItem>> {
+    let url = this._resouce + '/order-delivery-report/page';
+    return this._httpClient.post(url, page);
+  }
+
+  
 }

@@ -12,6 +12,7 @@ import { ProductReturnPageItem } from '../common/models/product';
 import { ServiceBase } from './service-base'
 import { autoinject } from 'aurelia-framework';
 import { buildQueryString } from 'aurelia-framework';
+import { InventoryAdjustmentPageItem } from '../common/models/inventory';
 
 @autoinject
 export class ProductService extends ServiceBase<Product> {

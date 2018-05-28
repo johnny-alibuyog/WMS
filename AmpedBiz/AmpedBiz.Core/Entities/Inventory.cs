@@ -46,6 +46,10 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Measure MinimumReorderQuantity { get; protected internal set; }
 
+        public virtual Measure IncreaseAdjustment { get; protected internal set; }
+
+        public virtual Measure DecreaseAdjustment { get; protected internal set; }
+
         //public virtual IEnumerable<Stock> Stocks { get; protected internal set; } = new Collection<Stock>();
 
         public virtual IEnumerable<InventoryAdjustment> Adjustments { get; protected internal set; } = new Collection<InventoryAdjustment>();

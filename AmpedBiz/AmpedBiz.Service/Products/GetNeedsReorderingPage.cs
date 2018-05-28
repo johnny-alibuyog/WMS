@@ -175,6 +175,10 @@ namespace AmpedBiz.Service.Products
                         Count = countFuture.Value,
                         Items = items.ToList()
                     };
+
+                    transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

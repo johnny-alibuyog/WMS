@@ -65,7 +65,7 @@ namespace AmpedBiz.Service.Dto
 
     public class CustomerSalesReportPageItem
     {
-        public DateTime? CompletedOn { get; set; }
+        public DateTime? PaidOn { get; set; }
 
         public string BranchName { get; set; }
 
@@ -78,5 +78,43 @@ namespace AmpedBiz.Service.Dto
         public decimal? PaidAmount { get; set; }
 
         public decimal? BalanceAmount => (this.TotalAmount ?? 0M) - (this.PaidAmount ?? 0M);
+    }
+
+    public class CustomerPaymentReportPageItem
+    {
+        public DateTime? PaidOn { get; set; }
+
+        public string InvoiceNumber { get; set; }
+
+        public string BranchName { get; set; }
+
+        public string CustomerName { get; set; }
+
+        public string PaymentTypeName { get; set; }
+
+        public decimal? TotalAmount { get; set; }
+
+        public decimal? PaidAmount { get; set; }
+
+        public decimal? BalanceAmount => (this.TotalAmount ?? 0M) - (this.PaidAmount ?? 0M);
+    }
+
+    public class CustomerOrderDeliveryReportPageItem
+    {
+        public Guid OrderId { get; set; }
+
+        public DateTime? ShippedOn { get; set; }
+
+        public string BranchName { get; set; }
+
+        public string InvoiceNumber { get; set; }
+
+        public string CustomerName { get; set; }
+
+        public string PricingName { get; set; }
+
+        public decimal? DiscountAmount { get; set; }
+
+        public decimal? TotalAmount { get; set; }
     }
 }

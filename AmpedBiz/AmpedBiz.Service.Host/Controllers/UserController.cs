@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Service.Users;
 using MediatR;
+using System;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -69,6 +70,41 @@ namespace AmpedBiz.Service.Host.Controllers
         public async Task<UpdateUser.Response> Process([FromBody]UpdateUser.Request request)
         {
             return await _mediator.Send(request ?? new UpdateUser.Request());
+        }
+
+        [HttpGet()]
+        [Route("{id}/address")]
+        public async Task<GetUserAddress.Response> Process([FromUri]GetUserAddress.Request request)
+        {
+            return await _mediator.Send(request ?? new GetUserAddress.Request());
+        }
+
+        [HttpGet()]
+        [Route("{id}/info")]
+        public async Task<GetUserInfo.Response> Process([FromUri]GetUserInfo.Request request)
+        {
+            return await _mediator.Send(request ?? new GetUserInfo.Request());
+        }
+
+        [HttpPut()]
+        [Route("{id}/address")]
+        public async Task<UpdateUserAddress.Response> Process([FromUri]Guid id, [FromBody]UpdateUserAddress.Request request)
+        {
+            return await _mediator.Send(request ?? new UpdateUserAddress.Request());
+        }
+
+        [HttpPut()]
+        [Route("{id}/info")]
+        public async Task<UpdateUserInfo.Response> Process([FromUri]Guid id, [FromBody]UpdateUserInfo.Request request)
+        {
+            return await _mediator.Send(request ?? new UpdateUserInfo.Request());
+        }
+
+        [HttpPut()]
+        [Route("{id}/password")]
+        public async Task<UpdateUserPassword.Response> Process([FromUri]Guid id, [FromBody]UpdateUserPassword.Request request)
+        {
+            return await _mediator.Send(request ?? new UpdateUserPassword.Request());
         }
     }
 }

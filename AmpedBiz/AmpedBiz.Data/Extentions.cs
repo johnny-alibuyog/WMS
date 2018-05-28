@@ -34,17 +34,17 @@ namespace AmpedBiz.Data
         {
             if (!CurrentSessionContext.HasBind(sessionFactory))
             {
-                CurrentSessionContext.Bind(sessionFactory.OpenSession().WithFilters(context));
+                CurrentSessionContext.Bind(sessionFactory.OpenSession());
             }
 
             if (!sessionFactory.GetCurrentSession().IsConnected ||
                 !sessionFactory.GetCurrentSession().IsOpen)
             {
                 CurrentSessionContext.Unbind(sessionFactory);
-                CurrentSessionContext.Bind(sessionFactory.OpenSession().WithFilters(context));
+                CurrentSessionContext.Bind(sessionFactory.OpenSession());
             }
 
-            return sessionFactory.GetCurrentSession();
+            return sessionFactory.GetCurrentSession().WithFilters(context);
         }
 
         public static ISession ReleaseSharedSession(this ISessionFactory sessionFactory)

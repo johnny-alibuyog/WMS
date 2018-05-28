@@ -64,7 +64,7 @@ namespace AmpedBiz.Core.Services.Users
 
                 target.Accept(new VerifyPasswordVisitor(this._hashProvider)
                 {
-                    Password = this.NewPassword,
+                    Password = this.OldPassword,
                     ResultCallback = (result) => verified = result
                 });
 

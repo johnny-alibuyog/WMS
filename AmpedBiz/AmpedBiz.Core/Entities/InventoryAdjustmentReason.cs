@@ -2,16 +2,29 @@
 
 namespace AmpedBiz.Core.Entities
 {
-    public class InventoryAdjustmentReason : Entity<Guid, InventoryAdjustmentReason>
+    public class InventoryAdjustmentReason : Entity<Guid, InventoryAdjustmentReason>, IHasTenant
     {
         public virtual Tenant Tenant { get; set; }
 
         public virtual string Name { get; internal protected set; }
 
+        public virtual string Description { get; internal protected set; }
+
         public virtual InventoryAdjustmentType Type { get; internal protected set; }
 
-        public InventoryAdjustmentReason() : this(null, null, null) { }
+        public InventoryAdjustmentReason() : this(null, null) { }
 
-        public InventoryAdjustmentReason(Tenant tenant, string name, InventoryAdjustmentType? type = null, Guid? id = null) : base(id ?? default(Guid)) { }
+        public InventoryAdjustmentReason(
+            string name, 
+            string description, 
+            InventoryAdjustmentType type = InventoryAdjustmentType.Decrease, 
+            Tenant tenant = null, 
+            Guid? id = null) : base(id ?? default(Guid))
+        {
+            this.Name = name;
+            this.Description = description;
+            this.Type = type;
+            this.Tenant = tenant;
+        }
     }
 }

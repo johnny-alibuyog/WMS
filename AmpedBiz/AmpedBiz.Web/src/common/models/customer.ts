@@ -32,11 +32,33 @@ export interface CustomerReportPageItem {
 
 export class CustomerSalesReportPageItem
 {
-  completedOn?: Date;
+  paidOn?: Date;
   branchName?: string;
   customerName?: string;
   invoiceNumber?: string;
   totalAmount?: number;
   paidAmount?: number;
   balanceAmount?: number;
+}
+
+export interface CustomerPaymentsReportPageItem {
+  paidOn?: Date;
+  invoiceNumber?: string;
+  branchName?: string;
+  customerName?: string;
+  paymentTypeName?: string;
+  totalAmount?: number;
+  paidAmount?: number;
+  balanceAmount?: number;
+}
+
+export interface CustomerOrderDeliveryReportPageItem {
+  id?: string;
+  shippedOn?: Date;
+  branchName?: string;
+  customerName?: string;
+  invoiceNumber?: string
+  pricingName?: string;
+  discountAmount?: number;
+  totalAmount?: number;
 }

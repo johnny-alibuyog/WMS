@@ -69,6 +69,10 @@ namespace AmpedBiz.Service.Returns
                         Count = count, //countFuture.Value,
                         Items = itemsFuture.ToList()
                     };
+
+                    transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

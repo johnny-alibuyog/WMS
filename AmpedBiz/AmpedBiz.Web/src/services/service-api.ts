@@ -2,6 +2,7 @@ import { autoinject } from 'aurelia-framework';
 import { AuthService } from './auth-service';
 import { BranchService } from './branch-service';
 import { CustomerService } from './customer-service';
+import { InventoryService } from './inventory-service';
 import { PaymentTypeService } from './payment-type-service';
 import { PricingService } from './pricing-service';
 import { ProductCategoryService } from './product-category-service';
@@ -17,21 +18,22 @@ import { SettingService } from './setting-service';
 
 @autoinject
 export class ServiceApi {
-  private _auth: AuthService;
-  private _branches: BranchService;
-  private _customers: CustomerService;
-  private _paymentTypes: PaymentTypeService;
-  private _pricings: PricingService;
-  private _productCategories: ProductCategoryService;
-  private _products: ProductService;
-  private _purchaseOrders: PurchaseOrderService;
-  private _returnReasons: ReturnReasonService;
-  private _returns: ReturnService;
-  private _orders: OrderService;
-  private _settings: SettingService;
-  private _suppliers: SupplierService;
-  private _users: UserService;
-  private _unitOfMeasures: UnitOfMeasureService;
+  private readonly _auth: AuthService;
+  private readonly _branches: BranchService;
+  private readonly _customers: CustomerService;
+  private readonly _inventories: InventoryService;
+  private readonly _paymentTypes: PaymentTypeService;
+  private readonly _pricings: PricingService;
+  private readonly _productCategories: ProductCategoryService;
+  private readonly _products: ProductService;
+  private readonly _purchaseOrders: PurchaseOrderService;
+  private readonly _returnReasons: ReturnReasonService;
+  private readonly _returns: ReturnService;
+  private readonly _orders: OrderService;
+  private readonly _settings: SettingService;
+  private readonly _suppliers: SupplierService;
+  private readonly _users: UserService;
+  private readonly _unitOfMeasures: UnitOfMeasureService;
 
   public get auth(): AuthService {
     return this._auth;
@@ -43,6 +45,10 @@ export class ServiceApi {
 
   public get customers(): CustomerService {
     return this._customers;
+  }
+
+  public get inventories(): InventoryService {
+    return this._inventories;
   }
 
   public get paymentTypes(): PaymentTypeService {
@@ -97,6 +103,7 @@ export class ServiceApi {
     auth: AuthService,
     branches: BranchService,
     customers: CustomerService,
+    inventories: InventoryService,
     paymentTypes: PaymentTypeService,
     pricings: PricingService,
     products: ProductService,
@@ -113,6 +120,7 @@ export class ServiceApi {
     this._auth = auth;
     this._branches = branches;
     this._customers = customers;
+    this._inventories = inventories;
     this._paymentTypes = paymentTypes;
     this._pricings = pricings;
     this._productCategories = productCategories;

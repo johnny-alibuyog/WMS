@@ -24,19 +24,24 @@ namespace AmpedBiz.Service.PurchaseOrders
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = session.Get<PurchaseOrder>(request.Id);
+
                     entity.EnsureExistence($"PurchaseOrder with id {request.Id} does not exists.");
+
                     entity.State.Process(new PurchaseOrderSubmittedVisitor()
                     {
                         SubmittedBy= session.Load<User>(request.SubmittedBy.Id),
                         SubmittedOn= request.SubmittedOn ?? DateTime.Now
                     });
+
                     entity.EnsureValidity();
 
                     session.Save(entity);
+
                     transaction.Commit();
 
                     response.Id = entity.Id;
-                    //entity.MapTo(response);
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

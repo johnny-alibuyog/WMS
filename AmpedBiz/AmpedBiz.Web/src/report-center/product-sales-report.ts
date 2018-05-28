@@ -2,6 +2,7 @@ import { autoinject } from 'aurelia-framework';
 import { formatDate, formatNumber, emptyIfNull } from '../services/formaters';
 import { Report, Content } from './report';
 import { OrderStatus } from '../common/models/order';
+import { SupplierCreate } from '../admin/suppliers/supplier-create';
 
 export interface ProductSalesReportModel {
   branchName?: string;
@@ -30,6 +31,11 @@ export interface ProductSalesReportItemModel {
 @autoinject
 export class ProductSalesReport extends Report<ProductSalesReportModel> {
 
+  public constructor() {
+    super();
+    this.option.pageOrientation = 'landscape';
+  }
+
   protected async buildBody(data: ProductSalesReportModel): Promise<any[] | Content[]> {
     let orderTableBody: any[] = [
       [
@@ -38,7 +44,7 @@ export class ProductSalesReport extends Report<ProductSalesReportModel> {
         { text: 'Supplier', style: 'tableHeader' },
         { text: 'Category', style: 'tableHeader' },
         { text: 'Product', style: 'tableHeader' },
-        { text: 'Unit', style: 'tableHeader' },
+        { text: 'Quantity', style: 'tableHeader', alignment: 'right' },
         { text: 'Price', style: 'tableHeader', alignment: 'right' },
         { text: 'Discount', style: 'tableHeader', alignment: 'right' },
         { text: 'Total', style: 'tableHeader', alignment: 'right' },
@@ -46,24 +52,36 @@ export class ProductSalesReport extends Report<ProductSalesReportModel> {
     ];
 
     if (data && data.items && data.items.length > 0) {
-      data.items.forEach(x =>
-        orderTableBody.push([
-          { text: formatDate(x.completedOn), style: 'tableData' },
-          { text: emptyIfNull(x.branchName), style: 'tableData' },
-          { text: emptyIfNull(x.supplierName), style: 'tableData' },
-          { text: emptyIfNull(x.categoryName), style: 'tableData' },
-          { text: emptyIfNull(x.productName), style: 'tableData' },
-          { text: emptyIfNull(x.quantityUnit), style: 'tableData' },
-          { text: formatNumber(x.unitPriceAmount), style: 'tableData', alignment: 'right' },
-          { text: formatNumber(x.discountAmount), style: 'tableData', alignment: 'right' },
-          { text: formatNumber(x.totalPriceAmount), style: 'tableData', alignment: 'right' },
-        ])
-      );
+      // table body
+      orderTableBody.push(...data.items.map(x => [
+        { text: formatDate(x.completedOn), style: 'tableData' },
+        { text: emptyIfNull(x.branchName), style: 'tableData' },
+        { text: emptyIfNull(x.supplierName), style: 'tableData' },
+        { text: emptyIfNull(x.categoryName), style: 'tableData' },
+        { text: emptyIfNull(x.productName), style: 'tableData' },
+        { text: `${emptyIfNull(x.quantityUnit)} ${formatNumber(x.quantityValue, '0,0')}`, style: 'tableData', alignment: 'right' },
+        { text: formatNumber(x.unitPriceAmount), style: 'tableData', alignment: 'right' },
+        { text: formatNumber(x.discountAmount), style: 'tableData', alignment: 'right' },
+        { text: formatNumber(x.totalPriceAmount), style: 'tableData', alignment: 'right' },
+      ]));
+
+      // table footer
+      orderTableBody.push([
+        { text: "", style: "tableData" },
+        { text: "", style: "tableData" },
+        { text: "", style: "tableData" },
+        { text: "", style: "tableData" },
+        { text: "", style: "tableData" },
+        { text: "Grand Total", style: "tableHeader" },
+        { text: formatNumber(data.items.map(o => o.unitPriceAmount).reduce((pre, cur) => pre + cur)), style: "tableData", alignment: "right" },
+        { text: formatNumber(data.items.map(o => o.discountAmount).reduce((pre, cur) => pre + cur)), style: "tableData", alignment: "right" },
+        { text: formatNumber(data.items.map(o => o.totalPriceAmount).reduce((pre, cur) => pre + cur)), style: "tableData", alignment: "right" },
+      ]);
     }
 
     let body = [
       {
-        text: 'Customer Orders',
+        text: 'Product Sales',
         style: 'title'
       },
       {
@@ -80,6 +98,10 @@ export class ProductSalesReport extends Report<ProductSalesReportModel> {
                     [
                       { text: 'Supplier: ', style: 'label' },
                       { text: emptyIfNull(data.supplierName), style: 'value' }
+                    ],
+                    [
+                      { text: 'Date: ', style: 'label' },
+                      { text: formatDate(data.fromDate) + ' - ' + formatDate(data.toDate), style: 'value' }
                     ],
                   ],
               },

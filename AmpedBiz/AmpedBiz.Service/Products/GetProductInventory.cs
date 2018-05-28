@@ -36,6 +36,7 @@ namespace AmpedBiz.Service.Products
                     response = new Response()
                     {
                         Id = inventory.Product.Id,
+                        InventoryId = inventory.Id,
                         Code = inventory.Product.Code,
                         Name = inventory.Product.Name,
                         UnitOfMeasures = inventory.Product.UnitOfMeasures
@@ -68,6 +69,8 @@ namespace AmpedBiz.Service.Products
                     };
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

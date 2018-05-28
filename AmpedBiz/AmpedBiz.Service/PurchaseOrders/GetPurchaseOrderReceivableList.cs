@@ -64,6 +64,8 @@ namespace AmpedBiz.Service.PurchaseOrders
                     response = new Response(dtos);
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

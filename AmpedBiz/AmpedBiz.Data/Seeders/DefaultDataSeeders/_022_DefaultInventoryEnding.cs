@@ -26,7 +26,9 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
         public void Seed()
         {
-            var filename = Path.Combine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath, @"default_ending_inventory.xlsx");
+            var context = this._contextProvider.Build();
+
+            var filename = Path.Combine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath, context.TenantId, @"default_ending_inventory.xlsx");
 
             if (!File.Exists(filename))
                 return;
@@ -40,12 +42,10 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 })
                 .ToList();
 
-            var context = _contextProvider.Build();
-
             using (var session = this._sessionFactory.RetrieveSharedSession(context))
             using (var transaction = session.BeginTransaction())
             {
-                session.SetBatchSize(100);
+                session.SetBatchSize(10);
 
                 var batches = endingInventoryData.Batch(10);
 
@@ -75,8 +75,8 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 });
 
                 transaction.Commit();
+                _sessionFactory.ReleaseSharedSession();
             }
         }
-
     }
 }

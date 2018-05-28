@@ -82,6 +82,8 @@ namespace AmpedBiz.Service.Suppliers
                     };
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

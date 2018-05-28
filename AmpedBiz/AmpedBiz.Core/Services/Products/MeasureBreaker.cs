@@ -56,6 +56,16 @@ namespace AmpedBiz.Core.Services.Products
             return new MeasureBreaker().BreakDown(product, measure);
         }
 
+        public static Measure TakePart(this Measure measure, Product product, UnitOfMeasure part)
+        {
+            return new MeasureBreaker().BreakDown(product, measure).First(x => x.Unit == part);
+        }
+
+        public static decimal? TakePartValue(this Measure measure, Product product, UnitOfMeasure part)
+        {
+            return TakePart(measure, product, part)?.Value;
+        }
+
         public static string InterpretAsString(this IEnumerable<Measure> measures)
         {
             return string.Join(" & ", measures.Select(x => x.ToStringIntegral()));

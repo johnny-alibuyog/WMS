@@ -134,10 +134,12 @@ namespace AmpedBiz.Service.Products
                     response = new Response()
                     {
                         Count = countFuture.Value,
-                        Items = idsFuture
-                            .Select(x => Hydrate(x))
-                            .ToList()
+                        Items = idsFuture.Select(Hydrate).ToList()
                     };
+
+                    transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

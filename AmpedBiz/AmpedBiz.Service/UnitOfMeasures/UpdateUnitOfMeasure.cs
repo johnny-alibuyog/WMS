@@ -26,6 +26,8 @@ namespace AmpedBiz.Service.UnitOfMeasures
                     entity.EnsureValidity();
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

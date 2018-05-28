@@ -4,6 +4,10 @@ import { AuthStorage } from "../services/auth-service";
 declare var pdfMake: any;
 declare var vfsfont: any;
 
+declare type Option = {
+  pageOrientation: 'portrait' | 'landscape'
+}
+
 export abstract class Report<T> {
 
   protected readonly builder: ReportBuilder<T>;
@@ -12,6 +16,10 @@ export abstract class Report<T> {
 
   protected abstract buildBody(data: T): Promise<Content[] | any[]>;
 
+  public option: Option = {
+    pageOrientation: 'portrait'
+  };
+
   constructor() {
     this.viewer = new ReportViewer();
     this.builder = new ReportBuilder<T>();
@@ -19,7 +27,7 @@ export abstract class Report<T> {
   }
 
   public async show(data: T): Promise<void> {
-    var document = await this.builder.buildPdf(data);
+    var document = await this.builder.buildPdf(data, this.option);
     this.viewer.show(document);
   }
 }
@@ -163,7 +171,7 @@ export class ReportBuilder<T> {
     return Promise.resolve(style);
   }
 
-  protected async buildDocument(data: T): Promise<DocumentDefinition> {
+  protected async buildDocument(data: T, option: Option): Promise<DocumentDefinition> {
     let parts = await Promise.all([
       this.buildHeader(),
       this.buildBody(data),
@@ -172,6 +180,7 @@ export class ReportBuilder<T> {
     ]);
 
     return <DocumentDefinition>{
+      pageOrientation: option.pageOrientation,
       content: [
         ...parts[0],  // header
         ...parts[1],  // body
@@ -181,9 +190,9 @@ export class ReportBuilder<T> {
     };
   }
 
-  public async buildPdf(data: T): Promise<any> {
+  public async buildPdf(data: T, option: Option): Promise<any> {
     return new Promise<any>(async (resolve, reject) => {
-      let document = await this.buildDocument(data);
+      let document = await this.buildDocument(data, option);
       pdfMake.createPdf(document).getDataUrl(dataUrl => resolve(dataUrl));
     });
   }

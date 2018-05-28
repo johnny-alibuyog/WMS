@@ -83,6 +83,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                 }
 
                 transaction.Commit();
+                _sessionFactory.ReleaseSharedSession();
             }
         }
     }

@@ -19,12 +19,20 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Map(x => x.AdjustedOn);
 
-                Map(x => x.Reason);
+                References(x => x.Reason);
 
-                Map(x => x.AdjustmentType);
+                Map(x => x.Remarks);
 
-                Component(x => x.Adjustment, 
-                    MeasureDefinition.Mapping.Map("Adjustment_", nameof(InventoryAdjustment)));
+                Map(x => x.Type);
+
+                Component(x => x.Quantity, 
+                    MeasureDefinition.Mapping.Map("Quantity_", nameof(InventoryAdjustment)));
+
+                Component(x => x.Standard,
+                    MeasureDefinition.Mapping.Map("Standard_", nameof(InventoryAdjustment)));
+
+                Component(x => x.QuantityStandardEquivalent,
+                    MeasureDefinition.Mapping.Map("QuantityStandardEquivalent_", nameof(InventoryAdjustment)));
             }
         }
 
@@ -45,12 +53,15 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Define(x => x.AdjustedOn);
 
                 Define(x => x.Reason)
-                    .NotNullableAndNotEmpty()
-                    .And.MaxLength(750);
+                    .NotNullable()
+                    .And.IsValid();
 
-                Define(x => x.AdjustmentType);
+                Define(x => x.Remarks)
+                    .MaxLength(550);
 
-                Define(x => x.Adjustment)
+                Define(x => x.Type);
+
+                Define(x => x.Quantity)
                     .NotNullable()
                     .And.IsValid();
             }

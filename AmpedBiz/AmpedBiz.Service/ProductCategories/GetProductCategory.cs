@@ -24,10 +24,14 @@ namespace AmpedBiz.Service.ProductCategories
                 using (var transaction = session.BeginTransaction())
                 {
                     var entity = session.Get<ProductCategory>(message.Id);
+
                     entity.EnsureExistence($"Product Category with id {message.Id} does not exists.");
+
                     entity.MapTo(response);
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

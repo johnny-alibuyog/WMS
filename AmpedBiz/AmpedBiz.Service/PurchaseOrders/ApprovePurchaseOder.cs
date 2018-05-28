@@ -38,6 +38,8 @@ namespace AmpedBiz.Service.PurchaseOrders
 
                     response.Id = entity.Id;
                     //entity.MapTo(response);
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

@@ -50,6 +50,8 @@ namespace AmpedBiz.Service.Users
                     user.MapTo(response);
 
                     transaction.Commit();
+
+                    SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;
