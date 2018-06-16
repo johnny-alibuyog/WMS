@@ -1,7 +1,6 @@
 import { autoinject } from 'aurelia-framework';
 import { formatDate, formatNumber, emptyIfNull } from '../services/formaters';
 import { Report, Content } from './report';
-import { OrderStatus } from '../common/models/order';
 
 export interface CustomerSalesReportModel {
   branchName?: string;
@@ -31,7 +30,7 @@ export class CustomerSalesReport extends Report<CustomerSalesReportModel> {
         { text: 'Branch', style: 'tableHeader' },
         { text: 'Customer', style: 'tableHeader' },
         { text: 'Invoice', style: 'tableHeader' },
-        { text: 'Total', style: 'tableHeader', alignment: 'right' },
+        { text: 'Paid', style: 'tableHeader', alignment: 'right' },
         { text: 'Balance', style: 'tableHeader', alignment: 'right' },
       ],
     ];
@@ -43,7 +42,7 @@ export class CustomerSalesReport extends Report<CustomerSalesReportModel> {
         { text: emptyIfNull(x.branchName), style: 'tableData' },
         { text: emptyIfNull(x.customerName), style: 'tableData' },
         { text: emptyIfNull(x.invoiceNumber), style: 'tableData' },
-        { text: formatNumber(x.totalAmount), style: 'tableData', alignment: 'right' },
+        { text: formatNumber(x.paidAmount), style: 'tableData', alignment: 'right' },
         { text: formatNumber(x.balanceAmount), style: 'tableData', alignment: 'right' },
       ]));
 
@@ -53,7 +52,7 @@ export class CustomerSalesReport extends Report<CustomerSalesReportModel> {
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
         { text: "Grand Total", style: "tableHeader" },
-        { text: formatNumber(data.items.map(o => o.totalAmount).reduce((pre, cur) => pre + cur)), style: "tableData", alignment: "right" },
+        { text: formatNumber(data.items.map(o => o.paidAmount).reduce((pre, cur) => pre + cur)), style: "tableData", alignment: "right" },
         { text: formatNumber(data.items.map(o => o.balanceAmount).reduce((pre, cur) => pre + cur)), style: "tableData", alignment: "right" },
       ]);
     }

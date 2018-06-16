@@ -30,6 +30,13 @@ namespace AmpedBiz.Service.Host.Controllers
             return await _mediator.Send(request ?? new GetInventoryAdjustmentPage.Request());
         }
 
+        [HttpPost()]
+        [Route("movements-report/page")]
+        public async Task<GetInventoryMovementsReportPage.Response> Process([FromBody]GetInventoryMovementsReportPage.Request request)
+        {
+            return await _mediator.Send(request ?? new GetInventoryMovementsReportPage.Request());
+        }
+
         [HttpGet()]
         [Route("adjustment-reasons")]
         public async Task<GetInventoryAdjustmentReasonList.Response> Process([FromUri]GetInventoryAdjustmentReasonList.Request request)

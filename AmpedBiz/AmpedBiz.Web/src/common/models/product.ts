@@ -169,7 +169,7 @@ export class ProductReportPageItem {
   totalRetailPriceAmount?: number;
 }
 
-export class ProductSalesReportPageItem {
+export class ProductsDeliveredReportPageItem {
   completedOn?: Date;
   branchName?: string;
   supplierName?: string;

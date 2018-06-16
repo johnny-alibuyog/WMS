@@ -6,11 +6,11 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
 {
     public class PurchaseOrderUpdateVisitor : IVisitor<PurchaseOrder>
     {
-        public Branch Branch { get; set; }
-
         public string PurchaseOrderNumber { get; set; }
 
         public string ReferenceNumber { get; set; }
+
+        public Branch Branch { get; set; }
 
         public User CreatedBy { get; set; }
 
@@ -41,6 +41,7 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
 
             target.PurchaseOrderNumber = this.PurchaseOrderNumber ?? target.PurchaseOrderNumber;
             target.ReferenceNumber = this.ReferenceNumber ?? target.ReferenceNumber;
+            target.Branch = this.Branch ?? target.Branch;
             target.CreatedBy = this.CreatedBy ?? target.CreatedBy;
             target.CreatedOn = this.CreatedOn ?? target.CreatedOn;
             target.ExpectedOn = this.ExpectedOn ?? target.ExpectedOn;

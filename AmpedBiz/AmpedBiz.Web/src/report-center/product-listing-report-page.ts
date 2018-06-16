@@ -12,7 +12,7 @@ export class ProductListingReportPage {
   private _report: ProductListingReport;
   private _notification: NotificationService;
 
-  public header: string = ' Product Sales';
+  public header: string = ' Products Delivered';
 
   public filter: Filter;
   public sorter: Sorter;
@@ -54,7 +54,7 @@ export class ProductListingReportPage {
       this.branches,
       this.categories,
       this.suppliers,
-      this.products,
+      this.products
     ] = await Promise.all([
       this._api.branches.getLookups(),
       this._api.productCategories.getLookups(),

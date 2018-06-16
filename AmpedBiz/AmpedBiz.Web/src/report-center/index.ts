@@ -116,11 +116,11 @@ export class Index {
       //   },
       // },
       {
-        route: ['product-sales-report-page'],
-        name: 'product-sales-report-page',
-        moduleId: './product-sales-report-page',
+        route: ['products-delivered-report-page'],
+        name: 'products-delivered-report-page',
+        moduleId: './products-delivered-report-page',
         nav: true,
-        title: 'Product Sales',
+        title: 'Products Delivered',
         settings: {
           auth: <AuthSettings>{
             roles: [
@@ -131,11 +131,11 @@ export class Index {
         },
       },
       {
-        route: ['product-invoice-movement-report-page'],
-        name: 'product-invoice-movement-report-page',
-        moduleId: './product-invoice-movement-report-page',
+        route: ['inventory-movements-report-page'],
+        name: 'inventory-movements-report-page',
+        moduleId: './inventory-movements-report-page',
         nav: true,
-        title: 'Product Invoice Movement',
+        title: 'Product Inventory Movement',
         settings: {
           auth: <AuthSettings>{
             roles: [

@@ -108,9 +108,11 @@ namespace AmpedBiz.Service.PurchaseOrders
                             standard: new Measure(x.Standard.Value, session.Load<UnitOfMeasure>(x.Standard.Unit.Id))
                         ))
                     });
+
                     entity.EnsureValidity();
 
                     session.Save(entity);
+
                     transaction.Commit();
 
                     entity.MapTo(response);

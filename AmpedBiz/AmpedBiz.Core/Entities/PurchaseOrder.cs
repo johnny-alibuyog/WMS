@@ -34,7 +34,6 @@ namespace AmpedBiz.Core.Entities
         ReceivingCreation
     }
 
-
     public class PurchaseOrder : Entity<Guid, PurchaseOrder>, IAccept<IVisitor<PurchaseOrder>>
     {
         public virtual string PurchaseOrderNumber { get; internal protected set; }
@@ -43,7 +42,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual string VoucherNumber { get; internal protected set; }
 
-        public virtual Tenant Tenant { get; internal protected set; }
+        public virtual Branch Branch { get; internal protected set; }
 
         public virtual PaymentType PaymentType { get; internal protected set; }
 

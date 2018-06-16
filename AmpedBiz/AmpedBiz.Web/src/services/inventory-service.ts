@@ -1,5 +1,5 @@
 import { PageRequest, PagerResponse } from '../common/models/paging';
-import { Inventory, InventoryAdjustmentPageItem, InventoryAdjustmentType, InventoryAdjustmentReason, InventoryAdjustment } from '../common/models/inventory';
+import { Inventory, InventoryAdjustmentPageItem, InventoryAdjustmentType, InventoryAdjustmentReason, InventoryAdjustment, InventoryMovementsReportPageItem } from '../common/models/inventory';
 
 import { autoinject } from 'aurelia-framework';
 import { buildQueryString } from 'aurelia-framework';
@@ -36,6 +36,11 @@ export class InventoryService extends ServiceBase<Inventory> {
     }
 
     return this._httpClient.get(url);
+  }
+
+  public getMovementsReportPage(page: PageRequest): Promise<PagerResponse<InventoryMovementsReportPageItem>> {
+    var url = this._resouce + '/movements-report/page';
+    return this._httpClient.post(url, page);
   }
 
   public createAdjustment(entity: InventoryAdjustment): Promise<InventoryAdjustment>{

@@ -1,8 +1,6 @@
-1. Rename reports files CustumerReport CustomerListingReport
-1. Rename reports files SupplierReport SupplierListingReport
-
-
- Pz700Rt22kL3scoQ0WfGkQYqkEDSdDTvXKH41WdT4kFCb8Js1D4JtqF6WdBl
-  j9Bct7XYXbtwhboZgsAtYwQL7fmcjyfEXzrQeE9RKfEKBgek44LuSz0eNQzs
-  
-  C:\_repo\Narasoft\tinda\trunk\AmpedBiz\AmpedBiz.Data.Initializer\bin\Release\.\Data\ImportFiles\Nicon\nicon\Branches\Nicon\inventory_adjustment_reason.xlsx
+- Make typescript Promise async
+- NHibernate Session usage should go to base class RequestHandlerBase
+- Rename reports files CustumerReport CustomerListingReport
+- Rename reports files SupplierReport SupplierListingReport
+- Make PurchaseOrder and Order Auditable
+- There should be no negative Receipt Value (PurchaseOrderReceipt)

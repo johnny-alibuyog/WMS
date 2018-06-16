@@ -3,12 +3,14 @@ using AmpedBiz.Core.Entities;
 using AmpedBiz.Data;
 using AmpedBiz.Data.Seeders;
 using AmpedBiz.Service.Dto.Mappers;
+using AmpedBiz.Service.Inventories;
 using AmpedBiz.Tests.Bootstrap;
 using Autofac;
 using Common.Logging;
 using MediatR;
 using NHibernate;
 using NUnit.Framework;
+using System;
 using System.Data.Common;
 using System.Transactions;
 
@@ -90,6 +92,13 @@ namespace AmpedBiz.Tests.IntegrationTests
                     //Assert.IsNull(XX);
                 }
             }
+        }
+
+        [Test]
+        public void Test2()
+        {
+            var xxx = this._mediator.Send(new GetInventoryMovementsReportPage.Request());
+            Console.WriteLine(xxx);
         }
 
         //[Test]

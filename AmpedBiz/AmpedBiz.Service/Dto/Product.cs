@@ -287,7 +287,7 @@ namespace AmpedBiz.Service.Dto
         public decimal? TotalRetailPriceAmount => this.OnHandValue * this.RetailPriceAmount;
     }
 
-    public class ProductSalesReportPageItem
+    public class ProductsDeliveredReportPageItem
     {
         public int Year { get; set; }
 

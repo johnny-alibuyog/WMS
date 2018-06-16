@@ -12,7 +12,7 @@ export class CustomerSalesReportPage {
   private _report: CustomerSalesReport;
   private _notification: NotificationService;
 
-  public header: string = ' Customer Order';
+  public header: string = ' Customer Sales';
 
   public filter: Filter;
   public sorter: Sorter;

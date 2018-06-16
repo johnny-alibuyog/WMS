@@ -21,6 +21,8 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Map(x => x.VoucherNumber)
                     .Index("IDX_VoucherNumber");
 
+                References(x => x.Branch);
+
                 References(x => x.PaymentType);
 
                 References(x => x.Supplier);
@@ -123,6 +125,9 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Define(x => x.VoucherNumber)
                     .MaxLength(30);
+
+                Define(x => x.Branch)
+                    .NotNullable();
 
                 Define(x => x.PaymentType);
 

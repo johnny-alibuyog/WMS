@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Products;
 using System;
+using System.Collections.Generic;
 
 namespace AmpedBiz.Service.Dto
 {
@@ -138,4 +139,79 @@ namespace AmpedBiz.Service.Dto
         public InventoryAdjustmentType Type { get; set; }
 
     }
+
+    public class InventoryMovementsReportPageItem
+    {
+        public DateTime Date { get; set; }
+
+        public string BranchName { get; set; }
+
+        public string ProductName { get; set; }
+
+        public string Out { get; set; }
+
+        public string In { get; set; }
+
+        //public virtual string OnOrder { get; set; }
+
+        public static InventoryMovementsReportPageItem Create(
+            IDictionary<Guid, AmpedBiz.Core.Entities.Branch> branchLookup,
+            IDictionary<Guid, AmpedBiz.Core.Entities.Product> productLookup,
+            IDictionary<string, AmpedBiz.Core.Entities.UnitOfMeasure> unitLookup,
+            InventoryMovementReportPageItemRaw raw
+            )
+        {
+            var data = new
+            {
+                Branch = branchLookup[raw.BranchId],
+                Product = productLookup[raw.ProductId],
+            };
+
+            return new InventoryMovementsReportPageItem()
+            {
+                Date = raw.Date,
+                BranchName = data.Branch.Name,
+                ProductName = data.Product.Name,
+                In = DetermineMeasure(unitLookup, data.Product, raw.InputUnitId, raw.InputValue),
+                Out = DetermineMeasure(unitLookup, data.Product, raw.OutputUnitId, raw.OutputValue),
+            };
+        }
+
+        public static string DetermineMeasure(
+            IDictionary<string, AmpedBiz.Core.Entities.UnitOfMeasure> unitLookup,
+            AmpedBiz.Core.Entities.Product product,
+            string unitId,
+            decimal value)
+        {
+            var unit = string.IsNullOrWhiteSpace(unitId)
+                ? product.UnitOfMeasures.Default(x => x.UnitOfMeasure)
+                : unitLookup[unitId];
+
+            return new AmpedBiz.Core.Entities.Measure(value, unit)
+             .BreakDown(product)
+             .InterpretAsString();
+        }
+    }
+
+    public class InventoryMovementReportPageItemRaw
+    {
+        public DateTime Date { get; set; }
+
+        public Guid BranchId { get; set; }
+
+        public string BranchName { get; set; }
+
+        public Guid ProductId { get; set; }
+
+        public string ProductName { get; set; }
+
+        public string OutputUnitId { get; set; }
+
+        public decimal OutputValue { get; set; }
+
+        public string InputUnitId { get; set; }
+
+        public decimal InputValue { get; set; }
+    }
+
 }

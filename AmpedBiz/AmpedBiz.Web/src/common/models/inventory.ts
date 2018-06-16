@@ -73,3 +73,11 @@ export interface InventoryAdjustmentReason {
   description?: string;
   type?: InventoryAdjustmentType;
 }
+
+export interface InventoryMovementsReportPageItem {
+  date?: Date;
+  branchName?: string;
+  productName?: string;
+  out?: string;
+  in?: string;
+}
