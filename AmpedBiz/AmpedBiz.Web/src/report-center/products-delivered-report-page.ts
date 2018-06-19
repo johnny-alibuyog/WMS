@@ -98,7 +98,7 @@ export class ProductsDeliveredReportPage {
         fromDate: header.fromDate,
         toDate: header.toDate,
         items: data.items.map(x => <ProductsDeliveredReportItemModel>{
-          completedOn: x.completedOn,
+          shippedOn: x.shippedOn,
           branchName: x.branchName,
           supplierName: x.supplierName,
           categoryName: x.categoryName,

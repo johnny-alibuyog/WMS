@@ -24,6 +24,11 @@ export interface CustomerPaymentsReportItemModel {
 @autoinject
 export class CustomerPaymentsReport extends Report<CustomerPaymentsReportModel> {
 
+  public constructor() {
+    super();
+    this.option.pageOrientation = 'landscape';
+  }
+
   protected async buildBody(data: CustomerPaymentsReportModel): Promise<any[] | Content[]> {
     let orderTableBody: any[] = [
       [
@@ -94,7 +99,7 @@ export class CustomerPaymentsReport extends Report<CustomerPaymentsReportModel> 
       {
         table: {
           headerRows: 1,
-          widths: ['auto', 'auto', '*', 'auto', 'auto', 'auto', 'auto', 'auto'],
+          widths: ['auto', 'auto','auto', '*', 'auto', 'auto', 'auto', 'auto'],
           body: orderTableBody
         },
         layout: 'lightHorizontalLines',

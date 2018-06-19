@@ -12,7 +12,7 @@ export class InventoryMovementsReportPage {
   private _report: InventoryMovementsReport;
   private _notification: NotificationService;
 
-  public header: string = ' Customer Order';
+  public header: string = ' Inventory Movements';
 
   public filter: Filter;
   public sorter: Sorter;

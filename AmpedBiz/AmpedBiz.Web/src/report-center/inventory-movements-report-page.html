@@ -88,8 +88,8 @@
                   <th class="col-md-2" click.delegate="sorter.doSort('productName')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['productName'])}"></i>Product
                   </th>
-                  <th>In</th>
-                  <th>Out</th>
+                  <th class="col-md-1 text-right">In</th>
+                  <th class="col-md-1 text-right">Out</th>
                 </tr>
               </thead>
 
@@ -98,8 +98,8 @@
                   <td>${item.date | dateFormat}</td>
                   <td>${item.branchName}</td>
                   <td>${item.productName}</td>
-                  <td>${item.in}</td>
-                  <td>${item.out}</td>
+                  <td class="col-md-1 text-right">${item.in}</td>
+                  <td class="col-md-1 text-right">${item.out}</td>
                 </tr>
               </tbody>
 

@@ -99,8 +99,8 @@
             <table class="table table-striped table-condensed table-hover">
               <thead>
                 <tr>
-                  <th class="col-md-1" click.delegate="sorter.doSort('completedOn')">
-                    <i class="fa fa-fw fa-${sorter.class(sorter['completedOn'])}"></i>Date
+                  <th class="col-md-1" click.delegate="sorter.doSort('shippedOn')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['shippedOn'])}"></i>Date
                   </th>
                   <th class="col-md-2" click.delegate="sorter.doSort('branchName')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['branchName'])}"></i>Branch
@@ -134,7 +134,7 @@
 
               <tbody>
                 <tr repeat.for="item of pager.items" click.delegate="edit(item)">
-                  <td>${item.completedOn | dateFormat}</td>
+                  <td>${item.shippedOn | dateFormat}</td>
                   <td>${item.branchName}</td>
                   <td>${item.supplierName}</td>
                   <td>${item.categoryName}</td>

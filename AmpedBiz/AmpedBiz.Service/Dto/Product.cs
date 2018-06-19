@@ -289,13 +289,7 @@ namespace AmpedBiz.Service.Dto
 
     public class ProductsDeliveredReportPageItem
     {
-        public int Year { get; set; }
-
-        public int Month { get; set; }
-
-        public int Day { get; set; }
-
-        public DateTime? CompletedOn => new DateTime(this.Year, this.Month, this.Day);
+        public DateTime ShippedOn { get; set; }
 
         public string BranchName { get; set; }
 

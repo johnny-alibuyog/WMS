@@ -15,7 +15,7 @@ export interface ProductsDeliveredReportModel {
 }
 
 export interface ProductsDeliveredReportItemModel {
-  completedOn?: Date;
+  shippedOn?: Date;
   branchName?: string;
   supplierName?: string;
   categoryName?: string;
@@ -54,7 +54,7 @@ export class ProductsDeliveredReport extends Report<ProductsDeliveredReportModel
     if (data && data.items && data.items.length > 0) {
       // table body
       orderTableBody.push(...data.items.map(x => [
-        { text: formatDate(x.completedOn), style: 'tableData' },
+        { text: formatDate(x.shippedOn), style: 'tableData' },
         { text: emptyIfNull(x.branchName), style: 'tableData' },
         { text: emptyIfNull(x.supplierName), style: 'tableData' },
         { text: emptyIfNull(x.categoryName), style: 'tableData' },

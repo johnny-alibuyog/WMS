@@ -81,6 +81,9 @@
                   <th class="col-md-2" click.delegate="sorter.doSort('customerName')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['customerName'])}"></i>Customer
                   </th>
+                  <th class="col-md-2" click.delegate="sorter.doSort('paymentTypeName')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['paymentTypeName'])}"></i>Payment Type
+                  </th>
                   <th class="col-md-1 text-right" click.delegate="sorter.doSort('totalAmount')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['totalAmount'])}"></i>Amount
                   </th>

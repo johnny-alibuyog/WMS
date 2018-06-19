@@ -135,7 +135,7 @@ export class Index {
         name: 'inventory-movements-report-page',
         moduleId: './inventory-movements-report-page',
         nav: true,
-        title: 'Product Inventory Movement',
+        title: 'Inventory Movement',
         settings: {
           auth: <AuthSettings>{
             roles: [

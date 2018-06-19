@@ -170,7 +170,7 @@ export class ProductReportPageItem {
 }
 
 export class ProductsDeliveredReportPageItem {
-  completedOn?: Date;
+  shippedOn?: Date;
   branchName?: string;
   supplierName?: string;
   categoryName?: string;

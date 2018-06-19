@@ -55,7 +55,7 @@ export class InventoryMovementsReport extends Report<InventoryMovementsReportMod
 
     let body = [
       {
-        text: 'Customer Sales',
+        text: 'Inventory Movement',
         style: 'title'
       },
       {

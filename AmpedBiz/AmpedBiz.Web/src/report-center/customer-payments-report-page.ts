@@ -3,7 +3,7 @@ import { ServiceApi } from '../services/service-api';
 import { Lookup } from '../common/custom_types/lookup';
 import { NotificationService } from '../common/controls/notification-service';
 import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
-import { CustomerSalesReportPageItem } from '../common/models/customer';
+import { CustomerPaymentsReportPageItem } from '../common/models/customer';
 import { CustomerPaymentsReport, CustomerPaymentsReportModel, CustomerPaymentsReportItemModel } from './customer-payments-report';
 
 @autoinject
@@ -16,7 +16,7 @@ export class CustomerPaymentsReportPage {
 
   public filter: Filter;
   public sorter: Sorter;
-  public pager: Pager<CustomerSalesReportPageItem>;
+  public pager: Pager<CustomerPaymentsReportPageItem>;
 
   public customers: Lookup<string>[];
   public branches: Lookup<string>[];
@@ -42,7 +42,7 @@ export class CustomerPaymentsReportPage {
     this.sorter["balanceAmount"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
 
-    this.pager = new Pager<CustomerSalesReportPageItem>();
+    this.pager = new Pager<CustomerPaymentsReportPageItem>();
     this.pager.onPage = () => this.getPage();
   }
 
@@ -98,13 +98,13 @@ export class CustomerPaymentsReportPage {
 
   private async getPage(): Promise<void> {
     try {
-      let data = await this._api.customers.getCustomerSalesReportPage({
+      let data = await this._api.customers.getCustomerPaymentsReportPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager
       });
 
-      let response = <PagerResponse<CustomerSalesReportPageItem>>data;
+      let response = <PagerResponse<CustomerPaymentsReportPageItem>>data;
       this.pager.count = response.count;
       this.pager.items = response.items;
     }

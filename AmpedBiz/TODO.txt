@@ -4,3 +4,17 @@
 - Rename reports files SupplierReport SupplierListingReport
 - Make PurchaseOrder and Order Auditable
 - There should be no negative Receipt Value (PurchaseOrderReceipt)
+
+
+Priority
+1. Customer Payments
+- Fix balance computation
+- Fix Invoice amount grand total (do not duplicate invoice amount computation)
+- Columns should be : Date, Branch, Customer, Invoice, Amount, Payment Type, Payment, Balance 
+
+2. Customer Sales Report
+- Columns should be Date, Branch, Customer Name, Invoice No., Status, Grand Total, Balance 
+
+3. SA Customer Order delivery report
+Paki dagdag ang Invoice amount..
+Date, Branch, Customer, Invoice, Pricing, Amount, Discount, Total
