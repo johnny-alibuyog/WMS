@@ -13,6 +13,9 @@ cinst nodejs
 # or for full install with npm
 cinst nodejs.install
 
+/* install typings */
+npm install typings --global
+
 /* aurelia validation typings */
 typings install aurelia-validation=github:aurelia/validation#0.13.1 --save
 
@@ -40,3 +43,6 @@ https://github.com/aurelia/documentation/issues/202
 https://github.com/jspm/registry/issues/132
 */
 jspm install select2 -o "{ format: 'global' } 
+
+
+/* typings is already deprecated, use "npm install @type/<package>" instead */

@@ -26,6 +26,7 @@ namespace AmpedBiz.Core.Services.Orders
             foreach (var item in itemsToInsert)
             {
                 item.Order = target;
+                item.Balance = target.Total - target.Payments.Sum(x => x.Payment);
                 target.Payments.Add(item);
             }
 

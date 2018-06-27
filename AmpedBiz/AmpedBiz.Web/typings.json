@@ -26,7 +26,8 @@
     "aurelia-templating-resources": "github:aurelia/templating-resources",
     "aurelia-templating-router": "github:aurelia/templating-router",
     "aurelia-validation": "github:aurelia/validation#0.13.1",
-    "moment": "registry:npm/moment#2.10.5+20160211003958"
+    "moment": "registry:npm/moment#2.10.5+20160211003958",
+    "linq": "npm:linq/linq"
   },
   "globalDevDependencies": {
     "angular-protractor": "registry:dt/angular-protractor#1.5.0+20160425143459",

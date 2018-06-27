@@ -151,6 +151,7 @@ export interface OrderPayment {
   paidTo?: Lookup<string>;
   paymentType?: Lookup<string>;
   paymentAmount?: number;
+  balanceAmount?: number;
 }
 
 export interface OrderPayable {

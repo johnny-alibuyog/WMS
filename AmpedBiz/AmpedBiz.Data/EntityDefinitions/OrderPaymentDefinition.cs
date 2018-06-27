@@ -23,6 +23,9 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Component(x => x.Payment,
                     MoneyDefinition.Mapping.Map("Payment_", nameof(OrderPayment)));
+
+                Component(x => x.Balance,
+                    MoneyDefinition.Mapping.Map("Balance_", nameof(OrderPayment)));
             }
         }
 

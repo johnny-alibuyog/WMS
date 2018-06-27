@@ -1,7 +1,7 @@
 import { autoinject } from 'aurelia-framework';
 import { formatDate, formatNumber, emptyIfNull } from '../services/formaters';
 import { Report, Content } from './report';
-import { OrderStatus } from '../common/models/order';
+import * as Enumerable from 'linq';
 
 export interface CustomerPaymentsReportModel {
   branchName?: string;
@@ -56,6 +56,22 @@ export class CustomerPaymentsReport extends Report<CustomerPaymentsReportModel> 
         { text: formatNumber(x.balanceAmount), style: 'tableData', alignment: 'right' },
       ]));
 
+      let grandTotal = {
+        totalAmount: Enumerable
+          .from(data.items)
+          .groupBy(x => x.invoiceNumber)
+          .select(x => x.first().totalAmount)
+          .sum(x => x),
+        paidAmount:  Enumerable
+          .from(data.items)
+          .sum(x => x.paidAmount),
+        balanceAmount: Enumerable
+          .from(data.items)
+          .groupBy(x => x.invoiceNumber)
+          .select(x => x.min(o => o.balanceAmount))
+          .sum(x => x),
+      };
+
       // table footer
       orderTableBody.push([
         { text: "", style: "tableData" },
@@ -63,9 +79,9 @@ export class CustomerPaymentsReport extends Report<CustomerPaymentsReportModel> 
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
         { text: "Grand Total", style: "tableHeader" },
-        { text: formatNumber(data.items.map(o => o.totalAmount).reduce((pre, cur) => pre + cur)), style: "tableData", alignment: "right" },
-        { text: formatNumber(data.items.map(o => o.paidAmount).reduce((pre, cur) => pre + cur)), style: "tableData", alignment: "right" },
-        { text: formatNumber(data.items.map(o => o.balanceAmount).reduce((pre, cur) => pre + cur)), style: "tableData", alignment: "right" },
+        { text: formatNumber(grandTotal.paidAmount), style: "tableData", alignment: "right" },
+        { text: formatNumber(grandTotal.paidAmount), style: "tableData", alignment: "right" },
+        { text: formatNumber(grandTotal.balanceAmount), style: "tableData", alignment: "right" },
       ]);
     }
 

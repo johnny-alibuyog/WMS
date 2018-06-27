@@ -16,6 +16,8 @@ namespace AmpedBiz.Service.Dto
         public virtual Lookup<string> PaymentType { get; set; }
 
         public virtual decimal PaymentAmount { get; set; }
+
+        public virtual decimal BalanceAmount { get; set; }
     }
 
     public class OrderPayable

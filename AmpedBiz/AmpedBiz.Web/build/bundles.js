@@ -35,6 +35,7 @@ module.exports = {
         "fetch",
         "moment",
         "numeral",
+        "linq",
         /*"jquery"*/
       ],
       "options": {

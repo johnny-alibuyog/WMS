@@ -1,7 +1,7 @@
 {
-  "name": "AmpBiz",
+  "name": "ampbiz",
   "version": "1.0.0",
-  "description": "Inventory System.",
+  "description": "Inventory System",
   "keywords": [
     "aurelia",
     "navigation",
@@ -26,6 +26,7 @@
     "e2e": "gulp serve e2e"
   },
   "devDependencies": {
+    "@types/linq": "^2.2.33",
     "aurelia-bundler": "^0.4.0",
     "aurelia-tools": "^0.2.3",
     "browser-sync": "^2.23.6",
@@ -83,6 +84,7 @@
       "css": "github:systemjs/plugin-css@^0.1.36",
       "fetch": "github:github/fetch@^1.0.0",
       "font-awesome": "npm:font-awesome@4.6.3",
+      "linq": "npm:linq@^3.1.0",
       "moment": "npm:moment@^2.14.1",
       "numeral": "npm:numeral@^1.5.3",
       "pdfmake": "github:bpampuch/pdfmake@^0.1.20",

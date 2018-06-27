@@ -125,7 +125,8 @@ namespace AmpedBiz.Service.Orders
                                 paidOn: x.PaidOn ?? DateTime.Now,
                                 paidTo: session.Load<User>(x.PaidTo.Id),
                                 paymentType: session.Load<PaymentType>(x.PaymentType.Id),
-                                payment: new Money(x.PaymentAmount, currency)
+                                payment: new Money(x.PaymentAmount, currency),
+                                balance: new Money(x.BalanceAmount, currency)
                             ))
                             .ToList(),
                         Returns = message.Returns

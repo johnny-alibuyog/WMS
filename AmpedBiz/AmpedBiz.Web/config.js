@@ -35,6 +35,7 @@ System.config({
     "css": "github:systemjs/plugin-css@0.1.36",
     "fetch": "github:github/fetch@1.1.1",
     "font-awesome": "npm:font-awesome@4.6.3",
+    "linq": "npm:linq@3.1.0",
     "moment": "npm:moment@2.20.1",
     "numeral": "npm:numeral@1.5.6",
     "pdfmake": "github:bpampuch/pdfmake@0.1.35",

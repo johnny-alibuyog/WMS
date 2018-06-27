@@ -14,12 +14,15 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Money Payment { get; protected set; }
 
+        public virtual Money Balance { get; protected internal set; }
+
         public OrderPayment() : base(default(Guid)) { }
 
         public OrderPayment(
             DateTime? paidOn, User paidTo, 
             PaymentType paymentType, 
-            Money payment, 
+            Money payment,
+            Money balance = null,
             Guid? id = null
         ) : base(id ?? default(Guid))
         {
@@ -27,6 +30,7 @@ namespace AmpedBiz.Core.Entities
             this.PaidTo = paidTo;
             this.PaymentType = paymentType;
             this.Payment = payment;
+            this.Balance = balance;
         }
     }
 }

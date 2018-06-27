@@ -108,8 +108,8 @@ namespace AmpedBiz.Service.Customers
                     message.Sorter.Compose("balanceAmount", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Order.Total.Amount - x.Order.Paid.Amount)
-                            : query.OrderByDescending(x => x.Order.Total.Amount - x.Order.Paid.Amount);
+                            ? query.OrderBy(x => x.Balance.Amount)
+                            : query.OrderByDescending(x => x.Balance.Amount);
                     });
 
                     // TODO: this is not performant, this is just a work around on groupby count issue of nhibernate. find a solution soon
@@ -132,7 +132,8 @@ namespace AmpedBiz.Service.Customers
                             CustomerName = x.Order.Customer.Name,
                             PaymentTypeName = x.PaymentType.Name,
                             TotalAmount = x.Order.Total.Amount,
-                            PaidAmount = x.Payment.Amount
+                            PaidAmount = x.Payment.Amount,
+                            BalanceAmount = x.Balance.Amount
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)
