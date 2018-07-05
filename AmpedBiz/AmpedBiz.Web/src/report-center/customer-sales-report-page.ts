@@ -38,6 +38,7 @@ export class CustomerSalesReportPage {
     this.sorter["branchName"] = SortDirection.None;
     this.sorter["customerName"] = SortDirection.None;
     this.sorter["invoice"] = SortDirection.None;
+    this.sorter["status"] = SortDirection.None;
     this.sorter["totalAmount"] = SortDirection.None;
     this.sorter["balanceAmount"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
@@ -83,6 +84,7 @@ export class CustomerSalesReportPage {
           branchName: x.branchName,
           customerName: x.customerName,
           invoiceNumber: x.invoiceNumber,
+          status: x.status,
           totalAmount: x.totalAmount,
           paidAmount: x.paidAmount,
           balanceAmount: x.balanceAmount,

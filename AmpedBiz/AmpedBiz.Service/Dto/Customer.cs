@@ -73,6 +73,8 @@ namespace AmpedBiz.Service.Dto
 
         public string InvoiceNumber { get; set; }
 
+        public string Status { get; set; }
+
         public decimal? TotalAmount { get; set; }
 
         public decimal? PaidAmount { get; set; }
@@ -116,5 +118,7 @@ namespace AmpedBiz.Service.Dto
         public decimal? DiscountAmount { get; set; }
 
         public decimal? TotalAmount { get; set; }
+
+        public decimal? SubTotalAmount { get; set; }
     }
 }

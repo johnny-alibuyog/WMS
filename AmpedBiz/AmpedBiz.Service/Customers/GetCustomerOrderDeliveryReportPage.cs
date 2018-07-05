@@ -93,6 +93,13 @@ namespace AmpedBiz.Service.Customers
                             : query.OrderByDescending(x => x.Total.Amount);
                     });
 
+                    message.Sorter.Compose("subTotalAmount", direction =>
+                    {
+                        query = direction == SortDirection.Ascending
+                            ? query.OrderBy(x => x.SubTotal.Amount)
+                            : query.OrderByDescending(x => x.SubTotal.Amount);
+                    });
+
                     var countFuture = query
                         .ToFutureValue(x => x.Count());
 
@@ -109,7 +116,8 @@ namespace AmpedBiz.Service.Customers
                             CustomerName = x.Customer.Name,
                             PricingName = x.Pricing.Name,
                             DiscountAmount = x.Discount.Amount,
-                            TotalAmount = x.Total.Amount
+                            TotalAmount = x.Total.Amount,
+                            SubTotalAmount = x.SubTotal.Amount
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)

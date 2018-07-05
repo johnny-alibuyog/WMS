@@ -72,20 +72,20 @@
                   <th class="col-md-1" click.delegate="sorter.doSort('paidOn')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['paidOn'])}"></i>Date
                   </th>
-                  <th class="col-md-2" click.delegate="sorter.doSort('invoiceNumber')">
-                    <i class="fa fa-fw fa-${sorter.class(sorter['invoiceNumber'])}"></i>Invoice
-                  </th>
                   <th class="col-md-2" click.delegate="sorter.doSort('branchName')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['branchName'])}"></i>Branch
                   </th>
                   <th class="col-md-2" click.delegate="sorter.doSort('customerName')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['customerName'])}"></i>Customer
                   </th>
-                  <th class="col-md-2" click.delegate="sorter.doSort('paymentTypeName')">
-                    <i class="fa fa-fw fa-${sorter.class(sorter['paymentTypeName'])}"></i>Payment Type
+                  <th class="col-md-2" click.delegate="sorter.doSort('invoiceNumber')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['invoiceNumber'])}"></i>Invoice
                   </th>
                   <th class="col-md-1 text-right" click.delegate="sorter.doSort('totalAmount')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['totalAmount'])}"></i>Amount
+                  </th>
+                  <th class="col-md-2" click.delegate="sorter.doSort('paymentTypeName')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['paymentTypeName'])}"></i>Payment Type
                   </th>
                   <th class="col-md-1 text-right" click.delegate="sorter.doSort('paidAmount')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['paidAmount'])}"></i>Payment
@@ -99,11 +99,11 @@
               <tbody>
                 <tr repeat.for="item of pager.items" click.delegate="edit(item)">
                   <td>${item.paidOn | dateFormat}</td>
-                  <td>${item.invoiceNumber}</td>
                   <td>${item.branchName}</td>
                   <td>${item.customerName}</td>
-                  <td>${item.paymentTypeName}</td>
+                  <td>${item.invoiceNumber}</td>
                   <td class="text-right">${item.totalAmount | numberFormat}</td>
+                  <td>${item.paymentTypeName}</td>
                   <td class="text-right">${item.paidAmount | numberFormat}</td>
                   <td class="text-right">${item.balanceAmount | numberFormat}</td>
                 </tr>

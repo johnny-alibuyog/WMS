@@ -84,6 +84,9 @@
                   <th class="col-md-2" click.delegate="sorter.doSort('pricingName')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['pricingName'])}"></i>Pricing
                   </th>
+                  <th class="col-md-1 text-right" click.delegate="sorter.doSort('subTotalAmount')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['subTotalAmount'])}"></i>Sub Total
+                  </th>
                   <th class="col-md-1 text-right" click.delegate="sorter.doSort('discountAmount')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['discountAmount'])}"></i>Discount
                   </th>
@@ -100,6 +103,7 @@
                   <td>${item.branchName}</td>
                   <td>${item.customerName}</td>
                   <td>${item.pricingName}</td>
+                  <td class="text-right">${item.subTotalAmount | numberFormat}</td>
                   <td class="text-right">${item.discountAmount | numberFormat}</td>
                   <td class="text-right">${item.totalAmount | numberFormat}</td>
                 </tr>

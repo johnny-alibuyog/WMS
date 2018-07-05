@@ -18,7 +18,7 @@ export function formatDate(value: Date, format?: string): string {
 
 export function formatNumber(value: number, format?: string): string {
   if (value == null) {
-    return '';
+    value = 0;
   }
 
   if (format === undefined || format === null || format.trim() === '') {

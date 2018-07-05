@@ -12,7 +12,7 @@ export class CustomerSalesReportPage {
   private _report: CustomerOrderDeliveryReport;
   private _notification: NotificationService;
 
-  public header: string = ' Customer Order';
+  public header: string = ' Customer Order Delivery';
 
   public filter: Filter;
   public sorter: Sorter;
@@ -40,6 +40,7 @@ export class CustomerSalesReportPage {
     this.sorter["pricingName"] = SortDirection.None;
     this.sorter["discountAmount"] = SortDirection.None;
     this.sorter["totalAmount"] = SortDirection.None;
+    this.sorter["subTotalAmount"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
 
     this.pager = new Pager<CustomerOrderDeliveryReportPageItem>();
@@ -84,6 +85,7 @@ export class CustomerSalesReportPage {
           pricingName: x.pricingName,
           discountAmount: x.discountAmount,
           totalAmount: x.totalAmount,
+          subTotalAmount: x.subTotalAmount
         })
       };
       this._report.show(reportModel)

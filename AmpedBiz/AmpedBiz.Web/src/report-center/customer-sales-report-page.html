@@ -91,6 +91,9 @@
                   <th class="col-md-2" click.delegate="sorter.doSort('invoiceNumber')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['invoiceNumber'])}"></i>Invoice
                   </th>
+                  <th class="col-md-2" click.delegate="sorter.doSort('status')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['status'])}"></i>Staus
+                  </th>
                   <th class="col-md-1 text-right" click.delegate="sorter.doSort('paidAmount')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['paidAmount'])}"></i>Paid
                   </th>
@@ -106,6 +109,7 @@
                   <td>${item.branchName}</td>
                   <td>${item.customerName}</td>
                   <td>${item.invoiceNumber}</td>
+                  <td>${item.status}</td>
                   <td class="text-right">${item.totalAmount | numberFormat}</td>
                   <td class="text-right">${item.balanceAmount | numberFormat}</td>
                 </tr>

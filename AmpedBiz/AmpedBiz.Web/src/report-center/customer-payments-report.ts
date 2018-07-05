@@ -33,11 +33,11 @@ export class CustomerPaymentsReport extends Report<CustomerPaymentsReportModel> 
     let orderTableBody: any[] = [
       [
         { text: 'Date', style: 'tableHeader' },
-        { text: 'Invoice', style: 'tableHeader' },
         { text: 'Branch', style: 'tableHeader' },
         { text: 'Customer', style: 'tableHeader' },
-        { text: 'Payment Type', style: 'tableHeader' },
+        { text: 'Invoice', style: 'tableHeader' },
         { text: 'Amount', style: 'tableHeader', alignment: 'right' },
+        { text: 'Payment Type', style: 'tableHeader' },
         { text: 'Payment', style: 'tableHeader', alignment: 'right' },
         { text: 'Balance', style: 'tableHeader', alignment: 'right' },
       ],
@@ -47,11 +47,11 @@ export class CustomerPaymentsReport extends Report<CustomerPaymentsReportModel> 
       // table content
       orderTableBody.push(...data.items.map(x => [
         { text: formatDate(x.paidOn), style: 'tableData' },
-        { text: emptyIfNull(x.invoiceNumber), style: 'tableData' },
         { text: emptyIfNull(x.branchName), style: 'tableData' },
         { text: emptyIfNull(x.customerName), style: 'tableData' },
-        { text: emptyIfNull(x.paymentTypeName), style: 'tableData' },
+        { text: emptyIfNull(x.invoiceNumber), style: 'tableData' },
         { text: formatNumber(x.totalAmount), style: 'tableData', alignment: 'right' },
+        { text: emptyIfNull(x.paymentTypeName), style: 'tableData' },
         { text: formatNumber(x.paidAmount), style: 'tableData', alignment: 'right' },
         { text: formatNumber(x.balanceAmount), style: 'tableData', alignment: 'right' },
       ]));
@@ -77,9 +77,9 @@ export class CustomerPaymentsReport extends Report<CustomerPaymentsReportModel> 
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
-        { text: "", style: "tableData" },
         { text: "Grand Total", style: "tableHeader" },
         { text: formatNumber(grandTotal.paidAmount), style: "tableData", alignment: "right" },
+        { text: "", style: "tableData" },
         { text: formatNumber(grandTotal.paidAmount), style: "tableData", alignment: "right" },
         { text: formatNumber(grandTotal.balanceAmount), style: "tableData", alignment: "right" },
       ]);

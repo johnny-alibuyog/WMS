@@ -1,7 +1,6 @@
 import { autoinject } from 'aurelia-framework';
 import { formatDate, formatNumber, emptyIfNull } from '../services/formaters';
 import { Report, Content } from './report';
-import { OrderStatus } from '../common/models/order';
 
 export interface CustomerOrderDeliveryReportModel {
   branchName?: string;
@@ -19,11 +18,16 @@ export interface CustomerOrderDeliveryReportItemModel {
   pricingName?: string;
   discountAmount?: number;
   totalAmount?: number;
+  subTotalAmount?: number;
 }
 
 @autoinject
 export class CustomerOrderDeliveryReport extends Report<CustomerOrderDeliveryReportModel> {
 
+  public constructor() {
+    super();
+    this.option.pageOrientation = 'landscape';
+  }
   protected async buildBody(data: CustomerOrderDeliveryReportModel): Promise<any[] | Content[]> {
     let orderTableBody: any[] = [
       [
@@ -32,6 +36,7 @@ export class CustomerOrderDeliveryReport extends Report<CustomerOrderDeliveryRep
         { text: 'Branch', style: 'tableHeader' },
         { text: 'Customer', style: 'tableHeader' },
         { text: 'Pricing', style: 'tableHeader' },
+        { text: 'Sub Total', style: 'tableHeader', alignment: 'right' },
         { text: 'Discount', style: 'tableHeader', alignment: 'right' },
         { text: 'Total', style: 'tableHeader', alignment: 'right' },
       ],
@@ -45,6 +50,7 @@ export class CustomerOrderDeliveryReport extends Report<CustomerOrderDeliveryRep
         { text: emptyIfNull(x.branchName), style: 'tableData' },
         { text: emptyIfNull(x.customerName), style: 'tableData' },
         { text: emptyIfNull(x.pricingName), style: 'tableData' },
+        { text: formatNumber(x.subTotalAmount), style: 'tableData', alignment: 'right' },
         { text: formatNumber(x.discountAmount), style: 'tableData', alignment: 'right' },
         { text: formatNumber(x.totalAmount), style: 'tableData', alignment: 'right' },
       ]));
@@ -56,6 +62,7 @@ export class CustomerOrderDeliveryReport extends Report<CustomerOrderDeliveryRep
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
         { text: "Grand Total", style: "tableHeader" },
+        { text: formatNumber(data.items.map(o => o.subTotalAmount).reduce((pre, cur) => pre + cur)), style: "tableData", alignment: "right" },
         { text: formatNumber(data.items.map(o => o.discountAmount).reduce((pre, cur) => pre + cur)), style: "tableData", alignment: "right" },
         { text: formatNumber(data.items.map(o => o.totalAmount).reduce((pre, cur) => pre + cur)), style: "tableData", alignment: "right" },
       ]);
@@ -95,7 +102,7 @@ export class CustomerOrderDeliveryReport extends Report<CustomerOrderDeliveryRep
       {
         table: {
           headerRows: 1,
-          widths: ['auto', 'auto', 'auto', '*', 'auto', 'auto', 'auto'],
+          widths: ['auto', 'auto', 'auto', '*', 'auto', 'auto', 'auto', 'auto'],
           body: orderTableBody
         },
         layout: 'lightHorizontalLines',

@@ -63,6 +63,7 @@ namespace AmpedBiz.Service.Customers
                             BranchName = x.Key.BranchName,
                             CustomerName = x.Key.CustomerName,
                             InvoiceNumber = x.Key.InvoiceNumber,
+                            Status = x.Min(o => o.Order.Status).ToString(),
                             TotalAmount = x.Max(o => o.Order.Total.Amount),
                             PaidAmount = x.Sum(o => o.Payment.Amount)
                         });
@@ -94,6 +95,13 @@ namespace AmpedBiz.Service.Customers
                         groupedQuery = direction == SortDirection.Ascending
                             ? groupedQuery.OrderBy(x => x.InvoiceNumber)
                             : groupedQuery.OrderByDescending(x => x.InvoiceNumber);
+                    });
+
+                    message.Sorter.Compose("status", direction =>
+                    {
+                        groupedQuery = direction == SortDirection.Ascending
+                            ? groupedQuery.OrderBy(x => x.Status)
+                            : groupedQuery.OrderByDescending(x => x.Status);
                     });
 
                     message.Sorter.Compose("totalAmount", direction =>

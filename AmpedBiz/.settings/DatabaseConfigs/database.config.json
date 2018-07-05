@@ -1,16 +1,16 @@
 ﻿{
   "Database": "MsSql",
   "Port": 3306,
-  "HostServer": "localhost",
+  "HostServer": "mssql2.gear.host",
   "Name": "ampbizdb",
-  "Username": "sa",
+  "Username": "ampbizdb",
   "Password": "6jPbwQtZ8N52WRJ5rEWv2g==",
   "BatchSize": 50,
   "RecreateDb": false,
   "Seeder": {
     "Enabled": false,
-    "UseDummyData": true,
-    "UseExternalFiles": true,
+    "UseDummyData": false,
+    "UseExternalFiles": false,
     "ExternalFilesPath": ".\\ImportFiles"
   }
 }

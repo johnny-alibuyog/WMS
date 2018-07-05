@@ -15,6 +15,7 @@ export interface CustomerSalesReportItemModel {
   branchName?: string;
   customerName?: string;
   invoiceNumber?: string;
+  status?: string;
   totalAmount?: number;
   paidAmount?: number;
   balanceAmount?: number;
@@ -30,7 +31,8 @@ export class CustomerSalesReport extends Report<CustomerSalesReportModel> {
         { text: 'Branch', style: 'tableHeader' },
         { text: 'Customer', style: 'tableHeader' },
         { text: 'Invoice', style: 'tableHeader' },
-        { text: 'Paid', style: 'tableHeader', alignment: 'right' },
+        { text: 'Status', style: 'tableHeader' },
+        { text: 'Total', style: 'tableHeader', alignment: 'right' },
         { text: 'Balance', style: 'tableHeader', alignment: 'right' },
       ],
     ];
@@ -42,12 +44,14 @@ export class CustomerSalesReport extends Report<CustomerSalesReportModel> {
         { text: emptyIfNull(x.branchName), style: 'tableData' },
         { text: emptyIfNull(x.customerName), style: 'tableData' },
         { text: emptyIfNull(x.invoiceNumber), style: 'tableData' },
+        { text: emptyIfNull(x.status), style: 'tableData' },
         { text: formatNumber(x.paidAmount), style: 'tableData', alignment: 'right' },
         { text: formatNumber(x.balanceAmount), style: 'tableData', alignment: 'right' },
       ]));
 
       // table footer
       orderTableBody.push([
+        { text: "", style: "tableData" },
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
@@ -91,7 +95,7 @@ export class CustomerSalesReport extends Report<CustomerSalesReportModel> {
       {
         table: {
           headerRows: 1,
-          widths: ['auto', 'auto', '*', 'auto', 'auto', 'auto'],
+          widths: ['auto', 'auto', '*', 'auto', 'auto', 'auto', 'auto'],
           body: orderTableBody
         },
         layout: 'lightHorizontalLines',

@@ -36,6 +36,7 @@ export class CustomerSalesReportPageItem
   branchName?: string;
   customerName?: string;
   invoiceNumber?: string;
+  status?: string;
   totalAmount?: number;
   paidAmount?: number;
   balanceAmount?: number;
@@ -61,4 +62,5 @@ export interface CustomerOrderDeliveryReportPageItem {
   pricingName?: string;
   discountAmount?: number;
   totalAmount?: number;
+  subTotalAmount?: number;
 }
