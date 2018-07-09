@@ -42,8 +42,7 @@ namespace AmpedBiz.Core.Entities
             this.UnitPrice = unitPrice;
 
             // quantity convertion to standard uom
-            this.QuantityStandardEquivalent = standard.Unit != quantity.Unit
-                    ? standard * quantity : quantity;
+            this.QuantityStandardEquivalent = standard * quantity;
 
             // discount is not included in the extended price
             this.ExtendedPrice = new Money((this.Quantity.Value * this.UnitPrice.Amount), this.UnitPrice.Currency);

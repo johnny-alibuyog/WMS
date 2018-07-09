@@ -51,8 +51,7 @@ namespace AmpedBiz.Core.Entities
             this.Standard = standard;
 
             // quantity convertion to standard uom
-            this.QuantityStandardEquivalent = standard.Unit != quantity.Unit
-                    ? standard * quantity : quantity;
+            this.QuantityStandardEquivalent = standard * quantity;
         }
     }
 }

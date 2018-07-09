@@ -137,6 +137,7 @@ namespace AmpedBiz.Service.Orders
                                 returnedOn: message.ReturnedOn ?? DateTime.Now,
                                 returnedBy: session.Load<User>(x.ReturnedBy.Id),
                                 quantity: new Measure(x.Quantity.Value, session.Load<UnitOfMeasure>(x.Quantity.Unit.Id)),
+                                standard: new Measure(x.Standard.Value, session.Load<UnitOfMeasure>(x.Standard.Unit.Id)),
                                 returned: new Money(x.ReturnedAmount, currency)
                             ))
                             .ToList()

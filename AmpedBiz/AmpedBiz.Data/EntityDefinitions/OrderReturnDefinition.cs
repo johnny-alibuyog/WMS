@@ -26,6 +26,12 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Component(x => x.Quantity,
                     MeasureDefinition.Mapping.Map("Quantity_", nameof(OrderReturn)));
 
+                Component(x => x.Standard,
+                    MeasureDefinition.Mapping.Map("Standard_", nameof(OrderReturn)));
+
+                Component(x => x.QuantityStandardEquivalent,
+                    MeasureDefinition.Mapping.Map("QuantityStandardEquivalent_", nameof(OrderReturn)));
+
                 Component(x => x.Returned,
                     MoneyDefinition.Mapping.Map("Returned_", nameof(OrderReturn)));
             }
@@ -56,6 +62,10 @@ namespace AmpedBiz.Data.EntityDefinitions
                 Define(x => x.ReturnedOn);
 
                 Define(x => x.Quantity);
+
+                Define(x => x.Standard);
+
+                Define(x => x.QuantityStandardEquivalent);
 
                 Define(x => x.Returned)
                     .IsValid();

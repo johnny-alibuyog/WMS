@@ -509,6 +509,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                         value: _utils.RandomInteger(1, (int)x.Quantity.Value),
                                         unit: x.Quantity.Unit
                                     ),
+                                    standard: x.Product.StandardEquivalentMeasureOf(x.Quantity.Unit),
                                     returned: new Money(
                                         amount: _utils.RandomInteger(1, (int)x.TotalPrice.Amount),
                                         currency: x.TotalPrice.Currency

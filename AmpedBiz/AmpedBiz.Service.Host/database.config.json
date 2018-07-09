@@ -1,16 +1,17 @@
 ﻿{
   "Database": "MsSql",
   "Port": 3306,
-  "HostServer": "mssql2.gear.host",
+  "HostServer": "localhost",
   "Name": "ampbizdb",
-  "Username": "ampbizdb",
+  "Username": "sa",
   "Password": "6jPbwQtZ8N52WRJ5rEWv2g==",
   "BatchSize": 50,
-  "RecreateDb": false,
+  "RecreateDb": true,
   "Seeder": {
-    "Enabled": false,
-    "UseDummyData": false,
-    "UseExternalFiles": false,
-    "ExternalFilesPath": ".\\ImportFiles"
+    "Enabled": true,
+    "UseDummyData": true,
+    "UseExternalFiles": true,
+    "ExternalFilesPath": ".\\ImportFiles",
+    "ExternalFilesAbsolutePath": "C:\\_repo\\Narasoft\\tinda\\trunk\\AmpedBiz\\AmpedBiz.Service.Host\\bin\\.\\ImportFiles"
   }
 }

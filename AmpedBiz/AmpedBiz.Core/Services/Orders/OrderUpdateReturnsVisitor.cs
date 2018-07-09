@@ -37,7 +37,7 @@ namespace AmpedBiz.Core.Services.Orders
                     InventoryVisitor = new ReturnVisitor()
                     {
                         Reason = item.Reason,
-                        Quantity = item.Quantity, // TODO: Use QuantityStandardEquivalent
+                        QuantityStandardEquivalent = item.QuantityStandardEquivalent, // TODO: Use QuantityStandardEquivalent
                     }
                 });
                 target.Returns.Add(item);

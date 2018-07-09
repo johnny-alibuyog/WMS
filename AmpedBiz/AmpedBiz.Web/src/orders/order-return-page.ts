@@ -48,7 +48,7 @@ export class OrderReturnPage {
 
   public selectedItem: OrderReturnable;
 
-  constructor(api: ServiceApi,  notification: NotificationService, eventAggregator: EventAggregator, bindingEngine: BindingEngine) {
+  constructor(api: ServiceApi, notification: NotificationService, eventAggregator: EventAggregator, bindingEngine: BindingEngine) {
     this._api = api;
     this._notification = notification;
     this._eventAggregator = eventAggregator;
@@ -181,7 +181,7 @@ export class OrderReturnPage {
       this.returnables = [];
     }
 
-    var _returnable: OrderReturnable ={
+    var _returnable: OrderReturnable = {
       orderId: this.orderId,
       product: null,
       discountRate: 0,

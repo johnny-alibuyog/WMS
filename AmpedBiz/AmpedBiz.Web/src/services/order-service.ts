@@ -189,7 +189,8 @@ export class OrderService extends ServiceBase<Order> {
           quantity: {
             value: 0,
             unit: order.items.find(x => x.product.id == product.id).quantity.unit
-          }
+          },
+          standard: order.items.find(x => x.product.id == product.id).standard
         }
       };
 
@@ -216,6 +217,7 @@ export class OrderService extends ServiceBase<Order> {
         returnedBy: this._auth.userAsLookup,
         returnedOn: new Date(),
         quantity: x.returning.quantity,
+        strandard: x.returning.standard,
         returnedAmount: x.returning.amount
       });
 

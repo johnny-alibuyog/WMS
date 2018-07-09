@@ -34,8 +34,7 @@ namespace AmpedBiz.Core.Entities
             this.UnitCost = unitCost;
 
             // quantity convertion to standard uom
-            this.QuantityStandardEquivalent = standard.Unit != quantity.Unit
-                    ? standard * quantity : quantity;
+            this.QuantityStandardEquivalent = standard * quantity;
 
             this.TotalCost = new Money(this.UnitCost.Amount * this.Quantity.Value, this.UnitCost.Currency);
         }

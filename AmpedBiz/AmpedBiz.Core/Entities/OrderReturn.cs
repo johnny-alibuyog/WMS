@@ -16,6 +16,10 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Measure Quantity { get; protected set; }
 
+        public virtual Measure Standard { get; protected set; }
+
+        public virtual Measure QuantityStandardEquivalent { get; protected set; }
+
         public virtual Money Returned { get; protected set; }
 
         public OrderReturn() : base(default(Guid)) { }
@@ -26,6 +30,7 @@ namespace AmpedBiz.Core.Entities
             DateTime? returnedOn, 
             User returnedBy, 
             Measure quantity, 
+            Measure standard,
             Money returned, 
             Guid? id = null
         ) : base(id ?? default(Guid))
@@ -35,7 +40,11 @@ namespace AmpedBiz.Core.Entities
             this.ReturnedOn = returnedOn;
             this.ReturnedBy = returnedBy;
             this.Quantity = quantity;
+            this.Standard = standard;
             this.Returned = returned;
+
+            // quantity convertion to standard uom
+            this.QuantityStandardEquivalent = standard * quantity;
         }
     }
 }

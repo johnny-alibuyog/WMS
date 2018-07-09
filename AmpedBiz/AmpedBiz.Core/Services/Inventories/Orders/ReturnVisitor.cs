@@ -4,7 +4,7 @@ namespace AmpedBiz.Core.Services.Inventories.Orders
 {
     public class ReturnVisitor : IVisitor<Inventory>
     {
-        public virtual Measure Quantity { get; set; }
+        public virtual Measure QuantityStandardEquivalent { get; set; }
 
         public virtual ReturnReason Reason { get; set; }
 
@@ -12,8 +12,8 @@ namespace AmpedBiz.Core.Services.Inventories.Orders
         {
             // NOTE: identify if returned item based on reason will get back to inventory
 
-            target.OnHand += this.Quantity;
-            target.Returned += this.Quantity;
+            target.OnHand += this.QuantityStandardEquivalent;
+            target.Returned += this.QuantityStandardEquivalent;
             target.Accept(new InventoryRecomputeVisitor());
         }
     }

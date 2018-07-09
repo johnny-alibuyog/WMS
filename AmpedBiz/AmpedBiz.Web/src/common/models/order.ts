@@ -120,6 +120,7 @@ export interface OrderReturn {
   returnedOn?: Date;
   returnedBy?: Lookup<string>;
   quantity?: Measure;
+  strandard?: Measure;
   returnedAmount?: number;
 }
 
@@ -142,6 +143,7 @@ export interface OrderReturning {
   returnedOn?: Date;
   returnedBy?: Lookup<string>;
   quantity?: Measure;
+  standard?: Measure;
   amount?: number;
 }
 

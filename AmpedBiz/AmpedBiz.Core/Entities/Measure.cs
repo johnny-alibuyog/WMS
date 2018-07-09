@@ -94,6 +94,9 @@ namespace AmpedBiz.Core.Entities
             if (value2 == null)
                 value2 = new Measure(0M, unit);
 
+            if (value1?.Unit == value2?.Unit)
+                return value2;
+
             return new Measure(value1.Value * value2.Value, unit);
         }
 
