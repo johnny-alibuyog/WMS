@@ -9,7 +9,7 @@
 
   <section class="row row-no-padding">
 
-    <div class="col-md-11">
+    <div class="col-md-12">
 
       <div class="panel panel-default">
 
@@ -18,7 +18,7 @@
 
           <!-- heading label -->
           <h4 class="panel-title row-fluid">
-            <span6>&nbsp ${header} &nbsp</span6>
+<span class="title">&nbsp ${header} &nbsp</span>
 
             <!-- transition buttons -->
             <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedModifications | canModify" disabled.bind="!canSave" click.trigger="save()">

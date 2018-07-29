@@ -1,0 +1,157 @@
+/* BLACK THEME CUSTOM CSS */
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+body {
+    font-family: 'Roboto',sans-serif !important;
+    transition: all 0.5ms ease-in;
+}
+.navbar-default {
+  background: #393939 !important;
+  a {
+    color: #fff;
+    &:hover,.active {
+        background: #DBDBDB !important;
+        color: #333 !important;
+    }
+  }
+}
+
+section {
+ margin: 0;
+}
+
+ .navbar-brand {
+   width: 246px;
+ }
+
+.flex {
+  display: flex;
+  height: 100vh;
+  .side-bar {
+    width: 303px;
+    background: #DCDCDC;
+    ul {
+      list-style: none;
+      margin: 20px 0;
+      li {
+        margin: 10px 0;
+        a {
+          font-size: 0.9em;
+          color: #393939;
+        }
+      }
+    }
+  }
+  .main-container {
+    padding: 0 40px 0 30px !important;
+    width: 100%;
+  }
+}
+
+.panel-default>.panel-heading {
+  background: #CFD8DC !important;
+}
+
+.btn-default {
+  background: #393939 !important;
+  color: #fff !important;
+  border-radius: 20px !important;
+}
+
+.btn-default:disabled {
+  background: #adadad;
+  color: #ccc;
+}
+
+.btn-default.disabled:hover,
+.btn-default[disabled]:hover,
+fieldset[disabled] .btn-default:hover,
+.btn-default.disabled:focus,
+.btn-default[disabled]:focus,
+fieldset[disabled] .btn-default:focus,
+.btn-default.disabled.focus,
+.btn-default[disabled].focus,
+fieldset[disabled] .btn-default.focus {
+  border-radius: 20px;
+}
+
+.form-horizontal.col-md-4.pull-right .btn.btn-default,
+.search-form .btn.btn-default {
+  border-radius: 0 !important;
+  background: #fff !important;
+  i.fa {
+    color: #333;
+  }
+}
+
+.search-form:first-child {
+  margin: 0;
+}
+
+.panel-title.row span.title {
+  margin-top: 8px;
+  display: block;
+  width: auto;
+  float: left;
+}
+
+.pagination>li>a {
+  border:none !important;
+}
+
+.pagination>.active>a,
+.pagination>.active>span,
+.pagination>.active>a:hover,
+.pagination>.active>span:hover,
+.pagination>.active>a:focus,
+.pagination>.active>span:focus {
+  background-color: #393939 !important;
+}
+
+ @media screen and (max-width: 1068px) {
+   .navbar-brand {
+     width: auto;
+     span {
+       display: none;
+     }
+   }
+   .flex {
+     flex-direction: column
+   }
+
+   .flex .side-bar {
+     width: 100%;
+     ul {
+       display: flex;
+       li {
+         margin: 0px 5px;
+         a {
+           padding: 5px 10px !important;
+         }
+       }
+     }
+   }
+   .main-container {
+     padding: 0 30px !important;
+     .col-md-8 {
+       width: 100%;
+     }
+   }
+ }
+
+  @media screen and (max-width: 793px) {
+    .nav>li>a {
+      padding: 15px 10px !important;
+    }
+    .flex .side-bar ul {
+      flex-direction: column;
+    }
+    .navbar-brand {
+      width: auto;
+      display: flex;
+      align-items: center;
+      span {
+        display: block;
+      }
+    }
+  }
