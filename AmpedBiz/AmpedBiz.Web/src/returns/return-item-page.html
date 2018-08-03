@@ -1,5 +1,7 @@
 <template>
   <require from="common/controls/pager"></require>
+  <require from="common/controls/select2"></require>
+  <require from="common/converters/lookup-to-id-value-converter"></require>
 
   <!-- list -->
   <div class="table-responsive">
@@ -40,10 +42,16 @@
           <td if.bind="$parent.selectedItem === item">
             <div class="row">
               <div class="col-xs-12">
-                <select class="form-control input-xs" value.bind="item.product | lookupToId:$parent.products" change.delegate="initializeItem(item)">
+                <select2 selected.bind="item.product | lookupToId:$parent.products" options.bind="$parent.products" placeholder="Select Product"
+                  allow_clear="true" selected:change.delegate="propagateProductChange(item, $event.detail.selected)">
+                  <tempalte replace-part="suggestions">
+                    <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
+                  </tempalte>
+                </select2>
+                <!-- <select class="form-control input-xs" value.bind="item.product | lookupToId:$parent.products" change.delegate="initializeItem(item)">
                   <option>Select Product</option>
                   <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
-                </select>
+                </select> -->
               </div>
             </div>
           </td>

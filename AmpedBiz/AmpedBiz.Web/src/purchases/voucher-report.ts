@@ -1,11 +1,5 @@
-import * as moment from 'moment';
-
-import { DocumentDefinition, ReportBuilder, Report, Content } from '../report-center/report';
 import { emptyIfNull, formatDate, formatNumber } from '../services/formaters';
-
-import { Address } from '../common/models/Address';
-import { AuthService } from '../services/auth-service';
-import { Lookup } from '../common/custom_types/lookup';
+import { Report, Content } from '../report-center/report';
 import { Voucher } from '../common/models/purchase-order';
 import { autoinject } from 'aurelia-framework';
 
@@ -24,15 +18,13 @@ export class VoucherReport extends Report<Voucher> {
     ];
 
     if (data && data.items && data.items.length > 0) {
-      data.items.forEach(x =>
-        productTableBody.push([
-          { text: x.product && x.product.name || '', style: 'tableData' },
-          { text: x.quantity && x.quantity.unit && x.quantity.unit.name || '', style: 'tableData' },
-          { text: formatNumber(x.quantity.value, "0"), style: 'tableData', alignment: 'right' },
-          { text: formatNumber(x.unitCostAmount), style: 'tableData', alignment: 'right' },
-          { text: formatNumber(x.totalCostAmount), style: 'tableData', alignment: 'right' },
-        ])
-      );
+      productTableBody.push(...data.items.map(x => [
+        { text: x.product && x.product.name || '', style: 'tableData' },
+        { text: x.quantity && x.quantity.unit && x.quantity.unit.name || '', style: 'tableData' },
+        { text: formatNumber(x.quantity.value, "0"), style: 'tableData', alignment: 'right' },
+        { text: formatNumber(x.unitCostAmount), style: 'tableData', alignment: 'right' },
+        { text: formatNumber(x.totalCostAmount), style: 'tableData', alignment: 'right' },
+      ]));
     }
 
     let body = [
@@ -43,41 +35,41 @@ export class VoucherReport extends Report<Voucher> {
               style: 'tablePlain',
               layout: 'noBorders',
               table:
-                {
-                  body:
+              {
+                body:
+                  [
                     [
-                      [
-                        { text: 'Supplier: ', style: 'label' },
-                        { text: emptyIfNull(data.supplierName), style: 'value' }
-                      ],
-                      [
-                        { text: 'Voucher Number: ', style: 'label' },
-                        { text: emptyIfNull(data.voucherNumber), style: 'value' }
-                      ],
-                      [
-                        { text: 'Reference Number: ', style: 'label' },
-                        { text: emptyIfNull(data.referenceNumber), style: 'value' }
-                      ],
+                      { text: 'Supplier: ', style: 'label' },
+                      { text: emptyIfNull(data.supplierName), style: 'value' }
                     ],
-                }
+                    [
+                      { text: 'Voucher Number: ', style: 'label' },
+                      { text: emptyIfNull(data.voucherNumber), style: 'value' }
+                    ],
+                    [
+                      { text: 'Reference Number: ', style: 'label' },
+                      { text: emptyIfNull(data.referenceNumber), style: 'value' }
+                    ],
+                  ],
+              }
             },
             {
               style: 'tablePlain',
               layout: 'noBorders',
               table:
-                {
-                  body:
+              {
+                body:
+                  [
                     [
-                      [
-                        { text: 'Approved On: ', style: 'label' },
-                        { text: formatDate(data.approvedOn), style: 'value' }
-                      ],
-                      [
-                        { text: 'Approved By: ', style: 'label' },
-                        { text: emptyIfNull(data.approvedByName), style: 'value' }
-                      ],
+                      { text: 'Approved On: ', style: 'label' },
+                      { text: formatDate(data.approvedOn), style: 'value' }
                     ],
-                }
+                    [
+                      { text: 'Approved By: ', style: 'label' },
+                      { text: emptyIfNull(data.approvedByName), style: 'value' }
+                    ],
+                  ],
+              }
             },
           ]
       },
@@ -104,29 +96,29 @@ export class VoucherReport extends Report<Voucher> {
               style: 'tablePlain',
               layout: 'noBorders',
               table:
-                {
-                  body:
+              {
+                body:
+                  [
+                    /*
                     [
-                      /*
-                      [
-                        { text: 'Tax: ', style: 'label' },
-                        { text: formatNumber(data.taxAmount), style: 'value', alignment: 'right' }
-                      ],
-                      */
-                      [
-                        { text: 'Shipping Fee: ', style: 'label' },
-                        { text: formatNumber(data.shippingFeeAmount), style: 'value', alignment: 'right' }
-                      ],
-                      [
-                        { text: 'Sub Total: ', style: 'label' },
-                        { text: formatNumber(data.subTotalAmount), style: 'value', alignment: 'right' }
-                      ],
-                      [
-                        { text: 'Grand Total: ', style: 'label' },
-                        { text: formatNumber(data.totalAmount), style: 'value', alignment: 'right' }
-                      ],
+                      { text: 'Tax: ', style: 'label' },
+                      { text: formatNumber(data.taxAmount), style: 'value', alignment: 'right' }
                     ],
-                }
+                    */
+                    [
+                      { text: 'Shipping Fee: ', style: 'label' },
+                      { text: formatNumber(data.shippingFeeAmount), style: 'value', alignment: 'right' }
+                    ],
+                    [
+                      { text: 'Sub Total: ', style: 'label' },
+                      { text: formatNumber(data.subTotalAmount), style: 'value', alignment: 'right' }
+                    ],
+                    [
+                      { text: 'Grand Total: ', style: 'label' },
+                      { text: formatNumber(data.totalAmount), style: 'value', alignment: 'right' }
+                    ],
+                  ],
+              }
             },
           ]
       },

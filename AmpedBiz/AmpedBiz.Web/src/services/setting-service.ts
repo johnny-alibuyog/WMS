@@ -5,7 +5,6 @@ import { InvoiceReportSetting } from "../common/models/invoice-report-setting";
 import { PageRequest } from "../common/models/paging";
 import { UserSetting } from "../common/models/user-setting";
 
-
 @autoinject
 export class SettingService extends ServiceBase<any> {
   constructor(httpClient: HttpClientFacade) {

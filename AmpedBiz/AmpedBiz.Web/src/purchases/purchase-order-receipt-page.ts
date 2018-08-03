@@ -1,22 +1,17 @@
+import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
-import { Filter, Pager, PagerRequest, PagerResponse, SortDirection, Sorter } from '../common/models/paging';
+import { Pager } from '../common/models/paging';
 import { ProductInventory, ProductInventoryFacade } from "../common/models/product";
 import { PurchaseOrderReceipt, PurchaseOrderReceivable, PurchaseOrderReceiving, purchaseOrderEvents } from '../common/models/purchase-order';
-import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
-
-import { Dictionary } from '../common/custom_types/dictionary';
 import { Lookup } from '../common/custom_types/lookup';
 import { Measure } from "../common/models/measure";
 import { NotificationService } from '../common/controls/notification-service';
 import { ServiceApi } from '../services/service-api';
+import * as Enumerable from 'linq';
 
 @autoinject
 @customElement("purchase-order-receipt-page")
 export class PurchaseOrderReceiptPage {
-
-  private readonly _api: ServiceApi;
-  private readonly _notification: NotificationService;
-  private readonly _eventAggregator: EventAggregator;
 
   private _subscriptions: Subscription[] = [];
   private _productInventories: ProductInventory[] = [];
@@ -42,11 +37,11 @@ export class PurchaseOrderReceiptPage {
 
   public selectedItem: PurchaseOrderReceivable;
 
-  constructor(api: ServiceApi, notification: NotificationService, eventAggregator: EventAggregator) {
-    this._api = api;
-    this._notification = notification;
-    this._eventAggregator = eventAggregator;
-
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _notification: NotificationService,
+    private readonly _eventAggregator: EventAggregator
+  ) {
     this.receiptPager.onPage = () => this.initializeReceiptPage();
     this.receivablePager.onPage = () => this.initializeReceivablePage();
   }
@@ -64,21 +59,16 @@ export class PurchaseOrderReceiptPage {
     this._subscriptions.forEach(subscription => subscription.dispose());
   }
 
-  private getProductInventory(product: Lookup<string>): Promise<ProductInventory> {
+  private async getProductInventory(product: Lookup<string>): Promise<ProductInventory> {
     if (product == null || product.id == null) {
-      return Promise.resolve(null);
+      return null;
     }
-
-    let productInventory = this._productInventories.find(x => x.id === product.id);
-
-    if (productInventory) {
-      return Promise.resolve(productInventory);
-    }
-
-    return this._api.products.getInventory(product.id).then(data => {
+    let data = this._productInventories.find(x => x.id === product.id);
+    if (!data) {
+      data = await this._api.products.getInventory(product.id);
       this._productInventories.push(data);
-      return data;
-    });
+    }
+    return data;
   }
 
   public receiptsChanged() {
@@ -89,11 +79,10 @@ export class PurchaseOrderReceiptPage {
     this.initializeReceivablePage();
   }
 
-  public initializeItem(item: PurchaseOrderReceivable): void {
+  public async initializeItem(item: PurchaseOrderReceivable): Promise<void> {
     if (this.isModificationDisallowed) {
       return;
     }
-
     if (!item.product) {
       item.receiving.quantity = {
         unit: null,
@@ -105,16 +94,13 @@ export class PurchaseOrderReceiptPage {
       };
       return;
     }
-
-    this.getProductInventory(item.product).then(inventory => {
-      var facade = new ProductInventoryFacade(inventory);
-      var current = facade.default;
-
-      item.unitOfMeasures = inventory.unitOfMeasures.map(x => x.unitOfMeasure);
-      item.receiving.quantity.unit = current.unitOfMeasure;
-      item.receiving.standard.unit = current.standard.unit;
-      item.receiving.standard.value = current.standard.value;
-    });
+    let inventory = await this.getProductInventory(item.product);
+    let facade = new ProductInventoryFacade(inventory);
+    let current = facade.default;
+    item.unitOfMeasures = inventory.unitOfMeasures.map(x => x.unitOfMeasure);
+    item.receiving.quantity.unit = current.unitOfMeasure;
+    item.receiving.standard.unit = current.standard.unit;
+    item.receiving.standard.value = current.standard.value;
   }
 
   public initializeReceiptPage(): void {
@@ -182,38 +168,33 @@ export class PurchaseOrderReceiptPage {
     this.initializeReceivablePage();
   }
 
-  public editItem(_receivable: PurchaseOrderReceivable): void {
+  public async editItem(_receivable: PurchaseOrderReceivable): Promise<void> {
     if (this.isModificationDisallowed) {
       return;
     }
-
     if (!_receivable.unitOfMeasures || _receivable.unitOfMeasures.length == 0) {
-      this.getProductInventory(_receivable.product).then(data => {
-        if (data && data.unitOfMeasures) {
-          _receivable.unitOfMeasures = data.unitOfMeasures.map(x => x.unitOfMeasure);
-        }
-      });
+      let data = await this.getProductInventory(_receivable.product);
+      if (data && data.unitOfMeasures) {
+        _receivable.unitOfMeasures = data.unitOfMeasures.map(x => x.unitOfMeasure);
+      }
     }
-
-    if (this.selectedItem !== _receivable)
+    if (this.selectedItem !== _receivable) {
       this.selectedItem = _receivable;
+    }
   }
 
   public deleteItem(_receivable: PurchaseOrderReceivable): void {
     if (this.isModificationDisallowed) {
       return;
     }
-
     if (_receivable.orderedQuantity > 0) {
       this._notification.error("You cannot delete receipt item that has already been ordered.");
       return;
     }
-
     if (_receivable.receivedQuantity > 0) {
       this._notification.error("You cannot delete receipt item that has already been received.");
       return;
     }
-
     var index = this.receivables.indexOf(_receivable);
     if (index > -1) {
       this.receivables.splice(index, 1);

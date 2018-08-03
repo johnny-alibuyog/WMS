@@ -8,35 +8,27 @@ import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } fro
 
 @autoinject
 export class BranchPage {
-  private _api: ServiceApi;
-  private _dialog: DialogService;
-  private _notification: NotificationService;
 
-  public filter: Filter;
-  public sorter: Sorter;
-  public pager: Pager<Branch>;
-
-  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<BranchPageItem>) {
-    this._api = api;
-    this._dialog = dialog;
-    this._notification = notification;
-
-    this.filter = filter;
+  public filter: Filter = new Filter();
+  public sorter: Sorter = new Sorter();
+  public pager: Pager<BranchPageItem> = new Pager<BranchPageItem>();
+  
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _dialog: DialogService,
+    private readonly _notification: NotificationService,
+  ) {
     this.filter["name"] = '';
     this.filter.onFilter = () => this.getPage();
-
-    this.sorter = sorter;
     this.sorter["code"] = SortDirection.None;
     this.sorter["name"] = SortDirection.Ascending;
     this.sorter["descirption"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
-
-    this.pager = pager;
     this.pager.onPage = () => this.getPage();
   }
 
-  public activate(): void {
-    this.getPage();
+  public async activate(): Promise<void> {
+    await this.getPage();
   }
 
   public async getPage(): Promise<void> {
@@ -56,14 +48,16 @@ export class BranchPage {
     }
   }
 
-  public create(): void {
-    this._dialog.open({ viewModel: BranchCreate, model: null })
-      .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
+  public async create(): Promise<void> {
+    let settings = { viewModel: BranchCreate, model: null };
+    let response = await this._dialog.open(settings).whenClosed();
+    if (!response.wasCancelled) await this.getPage();
   }
 
-  public edit(item: BranchPageItem): void {
-    this._dialog.open({ viewModel: BranchCreate, model: <Branch>{ id: item.id } })
-      .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
+  public async edit(item: BranchPageItem): Promise<void> {
+    let settings = { viewModel: BranchCreate, model: <Branch>{ id: item.id } };
+    let response = await this._dialog.open(settings).whenClosed();
+    if (!response.wasCancelled) await this.getPage();
   }
 
   public delete(item: any): void {

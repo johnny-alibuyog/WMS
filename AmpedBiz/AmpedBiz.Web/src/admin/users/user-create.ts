@@ -9,9 +9,6 @@ import { ActionResult } from '../../common/controls/notification';
 
 @autoinject
 export class UserCreate {
-  private readonly _api: ServiceApi;
-  private readonly _notification: NotificationService;
-  private readonly _controller: DialogController;
 
   public header: string = 'Create User';
   public isEdit: boolean = false;
@@ -19,30 +16,25 @@ export class UserCreate {
   public user: User;
   public branches: Branch[];
 
-  constructor(notification: NotificationService, controller: DialogController, api: ServiceApi) {
-    this._notification = notification;
-    this._controller = controller;
-    this._api = api;
-  }
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _notification: NotificationService,
+    private readonly _controller: DialogController,
+  ) { }
 
-  public activate(user: User): void {
-    this._api.branches.getList()
-      .then(data => this.branches = <Branch[]>data)
-      .catch(error => this._notification.warning(error));
-
-    if (user) {
-      this.header = "Edit User";
-      this.isEdit = true;
-      this._api.users.get(user.id)
-        .then(data => this.user = <User>data)
-        .catch(error => this._notification.warning(error));
+  public async activate(user: User): Promise<void> {
+    try {
+      this.isEdit = (user) ? true : false;
+      this.header = (this.isEdit) ? "Edit User" : "Create User";
+      [this.branches, this.user] = await Promise.all([
+        this._api.branches.getList(),
+        (this.isEdit)
+          ? this._api.users.get(user.id)
+          : this._api.users.getInitialUser(null)
+      ]);
     }
-    else {
-      this.header = "Create User";
-      this.isEdit = false;
-      this._api.users.getInitialUser(null)
-        .then(data => this.user = <User>data)
-        .catch(error => this._notification.warning(error));
+    catch (error) {
+      this._notification.warning(error)
     }
   }
 

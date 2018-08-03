@@ -1,8 +1,6 @@
-import { Router, RouteConfig, NavigationInstruction, activationStrategy } from 'aurelia-router';
 import { autoinject } from 'aurelia-framework';
-import { PurchaseOrderCreate } from './purchase-order-create';
+import { Router, RouteConfig, NavigationInstruction, activationStrategy } from 'aurelia-router';
 import { PurchaseOrder, PurchaseOrderPageItem, PurchaseOrderStatus } from '../common/models/purchase-order';
-import { Supplier } from '../common/models/supplier';
 import { ServiceApi } from '../services/service-api';
 import { Lookup } from '../common/custom_types/lookup';
 import { NotificationService } from '../common/controls/notification-service';
@@ -10,32 +8,24 @@ import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } fro
 
 @autoinject
 export class PurchaseOrderPage {
-  private _api: ServiceApi;
-  private _router: Router;
-  private _notification: NotificationService;
 
   public header: string = 'Purchase Orders';
-
-  public filter: Filter;
-  public sorter: Sorter;
-  public pager: Pager<PurchaseOrderPageItem>;
-
+  public filter: Filter = new Filter();
+  public sorter: Sorter = new Sorter();
+  public pager: Pager<PurchaseOrderPageItem> = new Pager<PurchaseOrderPageItem>();
   public statuses: Lookup<PurchaseOrderStatus>[];
   public suppliers: Lookup<string>[];
   public users: Lookup<string>[];
 
-  constructor(api: ServiceApi, router: Router, notification: NotificationService) {
-    this._api = api;
-    this._router = router;
-    this._notification = notification;
-
-    this.filter = new Filter();
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _router: Router,
+    private readonly _notification: NotificationService
+  ) {
     this.filter["status"] = PurchaseOrderStatus.new;
     this.filter["createdBy"] = null;
     this.filter["supplier"] = null;
     this.filter.onFilter = () => this.getPage();
-
-    this.sorter = new Sorter();
     this.sorter["supplier"] = SortDirection.None;
     this.sorter["status"] = SortDirection.Ascending;
     this.sorter["createdBy"] = SortDirection.None;
@@ -43,31 +33,21 @@ export class PurchaseOrderPage {
     this.sorter["submittedBy"] = SortDirection.None;
     this.sorter["totalAmount"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
-
-    this.pager = new Pager<PurchaseOrderPageItem>();
     this.pager.onPage = () => this.getPage();
   }
 
-  activate(params: any, routeConfig: RouteConfig, $navigationInstruction: NavigationInstruction): any {
-
-    let requests: [Promise<Lookup<string>[]>, Promise<Lookup<string>[]>, Promise<Lookup<PurchaseOrderStatus>[]>] = [
+  public async activate(params: any, routeConfig: RouteConfig, $navigationInstruction: NavigationInstruction): Promise<void> {
+    [this.users, this.suppliers, this.statuses] = await Promise.all([
       this._api.users.getLookups(),
       this._api.suppliers.getLookups(),
       this._api.purchaseOrders.getStatusLookup()
-    ];
-
-    Promise.all(requests).then((responses: [Lookup<string>[], Lookup<string>[], Lookup<PurchaseOrderStatus>[]]) => {
-      this.users = responses[0];
-      this.suppliers = responses[1];
-      this.statuses = responses[2];
-      this.filter["status"] = routeConfig.settings.status;
-      this.header = routeConfig.title;
-
-      this.getPage();
-    });
+    ]);
+    this.filter["status"] = routeConfig.settings.status;
+    this.header = routeConfig.title;
+    await this.getPage();
   }
 
-  determineActivationStrategy(): string {
+  public determineActivationStrategy(): string {
     return activationStrategy.invokeLifecycle;
   }
 
@@ -87,32 +67,31 @@ export class PurchaseOrderPage {
   }
   */
 
-  getPage(): void {
-    this._api.purchaseOrders
-      .getPage({
+  public async getPage(): Promise<void> {
+    try {
+      let data = await this._api.purchaseOrders.getPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager
-      })
-      .then(data => {
-        var response = <PagerResponse<PurchaseOrderPageItem>>data;
-        this.pager.count = response.count;
-        this.pager.items = response.items;
-      })
-      .catch(error => {
-        this._notification.error("Error encountered during search!");
       });
+      var response = <PagerResponse<PurchaseOrderPageItem>>data;
+      this.pager.count = response.count;
+      this.pager.items = response.items;
+    }
+    catch (error) {
+      this._notification.error("Error encountered during search!");
+    }
   }
 
-  create() {
+  public create(): void {
     this._router.navigateToRoute('purchase-order-create');
   }
 
-  edit(item: PurchaseOrderPageItem) {
+  public edit(item: PurchaseOrderPageItem): void {
     this._router.navigateToRoute('purchase-order-create', <PurchaseOrder>{ id: item.id });
   }
 
-  delete(item: PurchaseOrderPageItem) {
+  public delete(item: PurchaseOrderPageItem): void {
     /*
     var index = this.mockData.indexOf(item);
     if (index > -1) {

@@ -3,7 +3,7 @@
 
   <section class="row row-no-padding">
 
-    <div class="col-md-12">
+    <div class="col-md-11">
 
       <div class="panel panel-default">
 
@@ -12,7 +12,7 @@
 
           <!-- heading label -->
           <h4 class="panel-title row">
-<span class="title">&nbsp ${header} &nbsp</span>
+            <span>&nbsp ${header} &nbsp</span>
 
             <!-- create new -->
             <button type="button" class="btn btn-default" click.delegate="generateReport()">
@@ -84,11 +84,11 @@
                   <th class="col-md-1 text-right" click.delegate="sorter.doSort('totalAmount')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['totalAmount'])}"></i>Amount
                   </th>
-                  <th class="col-md-2" click.delegate="sorter.doSort('paymentTypeName')">
-                    <i class="fa fa-fw fa-${sorter.class(sorter['paymentTypeName'])}"></i>Payment Type
-                  </th>
                   <th class="col-md-1 text-right" click.delegate="sorter.doSort('paidAmount')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['paidAmount'])}"></i>Payment
+                  </th>
+                  <th class="col-md-2" click.delegate="sorter.doSort('paymentTypeName')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['paymentTypeName'])}"></i>Type
                   </th>
                   <th class="col-md-1 text-right" click.delegate="sorter.doSort('balanceAmount')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['balanceAmount'])}"></i>Balance
@@ -103,8 +103,8 @@
                   <td>${item.customerName}</td>
                   <td>${item.invoiceNumber}</td>
                   <td class="text-right">${item.totalAmount | numberFormat}</td>
-                  <td>${item.paymentTypeName}</td>
                   <td class="text-right">${item.paidAmount | numberFormat}</td>
+                  <td>${item.paymentTypeName}</td>
                   <td class="text-right">${item.balanceAmount | numberFormat}</td>
                 </tr>
               </tbody>

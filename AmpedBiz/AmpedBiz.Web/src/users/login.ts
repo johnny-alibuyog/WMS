@@ -3,38 +3,42 @@ import { autoinject } from 'aurelia-framework';
 //import {Validation, ValidationGroup} from 'aurelia-validation';
 import { AuthService } from '../services/auth-service';
 import { NotificationService } from '../common/controls/notification-service';
-import { Pager } from '../common/controls/pager';
+import { isNullOrWhiteSpace } from '../common/utils/string-helpers';
 
 @autoinject
 export class Login {
-  private _auth: AuthService;
-  //private _validation: ValidationGroup;
-  private _notification: NotificationService;
 
   public user: User;
 
   //constructor(userService: AuthService, validation: Validation) {
-  constructor(userService: AuthService) {
-    this._auth = userService;
+  constructor(
+    private readonly _auth: AuthService,
+    private readonly _notification: NotificationService) {
     //this._validation = validation.on(this.user)
     //  .ensure('username').isNotEmpty().hasMinLength(3).hasMaxLength(10)
     //  .ensure('password').isNotEmpty().hasMinLength(3).hasMaxLength(10);
   }
 
-  public login(): void {
-    if (this.user.username && this.user.password) {
-      this._auth.login(this.user)
-        .catch(error => this._notification.warning(error));
+  public async login(): Promise<void> {
+    try {
+      if (isNullOrWhiteSpace(this.user.username) || isNullOrWhiteSpace(this.user.password)) {
+        this._notification.warning('Please enter a username and password.');
+        return;
+      }
+      await this._auth.login(this.user);
     }
-    else {
-      this._notification.warning('Please enter a username and password.')
+    catch (error) {
+      this._notification.warning(error);
     }
   }
 
-  public logout(): void {
-    this._auth.logout()
-      .then(data => this.user = this._auth.user)
-      .catch(error => this._notification.warning(error));
+  public async logout(): Promise<void> {
+    try {
+      await this._auth.logout();
+    }
+    catch (error) {
+      this._notification.warning(error);
+    }
   }
 
   public activate(): void {

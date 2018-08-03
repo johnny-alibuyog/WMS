@@ -1,4 +1,10 @@
-choco install nodejs.install -y
+choco install cmder -y
+//choco install nodejs.install -y
+choco install nvm
+// issue with nvm node installation
+// description: https://github.com/coreybutler/nvm-windows/issues/302
+// solution: https://github.com/coreybutler/nvm-windows/issues/302#issuecomment-340249164
+// reference: https://nodejs.org/en/download/releases/
 choco install git.install -y
 choco install visualstudiocode -y
 choco install ankhsvn -y

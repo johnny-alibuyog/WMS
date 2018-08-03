@@ -6,9 +6,9 @@
   "Username": "sa",
   "Password": "6jPbwQtZ8N52WRJ5rEWv2g==",
   "BatchSize": 50,
-  "RecreateDb": true,
+  "RecreateDb": false,
   "Seeder": {
-    "Enabled": true,
+    "Enabled": false,
     "UseDummyData": true,
     "UseExternalFiles": true,
     "ExternalFilesPath": ".\\ImportFiles"

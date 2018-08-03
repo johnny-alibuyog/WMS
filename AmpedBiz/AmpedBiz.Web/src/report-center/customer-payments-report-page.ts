@@ -8,32 +8,24 @@ import { CustomerPaymentsReport, CustomerPaymentsReportModel, CustomerPaymentsRe
 
 @autoinject
 export class CustomerPaymentsReportPage {
-  private _api: ServiceApi;
-  private _report: CustomerPaymentsReport;
-  private _notification: NotificationService;
 
   public header: string = ' Customer Order';
-
-  public filter: Filter;
-  public sorter: Sorter;
-  public pager: Pager<CustomerPaymentsReportPageItem>;
-
+  public filter: Filter = new Filter();
+  public sorter: Sorter = new Sorter();
+  public pager: Pager<CustomerPaymentsReportPageItem> = new Pager<CustomerPaymentsReportPageItem>();
   public customers: Lookup<string>[];
   public branches: Lookup<string>[];
 
-  constructor(api: ServiceApi, report: CustomerPaymentsReport, notification: NotificationService) {
-    this._api = api;
-    this._report = report;
-    this._notification = notification;
-
-    this.filter = new Filter();
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _report: CustomerPaymentsReport,
+    private readonly _notification: NotificationService
+  ) {
     this.filter["customerId"] = null;
     this.filter["branchId"] = null;
     this.filter["fromDate"] = null;
     this.filter["toDate"] = null;
     this.filter.onFilter = () => this.getPage();
-
-    this.sorter = new Sorter();
     this.sorter["paidOn"] = SortDirection.Ascending;
     this.sorter["branchName"] = SortDirection.None;
     this.sorter["customerName"] = SortDirection.None;
@@ -41,8 +33,6 @@ export class CustomerPaymentsReportPage {
     this.sorter["totalAmount"] = SortDirection.None;
     this.sorter["balanceAmount"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
-
-    this.pager = new Pager<CustomerPaymentsReportPageItem>();
     this.pager.onPage = () => this.getPage();
   }
 
@@ -52,7 +42,7 @@ export class CustomerPaymentsReportPage {
       this._api.branches.getLookups()
     ]);
 
-    this.getPage();
+    await this.getPage();
   }
 
   public async generateReport(): Promise<void> {

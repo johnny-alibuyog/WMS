@@ -8,34 +8,26 @@ import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } fro
 
 @autoinject
 export class PaymentTypePage {
-  private _api: ServiceApi;
-  private _dialog: DialogService;
-  private _notification: NotificationService;
 
-  public filter: Filter;
-  public sorter: Sorter;
-  public pager: Pager<PaymentTypePageItem>;
+  public filter: Filter = new Filter();
+  public sorter: Sorter = new Sorter();
+  public pager: Pager<PaymentTypePageItem> = new Pager<PaymentTypePageItem>();
 
-  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<PaymentTypePageItem>) {
-    this._api = api;
-    this._dialog = dialog;
-    this._notification = notification;
-
-    this.filter = filter;
+  constructor(
+    private _api: ServiceApi,
+    private _dialog: DialogService,
+    private _notification: NotificationService,
+  ) {
     this.filter["name"] = '';
     this.filter.onFilter = () => this.getPage();
-
-    this.sorter = sorter;
     this.sorter["code"] = SortDirection.None;
     this.sorter["name"] = SortDirection.Ascending;
     this.sorter.onSort = () => this.getPage();
-
-    this.pager = pager;
     this.pager.onPage = () => this.getPage();
   }
 
-  public activate(): void {
-    this.getPage();
+  public async activate(): Promise<void> {
+    await this.getPage();
   }
 
   public async getPage(): Promise<void> {
@@ -54,14 +46,16 @@ export class PaymentTypePage {
     }
   }
 
-  public create(): void {
-    this._dialog.open({ viewModel: PaymentTypeCreate, model: null })
-      .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
+  public async create(): Promise<void> {
+    let settings = { viewModel: PaymentTypeCreate, model: null };
+    let response = await this._dialog.open(settings).whenClosed();
+    if (!response.wasCancelled) await this.getPage();
   }
 
-  public edit(item: PaymentTypePageItem): void {
-    this._dialog.open({ viewModel: PaymentTypeCreate, model: <PaymentType>{ id: item.id } })
-      .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
+  public async edit(item: PaymentTypePageItem): Promise<void> {
+    let settings = { viewModel: PaymentTypeCreate, model: <PaymentType>{ id: item.id } };
+    let response = await this._dialog.open(settings).whenClosed();
+    if (!response.wasCancelled) await this.getPage();
   }
 
   public delete(item: any): void {

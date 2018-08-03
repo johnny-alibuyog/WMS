@@ -18,120 +18,22 @@ import { SettingService } from './setting-service';
 
 @autoinject
 export class ServiceApi {
-  private readonly _auth: AuthService;
-  private readonly _branches: BranchService;
-  private readonly _customers: CustomerService;
-  private readonly _inventories: InventoryService;
-  private readonly _paymentTypes: PaymentTypeService;
-  private readonly _pricings: PricingService;
-  private readonly _productCategories: ProductCategoryService;
-  private readonly _products: ProductService;
-  private readonly _purchaseOrders: PurchaseOrderService;
-  private readonly _returnReasons: ReturnReasonService;
-  private readonly _returns: ReturnService;
-  private readonly _orders: OrderService;
-  private readonly _settings: SettingService;
-  private readonly _suppliers: SupplierService;
-  private readonly _users: UserService;
-  private readonly _unitOfMeasures: UnitOfMeasureService;
-
-  public get auth(): AuthService {
-    return this._auth;
-  }
-
-  public get branches(): BranchService {
-    return this._branches;
-  }
-
-  public get customers(): CustomerService {
-    return this._customers;
-  }
-
-  public get inventories(): InventoryService {
-    return this._inventories;
-  }
-
-  public get paymentTypes(): PaymentTypeService {
-    return this._paymentTypes;
-  }
-
-  public get pricings(): PricingService {
-    return this._pricings;
-  }
-
-  public get productCategories(): ProductCategoryService {
-    return this._productCategories;
-  }
-
-  public get products(): ProductService {
-    return this._products;
-  }
-
-  public get purchaseOrders(): PurchaseOrderService {
-    return this._purchaseOrders;
-  }
-
-  public get returnReasons(): ReturnReasonService {
-    return this._returnReasons;
-  }
-
-  public get returns(): ReturnService {
-    return this._returns;
-  }
-
-  public get orders(): OrderService {
-    return this._orders;
-  }
-
-  public get settings(): SettingService {
-    return this._settings;
-  }
-
-  public get suppliers(): SupplierService {
-    return this._suppliers;
-  }
-
-  public get users(): UserService {
-    return this._users;
-  }
-
-  public get unitOfMeasures(): UnitOfMeasureService {
-    return this._unitOfMeasures;
-  }
-
   constructor(
-    auth: AuthService,
-    branches: BranchService,
-    customers: CustomerService,
-    inventories: InventoryService,
-    paymentTypes: PaymentTypeService,
-    pricings: PricingService,
-    products: ProductService,
-    productCategories: ProductCategoryService,
-    purchaseOrders: PurchaseOrderService,
-    returnReasons: ReturnReasonService,
-    returns: ReturnService,
-    orders: OrderService,
-    settings: SettingService,
-    suppliers: SupplierService,
-    users: UserService,
-    unitOfMeasures: UnitOfMeasureService) {
-
-    this._auth = auth;
-    this._branches = branches;
-    this._customers = customers;
-    this._inventories = inventories;
-    this._paymentTypes = paymentTypes;
-    this._pricings = pricings;
-    this._productCategories = productCategories;
-    this._products = products;
-    this._purchaseOrders = purchaseOrders;
-    this._returnReasons = returnReasons;
-    this._returns = returns;
-    this._orders = orders;
-    this._settings = settings;
-    this._suppliers = suppliers;
-    this._users = users;
-    this._unitOfMeasures = unitOfMeasures;
-  }
+    public readonly auth: AuthService,
+    public readonly branches: BranchService,
+    public readonly customers: CustomerService,
+    public readonly inventories: InventoryService,
+    public readonly paymentTypes: PaymentTypeService,
+    public readonly pricings: PricingService,
+    public readonly products: ProductService,
+    public readonly productCategories: ProductCategoryService,
+    public readonly purchaseOrders: PurchaseOrderService,
+    public readonly returnReasons: ReturnReasonService,
+    public readonly returns: ReturnService,
+    public readonly orders: OrderService,
+    public readonly settings: SettingService,
+    public readonly suppliers: SupplierService,
+    public readonly users: UserService,
+    public readonly unitOfMeasures: UnitOfMeasureService
+  ) { }
 }

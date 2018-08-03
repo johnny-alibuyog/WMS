@@ -1,20 +1,14 @@
-import { inject } from 'aurelia-dependency-injection';
 import { autoinject } from 'aurelia-framework';
 import { DialogController } from 'aurelia-dialog';
 import { Branch } from '../../common/models/branch';
-import { Address } from '../../common/models/address';
 import { ServiceApi } from '../../services/service-api';
 import { NotificationService } from '../../common/controls/notification-service';
-import { ValidationRules, ValidationController, ValidationControllerFactory } from 'aurelia-validation';
+import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
 import { BootstrapFormRenderer } from '../../common/controls/validations/bootstrap-form-renderer';
 import { ActionResult } from '../../common/controls/notification';
 
 @autoinject()
 export class BranchCreate {
-  private readonly _api: ServiceApi;
-  private readonly _notification: NotificationService;
-  private readonly _dialogController: DialogController;
-  private readonly _validationController: ValidationController;
 
   public header: string = 'Create Branch';
   public isEdit: boolean = false;
@@ -22,21 +16,14 @@ export class BranchCreate {
   public name: string;
   public branch: Branch = this.initializeBranch();
 
-  private initializeBranch(): Branch {
-    return {
-      id: '',
-      name: '',
-      description: '',
-      taxpayerIdentificationNumber: '',
-      contact: {},
-      address: {}
-    };
-  }
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _notification: NotificationService,
+    private readonly _dialogController: DialogController,
+    private readonly _validationController: ValidationController,
+    validationControllerFactory: ValidationControllerFactory
+  ) {
 
-  constructor(api: ServiceApi, notification: NotificationService, dialogController: DialogController, validationControllerFactory: ValidationControllerFactory) {
-    this._api = api;
-    this._notification = notification;
-    this._dialogController = dialogController;
     this._validationController = validationControllerFactory.createForCurrentScope();
     this._validationController.addRenderer(new BootstrapFormRenderer());
 
@@ -68,18 +55,22 @@ export class BranchCreate {
       .on(this.branch);*/
   }
 
+  private initializeBranch(): Branch {
+    return {
+      id: '',
+      name: '',
+      description: '',
+      taxpayerIdentificationNumber: '',
+      contact: {},
+      address: {}
+    };
+  }
+
   public async activate(branch: Branch): Promise<void> {
     try {
-      if (branch) {
-        this.header = "Edit Branch";
-        this.isEdit = true;
-        this.branch = await this._api.branches.get(branch.id)
-      }
-      else {
-        this.header = "Create Branch";
-        this.isEdit = false;
-        this.branch = this.initializeBranch();
-      }
+      this.isEdit = (branch) ? true : false;
+      this.header = (this.isEdit) ? "Edit Branch" : "Create Branch";
+      this.branch = (this.isEdit) ? await this._api.branches.get(branch.id) : this.initializeBranch();
     } catch (error) {
       this._notification.warning(error)
     }
@@ -97,7 +88,7 @@ export class BranchCreate {
           ? await this._api.branches.update(this.branch)
           : await this._api.branches.create(this.branch);
         await this._notification.success("Branch  has been saved.").whenClosed();
-        this._dialogController.ok(data);
+        await this._dialogController.ok(data);
       }
     }
     catch (error) {

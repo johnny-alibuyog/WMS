@@ -8,27 +8,21 @@ import { ProductsDeliveredReportPageItem } from '../common/models/product';
 
 @autoinject
 export class ProductsDeliveredReportPage {
-  private _api: ServiceApi;
-  private _report: ProductsDeliveredReport;
-  private _notification: NotificationService;
 
   public header: string = ' Products Delivered';
-
-  public filter: Filter;
-  public sorter: Sorter;
-  public pager: Pager<ProductsDeliveredReportPageItem>;
-
+  public filter: Filter = new Filter();
+  public sorter: Sorter = new Sorter();
+  public pager: Pager<ProductsDeliveredReportPageItem> = new Pager<ProductsDeliveredReportPageItem>();
   public branches: Lookup<string>[];
   public categories: Lookup<string>[];
   public suppliers: Lookup<string>[];
   public products: Lookup<string>[];
 
-  constructor(api: ServiceApi, report: ProductsDeliveredReport, notification: NotificationService) {
-    this._api = api;
-    this._report = report;
-    this._notification = notification;
-
-    this.filter = new Filter();
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _report: ProductsDeliveredReport,
+    private readonly _notification: NotificationService,
+  ) {
     this.filter["branchId"] = null;
     this.filter["categoryId"] = null;
     this.filter["supplierId"] = null;
@@ -36,8 +30,6 @@ export class ProductsDeliveredReportPage {
     this.filter["fromDate"] = null;
     this.filter["toDate"] = null;
     this.filter.onFilter = () => this.getPage();
-
-    this.sorter = new Sorter();
     this.sorter["completedOn"] = SortDirection.Ascending;
     this.sorter["branchName"] = SortDirection.None;
     this.sorter["supplierName"] = SortDirection.None;
@@ -49,8 +41,6 @@ export class ProductsDeliveredReportPage {
     this.sorter["extendedPriceAmount"] = SortDirection.None;
     this.sorter["totalPriceAmount"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
-
-    this.pager = new Pager<ProductsDeliveredReportPageItem>();
     this.pager.onPage = () => this.getPage();
   }
 
@@ -66,8 +56,7 @@ export class ProductsDeliveredReportPage {
       this._api.suppliers.getLookups(),
       this._api.products.getLookups(),
     ]);
-
-    this.getPage();
+    await this.getPage();
   }
 
   public async generateReport(): Promise<void> {
@@ -111,7 +100,7 @@ export class ProductsDeliveredReportPage {
           totalPriceAmount: x.totalPriceAmount,
         })
       };
-      this._report.show(reportModel)
+      await this._report.show(reportModel)
     }
     catch (error) {
       this._notification.error("Error encountered during report generation!");

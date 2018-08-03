@@ -7,33 +7,23 @@ import { ActionResult } from '../../common/controls/notification';
 
 @autoinject
 export class UnitOfMeasureCreate {
-  private _api: ServiceApi;
-  private _controller: DialogController;
-  private _notification: NotificationService;
 
   public header: string = 'Create Unit of Measure Category';
   public isEdit: boolean = false;
   public canSave: boolean = true;
   public unitOfMeasure: UnitOfMeasure;
 
-  constructor(api: ServiceApi, controller: DialogController, notification: NotificationService) {
-    this._api = api;
-    this._controller = controller;
-    this._notification = notification;
-  }
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _controller: DialogController,
+    private readonly _notification: NotificationService,
+  ) { }
 
   public async activate(unitOfMeasure: UnitOfMeasure): Promise<void> {
     try {
-      if (unitOfMeasure) {
-        this.header = "Edit Unit of Measure";
-        this.isEdit = true;
-        this.unitOfMeasure = await this._api.unitOfMeasures.get(unitOfMeasure.id);
-      }
-      else {
-        this.header = "Create Unit of Measure";
-        this.isEdit = false;
-        this.unitOfMeasure = <UnitOfMeasure>{};
-      }
+      this.isEdit = (unitOfMeasure) ? true : false;
+      this.header = (this.isEdit) ? "Edit Unit of Measure" : "Create Unit of Measure";
+      this.unitOfMeasure = (this.isEdit) ? await this._api.unitOfMeasures.get(unitOfMeasure.id) : <UnitOfMeasure>{};
     }
     catch (error) {
       this._notification.warning(error);
@@ -52,7 +42,7 @@ export class UnitOfMeasureCreate {
           ? await this._api.unitOfMeasures.update(this.unitOfMeasure)
           : await this._api.unitOfMeasures.create(this.unitOfMeasure);
         await this._notification.success("Unit of Measure has been saved.").whenClosed();
-        this._controller.ok(<UnitOfMeasure>data);
+        await this._controller.ok(<UnitOfMeasure>data);
       }
     }
     catch (error) {

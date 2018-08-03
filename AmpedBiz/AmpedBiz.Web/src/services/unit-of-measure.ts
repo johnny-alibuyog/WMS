@@ -10,9 +10,8 @@ export class UnitOfMeasureService extends ServiceBase<UnitOfMeasure> {
     super('unit-of-measures', httpClient);
   }
 
-  getLookups(): Promise<Lookup<string>[]> {
+  public getLookups(): Promise<Lookup<string>[]> {
     var url = "unit-of-measure-lookups";
-    return this._httpClient.get(url)
-      .then(data => <Lookup<string>[]>data);
+    return this._httpClient.get(url);
   }
 }

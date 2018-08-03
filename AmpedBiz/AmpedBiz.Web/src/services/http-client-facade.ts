@@ -38,7 +38,7 @@ export class HttpClientFacade {
     );
   }
 
-  send(param: SendParameters): Promise<any> {
+  public send(param: SendParameters): Promise<any> {
     return this.httpClient
       .fetch('/' + param.url, {
         method: param.method || "GET",
@@ -54,19 +54,19 @@ export class HttpClientFacade {
       });
   }
 
-  get(url: string): Promise<any> {
+  public get(url: string): Promise<any> {
     return this.send({ url: url, method: "GET" });
   }
 
-  post(url: string, data: any): Promise<any> {
+  public post(url: string, data: any): Promise<any> {
     return this.send({ url: url, method: "POST", data: data });
   }
 
-  put(url: string, data: any): Promise<any> {
+  public put(url: string, data: any): Promise<any> {
     return this.send({ url: url, method: "PUT", data: data });
   }
 
-  patch(url: string, data: any): Promise<any> {
+  public patch(url: string, data: any): Promise<any> {
     return this.send({ url: url, method: "PATCH", data: data });
   }
 

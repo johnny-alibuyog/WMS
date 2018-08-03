@@ -15,21 +15,18 @@ export class ReturnService extends ServiceBase<Return> {
     this._auth = auth;
   }
 
-  getReturnsByCustomerPage(page: PageRequest): Promise<ReturnsByCustomerPageItem> {
+  public getReturnsByCustomerPage(page: PageRequest): Promise<ReturnsByCustomerPageItem> {
     var url = 'returns-by-customer/page';
-    return this._httpClient.post(url, page)
-      .then(data => <ReturnsByCustomerPageItem>data);
+    return this._httpClient.post(url, page);
   }
 
-  getReturnsByProductPage(page: PageRequest): Promise<ReturnsByProductPageItem> {
+  public getReturnsByProductPage(page: PageRequest): Promise<ReturnsByProductPageItem> {
     var url = 'returns-by-product/page';
-    return this._httpClient.post(url, page)
-      .then(data => <ReturnsByProductPageItem>data);
+    return this._httpClient.post(url, page);
   }
 
-  getReturnsByReasonPage(page: PageRequest): Promise<ReturnsByReasonPageItem> {
+  public getReturnsByReasonPage(page: PageRequest): Promise<ReturnsByReasonPageItem> {
     var url = 'returns-by-reason/page';
-    return this._httpClient.post(url, page)
-      .then(data => <ReturnsByReasonPageItem>data);
+    return this._httpClient.post(url, page);
   }
 }

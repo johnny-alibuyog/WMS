@@ -8,7 +8,6 @@ import { PageRequest } from '../common/models/paging';
 import { Product } from "../common/models/product";
 import { PurchaseOrder } from '../common/models/purchase-order';
 import { PurchaseOrderPayable } from '../common/models/purchase-order';
-import { PurchaseOrderPayment } from '../common/models/purchase-order';
 import { PurchaseOrderReceipt } from '../common/models/purchase-order';
 import { PurchaseOrderReceivable } from '../common/models/purchase-order';
 import { PurchaseOrderReceiving } from '../common/models/purchase-order';
@@ -28,14 +27,12 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
 
   public getStatusList(): Promise<PurchaseOrderStatus[]> {
     var url = this._resouce + '/statuses';
-    return this._httpClient.get(url)
-      .then(response => <PurchaseOrderStatus[]>response);
+    return this._httpClient.get(url);
   }
 
   public getStatusLookup(): Promise<Lookup<PurchaseOrderStatus>[]> {
     var url = this._resouce + '/status-lookups';
-    return this._httpClient.get(url)
-      .then(response => <Lookup<PurchaseOrderStatus>[]>response);
+    return this._httpClient.get(url);
   }
 
   public getNewPage(page: PageRequest): Promise<any> {
@@ -60,20 +57,17 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
 
   public getReceivables(id: string): Promise<PurchaseOrderReceivable[]> {
     var url = this._resouce + '/' + id + '/receivables';
-    return this._httpClient.get(url)
-      .then(response => <PurchaseOrderReceivable[]>response);
+    return this._httpClient.get(url);
   }
 
   public getVoucher(purchaseOrderId: string): Promise<Voucher> {
     var url = this._resouce + '/' + purchaseOrderId + '/voucher';
-    return this._httpClient.get(url)
-      .then(response => <Voucher>response);
+    return this._httpClient.get(url);
   }
 
   public getPayables(orderId: string): Promise<PurchaseOrderPayable> {
     var url = this._resouce + '/' + orderId + '/payables';
-    return this._httpClient.get(url)
-      .then(response => <PurchaseOrderPayable>response);
+    return this._httpClient.get(url);
   }
 
   public save(purchaseOrder: PurchaseOrder): Promise<PurchaseOrder> {

@@ -1,24 +1,18 @@
-import { BindingEngine, autoinject, bindable, bindingMode, computedFrom, customElement } from 'aurelia-framework'
-import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
-import { Filter, Pager, PagerRequest, PagerResponse, SortDirection, Sorter } from '../common/models/paging';
-import { OrderReturn, OrderReturnable, OrderReturning, orderEvents } from '../common/models/order';
+import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
+import { ensureNumeric } from '../common/utils/ensure-numeric';
+import { Subscription } from 'aurelia-event-aggregator';
+import { Pager } from '../common/models/paging';
+import { OrderReturn, OrderReturnable } from '../common/models/order';
 
-import { Dictionary } from '../common/custom_types/dictionary';
 import { Lookup } from '../common/custom_types/lookup';
-import { Measure } from "../common/models/measure";
 import { NotificationService } from '../common/controls/notification-service';
 import { ServiceApi } from '../services/service-api';
-import { ensureNumeric } from '../common/utils/ensure-numeric';
-import { pricing } from '../common/models/pricing';
+import * as Enumerable from 'linq';
 
 @autoinject
 @customElement("order-return-page")
 export class OrderReturnPage {
 
-  private _api: ServiceApi;
-  private _notification: NotificationService;
-  private _eventAggregator: EventAggregator;
-  private _bindingEngine: BindingEngine;
   private _subscriptions: Subscription[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
@@ -48,12 +42,10 @@ export class OrderReturnPage {
 
   public selectedItem: OrderReturnable;
 
-  constructor(api: ServiceApi, notification: NotificationService, eventAggregator: EventAggregator, bindingEngine: BindingEngine) {
-    this._api = api;
-    this._notification = notification;
-    this._eventAggregator = eventAggregator;
-    this._bindingEngine = bindingEngine;
-
+  constructor(
+    private _api: ServiceApi,
+    private _notification: NotificationService
+  ) {
     this.returnPager.onPage = () => this.initializeReturnablePage();
     this.returnablePager.onPage = () => this.initializeReturnablePage();
   }
@@ -95,9 +87,11 @@ export class OrderReturnPage {
       */
 
       // You can return items that are returnable.
-      this.products = newValue
-        .filter(x => x.returnableQuantity > 0)
-        .map(x => x.product);
+      this.products = Enumerable
+        .from(newValue)
+        .where(x => x.returnableQuantity > 0)
+        .select(x => x.product)
+        .toArray();
 
     }
 
@@ -246,10 +240,12 @@ export class OrderReturnPage {
   }
 
   public total() {
-    this.totalReturnedAmount = this.returns
-      .reduce((value, item) => value + ensureNumeric(item.returnedAmount), 0) || 0;
+    this.totalReturnedAmount = Enumerable
+      .from(this.returns)
+      .sum(x => x.returnedAmount);
 
-    this.totalReturningAmount = this.returnables
-      .reduce((value, item) => value + ensureNumeric(item.returning.amount), 0) || 0;
+    this.totalReturningAmount = Enumerable
+      .from(this.returnables)
+      .sum(x => x.returning.amount);
   }
 }

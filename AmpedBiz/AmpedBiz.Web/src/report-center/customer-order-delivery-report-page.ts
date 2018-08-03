@@ -2,37 +2,29 @@ import { autoinject } from 'aurelia-framework';
 import { ServiceApi } from '../services/service-api';
 import { Lookup } from '../common/custom_types/lookup';
 import { NotificationService } from '../common/controls/notification-service';
-import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
+import { Filter, Sorter, Pager, PagerRequest, SortDirection } from '../common/models/paging';
 import { CustomerOrderDeliveryReport, CustomerOrderDeliveryReportModel, CustomerOrderDeliveryReportItemModel } from './customer-order-delivery-report';
 import { CustomerOrderDeliveryReportPageItem } from '../common/models/customer';
 
 @autoinject
 export class CustomerSalesReportPage {
-  private _api: ServiceApi;
-  private _report: CustomerOrderDeliveryReport;
-  private _notification: NotificationService;
 
   public header: string = ' Customer Order Delivery';
-
-  public filter: Filter;
-  public sorter: Sorter;
-  public pager: Pager<CustomerOrderDeliveryReportPageItem>;
-
   public customers: Lookup<string>[];
   public branches: Lookup<string>[];
+  public filter: Filter = new Filter();
+  public sorter: Sorter = new Sorter();
+  public pager: Pager<CustomerOrderDeliveryReportPageItem> = new Pager<CustomerOrderDeliveryReportPageItem>();
 
-  constructor(api: ServiceApi, report: CustomerOrderDeliveryReport, notification: NotificationService) {
-    this._api = api;
-    this._report = report;
-    this._notification = notification;
-
-    this.filter = new Filter();
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _report: CustomerOrderDeliveryReport,
+    private readonly _notification: NotificationService
+  ) {
     this.filter["branchId"] = null;
     this.filter["fromDate"] = null;
     this.filter["toDate"] = null;
     this.filter.onFilter = () => this.getPage();
-
-    this.sorter = new Sorter();
     this.sorter["shippedOn"] = SortDirection.Ascending;
     this.sorter["invoiceNumber"] = SortDirection.None;
     this.sorter["branchName"] = SortDirection.None;
@@ -42,8 +34,6 @@ export class CustomerSalesReportPage {
     this.sorter["totalAmount"] = SortDirection.None;
     this.sorter["subTotalAmount"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
-
-    this.pager = new Pager<CustomerOrderDeliveryReportPageItem>();
     this.pager.onPage = () => this.getPage();
   }
 
@@ -52,8 +42,7 @@ export class CustomerSalesReportPage {
       this._api.customers.getLookups(),
       this._api.branches.getLookups()
     ]);
-
-    this.getPage();
+    await this.getPage();
   }
 
   public async generateReport(): Promise<void> {

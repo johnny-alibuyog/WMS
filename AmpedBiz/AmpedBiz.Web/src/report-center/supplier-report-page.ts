@@ -7,79 +7,67 @@ import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } fro
 
 @autoinject
 export class SupplierReportPage {
-  private _api: ServiceApi;
-  private _report: SupplierReport;
-  private _notification: NotificationService;
 
   public header: string = ' Supplier Report';
+  public filter: Filter = new Filter();
+  public sorter: Sorter = new Sorter();
+  public pager: Pager<SupplierReportPageItem> = new Pager<SupplierReportPageItem>();
 
-  public filter: Filter;
-  public sorter: Sorter;
-  public pager: Pager<SupplierReportPageItem>;
-
-  constructor(api: ServiceApi, report: SupplierReport, notification: NotificationService) {
-    this._api = api;
-    this._report = report;
-    this._notification = notification;
-
-    this.filter = new Filter();
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _report: SupplierReport,
+    private readonly _notification: NotificationService
+  ) {
     this.filter.onFilter = () => this.getPage();
-
-    this.sorter = new Sorter();
     this.sorter["supplierName"] = SortDirection.Ascending;
     this.sorter.onSort = () => this.getPage();
-
-    this.pager = new Pager<SupplierReportPageItem>();
     this.pager.onPage = () => this.getPage();
   }
 
-  public activate(): void {
-    this.getPage();
+  public async activate(): Promise<void> {
+    await this.getPage();
   }
 
-  public generateReport() {
-    this._api.suppliers
-      .getSupplierReportPage({
+  public async generateReport(): Promise<void> {
+    try {
+      let data = await this._api.suppliers.getSupplierReportPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>{
           offset: 0,
           size: 0
         }
-      })
-      .then(data => {
-        var response = <PagerResponse<SupplierReportPageItem>>data;
-        var reportModel = <SupplierReportModel>{
-          items: response.items.map(x => <SupplierReportModelItem>{
-            id: x.id,
-            name: x.name,
-            contactPerson: x.contactPerson,
-            contact: x.contact,
-            address: x.address,
-          })
-        };
-
-        this._report.show(reportModel)
-      })
-      .catch(error => {
-        this._notification.error("Error encountered during report generation!");
       });
+      let response = <PagerResponse<SupplierReportPageItem>>data;
+      let reportModel = <SupplierReportModel>{
+        items: response.items.map(x => <SupplierReportModelItem>{
+          id: x.id,
+          name: x.name,
+          contactPerson: x.contactPerson,
+          contact: x.contact,
+          address: x.address,
+        })
+      };
+      await this._report.show(reportModel)
+    }
+    catch (error) {
+      this._notification.error("Error encountered during report generation!");
+    }
   }
 
-  private getPage(): void {
-    this._api.suppliers
-      .getSupplierReportPage({
+  private async getPage(): Promise<void> {
+    try {
+      let data = await this._api.suppliers.getSupplierReportPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager
-      })
-      .then(data => {
-        var response = <PagerResponse<SupplierReportPageItem>>data;
-        this.pager.count = response.count;
-        this.pager.items = response.items;
-      })
-      .catch(error => {
-        this._notification.error("Error encountered during search!");
       });
+      var response = <PagerResponse<SupplierReportPageItem>>data;
+      this.pager.count = response.count;
+      this.pager.items = response.items;
+    }
+    catch (error) {
+      this._notification.error("Error encountered during search!");
+    }
   }
 }

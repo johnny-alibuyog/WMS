@@ -1,24 +1,18 @@
+import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
+import { pricing } from '../common/models/pricing';
+import { getValue } from "../common/models/measure";
+import { ensureNumeric } from '../common/utils/ensure-numeric';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
-import { Filter, Pager, PagerRequest, PagerResponse, SortDirection, Sorter } from '../common/models/paging';
+import { Pager } from '../common/models/paging';
 import { ProductInventory, ProductInventoryFacade } from "../common/models/product";
 import { PurchaseOrderItem, purchaseOrderEvents } from '../common/models/purchase-order';
-import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
-
-import { Dictionary } from '../common/custom_types/dictionary';
 import { Lookup } from '../common/custom_types/lookup';
-import { NotificationService } from '../common/controls/notification-service';
 import { ServiceApi } from '../services/service-api';
-import { ensureNumeric } from '../common/utils/ensure-numeric';
-import { getValue } from "../common/models/measure";
-import { pricing } from '../common/models/pricing';
+import * as Enumerable from 'linq';
 
 @autoinject
 @customElement("purchase-order-item-page")
 export class PurchaseOrderItemPage {
-
-  private readonly _api: ServiceApi;
-  private readonly _notification: NotificationService;
-  private readonly _eventAggregator: EventAggregator;
 
   private _subscriptions: Subscription[] = [];
   private _productInventories: ProductInventory[] = [];
@@ -54,25 +48,20 @@ export class PurchaseOrderItemPage {
 
   public selectedItem: PurchaseOrderItem;
 
-  constructor(api: ServiceApi, notification: NotificationService, eventAggregator: EventAggregator) {
-    this._api = api;
-    this._notification = notification;
-    this._eventAggregator = eventAggregator;
-
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _eventAggregator: EventAggregator
+  ) {
     this.itemPager.onPage = () => this.initializePage();
   }
 
-  private getProductInventory(product: Lookup<string>): Promise<ProductInventory> {
-    let productInventory = this._productInventories.find(x => x.id === product.id);
-
-    if (productInventory) {
-      return Promise.resolve(productInventory);
-    }
-
-    return this._api.products.getInventory(product.id).then(data => {
+  private async getProductInventory(product: Lookup<string>): Promise<ProductInventory> {
+    let data = this._productInventories.find(x => x.id === product.id);
+    if (!data) {
+      data = await this._api.products.getInventory(product.id);
       this._productInventories.push(data);
-      return data;
-    });
+    }
+    return data;
   }
 
   public attached(): void {
@@ -100,22 +89,20 @@ export class PurchaseOrderItemPage {
     this.total();
   }
 
-  public computeUnitPriceAmount() {
-    var item = this.selectedItem;
-    this.getProductInventory(item.product).then(inventory => {
-      var facade = new ProductInventoryFacade(inventory);
-      item.unitCostAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
-      this.compute(item);
-      this.total()
-    });
+  public async computeUnitPriceAmount(): Promise<void> {
+    let inventory = await this.getProductInventory(this.selectedItem.product);
+    let facade = new ProductInventoryFacade(inventory);
+    this.selectedItem.unitCostAmount = facade.getPriceAmount(inventory, this.selectedItem.quantity.unit, this.pricing);
+    this.compute(this.selectedItem);
+    this.total();
   }
 
-  public propagateProductChange(item: PurchaseOrderItem, productId: string) {
+  public async propagateProductChange(item: PurchaseOrderItem, productId: string): Promise<void> {
     item.product = this.products.find(x => x.id === productId);
-    this.initializeItem(item);
+    await this.initializeItem(item);
   }
 
-  public initializeItem(item: PurchaseOrderItem): void {
+  public async initializeItem(item: PurchaseOrderItem): Promise<void> {
     if (this.isModificationDisallowed) {
       return;
     }
@@ -133,17 +120,16 @@ export class PurchaseOrderItemPage {
       return;
     }
 
-    this.getProductInventory(item.product).then(inventory => {
-      var facade = new ProductInventoryFacade(inventory);
-      var current = facade.default;
+    let inventory = await this.getProductInventory(item.product);
+    let facade = new ProductInventoryFacade(inventory);
+    let current = facade.default;
 
-      item.unitOfMeasures = facade.getUnitOfMeasures();
-      item.quantity.unit = current.unitOfMeasure;
-      //item.quantity.value = 0;
-      item.standard.unit = current.standard.unit;
-      item.standard.value = current.standard.value;
-      item.unitCostAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
-    });
+    item.unitOfMeasures = facade.getUnitOfMeasures();
+    item.quantity.unit = current.unitOfMeasure;
+    //item.quantity.value = 0;
+    item.standard.unit = current.standard.unit;
+    item.standard.value = current.standard.value;
+    item.unitCostAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
   }
 
   public initializePage(): void {
@@ -198,17 +184,16 @@ export class PurchaseOrderItemPage {
     this.initializePage();
   }
 
-  public editItem(item: PurchaseOrderItem): void {
+  public async editItem(item: PurchaseOrderItem): Promise<void> {
     if (this.isModificationDisallowed) {
       return;
     }
 
     if (!item.unitOfMeasures || item.unitOfMeasures.length == 0) {
-      this.getProductInventory(item.product).then(data => {
-        if (data && data.unitOfMeasures) {
-          item.unitOfMeasures = data.unitOfMeasures.map(x => x.unitOfMeasure);
-        }
-      });
+      let data = await this.getProductInventory(item.product);
+      if (data && data.unitOfMeasures) {
+        item.unitOfMeasures = data.unitOfMeasures.map(x => x.unitOfMeasure);
+      }
     }
 
     if (this.selectedItem !== item)
@@ -238,8 +223,9 @@ export class PurchaseOrderItemPage {
 
     //this.discountAmount = ensureNumeric(this.discountAmount);
 
-    this.subTotalAmount = this.items
-      .reduce((value, current) => value + ensureNumeric(current.totalCostAmount), 0) || 0;
+    this.subTotalAmount = Enumerable
+      .from(this.items)
+      .sum(x => x.totalCostAmount);
 
     this.grandTotalAmount =
       ensureNumeric(this.taxAmount) +

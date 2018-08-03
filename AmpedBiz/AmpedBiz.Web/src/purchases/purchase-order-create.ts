@@ -1,37 +1,27 @@
+import { autoinject } from 'aurelia-framework';
+import { role } from "../common/models/role";
+import { pricing } from '../common/models/pricing';
 import { Filter, Sorter, PagerResponse, PageRequest } from './../common/models/paging';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
-import { PurchaseOrder, PurchaseOrderAggregate, PurchaseOrderReceipt, PurchaseOrderReceivable, PurchaseOrderStatus, purchaseOrderEvents, PurchaseOrderItem, } from '../common/models/purchase-order';
-
+import { PurchaseOrder, PurchaseOrderAggregate, PurchaseOrderReceipt, PurchaseOrderStatus, purchaseOrderEvents, PurchaseOrderItem, } from '../common/models/purchase-order';
 import { AuthService } from "../services/auth-service";
-import { Dictionary } from '../common/custom_types/dictionary';
 import { Lookup } from '../common/custom_types/lookup';
 import { NotificationService } from '../common/controls/notification-service';
 import { Router } from 'aurelia-router';
 import { ServiceApi } from '../services/service-api';
 import { StageDefinition } from '../common/models/stage-definition';
 import { VoucherReport } from './voucher-report';
-import { autoinject } from 'aurelia-framework';
 import { formatDate } from '../services/formaters';
-import { pricing } from '../common/models/pricing';
-import { role } from "../common/models/role";
 import { ActionResult } from '../common/controls/notification';
 import { SessionData } from '../services/session-data';
-import { Session } from 'protractor';
 import { NeedsReorderingPageItem, ProductInventoryFacade } from '../common/models/product';
 
 @autoinject
 export class PurchaseOrderCreate {
 
-  public header: string = 'Purchase Order';
-
-  private readonly _api: ServiceApi;
-  private readonly _auth: AuthService;
-  private readonly _router: Router;
-  private readonly _notification: NotificationService;
-  private readonly _eventAggegator: EventAggregator;
   private readonly _subscriptions: Subscription[] = [];
-  private readonly _voucherReport: VoucherReport;
-  private readonly _sessionData: SessionData;
+
+  public header: string = 'Purchase Order';
 
   public readonly canSave: boolean = true;
   public readonly canAddItem: boolean = true;
@@ -49,22 +39,14 @@ export class PurchaseOrderCreate {
   public purchaseOrder: PurchaseOrder;
 
   constructor(
-    api: ServiceApi,
-    auth: AuthService,
-    router: Router,
-    notification: NotificationService,
-    eventAggegator: EventAggregator,
-    voucherReport: VoucherReport,
-    sessionData: SessionData,
+    private readonly _api: ServiceApi,
+    private readonly _auth: AuthService,
+    private readonly _router: Router,
+    private readonly _notification: NotificationService,
+    private readonly _eventAggegator: EventAggregator,
+    private readonly _voucherReport: VoucherReport,
+    private readonly _sessionData: SessionData,
   ) {
-    this._api = api;
-    this._auth = auth;
-    this._router = router;
-    this._notification = notification;
-    this._eventAggegator = eventAggegator;
-    this._voucherReport = voucherReport;
-    this._sessionData = sessionData;
-
     this.canSave = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
     this.canAddItem = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
     this.canAddPayment = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
@@ -76,7 +58,7 @@ export class PurchaseOrderCreate {
   }
 
   private async newPurchaseOrder(): Promise<PurchaseOrder> {
-    return Promise.resolve(<PurchaseOrder>{
+    let instance = <PurchaseOrder>{
       createdOn: new Date(),
       createdBy: this._auth.userAsLookup,
       items: [],
@@ -86,12 +68,15 @@ export class PurchaseOrderCreate {
           PurchaseOrderAggregate.items,
         ]
       }
-    });
+    };
+    return Promise.resolve(instance);
   }
 
   private async initializeForPurchasing(): Promise<PurchaseOrder> {
-    let newPurchaseOrder = await this.newPurchaseOrder();
-    let forPurchasing = await this.getProductsForPurchasing();
+    let [newPurchaseOrder, forPurchasing] = await Promise.all([
+      this.newPurchaseOrder(),
+      this.getProductsForPurchasing()
+    ]);
     let inventories = await this._api.products.getInventoryList(forPurchasing.items.map(x => x.id));
 
     newPurchaseOrder.supplier = this.suppliers.find(x => x.id === this._sessionData.forPurchasing.supplierId);
@@ -147,22 +132,18 @@ export class PurchaseOrderCreate {
       return await this.newPurchaseOrder();
     }
   }
-  
+
   public get isPurchaseOrderApproved(): boolean {
     return this.purchaseOrder && this.purchaseOrder.status >= PurchaseOrderStatus.approved;
   }
 
   public async activate(purchaseOrder: PurchaseOrder): Promise<void> {
     try {
-      let data = await Promise.all([
+      [this.paymentTypes, this.suppliers, this.statuses] = await Promise.all([
         this._api.paymentTypes.getLookups(),
         this._api.suppliers.getLookups(),
         this._api.purchaseOrders.getStatusLookup(),
       ]);
-      this.paymentTypes = data[0];
-      this.suppliers = data[1];
-      this.statuses = data[2];
-
       let intializedPurchaseOrder = await this.getInitializedPurchaseOrder(purchaseOrder.id);
       this.setPurchaseOrder(intializedPurchaseOrder);
     } catch (error) {
@@ -224,58 +205,53 @@ export class PurchaseOrderCreate {
     this._eventAggegator.publish(purchaseOrderEvents.receipts.add);
   }
 
-  public save(): void {
-    this._notification.confirm('Do you want to save the purchase order?').whenClosed(result => {
+  public async save(): Promise<void> {
+    try {
+      let result = await this._notification.confirm('Do you want to save the purchase order?').whenClosed();
       if (result.output === ActionResult.Yes) {
-
         // generate new receipts from receivables >> receiving items
-        let newReceipts: PurchaseOrderReceipt[] = [];
-        try {
-          newReceipts = this._api.purchaseOrders.generateNewReceiptsFrom(this.purchaseOrder);
-          newReceipts.forEach(newReceipt => this.purchaseOrder.receipts.push(newReceipt));
-        } catch (error) {
-          this._notification.warning(error);
-          return;
-        }
-
-        this._api.purchaseOrders.save(this.purchaseOrder)
-          .then(data => this.resetAndNoify(data, "Purchase order has been saved."))
-          .catch(error => this._notification.warning(error));
-
-          this._sessionData.forPurchasing = {};
-
-          let ccc: string;
-
+        let newReceipts = this._api.purchaseOrders.generateNewReceiptsFrom(this.purchaseOrder);
+        newReceipts.forEach(newReceipt => this.purchaseOrder.receipts.push(newReceipt));
+        let data = await this._api.purchaseOrders.save(this.purchaseOrder);
+        this.resetAndNoify(data, "Purchase order has been saved.");
+        this._sessionData.forPurchasing = {};
       }
-    });
+    }
+    catch (error) {
+      this._notification.warning(error)
+    }
   }
 
-  public submit(): void {
-    this._notification.confirm('Do you want to submit the purchase order?').whenClosed(result => {
+  public async submit(): Promise<void> {
+    try {
+      let result = await this._notification.confirm('Do you want to submit the purchase order?').whenClosed();
       if (result.output === ActionResult.Yes) {
-
-        this._api.purchaseOrders.submit(this.purchaseOrder)
-          .then(data => this.resetAndNoify(data, "Purchase order has been submitted."))
-          .catch(error => this._notification.warning(error));
+        let data = await this._api.purchaseOrders.submit(this.purchaseOrder)
+        this.resetAndNoify(data, "Purchase order has been submitted.");
       }
-    });
+    }
+    catch (error) {
+      this._notification.warning(error);
+    }
   }
 
-  public approve(): void {
-    this._notification.confirm('Do you want to approve the purchase order?').whenClosed(result => {
+  public async approve(): Promise<void> {
+    try {
+      let result = await this._notification.confirm('Do you want to approve the purchase order?').whenClosed();
       if (result.output === ActionResult.Yes) {
-
-        this._api.purchaseOrders.approve(this.purchaseOrder)
-          .then(data => this.resetAndNoify(data, "Purchase order has been approved."))
-          .then(_ => this.showVoucher())
-          .catch(error => this._notification.warning(error));
+        let data = await this._api.purchaseOrders.approve(this.purchaseOrder);
+        this.resetAndNoify(data, "Purchase order has been approved.");
+        this.showVoucher();
       }
-    });
+    }
+    catch (error) {
+      this._notification.warning(error);
+    }
   }
 
-  public showVoucher(): void {
-    this._api.purchaseOrders.getVoucher(this.purchaseOrder.id)
-      .then(data => this._voucherReport.show(data))
+  public async showVoucher(): Promise<void> {
+    let data = await this._api.purchaseOrders.getVoucher(this.purchaseOrder.id);
+    this._voucherReport.show(data);
   }
 
   // NOTE: I HATE THIS METHOD!!! This looks like a disaster. Needed to be refactored when demo is done.
@@ -359,42 +335,47 @@ export class PurchaseOrderCreate {
     document.body.removeChild(link);
   }
 
-  public reject(): void {
-    this._notification.confirm('Do you want to reject the purchase order?').whenClosed(result => {
+  public async reject(): Promise<void> {
+    try {
+      let result = await this._notification.confirm('Do you want to reject the purchase order?').whenClosed();
       if (result.output === ActionResult.Yes) {
-
-        this._api.purchaseOrders.reject(this.purchaseOrder)
-          .then(data => this.resetAndNoify(data, "Purchase order has been rejected."))
-          .catch(error => this._notification.warning(error));
+        let data = await this._api.purchaseOrders.reject(this.purchaseOrder);
+        this.resetAndNoify(data, "Purchase order has been rejected.");
       }
-    });
+    }
+    catch (error) {
+      this._notification.warning(error);
+    }
   }
 
-  public complete(): void {
-    this._notification.confirm('Do you want to complete the purchase order?').whenClosed(result => {
+  public async complete(): Promise<void> {
+    try {
+      let result = await this._notification.confirm('Do you want to complete the purchase order?').whenClosed();
       if (result.output === ActionResult.Yes) {
-
-        this._api.purchaseOrders.complete(this.purchaseOrder)
-          .then(data => this.resetAndNoify(data, "Purchase order has been completed."))
-          .catch(error => this._notification.warning(error));
+        let data = await this._api.purchaseOrders.complete(this.purchaseOrder);
+        this.resetAndNoify(data, "Purchase order has been completed.");
       }
-    });
+    }
+    catch (error) {
+      this._notification.warning(error);
+    }
   }
 
-
-  public cancel(): void {
-    this._notification.confirm('Do you want to cancel the purchase order?').whenClosed(result => {
+  public async cancel(): Promise<void> {
+    try {
+      let result = await this._notification.confirm('Do you want to cancel the purchase order?').whenClosed();
       if (result.output === ActionResult.Yes) {
-
-        this._api.purchaseOrders.cancel(this.purchaseOrder)
-          .then(data => this.resetAndNoify(data, "Purchase order has been cancelled."))
-          .catch(error => this._notification.warning(error));
+        let data = await this._api.purchaseOrders.cancel(this.purchaseOrder);
+        this.resetAndNoify(data, "Purchase order has been cancelled.");
       }
-    });
+    }
+    catch (error) {
+      this._notification.warning(error);
+    }
   }
 
-  public refresh() {
-    this.activate(this.purchaseOrder);
+  public async refresh(): Promise<void> {
+    await this.activate(this.purchaseOrder);
   }
 
   public back(): void {

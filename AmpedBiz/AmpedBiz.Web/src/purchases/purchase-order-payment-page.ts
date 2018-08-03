@@ -1,21 +1,15 @@
+import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
-import { Filter, Pager, PagerRequest, PagerResponse, SortDirection, Sorter } from '../common/models/paging';
+import { Pager } from '../common/models/paging';
 import { PurchaseOrderPayable, PurchaseOrderPayment, purchaseOrderEvents } from '../common/models/purchase-order';
-import { autoinject, bindable, bindingMode, computedFrom, customElement } from 'aurelia-framework'
-
-import { Dictionary } from '../common/custom_types/dictionary';
 import { Lookup } from '../common/custom_types/lookup';
-import { NotificationService } from '../common/controls/notification-service';
 import { ServiceApi } from '../services/service-api';
-import { ensureNumeric } from '../common/utils/ensure-numeric';
+import * as Enumerable from 'linq';
 
 @autoinject
 @customElement("purchase-order-payment-page")
 export class PurchaseOrderPaymentPage {
 
-  private _api: ServiceApi;
-  private _notification: NotificationService;
-  private _eventAggregator: EventAggregator;
   private _subscriptions: Subscription[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
@@ -38,16 +32,15 @@ export class PurchaseOrderPaymentPage {
 
   public selectedItem: PurchaseOrderPayment;
 
-  constructor(api: ServiceApi, notification: NotificationService, eventAggregator: EventAggregator) {
-    this._api = api;
-    this._notification = notification;
-    this._eventAggregator = eventAggregator;
-
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _eventAggregator: EventAggregator
+  ) {
     this.paymentPager.onPage = () => this.initializePage();
   }
 
-  public purchaseOrderIdChanged(): void {
-    this.loadPayables();
+  public async purchaseOrderIdChanged(): Promise<void> {
+    await this.loadPayables();
   }
 
   public attached(): void {
@@ -63,26 +56,19 @@ export class PurchaseOrderPaymentPage {
     this._subscriptions.forEach(subscription => subscription.dispose());
   }
 
-  public paymentsChanged(): void {
-    this.loadPayables();
+  public async paymentsChanged(): Promise<void> {
+    await this.loadPayables();
     this.initializePage();
   }
 
-  private loadPayables(): void{
-
-    let requests: [Promise<PurchaseOrderPayable>] = [
-      this.purchaseOrderId
-        ? this._api.purchaseOrders.getPayables(this.purchaseOrderId)
-        : Promise.resolve(<PurchaseOrderPayable>{})
-    ];
-
-    Promise.all(requests).then((responses: [PurchaseOrderPayable]) => {
-      this.payable = responses[0];
-    });
+  private async loadPayables(): Promise<void> {
+    this.payable = this.purchaseOrderId
+      ? await this._api.purchaseOrders.getPayables(this.purchaseOrderId)
+      : <PurchaseOrderPayable>{};
   }
 
   private initializePage(): void {
-    if (!this.payments){
+    if (!this.payments) {
       this.payments = [];
     }
 
@@ -100,10 +86,10 @@ export class PurchaseOrderPaymentPage {
       return;
     }
 
-    if (!this.payments){
+    if (!this.payments) {
       this.payments = [];
     }
-    
+
     var current = this.payments.find(x => !x.paymentAmount || x.paymentAmount == 0);
     if (current) {
       this.selectedItem = current;
@@ -156,10 +142,9 @@ export class PurchaseOrderPaymentPage {
   }
 
   public total(): void {
-    this.totalPaymentAmount = this.payments
-      .filter(item => !item.id)
-      .reduce((value, current) => 
-        value + ensureNumeric(current.paymentAmount), 0
-      ) || 0;
+    this.totalPaymentAmount = Enumerable
+      .from(this.payments)
+      .where(x => !x.id)
+      .sum(x => x.paymentAmount);
   }
 }

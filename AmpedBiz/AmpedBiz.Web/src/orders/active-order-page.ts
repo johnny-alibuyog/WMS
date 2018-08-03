@@ -1,34 +1,25 @@
-import { Router, RouteConfig, NavigationInstruction } from 'aurelia-router';
+import { Router } from 'aurelia-router';
 import { autoinject } from 'aurelia-framework';
 import { buildQueryString } from 'aurelia-path';
-import { Order, OrderPageItem, OrderStatus } from '../common/models/order';
-import { Supplier } from '../common/models/supplier';
+import { OrderPageItem } from '../common/models/order';
 import { ServiceApi } from '../services/service-api';
-import { Lookup } from '../common/custom_types/lookup';
 import { NotificationService } from '../common/controls/notification-service';
-import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
+import { Filter, Sorter, Pager, PagerRequest, SortDirection, PagerResponse } from '../common/models/paging';
 
 @autoinject
 export class ActiveOrderPage {
-  private _api: ServiceApi;
-  private _router: Router;
-  private _notification: NotificationService;
 
   public header: string = 'Active Customer Orders';
+  public filter: Filter = new Filter();
+  public sorter: Sorter = new Sorter();
+  public pager: Pager<OrderPageItem> = new Pager<OrderPageItem>();
 
-  public filter: Filter;
-  public sorter: Sorter;
-  public pager: Pager<OrderPageItem>;
-
-  constructor(api: ServiceApi, router: Router, notification: NotificationService) {
-    this._api = api;
-    this._router = router;
-    this._notification = notification;
-
-    this.filter = new Filter();
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _router: Router,
+    private readonly _notification: NotificationService
+  ) {
     this.filter.onFilter = () => this.getPage();
-
-    this.sorter = new Sorter();
     this.sorter["orderdOn"] = SortDirection.None;
     this.sorter["createdBy"] = SortDirection.Ascending;
     this.sorter["customer"] = SortDirection.None;
@@ -39,40 +30,37 @@ export class ActiveOrderPage {
     this.sorter["subTotalAmount"] = SortDirection.None;
     this.sorter["totalAmount"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
-
-    this.pager = new Pager<OrderPageItem>();
     this.pager.onPage = () => this.getPage();
   }
 
-  public activate(): void {
-    this.getPage();
+  public async activate(): Promise<void> {
+    await this.getPage();
   }
 
-  public attached(): void {
-    this.getPage();
+  public async attached(): Promise<void> {
+    await this.getPage();
   }
 
-  private getPage(): void {
-    this._api.orders
-      .getActiveOrderPage({
+  private async getPage(): Promise<void> {
+    try {
+      let response = await this._api.orders.getActiveOrderPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager
-      })
-      .then(data => {
-        this.pager.count = data.count;
-        this.pager.items = data.items;
-      })
-      .catch(error => {
-        this._notification.error("Error encountered during search!");
       });
+      this.pager.count = response.count;
+      this.pager.items = response.items;
+    } 
+    catch (error) {
+      this._notification.error("Error encountered during search!");
+    }
   }
 
   public edit(item: OrderPageItem): void {
     this._router.navigate('#/orders/order-create?' + buildQueryString({ id: item.id }));
   }
 
-  public delete(item: OrderPageItem): void {
+  public delete(): void {
     /*
     var index = this.mockData.indexOf(item);
     if (index > -1) {

@@ -9,85 +9,68 @@ import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } fro
 
 @autoinject
 export class ReturnPage {
-  private _api: ServiceApi;
-  private _router: Router;
-  private _notification: NotificationService;
 
   public header: string = ' Returns';
-
-  public filter: Filter;
-  public sorter: Sorter;
-  public pager: Pager<ReturnPageItem>;
+  public filter: Filter = new Filter();
+  public sorter: Sorter = new Sorter();
+  public pager: Pager<ReturnPageItem> = new Pager<ReturnPageItem>();
   public branches: Lookup<string>[];
   public customers: Lookup<string>[];
 
-  constructor(api: ServiceApi, router: Router, notification: NotificationService) {
-    this._api = api;
-    this._router = router;
-    this._notification = notification;
-
-    this.filter = new Filter();
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _router: Router,
+    private readonly _notification: NotificationService
+  ) {
     this.filter["branch"] = null;
     this.filter["customer"] = null;
     this.filter.onFilter = () => this.getPage();
-
-    this.sorter = new Sorter();
     this.sorter["branch"] = SortDirection.None;
     this.sorter["customer"] = SortDirection.Ascending;
     this.sorter["returnedBy"] = SortDirection.None;
     this.sorter["returnedOn"] = SortDirection.None;
     this.sorter["totalAmount"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
-
-    this.pager = new Pager<ReturnPageItem>();
     this.pager.onPage = () => this.getPage();
   }
 
-  activate(params: any, routeConfig: RouteConfig, $navigationInstruction: NavigationInstruction): any {
-
-    let requests: [Promise<Lookup<string>[]>, Promise<Lookup<string>[]>] = [
+  public async activate(params: any, routeConfig: RouteConfig, $navigationInstruction: NavigationInstruction): Promise<void> {
+    [this.branches, this.customers] = await Promise.all([
       this._api.branches.getLookups(),
       this._api.customers.getLookups(),
-    ];
-
-    Promise.all(requests).then((responses: [Lookup<string>[], Lookup<string>[]]) => {
-      this.branches = responses[0];
-      this.customers = responses[1];
-
-      this.getPage();
-    });
+    ]);
+    await this.getPage();
   }
 
-  determineActivationStrategy(): string {
+  public determineActivationStrategy(): string {
     return activationStrategy.invokeLifecycle;
   }
 
-  getPage(): void {
-    this._api.returns
-      .getPage({
+  public async getPage(): Promise<void> {
+    try {
+      let data = await this._api.returns.getPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager
-      })
-      .then(data => {
-        var response = <PagerResponse<ReturnPageItem>>data;
-        this.pager.count = response.count;
-        this.pager.items = response.items;
-      })
-      .catch(error => {
-        this._notification.error("Error encountered during search!");
       });
+      var response = <PagerResponse<ReturnPageItem>>data;
+      this.pager.count = response.count;
+      this.pager.items = response.items;
+    }
+    catch (error) {
+      this._notification.error("Error encountered during search!");
+    }
   }
 
-  create(): void {
+  public create(): void {
     this._router.navigateToRoute('return-create');
   }
 
-  show(item: ReturnPageItem): void {
+  public show(item: ReturnPageItem): void {
     this._router.navigateToRoute('return-create', <Return>{ id: item.id });
   }
 
-  delete(item: ReturnPageItem) {
+  public delete(item: ReturnPageItem) {
     /*
     var index = this.mockData.indexOf(item);
     if (index > -1) {

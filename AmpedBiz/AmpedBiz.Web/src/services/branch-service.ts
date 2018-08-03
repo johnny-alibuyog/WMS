@@ -10,9 +10,8 @@ export class BranchService extends ServiceBase<Branch> {
     super('branches', httpClient);
   }
 
-  getLookups(): Promise<Lookup<string>[]> {
+  public getLookups(): Promise<Lookup<string>[]> {
     var url = "branch-lookups";
-    return this._httpClient.get(url)
-      .then(data => <Lookup<string>[]>data);
+    return this._httpClient.get(url);
   }
 }

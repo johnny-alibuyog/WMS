@@ -1,29 +1,21 @@
-import { Role, role } from '../../common/models/role';
-
-import { AuthService } from "../../services/auth-service";
 import { Branch } from '../../common/models/branch';
-import { DialogController } from 'aurelia-dialog';
 import { NotificationService } from '../../common/controls/notification-service';
 import { ServiceApi } from '../../services/service-api';
-import { User, UserPassword } from '../../common/models/user';
+import { UserPassword } from '../../common/models/user';
 import { autoinject } from 'aurelia-framework';
 import { ActionResult } from '../../common/controls/notification';
 
 @autoinject
 export class ChangePassword {
-  private readonly _api: ServiceApi;
-  private readonly _auth: AuthService;
-  private readonly _notificaton: NotificationService;
 
   public header: string = 'Change Password';
   public user: UserPassword;
   public branches: Branch[];
 
-  constructor(api: ServiceApi, auth: AuthService, notification: NotificationService) {
-    this._api = api;
-    this._auth = auth;
-    this._notificaton = notification;
-  }
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _notificaton: NotificationService
+  ) { }
 
   public activate(): void {
     this.user = <UserPassword>{

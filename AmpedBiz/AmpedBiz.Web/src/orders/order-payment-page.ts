@@ -1,21 +1,17 @@
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
-import { Filter, Pager, PagerRequest, PagerResponse, SortDirection, Sorter } from '../common/models/paging';
+import { Pager } from '../common/models/paging';
 import { OrderPayable, OrderPayment, orderEvents } from '../common/models/order';
-import { autoinject, bindable, bindingMode, computedFrom, customElement } from 'aurelia-framework'
+import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
 
-import { Dictionary } from '../common/custom_types/dictionary';
 import { Lookup } from '../common/custom_types/lookup';
-import { NotificationService } from '../common/controls/notification-service';
 import { ServiceApi } from '../services/service-api';
 import { ensureNumeric } from '../common/utils/ensure-numeric';
+import * as Enumerable from 'linq';
 
 @autoinject
 @customElement("order-payment-page")
 export class OrderPaymentPage {
 
-  private _api: ServiceApi;
-  private _notification: NotificationService;
-  private _eventAggregator: EventAggregator;
   private _subscriptions: Subscription[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
@@ -38,11 +34,10 @@ export class OrderPaymentPage {
 
   public selectedItem: OrderPayment;
 
-  constructor(api: ServiceApi, notification: NotificationService, eventAggregator: EventAggregator) {
-    this._api = api;
-    this._notification = notification;
-    this._eventAggregator = eventAggregator;
-
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _eventAggregator: EventAggregator
+  ) {
     this.paymentPager.onPage = () => this.initializePage();
   }
 
@@ -152,15 +147,13 @@ export class OrderPaymentPage {
   }
 
   public compute(item: OrderPayment): void {
-    //item.paymentAmount = 25;
     this.total();
   }
 
   public total(): void {
-    this.totalPaymentAmount = this.payments
-      .filter(item => !item.id)
-      .reduce((value, current) =>
-        value + ensureNumeric(current.paymentAmount), 0
-      ) || 0;
+    this.totalPaymentAmount = Enumerable
+      .from(this.payments)
+      .where(x => !x.id)
+      .sum(x => x.paymentAmount);
   }
 }

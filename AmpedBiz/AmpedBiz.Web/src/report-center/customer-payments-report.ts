@@ -37,8 +37,8 @@ export class CustomerPaymentsReport extends Report<CustomerPaymentsReportModel> 
         { text: 'Customer', style: 'tableHeader' },
         { text: 'Invoice', style: 'tableHeader' },
         { text: 'Amount', style: 'tableHeader', alignment: 'right' },
-        { text: 'Payment Type', style: 'tableHeader' },
         { text: 'Payment', style: 'tableHeader', alignment: 'right' },
+        { text: 'Type', style: 'tableHeader' },
         { text: 'Balance', style: 'tableHeader', alignment: 'right' },
       ],
     ];
@@ -51,8 +51,8 @@ export class CustomerPaymentsReport extends Report<CustomerPaymentsReportModel> 
         { text: emptyIfNull(x.customerName), style: 'tableData' },
         { text: emptyIfNull(x.invoiceNumber), style: 'tableData' },
         { text: formatNumber(x.totalAmount), style: 'tableData', alignment: 'right' },
-        { text: emptyIfNull(x.paymentTypeName), style: 'tableData' },
         { text: formatNumber(x.paidAmount), style: 'tableData', alignment: 'right' },
+        { text: emptyIfNull(x.paymentTypeName), style: 'tableData' },
         { text: formatNumber(x.balanceAmount), style: 'tableData', alignment: 'right' },
       ]));
 
@@ -79,8 +79,8 @@ export class CustomerPaymentsReport extends Report<CustomerPaymentsReportModel> 
         { text: "", style: "tableData" },
         { text: "Grand Total", style: "tableHeader" },
         { text: formatNumber(grandTotal.paidAmount), style: "tableData", alignment: "right" },
-        { text: "", style: "tableData" },
         { text: formatNumber(grandTotal.paidAmount), style: "tableData", alignment: "right" },
+        { text: "", style: "tableData" },
         { text: formatNumber(grandTotal.balanceAmount), style: "tableData", alignment: "right" },
       ]);
     }

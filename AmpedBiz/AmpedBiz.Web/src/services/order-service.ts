@@ -19,50 +19,42 @@ export class OrderService extends ServiceBase<Order> {
 
   public getStatusList(): Promise<OrderStatus[]> {
     var url = this._resouce + '/statuses';
-    return this._httpClient.get(url)
-      .then(response => <OrderStatus[]>response);
+    return this._httpClient.get(url);
   }
 
   public getStatusLookup(): Promise<Lookup<OrderStatus>[]> {
     var url = this._resouce + '/status-lookups';
-    return this._httpClient.get(url)
-      .then(response => <Lookup<OrderStatus>[]>response);
+    return this._httpClient.get(url);
   }
 
   public getPayables(orderId: string): Promise<OrderPayable> {
     var url = this._resouce + '/' + orderId + '/payables';
-    return this._httpClient.get(url)
-      .then(response => <OrderPayable>response);
+    return this._httpClient.get(url);
   }
 
   public getReturnables(orderId: string): Promise<OrderReturnable[]> {
     var url = this._resouce + '/' + orderId + '/returnables';
-    return this._httpClient.get(url)
-      .then(response => <OrderReturnable[]>response);
+    return this._httpClient.get(url);
   }
 
   public getInvoiceDetail(orderId: string): Promise<OrderInvoiceDetail> {
     var url = this._resouce + '/' + orderId + '/invoice-detail';
-    return this._httpClient.get(url)
-      .then(response => <OrderInvoiceDetail>response);
+    return this._httpClient.get(url);
   }
 
   public getOrderReportPage(page: PageRequest): Promise<PagerResponse<OrderReportPageItem>> {
     var url = this._resouce + '/report/page';
-    return this._httpClient.post(url, page)
-      .then(response => <PagerResponse<OrderReportPageItem>>response);
+    return this._httpClient.post(url, page);
   }
 
   public getSalesReportPage(page: PageRequest): Promise<PagerResponse<SalesReportPageItem>> {
     var url = this._resouce + '/sales-report/page';
-    return this._httpClient.post(url, page)
-      .then(response => <PagerResponse<SalesReportPageItem>>response);
+    return this._httpClient.post(url, page);
   }
 
   public getActiveOrderPage(page: PageRequest): Promise<PagerResponse<OrderPageItem>> {
     var url = this._resouce + '/active-orders/page';
-    return this._httpClient.post(url, page)
-      .then(response => <PagerResponse<OrderPageItem>>response);
+    return this._httpClient.post(url, page);
   }
 
   public save(order: Order): Promise<Order> {

@@ -8,64 +8,45 @@ import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } fro
 
 @autoinject
 export class ReturnsByProductPage {
-  private _api: ServiceApi;
-  private _router: Router;
-  private _notification: NotificationService;
 
   public header: string = ' Returns By Product';
-
-  public filter: Filter;
-  public sorter: Sorter;
-  public pager: Pager<ReturnsByProductPageItem>;
+  public filter: Filter = new Filter();
+  public sorter: Sorter = new Sorter();
+  public pager: Pager<ReturnsByProductPageItem> = new Pager<ReturnsByProductPageItem>();
   public products: Lookup<string>[] = [];
 
-  constructor(api: ServiceApi, router: Router, notification: NotificationService) {
-    this._api = api;
-    this._router = router;
-    this._notification = notification;
-
-    this.filter = new Filter();
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _notification: NotificationService
+  ) {
     this.filter["product"] = null;
     this.filter.onFilter = () => this.getPage();
-
-    this.sorter = new Sorter();
     this.sorter["product"] = SortDirection.Ascending;
     this.sorter["quantityValue"] = SortDirection.None;
     this.sorter["totalAmount"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
-
-    this.pager = new Pager<ReturnsByProductPageItem>();
     this.pager.onPage = () => this.getPage();
   }
 
-  public activate(params: any, routeConfig: RouteConfig, $navigationInstruction: NavigationInstruction): any {
-
-    let requests: [Promise<Lookup<string>[]>] = [
-      this._api.products.getLookups(),
-    ];
-
-    Promise.all(requests).then((responses: [Lookup<string>[], Lookup<string>[]]) => {
-      this.products = responses[0];
-
-      this.getPage();
-    });
+  public async activate(params: any, routeConfig: RouteConfig, $navigationInstruction: NavigationInstruction): Promise<void> {
+    this.products = await this._api.products.getLookups()
+    await this.getPage();
   }
 
-  private getPage(): void {
-    this._api.returns
-      .getReturnsByProductPage({
+  private async getPage(): Promise<void> {
+    try {
+      let data = await this._api.returns.getReturnsByProductPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager
-      })
-      .then(data => {
-        var response = <PagerResponse<ReturnsByProductPageItem>>data;
-        this.pager.count = response.count;
-        this.pager.items = response.items;
-      })
-      .catch(error => {
-        this._notification.error("Error encountered during search!");
       });
+      let response = <PagerResponse<ReturnsByProductPageItem>>data;
+      this.pager.count = response.count;
+      this.pager.items = response.items;
+    }
+    catch (error) {
+      this._notification.error("Error encountered during search!");
+    };
   }
 
   public create(): void {

@@ -1,9 +1,7 @@
-import { autoinject } from 'aurelia-framework';
 import { HttpClientFacade } from './http-client-facade';
 import { PageRequest, PagerResponse } from '../common/models/paging';
 
-//@autoinject
-export class ServiceBase<TEntity> {
+export abstract class ServiceBase<TEntity> {
   protected _resouce: string;
   protected _httpClient: HttpClientFacade;
 
@@ -28,6 +26,12 @@ export class ServiceBase<TEntity> {
     var url = this._resouce + '/page';
     return this._httpClient.post(url, page);
   }
+
+  // TODO: Refactor paging.ts
+  // public getPage<T>(page: PageRequest): Promise<PagerResponse<T>>{
+  //   var url = this._resouce + '/page';
+  //   return this._httpClient.post(url, page)  
+  // }
 
   public create(entity: TEntity): Promise<TEntity> {
     var url = this._resouce;

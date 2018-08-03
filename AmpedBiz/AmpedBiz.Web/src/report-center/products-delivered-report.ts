@@ -1,8 +1,7 @@
 import { autoinject } from 'aurelia-framework';
 import { formatDate, formatNumber, emptyIfNull } from '../services/formaters';
 import { Report, Content } from './report';
-import { OrderStatus } from '../common/models/order';
-import { SupplierCreate } from '../admin/suppliers/supplier-create';
+import * as Enumerable from 'linq';
 
 export interface ProductsDeliveredReportModel {
   branchName?: string;
@@ -73,9 +72,9 @@ export class ProductsDeliveredReport extends Report<ProductsDeliveredReportModel
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
         { text: "Grand Total", style: "tableHeader" },
-        { text: formatNumber(data.items.map(o => o.unitPriceAmount).reduce((pre, cur) => pre + cur)), style: "tableData", alignment: "right" },
-        { text: formatNumber(data.items.map(o => o.discountAmount).reduce((pre, cur) => pre + cur)), style: "tableData", alignment: "right" },
-        { text: formatNumber(data.items.map(o => o.totalPriceAmount).reduce((pre, cur) => pre + cur)), style: "tableData", alignment: "right" },
+        { text: formatNumber(Enumerable.from(data.items).sum(o => o.unitPriceAmount)), style: "tableData", alignment: "right" },
+        { text: formatNumber(Enumerable.from(data.items).sum(o => o.discountAmount)), style: "tableData", alignment: "right" },
+        { text: formatNumber(Enumerable.from(data.items).sum(o => o.totalPriceAmount)), style: "tableData", alignment: "right" },
       ]);
     }
 

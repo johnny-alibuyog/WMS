@@ -1,6 +1,5 @@
-import { Router, RouteConfig, NavigationInstruction } from 'aurelia-router';
+import { Router } from 'aurelia-router';
 import { autoinject } from 'aurelia-framework';
-import { CustomerCreate } from './customer-create';
 import { Customer, CustomerPageItem } from '../../common/models/customer';
 import { ServiceApi } from '../../services/service-api';
 import { NotificationService } from '../../common/controls/notification-service';
@@ -8,37 +7,28 @@ import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } fro
 
 @autoinject
 export class CustomerPage {
-  private _api: ServiceApi;
-  private _router: Router;
-  private _notification: NotificationService;
 
   public header: string = ' Customers';
+  public filter: Filter = new Filter(); 
+  public sorter: Sorter = new Sorter(); 
+  public pager: Pager<CustomerPageItem> = new Pager<CustomerPageItem>();
 
-  public filter: Filter;
-  public sorter: Sorter;
-  public pager: Pager<CustomerPageItem>;
-
-  constructor(api: ServiceApi, router: Router, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<CustomerPageItem>) {
-    this._api = api;
-    this._router = router;
-    this._notification = notification;
-
-    this.filter = filter;
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _router: Router,
+    private readonly _notification: NotificationService
+  ) {
     this.filter["name"] = '';
     this.filter.onFilter = () => this.getPage();
-
-    this.sorter = sorter;
     this.sorter["code"] = SortDirection.None;
     this.sorter["name"] = SortDirection.Ascending;
     this.sorter["descirption"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
-
-    this.pager = pager;
     this.pager.onPage = () => this.getPage();
   }
 
-  public activate(): void {
-    this.getPage();
+  public async activate(): Promise<void> {
+    await this.getPage();
   }
 
   private async getPage(): Promise<void> {
@@ -65,7 +55,7 @@ export class CustomerPage {
     this._router.navigateToRoute('customer-create', <Customer>{ id: item.id });
   }
 
-  public delete(item: any): void {
+  public delete(): void {
     /*
     var index = this.mockData.indexOf(item);
     if (index > -1) {

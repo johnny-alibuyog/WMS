@@ -4,8 +4,8 @@ import { AuthSettings } from '../services/auth-service';
 import { role } from '../common/models/role';
 
 export class Index {
-  heading: string = "Purchases";
-  router: Router;
+  public heading: string = "Purchases";
+  public router: Router;
 
   configureRouter(config: RouterConfiguration, router: Router) {
     config.title = "Purchases";

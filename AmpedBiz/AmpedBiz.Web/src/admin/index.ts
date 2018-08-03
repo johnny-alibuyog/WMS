@@ -113,7 +113,7 @@ export class Index {
         },
       },
       {
-        route: ['', 'user-page'],
+        route: ['user-page'],
         name: 'user-page',
         moduleId: './users/user-page',
         nav: true,
@@ -127,6 +127,10 @@ export class Index {
           }
         },
       },
+      {
+        route: [""],
+        redirect: "branch-page"
+      }
     ]);
 
     this.router = router;

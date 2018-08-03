@@ -9,11 +9,9 @@ import { AuthService } from '../services/auth-service';
 
 @autoinject
 export class InvoiceReport extends Report<OrderInvoiceDetail> {
-  private readonly _api: ServiceApi;
 
-  constructor(api: ServiceApi) {
+  constructor(private readonly _api: ServiceApi) {
     super();
-    this._api = api;
   }
 
   protected async buildBody(data: OrderInvoiceDetail): Promise<any[] | Content[]> {
@@ -32,16 +30,15 @@ export class InvoiceReport extends Report<OrderInvoiceDetail> {
     ];
 
     if (data && data.items && data.items.length > 0) {
-      data.items.forEach(x =>
-        productTableBody.push([
-          { text: x.product && x.product.name || "", style: "tableData" },
-          { text: x.quantity && x.quantity.unit && x.quantity.unit.name || "", style: "tableData" },
-          { text: formatNumber(x.quantity.value, "0"), style: "tableData", alignment: "right" },
-          { text: formatNumber(x.unitPriceAmount), style: "tableData", alignment: "right" },
-          { text: formatNumber(x.discountAmount), style: "tableData", alignment: "right" },
-          { text: formatNumber(x.totalPriceAmount), style: "tableData", alignment: "right" },
-        ])
-      );
+      // table content
+      productTableBody.push(...data.items.map(x => [
+        { text: x.product && x.product.name || "", style: "tableData" },
+        { text: x.quantity && x.quantity.unit && x.quantity.unit.name || "", style: "tableData" },
+        { text: formatNumber(x.quantity.value, "0"), style: "tableData", alignment: "right" },
+        { text: formatNumber(x.unitPriceAmount), style: "tableData", alignment: "right" },
+        { text: formatNumber(x.discountAmount), style: "tableData", alignment: "right" },
+        { text: formatNumber(x.totalPriceAmount), style: "tableData", alignment: "right" },
+      ]));
     }
 
     let pagedTables = [];
@@ -103,53 +100,53 @@ export class InvoiceReport extends Report<OrderInvoiceDetail> {
             style: "tablePlain",
             layout: "noBorders",
             table:
-              {
-                body:
+            {
+              body:
+                [
                   [
-                    [
-                      { text: "Customer: ", style: "label" },
-                      { text: emptyIfNull(data.customerName), style: "value" }
-                    ],
-                    [
-                      { text: "Invoice Number: ", style: "label" },
-                      { text: data.invoiceNumber || "", style: "value" }
-                    ],
-                    [
-                      { text: "Inviced On: ", style: "label" },
-                      { text: formatDate(data.invoicedOn), style: "value" }
-                    ],
-                    [
-                      { text: "Invoiced By: ", style: "label" },
-                      { text: data.invoicedByName || "", style: "value" }
-                    ],
+                    { text: "Customer: ", style: "label" },
+                    { text: emptyIfNull(data.customerName), style: "value" }
                   ],
-              }
+                  [
+                    { text: "Invoice Number: ", style: "label" },
+                    { text: data.invoiceNumber || "", style: "value" }
+                  ],
+                  [
+                    { text: "Inviced On: ", style: "label" },
+                    { text: formatDate(data.invoicedOn), style: "value" }
+                  ],
+                  [
+                    { text: "Invoiced By: ", style: "label" },
+                    { text: data.invoicedByName || "", style: "value" }
+                  ],
+                ],
+            }
           },
           {
             style: "tablePlain",
             layout: "noBorders",
             table:
-              {
-                body:
+            {
+              body:
+                [
                   [
-                    [
-                      { text: "Branch Name: ", style: "label" },
-                      { text: data.branchName || "", style: "value" }
-                    ],
-                    [
-                      { text: "Ordered On: ", style: "label" },
-                      { text: formatDate(data.orderedOn), style: "value" }
-                    ],
-                    [
-                      { text: "Staff: ", style: "label" },
-                      { text: data.orderedByName || "", style: "value" }
-                    ],
-                    [
-                      { text: "Delivery Address: ", style: "label" },
-                      { text: data.shippingAddress || "", style: "value" }
-                    ],
+                    { text: "Branch Name: ", style: "label" },
+                    { text: data.branchName || "", style: "value" }
                   ],
-              }
+                  [
+                    { text: "Ordered On: ", style: "label" },
+                    { text: formatDate(data.orderedOn), style: "value" }
+                  ],
+                  [
+                    { text: "Staff: ", style: "label" },
+                    { text: data.orderedByName || "", style: "value" }
+                  ],
+                  [
+                    { text: "Delivery Address: ", style: "label" },
+                    { text: data.shippingAddress || "", style: "value" }
+                  ],
+                ],
+            }
           },
         ]
     },
@@ -168,35 +165,35 @@ export class InvoiceReport extends Report<OrderInvoiceDetail> {
             style: "tablePlain",
             layout: "noBorders",
             table:
-              {
-                body:
+            {
+              body:
+                [
+                  // [
+                  //   { text: 'Tax: ', style: 'label' },
+                  //   { text: formatNumber(data.taxAmount), style: 'value', alignment: 'right' }
+                  // ],
                   [
-                    // [
-                    //   { text: 'Tax: ', style: 'label' },
-                    //   { text: formatNumber(data.taxAmount), style: 'value', alignment: 'right' }
-                    // ],
-                    [
-                      { text: "Shipping Fee: ", style: "label" },
-                      { text: formatNumber(data.shippingFeeAmount), style: "value", alignment: "right" }
-                    ],
-                    [
-                      { text: "Discount: ", style: "label" },
-                      { text: formatNumber(data.discountAmount), style: "value", alignment: "right" }
-                    ],
-                    [
-                      { text: "Sub Total: ", style: "label" },
-                      { text: formatNumber(data.subTotalAmount), style: "value", alignment: "right" }
-                    ],
-                    [
-                      { text: "Grand Total: ", style: "label" },
-                      { text: formatNumber(data.totalAmount), style: "value", alignment: "right" }
-                    ],
-                    [
-                      { text: "Returned: ", style: "label" },
-                      { text: formatNumber(data.returnedAmount), style: "value", alignment: "right" }
-                    ],
+                    { text: "Shipping Fee: ", style: "label" },
+                    { text: formatNumber(data.shippingFeeAmount), style: "value", alignment: "right" }
                   ],
-              }
+                  [
+                    { text: "Discount: ", style: "label" },
+                    { text: formatNumber(data.discountAmount), style: "value", alignment: "right" }
+                  ],
+                  [
+                    { text: "Sub Total: ", style: "label" },
+                    { text: formatNumber(data.subTotalAmount), style: "value", alignment: "right" }
+                  ],
+                  [
+                    { text: "Grand Total: ", style: "label" },
+                    { text: formatNumber(data.totalAmount), style: "value", alignment: "right" }
+                  ],
+                  [
+                    { text: "Returned: ", style: "label" },
+                    { text: formatNumber(data.returnedAmount), style: "value", alignment: "right" }
+                  ],
+                ],
+            }
           },
         ]
     }];

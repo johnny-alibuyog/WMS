@@ -1,17 +1,13 @@
-import { Filter, Pager, PagerRequest, PagerResponse, SortDirection, Sorter } from '../common/models/paging';
-import { ProductUnitOfMeasure, ProductUnitOfMeasurePrice } from "../common/models/product";
 import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
-
-import { Dictionary } from '../common/custom_types/dictionary';
-import { Inventory } from '../common/models/inventory';
+import { ProductUnitOfMeasure, ProductUnitOfMeasurePrice } from "../common/models/product";
 import { Lookup } from '../common/custom_types/lookup';
 import { Router } from 'aurelia-router';
 import { ServiceApi } from '../services/service-api';
+import { pricing } from '../common/models/pricing';
 
 @autoinject
 @customElement("product-uom")
 export class ProductUOM {
-  private _api: ServiceApi;
 
   @bindable()
   public productId: string = '';
@@ -23,12 +19,12 @@ export class ProductUOM {
 
   public selectedPrice: ProductUnitOfMeasurePrice;
 
-  public get standardName() : string {
+  public get standardName(): string {
     var standardItem = this.items && this.items.find(x => x.isStandard) || null;
     return standardItem && standardItem.unitOfMeasure && standardItem.unitOfMeasure.name || 'Item';
   }
 
-  public get defaultName() : string {
+  public get defaultName(): string {
     var defaultItem = this.items && this.items.find(x => x.isDefault) || null;
     return defaultItem && defaultItem.unitOfMeasure && defaultItem.unitOfMeasure.name || 'Package';
   }
@@ -46,9 +42,7 @@ export class ProductUOM {
     }
   };
 
-  constructor(api: ServiceApi, router: Router) {
-    this._api = api;
-  }
+  constructor(private readonly _api: ServiceApi) { }
 
   public selectPrice(item: ProductUnitOfMeasurePrice): void {
     this.selectedPrice = item;
@@ -130,21 +124,16 @@ export class ProductUOM {
       ? this.lookups.unitOfMeasure.items[0] : null;
   }
 
-  public attached(): void {
-    var requests: [
-      Promise<Lookup<string>[]>,
-      Promise<Lookup<string>[]>
-    ] = [
-        this._api.pricings.getLookups(),
-        this._api.unitOfMeasures.getLookups()
-      ];
+  public async attached(): Promise<void> {
+    let [pricings, unitOfMeasures] = await Promise.all([
+      this._api.pricings.getLookups(),
+      this._api.unitOfMeasures.getLookups()
+    ]);;
 
-    Promise.all(requests).then(data => {
-      this.lookups.pricing.items = data[0];
-      this.lookups.pricing.original = data[0];
-      this.lookups.unitOfMeasure.items = data[1];
-      this.lookups.unitOfMeasure.original = data[1];
-      this.resetUnitOfMeasureItems();
-    });
+    this.lookups.pricing.items = pricings;
+    this.lookups.pricing.original = pricings;
+    this.lookups.unitOfMeasure.items = unitOfMeasures;
+    this.lookups.unitOfMeasure.original = unitOfMeasures;
+    this.resetUnitOfMeasureItems();
   }
 }

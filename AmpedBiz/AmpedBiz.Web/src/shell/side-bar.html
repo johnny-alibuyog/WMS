@@ -1,5 +1,5 @@
 <template>
-  <ul>
+  <ul class="well nav nav-pills nav-stacked">
     <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
       <a if.bind="row.settings.auth.roles | authorize" href.bind="row.href">${row.title}</a>
     </li>

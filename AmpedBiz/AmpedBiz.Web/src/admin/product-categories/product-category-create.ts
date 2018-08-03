@@ -7,20 +7,17 @@ import { ActionResult } from '../../common/controls/notification';
 
 @autoinject
 export class ProductCategoryCreate {
-  private _api: ServiceApi;
-  private _controller: DialogController;
-  private _notification: NotificationService;
 
   public header: string = 'Create Product Category';
   public isEdit: boolean = false;
   public canSave: boolean = true;
   public productCategory: ProductCategory;
 
-  constructor(api: ServiceApi, controller: DialogController, notification: NotificationService) {
-    this._api = api;
-    this._controller = controller;
-    this._notification = notification;
-  }
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _controller: DialogController,
+    private readonly _notification: NotificationService
+  ) { }
 
   public async activate(productCategory: ProductCategory): Promise<void> {
     try {
@@ -34,7 +31,6 @@ export class ProductCategoryCreate {
         this.isEdit = false;
         this.productCategory = <ProductCategory>{};
       }
-
     }
     catch (error) {
       this._notification.warning(error);
@@ -53,7 +49,7 @@ export class ProductCategoryCreate {
           ? await this._api.productCategories.update(this.productCategory)
           : await this._api.productCategories.create(this.productCategory);
         await this._notification.success("Product Category has been saved.").whenClosed();
-        this._controller.ok(<ProductCategory>data);
+        await this._controller.ok(<ProductCategory>data);
       }
     }
     catch (error) {

@@ -1,4 +1,4 @@
-import { OrderAggregate, OrderStatus, OrderItem, OrderPayment, OrderReturn, OrderReturnable, OrderReturning } from '../common/models/order'
+import { OrderAggregate, OrderStatus, OrderItem, OrderPayment, OrderReturn, OrderReturnable } from '../common/models/order'
 
 export class IsTransitionAllowedToValueConverter {
 

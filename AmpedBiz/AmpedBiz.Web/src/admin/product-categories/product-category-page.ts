@@ -8,34 +8,26 @@ import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } fro
 
 @autoinject
 export class ProductCategoryPage {
-  private _api: ServiceApi;
-  private _dialog: DialogService;
-  private _notification: NotificationService;
 
-  public filter: Filter;
-  public sorter: Sorter;
-  public pager: Pager<ProductCategoryPageItem>;
+  public filter: Filter = new Filter();
+  public sorter: Sorter = new Sorter();
+  public pager: Pager<ProductCategoryPageItem> = new Pager<ProductCategoryPageItem>();
 
-  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<ProductCategoryPageItem>) {
-    this._api = api;
-    this._dialog = dialog;
-    this._notification = notification;
-
-    this.filter = filter;
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _dialog: DialogService,
+    private readonly _notification: NotificationService,
+  ) {
     this.filter["name"] = '';
     this.filter.onFilter = () => this.getPage();
-
-    this.sorter = sorter;
     this.sorter["code"] = SortDirection.None;
     this.sorter["name"] = SortDirection.Ascending;
     this.sorter.onSort = () => this.getPage();
-
-    this.pager = pager;
     this.pager.onPage = () => this.getPage();
   }
 
-  public activate(): void {
-    this.getPage();
+  public async activate(): Promise<void> {
+    await this.getPage();
   }
 
   public async getPage(): Promise<void> {
@@ -45,7 +37,6 @@ export class ProductCategoryPage {
         sorter: this.sorter,
         pager: <PagerRequest>this.pager
       });
-
       let response = <PagerResponse<ProductCategoryPageItem>>data;
       this.pager.count = response.count;
       this.pager.items = response.items;
@@ -55,14 +46,16 @@ export class ProductCategoryPage {
     }
   }
 
-  public create(): void {
-    this._dialog.open({ viewModel: ProductCategoryCreate, model: null })
-      .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
+  public async create(): Promise<void> {
+    let settings = { viewModel: ProductCategoryCreate, model: null };
+    let response = await this._dialog.open(settings).whenClosed();
+    if (!response.wasCancelled) await this.getPage();
   }
 
-  public edit(item: ProductCategoryPageItem): void {
-    this._dialog.open({ viewModel: ProductCategoryCreate, model: <ProductCategory>{ id: item.id } })
-      .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
+  public async edit(item: ProductCategoryPageItem): Promise<void> {
+    let settings = { viewModel: ProductCategoryCreate, model: <ProductCategory>{ id: item.id } };
+    let response = await this._dialog.open(settings).whenClosed();
+    if (!response.wasCancelled) await this.getPage();
   }
 
   public delete(item: any): void {

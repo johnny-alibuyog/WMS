@@ -1,24 +1,19 @@
+import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
-import { Filter, Pager, PagerRequest, PagerResponse, SortDirection, Sorter } from '../common/models/paging';
 import { ProductInventory, ProductInventoryFacade } from '../common/models/product';
 import { ReturnItem, returnEvents } from '../common/models/return';
-import { autoinject, bindable, bindingMode, computedFrom, customElement } from 'aurelia-framework'
-
-import { Dictionary } from '../common/custom_types/dictionary';
 import { Lookup } from '../common/custom_types/lookup';
 import { NotificationService } from '../common/controls/notification-service';
 import { ServiceApi } from '../services/service-api';
 import { ensureNumeric } from "../common/utils/ensure-numeric";
 import { getValue } from "../common/models/measure";
 import { pricing } from '../common/models/pricing';
+import { Pager } from '../common/models/paging';
+import * as Enumerable from 'linq';
 
 @autoinject
 @customElement("return-item-page")
 export class ReturnItemPage {
-
-  private readonly _api: ServiceApi;
-  private readonly _notification: NotificationService;
-  private readonly _eventAggregator: EventAggregator;
 
   private _subscriptions: Subscription[] = [];
   private _productInventories1: ProductInventory[] = [];
@@ -42,25 +37,21 @@ export class ReturnItemPage {
 
   public itemPager: Pager<ReturnItem> = new Pager<ReturnItem>();
 
-  constructor(api: ServiceApi, notification: NotificationService, eventAggregator: EventAggregator) {
-    this._api = api;
-    this._notification = notification;
-    this._eventAggregator = eventAggregator;
-
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _notification: NotificationService,
+    private readonly _eventAggregator: EventAggregator
+  ) {
     this.itemPager.onPage = () => this.initializePage();
   }
 
-  private getProductInventory(product: Lookup<string>): Promise<ProductInventory> {
-    let productInventory = this._productInventories1.find(x => x.id === product.id);
-
-    if (productInventory) {
-      return Promise.resolve(productInventory);
-    }
-
-    return this._api.products.getInventory(product.id).then(data => {
+  private async getProductInventory(product: Lookup<string>): Promise<ProductInventory> {
+    let data = this._productInventories1.find(x => x.id === product.id);
+    if (!data) {
+      data = await this._api.products.getInventory(product.id);
       this._productInventories1.push(data);
-      return data;
-    });
+    }
+    return data;
   }
 
   // private getUnitPriceAmount(product: Lookup<string>): Promise<number> {
@@ -120,16 +111,14 @@ export class ReturnItemPage {
       .then(result => this._productInventories1 = result);
   }
 
-  public computeUnitPriceAmount(): void {
-    var item = this.selectedItem;
-    this.getProductInventory(item.product).then(inventory => {
-      var facade = new ProductInventoryFacade(inventory);
-      item.unitPriceAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
-      this.compute(item);
-    });
+  public async computeUnitPriceAmount(): Promise<void> {
+    let inventory = await this.getProductInventory(this.selectedItem.product)
+    let facade = new ProductInventoryFacade(inventory);
+    this.selectedItem.unitPriceAmount = facade.getPriceAmount(inventory, this.selectedItem.quantity.unit, this.pricing);
+    this.compute(this.selectedItem);
   }
 
-  public initializeItem(item: ReturnItem): void {
+  public async initializeItem(item: ReturnItem): Promise<void> {
     if (!item.product) {
       item.quantity = {
         unit: null,
@@ -145,18 +134,21 @@ export class ReturnItemPage {
       return;
     }
 
-    this.getProductInventory(item.product).then(inventory => {
-      var facade = new ProductInventoryFacade(inventory);
-      var current = facade.default;
+    let inventory = await this.getProductInventory(item.product);
+    let facade = new ProductInventoryFacade(inventory);
+    let current = facade.default;
+    item.unitOfMeasures = inventory.unitOfMeasures.map(x => x.unitOfMeasure);
+    item.quantity.unit = current.unitOfMeasure;
+    //item.quantity.value = 0;
+    item.standard.unit = current.standard.unit;
+    item.standard.value = current.standard.value;
+    item.unitPriceAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
+    this.compute(item);
+  }
 
-      item.unitOfMeasures = inventory.unitOfMeasures.map(x => x.unitOfMeasure);
-      item.quantity.unit = current.unitOfMeasure;
-      //item.quantity.value = 0;
-      item.standard.unit = current.standard.unit;
-      item.standard.value = current.standard.value;
-      item.unitPriceAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
-      this.compute(item);
-    });
+  public async propagateProductChange(item: ReturnItem, productId: string): Promise<void> {
+    item.product = this.products.find(x => x.id === productId);
+    await this.initializeItem(item);
   }
 
   public initializePage(): void {
@@ -179,7 +171,7 @@ export class ReturnItemPage {
   }
 
   public addItem(): void {
-    if (!this.items){
+    if (!this.items) {
       this.items = [];
     }
 
@@ -200,21 +192,21 @@ export class ReturnItemPage {
     this.initializePage();
   }
 
-  public editItem(item: ReturnItem): void {
+  public async editItem(item: ReturnItem): Promise<void> {
     if (item.id) {
       return; // do not allow edit of items which is already saved
     }
-
+    
     if (!item.unitOfMeasures || item.unitOfMeasures.length == 0) {
-      this.getProductInventory(item.product).then(data => {
-        if (data && data.unitOfMeasures) {
-          item.unitOfMeasures = data.unitOfMeasures.map(x => x.unitOfMeasure);
-        }
-      });
+      let data = await this.getProductInventory(item.product);
+      if (data && data.unitOfMeasures) {
+        item.unitOfMeasures = data.unitOfMeasures.map(x => x.unitOfMeasure);
+      }
     }
 
-    if (this.selectedItem !== item)
+    if (this.selectedItem !== item) {
       this.selectedItem = item;
+    }
   }
 
   public deleteItem(item: ReturnItem): void {
@@ -232,7 +224,6 @@ export class ReturnItemPage {
   public compute(item: ReturnItem): void {
     item.extendedPriceAmount = ensureNumeric(item.unitPriceAmount) * getValue(item.quantity);
     item.totalPriceAmount = ensureNumeric(item.extendedPriceAmount);
-
     this.total();
   }
 
@@ -242,6 +233,6 @@ export class ReturnItemPage {
 
     //this.shippingFeeAmount = ensureNumeric(this.shippingFeeAmount);
 
-    this.grandTotalAmount = this.items
-      .reduce((value, current) => value + ensureNumeric(current.totalPriceAmount), 0) || 0;
-  }}
+    this.grandTotalAmount = Enumerable.from(this.items).sum(x => x.totalPriceAmount);
+  }
+}

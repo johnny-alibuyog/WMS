@@ -1,4 +1,3 @@
-import { autoinject } from "aurelia-framework";
 import { AuthStorage } from "../services/auth-service";
 
 declare var pdfMake: any;

@@ -1,28 +1,21 @@
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
-import { Filter, Pager, PagerRequest, PagerResponse, SortDirection, Sorter } from '../common/models/paging';
+import { Pager } from '../common/models/paging';
 import { OrderItem, orderEvents } from '../common/models/order';
 import { ProductInventory, ProductInventoryFacade } from '../common/models/product';
-import { autoinject, bindable, bindingMode, computedFrom, customElement } from 'aurelia-framework'
+import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
 
-import { Dictionary } from '../common/custom_types/dictionary';
 import { Lookup } from '../common/custom_types/lookup';
-import { NotificationService } from '../common/controls/notification-service';
 import { ServiceApi } from '../services/service-api';
 import { UnitOfMeasure } from "../common/models/unit-of-measure";
 import { ensureNumeric } from '../common/utils/ensure-numeric';
 import { getValue } from "../common/models/measure";
-import { pricing } from '../common/models/pricing';
 
 @autoinject
 @customElement("order-item-page")
 export class OrderItemPage {
 
-  private readonly _api: ServiceApi;
-  private readonly _notification: NotificationService;
-  private readonly _eventAggregator: EventAggregator;
-
   private _subscriptions: Subscription[] = [];
-  private _productInventories1: ProductInventory[] = [];
+  private _productInventories: ProductInventory[] = [];
   private _isPricingInitialized: boolean = false;
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
@@ -56,32 +49,27 @@ export class OrderItemPage {
 
   public selectedItem: OrderItem;
 
-  constructor(api: ServiceApi, notification: NotificationService, eventAggregator: EventAggregator) {
-    this._api = api;
-    this._notification = notification;
-    this._eventAggregator = eventAggregator;
-
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _eventAggregator: EventAggregator
+  ) {
     this.itemPager.onPage = () => this.initializePage();
   }
 
-  private getProductInventory(product: Lookup<string>): Promise<ProductInventory> {
-    let productInventory = this._productInventories1.find(x => x.id === product.id);
-
-    if (productInventory) {
-      return Promise.resolve(productInventory);
+  private async getProductInventory(product: Lookup<string>): Promise<ProductInventory> {
+    let data = this._productInventories.find(x => x.id === product.id);
+    if (!data) {
+      data = await this._api.products.getInventory(product.id);
+      this._productInventories.push(data);
     }
-
-    return this._api.products.getInventory(product.id).then(data => {
-      this._productInventories1.push(data);
-      return data;
-    });
+    return data;
   }
 
   public attached(): void {
     this._subscriptions = [
       this._eventAggregator.subscribe(
         orderEvents.item.add,
-        response => this.addItem()
+        () => this.addItem()
       ),
     ];
   }
@@ -99,7 +87,7 @@ export class OrderItemPage {
 
     let productIds = this.items.map(x => x.product.id);
     this._api.products.getInventoryList(productIds)
-      .then(result => this._productInventories1 = result);
+      .then(result => this._productInventories = result);
   }
 
   public taxAmountChanged(): void {
@@ -131,22 +119,21 @@ export class OrderItemPage {
     this.items.forEach(item => this.initializeItem(item));
   }
 
-  public computeUnitPriceAmount(): void {
+  public async computeUnitPriceAmount(): Promise<void> {
     var item = this.selectedItem;
-    this.getProductInventory(item.product).then(inventory => {
-      var facade = new ProductInventoryFacade(inventory);
-      item.unitPriceAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
-      this.compute(item);
-    });
+    let inventory = await this.getProductInventory(item.product);
+    var facade = new ProductInventoryFacade(inventory);
+    item.unitPriceAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
+    this.compute(item);
   }
 
   // we added unit parameter just to make the binding watch when ever item.quantity.unit changes
-  public getUnitOfMeasures(item: OrderItem, unit: UnitOfMeasure): UnitOfMeasure[] {
+  public getUnitOfMeasures(item: OrderItem): UnitOfMeasure[] {
     if (!item.product) {
       return [];
     }
 
-    var productInventory = this._productInventories1.find(x => x.id === item.product.id);
+    var productInventory = this._productInventories.find(x => x.id === item.product.id);
     if (!productInventory) {
       return [];
     }

@@ -25,6 +25,12 @@ namespace AmpedBiz.Service.Products
                     var query = session.Query<Product>()
                         .Where(x => x.Discontinued);
 
+                    // compose filters
+                    message.Filter.Compose<string>("name", value =>
+                    {
+                        query = query.Where(x => x.Name.Contains(value.ToLower()));
+                    });
+
                     // compose sort
                     message.Sorter.Compose("code", direction =>
                     {

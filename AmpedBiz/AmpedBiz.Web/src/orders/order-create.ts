@@ -16,13 +16,6 @@ import { ActionResult } from '../common/controls/notification';
 
 @autoinject
 export class OrderCreate {
-  private readonly _api: ServiceApi;
-  private readonly _auth: AuthService;
-  private readonly _router: Router;
-  private readonly _dialog: DialogService;
-  private readonly _notification: NotificationService;
-  private readonly _eventAggregator: EventAggregator;
-  private readonly _invoiceReport: InvoiceReport;
 
   private _subscriptions: Subscription[] = [];
 
@@ -50,21 +43,14 @@ export class OrderCreate {
   public order: Order;
 
   constructor(
-    api: ServiceApi,
-    auth: AuthService,
-    router: Router,
-    dialog: DialogService,
-    notification: NotificationService,
-    eventAggregator: EventAggregator,
-    invoiceReport: InvoiceReport
+    private readonly _api: ServiceApi,
+    private readonly _auth: AuthService,
+    private readonly _router: Router,
+    private readonly _dialog: DialogService,
+    private readonly _notification: NotificationService,
+    private readonly _eventAggregator: EventAggregator,
+    private readonly _invoiceReport: InvoiceReport
   ) {
-    this._api = api;
-    this._auth = auth;
-    this._router = router;
-    this._dialog = dialog;
-    this._notification = notification;
-    this._eventAggregator = eventAggregator;
-    this._invoiceReport = invoiceReport;
     this.canSave = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
     this.canAddItem = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
     this.canAddReturn = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
@@ -107,7 +93,19 @@ export class OrderCreate {
         )
       ];
 
-      let responses = await Promise.all([
+      let newOrder: Order;
+
+      [
+        this.products,
+        this.branches,
+        this.customers,
+        this.paymentTypes,
+        this.pricings,
+        this.returnReasons,
+        this.statuses,
+        this.payable,
+        newOrder
+      ] = await Promise.all([
         this._api.products.getLookups(),
         this._api.branches.getLookups(),
         this._api.customers.getLookups(),
@@ -123,20 +121,7 @@ export class OrderCreate {
           : Promise.resolve(this.getInitializedOrder())
       ]);
 
-      this.products = responses[0];
-      this.branches = responses[1];
-      this.customers = responses[2];
-      this.paymentTypes = responses[3];
-      this.pricings = responses[4];
-      this.returnReasons = responses[5];
-      this.statuses = responses[6];
-      this.payable = responses[7];
-      this.setOrder(responses[8]);
-
-      if (!this.order.branch) {
-        this.order.branch = this.branches
-          .find(x => x.id == this._api.auth.user.branchId);
-      }
+      this.setOrder(newOrder);
     }
     catch (error) {
       this._notification.error(error);
@@ -160,6 +145,10 @@ export class OrderCreate {
     order.returns = order.returns || [];
     order.payments = order.payments || [];
     order.returnables = this._api.orders.computeReturnablesFrom(order);
+
+    if (!order.branch && this.branches && this.branches.length > 0) {
+      order.branch = this.branches.find(x => x.id == this._api.auth.user.branchId);
+    }
 
     this.order = order;
   }
@@ -211,7 +200,7 @@ export class OrderCreate {
 
   public async showInvoice(): Promise<void> {
     let data = await this._api.orders.getInvoiceDetail(this.order.id);
-    this._invoiceReport.show(data);
+    await this._invoiceReport.show(data);
   }
 
   public signalPricingChanged(): void {

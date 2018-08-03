@@ -1,7 +1,6 @@
-import { Router, RouteConfig, NavigationInstruction } from 'aurelia-router';
 import { autoinject, BindingEngine, Disposable } from 'aurelia-framework';
-import { ProductCreate } from './product-create';
-import { Product, NeedsReorderingPageItem, ForPurchasing } from '../common/models/product';
+import { Router } from 'aurelia-router';
+import { NeedsReorderingPageItem, ForPurchasing } from '../common/models/product';
 import { ServiceApi } from '../services/service-api';
 import { SessionData } from '../services/session-data';
 import { Lookup } from '../common/custom_types/lookup';
@@ -10,33 +9,25 @@ import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } fro
 
 @autoinject
 export class NeedsReorderingPage {
-  private _api: ServiceApi;
-  private _router: Router;
-  private _sessionData: SessionData;
-  private _notification: NotificationService;
+
   private _subscriptions: Disposable[] = [];
-  private _bindingEngine: BindingEngine;
 
-  public filter: Filter;
-  public sorter: Sorter;
-  public pager: Pager<NeedsReorderingPageItem>;
+  public filter: Filter = new Filter();
+  public sorter: Sorter = new Sorter();
+  public pager: Pager<NeedsReorderingPageItem> = new Pager<NeedsReorderingPageItem>();
   public forPurchasing: ForPurchasing;
-
   public suppliers: Lookup<string>[] = [];
   public categories: Lookup<string>[] = [];
 
-  constructor(api: ServiceApi, router: Router, sessionData: SessionData, notification: NotificationService, bindingEngine: BindingEngine) {
-    this._api = api;
-    this._router = router;
-    this._sessionData = sessionData;
-    this._notification = notification;
-    this._bindingEngine = bindingEngine;
-
-    this.filter = new Filter();
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _router: Router,
+    private readonly _sessionData: SessionData,
+    private readonly _notification: NotificationService,
+    private readonly _bindingEngine: BindingEngine
+  ) {
     this.filter["supplierId"] = this._sessionData.forPurchasing && this._sessionData.forPurchasing.supplierId || '';
     this.filter.onFilter = () => this.getPage();
-
-    this.sorter = new Sorter();
     this.sorter["supplierId"] = SortDirection.None;
     this.sorter["productName"] = SortDirection.Ascending;
     this.sorter["categoryName"] = SortDirection.None;
@@ -46,8 +37,6 @@ export class NeedsReorderingPage {
     this.sorter["targetLevel"] = SortDirection.None;
     this.sorter["belowTarget"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
-
-    this.pager = new Pager<NeedsReorderingPageItem>();
     this.pager.onPage = () => this.getPage();
 
     this.forPurchasing = this._sessionData.forPurchasing;
@@ -55,24 +44,19 @@ export class NeedsReorderingPage {
     this._sessionData.forPurchasing = {};
   }
 
-  public attached(): void {
+  public async attached(): Promise<void> {
     this._subscriptions = [
       this._bindingEngine
         .collectionObserver(this.forPurchasing.selectedProductIds)
         .subscribe((changeRecords) => this.computeSelectAll(changeRecords)),
     ];
 
-    let requests: [Promise<Lookup<string>[]>, Promise<Lookup<string>[]>] = [
+    [this.suppliers, this.categories] = await Promise.all([
       this._api.suppliers.getLookups(),
       this._api.productCategories.getLookups()
-    ];
+    ]);
 
-    Promise.all(requests).then(data => {
-      this.suppliers = data[0];
-      this.categories = data[1];
-
-      this.getPage();
-    });
+    await this.getPage();
   }
 
   public detached(): void {
@@ -88,27 +72,24 @@ export class NeedsReorderingPage {
     this._router.navigateToRoute('new-purchase-order');
   }
 
-  public getPage(): void {
-    this.forPurchasing.supplierId = this.filter['supplierId'] || '';
-
-    this._api.products
-      .getNeedsReorderingPage({
+  public async getPage(): Promise<void> {
+    try {
+      this.forPurchasing.supplierId = this.filter['supplierId'] || '';
+      let data = await this._api.products.getNeedsReorderingPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager
-      })
-      .then(data => {
-        var response = <PagerResponse<NeedsReorderingPageItem>>data;
-        this.pager.count = response.count;
-        this.pager.items = response.items;
-
-        if (this.forPurchasing.purchaseAllBelowTarget) {
-          this.toggleSelectAll(true);
-        }
-      })
-      .catch(error => {
-        this._notification.error("Error encountered during search!");
       });
+      let response = <PagerResponse<NeedsReorderingPageItem>>data;
+      this.pager.count = response.count;
+      this.pager.items = response.items;
+      if (this.forPurchasing.purchaseAllBelowTarget) {
+        this.toggleSelectAll(true);
+      }
+    }
+    catch (error) {
+      this._notification.error("Error encountered during search!");
+    }
   }
 
   public toggleSelectAll(selectAll?: boolean): boolean {

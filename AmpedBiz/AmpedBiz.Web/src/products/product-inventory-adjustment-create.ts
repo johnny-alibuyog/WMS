@@ -10,14 +10,8 @@ import { UnitOfMeasure } from '../common/models/unit-of-measure';
 
 @autoinject
 export class ProductInventoryAdjustmentCreate {
-  private readonly _api: ServiceApi;
-  private readonly _controller: DialogController;
-  private readonly _notification: NotificationService;
-
   public header: string = 'Adjust Inventory';
-
-  public adjustment: InventoryAdjustment;
-
+  public adjustment: InventoryAdjustment = {};
   public canSave: boolean = true;
 
   public lookup = {
@@ -27,23 +21,18 @@ export class ProductInventoryAdjustmentCreate {
     reasons: <InventoryAdjustmentReason[]>[]
   }
 
-  constructor(api: ServiceApi, controller: DialogController, notification: NotificationService) {
-    this._api = api;
-    this._controller = controller;
-    this._notification = notification;
-    this.adjustment = <InventoryAdjustment>{
-
-    };
-  }
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _controller: DialogController,
+    private readonly _notification: NotificationService
+  ) { }
 
   public async activate(params: { inventoryId: string, productId: string }): Promise<void> {
     try {
-
       [this.lookup.inventory, this.lookup.types] = await Promise.all([
         this._api.products.getInventory(params.productId),
         this._api.inventories.getAdjustmentTypeLookup()
       ]);
-
       this.adjustment.inventoryId = params.inventoryId;
       this.adjustment.adjustedBy = this._api.auth.userAsLookup;
       this.adjustment.adjustedOn = new Date();
@@ -68,13 +57,12 @@ export class ProductInventoryAdjustmentCreate {
 
   public async save(): Promise<void> {
     try {
-      console.log('');
       let result = await this._notification.confirm('Do you want to save?').whenClosed();
       if (result.output === ActionResult.Yes) {
         this.adjustment.adjustedOn = new Date();
         let data = await this._api.inventories.createAdjustment(this.adjustment);
         await this._notification.success("Adjustment has been saved.").whenClosed();
-        this._controller.ok(data);
+        await this._controller.ok(data);
       }
     }
     catch (error) {

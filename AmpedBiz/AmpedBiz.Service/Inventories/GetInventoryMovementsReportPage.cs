@@ -98,10 +98,10 @@ namespace AmpedBiz.Service.Inventories
                     // TODO: this is not performant, this is just a work around on groupby count issue of nhibernate. find a solution soon
                     var totalItems = result
                         .Select(x => Dto.InventoryMovementsReportPageItem.Create(
-                                branchLookup: lookups.Branchs,
-                                productLookup: lookups.Products,
-                                unitLookup: lookups.Units,
-                                raw: x
+                            branchLookup: lookups.Branchs,
+                            productLookup: lookups.Products,
+                            unitLookup: lookups.Units,
+                            raw: x
                         ))
                         .ToList();
 

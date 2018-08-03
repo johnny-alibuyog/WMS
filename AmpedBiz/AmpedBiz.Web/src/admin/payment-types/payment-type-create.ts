@@ -7,20 +7,17 @@ import { ActionResult } from '../../common/controls/notification';
 
 @autoinject
 export class PaymentTypeCreate {
-  private _notification: NotificationService;
-  private _controller: DialogController;
-  private _service: PaymentTypeService;
 
   public header: string = 'Create Payment Type';
   public isEdit: boolean = false;
   public canSave: boolean = true;
   public paymentType: PaymentType;
 
-  constructor(notification: NotificationService, controller: DialogController, service: PaymentTypeService) {
-    this._notification = notification;
-    this._controller = controller;
-    this._service = service;
-  }
+  constructor(
+    private readonly _service: PaymentTypeService,
+    private readonly _controller: DialogController,
+    private readonly _notification: NotificationService,
+  ) { }
 
   public async activate(paymentType: PaymentType): Promise<void> {
     try {
@@ -52,7 +49,7 @@ export class PaymentTypeCreate {
           ? await this._service.update(this.paymentType)
           : await this._service.create(this.paymentType);
         await this._notification.success("Payment Type has been saved.").whenClosed();
-        this._controller.ok(<PaymentType>data)
+        await this._controller.ok(<PaymentType>data);
       }
     }
     catch (error) {

@@ -8,65 +8,60 @@ import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } fro
 
 @autoinject
 export class UnitOfMeasurePage {
-  private _api: ServiceApi;
-  private _dialog: DialogService;
-  private _notification: NotificationService;
 
-  public filter: Filter;
-  public sorter: Sorter;
-  public pager: Pager<UnitOfMeasurePageItem>;
+  public filter: Filter = new Filter();
+  public sorter: Sorter = new Sorter();
+  public pager: Pager<UnitOfMeasurePageItem> = new Pager<UnitOfMeasurePageItem>();
 
-  constructor(api: ServiceApi, dialog: DialogService, notification: NotificationService, filter: Filter, sorter: Sorter, pager: Pager<UnitOfMeasurePageItem>) {
-    this._api = api;
-    this._dialog = dialog;
-    this._notification = notification;
-
-    this.filter = filter;
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _dialog: DialogService,
+    private readonly _notification: NotificationService,
+  ) {
     this.filter["code"] = '';
     this.filter["name"] = '';
     this.filter.onFilter = () => this.getPage();
 
-    this.sorter = sorter;
     this.sorter["code"] = SortDirection.None;
     this.sorter["name"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
 
-    this.pager = pager;
     this.pager.onPage = () => this.getPage();
   }
 
-  activate() {
-    this.getPage();
+  public async activate(): Promise<void> {
+    await this.getPage();
   }
 
-  getPage() {
-    this._api.unitOfMeasures
-      .getPage({
+  public async getPage(): Promise<void> {
+    try {
+      let data = await this._api.unitOfMeasures.getPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager
-      })
-      .then(data => {
-        var response = <PagerResponse<UnitOfMeasurePageItem>>data;
-        this.pager.count = response.count;
-        this.pager.items = response.items;
-      })
-      .catch(error => {
-        this._notification.error("Error encountered during search!");
       });
+      var response = <PagerResponse<UnitOfMeasurePageItem>>data;
+      this.pager.count = response.count;
+      this.pager.items = response.items;
+    }
+    catch (error) {
+      this._notification.error("Error encountered during search!");
+    }
   }
 
-  create() {
-    this._dialog.open({ viewModel: UnitOfMeasureCreate, model: null })
-      .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
+  public async create(): Promise<void> {
+    let settings = { viewModel: UnitOfMeasureCreate, model: null };
+    let response = await this._dialog.open(settings).whenClosed();
+    if (!response.wasCancelled) await this.getPage();
   }
 
-  edit(item: UnitOfMeasure) {
-    this._dialog.open({ viewModel: UnitOfMeasureCreate, model: item })
-      .whenClosed(response => { if (!response.wasCancelled) this.getPage(); });
+  public async edit(item: UnitOfMeasure): Promise<void> {
+    let settings = { viewModel: UnitOfMeasureCreate, model: item };
+    let response = await this._dialog.open(settings).whenClosed(); 
+    if (!response.wasCancelled) await this.getPage();
   }
 
-  delete(item: any) {
+  public delete(item: any): void {
     /*
     var index = this.mockData.indexOf(item);
     if (index > -1) {

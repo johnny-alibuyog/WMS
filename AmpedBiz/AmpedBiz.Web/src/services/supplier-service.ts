@@ -12,21 +12,18 @@ export class SupplierService extends ServiceBase<Supplier> {
     super('suppliers', httpClient);
   }
 
-  getProductLookups(supplierId: string): Promise<Lookup<string>[]> {
+  public getProductLookups(supplierId: string): Promise<Lookup<string>[]> {
     var url = this._resouce + '/' + supplierId + '/product-lookups';
-    return this._httpClient.get(url)
-      .then(data => <Lookup<string>[]>data);
+    return this._httpClient.get(url);
   }
 
-  getLookups(): Promise<Lookup<string>[]> {
+  public getLookups(): Promise<Lookup<string>[]> {
     var url = "supplier-lookups";
-    return this._httpClient.get(url)
-      .then(data => <Lookup<string>[]>data);
+    return this._httpClient.get(url);
   }
 
-  getSupplierReportPage(page: PageRequest): Promise<PagerResponse<SupplierReportPageItem>> {
+  public getSupplierReportPage(page: PageRequest): Promise<PagerResponse<SupplierReportPageItem>> {
     var url = this._resouce + '/report/page';
-    return this._httpClient.post(url, page)
-      .then(response => <PagerResponse<SupplierReportPageItem>>response);
+    return this._httpClient.post(url, page);
   }
 }

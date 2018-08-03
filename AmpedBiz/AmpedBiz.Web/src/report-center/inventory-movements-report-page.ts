@@ -8,32 +8,24 @@ import { InventoryMovementsReportPageItem } from '../common/models/inventory';
 
 @autoinject
 export class InventoryMovementsReportPage {
-  private _api: ServiceApi;
-  private _report: InventoryMovementsReport;
-  private _notification: NotificationService;
 
   public header: string = ' Inventory Movements';
-
-  public filter: Filter;
-  public sorter: Sorter;
-  public pager: Pager<InventoryMovementsReportPageItem>;
-
+  public filter: Filter = new Filter();
+  public sorter: Sorter = new Sorter();
+  public pager: Pager<InventoryMovementsReportPageItem> = new Pager<InventoryMovementsReportPageItem>();
   public products: Lookup<string>[];
   public branches: Lookup<string>[];
 
-  constructor(api: ServiceApi, report: InventoryMovementsReport, notification: NotificationService) {
-    this._api = api;
-    this._report = report;
-    this._notification = notification;
-
-    this.filter = new Filter();
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _report: InventoryMovementsReport,
+    private readonly _notification: NotificationService
+  ) {
     this.filter["customerId"] = null;
     this.filter["branchId"] = null;
     this.filter["fromDate"] = null;
     this.filter["toDate"] = null;
     this.filter.onFilter = () => this.getPage();
-
-    this.sorter = new Sorter();
     this.sorter["paidOn"] = SortDirection.Ascending;
     this.sorter["branchName"] = SortDirection.None;
     this.sorter["customerName"] = SortDirection.None;
@@ -41,8 +33,6 @@ export class InventoryMovementsReportPage {
     this.sorter["totalAmount"] = SortDirection.None;
     this.sorter["balanceAmount"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
-
-    this.pager = new Pager<InventoryMovementsReportPageItem>();
     this.pager.onPage = () => this.getPage();
   }
 
@@ -51,8 +41,7 @@ export class InventoryMovementsReportPage {
       this._api.products.getLookups(),
       this._api.branches.getLookups()
     ]);
-
-    this.getPage();
+    await this.getPage();
   }
 
   public async generateReport(): Promise<void> {

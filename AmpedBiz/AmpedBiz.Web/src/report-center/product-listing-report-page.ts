@@ -8,27 +8,21 @@ import { ProductListingReport, ProductListingReportModel, ProductListingReportIt
 
 @autoinject
 export class ProductListingReportPage {
-  private _api: ServiceApi;
-  private _report: ProductListingReport;
-  private _notification: NotificationService;
 
   public header: string = ' Products Delivered';
-
-  public filter: Filter;
-  public sorter: Sorter;
-  public pager: Pager<ProductListingReportPageItem>;
-
+  public filter: Filter = new Filter();
+  public sorter: Sorter = new Sorter();
+  public pager: Pager<ProductListingReportPageItem> = new Pager<ProductListingReportPageItem>();
   public branches: Lookup<string>[];
   public categories: Lookup<string>[];
   public suppliers: Lookup<string>[];
   public products: Lookup<string>[];
 
-  constructor(api: ServiceApi, report: ProductListingReport, notification: NotificationService) {
-    this._api = api;
-    this._report = report;
-    this._notification = notification;
-
-    this.filter = new Filter();
+  constructor(
+    private readonly _api: ServiceApi,
+    private readonly _report: ProductListingReport,
+    private readonly _notification: NotificationService,
+  ) {
     this.filter["customerId"] = null;
     this.filter["categoryId"] = null;
     this.filter["supplierId"] = null;
@@ -36,16 +30,12 @@ export class ProductListingReportPage {
     this.filter["fromDate"] = null;
     this.filter["toDate"] = null;
     this.filter.onFilter = () => this.getPage();
-
-    this.sorter = new Sorter();
     this.sorter["branchName"] = SortDirection.None;
     this.sorter["supplierName"] = SortDirection.None;
     this.sorter["categoryName"] = SortDirection.None;
     this.sorter["productName"] = SortDirection.Ascending;
     this.sorter["unitOfMeasure"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
-
-    this.pager = new Pager<ProductListingReportPageItem>();
     this.pager.onPage = () => this.getPage();
   }
 
@@ -61,8 +51,7 @@ export class ProductListingReportPage {
       this._api.suppliers.getLookups(),
       this._api.products.getLookups(),
     ]);
-
-    this.getPage();
+    await this.getPage();
   }
 
   public async generateReport(): Promise<void> {
@@ -102,7 +91,7 @@ export class ProductListingReportPage {
           suggestedRetailPriceAmount: x.suggestedRetailPriceAmount,
         })
       };
-      this._report.show(reportModel)
+      await this._report.show(reportModel)
     }
     catch (error) {
       this._notification.error("Error encountered during report generation!");
@@ -116,7 +105,6 @@ export class ProductListingReportPage {
         sorter: this.sorter,
         pager: <PagerRequest>this.pager
       });
-
       let response = <PagerResponse<ProductListingReportPageItem>>data;
       this.pager.count = response.count;
       this.pager.items = response.items;
