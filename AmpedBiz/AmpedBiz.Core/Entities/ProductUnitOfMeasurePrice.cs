@@ -4,6 +4,8 @@ using System.Linq;
 
 namespace AmpedBiz.Core.Entities
 {
+    // TODO: Pricing should be per branch
+
     public class ProductUnitOfMeasurePrice : Entity<Guid, ProductUnitOfMeasurePrice>
     {
         public virtual ProductUnitOfMeasure ProductUnitOfMeasure { get; protected internal set; }
