@@ -16,6 +16,21 @@ namespace AmpedBiz.Common.Extentions
             ((ICollection<T>)items).Add(value);
         }
 
+        public static IEnumerable<T> Append<T>(this IEnumerable<T> items, T value)
+        {
+            ((ICollection<T>)items).Add(value);
+
+            return items;
+        }
+
+        public static IEnumerable<T> AddIfHasValue<T>(this IEnumerable<T> items, T value)
+        {
+            if (!EqualityComparer<T>.Default.Equals(value, default(T)))
+                ((ICollection<T>)items).Add(value);
+
+            return items;
+        }
+
         public static void Remove<T>(this IEnumerable<T> items, T value)
         {
             ((ICollection<T>)items).Remove(value);

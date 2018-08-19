@@ -235,6 +235,8 @@ namespace AmpedBiz.Service.Dto
 
         public string CategoryName { get; set; }
 
+        public string UnitOfMeasureName { get; set; }
+
         public decimal? AvailableValue { get; set; }
 
         public decimal? ReorderLevelValue { get; set; }

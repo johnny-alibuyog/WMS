@@ -6,6 +6,7 @@ using LinqToExcel;
 using NHibernate;
 using NHibernate.Linq;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 
@@ -58,7 +59,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             }
         }
 
-        public IEnumerable<UnitOfMeasure> GetUOMsFromDefaultFile(IContext context)
+        public IReadOnlyCollection<UnitOfMeasure> GetUOMsFromDefaultFile(IContext context)
         {
             var uoms = new List<UnitOfMeasure>();
 
@@ -78,35 +79,18 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             return uoms;
         }
 
-        public IEnumerable<UnitOfMeasure> GetUOMsFromProductList(IContext context)
+        public IReadOnlyCollection<UnitOfMeasure> GetUOMsFromProductList(IContext context)
         {
             var uoms = new List<UnitOfMeasure>();
 
-            var filename = Path.Combine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath, context.TenantId, @"default_products.xlsx");
+            var filename = Path.Combine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath, context.TenantId, @"products.xlsx");
 
             if (File.Exists(filename))
             {
-                var raw = new ExcelQueryFactory(filename)
+                uoms = new ExcelQueryFactory(filename)
                     .Worksheet()
-                    .Select(x => new
-                    {
-                        PieceUOM = x["Piece UOM"].ToString(),
-                        PackageUOM = x["Package UOM"].ToString(),
-                    })
-                    .ToList();
-
-                uoms = 
-                    (
-                        raw
-                            .Where(x => !string.IsNullOrWhiteSpace(x.PieceUOM))
-                            .Select(x => new UnitOfMeasure(id: x.PieceUOM, name: x.PieceUOM))
-                    )
-                    .Concat
-                    (
-                        raw
-                            .Where(x => !string.IsNullOrWhiteSpace(x.PackageUOM))
-                            .Select(x => new UnitOfMeasure(x.PackageUOM, x.PackageUOM))
-                    )
+                    .ExtractRawProducts()
+                    .ExtractUnitOfMeasures()
                     .ToList();
             }
 

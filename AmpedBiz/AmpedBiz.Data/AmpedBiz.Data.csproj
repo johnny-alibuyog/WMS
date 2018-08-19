@@ -195,8 +195,7 @@
     <Compile Include="Seeders\DefaultDataSeeders\_015_UnitOfMeasureSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_016_InventoryAdjustmentReasonSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_020_DefaultSupplierSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_021_DefaultProductSeeder.cs" />
-    <Compile Include="Seeders\DefaultDataSeeders\_022_DefaultInventoryEnding.cs" />
+    <Compile Include="Seeders\DefaultDataSeeders\_021_1_ProductSeeder.cs" />
     <Compile Include="Seeders\DefaultDataSeeders\_023_DefaultCustomerSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_000_BranchSeeder.cs" />
     <Compile Include="Seeders\DummyDataSeeders\_001_SupplierSeeder.cs" />

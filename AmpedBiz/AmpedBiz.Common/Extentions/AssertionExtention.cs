@@ -66,22 +66,28 @@ namespace AmpedBiz.Common.Extentions
 
     public static class EnsureExtention
     {
-        public static void Ensure<T>(this T instance, Predicate<T> that, string message)
+        public static T Ensure<T>(this T instance, Predicate<T> that, string message)
         {
             if (!that(instance))
                 throw new BusinessException(message);
+
+            return instance;
         }
 
-        public static void Ensure<T>(this T instance, Predicate<T> that, Func<T, string> messageBuilder)
+        public static T Ensure<T>(this T instance, Predicate<T> that, Func<T, string> messageBuilder)
         {
             if (!that(instance))
                 throw new BusinessException(messageBuilder(instance));
+
+            return instance;
         }
 
-        public static void Ensure<T>(this T instance, Predicate<T> that, Exception exception)
+        public static T Ensure<T>(this T instance, Predicate<T> that, Exception exception)
         {
             if (!that(instance))
                 throw exception;
+
+            return instance;
         }
 
         public static void Assert(this bool exists, string message)
@@ -98,30 +104,28 @@ namespace AmpedBiz.Common.Extentions
         }
 
 
-        public static void EnsureExistence<T>(this T entity, string message)
+        public static T EnsureExistence<T>(this T entity, string message)
         {
             if (string.IsNullOrWhiteSpace(message))
             {
                 message = $"{typeof(T).Name} does not exists";
             }
 
-            if (entity == null)
-            {
-                throw new ResourceNotFoundException(message);
-            }
+            entity.Ensure(that: instance => !instance.IsNullOrDefault(), exception: new ResourceNotFoundException(message));
+
+            return entity;
         }
 
-        public static void EnsureExistence<T>(this IEnumerable<T> entities, string message)
+        public static IEnumerable<T> EnsureExistence<T>(this IEnumerable<T> entities, string message)
         {
             if (string.IsNullOrWhiteSpace(message))
             {
                 message = $"{typeof(T).Name} does not exists";
             }
 
-            if (entities == null || !entities.Any())
-            {
-                throw new ResourceNotFoundException(message);
-            }
+            entities.Ensure(that: instance => !instance.IsNullOrEmpty(), exception: new ResourceNotFoundException(message));
+
+            return entities;
         }
     }
 }

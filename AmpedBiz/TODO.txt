@@ -1,5 +1,6 @@
 - Make typescript Promise async
 - NHibernate Session usage should go to base class RequestHandlerBase
+- Fix multitenancy for data seeding
 - When fething multiple aggregates from root, introduce multiple futures since one query will result into a unwanted multiple result sets (un performant)
 - Rename reports files CustumerReport CustomerListingReport
 - Rename reports files SupplierReport SupplierListingReport

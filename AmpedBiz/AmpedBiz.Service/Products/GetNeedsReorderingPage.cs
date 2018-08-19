@@ -31,8 +31,11 @@ namespace AmpedBiz.Service.Products
                 {
                     var query = session.Query<Inventory>()
                         .Where(x =>
-                            (x.CurrentLevel == null && x.ReorderLevel != null) ||
-                            (x.CurrentLevel.Value <= x.ReorderLevel.Value)
+                            (x.ReorderLevel != null && x.ReorderLevel.Value > 0M) &&
+                            (
+                                (x.CurrentLevel == null) ||
+                                (x.CurrentLevel.Value <= x.ReorderLevel.Value)
+                            )
                         );
 
                     // compose filters
@@ -147,11 +150,18 @@ namespace AmpedBiz.Service.Products
                         .List().ToDictionary(x => x.Id);
 
 
-                    var getConvertedValue = new Func<Guid, Measure, decimal?>((key, measure) =>
+                    var getConvertedValue = new Func<Guid, Measure, decimal?>((productId, measure) =>
                     {
                         return (message.UseDefaultUnitOfMeasure == null || message.UseDefaultUnitOfMeasure.Value)
-                            ? products[key].ConvertToDefaultValue(measure)
-                            : products[key].ConvertToStandardValue(measure);
+                            ? products[productId].ConvertToDefaultValue(measure)
+                            : products[productId].ConvertToStandardValue(measure);
+                    });
+
+                    var getUnitOfMeasure = new Func<Guid, string>((productId) =>
+                    {
+                        return (message.UseDefaultUnitOfMeasure == null || message.UseDefaultUnitOfMeasure.Value)
+                            ? products[productId].UnitOfMeasures.Default(x => x.UnitOfMeasure.Name)
+                            : products[productId].UnitOfMeasures.Standard(x => x.UnitOfMeasure.Name);
                     });
 
                     var items = itemsRawFuture
@@ -162,6 +172,7 @@ namespace AmpedBiz.Service.Products
                             ProductCode = x.ProductCode,
                             SupplierName = x.SupplierName,
                             CategoryName = x.CategoryName,
+                            UnitOfMeasureName = getUnitOfMeasure(x.ProductId),
                             ReorderLevelValue = getConvertedValue(x.ProductId, x.ReorderLevel),
                             AvailableValue = getConvertedValue(x.ProductId, x.Available),
                             CurrentLevelValue = getConvertedValue(x.ProductId, x.CurrentLevel),

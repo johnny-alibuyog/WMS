@@ -138,6 +138,7 @@ export interface NeedsReorderingPageItem {
   productName?: string;
   supplierName?: string;
   categoryName?: string;
+  unitOfMeasureName?: string;
   reorderLevelValue?: number;
   availableValue?: number;
   currentLevelValue?: number;

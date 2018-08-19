@@ -65,6 +65,7 @@
                     <i class="fa fa-fw fa-${sorter.class(sorter['categoryName'])}"></i>Category
                   </th>
                   -->
+                  <th class="col-md-1">Unit</th>
                   <th class="col-md-1 text-right" click.delegate="sorter.doSort('reorderLevel')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['reorderLevel'])}"></i>Reorder Level
                   </th>
@@ -88,6 +89,7 @@
                   <td><input type="checkbox" model.bind="item.id" checked.bind="forPurchasing.selectedProductIds" /> ${item.productName}</td>
                   <td>${item.supplierName}</td>
                   <!--<td>${item.categoryName}</td>-->
+                  <td>${item.unitOfMeasureName}</td>
                   <td class="text-right">${item.reorderLevelValue | numberFormat:'0,0'}</td>
                   <td class="text-right">${item.availableValue | numberFormat:'0,0'}</td>
                   <td class="text-right">${item.currentLevelValue | numberFormat:'0,0'}</td>

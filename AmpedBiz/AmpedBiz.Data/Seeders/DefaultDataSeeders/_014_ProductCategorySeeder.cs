@@ -1,7 +1,11 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Common.Configurations;
+using AmpedBiz.Core.Entities;
 using AmpedBiz.Data.Context;
+using LinqToExcel;
 using NHibernate;
 using NHibernate.Linq;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
@@ -28,7 +32,9 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             {
                 var entities = session.Query<ProductCategory>().Cacheable().ToList();
 
-                foreach (var item in ProductCategory.All)
+                var entitiesToImport = this.GetProductCategoryFromProductFile(context) ?? ProductCategory.All;
+
+                foreach (var item in entitiesToImport)
                 {
                     if (!entities.Contains(item))
                     {
@@ -40,6 +46,24 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 transaction.Commit();
                 _sessionFactory.ReleaseSharedSession();
             }
+        }
+
+        private IReadOnlyCollection<ProductCategory> GetProductCategoryFromProductFile(IContext context)
+        {
+            var categories = (List<ProductCategory>)null;
+
+            var filename = Path.Combine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath, context.TenantId, @"products.xlsx");
+
+            if (File.Exists(filename))
+            {
+                categories = new ExcelQueryFactory(filename)
+                    .Worksheet()
+                    .ExtractRawProducts()
+                    .ExtractProductCategories()
+                    .ToList();
+            }
+
+            return categories;
         }
     }
 }
