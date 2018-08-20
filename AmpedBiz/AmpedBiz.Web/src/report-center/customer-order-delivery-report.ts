@@ -26,7 +26,7 @@ export class CustomerOrderDeliveryReport extends Report<CustomerOrderDeliveryRep
 
   public constructor() {
     super();
-    this.option.pageOrientation = 'landscape';
+    //this.option.pageOrientation = 'landscape';
   }
   protected async buildBody(data: CustomerOrderDeliveryReportModel): Promise<any[] | Content[]> {
     let orderTableBody: any[] = [

@@ -110,7 +110,6 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 _sessionFactory.ReleaseSharedSession();
             }
         }
-
     }
 
     internal class ProductImportModel
@@ -302,7 +301,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                             pricing: pricingLookup[Pricing.BasePrice.Id],
                             price: new Money(
                                 currency: currency,
-                                amount: Convert.ToDecimal(instance.CostPricePerPackage)
+                                amount: Convert.ToDecimal(instance.CostPricePerPiece)
                             )
                         ),
                         new ProductUnitOfMeasurePrice(
@@ -310,7 +309,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                             pricing: pricingLookup[Pricing.WholesalePrice.Id],
                             price: new Money(
                                 currency: currency,
-                                amount:  Convert.ToDecimal(instance.WholesalePricePerPackage)
+                                amount:  Convert.ToDecimal(instance.WholesalePricePerPiece)
                             )
                         ),
                         new ProductUnitOfMeasurePrice(
@@ -318,7 +317,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                             pricing: pricingLookup[Pricing.RetailPrice.Id],
                             price: new Money(
                                 currency: currency,
-                                amount:  0M
+                                amount:  Convert.ToDecimal(instance.SuggestedRetailPrice)
                             )
                         ),
                         new ProductUnitOfMeasurePrice(
@@ -326,7 +325,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                             pricing: pricingLookup[Pricing.SuggestedRetailPrice.Id],
                             price: new Money(
                                 currency: currency,
-                                amount:  Convert.ToDecimal(instance.SuggestedRetailPrice)
+                                amount:  0M //Convert.ToDecimal(instance.SuggestedRetailPrice)
                             )
                         ),
                         new ProductUnitOfMeasurePrice(
