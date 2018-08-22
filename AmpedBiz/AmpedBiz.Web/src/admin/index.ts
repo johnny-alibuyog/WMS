@@ -129,7 +129,7 @@ export class Index {
       },
       {
         route: [""],
-        redirect: "branch-page"
+        redirect: "customer-page"
       }
     ]);
 
