@@ -2,6 +2,7 @@
 import { PageConfig } from './common/controls/pager';
 
 var apiHosts = {
+  'nicont130server': 'http://nicont130server/ampbiz/api/',
   'localhost': 'http://localhost:49561',
   'ampbiz': 'http://ampbiz/api',
   'ampbiz.local': 'http://ampbiz-api.local',

@@ -102,6 +102,7 @@ export class Shell {
           auth: <AuthSettings>{
             roles: [
               role.admin,
+              role.manager,
             ]
           }
         },
