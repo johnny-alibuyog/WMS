@@ -47,7 +47,7 @@ namespace AmpedBiz.Data.Configurations
         public bool OnPreDelete(PreDeleteEvent @event)
         {
             // no implemetation yet
-            return true;
+            return false;
         }
 
         public void OnPreRemoveCollection(PreCollectionRemoveEvent @event)
