@@ -4,7 +4,7 @@ namespace AmpedBiz.Core.Services.Inventories.PurchaseOrders
 {
     public class RetractOrderedVisitor : IVisitor<Inventory>
     {
-        public virtual Measure Remaining { get; set; }
+        public virtual Measure QuantityStandardEquivalent { get; set; }
 
         public virtual PurchaseOrderStatus Status { get; set; }
 
@@ -13,7 +13,7 @@ namespace AmpedBiz.Core.Services.Inventories.PurchaseOrders
             if (this.Status < PurchaseOrderStatus.Approved)
                 return;
 
-            target.OnOrder -= this.Remaining;
+            target.OnOrder -= this.QuantityStandardEquivalent;
             target.Accept(new InventoryRecomputeVisitor());
         }
     }

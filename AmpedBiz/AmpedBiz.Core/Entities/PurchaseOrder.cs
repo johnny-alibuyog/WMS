@@ -70,6 +70,10 @@ namespace AmpedBiz.Core.Entities
 
         public virtual DateTime? CreatedOn { get; internal protected set; }
 
+        public virtual DateTime? ModifiedBackOn { get; internal protected set; }
+
+        public virtual User ModifiedBackBy { get; internal protected set; }
+
         public virtual User SubmittedBy { get; internal protected set; }
 
         public virtual DateTime? SubmittedOn { get; internal protected set; }

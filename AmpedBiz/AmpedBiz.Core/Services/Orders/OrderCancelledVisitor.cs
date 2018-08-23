@@ -1,5 +1,4 @@
-﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Inventories.Orders;
 using AmpedBiz.Core.Services.Products;
 using System;
@@ -37,7 +36,7 @@ namespace AmpedBiz.Core.Services.Orders
 
                 case OrderStatus.Shipped:
                     // NOTE: when order has been shipped and was cancelled, 
-                    // items should be go through returns
+                    // items should go through returns
                     break;
             }
 

@@ -63,6 +63,8 @@ export interface Order {
   status?: OrderStatus;
   orderedOn?: Date;
   orderedBy?: Lookup<string>;
+  modifiedBackOn?: Date;
+  modifiedBackBy?: Lookup<string>;
   createdOn?: Date;
   createdBy?: Lookup<string>;
   stagedOn?: Date

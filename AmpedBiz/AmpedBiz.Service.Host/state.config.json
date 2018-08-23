@@ -12,6 +12,7 @@
     },
     "Invoiced": {
       "AllowedTransitions": [
+        "New",
         "Staged",
         "Cancelled"
       ],
@@ -21,6 +22,7 @@
     },
     "Staged": {
       "AllowedTransitions": [
+        "New",
         "Shipped",
         "Cancelled"
       ],
@@ -52,7 +54,6 @@
   "PurchaseOrderConfig": {
     "New": {
       "AllowedTransitions": [
-        "New",
         "Submitted",
         "Cancelled"
       ],

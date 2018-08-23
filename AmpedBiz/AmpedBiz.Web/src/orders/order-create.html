@@ -23,6 +23,10 @@
               <i class="fa fa-check"></i> Save
             </button>
 
+            <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'new'" disabled.bind="!canModifyBack" click.trigger="modifyBack()">
+              <i class="fa fa-check"></i> Modify Back
+            </button>
+
             <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'staged'" disabled.bind="!canStage" click.trigger="stage()">
               <i class="fa fa-check"></i> Stage
             </button>

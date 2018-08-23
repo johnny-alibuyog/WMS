@@ -129,6 +129,13 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpPost()]
+        [Route("{id}/modified-back")]
+        public async Task<ModifyBackOrder.Response> Process([FromUri]Guid id, [FromBody]ModifyBackOrder.Request request)
+        {
+            return await _mediator.Send(request ?? new ModifyBackOrder.Request());
+        }
+
+        [HttpPost()]
         [Route("{id}/shipped")]
         public async Task<ShipOrder.Response> Process([FromUri]Guid id, [FromBody]ShipOrder.Request request)
         {

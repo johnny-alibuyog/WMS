@@ -142,6 +142,16 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
     });
   }
 
+  public modifyBack(purchaseOrder: PurchaseOrder): Promise<PurchaseOrder> {
+    var url = this._resouce + '/' + purchaseOrder.id + '/modified-back';
+    return this._httpClient.post(url, <PurchaseOrder>{
+      id: purchaseOrder.id,
+      modifiedBackBy: this._auth.userAsLookup,
+      modifiedBackOn: new Date()
+    });
+  }
+
+  // TODO: deprecate this method soon. modify back is the appropriate action
   public reject(purchaseOrder: PurchaseOrder): Promise<PurchaseOrder> {
     var url = this._resouce + '/' + purchaseOrder.id + '/new';
     return this._httpClient.patch(url, <PurchaseOrder>{

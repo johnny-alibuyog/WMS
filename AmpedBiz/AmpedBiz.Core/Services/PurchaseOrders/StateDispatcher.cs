@@ -37,6 +37,14 @@ namespace AmpedBiz.Core.Services.PurchaseOrders
             this._target.Accept(visitor);
         }
 
+        private void Process(PurchaseOrderModifyBackVisitor visitor)
+        {
+            if (!this.Stage.IsTransitionAllowedTo(PurchaseOrderStatus.New))
+                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "modify back", this._target.Status));
+
+            this._target.Accept(visitor);
+        }
+
         private void Process(PurchaseOrderApprovedVisitor visitor)
         {
             if (!this.Stage.IsTransitionAllowedTo(PurchaseOrderStatus.Approved))

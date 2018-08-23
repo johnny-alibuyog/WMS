@@ -55,6 +55,10 @@ namespace AmpedBiz.Service.Dto
 
         public DateTime? CreatedOn { get; set; }
 
+        public DateTime? ModifiedBackOn { get; set; }
+
+        public Lookup<Guid> ModifiedBackBy { get; set; }
+
         public Lookup<Guid> SubmittedBy { get; set; }
 
         public DateTime? SubmittedOn { get; set; }

@@ -80,6 +80,10 @@ namespace AmpedBiz.Core.Entities
 
         public virtual User OrderedBy { get; internal protected set; }
 
+        public virtual DateTime? ModifiedBackOn { get; internal protected set; }
+
+        public virtual User ModifiedBackBy { get; internal protected set; }
+
         public virtual DateTime? CreatedOn { get; internal protected set; }
 
         public virtual User CreatedBy { get; internal protected set; }

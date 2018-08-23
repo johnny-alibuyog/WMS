@@ -40,6 +40,7 @@ namespace AmpedBiz.Common.Configurations
                     },
                     AllowedTransitions = new string[]
                     {
+                        Order.Status.New,
                         Order.Status.Staged,
                         Order.Status.Cancelled,
                     }
@@ -54,6 +55,7 @@ namespace AmpedBiz.Common.Configurations
                     },
                     AllowedTransitions = new string[]
                     {
+                        Order.Status.New,
                         Order.Status.Shipped,
                         Order.Status.Cancelled,
                     }
@@ -114,7 +116,6 @@ namespace AmpedBiz.Common.Configurations
                     },
                     AllowedTransitions = new string[]
                     {
-                        PurchaseOrder.Status.New,
                         PurchaseOrder.Status.Submitted,
                         PurchaseOrder.Status.Cancelled,
                     }

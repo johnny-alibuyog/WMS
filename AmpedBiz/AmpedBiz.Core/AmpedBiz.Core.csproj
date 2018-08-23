@@ -120,6 +120,7 @@
     <Compile Include="Services\Orders\OrderCancelledVisitor.cs" />
     <Compile Include="Services\Orders\OrderCompletedVisitor.cs" />
     <Compile Include="Services\Orders\OrderInvoicedVisitor.cs" />
+    <Compile Include="Services\Orders\OrderModifiedBackVisitor.cs" />
     <Compile Include="Services\Orders\OrderRoutedVisitor.cs" />
     <Compile Include="Services\Orders\OrderShippedVisitor.cs" />
     <Compile Include="Services\Orders\OrderStagedVisitor.cs" />
@@ -146,6 +147,7 @@
     <Compile Include="Services\PurchaseOrders\PurchaseOrderCancelledVisitor.cs" />
     <Compile Include="Services\PurchaseOrders\PurchaseOrderCompletedVisitor.cs" />
     <Compile Include="Services\PurchaseOrders\PurchaseOrderLogTransactionVisitor.cs" />
+    <Compile Include="Services\PurchaseOrders\PurchaseOrderModifyBackVisitor.cs" />
     <Compile Include="Services\PurchaseOrders\PurchaseOrderSubmittedVisitor.cs" />
     <Compile Include="Services\PurchaseOrders\PurchaseOrderUpdateItemsVisitor.cs" />
     <Compile Include="Services\PurchaseOrders\PurchaseOrderUpdatePaymentsVisitor.cs" />

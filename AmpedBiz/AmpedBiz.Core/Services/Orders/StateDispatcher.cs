@@ -41,6 +41,14 @@ namespace AmpedBiz.Core.Services.Orders
             this._target.Accept(visitor);
         }
 
+        private void Process(OrderModifiedBackVisitor visitor)
+        {
+            if (!this.Stage.IsTransitionAllowedTo(OrderStatus.New))
+                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "modify back", this._target.Status));
+
+            this._target.Accept(visitor);
+        }
+
         private void Process(OrderRoutedVisitor visitor)
         {
             if (!this.Stage.IsTransitionAllowedTo(OrderStatus.Routed))

@@ -24,6 +24,7 @@ export class PurchaseOrderCreate {
   public header: string = 'Purchase Order';
 
   public readonly canSave: boolean = true;
+  public readonly canModifyBack: boolean = true;
   public readonly canAddItem: boolean = true;
   public readonly canAddPayment: boolean = true;
   public readonly canAddReceipt: boolean = true;
@@ -48,6 +49,7 @@ export class PurchaseOrderCreate {
     private readonly _sessionData: SessionData,
   ) {
     this.canSave = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
+    this.canModifyBack = this._auth.isAuthorized([role.admin, role.manager]);
     this.canAddItem = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
     this.canAddPayment = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
     this.canAddReceipt = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
@@ -333,6 +335,19 @@ export class PurchaseOrderCreate {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  }
+
+  public async modifyBack(): Promise<void> {
+    try {
+      let result = await this._notification.confirm('Do you want to modify back the purchase order? This will go back to "New" stage.').whenClosed();
+      if (result.output === ActionResult.Yes) {
+        let data = await this._api.purchaseOrders.modifyBack(this.purchaseOrder);
+        this.resetAndNoify(data, 'You can now modify back the purchase order. It is under "New" stage.');
+      }
+    }
+    catch (error) {
+      this._notification.warning(error);
+    }
   }
 
   public async reject(): Promise<void> {

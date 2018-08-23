@@ -100,6 +100,13 @@ namespace AmpedBiz.Service.Host.Controllers
             return await _mediator.Send(request ?? new ApprovePurchaseOder.Request());
         }
 
+        [HttpPost()]
+        [Route("{id}/modified-back")]
+        public async Task<ModifyBackPurchaseOder.Response> Process([FromUri]Guid id, [FromBody]ModifyBackPurchaseOder.Request request)
+        {
+            return await _mediator.Send(request ?? new ModifyBackPurchaseOder.Request());
+        }
+
         [HttpGet()]
         [Route("{id}/receivables")]
         public async Task<GetPurchaseOrderReceivableList.Response> Process([FromUri]GetPurchaseOrderReceivableList.Request request)

@@ -25,6 +25,10 @@
               <i class="fa fa-check"></i> Save
             </button>
 
+            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'new'" disabled.bind="!canModifyBack" click.trigger="modifyBack()">
+              <i class="fa fa-check"></i> Modify Back
+            </button>
+
             <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'submitted'" disabled.bind="!canSubmit" click.trigger="submit()">
               <i class="fa fa-check"></i> Submit
             </button>

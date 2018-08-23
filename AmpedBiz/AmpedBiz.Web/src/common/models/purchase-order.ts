@@ -56,6 +56,8 @@ export interface PurchaseOrder {
   expectedOn?: Date;
   createdBy?: Lookup<string>;
   createdOn?: Date;
+  modifiedBackOn?: Date;
+  modifiedBackBy?: Lookup<string>;
   submittedBy?: Lookup<string>;
   submittedOn?: Date;
   closedBy?: Lookup<string>;

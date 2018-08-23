@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace AmpedBiz.Core.Services.Products
 {
+    // TODO: For performance reasons, remove this soon. This results in a n+1 query since product inventories is navigated to.
     public class SearchAndApplyVisitor : IVisitor<Product>
     {
         public virtual Branch Branch { get; set; }

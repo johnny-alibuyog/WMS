@@ -18,10 +18,10 @@
         <tr repeat.for="item of paymentPager.items" click.delegate="editItem(item)">
           <td>
             <a href="javascript:undefined" class="text-info" click.delegate="editItem(item)">
-              <i class="fa fa-pencil"></i>
+              <i class="fa fa-pencil ${isModificationDisallowed ? 'fa-disabled' : ''}"></i>
             </a>
             <a href="javascript:undefined" class="text-danger" click.delegate="deleteItem(item)">
-              <i class="fa fa-times"></i>
+              <i class="fa fa-times ${isModificationDisallowed ? 'fa-disabled' : ''}"></i>
             </a>
           </td>
 

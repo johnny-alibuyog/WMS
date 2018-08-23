@@ -57,6 +57,10 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 References(x => x.OrderedBy);
 
+                Map(x => x.ModifiedBackOn);
+
+                References(x => x.ModifiedBackBy);
+
                 Map(x => x.CreatedOn);
 
                 References(x => x.CreatedBy);
@@ -174,6 +178,10 @@ namespace AmpedBiz.Data.EntityDefinitions
                     .NotNullable();
 
                 Define(x => x.DueOn);
+
+                Define(x => x.ModifiedBackOn);
+
+                Define(x => x.ModifiedBackBy);
 
                 Define(x => x.OrderedOn);
 

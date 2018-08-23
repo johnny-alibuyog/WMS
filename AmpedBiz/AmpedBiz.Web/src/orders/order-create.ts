@@ -22,6 +22,7 @@ export class OrderCreate {
   public header: string = 'Order';
 
   public readonly canSave: boolean = true;
+  public readonly canModifyBack: boolean = true;
   public readonly canAddItem: boolean = true;
   public readonly canAddReturn: boolean = true;
   public readonly canAddPayment: boolean = true;
@@ -52,6 +53,7 @@ export class OrderCreate {
     private readonly _invoiceReport: InvoiceReport
   ) {
     this.canSave = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
+    this.canModifyBack = this._auth.isAuthorized([role.admin, role.manager]);
     this.canAddItem = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
     this.canAddReturn = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
     this.canAddPayment = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
@@ -213,6 +215,19 @@ export class OrderCreate {
       if (result.output === ActionResult.Yes) {
         let data = await this._api.orders.stage(this.order);
         this.resetAndNoify(data, "Order has been staged.");
+      }
+    }
+    catch (error) {
+      this._notification.warning(error);
+    }
+  }
+
+  public async modifyBack(): Promise<void> {
+    try {
+      let result = await this._notification.confirm('Do you want to modify back the  order? This will go back to "New" stage.').whenClosed();
+      if (result.output === ActionResult.Yes) {
+        let data = await this._api.orders.modifyBack(this.order);
+        this.resetAndNoify(data, 'You can now modify back the purchase order. It is under "New" stage.');
       }
     }
     catch (error) {
