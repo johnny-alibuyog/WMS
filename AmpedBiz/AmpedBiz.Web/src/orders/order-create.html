@@ -23,8 +23,8 @@
               <i class="fa fa-check"></i> Save
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'new'" disabled.bind="!canModifyBack" click.trigger="modifyBack()">
-              <i class="fa fa-check"></i> Modify Back
+            <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'created'" disabled.bind="!canRecreate" click.trigger="recreate()">
+              <i class="fa fa-check"></i> Recreate
             </button>
 
             <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'staged'" disabled.bind="!canStage" click.trigger="stage()">

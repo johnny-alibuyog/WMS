@@ -188,6 +188,9 @@ export class PurchaseOrderItemPage {
     if (this.isModificationDisallowed) {
       return;
     }
+    if (this.selectedItem === item) {
+      return;
+    }
 
     if (!item.unitOfMeasures || item.unitOfMeasures.length == 0) {
       let data = await this.getProductInventory(item.product);
@@ -196,8 +199,7 @@ export class PurchaseOrderItemPage {
       }
     }
 
-    if (this.selectedItem !== item)
-      this.selectedItem = item;
+    this.selectedItem = item;
   }
 
   public deleteItem(item: PurchaseOrderItem): void {

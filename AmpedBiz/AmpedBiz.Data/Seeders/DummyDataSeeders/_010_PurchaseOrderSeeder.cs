@@ -61,7 +61,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
         {
             try
             {
-                if (this.Exists(x => x.Status == PurchaseOrderStatus.New))
+                if (this.Exists(x => x.Status == PurchaseOrderStatus.Created))
                     return null;
 
                 return new Pipeline<IEnumerable<PurchaseOrder>>()

@@ -1,4 +1,3 @@
-import { Dictionary } from '../custom_types/dictionary';
 import { Lookup } from '../custom_types/lookup';
 import { Measure } from "./measure";
 import { StageDefinition } from './stage-definition';
@@ -25,7 +24,7 @@ export const purchaseOrderEvents = {
 }
 
 export enum PurchaseOrderStatus {
-  new = 1,
+  created = 1,
   submitted = 2,
   approved = 3,
   completed = 4,
@@ -56,8 +55,8 @@ export interface PurchaseOrder {
   expectedOn?: Date;
   createdBy?: Lookup<string>;
   createdOn?: Date;
-  modifiedBackOn?: Date;
-  modifiedBackBy?: Lookup<string>;
+  recreatedOn?: Date;
+  recreatedBy?: Lookup<string>;
   submittedBy?: Lookup<string>;
   submittedOn?: Date;
   closedBy?: Lookup<string>;

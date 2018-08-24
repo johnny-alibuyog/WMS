@@ -11,13 +11,13 @@ export class Index {
     config.title = "Purchases";
     config.map([
       {
-        route: ['', 'new-page'],
-        name: 'new-page',
+        route: ['', 'created-page'],
+        name: 'created-page',
         moduleId: './purchase-order-page',
         nav: true,
-        title: 'New',
+        title: 'Created',
         settings: {
-          status: PurchaseOrderStatus.new,
+          status: PurchaseOrderStatus.created,
           auth: <AuthSettings>{
             roles: role.all()
           }

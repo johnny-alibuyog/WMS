@@ -109,12 +109,12 @@ export class OrderService extends ServiceBase<Order> {
     });
   }
 
-  public modifyBack(order: Order): Promise<Order> {
-    var url = this._resouce + '/' + order.id + '/modified-back';
+  public recreate(order: Order): Promise<Order> {
+    var url = this._resouce + '/' + order.id + '/recreated';
     return this._httpClient.post(url, <Order>{
       id: order.id,
-      modifiedBackBy: this._auth.userAsLookup,
-      modifiedBackOn: new Date()
+      recreatedBy: this._auth.userAsLookup,
+      recreatedOn: new Date()
     });
   }
 

@@ -147,7 +147,7 @@
     <Compile Include="Services\PurchaseOrders\PurchaseOrderCancelledVisitor.cs" />
     <Compile Include="Services\PurchaseOrders\PurchaseOrderCompletedVisitor.cs" />
     <Compile Include="Services\PurchaseOrders\PurchaseOrderLogTransactionVisitor.cs" />
-    <Compile Include="Services\PurchaseOrders\PurchaseOrderModifyBackVisitor.cs" />
+    <Compile Include="Services\PurchaseOrders\PurchaseOrderRecreatedVisitor.cs" />
     <Compile Include="Services\PurchaseOrders\PurchaseOrderSubmittedVisitor.cs" />
     <Compile Include="Services\PurchaseOrders\PurchaseOrderUpdateItemsVisitor.cs" />
     <Compile Include="Services\PurchaseOrders\PurchaseOrderUpdatePaymentsVisitor.cs" />

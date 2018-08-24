@@ -1,6 +1,6 @@
 ﻿{
   "OrderConfig": {
-    "New": {
+    "Created": {
       "AllowedTransitions": [
         "Invoiced",
         "Cancelled"
@@ -12,7 +12,7 @@
     },
     "Invoiced": {
       "AllowedTransitions": [
-        "New",
+        "Created",
         "Staged",
         "Cancelled"
       ],
@@ -22,7 +22,7 @@
     },
     "Staged": {
       "AllowedTransitions": [
-        "New",
+        "Created",
         "Shipped",
         "Cancelled"
       ],
@@ -52,7 +52,7 @@
     }
   },
   "PurchaseOrderConfig": {
-    "New": {
+    "Created": {
       "AllowedTransitions": [
         "Submitted",
         "Cancelled"
@@ -64,7 +64,7 @@
     },
     "Submitted": {
       "AllowedTransitions": [
-        "New",
+        "Created",
         "Approved",
         "Cancelled"
       ],

@@ -998,11 +998,11 @@ namespace AmpedBiz.Tests.IntegrationTests
             var purchaseOrders = await this.CreatePurchaseOrders(expected);
 
             //Create Purchase Order(s) - Assert Status, it should be NEW orders
-            var actual = purchaseOrders.Count(p => p.Status == Service.Dto.PurchaseOrderStatus.New);
+            var actual = purchaseOrders.Count(p => p.Status == Service.Dto.PurchaseOrderStatus.Created);
             Assert.AreEqual(expected, expected);
 
             //Get list of created purchaseorders
-            var purchaseOrderList = await this.GetPurchaseOrders(Service.Dto.PurchaseOrderStatus.New, 2);
+            var purchaseOrderList = await this.GetPurchaseOrders(Service.Dto.PurchaseOrderStatus.Created, 2);
 
             var purchaseOrder1 = purchaseOrderList.First();
             var purchaseOrder2 = purchaseOrderList.Last();
@@ -1054,7 +1054,7 @@ namespace AmpedBiz.Tests.IntegrationTests
 
             //Assert: Orders = New, Items = Allocated
             var newOrders = await this.CreateOrders(expected);
-            Assert.GreaterOrEqual(expected, newOrders.Count(o => o.Status == Service.Dto.OrderStatus.New));
+            Assert.GreaterOrEqual(expected, newOrders.Count(o => o.Status == Service.Dto.OrderStatus.Created));
             //Assert.False(newOrders.SelectMany(o => o.Items.Where(x => x != null))
             //    .Any(i => i.Status != Service.Dto.OrderItemStatus.Allocated));
 

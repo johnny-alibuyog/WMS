@@ -8,7 +8,7 @@ namespace AmpedBiz.Core.Entities
 {
     public enum PurchaseOrderStatus
     {
-        New = 1,
+        Created = 1,
         Submitted = 2,
         Approved = 3,
         Completed = 4,
@@ -62,7 +62,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual Money Paid { get; internal protected set; }
 
-        public virtual PurchaseOrderStatus Status { get; internal protected set; } = PurchaseOrderStatus.New;
+        public virtual PurchaseOrderStatus Status { get; internal protected set; } = PurchaseOrderStatus.Created;
 
         public virtual DateTime? ExpectedOn { get; internal protected set; }
 
@@ -70,9 +70,9 @@ namespace AmpedBiz.Core.Entities
 
         public virtual DateTime? CreatedOn { get; internal protected set; }
 
-        public virtual DateTime? ModifiedBackOn { get; internal protected set; }
+        public virtual DateTime? RecreatedOn { get; internal protected set; }
 
-        public virtual User ModifiedBackBy { get; internal protected set; }
+        public virtual User RecreatedBy { get; internal protected set; }
 
         public virtual User SubmittedBy { get; internal protected set; }
 

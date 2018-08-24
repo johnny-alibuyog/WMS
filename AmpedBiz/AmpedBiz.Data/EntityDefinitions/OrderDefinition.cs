@@ -57,9 +57,9 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 References(x => x.OrderedBy);
 
-                Map(x => x.ModifiedBackOn);
+                Map(x => x.RecreatedOn);
 
-                References(x => x.ModifiedBackBy);
+                References(x => x.RecreatedBy);
 
                 Map(x => x.CreatedOn);
 
@@ -179,9 +179,9 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Define(x => x.DueOn);
 
-                Define(x => x.ModifiedBackOn);
+                Define(x => x.RecreatedOn);
 
-                Define(x => x.ModifiedBackBy);
+                Define(x => x.RecreatedBy);
 
                 Define(x => x.OrderedOn);
 

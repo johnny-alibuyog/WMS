@@ -17,7 +17,7 @@ namespace AmpedBiz.Common.Configurations
         public Dictionary<string, Definition> OrderConfig = new Dictionary<string, Definition>()
         {
             {
-                Order.Status.New, new Definition()
+                Order.Status.Created, new Definition()
                 {
                     AllowedModifications = new string[]
                     {
@@ -40,7 +40,7 @@ namespace AmpedBiz.Common.Configurations
                     },
                     AllowedTransitions = new string[]
                     {
-                        Order.Status.New,
+                        Order.Status.Created,
                         Order.Status.Staged,
                         Order.Status.Cancelled,
                     }
@@ -55,7 +55,7 @@ namespace AmpedBiz.Common.Configurations
                     },
                     AllowedTransitions = new string[]
                     {
-                        Order.Status.New,
+                        Order.Status.Created,
                         Order.Status.Shipped,
                         Order.Status.Cancelled,
                     }
@@ -107,7 +107,7 @@ namespace AmpedBiz.Common.Configurations
         public Dictionary<string, Definition> PurchaseOrderConfig = new Dictionary<string, Definition>()
         {
             {
-                PurchaseOrder.Status.New, new Definition()
+                PurchaseOrder.Status.Created, new Definition()
                 {
                     AllowedModifications = new string[]
                     {
@@ -130,7 +130,7 @@ namespace AmpedBiz.Common.Configurations
                     },
                     AllowedTransitions = new string[]
                     {
-                        PurchaseOrder.Status.New,
+                        PurchaseOrder.Status.Created,
                         PurchaseOrder.Status.Approved,
                         PurchaseOrder.Status.Cancelled,
                     }
@@ -201,7 +201,7 @@ namespace AmpedBiz.Common.Configurations
     {
         public static class Status
         {
-            public static string New = "New";
+            public static string Created = "Created";
 
             public static string Invoiced = "Invoiced";
 
@@ -230,7 +230,7 @@ namespace AmpedBiz.Common.Configurations
     {
         public static class Status
         {
-            public static string New = "New";
+            public static string Created = "Created";
 
             public static string Submitted = "Submitted";
 

@@ -43,8 +43,8 @@ namespace AmpedBiz.Core.Services.Orders
 
         private void Process(OrderModifiedBackVisitor visitor)
         {
-            if (!this.Stage.IsTransitionAllowedTo(OrderStatus.New))
-                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "modify back", this._target.Status));
+            if (!this.Stage.IsTransitionAllowedTo(OrderStatus.Created))
+                throw new InvalidOperationException(string.Format(STATE_EXCEPTION_MESSAGE, "recreate", this._target.Status));
 
             this._target.Accept(visitor);
         }

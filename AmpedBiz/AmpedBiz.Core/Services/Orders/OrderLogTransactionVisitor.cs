@@ -34,7 +34,7 @@ namespace AmpedBiz.Core.Services.Orders
         {
             switch (status)
             {
-                case OrderStatus.New:
+                case OrderStatus.Created:
                     return OrderTransactionType.Creation;
 
                 case OrderStatus.Invoiced:

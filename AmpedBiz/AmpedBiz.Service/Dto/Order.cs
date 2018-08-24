@@ -7,7 +7,7 @@ namespace AmpedBiz.Service.Dto
 {
     public enum OrderStatus
     {
-        New = 1,
+        Created = 1,
         Invoiced = 2,
         Staged = 3,
         Routed = 4,
@@ -65,9 +65,9 @@ namespace AmpedBiz.Service.Dto
 
         public Lookup<Guid> OrderedBy { get; set; }
 
-        public DateTime? ModifiedBackOn { get; set; }
+        public DateTime? RecreatedOn { get; set; }
 
-        public Lookup<Guid> ModifiedBackBy { get; set; }
+        public Lookup<Guid> RecreatedBy { get; set; }
 
         public DateTime? CreatedOn { get; set; }
 

@@ -22,7 +22,7 @@ export class PurchaseOrderPage {
     private readonly _router: Router,
     private readonly _notification: NotificationService
   ) {
-    this.filter["status"] = PurchaseOrderStatus.new;
+    this.filter["status"] = PurchaseOrderStatus.created;
     this.filter["createdBy"] = null;
     this.filter["supplier"] = null;
     this.filter.onFilter = () => this.getPage();

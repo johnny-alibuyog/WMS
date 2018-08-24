@@ -22,7 +22,7 @@ export class OrderCreate {
   public header: string = 'Order';
 
   public readonly canSave: boolean = true;
-  public readonly canModifyBack: boolean = true;
+  public readonly canRecreate: boolean = true;
   public readonly canAddItem: boolean = true;
   public readonly canAddReturn: boolean = true;
   public readonly canAddPayment: boolean = true;
@@ -53,7 +53,7 @@ export class OrderCreate {
     private readonly _invoiceReport: InvoiceReport
   ) {
     this.canSave = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
-    this.canModifyBack = this._auth.isAuthorized([role.admin, role.manager]);
+    this.canRecreate = this._auth.isAuthorized([role.admin, role.manager]);
     this.canAddItem = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
     this.canAddReturn = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
     this.canAddPayment = this._auth.isAuthorized([role.admin, role.manager, role.salesclerk]);
@@ -222,12 +222,12 @@ export class OrderCreate {
     }
   }
 
-  public async modifyBack(): Promise<void> {
+  public async recreate(): Promise<void> {
     try {
-      let result = await this._notification.confirm('Do you want to modify back the  order? This will go back to "New" stage.').whenClosed();
+      let result = await this._notification.confirm('Do you want to recreate the order? This will go back to "Created" stage.').whenClosed();
       if (result.output === ActionResult.Yes) {
-        let data = await this._api.orders.modifyBack(this.order);
-        this.resetAndNoify(data, 'You can now modify back the purchase order. It is under "New" stage.');
+        let data = await this._api.orders.recreate(this.order);
+        this.resetAndNoify(data, 'You can now recreate the purchase order. It is under "Created" stage.');
       }
     }
     catch (error) {

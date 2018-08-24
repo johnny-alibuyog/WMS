@@ -7,7 +7,7 @@ namespace AmpedBiz.Service.Dto
 {
     public enum PurchaseOrderStatus
     {
-        New = 1,
+        Created = 1,
         Submitted = 2,
         Approved = 3,
         Completed = 4,
@@ -55,9 +55,9 @@ namespace AmpedBiz.Service.Dto
 
         public DateTime? CreatedOn { get; set; }
 
-        public DateTime? ModifiedBackOn { get; set; }
+        public DateTime? RecreatedOn { get; set; }
 
-        public Lookup<Guid> ModifiedBackBy { get; set; }
+        public Lookup<Guid> RecreatedBy { get; set; }
 
         public Lookup<Guid> SubmittedBy { get; set; }
 

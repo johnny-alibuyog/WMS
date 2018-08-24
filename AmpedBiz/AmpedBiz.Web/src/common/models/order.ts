@@ -29,7 +29,7 @@ export const orderEvents = {
 }
 
 export enum OrderStatus {
-  new = 1,
+  created = 1,
   invoiced = 2,
   staged = 3,
   routed = 4,
@@ -63,8 +63,8 @@ export interface Order {
   status?: OrderStatus;
   orderedOn?: Date;
   orderedBy?: Lookup<string>;
-  modifiedBackOn?: Date;
-  modifiedBackBy?: Lookup<string>;
+  recreatedOn?: Date;
+  recreatedBy?: Lookup<string>;
   createdOn?: Date;
   createdBy?: Lookup<string>;
   stagedOn?: Date
