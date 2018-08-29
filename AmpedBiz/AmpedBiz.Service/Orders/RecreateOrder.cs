@@ -1,18 +1,18 @@
 ﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Services.PurchaseOrders;
+using AmpedBiz.Core.Services.Orders;
 using AmpedBiz.Data;
 using MediatR;
 using System;
 using System.Threading.Tasks;
 
-namespace AmpedBiz.Service.PurchaseOrders
+namespace AmpedBiz.Service.Orders
 {
-    public class ApprovePurchaseOder
+    public class RecreateOrder
     {
-        public class Request : Dto.PurchaseOrder, IRequest<Response> { }
+        public class Request : Dto.Order, IRequest<Response> { }
 
-        public class Response : Dto.PurchaseOrder { }
+        public class Response : Dto.Order { }
 
         public class Handler : RequestHandlerBase<Request, Response>
         {
@@ -23,13 +23,13 @@ namespace AmpedBiz.Service.PurchaseOrders
                 using (var session = SessionFactory.RetrieveSharedSession(Context))
                 using (var transaction = session.BeginTransaction())
                 {
-                    var entity = session.Get<PurchaseOrder>(request.Id);
-                    entity.EnsureExistence($"PurchaseOrder with id {request.Id} does not exists.");
-                    entity.State.Process(new PurchaseOrderApprovedVisitor()
+                    var entity = session.Get<Order>(request.Id);
+                    entity.EnsureExistence($"Order with id {request.Id} does not exists.");
+                    entity.State.Process(new OrderModifiedBackVisitor()
                     {
-                        Branch = session.Load<Branch>(Context.BranchId),
-                        ApprovedBy = session.Load<User>(request.ApprovedBy.Id),
-                        ApprovedOn = request.ApprovedOn ?? DateTime.Now
+                        Branch = session.Load<Branch>(this.Context.BranchId),
+                        RecreatedOn = request.RecreatedOn ?? DateTime.Today,
+                        RecreatedBy = session.Load<User>(request.RecreatedBy.Id)
                     });
                     entity.EnsureValidity();
 
@@ -52,13 +52,13 @@ namespace AmpedBiz.Service.PurchaseOrders
             {
                 // hydrate the response with the new object state
 
-                var hydrationHandler = new GetPurchaseOrder.Handler()
+                var hydrationHandler = new GetOrder.Handler()
                 {
                     SessionFactory = this.sessionFactory,
                     Context = this.context
                 };
 
-                var hydrated = hydrationHandler.Execute(new GetPurchaseOrder.Request(response.Id));
+                var hydrated = hydrationHandler.Execute(new GetOrder.Request(response.Id));
 
                 response.MapFrom(hydrated);
 

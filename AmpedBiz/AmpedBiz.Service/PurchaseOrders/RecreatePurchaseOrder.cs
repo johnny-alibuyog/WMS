@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
-    public class ApprovePurchaseOder
+    public class RecreatePurchaseOder
     {
         public class Request : Dto.PurchaseOrder, IRequest<Response> { }
 
@@ -25,11 +25,11 @@ namespace AmpedBiz.Service.PurchaseOrders
                 {
                     var entity = session.Get<PurchaseOrder>(request.Id);
                     entity.EnsureExistence($"PurchaseOrder with id {request.Id} does not exists.");
-                    entity.State.Process(new PurchaseOrderApprovedVisitor()
+                    entity.State.Process(new PurchaseOrderRecreatedVisitor()
                     {
                         Branch = session.Load<Branch>(Context.BranchId),
-                        ApprovedBy = session.Load<User>(request.ApprovedBy.Id),
-                        ApprovedOn = request.ApprovedOn ?? DateTime.Now
+                        RecreatedBy = session.Load<User>(request.RecreatedBy.Id),
+                        RecreatedOn = request.RecreatedOn ?? DateTime.Now
                     });
                     entity.EnsureValidity();
 

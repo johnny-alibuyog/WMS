@@ -9,7 +9,7 @@ import { ProductListingReport, ProductListingReportModel, ProductListingReportIt
 @autoinject
 export class ProductListingReportPage {
 
-  public header: string = ' Products Delivered';
+  public header: string = ' Product Listing';
   public filter: Filter = new Filter();
   public sorter: Sorter = new Sorter();
   public pager: Pager<ProductListingReportPageItem> = new Pager<ProductListingReportPageItem>();
