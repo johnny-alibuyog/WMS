@@ -1,4 +1,4 @@
-import { Measure, getValue } from "../common/models/measure";
+import { getValue } from "../common/models/measure";
 import { Order, OrderInvoiceDetail, OrderPayable, OrderReportPageItem, OrderReturn, OrderReturnable, OrderReturning, OrderStatus, SalesReportPageItem, OrderPageItem } from '../common/models/order';
 import { PageRequest, PagerResponse } from '../common/models/paging';
 

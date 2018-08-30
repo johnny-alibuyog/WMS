@@ -88,24 +88,16 @@ namespace AmpedBiz.Service.Orders
                     entity.Accept(new OrderUpdateVisitor()
                     {
                         OrderNumber = message.OrderNumber,
-                        CreatedBy = (!message?.CreatedBy?.Id.IsNullOrDefault() ?? false)
-                            ? session.Load<User>(message.CreatedBy.Id) : null,
-                        CreatedOn = message?.CreatedOn ?? DateTime.Now,
-                        OrderedBy = (!message?.OrderedBy?.Id.IsNullOrDefault() ?? false)
-                            ? session.Load<User>(message.CreatedBy.Id) : null,
-                        OrderedOn = message?.OrderedOn ?? DateTime.Now,
-                        Branch = (!message?.Branch?.Id.IsNullOrDefault() ?? false)
-                            ? session.Load<Branch>(message.Branch.Id) : null,
-                        Customer = (!message?.Customer?.Id.IsNullOrDefault() ?? false)
-                            ? session.Load<Customer>(message.Customer.Id) : null,
-                        Shipper = (!message?.Shipper?.Id.IsNullOrEmpty() ?? false)
-                            ? session.Load<Shipper>(message.Shipper.Id) : null,
-                        ShippingAddress = (message.ShippingAddress != null)
-                            ? message.ShippingAddress.MapTo<Dto.Address, Address>() : null,
-                        Pricing = (!message?.Pricing?.Id.IsNullOrEmpty() ?? false)
-                            ? session.Load<Pricing>(message.Pricing.Id) : null,
-                        PaymentType = (!message?.PaymentType?.Id.IsNullOrEmpty() ?? false)
-                            ? session.Load<PaymentType>(message.PaymentType.Id) : null,
+                        CreatedBy = message.CreatedBy?.Id.EvalOrDefault(value => session.Load<User>(value)),
+                        CreatedOn = message.CreatedOn.GetValueOrDefault(DateTime.Now),
+                        OrderedBy = message.OrderedBy?.Id.EvalOrDefault(value => session.Load<User>(value)),
+                        OrderedOn = message.OrderedOn.GetValueOrDefault(DateTime.Now),
+                        Branch = message.Branch?.Id.EvalOrDefault(value => session.Load<Branch>(value)),
+                        Customer = message.Customer?.Id.EvalOrDefault(value => session.Load<Customer>(value)),
+                        Shipper = message.Shipper?.Id.EvalOrDefault(value => session.Load<Shipper>(value)),
+                        ShippingAddress = message.ShippingAddress.EvalOrDefault(value => value.MapTo<Dto.Address, Address>()),
+                        Pricing = message.Pricing?.Id.EvalOrDefault(value => session.Load<Pricing>(value)),
+                        PaymentType = message.PaymentType?.Id.EvalOrDefault(value => session.Load<PaymentType>(value)),
                         TaxRate = message.TaxRate,
                         Tax = new Money(message.TaxAmount, currency),
                         ShippingFee = new Money(message.ShippingFeeAmount, currency),
@@ -122,7 +114,7 @@ namespace AmpedBiz.Service.Orders
                         Payments = message.Payments
                             .Select(x => new OrderPayment(
                                 id: x.Id,
-                                paidOn: x.PaidOn ?? DateTime.Now,
+                                paidOn: x.PaidOn.GetValueOrDefault(DateTime.Now),
                                 paidTo: session.Load<User>(x.PaidTo.Id),
                                 paymentType: session.Load<PaymentType>(x.PaymentType.Id),
                                 payment: new Money(x.PaymentAmount, currency),
@@ -133,9 +125,9 @@ namespace AmpedBiz.Service.Orders
                             .Select(x => new OrderReturn(
                                 id: x.Id,
                                 product: GetProduct(x.Product.Id),
-                                reason: session.Load<ReturnReason>(x.Reason.Id),
-                                returnedOn: message.ReturnedOn ?? DateTime.Now,
-                                returnedBy: session.Load<User>(x.ReturnedBy.Id),
+                                reason: x.Reason?.Id.EvalOrDefault(value => session.Load<ReturnReason>(value)),
+                                returnedOn: message.ReturnedOn.GetValueOrDefault(DateTime.Now),
+                                returnedBy: x.ReturnedBy?.Id.EvalOrDefault(value => session.Load<User>(value)),
                                 quantity: new Measure(x.Quantity.Value, session.Load<UnitOfMeasure>(x.Quantity.Unit.Id)),
                                 standard: new Measure(x.Standard.Value, session.Load<UnitOfMeasure>(x.Standard.Unit.Id)),
                                 returned: new Money(x.ReturnedAmount, currency)

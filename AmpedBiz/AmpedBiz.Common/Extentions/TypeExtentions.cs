@@ -43,5 +43,24 @@ namespace AmpedBiz.Common.Extentions
 
             return defaultValue;
         }
+
+        public static TOutput Eval<TOutput, TInput>(this TInput value, Func<TInput, TOutput> evaluate)
+        {
+            return evaluate(value);
+        }
+
+        public static TOutput EvalOrDefault<TOutput, TInput>(this TInput value, Func<TInput, TOutput> evaluate)
+        {
+            return !value.IsNullOrDefault()
+                ? evaluate(value)
+                : default(TOutput);
+        }
+
+        public static TOutput EvalOrDefault<TOutput, TInput>(this TInput value, Func<TInput, TOutput> evaluate, TOutput defalutValue)
+        {
+            return !value.IsNullOrDefault()
+                ? evaluate(value)
+                : defalutValue;
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Common.Extentions;
 using NUnit.Framework;
 using System;
+using System.Diagnostics;
 using Dto = AmpedBiz.Service.Dto;
 using Entity = AmpedBiz.Core.Entities;
 
@@ -9,6 +10,17 @@ namespace AmpedBiz.Tests.UnitTests
     [TestFixture]
     public class MappingTest
     {
+        [Test]
+        public void DateTest()
+        {
+            Debug.WriteLine(DateTime.Now);
+            Debug.WriteLine(DateTime.UtcNow);
+            Debug.WriteLine(DateTimeOffset.Now);
+            Debug.WriteLine(DateTimeOffset.UtcNow);
+            Debug.WriteLine(DateTimeOffset.Now.ToLocalTime());
+            Debug.WriteLine(DateTimeOffset.UtcNow.DateTime);
+        }
+
         [Test]
         public void ShouldMapAddress()
         {

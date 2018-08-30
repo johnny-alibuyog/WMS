@@ -29,7 +29,7 @@ namespace AmpedBiz.Service.Orders
                     {
                         Branch = session.Load<Branch>(this.Context.BranchId),
                         CancelledBy = session.Load<User>(request.CancelledBy.Id),
-                        CancelledOn = request.CancelledOn ?? DateTime.Now,
+                        CancelledOn = request.CancelledOn.GetValueOrDefault(DateTime.Now),
                         CancellationReason = request.CancellationReason
                     });
                     entity.EnsureValidity();

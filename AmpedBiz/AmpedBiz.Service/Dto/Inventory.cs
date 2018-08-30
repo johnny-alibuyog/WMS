@@ -1,6 +1,8 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Products;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace AmpedBiz.Service.Dto
@@ -212,6 +214,22 @@ namespace AmpedBiz.Service.Dto
         public string InputUnitId { get; set; }
 
         public decimal InputValue { get; set; }
+
+        public static InventoryMovementReportPageItemRaw Parse(IDictionary row)
+        {
+            return new InventoryMovementReportPageItemRaw()
+            {
+                Date = row[nameof(Date)].EvalOrDefault(value => Convert.ToDateTime(value)),
+                BranchId = row[nameof(BranchId)].EvalOrDefault(value => Guid.Parse(value.ToString())),
+                BranchName = row[nameof(BranchName)].EvalOrDefault(value => value.ToString()),
+                ProductId = row[nameof(ProductId)].EvalOrDefault(value => Guid.Parse(value.ToString())),
+                ProductName = row[nameof(ProductName)].EvalOrDefault(value => value.ToString()),
+                OutputUnitId = row[nameof(OutputUnitId)].EvalOrDefault(value => value.ToString()),
+                OutputValue = row[nameof(OutputValue)].EvalOrDefault(value => Convert.ToDecimal(value)),
+                InputUnitId = row[nameof(InputUnitId)].EvalOrDefault(value => value.ToString()),
+                InputValue = row[nameof(InputValue)].EvalOrDefault(value => Convert.ToDecimal(value)),
+            };
+        }
     }
 
 }
