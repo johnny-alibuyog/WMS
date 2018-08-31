@@ -19,10 +19,13 @@ namespace AmpedBiz.Core.Entities
 
         public static ReturnReason Expired = new ReturnReason("E", "Expired");
 
+        public static ReturnReason SlowMoving = new ReturnReason("SM", "Slow Moving");
+
         public static readonly IEnumerable<ReturnReason> All = new [] 
         {
             ReturnReason.Damaged,
             ReturnReason.Expired,
+            ReturnReason.SlowMoving
         };
     }
 }

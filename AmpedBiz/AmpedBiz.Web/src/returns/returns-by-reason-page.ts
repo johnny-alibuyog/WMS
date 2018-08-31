@@ -10,10 +10,9 @@ import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } fro
 export class ReturnsByReasonPage {
 
   public header: string = ' Returns By Reason';
-
-  public filter: Filter;
-  public sorter: Sorter;
-  public pager: Pager<ReturnsByReasonPageItem>;
+  public filter: Filter = new Filter();
+  public sorter: Sorter = new Sorter();
+  public pager: Pager<ReturnsByReasonPageItem> = new Pager<ReturnsByReasonPageItem>();
   public returnReasons: Lookup<string>[] = [];
 
   constructor(
