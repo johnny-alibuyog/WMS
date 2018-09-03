@@ -24,8 +24,11 @@ namespace AmpedBiz.Service.Customers
                 using (var session = SessionFactory.RetrieveSharedSession(Context))
                 using (var transaction = session.BeginTransaction())
                 {
-                    var query = session.Query<Order>()
-                        .Where(x => x.ShippedBy != null && x.ShippedOn != null);
+                    var query = session.Query<Order>().Where(x => 
+                        x.ShippedBy != null && 
+                        x.ShippedOn != null &&
+                        x.Status != OrderStatus.Cancelled
+                    );
 
                     // compose filters
                     message.Filter.Compose<Guid>("branchId", value =>

@@ -35,8 +35,17 @@ namespace AmpedBiz.Core.Services.Orders
                     break;
 
                 case OrderStatus.Shipped:
-                    // NOTE: when order has been shipped and was cancelled, 
-                    // items should go through returns
+                    foreach (var item in target.Items)
+                    {
+                        item.Product.Accept(new SearchAndApplyVisitor()
+                        {
+                            Branch = Branch,
+                            InventoryVisitor = new RetractShippedVisitor()
+                            {
+                                QuantityStandardEquivalent = item.QuantityStandardEquivalent
+                            }
+                        });
+                    }
                     break;
             }
 
