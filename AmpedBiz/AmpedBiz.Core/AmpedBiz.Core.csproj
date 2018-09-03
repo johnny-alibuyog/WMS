@@ -111,6 +111,7 @@
     <Compile Include="Services\Inventories\InventoryUpdateVisitor.cs" />
     <Compile Include="Services\Inventories\Orders\AllocateVisitor.cs" />
     <Compile Include="Services\Inventories\Orders\RetractAllocatedVisitor.cs" />
+    <Compile Include="Services\Inventories\Orders\RetractShippedVisitor.cs" />
     <Compile Include="Services\Inventories\Orders\ReturnVisitor.cs" />
     <Compile Include="Services\Inventories\Orders\ShipVisitor.cs" />
     <Compile Include="Services\Inventories\PurchaseOrders\ReceiveVisitor.cs" />
