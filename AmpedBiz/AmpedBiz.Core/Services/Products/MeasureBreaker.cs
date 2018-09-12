@@ -22,7 +22,7 @@ namespace AmpedBiz.Core.Services.Products
                 measure = new Measure(0, unit.Standard.UnitOfMeasure);
             }
 
-            if (product.UnitOfMeasures.Count() == 1)
+            if (product.UnitOfMeasures.Count() == 1 || unit.Standard == unit.Default)
             {
                 brokenDownMeasures.Add(product.Convert(measure, unit.Standard.UnitOfMeasure));
             }

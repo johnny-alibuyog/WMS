@@ -146,6 +146,7 @@ export class OrderReturnPage {
     returnable.returning.returnedOn = reference && reference.returning && reference.returning.returnedOn || new Date();
     returnable.returning.returnedBy = reference && reference.returning && reference.returning.returnedBy || this._api.auth.userAsLookup;
     returnable.returning.quantity = reference && reference.returning && reference.returning.quantity;
+    returnable.returning.standard = reference && reference.returning && reference.returning.standard;
     returnable.returning.amount = reference && reference.returning && reference.returning.amount || 0;
 
     /*
@@ -191,6 +192,10 @@ export class OrderReturnPage {
         returnedOn: new Date(),
         returnedBy: this._api.auth.userAsLookup,
         quantity: {
+          value: 0,
+          unit: {}
+        },
+        standard: {
           value: 0,
           unit: {}
         },

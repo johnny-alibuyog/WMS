@@ -29,7 +29,8 @@ namespace AmpedBiz.Service.Products
                 {
                     //session.DisableBranchFilter(); //TODO: include branch to Pricing
 
-                    var query = session.Query<ProductUnitOfMeasure>();
+                    var query = session.Query<ProductUnitOfMeasure>()
+                        .Where(x => x.IsStandard || x.IsDefault);
 
                     // compose filter
                     //message.Filter.Compose<Guid>("branchId", value =>
@@ -152,11 +153,6 @@ namespace AmpedBiz.Service.Products
                             Inventory = inventories.Single(x => x.Product.Id == productId)
                         };
 
-                        lookup.Inventory.Available.TakePartValue(
-                            product: lookup.Product,
-                            part: lookup.UnitOfMeasure
-                        );
-
                         var item = new Dto.ProductListingReportPageItem()
                         {
                             BranchName = branch.Name,
@@ -190,6 +186,7 @@ namespace AmpedBiz.Service.Products
                                 arg2: x.ProductId,
                                 arg3: x.UnitOfMeasureId
                             ))
+                            .Distinct()
                             .ToList()
                     };
 

@@ -212,13 +212,12 @@ export class OrderService extends ServiceBase<Order> {
         x.returning.amount > 0
       )
       .map(x => <OrderReturn>{
-        orderId: x.orderId,
         product: x.product,
         reason: x.returning.reason,
         returnedBy: this._auth.userAsLookup,
         returnedOn: new Date(),
         quantity: x.returning.quantity,
-        strandard: x.returning.standard,
+        standard: x.returning.standard,
         returnedAmount: x.returning.amount
       });
 

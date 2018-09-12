@@ -122,7 +122,7 @@ export interface OrderReturn {
   returnedOn?: Date;
   returnedBy?: Lookup<string>;
   quantity?: Measure;
-  strandard?: Measure;
+  standard?: Measure;
   returnedAmount?: number;
 }
 

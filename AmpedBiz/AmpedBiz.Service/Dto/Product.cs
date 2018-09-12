@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Common.CustomTypes;
+using AmpedBiz.Common.Extentions;
 using System;
 using System.Collections.Generic;
 
@@ -314,7 +315,7 @@ namespace AmpedBiz.Service.Dto
         public decimal? TotalPriceAmount { get; set; }
     }
 
-    public class ProductListingReportPageItem
+    public class ProductListingReportPageItem : IEquatable<ProductListingReportPageItem>
     {
         public string BranchName { get; set; }
 
@@ -337,5 +338,49 @@ namespace AmpedBiz.Service.Dto
         public decimal? RetailPriceAmount { get; set; }
 
         public decimal? SuggestedRetailPriceAmount { get; set; }
+
+        public bool Equals(ProductListingReportPageItem other)
+        {
+            if (other == null)
+                return false;
+
+            if (this.BranchName != other.BranchName)
+                return false;
+
+            if (this.SupplierName != other.SupplierName)
+                return false;
+
+            if (this.CategoryName != other.CategoryName)
+                return false;
+
+            if (this.ProductName != other.BranchName)
+                return false;
+
+            if (this.QuantityUnit != other.QuantityUnit)
+                return false;
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 17;
+
+            hashCode += AddToHashIfValueIsNotDefault(this.BranchName, hashCode);
+            hashCode += AddToHashIfValueIsNotDefault(this.SupplierName, hashCode);
+            hashCode += AddToHashIfValueIsNotDefault(this.CategoryName, hashCode);
+            hashCode += AddToHashIfValueIsNotDefault(this.ProductName, hashCode);
+            hashCode += AddToHashIfValueIsNotDefault(this.QuantityUnit, hashCode);
+
+            return hashCode;
+        }
+
+        private int AddToHashIfValueIsNotDefault(object value, int hashCode)
+        {
+            if (value.IsNullOrDefault())
+                return 0;
+
+            return hashCode * 59 + value.GetHashCode();
+        }
     }
 }
