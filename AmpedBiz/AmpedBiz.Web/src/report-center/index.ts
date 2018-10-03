@@ -1,11 +1,18 @@
 import { Router, RouterConfiguration } from 'aurelia-router'
-import { appConfig } from '../app-config';
-import { AuthSettings } from '../services/auth-service';
+import { AuthSettings, AuthService } from '../services/auth-service';
 import { role } from '../common/models/role';
+import { autoinject } from 'aurelia-framework';
 
+@autoinject()
 export class Index {
-  heading: string = "Report Center";
-  router: Router;
+  private readonly _auth: AuthService;
+
+  public heading: string = "Report Center";
+  public router: Router;
+
+  public constructor(auth: AuthService) {
+    this._auth = auth;
+  }
 
   configureRouter(config: RouterConfiguration, router: Router) {
     config.title = "Report Center";
@@ -36,6 +43,7 @@ export class Index {
             roles: [
               role.admin,
               role.manager,
+              role.salesclerk,
             ]
           }
         },
@@ -66,6 +74,7 @@ export class Index {
             roles: [
               role.admin,
               role.manager,
+              role.salesclerk,
             ]
           }
         },
@@ -81,6 +90,7 @@ export class Index {
             roles: [
               role.admin,
               role.manager,
+              role.salesclerk,
             ]
           }
         },
@@ -126,6 +136,7 @@ export class Index {
             roles: [
               role.admin,
               role.manager,
+              role.salesclerk,
             ]
           }
         },
@@ -141,6 +152,23 @@ export class Index {
             roles: [
               role.admin,
               role.manager,
+              role.salesclerk,
+            ]
+          }
+        },
+      },
+      {
+        route: ['purchase-order-report-page'],
+        name: 'purchase-order-report-page',
+        moduleId: './purchase-order-report-page',
+        nav: true,
+        title: 'Purchases',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk,
             ]
           }
         },
@@ -162,7 +190,10 @@ export class Index {
       },
       {
         route: [""],
-        redirect: "customer-report-page"
+        redirect: 
+          this._auth.isAuthorized(role.salesclerk) 
+            ? "product-listing-report-page" 
+            : "customer-report-page"
       },
     ]);
 

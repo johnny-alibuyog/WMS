@@ -72,8 +72,8 @@ namespace AmpedBiz.Service.Returns
                     message.Sorter.Compose("totalAmount", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.Total.Amount)
-                            : query.OrderByDescending(x => x.Total.Amount);
+                            ? query.OrderBy(x => x.TotalReturned.Amount)
+                            : query.OrderByDescending(x => x.TotalReturned.Amount);
                     });
 
                     var itemsFuture = query
@@ -87,7 +87,7 @@ namespace AmpedBiz.Service.Returns
                                 x.ReturnedBy.Person.LastName,
                             ReturnedOn = x.ReturnedOn,
                             Remarks = x.Remarks,
-                            TotalAmount = x.Total.Amount
+                            ReturnedAmount = x.TotalReturned.Amount
                         })
                         .Skip(message.Pager.SkipCount)
                         .Take(message.Pager.Size)

@@ -103,6 +103,7 @@ export class Shell {
             roles: [
               role.admin,
               role.manager,
+              role.salesclerk,
             ]
           }
         },

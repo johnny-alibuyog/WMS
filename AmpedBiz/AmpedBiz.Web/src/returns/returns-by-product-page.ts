@@ -1,6 +1,7 @@
+import { ReturnsByProductReport, ReturnsByProductReportModel, ReturnsByProductReportItem } from './returns-by-product-report';
 import { Router, RouteConfig, NavigationInstruction } from 'aurelia-router';
 import { autoinject } from 'aurelia-framework';
-import { Return, ReturnsByProductPageItem } from '../common/models/return';
+import { ReturnsByProductPageItem } from '../common/models/return';
 import { ServiceApi } from '../services/service-api';
 import { Lookup } from '../common/custom_types/lookup';
 import { NotificationService } from '../common/controls/notification-service';
@@ -14,22 +15,31 @@ export class ReturnsByProductPage {
   public sorter: Sorter = new Sorter();
   public pager: Pager<ReturnsByProductPageItem> = new Pager<ReturnsByProductPageItem>();
   public products: Lookup<string>[] = [];
+  public branches: Lookup<string>[] = [];
 
   constructor(
+    private readonly _router: Router,
     private readonly _api: ServiceApi,
-    private readonly _notification: NotificationService
+    private readonly _notification: NotificationService,
+    private readonly _report: ReturnsByProductReport
   ) {
+    this.filter["branch"] = null;
     this.filter["product"] = null;
+    this.filter["includeOrderReturns"] = false;
     this.filter.onFilter = () => this.getPage();
-    this.sorter["product"] = SortDirection.Ascending;
+    this.sorter["branchName"] = SortDirection.None;
+    this.sorter["productName"] = SortDirection.Ascending;
     this.sorter["quantityValue"] = SortDirection.None;
-    this.sorter["totalAmount"] = SortDirection.None;
+    this.sorter["returnedAmount"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
     this.pager.onPage = () => this.getPage();
   }
 
   public async activate(params: any, routeConfig: RouteConfig, $navigationInstruction: NavigationInstruction): Promise<void> {
-    this.products = await this._api.products.getLookups()
+    [this.branches, this.products] = await Promise.all([
+      this._api.branches.getLookups(),
+      this._api.products.getLookups(),
+    ]);
     await this.getPage();
   }
 
@@ -54,9 +64,50 @@ export class ReturnsByProductPage {
   }
 
   public show(item: ReturnsByProductPageItem): void {
-    //this._router.navigateToRoute('return-create', <Return>{ id: item.id });
+    let params = { 
+      productId: item.id,
+      branchId: this.filter["branch"],
+      includeOrderReturns: this.filter["includeOrderReturns"]
+   };
+
+    this._router.navigateToRoute("returns-by-product-details-page", params);
   }
 
   public delete(item: ReturnsByProductPageItem) {
+  }
+
+  public async generateReport(): Promise<void> {
+    try {
+      let data = await this._api.returns.getReturnsByProductPage({
+        filter: this.filter,
+        sorter: this.sorter,
+        pager: <PagerRequest>{
+          offset: 0,
+          size: 0
+        }
+      });
+
+      let header = {
+        branch: this.branches.find(x => x.id == this.filter["branch"]),
+        product: this.products.find(x => x.id == this.filter["product"]),
+      };
+
+      let reportModel = <ReturnsByProductReportModel>{
+        branchName: header.branch && header.branch.name || "All Branches",
+        productName: header.product && header.product.name || "All Products",
+        items: data.items.map(x => <ReturnsByProductReportItem>{
+          branchName: x.branchName,
+          productCode: x.productCode,
+          productName: x.productName,
+          quantityValue: x.quantityValue,
+          quantityUnit: x.quantityUnit,
+          returnedAmount: x.returnedAmount
+        })
+      };
+      this._report.show(reportModel)
+    }
+    catch (error) {
+      this._notification.error("Error encountered during report generation!");
+    }
   }
 }

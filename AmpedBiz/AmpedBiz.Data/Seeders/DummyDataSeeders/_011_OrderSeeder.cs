@@ -67,7 +67,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     return null;
 
                 return new Pipeline<IEnumerable<Order>>()
-                    .Register(new OrderActions.NewAction(count))
+                    .Register(new OrderActions.CreateAction(count))
                     .Execute(new List<Order>());
 
             }
@@ -86,7 +86,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     return null;
 
                 return new Pipeline<IEnumerable<Order>>()
-                    .Register(new OrderActions.NewAction(count))
+                    .Register(new OrderActions.CreateAction(count))
                     .Register(new OrderActions.InvoiceAction())
                     .Execute(new List<Order>());
             }
@@ -105,7 +105,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     return null;
 
                 return new Pipeline<IEnumerable<Order>>()
-                    .Register(new OrderActions.NewAction(count))
+                    .Register(new OrderActions.CreateAction(count))
                     .Register(new OrderActions.InvoiceAction())
                     .Register(new OrderActions.PayAction())
                     .Execute(new List<Order>());
@@ -126,7 +126,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     return null;
 
                 return new Pipeline<IEnumerable<Order>>()
-                    .Register(new OrderActions.NewAction(count))
+                    .Register(new OrderActions.CreateAction(count))
                     .Register(new OrderActions.InvoiceAction())
                     .Register(new OrderActions.PayAction())
                     .Register(new OrderActions.StageAction())
@@ -147,7 +147,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     return null;
 
                 return new Pipeline<IEnumerable<Order>>()
-                    .Register(new OrderActions.NewAction(count))
+                    .Register(new OrderActions.CreateAction(count))
                     .Register(new OrderActions.InvoiceAction())
                     .Register(new OrderActions.PayAction())
                     .Register(new OrderActions.StageAction())
@@ -169,7 +169,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     return null;
 
                 return new Pipeline<IEnumerable<Order>>()
-                    .Register(new OrderActions.NewAction(count))
+                    .Register(new OrderActions.CreateAction(count))
                     .Register(new OrderActions.InvoiceAction())
                     .Register(new OrderActions.PayAction())
                     .Register(new OrderActions.StageAction())
@@ -192,7 +192,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     return null;
 
                 return new Pipeline<IEnumerable<Order>>()
-                    .Register(new OrderActions.NewAction(count))
+                    .Register(new OrderActions.CreateAction(count))
                     .Register(new OrderActions.InvoiceAction())
                     .Register(new OrderActions.PayAction())
                     .Register(new OrderActions.StageAction())
@@ -216,7 +216,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     return null;
 
                 return new Pipeline<IEnumerable<Order>>()
-                    .Register(new OrderActions.NewAction(count))
+                    .Register(new OrderActions.CreateAction(count))
                     .Register(new OrderActions.CancelAction())
                     .Execute(new List<Order>());
             }
@@ -283,11 +283,11 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
             }
         }
 
-        internal class NewAction : ActionStep
+        internal class CreateAction : ActionStep
         {
             public virtual int Count { get; set; }
 
-            public NewAction(int count)
+            public CreateAction(int count)
             {
                 this.Count = count;
             }
@@ -511,7 +511,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                     ),
                                     standard: x.Product.StandardEquivalentMeasureOf(x.Quantity.Unit),
                                     returned: new Money(
-                                        amount: _utils.RandomInteger(1, (int)x.TotalPrice.Amount),
+                                        amount: _utils.RandomInteger(0, (int)x.TotalPrice.Amount),
                                         currency: x.TotalPrice.Currency
                                     )
                                 ))

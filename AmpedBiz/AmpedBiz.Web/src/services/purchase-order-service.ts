@@ -1,10 +1,10 @@
-import { PurchaseOrderItem, Voucher } from '../common/models/purchase-order';
+import { PurchaseOrderItem, Voucher, PurchaseOrderReportPageItem } from '../common/models/purchase-order';
 
 import { AuthService } from './auth-service';
 import { HttpClientFacade } from './http-client-facade';
 import { Lookup } from '../common/custom_types/lookup';
 import { Measure } from "../common/models/measure";
-import { PageRequest } from '../common/models/paging';
+import { PageRequest, PagerResponse } from '../common/models/paging';
 import { Product } from "../common/models/product";
 import { PurchaseOrder } from '../common/models/purchase-order';
 import { PurchaseOrderPayable } from '../common/models/purchase-order';
@@ -33,6 +33,11 @@ export class PurchaseOrderService extends ServiceBase<PurchaseOrder> {
   public getStatusLookup(): Promise<Lookup<PurchaseOrderStatus>[]> {
     var url = this._resouce + '/status-lookups';
     return this._httpClient.get(url);
+  }
+
+  public getReportPage(page: PageRequest): Promise<PagerResponse<PurchaseOrderReportPageItem>>{
+    var url = this._resouce + '/report/page';
+    return this._httpClient.post(url, page);
   }
 
   public getNewPage(page: PageRequest): Promise<any> {

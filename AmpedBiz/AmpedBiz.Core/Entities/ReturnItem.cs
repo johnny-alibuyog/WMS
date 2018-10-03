@@ -2,45 +2,33 @@
 
 namespace AmpedBiz.Core.Entities
 {
-    public class ReturnItem : Entity<Guid, ReturnItem>
-    {
-        public virtual Product Product { get; protected set; }
+	public class ReturnItem : ReturnItemBase
+	{
+		public virtual Return Return { get; protected internal set; }
 
-        public virtual Return Return { get; protected internal set; }
+		public virtual Money UnitPrice { get; protected set; }
 
-        public virtual ReturnReason ReturnReason { get; internal protected set; }
+		public ReturnItem() : base(default(Guid)) { }
 
-        public virtual Measure Quantity { get; protected set; }
+		public ReturnItem(
+			Product product,
+			ReturnReason reason,
+			Measure quantity,
+			Measure standard,
+			Money unitPrice,
+			Guid? id = null
+		) : base(id ?? default(Guid))
+		{
+			this.Product = product;
+			this.Reason = reason;
+			this.Quantity = quantity;
+			this.Standard = standard;
+			this.UnitPrice = unitPrice;
 
-        public virtual Measure Standard { get; protected set; }
+			// quantity convertion to standard uom
+			this.QuantityStandardEquivalent = standard * quantity;
 
-        public virtual Measure QuantityStandardEquivalent { get; protected set; }
-
-        public virtual Money UnitPrice { get; protected set; }
-
-        public virtual Money TotalPrice { get; protected set; }
-
-        public ReturnItem() : base(default(Guid)) { }
-
-        public ReturnItem(
-            Product product,
-            ReturnReason returnReason,
-            Measure quantity,
-            Measure standard,
-            Money unitPrice,
-            Guid? id = null
-        ) : base(id ?? default(Guid))
-        {
-            this.Product = product;
-            this.ReturnReason = returnReason;
-            this.Quantity = quantity;
-            this.Standard = standard;
-            this.UnitPrice = unitPrice;
-
-            // quantity convertion to standard uom
-            this.QuantityStandardEquivalent = standard * quantity;
-
-            this.TotalPrice = new Money((this.Quantity.Value * this.UnitPrice.Amount), this.UnitPrice.Currency);
-        }
-    }
+			this.Returned = new Money((this.Quantity.Value * this.UnitPrice.Amount), this.UnitPrice.Currency);
+		}
+	}
 }

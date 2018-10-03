@@ -23,8 +23,8 @@ namespace AmpedBiz.Data.EntityDefinitions
 
                 Map(x => x.Remarks);
 
-                Component(x => x.Total,
-                    MoneyDefinition.Mapping.Map("Total_", nameof(Return)));
+                Component(x => x.TotalReturned,
+                    MoneyDefinition.Mapping.Map("TotalReturned_", nameof(Return)));
 
                 HasMany(x => x.Items)
                     .Cascade.AllDeleteOrphan()

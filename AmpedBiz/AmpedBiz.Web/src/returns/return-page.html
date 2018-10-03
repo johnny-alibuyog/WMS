@@ -70,8 +70,8 @@
                   <th class="col-md-1" click.delegate="sorter.doSort('returnedOn')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['returnedOn'])}"></i>Date
                   </th>
-                  <th class="col-md-1 text-right" click.delegate="sorter.doSort('totalAmount')">
-                    <i class="fa fa-fw fa-${sorter.class(sorter['totalAmount'])}"></i>Amount
+                  <th class="col-md-1 text-right" click.delegate="sorter.doSort('returnedAmount')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['returnedAmount'])}"></i>Amount
                   </th>
                 </tr>
               </thead>
@@ -87,7 +87,7 @@
                   <td>${item.branchName}</td>
                   <td>${item.returnedByName}</td>
                   <td>${item.returnedOn | dateFormat}</td>
-                  <td class="text-right">${item.totalAmount | numberFormat}</td>
+                  <td class="text-right">${item.returnedAmount | numberFormat}</td>
                 </tr>
               </tbody>
               

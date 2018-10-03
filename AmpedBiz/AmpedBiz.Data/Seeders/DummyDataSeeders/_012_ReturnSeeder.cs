@@ -65,7 +65,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                             .Take(randomProductCount)
                             .Select(x => new ReturnItem(
                                 product: x,
-                                returnReason: _utils.Random<ReturnReason>(),
+                                reason: _utils.Random<ReturnReason>(),
                                 quantity: new Measure(
                                     value: _utils.RandomInteger(1, (int)inventories[x].Shipped.Value),
                                     unit: x.UnitOfMeasures.Default(o => o.UnitOfMeasure)

@@ -19,7 +19,7 @@ export interface Return {
   returnedBy?: Lookup<string>;
   returnedOn?: Date;
   remarks?: string;
-  totalAmount?: number;
+  totalReturnedAmount?: number;
   items?: ReturnItem[];
 }
 
@@ -30,48 +30,80 @@ export interface ReturnPageItem {
   returnedByName?: string;
   returnedOn?: Date;
   remarks?: string;
-  totalAmount?: number;
+  returnedAmount?: number;
 }
 
 export interface ReturnItem {
   id?: string;
   returnId?: string;
   product?: Lookup<string>;
-  returnReason?: Lookup<string>;
+  reason?: Lookup<string>;
   unitOfMeasures?: UnitOfMeasure[];
   quantity?: Measure;
   standard?: Measure;
   unitPriceAmount?: number;
   extendedPriceAmount?: number;
-  totalPriceAmount?: number;
+  returnedAmount?: number;
 }
 
 export interface ReturnItemPageItem {
   id?: string;
   returnId?: string;
   productName?: string;
-  returnReasonName?: string;
+  reasonName?: string;
   quantityValue?: string;
   unitPriceAmount?: string;
   extendedPriceAmount?: string;
-  totalPriceAmount?: string;
+  returnedAmount?: string;
 }
 
 export interface ReturnsByCustomerPageItem {
   id?: string;
+  branchName?: string;
   customerName?: string;
-  totalAmount?: number;
+  returnedAmount?: number;
+}
+
+export interface ReturnsByCustomerDetailsPageItem {
+  id?: string;
+  branchName?: string;
+  customerName?: string;
+  returnedOn?: Date;
+  returnedAmount?: number;
 }
 
 export interface ReturnsByProductPageItem {
   id?: string;
+  branchName?: string;
   productName?: string;
+  productCode?: string;
+  quantityUnit?: string;
   quantityValue?: number;
-  totalAmount?: number;
+  returnedAmount?: number;
+}
+
+export interface ReturnsByProductDetailsPageItem {
+  id?: string;
+  branchName?: string;
+  productName?: string;
+  productCode?: string;
+  returnedOn?: Date;
+  quantityUnit?: string;
+  quantityValue?: number;
+  returnedAmount?: number;
 }
 
 export interface ReturnsByReasonPageItem {
   id?: string;
-  returnReasonName?: string;
-  totalAmount?: number;
+  branchName?: string;
+  reasonName?: string;
+  returnedAmount?: number;
+}
+
+export interface ReturnsByReasonDetailsPageItem {
+  id?: string;
+  branchName?: string;
+  reasonName?: string;
+  returnedOn?: Date;
+  returnedAmount?: number;
 }

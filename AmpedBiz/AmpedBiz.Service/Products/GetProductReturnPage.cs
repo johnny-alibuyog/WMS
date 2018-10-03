@@ -35,8 +35,8 @@ namespace AmpedBiz.Service.Products
                     message.Sorter.Compose("reason", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.ReturnReason.Name)
-                            : query.OrderByDescending(x => x.ReturnReason.Name);
+                            ? query.OrderBy(x => x.Reason.Name)
+                            : query.OrderByDescending(x => x.Reason.Name);
                     });
 
                     message.Sorter.Compose("returnedOn", direction =>
@@ -60,8 +60,8 @@ namespace AmpedBiz.Service.Products
                     message.Sorter.Compose("returned", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.TotalPrice.Amount)
-                            : query.OrderByDescending(x => x.TotalPrice.Amount);
+                            ? query.OrderBy(x => x.Returned.Amount)
+                            : query.OrderByDescending(x => x.Returned.Amount);
                     });
 
                     message.Sorter.Compose("quantityUnit", direction =>
@@ -82,12 +82,12 @@ namespace AmpedBiz.Service.Products
                         .Select(x => new Dto.ProductOrderReturnPageItem()
                         {
                             Id = x.Return.Id,
-                            ReasonName = x.ReturnReason.Name,
+                            ReasonName = x.Reason.Name,
                             ReturnedOn = x.Return.ReturnedOn,
                             ReturnedByName =
                                 x.Return.ReturnedBy.Person.FirstName + " " +
                                 x.Return.ReturnedBy.Person.LastName,
-                            ReturnedAmount = x.TotalPrice.Amount,
+                            ReturnedAmount = x.Returned.Amount,
                             Quantity = new Dto.Measure(
                                 x.Quantity.Value,
                                 new Dto.UnitOfMeasure(

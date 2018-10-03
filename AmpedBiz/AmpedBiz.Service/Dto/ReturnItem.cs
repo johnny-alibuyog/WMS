@@ -11,7 +11,7 @@ namespace AmpedBiz.Service.Dto
 
         public Lookup<Guid> Product { get; set; }
 
-        public Lookup<string> ReturnReason { get; set; }
+        public Lookup<string> Reason { get; set; }
 
         public Measure Quantity { get; set; }
 
@@ -30,7 +30,7 @@ namespace AmpedBiz.Service.Dto
 
         public string ProductName { get; set; }
 
-        public string ReturnReasonName { get; set; }
+        public string ReasonName { get; set; }
 
         public decimal QuantityValue { get; set; }
 

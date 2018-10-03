@@ -175,6 +175,7 @@
     <Compile Include="Products\GetProductsDeliveredReportPage.cs" />
     <Compile Include="Products\UpdateProduct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PurchaseOrders\GetPurchaseOrderReportPage.cs" />
     <Compile Include="PurchaseOrders\RecreatePurchaseOrder.cs" />
     <Compile Include="PurchaseOrders\GetActivePurchaseOrderPage.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrderPayable.cs" />
@@ -203,8 +204,11 @@
     <Compile Include="Returns\GetReturn.cs" />
     <Compile Include="Returns\GetReturnList.cs" />
     <Compile Include="Returns\GetReturnPage.cs" />
+    <Compile Include="Returns\GetReturnsByCustomerDetailsPage.cs" />
     <Compile Include="Returns\GetReturnsByCustomerPage.cs" />
+    <Compile Include="Returns\GetReturnsByProductDetailsPage.cs" />
     <Compile Include="Returns\GetReturnsByProductPage.cs" />
+    <Compile Include="Returns\GetReturnsByReasonDetailsPage.cs" />
     <Compile Include="Returns\GetReturnsByReasonPage.cs" />
     <Compile Include="Settings\GetInvoiceReportSetting.cs" />
     <Compile Include="Settings\GetUserSetting.cs" />
@@ -233,6 +237,7 @@
     <Compile Include="Users\GetUserList.cs" />
     <Compile Include="Users\Login.cs" />
     <Compile Include="Users\Override.cs" />
+    <Compile Include="Users\ResetUserPassword.cs" />
     <Compile Include="Users\UpdateUser.cs" />
     <Compile Include="Users\UpdateUserAddress.cs" />
     <Compile Include="Users\UpdateUserInfo.cs" />

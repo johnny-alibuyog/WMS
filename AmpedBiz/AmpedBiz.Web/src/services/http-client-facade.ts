@@ -23,7 +23,6 @@ export class HttpClientFacade {
       })
       .withInterceptor({
         request(request) {
-          console.log(`Requesting ${request.method} ${request.url}`);
           request.headers.append('UserId', AuthStorage.userId);     // TODO: change this to jwt soon
           request.headers.append('BranchId', AuthStorage.branchId); // TODO: change this to jwt soon
           request.headers.append('TenantId',  AuthStorage.tenantId); // TODO: change this to jwt soon
@@ -31,7 +30,6 @@ export class HttpClientFacade {
           return request; // you can return a modified Request, or you can short-circuit the request by returning a Response
         },
         response(response) {
-          console.log(`Received ${response.status} ${response.url}`);
           return response; // you can return a modified Response
         }
       })

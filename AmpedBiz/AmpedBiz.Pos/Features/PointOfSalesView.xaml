@@ -1,0 +1,315 @@
+﻿<rxui:ReactiveUserControl 
+    x:Class="AmpedBiz.Pos.Features.PointOfSaleView"
+    x:TypeArguments="local:PointOfSalesViewModel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:rxui="http://reactiveui.net"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:local="clr-namespace:AmpedBiz.Pos.Features"
+    xmlns:ap="clr-namespace:AmpedBiz.Pos.Common.AttachedProperties"
+    xmlns:ex="clr-namespace:AmpedBiz.Pos.Common.Extentions">
+    <UserControl.Resources>
+        <Style x:Key="LabelControl" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignBody2TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="TextAlignment" Value="Right" />
+            <Setter Property="Padding" Value="0 0 20 6" />
+        </Style>
+
+        <Style x:Key="InputControl" TargetType="Control">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="20 0 50 0" />
+        </Style>
+
+        <Style x:Key="NumericHeader"  TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Width" Value="Auto" />
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock TextWrapping="Wrap" Text="{Binding}" TextAlignment="Right" />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="NumericElement" TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+
+        <Style x:Key="NumericEditingElement" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="25" VerticalAlignment="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sales -->
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="75"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Style="{StaticResource MaterialDesignHeadlineTextBlock}" Margin="5 0">Sales Details</TextBlock>
+
+            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical" Grid.IsSharedSizeScope="True">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="TextBock"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock 
+                        Grid.Column="0"
+                        Text="Customer:"
+                        Style="{StaticResource LabelControl}">
+                    </TextBlock>
+                    <!--<TextBox 
+                        Grid.Column="1"
+                        IsEnabled="False"
+                        md:HintAssist.HintOpacity=".26"
+                        Style="{ex:MultiStyle MaterialDesignTextBox InputControl}"
+                        Name="CustomerTextBox">
+                    </TextBox>-->
+                    <ComboBox
+                        Grid.Column="1"
+                        IsEditable="True"
+                        Name="CustomerComboBox"
+                        md:HintAssist.HintOpacity=".26"
+                        Style="{ex:MultiStyle MaterialDesignFloatingHintComboBox InputControl}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="TextBock"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock 
+                        Grid.Column="0" 
+                        Text="Invoice Number:" 
+                        Style="{StaticResource LabelControl}">
+                    </TextBlock>
+                    <TextBox 
+                        Grid.Column="1"
+                        IsEnabled="False"
+                        md:HintAssist.HintOpacity=".26"
+                        Style="{ex:MultiStyle MaterialDesignTextBox InputControl}"
+                        Name="InvoiceNumberTextBox">
+                    </TextBox>
+                </Grid>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" Grid.IsSharedSizeScope="True">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock 
+                        Grid.Column="0"
+                        Text="Sales On:" 
+                        Style="{StaticResource LabelControl}">
+                    </TextBlock>
+                    <!--<TextBox 
+                        Grid.Column="1"
+                        IsEnabled="False"
+                        md:HintAssist.HintOpacity=".26"
+                        Style="{ex:MultiStyle MaterialDesignTextBox InputControl}"
+                        Name="SalesOnTextBox">
+                    </TextBox>-->
+                    <DatePicker
+                        Grid.Column="1"
+                        IsEnabled="False"
+                        md:HintAssist.HintOpacity=".26"
+                        Style="{ex:MultiStyle MaterialDesignFloatingHintDatePicker InputControl}"
+                        Name="SalesOnDatePicker">
+                    </DatePicker>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Label"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock 
+                        Grid.Column="0"
+                        Text="Sales By:"
+                        Style="{StaticResource LabelControl}">
+                    </TextBlock>
+                    <TextBox 
+                        Grid.Column="1"
+                        IsEnabled="False"
+                        md:HintAssist.HintOpacity=".26"
+                        Style="{ex:MultiStyle MaterialDesignTextBox InputControl}"
+                        Name="SalesByTextBox">
+                    </TextBox>
+                </Grid>
+            </StackPanel>
+
+            <Button
+                Name="CreateItemButton"
+                Margin="2"
+                Grid.Row="1"
+                Grid.Column="2"
+                ToolTip="Icon"
+                Content="{md:PackIcon Plus}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"/>
+
+        </Grid>
+
+        <!-- Deatils -->
+        <StackPanel Grid.Row="1" Height="Auto" Margin="0 10 0 0" >
+
+            <DataGrid
+                Name="ItemsDataGridView"
+                CanUserSortColumns="False"
+                CanUserAddRows="False"
+                AutoGenerateColumns="False"
+                SelectionUnit="FullRow"
+                ScrollViewer.CanContentScroll="True" 
+                ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                md:DataGridAssist.CellPadding="4 2 2 2"
+                md:DataGridAssist.ColumnHeaderPadding="4 2 2 2"
+                md:DataGridAssist.EnableEditBoxAssist="False"
+                ap:ScrollToViewAttachedProperty.SelectedItem="{Binding ViewModel.SelectedItem}"
+                MaxHeight="320">
+                <DataGrid.Columns>
+
+                    <DataGridTemplateColumn
+                        x:Name="ActionColumn"
+                        Header="Action">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate DataType="md:PackIconKind">
+                                <StackPanel Orientation="Horizontal" Cursor="Hand">
+                                    <Button
+                                        HorizontalAlignment="Left"
+                                        ToolTip="MaterialDesignFloatingActionMiniButton"
+                                        Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                                        Command="{Binding Path=ViewModel.DeleteItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                        CommandParameter="{Binding }"
+                                        Height="20" Width="20">
+                                        <md:PackIcon Kind="Delete" Height="12" Width="12" />
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn
+                        Width="310"
+                        x:Name="ProductColumn"
+                        Header="Product"
+                        IsReadOnly="True"
+                        Binding="{Binding Product}">
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn
+                        Width="Auto"
+                        x:Name="BarcodeColumn"
+                        Header="Barcode"
+                        IsReadOnly="True"
+                        Binding="{Binding Barcode}">
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn
+                        Width="75"
+                        x:Name="UnitColumn"
+                        Header="Unit"
+                        IsReadOnly="True"
+                        Binding="{Binding Unit}" 
+                        TextBlock.TextAlignment="Right">
+                    </DataGridTextColumn>
+
+                    <md:MaterialDataGridTextColumn 
+                        Width="100"
+                        x:Name="QuantityColumn" 
+                        Header="Qty"
+                        Binding="{Binding Quantity}" 
+                        HeaderStyle="{StaticResource NumericHeader}"
+                        ElementStyle="{StaticResource NumericElement}"
+                        EditingElementStyle="{StaticResource NumericEditingElement}">
+                    </md:MaterialDataGridTextColumn>
+
+                    <md:MaterialDataGridTextColumn  
+                        Width="100"
+                        Header="Price"
+                        x:Name="PriceColumn" 
+                        Binding="{Binding Price}"
+                        HeaderStyle="{StaticResource NumericHeader}"
+                        ElementStyle="{StaticResource NumericElement}"
+                        EditingElementStyle="{StaticResource NumericEditingElement}">
+                    </md:MaterialDataGridTextColumn>
+
+                    <md:MaterialDataGridTextColumn
+                        Width="100"
+                        Header="Total" 
+                        IsReadOnly="True"
+                        x:Name="TotalColumn" 
+                        Binding="{Binding Total}" 
+                        HeaderStyle="{StaticResource NumericHeader}"
+                        ElementStyle="{StaticResource NumericElement}"
+                        EditingElementStyle="{StaticResource NumericEditingElement}">
+                    </md:MaterialDataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!-- Footer -->
+            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0 7">
+                <Grid Width="{Binding ElementName=ActionColumn,Path=ActualWidth}">
+                    <TextBlock Margin="5,0,0,0"></TextBlock>
+                </Grid>
+                <Grid Width="{Binding ElementName=ProductColumn,Path=ActualWidth}">
+                    <TextBlock Margin="5,0,0,0"></TextBlock>
+                </Grid>
+                <Grid Width="{Binding ElementName=BarcodeColumn,Path=ActualWidth}">
+                    <TextBlock Margin="5,0,0,0"></TextBlock>
+                </Grid>
+                <Grid Width="{Binding ElementName=QuantityColumn,Path=ActualWidth}">
+                    <TextBlock Margin="5,0,0,0"></TextBlock>
+                </Grid>
+                <Grid Width="{Binding ElementName=UnitColumn,Path=ActualWidth}">
+                    <TextBlock Margin="5,0,0,0"></TextBlock>
+                </Grid>
+                <Grid Width="{Binding ElementName=PriceColumn,Path=ActualWidth}">
+                    <TextBlock Padding="0 0 5 0" TextAlignment="Right" Style="{StaticResource LabelControl}" Text="Total:"></TextBlock>
+                </Grid>
+                <Grid Width="{Binding ElementName=TotalColumn,Path=ActualWidth}">
+                    <TextBlock Padding="0 0 5 0" Name="GrandTotalTextBlock" TextAlignment="Right" Text="{Binding PointOfSale.GrandTotal}"/>
+                </Grid>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2">
+            <!--<TextBlock Name="GrandTotal"></TextBlock>
+            <TextBlock>
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0}, {1}">
+                        <Binding ElementName="ItemsDataGridView" Path="ActualWidth"/>
+                        <Binding ElementName="ItemsDataGridView" Path="ActualHeight"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>-->
+        </StackPanel>
+
+    </Grid>
+</rxui:ReactiveUserControl>

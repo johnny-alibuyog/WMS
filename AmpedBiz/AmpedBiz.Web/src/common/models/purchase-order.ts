@@ -173,3 +173,17 @@ export interface VoucherItem {
   unitCostAmount?: number;
   totalCostAmount?: number;
 }
+
+export interface PurchaseOrderReportPageItem {
+  id?: string;
+  createdOn?: Date;
+  branchName?: string;
+  supplierName?: string;
+  voucherNumber?: string;
+  createdByName?: string;
+  approvedByName?: string;
+  status?: PurchaseOrderStatus;
+  totalAmount?: number;
+  paidAmount?: number;
+  balanceAmount?: number;
+}

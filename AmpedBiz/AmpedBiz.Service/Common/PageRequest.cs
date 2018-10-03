@@ -41,7 +41,7 @@ namespace AmpedBiz.Service.Common
 
             var value = this[field];
 
-            if (value.IsNullOrDefault())
+            if (value.IsNullOrDefault() && !(value is bool))
                 return;
 
             if (value is string && string.IsNullOrWhiteSpace(value as string))

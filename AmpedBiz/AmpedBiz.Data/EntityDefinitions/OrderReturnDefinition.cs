@@ -6,34 +6,15 @@ namespace AmpedBiz.Data.EntityDefinitions
 {
     public class OrderReturnDefinition
     {
-        public class Mapping : ClassMap<OrderReturn>
+        public class Mapping : SubclassMap<OrderReturn>
         {
             public Mapping()
             {
-                Id(x => x.Id)
-                    .GeneratedBy.GuidComb();
-
-                References(x => x.Product);
-
                 References(x => x.Order);
-
-                References(x => x.Reason);
 
                 References(x => x.ReturnedBy);
 
                 Map(x => x.ReturnedOn);
-
-                Component(x => x.Quantity,
-                    MeasureDefinition.Mapping.Map("Quantity_", nameof(OrderReturn)));
-
-                Component(x => x.Standard,
-                    MeasureDefinition.Mapping.Map("Standard_", nameof(OrderReturn)));
-
-                Component(x => x.QuantityStandardEquivalent,
-                    MeasureDefinition.Mapping.Map("QuantityStandardEquivalent_", nameof(OrderReturn)));
-
-                Component(x => x.Returned,
-                    MoneyDefinition.Mapping.Map("Returned_", nameof(OrderReturn)));
             }
         }
 
@@ -41,17 +22,7 @@ namespace AmpedBiz.Data.EntityDefinitions
         {
             public Validation()
             {
-                Define(x => x.Id);
-
-                Define(x => x.Product)
-                    .NotNullable()
-                    .And.IsValid();
-
                 Define(x => x.Order)
-                    .NotNullable()
-                    .And.IsValid();
-
-                Define(x => x.Reason)
                     .NotNullable()
                     .And.IsValid();
 
@@ -60,15 +31,6 @@ namespace AmpedBiz.Data.EntityDefinitions
                     .And.IsValid();
 
                 Define(x => x.ReturnedOn);
-
-                Define(x => x.Quantity);
-
-                Define(x => x.Standard);
-
-                Define(x => x.QuantityStandardEquivalent);
-
-                Define(x => x.Returned)
-                    .IsValid();
             }
         }
     }

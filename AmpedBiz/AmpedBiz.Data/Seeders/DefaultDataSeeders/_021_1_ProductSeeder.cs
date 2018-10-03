@@ -206,6 +206,10 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
         public static IReadOnlyCollection<ProductImportModel> ExtractRawProducts(this ExcelQueryable<Row> rows)
         {
+            //Console.WriteLine("=========================================================================");
+            //Console.WriteLine(string.Join(", ", rows.FirstOrDefault()?.ColumnNames));
+            //Console.WriteLine("=========================================================================");
+
             return rows
                 .Select(ProductImportModel.Map)
                 .Where(x => !x.IsNullOrDefault())

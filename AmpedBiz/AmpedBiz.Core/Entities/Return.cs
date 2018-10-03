@@ -1,12 +1,11 @@
 ﻿using AmpedBiz.Core.Services;
-using AmpedBiz.Core.Services.Returns;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class Return : Entity<Guid, Return>, IAccept<IVisitor<Return>>
+	public class Return : Entity<Guid, Return>, IAccept<IVisitor<Return>>
     {
         public virtual Branch Branch { get; internal protected set; }
 
@@ -18,7 +17,7 @@ namespace AmpedBiz.Core.Entities
 
         public virtual string Remarks { get; internal protected set; }
 
-        public virtual Money Total { get; internal protected set; }
+        public virtual Money TotalReturned { get; internal protected set; }
 
         public virtual IEnumerable<ReturnItem> Items { get; internal protected set; } = new Collection<ReturnItem>();
 

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Weavers>
+  <ReactiveUI />
+  <!--<PropertyChanged />
+  <PropertyChanging />-->
+
+  <!--<PropertyChanged EventInvokerNames="RaisePropertyChanged"/>
+  <PropertyChanging EventInvokerNames="RaisePropertyChanging"/>-->
+
+  <!--<PropertyChanged EventInvokerNames="ReactiveUI.IReactiveObject.RaisePropertyChanged, RaisePropertyChanged"/>
+  <PropertyChanging EventInvokerNames="ReactiveUI.IReactiveObject.RaisePropertyChanging, RaisePropertyChanging"/>-->
+</Weavers>

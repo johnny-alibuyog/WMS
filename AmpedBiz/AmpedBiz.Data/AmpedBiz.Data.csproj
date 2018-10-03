@@ -149,6 +149,7 @@
     <Compile Include="EntityDefinitions\PurchaseOrderPaymentDefinition.cs" />
     <Compile Include="EntityDefinitions\PurchaseOrderReceiptDefinition.cs" />
     <Compile Include="EntityDefinitions\PurchaseOrderTransactionDefinition.cs" />
+    <Compile Include="EntityDefinitions\ReturnItemBaseDefinition.cs" />
     <Compile Include="EntityDefinitions\ReturnItemDefinition.cs" />
     <Compile Include="EntityDefinitions\ReturnDefinition.cs" />
     <Compile Include="EntityDefinitions\ReturnReasonDefinition.cs" />

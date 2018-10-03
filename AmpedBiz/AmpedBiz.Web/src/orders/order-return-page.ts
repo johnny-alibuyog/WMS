@@ -66,7 +66,6 @@ export class OrderReturnPage {
   }
 
   public reasonsChanged(newValue: Lookup<string>[], oldValue: Lookup<string>[]): void {
-    console.log(newValue);
   }
 
   public returnsChanged(newValue: OrderReturn[], oldValue: OrderReturn[]): void {

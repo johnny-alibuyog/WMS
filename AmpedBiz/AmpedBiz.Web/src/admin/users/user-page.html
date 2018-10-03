@@ -47,6 +47,7 @@
               <thead>
                 <tr>
                   <th class="col-md-1">Action</th>
+                  <th class="col-md-1">Reset Password</th>
                   <th class="col-md-2" click.delegate="sorter.doSort('username')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['username'])}"></i>Username
                   </th>
@@ -67,6 +68,11 @@
                     </a>
                     <a href="javascript:undefined" class="text-danger" click.delegate="delete(item)">
                       <i class="fa fa-times"></i>
+                    </a>
+                  </td>
+                  <td>
+                    <a href="javascript:undefined" class="text-info" click.delegate="resetPassword(item)">
+                      <i class="fa fa-fw fa-unlock"></i>Reset
                     </a>
                   </td>
                   <td>${item.username}</td>

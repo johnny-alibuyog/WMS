@@ -57,7 +57,12 @@ namespace AmpedBiz.Service.Dto
         public string ConfirmPassword { get; set; }
     }
 
-    public class UserAddress
+	public class UserResetPassword
+	{
+		public Guid Id { get; set; }
+	}
+
+	public class UserAddress
     {
         public Guid Id { get; set; }
 

@@ -3,15 +3,10 @@ using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Users;
 using AmpedBiz.Data;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AmpedBiz.Service.Users
 {
-    public class UpdateUserPassword
+	public class UpdateUserPassword
     {
         public class Request : Dto.UserPassword, IRequest<Response> { }
 

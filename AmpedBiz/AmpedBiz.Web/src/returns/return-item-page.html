@@ -32,11 +32,11 @@
 
           <!-- read-only mode -->
           <td if.bind="$parent.selectedItem !== item">${item.product.name}</td>
-          <td if.bind="$parent.selectedItem !== item">${item.returnReason.name}</td>
+          <td if.bind="$parent.selectedItem !== item">${item.reason.name}</td>
           <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantity.unit.name}</td>
           <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantity.value}</td>
           <td if.bind="$parent.selectedItem !== item" class="text-right">${item.unitPriceAmount | numberFormat}</td>
-          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.totalPriceAmount | numberFormat}</td>
+          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.returnedAmount | numberFormat}</td>
 
           <!-- edit mode -->
           <td if.bind="$parent.selectedItem === item">
@@ -59,9 +59,9 @@
           <td if.bind="$parent.selectedItem === item">
             <div class="row">
               <div class="col-xs-12">
-                <select class="form-control input-xs" value.bind="item.returnReason | lookupToId:$parent.returnReasons" change.delegate="initializeItem(item)">
-                  <option>Select Product</option>
-                  <option repeat.for="returnReason of $parent.returnReasons" model.bind="returnReason.id">${returnReason.name}</option>
+                <select class="form-control input-xs" value.bind="item.reason | lookupToId:$parent.reasons" change.delegate="initializeItem(item)">
+                  <option>Select Reason</option>
+                  <option repeat.for="reason of $parent.reasons" model.bind="reason.id">${reason.name}</option>
                 </select>
               </div>
             </div>
@@ -98,13 +98,27 @@
           <td if.bind="$parent.selectedItem === item" class="text-right">
             <div class="row">
               <div class="col-xs-12 pull-right">
-                <input class="form-control input-xs text-right" type="number" numeric-value.bind="item.totalPriceAmount" disabled />
+                <input class="form-control input-xs text-right" type="number" numeric-value.bind="item.returnedAmount" disabled />
               </div>
             </div>
           </td>
 
         </tr>
       </tbody>
+
+      <tfoot>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="text-right">
+            <label>Grand Total:</label>
+          </td>
+          <td class="text-right">${totalReturnedAmount | numberFormat}</td>
+        </tr>
+      </tfoot>
 
     </table>
   </div>

@@ -1,3 +1,24 @@
+- POS 
+  - Can read product from barcode 
+  - Should print receipt after purchase has been finalized
+  - Can void transaction
+  - Fields (PointOfSale)
+    - Branch
+	- Customer
+	- Invoice Number
+	- Sales By
+	- Sales On
+	- Items (PointOfSaleItem)
+	  - Product Name
+	  - Barcode
+	  - Unit
+	  - Quantity
+	  - Price
+	  - Total
+    - Grand Total
+	  
+  
+
 - NHibernate Session usage should go to base class RequestHandlerBase
 - Fix multitenancy for data seeding
 - use EvalOrDefault for complex data evaluation

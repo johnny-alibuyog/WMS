@@ -1,5 +1,5 @@
 import { autoinject } from 'aurelia-framework';
-import { User, UserAddress, UserInfo, UserPassword } from '../common/models/user'
+import { User, UserAddress, UserInfo, UserPassword, UserResetPassword } from '../common/models/user'
 import { Lookup } from "../common/custom_types/lookup";
 import { ServiceBase } from './service-base'
 import { HttpClientFacade } from './http-client-facade';
@@ -44,5 +44,10 @@ export class UserService extends ServiceBase<User> {
   public updatePassword(userPassword: UserPassword): Promise<void>{
     var url = `${this._resouce}/${userPassword.id}/password`;
     return this._httpClient.put(url, userPassword);
+  }
+
+  public resetPassword(user: UserResetPassword): Promise<void>{
+    var url = `${this._resouce}/${user.id}/reset-password`;
+    return this._httpClient.post(url, user);
   }
 }

@@ -6,6 +6,7 @@ import { User, UserPageItem } from '../../common/models/user';
 import { ServiceApi } from '../../services/service-api';
 import { NotificationService } from '../../common/controls/notification-service';
 import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../../common/models/paging';
+import { ActionResult } from '../../common/controls/notification';
 
 @autoinject
 export class UserPage {
@@ -65,6 +66,20 @@ export class UserPage {
     let settings = { viewModel: UserCreate, model: user };
     let response = await this._dialog.open(settings).whenClosed();
     if (!response.wasCancelled) await this.getPage();
+  }
+
+  public async resetPassword(user: User): Promise<void> {
+    try {
+      let message = `Do you want to reset password of ${user.person.firstName} ${user.person.lastName}?`;
+      let result = await this._notification.confirm(message).whenClosed();
+      if (result.output === ActionResult.Yes) {
+        await this._api.users.resetPassword({ id: user.id });
+        await this._notification.info(`Password of  ${user.person.firstName} ${user.person.lastName} has been reset`);
+      }
+    }
+    catch (error) {
+      this._notification.error("Error encountered during reset!");
+    }
   }
 
   public delete(user: any): void {

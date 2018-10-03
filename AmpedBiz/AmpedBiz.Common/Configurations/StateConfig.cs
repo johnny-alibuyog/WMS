@@ -71,8 +71,7 @@ namespace AmpedBiz.Common.Configurations
                     },
                     AllowedTransitions = new string[]
                     {
-                        Order.Status.Completed,
-                        Order.Status.Cancelled,
+                        Order.Status.Completed
                     }
                 }
             },

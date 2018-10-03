@@ -47,7 +47,7 @@ namespace AmpedBiz.Service.Returns
                         Items = message.Items
                             .Select(x => new ReturnItem(
                                 product: GetProduct(x.Product.Id),
-                                returnReason: session.Load<ReturnReason>(x.ReturnReason.Id),
+                                reason: session.Load<ReturnReason>(x.Reason.Id),
                                 quantity: new Measure(x.Quantity.Value, session.Load<UnitOfMeasure>(x.Quantity.Unit.Id)),
                                 standard: new Measure(x.Standard.Value, session.Load<UnitOfMeasure>(x.Standard.Unit.Id)),
                                 unitPrice: new Money(x.UnitPriceAmount, currency)

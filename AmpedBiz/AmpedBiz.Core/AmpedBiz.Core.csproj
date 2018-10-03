@@ -80,6 +80,7 @@
     <Compile Include="Entities\PurchaseOrderTransaction.cs" />
     <Compile Include="Entities\Return.cs" />
     <Compile Include="Entities\ReturnItem.cs" />
+    <Compile Include="Entities\ReturnItemBase.cs" />
     <Compile Include="Entities\ReturnReason.cs" />
     <Compile Include="Entities\PurchaseOrderItem.cs" />
     <Compile Include="Entities\PurchaseOrderPayment.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="Entities\StageDefinition.cs" />
     <Compile Include="Services\Settings\ISettingsFacade.cs" />
     <Compile Include="Services\UnitOfMeasures\UnitBreaker.cs" />
+    <Compile Include="Services\Users\ResetPasswordVisitor.cs" />
     <Compile Include="Services\Users\SetPasswordVisitor.cs" />
     <Compile Include="Services\Users\SetRoleVisitor.cs" />
     <Compile Include="Services\Users\VerifyPasswordVisitor.cs" />

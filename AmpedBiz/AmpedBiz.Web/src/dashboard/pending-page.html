@@ -6,35 +6,31 @@
 
   <section class="au-animate">
 
-    <div class="container col-md-12">
+    <!--
+    <select select2="value.bind: selected; allow-clear: false" name="program" id="program" style="width: 100%;" class="form-control"
+      value.bind="selected">
+      <option repeat.for="option of options" value.bind="option.id">${option.name}</option>
+    </select>
 
-      <!--
-      <select select2="value.bind: selected; allow-clear: false" name="program" id="program" style="width: 100%;" class="form-control"
-        value.bind="selected">
+    <select2 name="options" selected.bind="selected" options.bind="options" placeholder="Enter a selection" allow_clear="true">
+      <template replace-part="suggestions">
         <option repeat.for="option of options" value.bind="option.id">${option.name}</option>
-      </select>
+      </template>
+    </select2>
+    -->
 
-      <select2 name="options" selected.bind="selected" options.bind="options" placeholder="Enter a selection" allow_clear="true">
-        <template replace-part="suggestions">
-          <option repeat.for="option of options" value.bind="option.id">${option.name}</option>
-        </template>
-      </select2>
-      -->
-
-      <!-- needs reordering -->
-      <div class="row">
-        <div class="au-stagger ">
-          <needs-reordering-page></needs-reordering-page>
-        </div>
+    <!-- needs reordering -->
+    <div class="row">
+      <div class="au-stagger ">
+        <needs-reordering-page></needs-reordering-page>
       </div>
+    </div>
 
-      <!-- active orders -->
-      <div class="row">
-        <div class="au-stagger ">
-          <active-order-page></active-order-page>
-        </div>
+    <!-- active orders -->
+    <div class="row">
+      <div class="au-stagger ">
+        <active-order-page></active-order-page>
       </div>
-
     </div>
 
   </section>

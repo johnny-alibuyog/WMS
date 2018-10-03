@@ -45,7 +45,7 @@ namespace AmpedBiz.Service.Returns
                         .Fetch(x => x.Items).Eager
                         .Fetch(x => x.Items.First().Product).Eager
                         .Fetch(x => x.Items.First().Product.Inventories).Eager
-                        .Fetch(x => x.Items.First().ReturnReason).Eager
+                        .Fetch(x => x.Items.First().Reason).Eager
                         .SingleOrDefault();
 
                     entity.EnsureExistence($"Returns with id {message.Id} does not exists.");

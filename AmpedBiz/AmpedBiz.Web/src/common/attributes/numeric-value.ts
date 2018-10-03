@@ -22,9 +22,6 @@ export class NumericValue {
   }
 
   public valueChanged(): void {
-    console.log(this._input);
-    console.log(this.value);
-
     // synchronize the input element with the bound value
     const number = this._ensureNumber(this.value);
     if (this.value < number) {

@@ -76,12 +76,9 @@ export class Select2 {
       this.element.dispatchEvent(changeEvent);
     });
     */
-
-    console.log("select2 attached");
   }
 
   detached() {
     $(this.element).find('select').select2('destroy');
-    console.log("select2 detached");
   }
 }

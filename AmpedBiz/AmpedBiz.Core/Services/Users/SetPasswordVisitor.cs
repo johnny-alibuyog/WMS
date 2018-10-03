@@ -25,11 +25,7 @@ namespace AmpedBiz.Core.Services.Users
         {
             this.Validate(target);
 
-            var hash = default(string);
-
-            var salt = default(string);
-
-            this._hashProvider.GetHashAndSaltString(this.NewPassword, out hash, out salt);
+            this._hashProvider.GetHashAndSaltString(this.NewPassword, out var hash, out var salt);
 
             target.PasswordHash = hash;
 

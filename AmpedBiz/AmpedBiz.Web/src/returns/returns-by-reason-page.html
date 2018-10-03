@@ -3,7 +3,7 @@
 
   <section class="row row-no-padding">
 
-    <div class="col-md-6">
+    <div class="col-md-11">
 
       <div class="panel panel-default">
 
@@ -14,13 +14,32 @@
           <h4 class="panel-title row">
             <span>&nbsp ${header} &nbsp</span>
 
+            <!-- generate report -->
+            <button type="button" class="btn btn-default" click.delegate="generateReport()">
+              <i class="fa fa-file"></i> Generate Report
+            </button>
+
             <!-- search -->
             <form class="search-form form-horizontal pull-right" role="form" submit.delegate="filter.doFilter()">
 
+              <div class="search-from input">
+                <span class="center-input">
+                    <input type="checkbox" checked.bind="filter['includeOrderReturns']" change.delegate="filter.doFilter()">
+                    <span class="control-label">Include Order Returns</span>
+                  </span>
+              </div>
+
               <div class="search-form input">
-                <select class="form-control" value.bind="filter['returnReason']" change.delegate="filter.doFilter()">
+                <select class="form-control" value.bind="filter['branch']" change.delegate="filter.doFilter()">
+                  <option value="">All Branches</option>
+                  <option repeat.for="item of branches" model.bind="item.id">${item.name}</option>
+                </select>
+              </div>
+
+              <div class="search-form input">
+                <select class="form-control" value.bind="filter['reason']" change.delegate="filter.doFilter()">
                   <option value="">All Reasons</option>
-                  <option repeat.for="item of returnReasons" model.bind="item.id">${item.name}</option>
+                  <option repeat.for="item of reasons" model.bind="item.id">${item.name}</option>
                 </select>
               </div>
 
@@ -46,11 +65,14 @@
               <thead>
                 <tr>
                   <th class="col-md-1">Action</th>
-                  <th class="col-md-2" click.delegate="sorter.doSort('returnReason')">
-                    <i class="fa fa-fw fa-${sorter.class(sorter['returnReason'])}"></i>Reason
+                  <th class="col-md-2" click.delegate="sorter.doSort('branchName')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['branchName'])}"></i>Branch
                   </th>
-                  <th class="col-md-1 text-right" click.delegate="sorter.doSort('totalAmount')">
-                    <i class="fa fa-fw fa-${sorter.class(sorter['totalAmount'])}"></i>Amount
+                  <th class="col-md-2" click.delegate="sorter.doSort('reasonName')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['reasonName'])}"></i>Reason
+                  </th>
+                  <th class="col-md-1 text-right" click.delegate="sorter.doSort('returnedAmount')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['returnedAmount'])}"></i>Amount
                   </th>
                 </tr>
               </thead>
@@ -62,8 +84,9 @@
                       <i class="fa fa-search"></i>
                     </a>
                   </td>
-                  <td>${item.returnReasonName}</td>
-                  <td class="text-right">${item.totalAmount | numberFormat}</td>
+                  <td>${item.branchName}</td>
+                  <td>${item.reasonName}</td>
+                  <td class="text-right">${item.returnedAmount | numberFormat}</td>
                 </tr>
               </tbody>
 

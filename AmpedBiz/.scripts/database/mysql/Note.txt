@@ -1,0 +1,1 @@
+NOTE: to create a scheduled backup, run backup.cmd using windows task scheduler (https://stackoverflow.com/questions/14666819/mysql-database-backup-automatically-on-a-windows-server)

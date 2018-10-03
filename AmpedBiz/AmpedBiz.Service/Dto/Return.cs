@@ -6,68 +6,142 @@ namespace AmpedBiz.Service.Dto
 {
     public class Return
     {
-        public virtual Guid Id { get; set; }
+        public Guid Id { get; set; }
 
-        public virtual Lookup<Guid> Branch { get; set; }
+        public Lookup<Guid> Branch { get; set; }
 
-        public virtual Lookup<Guid> Customer { get; set; }
+        public Lookup<Guid> Customer { get; set; }
 
-        public virtual Lookup<Guid> ReturnedBy { get; set; }
+        public Lookup<Guid> ReturnedBy { get; set; }
 
-        public virtual DateTime? ReturnedOn { get; set; }
+        public DateTime? ReturnedOn { get; set; }
 
-        public virtual string Remarks { get; set; }
+        public string Remarks { get; set; }
 
-        public virtual decimal TotalAmount { get; set; }
+        public decimal TotalReturnedAmount { get; set; }
 
-        public virtual IEnumerable<ReturnItem> Items { get; set; }
+        public IEnumerable<ReturnItem> Items { get; set; }
     }
 
     public class ReturnPageItem
     {
-        public virtual Guid Id { get; set; }
+        public Guid Id { get; set; }
 
-        public virtual string BranchName { get; set; }
+        public string BranchName { get; set; }
 
-        public virtual string CustomerName { get; set; }
+        public string CustomerName { get; set; }
 
-        public virtual string ReturnedByName { get; set; }
+        public string ReturnedByName { get; set; }
 
-        public virtual DateTime? ReturnedOn { get; set; }
+        public DateTime? ReturnedOn { get; set; }
 
-        public virtual string Remarks { get; set; }
+        public string Remarks { get; set; }
 
-        public virtual decimal TotalAmount { get; set; }
+        public decimal ReturnedAmount { get; set; }
     }
 
     public class ReturnsByCustomerPageItem
     {
-        public virtual Guid Id { get; set; }
+        public Guid Id { get; set; }
 
-        public virtual string CustomerName { get; set; }
+		public string CustomerCode { get; set; }
 
-        public virtual decimal TotalAmount { get; set; }
+        public string CustomerName { get; set; }
+
+        public string BranchName { get; set; }
+
+        public decimal ReturnedAmount { get; set; }
     }
 
-    public class ReturnsByProductPageItem
+	public class ReturnsByCustomerDetailsPageItem
+	{
+		public Guid Id { get; set; }
+
+		public string BranchName { get; set; }
+
+		public string CustomerCode { get; set; }
+
+		public string CustomerName { get; set; }
+
+		public DateTime ReturnedOn { get; set; }
+
+		public decimal ReturnedAmount { get; set; }
+	}
+
+	public class ReturnsByCustomerReportPageItem
+	{
+		public Guid Id { get; set; }
+
+		public string BranchName { get; set; }
+
+		public string CustomerCode { get; set; }
+
+		public string CustomerName { get; set; }
+
+		public string ReturnedByName { get; set; }
+
+		public DateTime ReturnedOn { get; set; }
+
+		public decimal ReturnedAmount { get; set; }
+	}
+
+	public class ReturnsByProductPageItem
     {
-        public virtual Guid Id { get; set; }
+        public Guid Id { get; set; }
 
-        public virtual string ProductCode { get; set; }
+		public string BranchName { get; set; }
 
-        public virtual string ProductName { get; set; }
+		public string ProductCode { get; set; }
 
-        public virtual decimal QuantityValue { get; set; }
+        public string ProductName { get; set; }
 
-        public virtual decimal TotalAmount { get; set; }
+        public string QuantityUnit { get; set; }
+
+        public decimal QuantityValue { get; set; }
+
+        public decimal ReturnedAmount { get; set; }
     }
 
-    public class ReturnsByReasonPageItem
+	public class ReturnsByProductDetailsPageItem
+	{
+		public Guid Id { get; set; }
+
+		public string BranchName { get; set; }
+
+		public string ProductCode { get; set; }
+
+		public string ProductName { get; set; }
+
+		public DateTime ReturnedOn { get; set; }
+
+		public string QuantityUnit { get; set; }
+
+		public decimal QuantityValue { get; set; }
+
+		public decimal ReturnedAmount { get; set; }
+	}
+
+	public class ReturnsByReasonPageItem
     {
-        public virtual string Id { get; set; }
+        public string Id { get; set; }
 
-        public virtual string ReturnReasonName { get; set; }
+		public string BranchName { get; set; }
 
-        public virtual decimal TotalAmount { get; set; }
+        public string ReasonName { get; set; }
+
+        public decimal ReturnedAmount { get; set; }
     }
+
+	public class ReturnsByReasonDetailsPageItem
+	{
+		public string Id { get; set; }
+
+		public string BranchName { get; set; }
+
+		public string ReasonName { get; set; }
+
+		public DateTime ReturnedOn { get; set; }
+
+		public decimal ReturnedAmount { get; set; }
+	}
 }

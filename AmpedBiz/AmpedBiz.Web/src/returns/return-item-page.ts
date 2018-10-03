@@ -31,9 +31,9 @@ export class ReturnItemPage {
 
   public products: Lookup<string>[] = [];
 
-  public returnReasons: Lookup<string>[] = [];
+  public reasons: Lookup<string>[] = [];
 
-  public grandTotalAmount: number;
+  public totalReturnedAmount: number;
 
   public itemPager: Pager<ReturnItem> = new Pager<ReturnItem>();
 
@@ -92,7 +92,7 @@ export class ReturnItemPage {
     Promise.all(requests)
       .then(responses => {
         this.products = responses[0];
-        this.returnReasons = responses[1];
+        this.reasons = responses[1];
       })
       .catch(error => {
         this._notification.error(error);
@@ -129,7 +129,7 @@ export class ReturnItemPage {
         value: 0
       };
       item.unitPriceAmount = 0;
-      item.totalPriceAmount = 0;
+      item.returnedAmount = 0;
       this.compute(item);
       return;
     }
@@ -156,7 +156,7 @@ export class ReturnItemPage {
       this.items = [];
 
     this.items.forEach(item => {
-      if (!item.totalPriceAmount) {
+      if (!item.returnedAmount) {
         this.compute(item);
       }
     });
@@ -223,7 +223,7 @@ export class ReturnItemPage {
 
   public compute(item: ReturnItem): void {
     item.extendedPriceAmount = ensureNumeric(item.unitPriceAmount) * getValue(item.quantity);
-    item.totalPriceAmount = ensureNumeric(item.extendedPriceAmount);
+    item.returnedAmount = ensureNumeric(item.extendedPriceAmount);
     this.total();
   }
 
@@ -233,6 +233,6 @@ export class ReturnItemPage {
 
     //this.shippingFeeAmount = ensureNumeric(this.shippingFeeAmount);
 
-    this.grandTotalAmount = Enumerable.from(this.items).sum(x => x.totalPriceAmount);
+    this.totalReturnedAmount = Enumerable.from(this.items).sum(x => x.returnedAmount);
   }
 }

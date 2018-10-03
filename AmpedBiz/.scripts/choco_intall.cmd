@@ -25,7 +25,9 @@ choco install sqlite
 choco install postgresql -y
 choco install pgadmin3 -y
 
-// mysql
+// mysql (this doesn't work anymore, mysql installer should be managed through mysql installer https://dev.mysql.com/downloads/installer/)
+/*
 choco install mysql -y
 choco install mysql.workbench -y
 choco install mysql-connector -y
+*/

@@ -84,6 +84,21 @@ export class Index {
         },
       },
       {
+        route: ['return-reason-page'],
+        name: 'return-reason-page',
+        moduleId: './return-reasons/return-reason-page',
+        nav: true,
+        title: 'Return Reasons',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+            ]
+          }
+        },
+      },
+      {
         route: ['supplier-page'],
         name: 'supplier-page',
         moduleId: './suppliers/supplier-page',

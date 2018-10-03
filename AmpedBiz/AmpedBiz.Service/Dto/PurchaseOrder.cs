@@ -120,4 +120,30 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? TotalAmount { get; set; }
     }
+
+
+	public class PurchaseOrderReportPageItem
+	{
+		public Guid Id { get; set; }
+
+		public DateTime? CreatedOn { get; set; }
+
+		public string BranchName { get; set; }
+
+		public string SupplierName { get; set; }
+
+		public string VoucherNumber { get; set; }
+
+		public string CreatedByName { get; set; }
+
+		public string ApprovedByName { get; set; }
+
+		public PurchaseOrderStatus Status { get; set; }
+
+		public decimal TotalAmount { get; set; }
+
+		public decimal PaidAmount { get; set; }
+
+		public decimal BalanceAmount => this.TotalAmount - this.PaidAmount;
+	}
 }

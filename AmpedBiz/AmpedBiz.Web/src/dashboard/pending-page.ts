@@ -6,7 +6,6 @@ export class PendingList {
   }
 
   activate() {
-    console.log('activate');
     this.options = [
       { name: 'First Option', id: "1" },
       { name: 'Second Option', id: "2" },

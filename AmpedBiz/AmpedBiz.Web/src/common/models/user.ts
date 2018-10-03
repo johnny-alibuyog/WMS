@@ -38,3 +38,7 @@ export interface UserPassword {
   newPassword?: string;
   confirmPassword?: string;
 }
+
+export interface UserResetPassword {
+  id?: string;
+}

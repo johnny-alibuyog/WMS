@@ -9,12 +9,12 @@ namespace AmpedBiz.Core.Services.Returns
         {
             if (target.Items.Any())
             {
-                target.Total = target.Items
+                target.TotalReturned = target.Items
                     .Where(x =>
-                        x.TotalPrice != null &&
-                        x.TotalPrice.Currency != null
+                        x.Returned != null &&
+                        x.Returned.Currency != null
                     )
-                    .Sum(x => x.TotalPrice);
+                    .Sum(x => x.Returned);
             }
         }
     }

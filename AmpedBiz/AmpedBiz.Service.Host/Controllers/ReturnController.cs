@@ -50,18 +50,39 @@ namespace AmpedBiz.Service.Host.Controllers
             return await _mediator.Send(request ?? new GetReturnsByCustomerPage.Request());
         }
 
-        [HttpPost()]
+		[HttpPost()]
+		[Route("~/returns-by-customer-details/page")]
+		public async Task<GetReturnsByCustomerDetailsPage.Response> Process([FromBody]GetReturnsByCustomerDetailsPage.Request request)
+		{
+			return await _mediator.Send(request ?? new GetReturnsByCustomerDetailsPage.Request());
+		}
+
+		[HttpPost()]
         [Route("~/returns-by-product/page")]
         public async Task<GetReturnsByProductPage.Response> Process([FromBody]GetReturnsByProductPage.Request request)
         {
             return await _mediator.Send(request ?? new GetReturnsByProductPage.Request());
         }
 
-        [HttpPost()]
+		[HttpPost()]
+		[Route("~/returns-by-product-details/page")]
+		public async Task<GetReturnsByProductDetailsPage.Response> Process([FromBody]GetReturnsByProductDetailsPage.Request request)
+		{
+			return await _mediator.Send(request ?? new GetReturnsByProductDetailsPage.Request());
+		}
+
+		[HttpPost()]
         [Route("~/returns-by-reason/page")]
         public async Task<GetReturnsByReasonPage.Response> Process([FromBody]GetReturnsByReasonPage.Request request)
         {
             return await _mediator.Send(request ?? new GetReturnsByReasonPage.Request());
         }
-    }
+
+		[HttpPost()]
+		[Route("~/returns-by-reason-details/page")]
+		public async Task<GetReturnsByReasonDetailsPage.Response> Process([FromBody]GetReturnsByReasonDetailsPage.Request request)
+		{
+			return await _mediator.Send(request ?? new GetReturnsByReasonDetailsPage.Request());
+		}
+	}
 }

@@ -106,5 +106,12 @@ namespace AmpedBiz.Service.Host.Controllers
         {
             return await _mediator.Send(request ?? new UpdateUserPassword.Request());
         }
-    }
+
+		[HttpPost()]
+		[Route("{id}/reset-password")]
+		public async Task<ResetUserPassword.Response> Process([FromUri]Guid id, [FromBody]ResetUserPassword.Request request)
+		{
+			return await _mediator.Send(request ?? new ResetUserPassword.Request());
+		}
+	}
 }

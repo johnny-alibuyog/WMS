@@ -51,7 +51,14 @@ namespace AmpedBiz.Service.Host.Controllers
             return await _mediator.Send(request ?? new GetPurchaseOrderPage.Request());
         }
 
-        [HttpGet()]
+		[HttpPost()]
+		[Route("report/page")]
+		public async Task<GetPurchaseOrderReportPage.Response> Process([FromBody]GetPurchaseOrderReportPage.Request request)
+		{
+			return await _mediator.Send(request ?? new GetPurchaseOrderReportPage.Request());
+		}
+
+		[HttpGet()]
         [Route("statuses")]
         public async Task<GetPurchaseOrderStatusList.Response> Process([FromBody]GetPurchaseOrderStatusList.Request request)
         {

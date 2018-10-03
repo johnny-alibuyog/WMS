@@ -34,6 +34,18 @@ export class Index {
         },
       },
       {
+        route: ['returns-by-customer-details-page'],
+        name: 'returns-by-customer-details-page',
+        moduleId: './returns-by-customer-details-page',
+        nav: false,
+        title: 'Returns By Customer Details',
+        settings: {
+          auth: <AuthSettings>{
+            roles: role.all()
+          }
+        },
+      },
+      {
         route: ['returns-by-product-page'],
         name: 'returns-by-product-page',
         moduleId: './returns-by-product-page',
@@ -46,11 +58,35 @@ export class Index {
         },
       },
       {
+        route: ['returns-by-product-details-page'],
+        name: 'returns-by-product-details-page',
+        moduleId: './returns-by-product-details-page',
+        nav: false,
+        title: 'Returns By Product Details',
+        settings: {
+          auth: <AuthSettings>{
+            roles: role.all()
+          }
+        },
+      },
+      {
         route: ['returns-by-reason-page'],
         name: 'returns-by-reason-page',
         moduleId: './returns-by-reason-page',
         nav: true,
         title: 'Returns By Reason',
+        settings: {
+          auth: <AuthSettings>{
+            roles: role.all()
+          }
+        },
+      },
+      {
+        route: ['returns-by-reason-details-page'],
+        name: 'returns-by-reason-details-page',
+        moduleId: './returns-by-reason-details-page',
+        nav: false,
+        title: 'Returns By Reason Details',
         settings: {
           auth: <AuthSettings>{
             roles: role.all()

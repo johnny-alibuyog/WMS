@@ -3,6 +3,7 @@ using AmpedBiz.Data;
 using AmpedBiz.Service.Common;
 using MediatR;
 using NHibernate.Linq;
+using System;
 using System.Linq;
 
 namespace AmpedBiz.Service.Returns
@@ -22,55 +23,140 @@ namespace AmpedBiz.Service.Returns
                 using (var session = SessionFactory.RetrieveSharedSession(Context))
                 using (var transaction = session.BeginTransaction())
                 {
-                    var query = session.Query<ReturnItem>()
-                        .GroupBy(x => x.ReturnReason.Id)
-                        .Select(x => new Dto.ReturnsByReasonPageItem()
-                        {
-                            Id = x.Key,
-                            ReturnReasonName = x.Max(o => o.ReturnReason.Name),
-                            TotalAmount = x.Sum(o => o.TotalPrice.Amount)
-                        });
+					var query = default(IQueryable<Dto.ReturnsByReasonPageItem>);
 
-                    // compose filters
-                    message.Filter.Compose<string>("returnReason", value =>
-                    {
-                        query = query.Where(x => x.Id == value);
-                    });
+					var includeOrderReturns = false;
 
-                    // compose sort
-                    message.Sorter.Compose("product", direction =>
+					// compose filters
+					message.Filter.Compose<bool>("includeOrderReturns", value => includeOrderReturns = value);
+
+					if (includeOrderReturns)
+					{
+						var query1 = session.Query<ReturnItemBase>();
+
+						// compose filters
+						message.Filter.Compose<string>("reason", value =>
+						{
+							query1 = query1.Where(x => x.Reason.Id == value);
+						});
+
+						message.Filter.Compose<Guid>("branch", value =>
+						{
+							query1 = query1.Where(x => x is ReturnItem
+								? ((ReturnItem)x).Return.Branch.Id == value
+								: ((OrderReturn)x).Order.Branch.Id == value
+							);
+						});
+
+						query = query1
+							.Select(x => new
+							{
+								ReasonId = x.Reason.Id,
+								BranchName = x is ReturnItem
+									? ((ReturnItem)x).Return.Branch.Name
+									: ((OrderReturn)x).Order.Branch.Name,
+								ReasonName = x.Reason.Name,
+								ReturnedAmount = x.Returned.Amount
+							})
+							.GroupBy(x => new
+							{
+								ReasonId = x.ReasonId,
+								BranchName = x.BranchName
+							})
+							.Select(x => new Dto.ReturnsByReasonPageItem()
+							{
+								Id = x.Key.ReasonId,
+								BranchName = x.Key.BranchName,
+								ReasonName = x.Max(o => o.ReasonName),
+								ReturnedAmount = x.Sum(o => o.ReturnedAmount)
+							});
+					}
+					else
+					{
+						var query1 = session.Query<ReturnItem>();
+
+						// compose filters
+						message.Filter.Compose<string>("reason", value =>
+						{
+							query1 = query1.Where(x => x.Reason.Id == value);
+						});
+
+						message.Filter.Compose<Guid>("branch", value =>
+						{
+							query1 = query1.Where(x => x.Return.Branch.Id == value);
+						});
+
+						query = query1
+							.GroupBy(x => new
+							{
+								ReasonId = x.Reason.Id,
+								BranchName = x.Return.Branch.Name
+							})
+							.Select(x => new Dto.ReturnsByReasonPageItem()
+							{
+								Id = x.Key.ReasonId,
+								BranchName = x.Key.BranchName,
+								ReasonName = x.Max(o => o.Reason.Name),
+								ReturnedAmount = x.Sum(o => o.Returned.Amount)
+							});
+					}
+
+					// compose sort
+					message.Sorter.Compose("branchName", direction =>
+					{
+						query = direction == SortDirection.Ascending
+							? query.OrderBy(x => x.BranchName)
+							: query.OrderByDescending(x => x.BranchName);
+					});
+
+					message.Sorter.Compose("reasonName", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.ReturnReasonName)
-                            : query.OrderByDescending(x => x.ReturnReasonName);
+                            ? query.OrderBy(x => x.ReasonName)
+                            : query.OrderByDescending(x => x.ReasonName);
                     });
 
-                    message.Sorter.Compose("totalAmount", direction =>
+                    message.Sorter.Compose("returnedAmount", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.TotalAmount)
-                            : query.OrderByDescending(x => x.TotalAmount);
+                            ? query.OrderBy(x => x.ReturnedAmount)
+                            : query.OrderByDescending(x => x.ReturnedAmount);
                     });
 
-                    var itemsFuture = query
-                        .Skip(message.Pager.SkipCount)
-                        .Take(message.Pager.Size)
-                        .ToFuture();
+					// TODO: this is not performant, this is just a work around on groupby count issue of nhibernate. find a solution soon
+					var totalItems = query.ToList();
 
-                    // TODO: Count is not working in groupby, find a better solution
-                    //var countFuture = query
-                    //    .ToFutureValue(x => x.Count());
+					var count = totalItems.Count;
 
-                    var count = query.ToList().Count;
+					if (message.Pager.IsPaged() != true)
+						message.Pager.RetrieveAll(count);
 
+					var items = query
+						.Skip(message.Pager.SkipCount)
+						.Take(message.Pager.Size)
+						.ToList();
 
-                    response = new Response()
-                    {
-                        Count = count, //countFuture.Value,
-                        Items = itemsFuture.ToList()
-                    };
+					response = new Response()
+					{
+						Count = count,
+						Items = items
+					};
 
-                    transaction.Commit();
+					//var itemsFuture = query
+					//    .Skip(message.Pager.SkipCount)
+					//    .Take(message.Pager.Size)
+					//    .ToFuture();
+
+					//var countFuture = query
+					//    .ToFutureValue(x => x.Count());
+
+					//response = new Response()
+					//{
+					//    Count = countFuture.Value,
+					//    Items = itemsFuture.ToList()
+					//};
+
+					transaction.Commit();
 
                     SessionFactory.ReleaseSharedSession();
                 }

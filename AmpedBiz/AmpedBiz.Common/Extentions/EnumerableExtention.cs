@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace AmpedBiz.Common.Extentions
@@ -9,6 +10,16 @@ namespace AmpedBiz.Common.Extentions
         public static ICollection<T> AsCollection<T>(this IEnumerable<T> items)
         {
             return items as ICollection<T>;
+        }
+
+        public static ObservableCollection<T> AsObservable<T>(this IEnumerable<T> items)
+        {
+            return new ObservableCollection<T>(items);
+        }
+
+        public static ReadOnlyObservableCollection<T> AsReadOnly<T>(this ObservableCollection<T> items)
+        {
+            return new ReadOnlyObservableCollection<T>(items);
         }
 
         public static void Add<T>(this IEnumerable<T> items, T value)

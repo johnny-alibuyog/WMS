@@ -1,0 +1,27 @@
+﻿/* Material Design Template */
+Install-Package MaterialDesignThemes -Version 2.4.1.1101
+
+/* MVVM Framework */
+Install-Package ReactiveUI.WPF
+Install-Package DynamicData.ReactiveUI
+
+/* Fody Weaver */
+Install-Package Fody
+Install-Package ReactiveUI.Fody
+/*Install-Package PropertyChanging.Fody*/
+/*Install-Package PropertyChanged.Fody*/
+Update-Package Fody
+/* NOTE: for the weaving to work, we need to add FodyWeaver.xml with values:
+<?xml version="1.0" encoding="utf-8"?>
+<Weavers>
+  <ReactiveUI />
+  <PropertyChanged EventInvokerNames="raisePropertyChanged"/>
+  <PropertyChanging EventInvokerNames="raisePropertyChanging"/>
+</Weavers>
+*/
+
+/* Fake Date Generator */
+Install-Package Bogus
+
+/* Tupple for Decompostion */
+Install-Package "System.ValueTuple"
