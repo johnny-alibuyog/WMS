@@ -25,7 +25,7 @@ export class ReturnsByProductPage {
   ) {
     this.filter["branch"] = null;
     this.filter["product"] = null;
-    this.filter["includeOrderReturns"] = false;
+    this.filter["includeOrderReturns"] = true;
     this.filter.onFilter = () => this.getPage();
     this.sorter["branchName"] = SortDirection.None;
     this.sorter["productName"] = SortDirection.Ascending;

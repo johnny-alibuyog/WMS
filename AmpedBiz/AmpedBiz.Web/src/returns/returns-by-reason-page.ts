@@ -25,7 +25,7 @@ export class ReturnsByReasonPage {
   ) {
     this.filter["branch"] = null;
     this.filter["reason"] = null;
-    this.filter["includeOrderReturns"] = false;
+    this.filter["includeOrderReturns"] = true;
     this.filter.onFilter = () => this.getPage();
     this.sorter["branchName"] = SortDirection.Ascending;
     this.sorter["reasonName"] = SortDirection.Ascending;
