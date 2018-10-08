@@ -1,7 +1,7 @@
 // https://auth0.com/blog/2015/08/05/creating-your-first-aurelia-app-from-authentication-to-calling-an-api/
 import { PageConfig } from './common/controls/pager';
 
-var apiHosts = {
+let apiHosts = {
   'nicont130server': 'http://nicont130server/ampbiz/api/',
   'server-pc': 'http://server-pc/ampbiz/api/',
   'localhost': 'http://localhost:49561',
@@ -12,7 +12,8 @@ var apiHosts = {
 
 export let appConfig = {
   api: {
-    baseUrl: apiHosts[window.location.hostname],
+    baseUrl: apiHosts[window.location.hostname] 
+      || `${window.location.origin}${window.location.pathname}api/`,
   },
   page: <PageConfig>{
     maxSize: 5,
