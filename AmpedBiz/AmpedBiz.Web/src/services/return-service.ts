@@ -1,6 +1,6 @@
 import { autoinject } from 'aurelia-framework';
 import { PageRequest, PagerResponse } from '../common/models/paging';
-import { Return, ReturnsByCustomerPageItem, ReturnsByProductPageItem, ReturnsByReasonPageItem, ReturnsByCustomerDetailsPageItem, ReturnsByProductDetailsPageItem, ReturnsByReasonDetailsPageItem } from '../common/models/return';
+import { Return, ReturnsByCustomerPageItem, ReturnsByProductPageItem, ReturnsByReasonPageItem, ReturnsByCustomerDetailsPageItem, ReturnsByProductDetailsPageItem, ReturnsByReasonDetailsPageItem, ReturnsDetailsReportPageItem } from '../common/models/return';
 import { ServiceBase } from './service-base'
 import { AuthService } from './auth-service';
 import { HttpClientFacade } from './http-client-facade';
@@ -12,6 +12,11 @@ export class ReturnService extends ServiceBase<Return> {
   constructor(httpClient: HttpClientFacade, auth: AuthService) {
     super('returns', httpClient);
     this._auth = auth;
+  }
+
+  public getReturnsDetailsReportPage(page: PageRequest): Promise<PagerResponse<ReturnsDetailsReportPageItem>> {
+    var url = 'returns-details-report/page';
+    return this._httpClient.post(url, page);
   }
 
   public getReturnsByCustomerPage(page: PageRequest): Promise<PagerResponse<ReturnsByCustomerPageItem>> {

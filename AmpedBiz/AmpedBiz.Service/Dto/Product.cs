@@ -95,6 +95,8 @@ namespace AmpedBiz.Service.Dto
 
         public bool IsDefault { get; set; }
 
+		public string Barcode { get; set; }
+
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
         public Measure Available { get; set; }
@@ -292,8 +294,6 @@ namespace AmpedBiz.Service.Dto
 
     public class ProductsDeliveredReportPageItem
     {
-        public DateTime ShippedOn { get; set; }
-
         public string BranchName { get; set; }
 
         public string SupplierName { get; set; }

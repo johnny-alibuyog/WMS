@@ -26,35 +26,31 @@ namespace AmpedBiz.Service.Returns
 					var query = default(IQueryable<Dto.ReturnsByCustomerDetailsPageItem>);
 
 					var includeOrderReturns = false;
-					var customerId = Guid.Empty;
-					var branchId = Guid.Empty;
 
 					// compose filters
 					message.Filter.Compose<bool>("includeOrderReturns", value => includeOrderReturns = value);
-					message.Filter.Compose<Guid>("customer", value => value = customerId = value);
-					message.Filter.Compose<Guid>("branch", value => value = branchId = value);
 
 					if (includeOrderReturns)
 					{
 						var query1 = session.Query<ReturnItemBase>();
 
-						if (customerId != Guid.Empty)
+						message.Filter.Compose<Guid>("customer", value =>
 						{
 							// we need to do this because where condition from a groupby select messed up the id value (guid)
 							query1 = query1.Where(x => x is ReturnItem
-								? ((ReturnItem)x).Return.Customer.Id == customerId
-								: ((OrderReturn)x).Order.Customer.Id == customerId
+								? ((ReturnItem)x).Return.Customer.Id == value
+								: ((OrderReturn)x).Order.Customer.Id == value
 							);
-						}
+						});
 
-						if (branchId != Guid.Empty)
+						message.Filter.Compose<Guid>("branch", value =>
 						{
 							// we need to do this because where condition from a groupby select messed up the id value (guid)
 							query1 = query1.Where(x => x is ReturnItem
-								? ((ReturnItem)x).Return.Branch.Id == branchId
-								: ((OrderReturn)x).Order.Branch.Id == branchId
+								? ((ReturnItem)x).Return.Branch.Id == value
+								: ((OrderReturn)x).Order.Branch.Id == value
 							);
-						}
+						});
 
 						query = query1
 							.Select(x => new
@@ -94,15 +90,15 @@ namespace AmpedBiz.Service.Returns
 					{
 						var query1 = session.Query<Return>();
 
-						if (customerId != Guid.Empty)
+						message.Filter.Compose<Guid>("customer", value =>
 						{
-							query1 = query1.Where(x => x.Customer.Id == customerId);
-						}
+							query1 = query1.Where(x => x.Customer.Id == value);
+						});
 
-						if (branchId != Guid.Empty)
+						message.Filter.Compose<Guid>("branch", value =>
 						{
-							query1 = query1.Where(x => x.Branch.Id == branchId);
-						}
+							query1 = query1.Where(x => x.Branch.Id == value);
+						});
 
 						query = query1
 							.GroupBy(x => new

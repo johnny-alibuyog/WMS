@@ -14,7 +14,6 @@ export interface ProductsDeliveredReportModel {
 }
 
 export interface ProductsDeliveredReportItemModel {
-  shippedOn?: Date;
   branchName?: string;
   supplierName?: string;
   categoryName?: string;
@@ -38,7 +37,6 @@ export class ProductsDeliveredReport extends Report<ProductsDeliveredReportModel
   protected async buildBody(data: ProductsDeliveredReportModel): Promise<any[] | Content[]> {
     let orderTableBody: any[] = [
       [
-        { text: 'Date', style: 'tableHeader' },
         { text: 'Branch', style: 'tableHeader' },
         { text: 'Supplier', style: 'tableHeader' },
         { text: 'Category', style: 'tableHeader' },
@@ -53,7 +51,6 @@ export class ProductsDeliveredReport extends Report<ProductsDeliveredReportModel
     if (data && data.items && data.items.length > 0) {
       // table body
       orderTableBody.push(...data.items.map(x => [
-        { text: formatDate(x.shippedOn), style: 'tableData' },
         { text: emptyIfNull(x.branchName), style: 'tableData' },
         { text: emptyIfNull(x.supplierName), style: 'tableData' },
         { text: emptyIfNull(x.categoryName), style: 'tableData' },
@@ -66,7 +63,6 @@ export class ProductsDeliveredReport extends Report<ProductsDeliveredReportModel
 
       // table footer
       orderTableBody.push([
-        { text: "", style: "tableData" },
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
@@ -135,7 +131,7 @@ export class ProductsDeliveredReport extends Report<ProductsDeliveredReportModel
       {
         table: {
           headerRows: 1,
-          widths: ['auto', 'auto', 'auto', 'auto', '*', 'auto', 'auto', 'auto', 'auto'],
+          widths: ['auto', 'auto', 'auto', '*', 'auto', 'auto', 'auto', 'auto'],
           body: orderTableBody
         },
         layout: 'lightHorizontalLines',

@@ -19,6 +19,8 @@ namespace AmpedBiz.Service.Products
             public Guid[] ProductIds { get; set; }
 
             public Guid SupplierId { get; set; }
+
+			public string SearchTerm { get; set; }
         }
 
         public class Response : List<Dto.ProductInventory>
@@ -49,6 +51,14 @@ namespace AmpedBiz.Service.Products
                         query = query.Where(x => x.Product.Supplier.Id == message.SupplierId);
                     }
 
+					if (!message.SearchTerm.IsNullOrWhiteSpace())
+					{
+						query = query.Where(x => 
+							x.Product.Name.StartsWith(message.SearchTerm) ||
+							x.Product.UnitOfMeasures.Any(y => y.Barcode.StartsWith(message.SearchTerm))
+						);
+					}
+
                     var productInventories = query
                         .Fetch(x => x.Product)
                         .ThenFetchMany(x => x.UnitOfMeasures)
@@ -66,6 +76,7 @@ namespace AmpedBiz.Service.Products
                                 {
                                     IsDefault = x.IsDefault,
                                     IsStandard = x.IsStandard,
+									Barcode = x.Barcode,
                                     UnitOfMeasure = x.UnitOfMeasure
                                         .MapTo(default(Dto.UnitOfMeasure)),
                                     Available = productInventory

@@ -24,6 +24,13 @@ namespace AmpedBiz.Core.Entities
         Returns = 3
     }
 
+	public enum OrderType
+	{
+		Order = 1,
+		PointOfSale = 2,
+		RoutedSale =3
+	}
+
     public enum OrderTransactionType
     {
         Creation,
@@ -71,6 +78,8 @@ namespace AmpedBiz.Core.Entities
         public virtual Money Total { get; internal protected set; }
 
         public virtual Money Paid { get; internal protected set; }
+
+		public virtual OrderType Type { get; internal protected set; } = OrderType.Order;
 
         public virtual OrderStatus Status { get; internal protected set; } = OrderStatus.Created;
 

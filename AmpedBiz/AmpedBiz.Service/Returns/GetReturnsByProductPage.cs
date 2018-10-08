@@ -26,32 +26,28 @@ namespace AmpedBiz.Service.Returns
 					var query = default(IQueryable<Dto.ReturnsByProductPageItem>);
 
 					var includeOrderReturns = false;
-					var productId = Guid.Empty;
-					var branchId = Guid.Empty;
 
 					// compose filters
 					message.Filter.Compose<bool>("includeOrderReturns", value => includeOrderReturns = value);
-					message.Filter.Compose<Guid>("product", value => productId = value);
-					message.Filter.Compose<Guid>("branch", value => branchId = value);
-
+					
 					if (includeOrderReturns)
 					{
 						var query1 = session.Query<ReturnItemBase>();
 
-						if (productId != Guid.Empty)
+						message.Filter.Compose<Guid>("product", value =>
 						{
 							// we need to do this because where condition from a groupby select messed up the id value (guid)
-							query1 = query1.Where(x => x.Product.Id == productId);
-						}
+							query1 = query1.Where(x => x.Product.Id == value);
+						});
 
-						if (branchId != Guid.Empty)
+						message.Filter.Compose<Guid>("branch", value =>
 						{
 							// we need to do this because where condition from a groupby select messed up the id value (guid)
 							query1 = query1.Where(x => x is ReturnItem
-								? ((ReturnItem)x).Return.Branch.Id == branchId
-								: ((OrderReturn)x).Order.Branch.Id == branchId
+								? ((ReturnItem)x).Return.Branch.Id == value
+								: ((OrderReturn)x).Order.Branch.Id == value
 							);
-						}
+						});
 
 						query = query1
 							.Select(x => new 
@@ -86,15 +82,15 @@ namespace AmpedBiz.Service.Returns
 					{
 						var query1 = session.Query<ReturnItem>();
 
-						if (productId != Guid.Empty)
+						message.Filter.Compose<Guid>("product", value =>
 						{
-							query1 = query1.Where(x => x.Product.Id == productId);
-						}
+							query1 = query1.Where(x => x.Product.Id == value);
+						});
 
-						if (branchId != Guid.Empty)
+						message.Filter.Compose<Guid>("branch", value =>
 						{
-							query1 = query1.Where(x => x.Return.Branch.Id == branchId);
-						}
+							query1 = query1.Where(x => x.Return.Branch.Id == value);
+						});
 
 						query = query1
 							.GroupBy(x => new

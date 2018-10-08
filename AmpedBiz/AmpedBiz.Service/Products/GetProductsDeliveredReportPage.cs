@@ -66,7 +66,6 @@ namespace AmpedBiz.Service.Products
                     var groupedQuery = query
                         .GroupBy(x => new
                         {
-                            ShippedOn = x.Order.ShippedOn.Value.Date,
                             BranchName = x.Order.Branch.Name,
                             SupplierName = x.Product.Supplier.Name,
                             CategoryName = x.Product.Category.Name,
@@ -76,7 +75,6 @@ namespace AmpedBiz.Service.Products
                         })
                         .Select(x => new Dto.ProductsDeliveredReportPageItem()
                         {
-                            ShippedOn = x.Key.ShippedOn,
                             BranchName = x.Key.BranchName,
                             SupplierName = x.Key.SupplierName,
                             CategoryName = x.Key.CategoryName,
@@ -91,13 +89,6 @@ namespace AmpedBiz.Service.Products
 
 
                     // compose order
-                    message.Sorter.Compose("shippedOn", direction =>
-                    {
-                        groupedQuery = direction == SortDirection.Ascending
-                            ? groupedQuery.OrderBy(x => x.ShippedOn)
-                            : groupedQuery.OrderByDescending(x => x.ShippedOn);
-                    });
-
                     message.Sorter.Compose("branchName", direction =>
                     {
                         groupedQuery = direction == SortDirection.Ascending

@@ -40,7 +40,26 @@ namespace AmpedBiz.Service.Dto
         public decimal ReturnedAmount { get; set; }
     }
 
-    public class ReturnsByCustomerPageItem
+	public class ReturnsDetailsReportPageItem
+	{
+		public Guid Id { get; set; }
+
+		public string BranchName { get; set; }
+
+		public string CustomerName { get; set; }
+
+		public string ProductName { get; set; }
+
+		public string ReasonName { get; set; }
+
+		public string ReturnedByName { get; set; }
+
+		public DateTime ReturnedOn { get; set; }
+
+		public decimal ReturnedAmount { get; set; }
+	}
+
+	public class ReturnsByCustomerPageItem
     {
         public Guid Id { get; set; }
 

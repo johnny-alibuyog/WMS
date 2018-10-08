@@ -53,6 +53,14 @@ namespace AmpedBiz.Pos.Features
 
             this.DeleteItemCommand = ReactiveCommand.CreateFromTask<PointOfSaleItemModel>(this.DeleteItem);
             this.DeleteItemCommand.ThrownExceptions.Subscribe(exception => this.Log().WarnException("Error!", exception));
+
+			this.WhenAnyValue(x => x.SelectedItem)
+				.Subscribe(x =>
+				{
+					Console.WriteLine("Chorva");
+
+				});
+				
         }
 
         private async Task Initialize()
@@ -127,13 +135,13 @@ namespace AmpedBiz.Pos.Features
 		private readonly Faker fake;
 		private readonly LookupsModel _lookups;
 
-		public Branch RandomBranch() => fake.PickRandom(this._lookups.Branches.AsEnumerable());
+		public BranchModel RandomBranch() => fake.PickRandom(this._lookups.Branches.AsEnumerable());
 
-		public Customer RandomCustomer() => fake.PickRandom(this._lookups.Customers.AsEnumerable());
+		public CustomerModel RandomCustomer() => fake.PickRandom(this._lookups.Customers.AsEnumerable());
 
 		public string RandomInvoiceNumber() => fake.Random.Replace("??-#####");
 
-		public User RandomUser() => fake.PickRandom(this._lookups.Users.AsEnumerable());
+		public UserModel RandomUser() => fake.PickRandom(this._lookups.Users.AsEnumerable());
 
 		public DateTime RandomDate() => DateTime.Now;
 

@@ -30,5 +30,10 @@ namespace AmpedBiz.Common.Extentions
 
             return String.Equals(fixedStringA, fixedStringB, StringComparison.OrdinalIgnoreCase);
         }
+
+		public static bool IsNullOrWhiteSpace(this string value)
+		{
+			return string.IsNullOrWhiteSpace(value);
+		}
     }
 }

@@ -4,13 +4,13 @@ using System;
 
 namespace AmpedBiz.Pos.Common.Models
 {
-    public abstract class Lookup<TId> : ReactiveObject, IComparable<Lookup<TId>>, IEquatable<Lookup<TId>>
+    public abstract class LookupModel<TId> : ReactiveObject, IComparable<LookupModel<TId>>, IEquatable<LookupModel<TId>>
     {
         [Reactive] public TId Id { get; private set; }
 
         [Reactive] public string Name { get; private set; }
 
-        protected Lookup(TId id, string name)
+        protected LookupModel(TId id, string name)
         {
             this.Id = id;
             this.Name = name;
@@ -25,17 +25,17 @@ namespace AmpedBiz.Pos.Common.Models
             return hashCode;
         }
 
-        public int CompareTo(Lookup<TId> other)
+        public int CompareTo(LookupModel<TId> other)
         {
             return string.Compare(this.Name, other?.Name);
         }
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as Lookup<TId>);
+            return this.Equals(obj as LookupModel<TId>);
         }
 
-        public bool Equals(Lookup<TId> other)
+        public bool Equals(LookupModel<TId> other)
         {
             if (other == null)
                 return false;

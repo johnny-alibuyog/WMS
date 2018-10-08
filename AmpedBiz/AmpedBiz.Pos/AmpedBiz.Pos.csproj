@@ -99,12 +99,15 @@
     <Compile Include="Common\Controls\DialogFacade.cs" />
     <Compile Include="Common\Controls\ToastFacade.cs" />
     <Compile Include="Common\Extentions\MultiStyleExtension.cs" />
-    <Compile Include="Common\Models\Branch.cs" />
-    <Compile Include="Common\Models\Customer.cs" />
-    <Compile Include="Common\Models\Lookup.cs" />
-    <Compile Include="Common\Models\Product.cs" />
-    <Compile Include="Common\Models\UnitOfMeasure.cs" />
-    <Compile Include="Common\Models\User.cs" />
+    <Compile Include="Common\Models\BranchModel.cs" />
+    <Compile Include="Common\Models\CustomerModel.cs" />
+    <Compile Include="Common\Models\LookupModel.cs" />
+    <Compile Include="Common\Models\PaymentTypeModel.cs" />
+    <Compile Include="Common\Models\PricingModel.cs" />
+    <Compile Include="Common\Models\ProductModel.cs" />
+    <Compile Include="Common\Models\ProductInventoryModel.cs" />
+    <Compile Include="Common\Models\UnitOfMeasureModel.cs" />
+    <Compile Include="Common\Models\UserModel.cs" />
     <Compile Include="Common\Services\ApiService.cs" />
     <Compile Include="Features\PointOfSaleModel.cs">
       <DependentUpon>PointOfSalesView.xaml</DependentUpon>
@@ -184,6 +187,10 @@
     <ProjectReference Include="..\AmpedBiz.Common\AmpedBiz.Common.csproj">
       <Project>{B7363F6D-0C87-4352-98CC-8798C968E7B5}</Project>
       <Name>AmpedBiz.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AmpedBiz.Service\AmpedBiz.Service.csproj">
+      <Project>{83fa9462-8a6f-417b-8575-5b1ca054dbcf}</Project>
+      <Name>AmpedBiz.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

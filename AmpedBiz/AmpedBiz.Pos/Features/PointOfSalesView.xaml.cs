@@ -1,5 +1,7 @@
 ﻿using ReactiveUI;
+using System;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 
 namespace AmpedBiz.Pos.Features
 {
@@ -69,6 +71,19 @@ namespace AmpedBiz.Pos.Features
 						view => view.ItemsDataGridView.SelectedItem
 					)
 					.DisposeWith(block);
+
+				this.WhenAnyValue(x => x.ItemsDataGridView.SelectedItem)
+					.Where(x => x != null)
+					.Subscribe(x =>
+					{
+						//Console.WriteLine(x);
+						this.ItemsDataGridView.UpdateLayout();
+						this.ItemsDataGridView.ScrollIntoView(x, null);
+						//this.ItemsDataGridView.UpdateLayout();
+						//this.ItemsDataGridView.ScrollIntoView(x.ItemsDataGridView.SelectedItem, null);
+					})
+					.DisposeWith(block);
+				
 			});
 		}
 

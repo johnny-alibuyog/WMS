@@ -18,13 +18,17 @@ namespace AmpedBiz.Pos.Features
 
 		private readonly SourceList<PointOfSaleItemModel> _itemSource = new SourceList<PointOfSaleItemModel>();
 
-		[Reactive] public Branch Branch { get; set; }
+		[Reactive] public string InvoiceNumber { get; set; }
 
-        [Reactive] public Customer Customer { get; set; }
+		[Reactive] public BranchModel Branch { get; set; }
 
-        [Reactive] public string InvoiceNumber { get; set; }
+        [Reactive] public CustomerModel Customer { get; set; }
 
-        [Reactive] public User SalesBy { get; set; }
+		[Reactive] public PricingModel PricingModel { get; set; }
+
+		[Reactive] public PaymentTypeModel PaymentType { get; set; }
+
+        [Reactive] public UserModel SalesBy { get; set; }
 
         [Reactive] public DateTime SalesOn { get; set; }
 
@@ -86,11 +90,11 @@ namespace AmpedBiz.Pos.Features
 
     public class PointOfSaleItemModel : ReactiveObject
     {
-        [Reactive] public Product Product { get; set; }
+        [Reactive] public ProductModel Product { get; set; }
 
         [Reactive] public string Barcode { get; set; }
 
-        [Reactive] public UnitOfMeasure Unit { get; set; }
+        [Reactive] public UnitOfMeasureModel Unit { get; set; }
 
         [Reactive] public decimal Quantity { get; set; }
 
@@ -111,22 +115,22 @@ namespace AmpedBiz.Pos.Features
 
     public class LookupsModel : ReactiveObject
     {
-        [Reactive] public IReadOnlyCollection<User> Users { get; set; }
+        [Reactive] public IReadOnlyCollection<UserModel> Users { get; set; }
 
-        [Reactive] public IReadOnlyCollection<Branch> Branches { get; set; }
+        [Reactive] public IReadOnlyCollection<BranchModel> Branches { get; set; }
 
-        [Reactive] public IReadOnlyCollection<Product> Products { get; set; }
+        [Reactive] public IReadOnlyCollection<ProductModel> Products { get; set; }
 
-        [Reactive] public IReadOnlyCollection<Customer> Customers { get; set; }
+        [Reactive] public IReadOnlyCollection<CustomerModel> Customers { get; set; }
 
-        [Reactive] public IReadOnlyCollection<UnitOfMeasure> UnitOfMeasures { get; set; }
+        [Reactive] public IReadOnlyCollection<UnitOfMeasureModel> UnitOfMeasures { get; set; }
 
         public LookupsModel(
-            IReadOnlyCollection<User> users,
-            IReadOnlyCollection<Branch> branches,
-            IReadOnlyCollection<Product> products,
-            IReadOnlyCollection<Customer> customers,
-            IReadOnlyCollection<UnitOfMeasure> unitOfMeasures)
+            IReadOnlyCollection<UserModel> users,
+            IReadOnlyCollection<BranchModel> branches,
+            IReadOnlyCollection<ProductModel> products,
+            IReadOnlyCollection<CustomerModel> customers,
+            IReadOnlyCollection<UnitOfMeasureModel> unitOfMeasures)
         {
             Users = users;
             Branches = branches;

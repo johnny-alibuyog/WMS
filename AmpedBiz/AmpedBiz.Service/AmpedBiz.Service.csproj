@@ -95,6 +95,7 @@
     <Compile Include="Dto\OrderReturn.cs" />
     <Compile Include="Dto\PaymentType.cs" />
     <Compile Include="Dto\Person.cs" />
+    <Compile Include="Dto\PointOfSale.cs" />
     <Compile Include="Dto\Product.cs" />
     <Compile Include="Dto\ProductCategory.cs" />
     <Compile Include="Dto\ProductUnitOfMeasure.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="PaymentTypes\GetPaymentTypeLookup.cs" />
     <Compile Include="PaymentTypes\GetPaymentTypePage.cs" />
     <Compile Include="PipelineBehaviorBase.cs" />
+    <Compile Include="PointOfSales\SavePointOfSale.cs" />
     <Compile Include="Pricings\GetPricingLookup.cs" />
     <Compile Include="ProductCategories\CreateProductCategory.cs" />
     <Compile Include="ProductCategories\GetProductCategory.cs" />
@@ -202,6 +204,7 @@
     <Compile Include="ReturnReasons\UpdateReturnReason.cs" />
     <Compile Include="Returns\CreateReturn.cs" />
     <Compile Include="Returns\GetReturn.cs" />
+    <Compile Include="Returns\GetReturnDetailsReportPage.cs" />
     <Compile Include="Returns\GetReturnList.cs" />
     <Compile Include="Returns\GetReturnPage.cs" />
     <Compile Include="Returns\GetReturnsByCustomerDetailsPage.cs" />

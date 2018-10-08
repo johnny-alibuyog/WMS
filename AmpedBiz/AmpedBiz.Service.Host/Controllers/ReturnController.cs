@@ -43,7 +43,14 @@ namespace AmpedBiz.Service.Host.Controllers
             return await _mediator.Send(request ?? new GetReturnPage.Request());
         }
 
-        [HttpPost()]
+		[HttpPost()]
+		[Route("~/returns-details-report/page")]
+		public async Task<GetReturnDetailsReportPage.Response> Process([FromBody]GetReturnDetailsReportPage.Request request)
+		{
+			return await _mediator.Send(request ?? new GetReturnDetailsReportPage.Request());
+		}
+
+		[HttpPost()]
         [Route("~/returns-by-customer/page")]
         public async Task<GetReturnsByCustomerPage.Response> Process([FromBody]GetReturnsByCustomerPage.Request request)
         {

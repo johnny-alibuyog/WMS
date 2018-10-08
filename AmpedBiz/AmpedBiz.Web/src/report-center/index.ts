@@ -189,6 +189,21 @@ export class Index {
         },
       },
       {
+        route: ['returns-details-report-page'],
+        name: 'returns-details-report-page',
+        moduleId: './returns-details-report-page',
+        nav: true,
+        title: 'Return Details',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+            ]
+          }
+        },
+      },
+      {
         route: [""],
         redirect: 
           this._auth.isAuthorized(role.salesclerk) 

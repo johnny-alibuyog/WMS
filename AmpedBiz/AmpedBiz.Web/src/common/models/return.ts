@@ -57,6 +57,17 @@ export interface ReturnItemPageItem {
   returnedAmount?: string;
 }
 
+export interface ReturnsDetailsReportPageItem {
+  id?: string;
+  branchName?: string;
+  customerName?: string;
+  productName?: string;
+  reasonName?: string;
+  returnedByName?: string;
+  returnedOn?: Date;
+  returnedAmount?: number;
+}
+
 export interface ReturnsByCustomerPageItem {
   id?: string;
   branchName?: string;

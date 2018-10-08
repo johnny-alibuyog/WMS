@@ -69,7 +69,10 @@ export interface ProductInventoryUnitOfMeasure {
   unitOfMeasure?: UnitOfMeasure;
   isStandard?: boolean;
   isDefault?: boolean;
+  barcode?: string;
   available?: Measure;
+  targetLevel?: Measure;
+  badStock?: Measure;
   standard?: Measure;
   prices?: ProductInventoryUnitOfMeasurePrice[];
 }
