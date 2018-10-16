@@ -4,6 +4,7 @@ using DynamicData.Aggregation;
 using DynamicData.ReactiveUI;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using ReactiveUI.Legacy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
