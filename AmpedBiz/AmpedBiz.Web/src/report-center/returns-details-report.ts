@@ -26,6 +26,11 @@ export interface ReturnByCustomerReportItem {
 @autoinject
 export class ReturnByCustomerReport extends Report<ReturnByCustomerReportModel> {
 
+  public constructor() {
+    super();
+    this.option.pageOrientation = 'landscape';
+  }
+
   protected buildBody(data: ReturnByCustomerReportModel): Promise<any[] | Content[]> {
     // table header
     let orderTableBody: any[] = [
@@ -36,7 +41,7 @@ export class ReturnByCustomerReport extends Report<ReturnByCustomerReportModel> 
         { text: 'Customer', style: 'tableHeader' },
         { text: 'Product', style: 'tableHeader' },
         { text: 'Reason', style: 'tableHeader' },
-        { text: 'Returned Amount', style: 'tableHeader', alignment: 'right' },
+        { text: 'Amount', style: 'tableHeader', alignment: 'right' },
       ],
     ];
 

@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace AmpedBiz.Service.Orders
 {
-    public class SaveOrder
+	public class SaveOrder
     {
         public class Request : Dto.Order, IRequest<Response>
         {
@@ -27,6 +27,8 @@ namespace AmpedBiz.Service.Orders
                 using (var session = SessionFactory.RetrieveSharedSession(Context))
                 using (var transaction = session.BeginTransaction())
                 {
+					//session.EnableBranchFilter(this.Context.BranchId);
+
                     var entity = (Order)null;
 
                     if (message.Id != Guid.Empty)
@@ -130,7 +132,10 @@ namespace AmpedBiz.Service.Orders
                                 returnedBy: x.ReturnedBy?.Id.EvalOrDefault(value => session.Load<User>(value)),
                                 quantity: new Measure(x.Quantity.Value, session.Load<UnitOfMeasure>(x.Quantity.Unit.Id)),
                                 standard: new Measure(x.Standard.Value, session.Load<UnitOfMeasure>(x.Standard.Unit.Id)),
-                                returned: new Money(x.ReturnedAmount, currency)
+                                returned: new Money(0M, currency) 
+								// NOTE: Since the payment is not yet fulfilled and, return money in this 
+								//		 transaction is not applicable. If the customer demands a return for 
+								//		 orders that has been completed/paid, it should be done in Returns module.
                             ))
                             .ToList()
                     });

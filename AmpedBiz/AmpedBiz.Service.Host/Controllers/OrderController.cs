@@ -87,13 +87,6 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpGet()]
-        [Route("{id}/returnables")]
-        public async Task<GetOrderReturnable.Response> Process([FromUri]GetOrderReturnable.Request request)
-        {
-            return await _mediator.Send(request ?? new GetOrderReturnable.Request());
-        }
-
-        [HttpGet()]
         [Route("{id}/invoice-detail")]
         public async Task<GetOrderInvoiceDetail.Response> Process([FromUri]GetOrderInvoiceDetail.Request request)
         {

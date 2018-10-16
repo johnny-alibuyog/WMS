@@ -1,12 +1,11 @@
-﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Entities;
 using AmpedBiz.Core.Services.Inventories.Orders;
 using AmpedBiz.Core.Services.Products;
 using System;
 
 namespace AmpedBiz.Core.Services.Orders
 {
-    public class OrderInvoicedVisitor : IVisitor<Order>
+	public class OrderInvoicedVisitor : IVisitor<Order>
     {
         public Branch Branch { get; set; }
 
@@ -26,7 +25,6 @@ namespace AmpedBiz.Core.Services.Orders
                         QuantityStandardEquivalent = item.QuantityStandardEquivalent
                     }
                 });
-
             }
 
             target.InvoicedOn = this.InvoicedOn;

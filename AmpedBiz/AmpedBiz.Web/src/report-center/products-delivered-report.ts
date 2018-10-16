@@ -26,6 +26,22 @@ export interface ProductsDeliveredReportItemModel {
   totalPriceAmount?: number;
 }
 
+type Key = {
+  branchName?: string;
+  supplierName?: string;
+  categoryName?: string;
+  productName?: string;
+  quantityUnit?: string;
+  unitPriceAmount?: number;
+  // items: ProductsDeliveredReportItemModel[];
+}
+
+type Group = {
+  key: Key;
+  subTotal: number;
+  items: ProductsDeliveredReportItemModel[];
+}
+
 @autoinject
 export class ProductsDeliveredReport extends Report<ProductsDeliveredReportModel> {
 
@@ -37,29 +53,50 @@ export class ProductsDeliveredReport extends Report<ProductsDeliveredReportModel
   protected async buildBody(data: ProductsDeliveredReportModel): Promise<any[] | Content[]> {
     let orderTableBody: any[] = [
       [
+        { text: 'Product', style: 'tableHeader' },
         { text: 'Branch', style: 'tableHeader' },
         { text: 'Supplier', style: 'tableHeader' },
         { text: 'Category', style: 'tableHeader' },
-        { text: 'Product', style: 'tableHeader' },
         { text: 'Quantity', style: 'tableHeader', alignment: 'right' },
         { text: 'Price', style: 'tableHeader', alignment: 'right' },
         { text: 'Discount', style: 'tableHeader', alignment: 'right' },
         { text: 'Total', style: 'tableHeader', alignment: 'right' },
+        { text: 'SubTotal', style: 'tableHeader', alignment: 'right' },
       ],
     ];
 
     if (data && data.items && data.items.length > 0) {
       // table body
-      orderTableBody.push(...data.items.map(x => [
-        { text: emptyIfNull(x.branchName), style: 'tableData' },
-        { text: emptyIfNull(x.supplierName), style: 'tableData' },
-        { text: emptyIfNull(x.categoryName), style: 'tableData' },
-        { text: emptyIfNull(x.productName), style: 'tableData' },
-        { text: `${emptyIfNull(x.quantityUnit)} ${formatNumber(x.quantityValue, '0,0')}`, style: 'tableData', alignment: 'right' },
-        { text: formatNumber(x.unitPriceAmount), style: 'tableData', alignment: 'right' },
-        { text: formatNumber(x.discountAmount), style: 'tableData', alignment: 'right' },
-        { text: formatNumber(x.totalPriceAmount), style: 'tableData', alignment: 'right' },
-      ]));
+
+      Enumerable
+        .from(data.items)
+        .orderBy(x => x.productName)
+        .groupBy(x => x.productName)
+        .forEach(group => {
+
+          let details = group.getSource();
+
+          // details
+          orderTableBody.push(...Enumerable
+            .from(details)
+            .select((x, i) => [
+              (i === 0) // header
+                ? { text: emptyIfNull(x.productName), style: 'tableData', rowSpan: details.length }
+                : { text: "", style: "tableData" },
+              { text: emptyIfNull(x.branchName), style: 'tableData' },
+              { text: emptyIfNull(x.supplierName), style: 'tableData' },
+              { text: emptyIfNull(x.categoryName), style: 'tableData' },
+              { text: `${emptyIfNull(x.quantityUnit)} ${formatNumber(x.quantityValue, '0,0')}`, style: 'tableData', alignment: 'right' },
+              { text: formatNumber(x.unitPriceAmount), style: 'tableData', alignment: 'right' },
+              { text: formatNumber(x.discountAmount), style: 'tableData', alignment: 'right' },
+              { text: formatNumber(x.totalPriceAmount), style: 'tableData', alignment: 'right' },
+              (i === details.length - 1) // subtotal
+                ? { text: formatNumber(Enumerable.from(details).sum(o => o.discountAmount)), style: 'tableData', alignment: 'right', rowSpan: details.length }
+                : { text: "", style: "tableData" },
+            ])
+            .toArray()
+          );
+        });
 
       // table footer
       orderTableBody.push([
@@ -67,9 +104,11 @@ export class ProductsDeliveredReport extends Report<ProductsDeliveredReportModel
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
+        { text: "", style: "tableData" },
+        { text: "", style: "tableData" },
+        { text: "", style: "tableData" },
         { text: "Grand Total", style: "tableHeader" },
-        { text: formatNumber(Enumerable.from(data.items).sum(o => o.unitPriceAmount)), style: "tableData", alignment: "right" },
-        { text: formatNumber(Enumerable.from(data.items).sum(o => o.discountAmount)), style: "tableData", alignment: "right" },
+        // { text: formatNumber(Enumerable.from(data.items).sum(o => o.discountAmount)), style: "tableData", alignment: "right" },
         { text: formatNumber(Enumerable.from(data.items).sum(o => o.totalPriceAmount)), style: "tableData", alignment: "right" },
       ]);
     }
@@ -83,41 +122,41 @@ export class ProductsDeliveredReport extends Report<ProductsDeliveredReportModel
         columns: [
           {
             table:
-              {
-                body:
+            {
+              body:
+                [
                   [
-                    [
-                      { text: 'Branch: ', style: 'label' },
-                      { text: emptyIfNull(data.branchName), style: 'value' }
-                    ],
-                    [
-                      { text: 'Supplier: ', style: 'label' },
-                      { text: emptyIfNull(data.supplierName), style: 'value' }
-                    ],
-                    [
-                      { text: 'Date: ', style: 'label' },
-                      { text: formatDate(data.fromDate) + ' - ' + formatDate(data.toDate), style: 'value' }
-                    ],
+                    { text: 'Branch: ', style: 'label' },
+                    { text: emptyIfNull(data.branchName), style: 'value' }
                   ],
-              },
+                  [
+                    { text: 'Supplier: ', style: 'label' },
+                    { text: emptyIfNull(data.supplierName), style: 'value' }
+                  ],
+                  [
+                    { text: 'Date: ', style: 'label' },
+                    { text: formatDate(data.fromDate) + ' - ' + formatDate(data.toDate), style: 'value' }
+                  ],
+                ],
+            },
             style: 'tablePlain',
             layout: 'noBorders',
           },
           {
             table:
-              {
-                body:
+            {
+              body:
+                [
                   [
-                    [
-                      { text: 'Categoy: ', style: 'label' },
-                      { text: emptyIfNull(data.categoryName), style: 'value' }
-                    ],
-                    [
-                      { text: 'Product: ', style: 'label' },
-                      { text: emptyIfNull(data.productName), style: 'value' }
-                    ],
+                    { text: 'Categoy: ', style: 'label' },
+                    { text: emptyIfNull(data.categoryName), style: 'value' }
                   ],
-              },
+                  [
+                    { text: 'Product: ', style: 'label' },
+                    { text: emptyIfNull(data.productName), style: 'value' }
+                  ],
+                ],
+            },
             style: 'tablePlain',
             layout: 'noBorders',
           },
@@ -131,7 +170,7 @@ export class ProductsDeliveredReport extends Report<ProductsDeliveredReportModel
       {
         table: {
           headerRows: 1,
-          widths: ['auto', 'auto', 'auto', '*', 'auto', 'auto', 'auto', 'auto'],
+          widths: ['*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
           body: orderTableBody
         },
         layout: 'lightHorizontalLines',

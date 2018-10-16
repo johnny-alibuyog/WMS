@@ -32,8 +32,8 @@ export class ProductsDeliveredReportPage {
     this.filter.onFilter = () => this.getPage();
     this.sorter["branchName"] = SortDirection.None;
     this.sorter["supplierName"] = SortDirection.None;
-    this.sorter["categoryName"] = SortDirection.Ascending;
-    this.sorter["productName"] = SortDirection.None;
+    this.sorter["categoryName"] = SortDirection.None;
+    this.sorter["productName"] = SortDirection.Ascending;
     this.sorter["quantityUnit"] = SortDirection.None;
     this.sorter["unitPriceAmount"] = SortDirection.None;
     this.sorter["discountAmount"] = SortDirection.None;

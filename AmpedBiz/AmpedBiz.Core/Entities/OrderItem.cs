@@ -1,14 +1,15 @@
-﻿using System;
+﻿using AmpedBiz.Core.Services;
+using System;
 
 namespace AmpedBiz.Core.Entities
 {
-    public class OrderItem : Entity<Guid, OrderItem>
-    {
+    public class OrderItem : Entity<Guid, OrderItem>, IAccept<IVisitor<OrderItem>>
+	{
         public virtual Order Order { get; protected internal set; }
 
         public virtual Product Product { get; protected set; }
 
-        public virtual Measure Quantity { get; protected set; }
+        public virtual Measure Quantity { get; internal protected set; }
 
         public virtual Measure Standard { get; protected set; }
 
@@ -34,22 +35,31 @@ namespace AmpedBiz.Core.Entities
             Money unitPrice,
             Guid? id = null
         ) : base(id ?? default(Guid))
-        {
-            this.Product = product;
-            this.Quantity = quantity;
-            this.Standard = standard;
-            this.DiscountRate = discountRate;
-            this.UnitPrice = unitPrice;
+		{
+			this.Product = product;
+			this.Quantity = quantity;
+			this.Standard = standard;
+			this.DiscountRate = discountRate;
+			this.UnitPrice = unitPrice;
+			this.Compute();
+		}
 
-            // quantity convertion to standard uom
-            this.QuantityStandardEquivalent = standard * quantity;
+		protected internal virtual void Compute()
+		{
+			// quantity convertion to standard uom
+			this.QuantityStandardEquivalent = this.Standard * this.Quantity;
 
-            // discount is not included in the extended price
-            this.ExtendedPrice = new Money((this.Quantity.Value * this.UnitPrice.Amount), this.UnitPrice.Currency);
+			// discount is not included in the extended price
+			this.ExtendedPrice = new Money((this.Quantity.Value * this.UnitPrice.Amount), this.UnitPrice.Currency);
 
-            this.Discount = new Money((this.ExtendedPrice.Amount * this.DiscountRate), this.UnitPrice.Currency);
+			this.Discount = new Money((this.ExtendedPrice.Amount * this.DiscountRate), this.UnitPrice.Currency);
 
-            this.TotalPrice = this.ExtendedPrice - this.Discount;
-        }
-    }
+			this.TotalPrice = this.ExtendedPrice - this.Discount;
+		}
+
+		public virtual void Accept(IVisitor<OrderItem> visitor)
+		{
+			visitor.Visit(this);
+		}
+	}
 }

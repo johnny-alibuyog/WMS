@@ -1,5 +1,6 @@
 import { getValue } from "../common/models/measure";
-import { Order, OrderInvoiceDetail, OrderPayable, OrderReportPageItem, OrderReturn, OrderReturnable, OrderReturning, OrderStatus, SalesReportPageItem, OrderPageItem } from '../common/models/order';
+import { isNullOrWhiteSpace } from '../common/utils/string-helpers';
+import { Order, OrderInvoiceDetail, OrderPayable, OrderReportPageItem, OrderReturn, OrderReturnable, OrderStatus, SalesReportPageItem, OrderPageItem } from '../common/models/order';
 import { PageRequest, PagerResponse } from '../common/models/paging';
 
 import { AuthService } from './auth-service';
@@ -7,6 +8,7 @@ import { HttpClientFacade } from './http-client-facade';
 import { Lookup } from '../common/custom_types/lookup';
 import { ServiceBase } from './service-base'
 import { autoinject } from 'aurelia-framework';
+import Enumerable = require("linq");
 
 @autoinject
 export class OrderService extends ServiceBase<Order> {
@@ -29,11 +31,6 @@ export class OrderService extends ServiceBase<Order> {
 
   public getPayables(orderId: string): Promise<OrderPayable> {
     var url = this._resouce + '/' + orderId + '/payables';
-    return this._httpClient.get(url);
-  }
-
-  public getReturnables(orderId: string): Promise<OrderReturnable[]> {
-    var url = this._resouce + '/' + orderId + '/returnables';
     return this._httpClient.get(url);
   }
 
@@ -165,66 +162,106 @@ export class OrderService extends ServiceBase<Order> {
 
   public computeReturnablesFrom(order: Order): OrderReturnable[] {
     var products = order.items.map(x => x.product);
+    var products = order.items.map(x => x.product);
 
-    return products.map(product => {
-      var returnable: OrderReturnable = {
-        orderId: order.id,
-        product: <Lookup<string>>{
-          id: product.id,
-          name: product.name
+    return products.map(product => <OrderReturnable>{
+      orderId: order.id,
+      product: <Lookup<string>>{
+        id: product.id,
+        name: product.name
+      },
+      discountRate: order.items.find(x => x.product.id == product.id).discountRate,
+      discountAmount: order.items.find(x => x.product.id == product.id).discountAmount,
+      unitPriceAmount: order.items.find(x => x.product.id == product.id).unitPriceAmount,
+      extendedPriceAmount: order.items.find(x => x.product.id == product.id).extendedPriceAmount,
+      totalPriceAmount: order.items.find(x => x.product.id == product.id).totalPriceAmount,
+      orderedQuantity: Enumerable.from(order.items)
+        .where(x => x.product.id == product.id)
+        .sum(x => getValue(x.quantity)),
+      returnableQuantity: Enumerable.from(order.items)
+        .where(x => x.product.id == product.id)
+        .sum(x => getValue(x.quantity)),
+      returnedQuantity: Enumerable.from(order.returns)
+        .where(x => x.product.id == product.id)
+        .sum(x => getValue(x.quantity)),
+      returning: {
+        returnedBy: this._auth.userAsLookup,
+        returnedOn: new Date(),
+        quantity: {
+          value: null,
+          unit: order.items.find(x => x.product.id == product.id).quantity.unit
         },
-        discountRate: order.items.find(x => x.product.id == product.id).discountRate,
-        discountAmount: order.items.find(x => x.product.id == product.id).discountAmount,
-        unitPriceAmount: order.items.find(x => x.product.id == product.id).unitPriceAmount,
-        extendedPriceAmount: order.items.find(x => x.product.id == product.id).extendedPriceAmount,
-        totalPriceAmount: order.items.find(x => x.product.id == product.id).totalPriceAmount,
-        orderedQuantity: order.items
-          .filter(item => item.product.id == product.id)
-          .reduce((prevVal, item) => prevVal + getValue(item.quantity), 0),
-        returnedQuantity: order.returns
-          .filter(receipt => receipt.product.id == product.id)
-          .reduce((prevVal, receipt) => prevVal + receipt.quantity.value, 0),
-        returning: {
-          returnedBy: this._auth.userAsLookup,
-          returnedOn: new Date(),
-          quantity: {
-            value: 0,
-            unit: order.items.find(x => x.product.id == product.id).quantity.unit
-          },
-          standard: order.items.find(x => x.product.id == product.id).standard
-        }
-      };
-
-      returnable.returnableQuantity = returnable.orderedQuantity > returnable.returnedQuantity
-        ? returnable.orderedQuantity - returnable.returnedQuantity : 0;
-
-      return returnable;
+        standard: order.items.find(x => x.product.id == product.id).standard
+      }
     });
   }
 
   public generateNewReturns(order: Order): boolean {
-    let returns = order.returnables
-      .filter(x =>
+
+    this.validateReturns(order);
+
+    let returns = Enumerable
+      .from(order.returnables)
+      .where(x =>
         x.returning &&
         x.returning.reason &&
         x.returning.quantity &&
-        x.returning.quantity.value > 0 &&
-        x.returning.amount > 0
+        x.returning.quantity.value > 0 //&&
+        //x.returning.amount > 0
       )
-      .map(x => <OrderReturn>{
+      .select(x => <OrderReturn>{
         product: x.product,
         reason: x.returning.reason,
         returnedBy: this._auth.userAsLookup,
         returnedOn: new Date(),
         quantity: x.returning.quantity,
         standard: x.returning.standard,
-        returnedAmount: x.returning.amount
-      });
+        returnedAmount: 0 //x.returning.amount 
+        // NOTE: customer cannot return amount on this transcation since payment is not yet processed.
+        //       If the customer has already processed payment and would like to refund payment, 
+        //       you must use the return module and not order return.
+      })
+      .toArray();
 
-    let withReturns = returns && returns.length > 0;
-    if (withReturns) {
-      order.returns.push(...returns);
+    returns.forEach(item => {
+      let instance = Enumerable.from(order.returns)
+        .firstOrDefault(x => isNullOrWhiteSpace(x.id) && x.product.id == item.product.id);
+
+      if (instance != null) {
+        instance.reason = item.reason;
+        instance.returnedBy = item.returnedBy;
+        instance.returnedOn = item.returnedOn;
+        instance.quantity = item.quantity;
+        instance.standard = item.standard;
+        instance.returnedAmount = item.returnedAmount;
+      }
+      else {
+        order.returns.push(item);
+      }
+    });
+
+    return returns && returns.length > 0;
+  }
+
+  private validateReturns(order: Order) {
+
+    let invalidReturningItems = Enumerable
+      .from(order.returnables)
+      .where(x => x.returning.quantity.value > x.returnableQuantity)
+      .toArray();
+
+    if (invalidReturningItems.length > 0) {
+      let buildErrorMessage = (arg: OrderReturnable) => {
+        return `Invalid return quantity of ${arg.returning.quantity.value} because only ${arg.returnableQuantity} is returnable for product ${arg.product.name}`;
+      };
+
+      let errorMessage = Enumerable
+        .from(invalidReturningItems)
+        .select(buildErrorMessage)
+        .toArray()
+        .join(' ');
+
+      throw new Error(errorMessage);
     }
-    return withReturns;
   }
 }

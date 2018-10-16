@@ -144,7 +144,7 @@ namespace AmpedBiz.Data.EntityDefinitions
                     .MaxLength(30);
 
                 Define(x => x.Branch)
-                    .IsValid();
+					.NotNullable();
 
                 Define(x => x.Customer)
                     .NotNullable()

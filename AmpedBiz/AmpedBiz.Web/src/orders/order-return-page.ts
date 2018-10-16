@@ -1,5 +1,4 @@
 import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
-import { ensureNumeric } from '../common/utils/ensure-numeric';
 import { Subscription } from 'aurelia-event-aggregator';
 import { Pager } from '../common/models/paging';
 import { OrderReturn, OrderReturnable } from '../common/models/order';
@@ -29,10 +28,6 @@ export class OrderReturnPage {
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public isModificationDisallowed: boolean = true;
-
-  public totalReturnedAmount?: number;
-
-  public totalReturningAmount?: number;
 
   public products: Lookup<string>[] = [];
 
@@ -102,8 +97,6 @@ export class OrderReturnPage {
       this.returns = [];
     }
 
-    this.total();
-
     this.returnPager.count = this.returns.length;
     this.returnPager.items = this.returns.slice(
       this.returnPager.start,
@@ -115,8 +108,6 @@ export class OrderReturnPage {
     if (!this.returnables) {
       this.returnables = [];
     }
-
-    this.total();
 
     this.returnablePager.count = this.returnables.length;
     this.returnablePager.items = this.returnables.slice(
@@ -235,21 +226,5 @@ export class OrderReturnPage {
       this.returnables.splice(index, 1);
     }
     this.initializeReturnablePage();
-  }
-
-  public compute(item: OrderReturnable): void {
-    var unitPrice = item.totalPriceAmount / item.orderedQuantity;
-    item.returning.amount = unitPrice * item.returning.quantity.value;
-    this.total();
-  }
-
-  public total() {
-    this.totalReturnedAmount = Enumerable
-      .from(this.returns)
-      .sum(x => x.returnedAmount);
-
-    this.totalReturningAmount = Enumerable
-      .from(this.returnables)
-      .sum(x => x.returning.amount);
   }
 }

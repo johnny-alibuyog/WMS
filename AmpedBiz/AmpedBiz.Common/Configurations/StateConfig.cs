@@ -80,7 +80,6 @@ namespace AmpedBiz.Common.Configurations
                 {
                     AllowedModifications = new string[]
                     {
-                        Order.Aggregates.Returns,
                     },
                     AllowedTransitions = new string[]
                     {

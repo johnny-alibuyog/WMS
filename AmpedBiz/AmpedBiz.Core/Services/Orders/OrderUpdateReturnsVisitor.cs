@@ -41,6 +41,7 @@ namespace AmpedBiz.Core.Services.Orders
                     }
                 });
                 target.Returns.Add(item);
+				this.ReflectReturnToOrderItem(target, item);
             }
 
             var lastReturn = target.Returns.OrderBy(x => x.ReturnedOn).Last();
@@ -54,5 +55,11 @@ namespace AmpedBiz.Core.Services.Orders
                 ));
             }
         }
+
+		private void ReflectReturnToOrderItem(Order order, OrderReturn @return)
+		{
+			var item = order.Items.FirstOrDefault(x => x.Product == @return.Product);
+			item.Accept(new OrderItemReturnVisitor(@return));
+		}
     }
 }

@@ -10,16 +10,14 @@
         <tr class="row-no-padding">
           <th rowspan="2" class="col-sm-1 vertical-middle">Action</th>
           <th rowspan="2" class="col-sm-3 vertical-middle">Product</th>
-          <th rowspan="2" class="col-sm-1 vertical-middle text-right">Price</th>
+          <th rowspan="2" class="col-sm-1 text-right">Unit</th>
           <th rowspan="2" class="col-sm-1 vertical-middle text-right">Returned</th>
           <th rowspan="2" class="col-sm-1 vertical-middle text-right">Returnable</th>
           <th colspan="4" class="col-sm-5 text-center">Returning</th>
         </tr>
         <tr>
-          <th class="col-sm-2 text-center">Reason</th>
-          <th class="col-sm-1 text-right">Unit</th>
           <th class="col-sm-1 text-right">Quantity</th>
-          <th class="col-sm-1 text-right">Amount</th>
+          <th class="col-sm-2">Reason</th>
         </tr>
       </thead>
 
@@ -47,14 +45,20 @@
           </td>
           -->
 
-          <!-- Price -->
-          <td class="text-right">${item.totalPriceAmount / item.orderedQuantity | numberFormat}</td>
+          <!-- Unit -->
+          <td class="text-right">${item.returning.quantity.unit.name}</td>
 
           <!-- Returned -->
           <td class="text-right">${item.returnedQuantity}</td>
 
           <!-- Returnable -->
           <td class="text-right">${item.returnableQuantity}</td>
+
+          <!-- Returning -->
+          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.returning.quantity.value}</td>
+          <td if.bind="$parent.selectedItem === item" class="text-right">
+            <input class="form-control text-right" type="number" numeric-value.bind="item.returning.quantity.value" />
+          </td>
 
           <!-- Reason -->
           <td if.bind="$parent.selectedItem !== item">${item.returning.reason.name}</td>
@@ -65,48 +69,8 @@
             </select>
           </td>
 
-          <!-- Unit -->
-          <td class="text-right">${item.returning.quantity.unit.name}</td>
-
-          <!-- Returning -->
-          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.returning.quantity.value}</td>
-          <td if.bind="$parent.selectedItem === item" class="text-right">
-            <input class="form-control text-right" type="number" numeric-value.bind="item.returning.quantity.value" keyup.delegate="compute(item)"
-            />
-          </td>
-
-          <!-- Amount -->
-          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.returning.amount | numberFormat}</td>
-          <td if.bind="$parent.selectedItem === item" class="text-right">
-            <input class="form-control text-right" type="number" numeric-value.bind="item.returning.amount" keyup.delegate="compute(item)" />
-          </td>
         </tr>
       </tbody>
-
-      <tfoot>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td class="text-right"><label>Returned:</label></td>
-          <td class="text-right">${totalReturnedAmount | numberFormat}</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td class="text-right"><label>Returning:</label></td>
-          <td class="text-right">${totalReturningAmount | numberFormat}</td>
-        </tr>
-      </tfoot>
 
     </table>
   </div>

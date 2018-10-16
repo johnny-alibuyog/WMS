@@ -2,7 +2,7 @@
 
 namespace AmpedBiz.Core.Entities
 {
-	public abstract class ReturnItemBase : Entity<Guid, ReturnItem>
+	public abstract class ReturnItemBase : Entity<Guid, ReturnItemBase>
 	{
 		public virtual Product Product { get; protected set; }
 
@@ -18,6 +18,6 @@ namespace AmpedBiz.Core.Entities
 
 		public ReturnItemBase() : base(default(Guid)) { }
 
-		public ReturnItemBase(Guid id) : base(default(Guid)) { }
+		public ReturnItemBase(Guid id) : base(id) { }
 	}
 }
