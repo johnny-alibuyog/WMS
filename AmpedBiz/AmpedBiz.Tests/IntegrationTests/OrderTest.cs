@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Common.Configurations;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Orders;
+using AmpedBiz.Core.Products;
 using AmpedBiz.Data;
 using AmpedBiz.Data.Seeders;
 using AmpedBiz.Service.Dto.Mappers;
@@ -16,112 +17,112 @@ using System.Transactions;
 
 namespace AmpedBiz.Tests.IntegrationTests
 {
-    [TestFixture]
-    public class OrderTest
-    {
-        private readonly ISessionFactory _sessionFactory = Ioc.Container.Resolve<ISessionFactory>();
-        private readonly IMediator _mediator = Ioc.Container.Resolve<IMediator>();
+	[TestFixture]
+	public class OrderTest
+	{
+		private readonly ISessionFactory _sessionFactory = Ioc.Container.Resolve<ISessionFactory>();
+		private readonly IMediator _mediator = Ioc.Container.Resolve<IMediator>();
 
-        [OneTimeSetUp]
-        public void Setup()
-        {
-            var log = LogManager.GetLogger<OrderTest>();
-            log.Error("log me like you do");
+		[OneTimeSetUp]
+		public void Setup()
+		{
+			var log = LogManager.GetLogger<OrderTest>();
+			log.Error("log me like you do");
 
-            var config = DatabaseConfig.Instance.Seeder;
+			var config = DatabaseConfig.Instance.Seeder;
 
-            Ioc.Container.Resolve<IMapper>().Initialze();
-            Ioc.Container.Resolve<Runner>().Run(config);
-        }
+			Ioc.Container.Resolve<IMapper>().Initialze();
+			Ioc.Container.Resolve<Runner>().Run(config);
+		}
 
-        [Test]
-        public void Test()
-        {
-            var state = StateConfig.Instance.Value;
+		[Test]
+		public void Test()
+		{
+			var state = StateConfig.Instance.Value;
 
-            var order = new Order();
+			var order = new Order();
 
-            for (int i = 0; i < 100; i++)
-            {
-                //order.AddOrderItem(new OrderItem() { ExtendedPrice = new Money(10) });
-            }
-        }
+			for (int i = 0; i < 100; i++)
+			{
+				//order.AddOrderItem(new OrderItem() { ExtendedPrice = new Money(10) });
+			}
+		}
 
-        [Test]
-        public void Test1()
-        {
-            try
-            {
-                using (var scope = new TransactionScope())
-                {
-                    using (var session = this._sessionFactory.RetrieveSharedSession())
-                    using (var transaction = session.BeginTransaction())
-                    {
-                        if (Transaction.Current != null)
-                            ((DbConnection)session.Connection).EnlistTransaction(Transaction.Current);
+		[Test]
+		public void Test1()
+		{
+			try
+			{
+				using (var scope = new TransactionScope())
+				{
+					using (var session = this._sessionFactory.RetrieveSharedSession())
+					using (var transaction = session.BeginTransaction())
+					{
+						if (Transaction.Current != null)
+							((DbConnection)session.Connection).EnlistTransaction(Transaction.Current);
 
-                        session.Save(new Pricing("XX", "XXXXX"));
+						session.Save(new Pricing("XX", "XXXXX"));
 
-                        transaction.Commit();
+						transaction.Commit();
 
-                        _sessionFactory.ReleaseSharedSession();
-                    }
+						_sessionFactory.ReleaseSharedSession();
+					}
 
-                    //using (var session = this._sessionFactory.RetrieveSharedSession())
-                    //using (var transaction = session.BeginTransaction())
-                    //{
-                    //    var XX = session.Get<Pricing>("XX");
-                    //    XX.Name = "YYYY";
+					//using (var session = this._sessionFactory.RetrieveSharedSession())
+					//using (var transaction = session.BeginTransaction())
+					//{
+					//    var XX = session.Get<Pricing>("XX");
+					//    XX.Name = "YYYY";
 
-                    //    transaction.Commit();
-                    //}
+					//    transaction.Commit();
+					//}
 
-                    scope.Dispose();
-                }
-            }
-            catch
-            {
+					scope.Dispose();
+				}
+			}
+			catch
+			{
 
-            }
-            finally
-            {
-                using (var session = this._sessionFactory.RetrieveSharedSession())
-                using (var transaction = session.BeginTransaction())
-                {
-                    var XX = session.Get<Pricing>("XX");
-                    //Assert.IsNull(XX);
-                }
-            }
-        }
+			}
+			finally
+			{
+				using (var session = this._sessionFactory.RetrieveSharedSession())
+				using (var transaction = session.BeginTransaction())
+				{
+					var XX = session.Get<Pricing>("XX");
+					//Assert.IsNull(XX);
+				}
+			}
+		}
 
-        [Test]
-        public void Test2()
-        {
-            var xxx = this._mediator.Send(new GetInventoryMovementsReportPage.Request());
-            Console.WriteLine(xxx);
-        }
+		[Test]
+		public void Test2()
+		{
+			var xxx = this._mediator.Send(new GetInventoryMovementsReportPage.Request());
+			Console.WriteLine(xxx);
+		}
 
-        //[Test]
-        //public void Test1()
-        //{
-        //    using (var session = this._sessionFactory.RetrieveSharedSession(_context))
-        //    using (var transaction = session.BeginTransaction())
-        //    {
-        //        //var entity = new ProductCategory("xxx");
-        //        //var entity = session.Get<ProductCategory>(ProductCategory.Drinks.Id);
+		//[Test]
+		//public void Test1()
+		//{
+		//    using (var session = this._sessionFactory.RetrieveSharedSession(_context))
+		//    using (var transaction = session.BeginTransaction())
+		//    {
+		//        //var entity = new ProductCategory("xxx");
+		//        //var entity = session.Get<ProductCategory>(ProductCategory.Drinks.Id);
 
-        //        //entity.Name = null;
+		//        //entity.Name = null;
 
-        //        //var invalidValues = SessionFactoryProvider.Validator.Validate(entity);
+		//        //var invalidValues = SessionFactoryProvider.Validator.Validate(entity);
 
-        //        var entity = new Order();
-        //        entity.EnsureValidity();
+		//        var entity = new Order();
+		//        entity.EnsureValidity();
 
-        //        session.Save(new Order());
+		//        session.Save(new Order());
 
-        //        transaction.Commit();
-        //    }
-        //}
+		//        transaction.Commit();
+		//    }
+		//}
 
-    }
+	}
 }

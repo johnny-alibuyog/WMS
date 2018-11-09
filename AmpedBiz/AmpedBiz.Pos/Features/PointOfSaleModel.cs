@@ -1,12 +1,14 @@
 ﻿using AmpedBiz.Pos.Common.Models;
 using DynamicData;
 using DynamicData.Aggregation;
+using DynamicData.Binding;
 using DynamicData.ReactiveUI;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Legacy;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -33,7 +35,7 @@ namespace AmpedBiz.Pos.Features
 
         [Reactive] public DateTime SalesOn { get; set; }
 
-		[Reactive] public ReactiveList<PointOfSaleItemModel> Items { get; private set; } = new ReactiveList<PointOfSaleItemModel>();
+		[Reactive] public IObservableCollection<PointOfSaleItemModel> Items { get; private set; }
 
         public decimal GrandTotal { [ObservableAsProperty] get; }
 

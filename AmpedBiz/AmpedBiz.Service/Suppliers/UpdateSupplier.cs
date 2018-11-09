@@ -1,11 +1,11 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Products;
 using AmpedBiz.Data;
 using MediatR;
 
 namespace AmpedBiz.Service.Suppliers
 {
-    public class UpdateSupplier
+	public class UpdateSupplier
     {
         public class Request : Dto.Supplier, IRequest<Response> { }
 

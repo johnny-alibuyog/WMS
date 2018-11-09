@@ -254,6 +254,7 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Controllers\PointOfSaleController.cs" />
     <Compile Include="Controllers\PricingController.cs" />
     <Compile Include="Controllers\ProductCategoryController.cs" />
     <Compile Include="Controllers\ProductController.cs" />

@@ -1,12 +1,12 @@
 ﻿using AmpedBiz.Common.CustomTypes;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AmpedBiz.Tests.IntegrationTests
 {
-    internal class DummyData
+	internal class DummyData
     {
         private readonly Random random = new Random();
 

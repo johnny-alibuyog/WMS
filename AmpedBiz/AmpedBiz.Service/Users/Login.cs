@@ -1,61 +1,61 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Services.Users;
+using AmpedBiz.Core.Users;
+using AmpedBiz.Core.Users.Services;
 using AmpedBiz.Data;
 using MediatR;
 
 namespace AmpedBiz.Service.Users
 {
-    public class Login
-    {
-        public class Request : Dto.User, IRequest<Response> { }
+	public class Login
+	{
+		public class Request : Dto.User, IRequest<Response> { }
 
-        public class Response : Dto.User { }
+		public class Response : Dto.User { }
 
-        public class Handler : RequestHandlerBase<Request, Response>
-        {
-            public override Response Execute(Request message)
-            {
-                var response = new Response();
+		public class Handler : RequestHandlerBase<Request, Response>
+		{
+			public override Response Execute(Request message)
+			{
+				var response = new Response();
 
-                using (var session = SessionFactory.RetrieveSharedSession(Context))
-                using (var transaction = session.BeginTransaction())
-                {
-                    var user = session.QueryOver<User>()
-                        .Where(x => x.Username == message.Username)
-                        .Fetch(x => x.Roles).Eager
-                        .Fetch(x => x.Branch).Eager
-                        .Fetch(x => x.Branch.Tenant).Eager
-                        .SingleOrDefault();
+				using (var session = SessionFactory.RetrieveSharedSession(Context))
+				using (var transaction = session.BeginTransaction())
+				{
+					var user = session.QueryOver<User>()
+						.Where(x => x.Username == message.Username)
+						.Fetch(x => x.Roles).Eager
+						.Fetch(x => x.Branch).Eager
+						.Fetch(x => x.Branch.Tenant).Eager
+						.SingleOrDefault();
 
-                    user.Ensure(
-                        that: instance =>
-                        {
-                            if (instance == null)
-                                return false;
+					user.Ensure(
+						that: instance =>
+						{
+							if (instance == null)
+								return false;
 
-                            var verfied = default(bool);
+							var verfied = default(bool);
 
-                            instance.Accept(new VerifyPasswordVisitor()
-                            {
-                                Password = message.Password,
-                                ResultCallback = (result) => verfied = result
-                            });
+							instance.Accept(new VerifyPasswordVisitor()
+							{
+								Password = message.Password,
+								ResultCallback = (result) => verfied = result
+							});
 
-                            return verfied;
-                        },
-                        message: "Invalid user or password!"
-                    );
+							return verfied;
+						},
+						message: "Invalid user or password!"
+					);
 
-                    user.MapTo(response);
+					user.MapTo(response);
 
-                    transaction.Commit();
+					transaction.Commit();
 
-                    SessionFactory.ReleaseSharedSession();
-                }
+					SessionFactory.ReleaseSharedSession();
+				}
 
-                return response;
-            }
-        }
-    }
+				return response;
+			}
+		}
+	}
 }

@@ -1,11 +1,11 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Returns;
 using AmpedBiz.Data;
 using MediatR;
 
 namespace AmpedBiz.Service.ReturnReasons
 {
-    public class UpdateReturnReason
+	public class UpdateReturnReason
     {
         public class Request : Dto.ReturnReason, IRequest<Response> { }
 

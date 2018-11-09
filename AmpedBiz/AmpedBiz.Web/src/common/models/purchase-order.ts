@@ -41,6 +41,7 @@ export interface PurchaseOrder {
   id?: string;
   referenceNumber?: string;
   voucherNumber?: string;
+  branch?: Lookup<string>;
   user?: Lookup<string>;
   supplier?: Lookup<string>;
   shipper?: Lookup<string>;

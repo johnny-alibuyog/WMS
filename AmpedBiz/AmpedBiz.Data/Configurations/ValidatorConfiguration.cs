@@ -1,4 +1,4 @@
-﻿using AmpedBiz.Data.EntityDefinitions;
+﻿using AmpedBiz.Data.Definitions.Users;
 using NHibernate.Cfg;
 using NHibernate.Validator.Cfg;
 using NHibernate.Validator.Cfg.Loquacious;
@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace AmpedBiz.Data.Configurations
 {
-    internal static class ValidatorConfiguration
+	internal static class ValidatorConfiguration
     {
         public static void Configure(Configuration configuration)
         {

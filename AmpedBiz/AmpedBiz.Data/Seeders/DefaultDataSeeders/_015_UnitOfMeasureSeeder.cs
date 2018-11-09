@@ -1,18 +1,17 @@
 ﻿using AmpedBiz.Common.Configurations;
 using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Products;
 using AmpedBiz.Data.Context;
 using LinqToExcel;
 using NHibernate;
 using NHibernate.Linq;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 
 namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 {
-    public class _015_UnitOfMeasureSeeder : IDefaultDataSeeder
+	public class _015_UnitOfMeasureSeeder : IDefaultDataSeeder
     {
         private readonly IContextProvider _contextProvider;
         private readonly ISessionFactory _sessionFactory;

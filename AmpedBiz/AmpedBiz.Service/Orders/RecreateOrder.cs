@@ -1,6 +1,8 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Services.Orders;
+using AmpedBiz.Core.Common;
+using AmpedBiz.Core.Orders;
+using AmpedBiz.Core.Orders.Services;
+using AmpedBiz.Core.Users;
 using AmpedBiz.Data;
 using MediatR;
 using System;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AmpedBiz.Service.Orders
 {
-    public class RecreateOrder
+	public class RecreateOrder
     {
         public class Request : Dto.Order, IRequest<Response> { }
 

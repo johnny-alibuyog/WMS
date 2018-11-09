@@ -104,7 +104,7 @@ namespace AmpedBiz.Common.Extentions
         }
 
 
-        public static T EnsureExistence<T>(this T entity, string message)
+        public static T EnsureExistence<T>(this T entity, string message = null)
         {
             if (string.IsNullOrWhiteSpace(message))
             {
@@ -116,7 +116,7 @@ namespace AmpedBiz.Common.Extentions
             return entity;
         }
 
-        public static IEnumerable<T> EnsureExistence<T>(this IEnumerable<T> entities, string message)
+        public static IEnumerable<T> EnsureExistence<T>(this IEnumerable<T> entities, string message = null)
         {
             if (string.IsNullOrWhiteSpace(message))
             {

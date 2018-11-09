@@ -5,6 +5,7 @@ import { CustomerService } from './customer-service';
 import { InventoryService } from './inventory-service';
 import { PaymentTypeService } from './payment-type-service';
 import { PricingService } from './pricing-service';
+import { PointOfSaleService } from './point-of-sale-service';
 import { ProductCategoryService } from './product-category-service';
 import { ProductService } from './product-service';
 import { PurchaseOrderService } from './purchase-order-service';
@@ -26,6 +27,7 @@ export class ServiceApi {
     public readonly paymentTypes: PaymentTypeService,
     public readonly pricings: PricingService,
     public readonly products: ProductService,
+    public readonly pointOfSales: PointOfSaleService,
     public readonly productCategories: ProductCategoryService,
     public readonly purchaseOrders: PurchaseOrderService,
     public readonly returnReasons: ReturnReasonService,

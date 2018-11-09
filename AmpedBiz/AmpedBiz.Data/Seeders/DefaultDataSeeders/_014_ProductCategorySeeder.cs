@@ -1,5 +1,5 @@
 ﻿using AmpedBiz.Common.Configurations;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Products;
 using AmpedBiz.Data.Context;
 using LinqToExcel;
 using NHibernate;
@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 {
-    public class _014_ProductCategorySeeder : IDefaultDataSeeder
+	public class _014_ProductCategorySeeder : IDefaultDataSeeder
     {
         private readonly IContextProvider _contextProvider;
         private readonly ISessionFactory _sessionFactory;

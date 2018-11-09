@@ -1,14 +1,12 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Common;
 using AmpedBiz.Data;
-using AmpedBiz.Data.Context;
 using MediatR;
-using NHibernate;
 using System;
 
 namespace AmpedBiz.Service.Branches
 {
-    public class GetBranch
+	public class GetBranch
     {
         public class Request : IRequest<Response>
         {

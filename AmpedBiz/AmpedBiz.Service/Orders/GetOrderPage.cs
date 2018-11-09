@@ -1,4 +1,4 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Orders;
 using AmpedBiz.Data;
 using AmpedBiz.Service.Common;
 using MediatR;
@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace AmpedBiz.Service.Orders
 {
-    public class GetOrderPage
+	public class GetOrderPage
     {
         public class Request : PageRequest, IRequest<Response> { }
 
@@ -39,11 +39,6 @@ namespace AmpedBiz.Service.Orders
                     message.Filter.Compose<Guid>("customer", value =>
                     {
                         query = query.Where(x => x.Customer.Id == value);
-                    });
-
-                    message.Filter.Compose<OrderStatus[]>("statuses", value =>
-                    {
-                        query = query.Where(x => value.Contains(x.Status));
                     });
 
                     message.Filter.Compose<OrderStatus[]>("statuses", value =>

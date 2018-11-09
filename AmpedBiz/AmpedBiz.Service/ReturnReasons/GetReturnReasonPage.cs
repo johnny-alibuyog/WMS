@@ -1,4 +1,4 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Returns;
 using AmpedBiz.Data;
 using AmpedBiz.Service.Common;
 using MediatR;
@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace AmpedBiz.Service.ReturnReasons
 {
-    public class GetReturnReasonPage
+	public class GetReturnReasonPage
     {
         public class Request : PageRequest, IRequest<Response> { }
 

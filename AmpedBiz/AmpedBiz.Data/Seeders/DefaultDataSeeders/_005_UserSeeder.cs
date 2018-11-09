@@ -1,5 +1,5 @@
-﻿using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Services.Users;
+﻿using AmpedBiz.Core.Users;
+using AmpedBiz.Core.Users.Services;
 using AmpedBiz.Data.Context;
 using AmpedBiz.Data.Helpers;
 using NHibernate;

@@ -1,4 +1,4 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Products;
 using AmpedBiz.Data.Context;
 using NHibernate;
 using NHibernate.Linq;
@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 {
-    public class _013_PricingSeeder : IDefaultDataSeeder
+	public class _013_PricingSeeder : IDefaultDataSeeder
     {
         private readonly IContextProvider _contextProvider;
         private readonly ISessionFactory _sessionFactory;

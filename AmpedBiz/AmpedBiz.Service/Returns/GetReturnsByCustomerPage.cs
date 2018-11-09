@@ -1,4 +1,6 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Common;
+using AmpedBiz.Core.Orders;
+using AmpedBiz.Core.Returns;
 using AmpedBiz.Data;
 using AmpedBiz.Service.Common;
 using MediatR;

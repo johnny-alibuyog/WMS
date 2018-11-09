@@ -1,5 +1,5 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Products;
 using AmpedBiz.Data;
 using MediatR;
 using NHibernate.Linq;
@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace AmpedBiz.Service.ProductCategories
 {
-    public class CreateProductCategory
+	public class CreateProductCategory
     {
         public class Request : Dto.ProductCategory, IRequest<Response> { }
 

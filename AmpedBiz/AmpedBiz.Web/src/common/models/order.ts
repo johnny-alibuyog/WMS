@@ -1,8 +1,6 @@
 import { Address } from './Address';
-import { Dictionary } from '../custom_types/dictionary';
 import { Lookup } from '../custom_types/lookup';
 import { Measure } from "./measure";
-import { ProductInventory } from './product';
 import { StageDefinition } from './stage-definition';
 import { UnitOfMeasure } from "./unit-of-measure";
 

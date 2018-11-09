@@ -1,12 +1,12 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Common;
 using AmpedBiz.Data;
 using MediatR;
 using System;
 
 namespace AmpedBiz.Service.Customers
 {
-    public class GetCustomer
+	public class GetCustomer
     {
         public class Request : IRequest<Response>
         {

@@ -1,7 +1,7 @@
 ﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Data.Configurations;
 using AmpedBiz.Data.Context;
-using AmpedBiz.Data.EntityDefinitions;
+using AmpedBiz.Data.Definitions.Common;
 using NHibernate;
 using NHibernate.Context;
 using System;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace AmpedBiz.Data
 {
-    public static class Extentions
+	public static class Extentions
     {
         private static ISession WithFilters(this ISession session, IContext context = null)
         {

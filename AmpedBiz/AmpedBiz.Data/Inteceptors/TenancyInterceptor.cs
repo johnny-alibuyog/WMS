@@ -1,14 +1,13 @@
 ﻿using AmpedBiz.Core;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Common;
 using AmpedBiz.Data.Context;
-using AmpedBiz.Data.EntityDefinitions;
 using NHibernate;
 using NHibernate.Type;
 using System;
 
 namespace AmpedBiz.Data.Inteceptors
 {
-    public class TenancyInterceptor : EmptyInterceptor
+	public class TenancyInterceptor : EmptyInterceptor
     {
         private ISession _session;
 

@@ -1,4 +1,5 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Orders;
+using AmpedBiz.Core.Returns;
 using AmpedBiz.Data;
 using AmpedBiz.Service.Common;
 using MediatR;
@@ -8,28 +9,28 @@ using System.Linq;
 
 namespace AmpedBiz.Service.Returns
 {
-    public class GetReturnsByProductPage
-    {
-        public class Request : PageRequest, IRequest<Response> { }
+	public class GetReturnsByProductPage
+	{
+		public class Request : PageRequest, IRequest<Response> { }
 
-        public class Response : PageResponse<Dto.ReturnsByProductPageItem> { }
+		public class Response : PageResponse<Dto.ReturnsByProductPageItem> { }
 
-        public class Handler : RequestHandlerBase<Request, Response>
-        {
-            public override Response Execute(Request message)
-            {
-                var response = new Response();
+		public class Handler : RequestHandlerBase<Request, Response>
+		{
+			public override Response Execute(Request message)
+			{
+				var response = new Response();
 
-                using (var session = SessionFactory.RetrieveSharedSession(Context))
-                using (var transaction = session.BeginTransaction())
-                {
+				using (var session = SessionFactory.RetrieveSharedSession(Context))
+				using (var transaction = session.BeginTransaction())
+				{
 					var query = default(IQueryable<Dto.ReturnsByProductPageItem>);
 
 					var includeOrderReturns = false;
 
 					// compose filters
 					message.Filter.Compose<bool>("includeOrderReturns", value => includeOrderReturns = value);
-					
+
 					if (includeOrderReturns)
 					{
 						var query1 = session.Query<ReturnItemBase>();
@@ -50,7 +51,7 @@ namespace AmpedBiz.Service.Returns
 						});
 
 						query = query1
-							.Select(x => new 
+							.Select(x => new
 							{
 								Id = x.Product.Id,
 								BranchName = x is ReturnItem
@@ -126,18 +127,18 @@ namespace AmpedBiz.Service.Returns
 					});
 
 					message.Sorter.Compose("quantityValue", direction =>
-                    {
-                        query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.QuantityValue)
-                            : query.OrderByDescending(x => x.QuantityValue);
-                    });
+					{
+						query = direction == SortDirection.Ascending
+							? query.OrderBy(x => x.QuantityValue)
+							: query.OrderByDescending(x => x.QuantityValue);
+					});
 
-                    message.Sorter.Compose("returnedAmount", direction =>
-                    {
-                        query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.ReturnedAmount)
-                            : query.OrderByDescending(x => x.ReturnedAmount);
-                    });
+					message.Sorter.Compose("returnedAmount", direction =>
+					{
+						query = direction == SortDirection.Ascending
+							? query.OrderBy(x => x.ReturnedAmount)
+							: query.OrderByDescending(x => x.ReturnedAmount);
+					});
 
 					// TODO: this is not performant, this is just a work around on groupby count issue of nhibernate. find a solution soon
 					var totalItems = query.ToList();
@@ -174,11 +175,11 @@ namespace AmpedBiz.Service.Returns
 
 					transaction.Commit();
 
-                    SessionFactory.ReleaseSharedSession();
-                }
+					SessionFactory.ReleaseSharedSession();
+				}
 
-                return response;
-            }
-        }
-    }
+				return response;
+			}
+		}
+	}
 }

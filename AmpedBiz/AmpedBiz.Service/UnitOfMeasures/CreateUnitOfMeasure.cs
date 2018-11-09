@@ -1,5 +1,5 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Products;
 using AmpedBiz.Data;
 using MediatR;
 using NHibernate.Linq;

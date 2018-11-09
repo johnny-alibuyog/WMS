@@ -1,4 +1,4 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Common;
 using AmpedBiz.Data.Context;
 using AmpedBiz.Data.Seeders.DataProviders;
 using LinqToExcel;
@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 {
-    public class _001_TenantSeeder : IDefaultDataSeeder
+	public class _001_TenantSeeder : IDefaultDataSeeder
     {
         private readonly IContextProvider _contextProvider;
         private readonly ISessionFactory _sessionFactory;

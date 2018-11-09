@@ -1,7 +1,11 @@
 ﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Common.Pipes;
-using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Services.Orders;
+using AmpedBiz.Core.Common;
+using AmpedBiz.Core.Orders;
+using AmpedBiz.Core.Orders.Services;
+using AmpedBiz.Core.Products;
+using AmpedBiz.Core.Returns;
+using AmpedBiz.Core.Users;
 using AmpedBiz.Data.Context;
 using NHibernate;
 using NHibernate.Linq;
@@ -13,7 +17,7 @@ using System.Linq.Expressions;
 
 namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 {
-    public class _011_OrderSeeder : IDummyDataSeeder
+	public class _011_OrderSeeder : IDummyDataSeeder
     {
         private readonly Utils _utils;
         private readonly IContextProvider _contextProvider;
@@ -45,7 +49,6 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
             CreateCompletedOrders(_utils.RandomInteger(min, max));
             CreateCancelledOrders(_utils.RandomInteger(min, max));
         }
-
 
         private bool Exists(Expression<Func<Order, bool>> condition)
         {
@@ -332,10 +335,10 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                         discountRate: _utils.RandomDecimal(0.01M, 0.10M),
                                         quantity: new Measure(
                                             value: _utils.RandomInteger(1, 4),
-                                            unit: x.UnitOfMeasures.Default(o => o.UnitOfMeasure)
+                                            unit: x.UnitOfMeasures.Standard(o => o.UnitOfMeasure)
                                         ),
                                         standard: x.StandardEquivalentMeasureOf(x.UnitOfMeasures.Default(o => o.UnitOfMeasure)),
-                                        unitPrice: x.UnitOfMeasures.Default(o => o.Prices.Wholesale())
+                                        unitPrice: x.UnitOfMeasures.Standard(o => o.Prices.Wholesale())
                                     )
                                 )
                         });

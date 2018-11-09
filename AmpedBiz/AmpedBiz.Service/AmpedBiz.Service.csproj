@@ -96,6 +96,8 @@
     <Compile Include="Dto\PaymentType.cs" />
     <Compile Include="Dto\Person.cs" />
     <Compile Include="Dto\PointOfSale.cs" />
+    <Compile Include="Dto\PointOfSaleItem.cs" />
+    <Compile Include="Dto\PointOfSalePayment.cs" />
     <Compile Include="Dto\Product.cs" />
     <Compile Include="Dto\ProductCategory.cs" />
     <Compile Include="Dto\ProductUnitOfMeasure.cs" />
@@ -142,6 +144,8 @@
     <Compile Include="PaymentTypes\GetPaymentTypeLookup.cs" />
     <Compile Include="PaymentTypes\GetPaymentTypePage.cs" />
     <Compile Include="PipelineBehaviorBase.cs" />
+    <Compile Include="PointOfSales\GetPointOfSale.cs" />
+    <Compile Include="PointOfSales\GetPointOfSalePage.cs" />
     <Compile Include="PointOfSales\SavePointOfSale.cs" />
     <Compile Include="Pricings\GetPricingLookup.cs" />
     <Compile Include="ProductCategories\CreateProductCategory.cs" />
@@ -174,6 +178,7 @@
     <Compile Include="Products\GetProductPurchasePage.cs" />
     <Compile Include="Products\GetProductReportPage.cs" />
     <Compile Include="Products\GetProductsDeliveredReportPage.cs" />
+    <Compile Include="Products\GetProductUnitOfMeasure.cs" />
     <Compile Include="Products\UpdateProduct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrderReportPage.cs" />

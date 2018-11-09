@@ -1,7 +1,9 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Services.Inventories;
-using AmpedBiz.Core.Services.Products;
+using AmpedBiz.Core.Common;
+using AmpedBiz.Core.Inventories;
+using AmpedBiz.Core.Inventories.Services;
+using AmpedBiz.Core.Products;
+using AmpedBiz.Core.Products.Services;
 using AmpedBiz.Data;
 using MediatR;
 using NHibernate.Linq;
@@ -10,7 +12,7 @@ using static AmpedBiz.Common.Extentions.TypeExtentions;
 
 namespace AmpedBiz.Service.Products
 {
-    public class UpdateProduct
+	public class UpdateProduct
     {
         public class Request : Dto.Product, IRequest<Response> { }
 

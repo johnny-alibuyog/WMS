@@ -1,5 +1,5 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Users;
 using AmpedBiz.Data;
 using AmpedBiz.Service.Common;
 using MediatR;
@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace AmpedBiz.Service.Users
 {
-    public class GetUserPage
+	public class GetUserPage
     {
         public class Request : PageRequest, IRequest<Response> { }
 

@@ -1,8 +1,10 @@
 ﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Common.Pipes;
-using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Services.Products;
-using AmpedBiz.Core.Services.PurchaseOrders;
+using AmpedBiz.Core.Common;
+using AmpedBiz.Core.Products;
+using AmpedBiz.Core.PurchaseOrders;
+using AmpedBiz.Core.PurchaseOrders.Services;
+using AmpedBiz.Core.Users;
 using AmpedBiz.Data.Context;
 using NHibernate;
 using NHibernate.Linq;
@@ -14,7 +16,7 @@ using System.Linq.Expressions;
 
 namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 {
-    public class _010_PurchaseOrderSeeder : IDummyDataSeeder
+	public class _010_PurchaseOrderSeeder : IDummyDataSeeder
     {
         private readonly Utils _utils;
         private readonly IContextProvider _contextProvider;

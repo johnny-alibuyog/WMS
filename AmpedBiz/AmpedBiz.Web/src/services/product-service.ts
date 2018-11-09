@@ -1,3 +1,4 @@
+import { ProductUnitOfMeasure } from './../common/models/product';
 import { PageRequest, PagerResponse } from '../common/models/paging';
 
 import { HttpClientFacade } from './http-client-facade';
@@ -84,5 +85,10 @@ export class ProductService extends ServiceBase<Product> {
   public getProductListingReportPage(page: PageRequest): Promise<PagerResponse<ProductListingReportPageItem>> {
     var url = this._resouce + '/listing-report/page';
     return this._httpClient.post(url, page);
+  }
+
+  public getProductUnitOfMeasure(key: string): Promise<ProductUnitOfMeasure> {
+    var url = `${this._resouce}/${key}/unit-of-measure`;
+    return this._httpClient.get(url);
   }
 }

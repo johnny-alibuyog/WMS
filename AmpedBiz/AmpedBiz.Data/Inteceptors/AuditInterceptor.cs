@@ -1,5 +1,5 @@
 ﻿using AmpedBiz.Core;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Users;
 using AmpedBiz.Data.Context;
 using NHibernate;
 using NHibernate.Type;
@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace AmpedBiz.Data.Inteceptors
 {
-    public class AuditInterceptor : EmptyInterceptor
+	public class AuditInterceptor : EmptyInterceptor
     {
         private ISession _session;
 

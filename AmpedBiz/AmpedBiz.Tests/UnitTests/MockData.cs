@@ -1,10 +1,9 @@
 ﻿using Dto = AmpedBiz.Service.Dto;
-using Entity = AmpedBiz.Core.Entities;
 
 
 namespace AmpedBiz.Tests.UnitTests
 {
-    public static class MockData
+	public static class MockData
     {
         public static class Dtos
         {
@@ -25,9 +24,9 @@ namespace AmpedBiz.Tests.UnitTests
 
         public static class Entities
         {
-            public static Entity.Address CreateAddress()
+            public static Core.Common.Address CreateAddress()
             {
-                return new Entity.Address()
+                return new Core.Common.Address()
                 {
                     Street = "Entity Street",
                     Barangay = "Entity Barangay",

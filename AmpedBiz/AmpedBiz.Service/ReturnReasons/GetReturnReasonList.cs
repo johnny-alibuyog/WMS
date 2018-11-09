@@ -1,5 +1,5 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Returns;
 using AmpedBiz.Data;
 using MediatR;
 using NHibernate.Linq;
@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace AmpedBiz.Service.ReturnReasons
 {
-    public class GetReturnReasonList
+	public class GetReturnReasonList
     {
         public class Request : IRequest<Response>
         {

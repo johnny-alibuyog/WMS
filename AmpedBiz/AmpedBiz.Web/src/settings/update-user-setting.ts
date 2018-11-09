@@ -3,7 +3,7 @@ import { autoinject } from 'aurelia-framework';
 import { ServiceApi } from '../services/service-api';
 import { NotificationService } from '../common/controls/notification-service';
 import { ActionResult } from '../common/controls/notification';
-import { UserSetting } from '../common/models/user-setting';
+import { UserSetting } from '../common/models/setting';
 
 @autoinject
 export class UpdateUserSetting {

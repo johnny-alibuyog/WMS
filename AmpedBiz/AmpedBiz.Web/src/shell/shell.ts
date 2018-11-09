@@ -1,5 +1,6 @@
+import { defaultModules } from './../common/models/setting';
 import { AuthService, AuthSettings } from '../services/auth-service';
-import { NavigationInstruction, Next, PipelineStep, Redirect, Router, RouterConfiguration } from 'aurelia-router';
+import { NavigationInstruction, Next, PipelineStep, Router, RouterConfiguration } from 'aurelia-router';
 
 import { NotificationService } from '../common/controls/notification-service';
 import { autoinject } from 'aurelia-framework';
@@ -36,6 +37,23 @@ export class Shell {
         settings: {
           auth: <AuthSettings>{
             roles: role.all()
+          }
+        },
+      },
+      {
+        route: ['point-of-sales'],
+        name: 'point-of-sales',
+        moduleId: '../point-of-sales/index',
+        nav: defaultModules.pointOfSales,
+        main: true,
+        title: 'POS',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+              role.salesclerk
+            ]
           }
         },
       },

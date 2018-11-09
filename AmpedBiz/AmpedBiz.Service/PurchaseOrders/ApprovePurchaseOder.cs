@@ -1,6 +1,8 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Services.PurchaseOrders;
+using AmpedBiz.Core.Common;
+using AmpedBiz.Core.PurchaseOrders;
+using AmpedBiz.Core.PurchaseOrders.Services;
+using AmpedBiz.Core.Users;
 using AmpedBiz.Data;
 using MediatR;
 using System;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
-    public class ApprovePurchaseOder
+	public class ApprovePurchaseOder
     {
         public class Request : Dto.PurchaseOrder, IRequest<Response> { }
 

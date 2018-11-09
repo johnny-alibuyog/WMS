@@ -1,11 +1,12 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Common;
+using AmpedBiz.Core.Users;
 using AmpedBiz.Data.Context;
 using Autofac;
 using System.Reflection;
 
 namespace AmpedBiz.Tests.Bootstrap
 {
-    public static class Ioc
+	public static class Ioc
     {
         public static IContainer Container = BuildContainer((TenantId)Tenant.Default.Id);
 

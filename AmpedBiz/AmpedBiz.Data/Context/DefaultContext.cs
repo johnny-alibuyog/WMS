@@ -1,9 +1,10 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Common;
+using AmpedBiz.Core.Users;
 using System;
 
 namespace AmpedBiz.Data.Context
 {
-    public class DefaultContext : IContext
+	public class DefaultContext : IContext
     {
         public Guid UserId => User.Admin.Id;
 

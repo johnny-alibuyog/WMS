@@ -1,4 +1,4 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.PurchaseOrders;
 using AmpedBiz.Data;
 using AmpedBiz.Service.Common;
 using MediatR;
@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
-    public class GetActivePurchaseOrderPage
+	public class GetActivePurchaseOrderPage
     {
         public class Request : PageRequest, IRequest<Response> { }
 

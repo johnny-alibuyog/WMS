@@ -1,4 +1,4 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Users;
 using AmpedBiz.Data;
 using MediatR;
 using NHibernate.Linq;
@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace AmpedBiz.Service.Users
 {
-    public class GetInitialUser
+	public class GetInitialUser
     {
         public class Request : IRequest<Response> { }
 

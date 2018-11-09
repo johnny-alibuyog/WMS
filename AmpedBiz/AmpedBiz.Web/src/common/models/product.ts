@@ -18,6 +18,7 @@ export interface Product {
 
 export interface ProductUnitOfMeasure {
   id?: string;
+  productId?: string;
   size?: string;
   barcode?: string;
   unitOfMeasure?: UnitOfMeasure;
@@ -234,6 +235,15 @@ export class ProductInventoryFacade {
     }
 
     return productUnitOfMeasure.prices.find(x => x.pricing.id == pricing.id);
+  }
+
+  public getBarcode(inventory: ProductInventory, unitOfMeasure: UnitOfMeasure, pricing: Lookup<string>): string {
+    var productUnitOfMeasure = inventory.unitOfMeasures.find(x => x.unitOfMeasure.id === unitOfMeasure.id);
+    if (!productUnitOfMeasure) {
+      return null;
+    }
+
+    return productUnitOfMeasure.barcode;
   }
 
   public getPriceAmount(inventory: ProductInventory, unitOfMeasure: UnitOfMeasure, pricing: Lookup<string>): number {

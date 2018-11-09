@@ -7,6 +7,8 @@ namespace AmpedBiz.Service.Dto
     {
         public Guid Id { get; set; }
 
+		public Guid ProductId { get; set; }
+
         public string Size { get; set; }
 
         public string Barcode { get; set; }

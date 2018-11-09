@@ -1,6 +1,6 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Services.Users;
+using AmpedBiz.Core.Users;
+using AmpedBiz.Core.Users.Services;
 using AmpedBiz.Data;
 using AmpedBiz.Data.Helpers;
 using MediatR;

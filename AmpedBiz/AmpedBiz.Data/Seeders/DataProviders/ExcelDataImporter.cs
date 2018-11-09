@@ -1,5 +1,5 @@
 ﻿using AmpedBiz.Common.Configurations;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Common;
 using AmpedBiz.Data.Context;
 using LinqToExcel;
 using NHibernate;
@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace AmpedBiz.Data.Seeders.DataProviders
 {
-    public class ExcelDataImporter
+	public class ExcelDataImporter
     {
         private readonly IContext _context;
         private readonly ISession _session;

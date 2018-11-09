@@ -1,9 +1,9 @@
-﻿using System;
-using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Users;
+using System;
 
 namespace AmpedBiz.Core
 {
-    public interface IAuditable 
+	public interface IAuditable 
     {
         DateTime? CreatedOn { get; set; }
 

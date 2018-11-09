@@ -55,6 +55,7 @@
     <Compile Include="Configurations\AuthConfig.cs" />
     <Compile Include="Configurations\DatabaseConfig.cs" />
     <Compile Include="Configurations\StateConfig.cs" />
+    <Compile Include="CustomTypes\Prop.cs" />
     <Compile Include="Exceptions\BusinessException.cs" />
     <Compile Include="Exceptions\ResourceAlreadyExistsException.cs" />
     <Compile Include="Exceptions\ResourceNotFoundException.cs" />

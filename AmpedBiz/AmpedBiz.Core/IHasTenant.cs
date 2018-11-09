@@ -1,8 +1,8 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Common;
 
 namespace AmpedBiz.Core
 {
-    public interface IHasTenant
+	public interface IHasTenant
     {
         Tenant Tenant { get; set; }
     }

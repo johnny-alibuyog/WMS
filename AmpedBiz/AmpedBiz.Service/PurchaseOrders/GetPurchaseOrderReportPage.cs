@@ -1,5 +1,5 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.PurchaseOrders;
 using AmpedBiz.Data;
 using AmpedBiz.Service.Common;
 using MediatR;

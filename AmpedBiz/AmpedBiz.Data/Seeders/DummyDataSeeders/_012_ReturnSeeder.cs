@@ -1,5 +1,9 @@
-﻿using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Services.Returns;
+﻿using AmpedBiz.Core.Common;
+using AmpedBiz.Core.Inventories;
+using AmpedBiz.Core.Products;
+using AmpedBiz.Core.Returns;
+using AmpedBiz.Core.Returns.Services;
+using AmpedBiz.Core.Users;
 using AmpedBiz.Data.Context;
 using AmpedBiz.Data.Helpers;
 using NHibernate;
@@ -9,7 +13,7 @@ using System.Linq;
 
 namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 {
-    public class _012_ReturnSeeder : IDummyDataSeeder
+	public class _012_ReturnSeeder : IDummyDataSeeder
     {
         private readonly Utils _utils;
         private readonly IContextProvider _contextProvider;

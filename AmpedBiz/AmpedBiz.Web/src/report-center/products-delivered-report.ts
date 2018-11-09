@@ -90,8 +90,8 @@ export class ProductsDeliveredReport extends Report<ProductsDeliveredReportModel
               { text: formatNumber(x.unitPriceAmount), style: 'tableData', alignment: 'right' },
               { text: formatNumber(x.discountAmount), style: 'tableData', alignment: 'right' },
               { text: formatNumber(x.totalPriceAmount), style: 'tableData', alignment: 'right' },
-              (i === details.length - 1) // subtotal
-                ? { text: formatNumber(Enumerable.from(details).sum(o => o.discountAmount)), style: 'tableData', alignment: 'right', rowSpan: details.length }
+              (i === 0) // subtotal
+                ? { text: formatNumber(Enumerable.from(details).sum(o => o.totalPriceAmount)), style: 'tableData', alignment: 'right', rowSpan: details.length }
                 : { text: "", style: "tableData" },
             ])
             .toArray()
@@ -108,7 +108,6 @@ export class ProductsDeliveredReport extends Report<ProductsDeliveredReportModel
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
         { text: "Grand Total", style: "tableHeader" },
-        // { text: formatNumber(Enumerable.from(data.items).sum(o => o.discountAmount)), style: "tableData", alignment: "right" },
         { text: formatNumber(Enumerable.from(data.items).sum(o => o.totalPriceAmount)), style: "tableData", alignment: "right" },
       ]);
     }

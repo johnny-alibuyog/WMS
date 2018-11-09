@@ -1,11 +1,11 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Common;
 using AmpedBiz.Data;
 using MediatR;
 
 namespace AmpedBiz.Service.Branches
 {
-    public class UpdateBranch
+	public class UpdateBranch
     {
         public class Request : Dto.Branch, IRequest<Response> { }
 

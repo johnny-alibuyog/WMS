@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Orders;
+using AmpedBiz.Core.Returns;
 using AmpedBiz.Data;
 using AmpedBiz.Service.Common;
 using MediatR;
@@ -144,7 +145,7 @@ namespace AmpedBiz.Service.Returns
 								CustomerName = x.Return.Customer.Name,
 								ProductName = x.Product.Name,
 								ReasonName = x.Reason.Name,
-								ReturnedByName = 
+								ReturnedByName =
 									x.Return.ReturnedBy.Person.FirstName + " " +
 									x.Return.ReturnedBy.Person.LastName,
 								ReturnedOn = x.Return.ReturnedOn.Value.Date,

@@ -1,5 +1,5 @@
 ﻿using AmpedBiz.Common.CustomTypes;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Products;
 using AmpedBiz.Data;
 using MediatR;
 using NHibernate.Linq;
@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace AmpedBiz.Service.UnitOfMeasures
 {
-    public class GetUnitOfMeasureLookup
+	public class GetUnitOfMeasureLookup
     {
         public class Request : IRequest<Response> { }
 

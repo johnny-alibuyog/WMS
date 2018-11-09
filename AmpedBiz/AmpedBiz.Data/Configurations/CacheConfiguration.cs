@@ -1,10 +1,14 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Common;
+using AmpedBiz.Core.Products;
+using AmpedBiz.Core.Returns;
+using AmpedBiz.Core.Settings;
+using AmpedBiz.Core.Users;
 using NHibernate.Caches.SysCache2;
 using NHibernate.Cfg;
 
 namespace AmpedBiz.Data.Configurations
 {
-    internal static class CacheConfiguration
+	internal static class CacheConfiguration
     {
         private const string RegionName = "hourly";
 

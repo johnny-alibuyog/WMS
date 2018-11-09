@@ -67,6 +67,7 @@ export class OrderCreate {
 
   public getInitializedOrder(): Order {
     return <Order>{
+      branch: this._auth.userBranchAsLookup,
       orderedOn: new Date(),
       orderedBy: this._auth.userAsLookup,
       createdOn: new Date(),

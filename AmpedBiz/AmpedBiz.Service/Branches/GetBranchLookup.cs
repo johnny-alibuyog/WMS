@@ -1,5 +1,5 @@
 ﻿using AmpedBiz.Common.CustomTypes;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Common;
 using AmpedBiz.Data;
 using MediatR;
 using NHibernate.Linq;
@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace AmpedBiz.Service.Branches
 {
-    public class GetBranchLookup
+	public class GetBranchLookup
     {
         public class Request : IRequest<Response> { }
 

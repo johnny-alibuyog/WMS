@@ -1,12 +1,12 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Users;
 using AmpedBiz.Data;
 using MediatR;
 using System;
 
 namespace AmpedBiz.Service.Users
 {
-    public class GetUserAddress
+	public class GetUserAddress
     {
         public class Request : IRequest<Response>
         {

@@ -1,5 +1,5 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Orders;
 using AmpedBiz.Data;
 using AmpedBiz.Service.Common;
 using MediatR;
@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace AmpedBiz.Service.Orders
 {
-    public class GetOrderReportPage
+	public class GetOrderReportPage
     {
         public class Request : PageRequest, IRequest<Response> { }
 

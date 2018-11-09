@@ -110,7 +110,7 @@ namespace AmpedBiz.Service.Dto
         public List<ProductInventoryUnitOfMeasurePrice> Prices { get; set; } = new List<ProductInventoryUnitOfMeasurePrice>();
     }
 
-    public class ProductInventoryUnitOfMeasurePrice
+	public class ProductInventoryUnitOfMeasurePrice
     {
         public Lookup<string> Pricing { get; set; }
 

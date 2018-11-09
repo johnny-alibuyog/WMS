@@ -1,11 +1,11 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Common;
 using AmpedBiz.Data;
 using MediatR;
 
 namespace AmpedBiz.Service.Customers
 {
-    public class UpdateCustomer
+	public class UpdateCustomer
     {
         public class Request : Dto.Customer, IRequest<Response> { }
 

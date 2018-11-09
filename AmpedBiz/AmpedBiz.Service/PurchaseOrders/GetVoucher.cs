@@ -1,5 +1,5 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.PurchaseOrders;
 using AmpedBiz.Data;
 using MediatR;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace AmpedBiz.Service.PurchaseOrders
 {
-    public class GetVoucher
+	public class GetVoucher
     {
         public class Request : IRequest<Response>
         {

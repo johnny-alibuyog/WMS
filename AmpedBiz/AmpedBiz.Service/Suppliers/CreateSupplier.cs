@@ -1,5 +1,5 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Products;
 using AmpedBiz.Data;
 using MediatR;
 using NHibernate.Linq;
@@ -7,40 +7,40 @@ using System.Linq;
 
 namespace AmpedBiz.Service.Suppliers
 {
-    public class CreateSupplier
-    {
-        public class Request : Dto.Supplier, IRequest<Response> { }
+	public class CreateSupplier
+	{
+		public class Request : Dto.Supplier, IRequest<Response> { }
 
-        public class Response : Dto.Supplier { }
+		public class Response : Dto.Supplier { }
 
-        public class Handler : RequestHandlerBase<Request, Response>
-        {
-            public override Response Execute(Request message)
-            {
-                var response = new Response();
+		public class Handler : RequestHandlerBase<Request, Response>
+		{
+			public override Response Execute(Request message)
+			{
+				var response = new Response();
 
-                using (var session = SessionFactory.RetrieveSharedSession(Context))
-                using (var transaction = session.BeginTransaction())
-                {
-                    var exists = session.Query<Supplier>().Any(x => x.Id == message.Id);
+				using (var session = SessionFactory.RetrieveSharedSession(Context))
+				using (var transaction = session.BeginTransaction())
+				{
+					var exists = session.Query<Supplier>().Any(x => x.Id == message.Id);
 
-                    exists.Assert($"Supplier with id {message.Id} already exists.");
+					exists.Assert($"Supplier with id {message.Id} already exists.");
 
-                    var entity = message.MapTo(new Supplier(message.Id));
+					var entity = message.MapTo(new Supplier(message.Id));
 
-                    entity.EnsureValidity();
+					entity.EnsureValidity();
 
-                    session.Save(entity);
+					session.Save(entity);
 
-                    transaction.Commit();
+					transaction.Commit();
 
-                    entity.MapTo(response);
+					entity.MapTo(response);
 
-                    SessionFactory.ReleaseSharedSession();
-                }
+					SessionFactory.ReleaseSharedSession();
+				}
 
-                return response;
-            }
-        }
-    }
+				return response;
+			}
+		}
+	}
 }

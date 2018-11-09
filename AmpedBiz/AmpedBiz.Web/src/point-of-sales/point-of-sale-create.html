@@ -1,0 +1,161 @@
+<template>
+  <require from="common/controls/pager"></require>
+  <require from="point-of-sales/point-of-sale-item-page"></require>
+  <!-- <require from="point-of-sales/point-of-sale-payment-page"></require>
+  <require from="point-of-sales/point-of-sale-verification-value-converter"></require> -->
+
+  <section class="row row-no-padding">
+
+    <div class="col-md-11">
+
+      <div class="panel panel-default">
+
+        <!-- heading -->
+        <div class="panel-heading">
+
+          <!-- heading label -->
+          <h4 class="panel-title row-fluid">
+            <span6>&nbsp ${header} &nbsp</span6>
+
+            <!-- buttons -->
+            <button type="button" class="btn btn-default" disabled.bind="!isSaleTendred" click.trigger="tender()">
+              <i class="fa fa-check"></i> Tender
+            </button>
+
+            <button type="button" class="btn btn-default" disabled.bind="!isSaleTendred" click.trigger="cancel()">
+              <i class="fa fa-check"></i> Cancel
+            </button>
+
+            <!-- <button type="button" class="btn btn-default" if.bind="isOrderInvoiced" click.trigger="showInvoice()">
+              <i class="fa fa-check"></i> View Invoice
+            </button> -->
+          </h4>
+
+        </div>
+
+        <!-- body -->
+        <div class="panel-body">
+
+          <form class="form-horizontal" role="form">
+
+            <!-- inputs -->
+            <div class="row">
+
+              <div class="col-lg-6">
+
+                <!-- <div class="form-group">
+                  <label class="control-label col-sm-4">Branch:</label>
+                  <div class="col-sm-8">
+                    <select class="form-control" value.bind="pointOfSale.branch | lookupToId:branches">
+                      <option>Select Branch</option>
+                      <option repeat.for="branch of branches" model.bind="branch.id">${branch.name}</option>
+                    </select>
+                  </div>
+                </div> -->
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Customer:</label>
+                  <div class="col-sm-8">
+                    <select class="form-control" value.bind="pointOfSale.customer | lookupToId:customers">
+                      <option>Select Customer</option>
+                      <option repeat.for="customer of customers" model.bind="customer.id">${customer.name}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Tendered By:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" value.bind="pointOfSale.tenderedBy.name" disabled />
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-lg-6 form-group">
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Tendered On:</label>
+                  <div class="col-sm-8">
+                    <input type="date" class="form-control datepicker" placeholder="Enter Date" value.bind="pointOfSale.tenderedOn | dateInputFormat" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Invoice:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" value.bind="pointOfSale.invoiceNumber" disabled />
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- tabs -->
+            <div class="row">
+
+              <div class="col-lg-12">
+
+                <ul class="nav nav-tabs">
+                  <li class="active">
+                    <a data-toggle="tab" href="#itemsTab">
+                      <span>Sale Items &nbsp</span>
+                      <button type="button" class="btn btn-default btn-circle" disabled.bind="isSaleTendred"
+                        click.trigger="addItem()">
+                        <i class="glyphicon glyphicon-plus"></i>
+                      </button>
+                    </a>
+                  </li>
+                  <!-- <li>
+                    <a data-toggle="tab" href="#paymentsTab">
+                      <span>Payments &nbsp</span>
+                      <button type="button" class="btn btn-default btn-circle" 
+                        disabled.bind="order.stage.allowedModifications | isModificationDisallowedTo:'payments':canAddPayment" 
+                        click.trigger="addPayment()">
+                        <i class="glyphicon glyphicon-plus"></i>
+                      </button>
+                    </a>
+                  </li> -->
+                </ul>
+
+                <div class="tab-content">
+
+                  <!-- items -->
+                  <div id="itemsTab" class="tab-pane fade in active">
+                    <br />
+
+                    <point-of-sale-item-page products.bind="products" items.bind="pointOfSale.items" order-id.bind="pointOfSale.id"
+                      pricing.bind="pointOfSale.pricing" is-modification-disallowed.bind="isSaleTendred">
+                    </point-of-sale-item-page>
+                  </div>
+
+                  <!-- payment informations -->
+                  <!-- <div id="paymentsTab" class="tab-pane fade">
+                    <br />
+
+                    <order-payment-page 
+                      payment-types.bind="paymentTypes"
+                      payments.bind="order.payments" 
+                      order-id.bind="order.id"
+                      is-modification-disallowed.bind="order.stage.allowedModifications | isModificationDisallowedTo:'payments':canAddPayment">
+                    </order-payment-page>
+                  </div> -->
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</template>

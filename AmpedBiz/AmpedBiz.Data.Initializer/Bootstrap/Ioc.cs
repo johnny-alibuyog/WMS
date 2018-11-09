@@ -1,22 +1,23 @@
-﻿using AmpedBiz.Core.Entities;
+﻿using AmpedBiz.Core.Common;
+using AmpedBiz.Core.Users;
 using AmpedBiz.Data.Context;
 using Autofac;
 using System.Reflection;
 
 namespace AmpedBiz.Data.Initializer.Bootstrap
 {
-    public static class Ioc
-    {
-        public static IContainer BuildContainer(TenantId tenantId)
-        {
-            var builder = new ContainerBuilder();
+	public static class Ioc
+	{
+		public static IContainer BuildContainer(TenantId tenantId)
+		{
+			var builder = new ContainerBuilder();
 
-            builder.RegisterInstance(tenantId);
-            builder.RegisterInstance((BranchId)Branch.Default.Id);
-            builder.RegisterInstance((UserId)User.Admin.Id);
-            builder.RegisterAssemblyModules(Assembly.GetExecutingAssembly());
+			builder.RegisterInstance(tenantId);
+			builder.RegisterInstance((BranchId)Branch.Default.Id);
+			builder.RegisterInstance((UserId)User.Admin.Id);
+			builder.RegisterAssemblyModules(Assembly.GetExecutingAssembly());
 
-            return builder.Build();
-        }
-    }
+			return builder.Build();
+		}
+	}
 }

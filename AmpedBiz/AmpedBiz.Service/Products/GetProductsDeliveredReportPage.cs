@@ -1,5 +1,5 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
+using AmpedBiz.Core.Orders;
 using AmpedBiz.Data;
 using AmpedBiz.Service.Common;
 using MediatR;
@@ -9,188 +9,188 @@ using System.Linq;
 
 namespace AmpedBiz.Service.Products
 {
-    public class GetProductsDeliveredReportPage
-    {
-        public class Request : PageRequest, IRequest<Response> { }
+	public class GetProductsDeliveredReportPage
+	{
+		public class Request : PageRequest, IRequest<Response> { }
 
-        public class Response : PageResponse<Dto.ProductsDeliveredReportPageItem> { }
+		public class Response : PageResponse<Dto.ProductsDeliveredReportPageItem> { }
 
-        public class Handler : RequestHandlerBase<Request, Response>
-        {
-            public override Response Execute(Request message)
-            {
-                var response = new Response();
+		public class Handler : RequestHandlerBase<Request, Response>
+		{
+			public override Response Execute(Request message)
+			{
+				var response = new Response();
 
-                if (message.Filter == null)
-                    message.Filter = new Filter();
+				if (message.Filter == null)
+					message.Filter = new Filter();
 
-                using (var session = SessionFactory.RetrieveSharedSession(Context))
-                using (var transaction = session.BeginTransaction())
-                {
-                    var query = session.Query<OrderItem>().Where(x =>
-                        x.Order.Status == OrderStatus.Shipped ||
-                        x.Order.Status == OrderStatus.Completed
-                    );
+				using (var session = SessionFactory.RetrieveSharedSession(Context))
+				using (var transaction = session.BeginTransaction())
+				{
+					var query = session.Query<OrderItem>().Where(x =>
+						x.Order.Status == OrderStatus.Shipped ||
+						x.Order.Status == OrderStatus.Completed
+					);
 
-                    // compose filter
-                    message.Filter.Compose<Guid>("branchId", value =>
-                    {
-                        query = query.Where(x => x.Order.Branch.Id == value);
-                    });
+					// compose filter
+					message.Filter.Compose<Guid>("branchId", value =>
+					{
+						query = query.Where(x => x.Order.Branch.Id == value);
+					});
 
-                    message.Filter.Compose<Guid>("supplierId", value =>
-                    {
-                        query = query.Where(x => x.Product.Supplier.Id == value);
-                    });
+					message.Filter.Compose<Guid>("supplierId", value =>
+					{
+						query = query.Where(x => x.Product.Supplier.Id == value);
+					});
 
-                    message.Filter.Compose<string>("categoryId", value =>
-                    {
-                        query = query.Where(x => x.Product.Category.Id == value);
-                    });
+					message.Filter.Compose<string>("categoryId", value =>
+					{
+						query = query.Where(x => x.Product.Category.Id == value);
+					});
 
-                    message.Filter.Compose<Guid>("productId", value =>
-                    {
-                        query = query.Where(x => x.Product.Id == value);
-                    });
+					message.Filter.Compose<Guid>("productId", value =>
+					{
+						query = query.Where(x => x.Product.Id == value);
+					});
 
-                    message.Filter.Compose<DateTime>("fromDate", value =>
-                    {
-                        query = query.Where(x => x.Order.ShippedOn >= value.StartOfDay());
-                    });
+					message.Filter.Compose<DateTime>("fromDate", value =>
+					{
+						query = query.Where(x => x.Order.ShippedOn >= value.StartOfDay());
+					});
 
-                    message.Filter.Compose<DateTime>("toDate", value =>
-                    {
-                        query = query.Where(x => x.Order.ShippedOn <= value.EndOfDay());
-                    });
+					message.Filter.Compose<DateTime>("toDate", value =>
+					{
+						query = query.Where(x => x.Order.ShippedOn <= value.EndOfDay());
+					});
 
-                    var groupedQuery = query
-                        .GroupBy(x => new
-                        {
-                            BranchName = x.Order.Branch.Name,
-                            SupplierName = x.Product.Supplier.Name,
-                            CategoryName = x.Product.Category.Name,
-                            ProductName = x.Product.Name,
-                            QuantityUnitName = x.Quantity.Unit.Name,
-                            UnitPriceAmount = x.UnitPrice.Amount,
-                        })
-                        .Select(x => new Dto.ProductsDeliveredReportPageItem()
-                        {
-                            BranchName = x.Key.BranchName,
-                            SupplierName = x.Key.SupplierName,
-                            CategoryName = x.Key.CategoryName,
-                            ProductName = x.Key.ProductName,
-                            UnitPriceAmount = x.Key.UnitPriceAmount,
-                            QuantityUnit = x.Key.QuantityUnitName,
-                            QuantityValue = x.Sum(o => o.Quantity.Value),
-                            DiscountAmount = x.Sum(o => o.Discount.Amount),
-                            ExtendedPriceAmount = x.Sum(o => o.ExtendedPrice.Amount),
-                            TotalPriceAmount = x.Sum(o => o.TotalPrice.Amount)
-                        });
+					var groupedQuery = query
+						.GroupBy(x => new
+						{
+							BranchName = x.Order.Branch.Name,
+							SupplierName = x.Product.Supplier.Name,
+							CategoryName = x.Product.Category.Name,
+							ProductName = x.Product.Name,
+							QuantityUnitName = x.Quantity.Unit.Name,
+							UnitPriceAmount = x.UnitPrice.Amount,
+						})
+						.Select(x => new Dto.ProductsDeliveredReportPageItem()
+						{
+							BranchName = x.Key.BranchName,
+							SupplierName = x.Key.SupplierName,
+							CategoryName = x.Key.CategoryName,
+							ProductName = x.Key.ProductName,
+							UnitPriceAmount = x.Key.UnitPriceAmount,
+							QuantityUnit = x.Key.QuantityUnitName,
+							QuantityValue = x.Sum(o => o.Quantity.Value),
+							DiscountAmount = x.Sum(o => o.Discount.Amount),
+							ExtendedPriceAmount = x.Sum(o => o.ExtendedPrice.Amount),
+							TotalPriceAmount = x.Sum(o => o.TotalPrice.Amount)
+						});
 
 
-                    // compose order
-                    message.Sorter.Compose("branchName", direction =>
-                    {
-                        groupedQuery = direction == SortDirection.Ascending
-                            ? groupedQuery.OrderBy(x => x.BranchName)
-                            : groupedQuery.OrderByDescending(x => x.BranchName);
-                    });
+					// compose order
+					message.Sorter.Compose("branchName", direction =>
+					{
+						groupedQuery = direction == SortDirection.Ascending
+							? groupedQuery.OrderBy(x => x.BranchName)
+							: groupedQuery.OrderByDescending(x => x.BranchName);
+					});
 
-                    message.Sorter.Compose("supplierName", direction =>
-                    {
-                        groupedQuery = direction == SortDirection.Ascending
-                            ? groupedQuery.OrderBy(x => x.SupplierName)
-                            : groupedQuery.OrderByDescending(x => x.SupplierName);
-                    });
+					message.Sorter.Compose("supplierName", direction =>
+					{
+						groupedQuery = direction == SortDirection.Ascending
+							? groupedQuery.OrderBy(x => x.SupplierName)
+							: groupedQuery.OrderByDescending(x => x.SupplierName);
+					});
 
-                    message.Sorter.Compose("categoryName", direction =>
-                    {
-                        groupedQuery = direction == SortDirection.Ascending
-                            ? groupedQuery.OrderBy(x => x.CategoryName)
-                            : groupedQuery.OrderByDescending(x => x.CategoryName);
-                    });
+					message.Sorter.Compose("categoryName", direction =>
+					{
+						groupedQuery = direction == SortDirection.Ascending
+							? groupedQuery.OrderBy(x => x.CategoryName)
+							: groupedQuery.OrderByDescending(x => x.CategoryName);
+					});
 
-                    message.Sorter.Compose("productName", direction =>
-                    {
-                        groupedQuery = direction == SortDirection.Ascending
-                            ? groupedQuery.OrderBy(x => x.ProductName)
-                            : groupedQuery.OrderByDescending(x => x.ProductName);
-                    });
+					message.Sorter.Compose("productName", direction =>
+					{
+						groupedQuery = direction == SortDirection.Ascending
+							? groupedQuery.OrderBy(x => x.ProductName)
+							: groupedQuery.OrderByDescending(x => x.ProductName);
+					});
 
-                    message.Sorter.Compose("quantityUnit", direction =>
-                    {
-                        groupedQuery = direction == SortDirection.Ascending
-                            ? groupedQuery.OrderBy(x => x.QuantityUnit)
-                            : groupedQuery.OrderByDescending(x => x.QuantityUnit);
-                    });
+					message.Sorter.Compose("quantityUnit", direction =>
+					{
+						groupedQuery = direction == SortDirection.Ascending
+							? groupedQuery.OrderBy(x => x.QuantityUnit)
+							: groupedQuery.OrderByDescending(x => x.QuantityUnit);
+					});
 
-                    message.Sorter.Compose("quantityValue", direction =>
-                    {
-                        groupedQuery = direction == SortDirection.Ascending
-                            ? groupedQuery.OrderBy(x => x.QuantityValue)
-                            : groupedQuery.OrderByDescending(x => x.QuantityValue);
-                    });
+					message.Sorter.Compose("quantityValue", direction =>
+					{
+						groupedQuery = direction == SortDirection.Ascending
+							? groupedQuery.OrderBy(x => x.QuantityValue)
+							: groupedQuery.OrderByDescending(x => x.QuantityValue);
+					});
 
-                    message.Sorter.Compose("unitPriceAmount", direction =>
-                    {
-                        groupedQuery = direction == SortDirection.Ascending
-                            ? groupedQuery.OrderBy(x => x.UnitPriceAmount)
-                            : groupedQuery.OrderByDescending(x => x.UnitPriceAmount);
-                    });
+					message.Sorter.Compose("unitPriceAmount", direction =>
+					{
+						groupedQuery = direction == SortDirection.Ascending
+							? groupedQuery.OrderBy(x => x.UnitPriceAmount)
+							: groupedQuery.OrderByDescending(x => x.UnitPriceAmount);
+					});
 
-                    message.Sorter.Compose("discountAmount", direction =>
-                    {
-                        groupedQuery = direction == SortDirection.Ascending
-                            ? groupedQuery.OrderBy(x => x.DiscountAmount)
-                            : groupedQuery.OrderByDescending(x => x.DiscountAmount);
-                    });
+					message.Sorter.Compose("discountAmount", direction =>
+					{
+						groupedQuery = direction == SortDirection.Ascending
+							? groupedQuery.OrderBy(x => x.DiscountAmount)
+							: groupedQuery.OrderByDescending(x => x.DiscountAmount);
+					});
 
-                    message.Sorter.Compose("extendedPriceAmount", direction =>
-                    {
-                        groupedQuery = direction == SortDirection.Ascending
-                            ? groupedQuery.OrderBy(x => x.ExtendedPriceAmount)
-                            : groupedQuery.OrderByDescending(x => x.ExtendedPriceAmount);
-                    });
+					message.Sorter.Compose("extendedPriceAmount", direction =>
+					{
+						groupedQuery = direction == SortDirection.Ascending
+							? groupedQuery.OrderBy(x => x.ExtendedPriceAmount)
+							: groupedQuery.OrderByDescending(x => x.ExtendedPriceAmount);
+					});
 
-                    message.Sorter.Compose("totalPriceAmount", direction =>
-                    {
-                        groupedQuery = direction == SortDirection.Ascending
-                            ? groupedQuery.OrderBy(x => x.TotalPriceAmount)
-                            : groupedQuery.OrderByDescending(x => x.TotalPriceAmount);
-                    });
+					message.Sorter.Compose("totalPriceAmount", direction =>
+					{
+						groupedQuery = direction == SortDirection.Ascending
+							? groupedQuery.OrderBy(x => x.TotalPriceAmount)
+							: groupedQuery.OrderByDescending(x => x.TotalPriceAmount);
+					});
 
-                    //var countFuture = groupedQuery
-                    //    .Select(x => new { BranchName = x.BranchName })
-                    //    .ToFuture();
+					//var countFuture = groupedQuery
+					//    .Select(x => new { BranchName = x.BranchName })
+					//    .ToFuture();
 
-                    // TODO: this is not performant, this is just a work around on groupby count issue of nhibernate. find a solution soon
-                    var totalItems = groupedQuery.ToList();
+					// TODO: this is not performant, this is just a work around on groupby count issue of nhibernate. find a solution soon
+					var totalItems = groupedQuery.ToList();
 
-                    var count = totalItems.Count;
+					var count = totalItems.Count;
 
-                    if (message.Pager.IsPaged() != true)
-                        message.Pager.RetrieveAll(count);
+					if (message.Pager.IsPaged() != true)
+						message.Pager.RetrieveAll(count);
 
-                    var items = groupedQuery
-                        .Skip(message.Pager.SkipCount)
-                        .Take(message.Pager.Size)
-                        .ToList();
+					var items = groupedQuery
+						.Skip(message.Pager.SkipCount)
+						.Take(message.Pager.Size)
+						.ToList();
 
-                    response = new Response()
-                    {
-                        Count = count,
-                        Items = items
-                    };
+					response = new Response()
+					{
+						Count = count,
+						Items = items
+					};
 
-                    transaction.Commit();
+					transaction.Commit();
 
-                    SessionFactory.ReleaseSharedSession();
-                }
+					SessionFactory.ReleaseSharedSession();
+				}
 
-                return response;
-            }
-        }
-    }
+				return response;
+			}
+		}
+	}
 }
 
 // GROUP BY WITH PROJECTION REFERENCES: 

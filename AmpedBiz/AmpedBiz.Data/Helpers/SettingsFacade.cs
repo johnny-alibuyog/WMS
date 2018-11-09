@@ -1,5 +1,6 @@
-﻿using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Services.Settings;
+﻿using AmpedBiz.Core.Common;
+using AmpedBiz.Core.Settings;
+using AmpedBiz.Core.Settings.Services;
 using NHibernate;
 using NHibernate.Linq;
 using System;
@@ -8,7 +9,7 @@ using System.Linq;
 
 namespace AmpedBiz.Data.Helpers
 {
-    public class SettingsFacade : ISettingsFacade
+	public class SettingsFacade : ISettingsFacade
     {
         private readonly ISession _session;
 

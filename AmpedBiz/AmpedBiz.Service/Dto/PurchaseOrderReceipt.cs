@@ -50,7 +50,7 @@ namespace AmpedBiz.Service.Dto
 
         public string ReceivingBatchNumber { get; set; }
 
-        public static PurchaseOrderReceivable[] Evaluate(Core.Entities.PurchaseOrder purchaseOrder)
+        public static PurchaseOrderReceivable[] Evaluate(Core.PurchaseOrders.PurchaseOrder purchaseOrder)
         {
             return purchaseOrder.Items
                 .GroupJoin(purchaseOrder.Receipts,

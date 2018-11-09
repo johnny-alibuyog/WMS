@@ -61,6 +61,7 @@ export class PurchaseOrderCreate {
 
   private async newPurchaseOrder(): Promise<PurchaseOrder> {
     let instance = <PurchaseOrder>{
+      branch: this._auth.userBranchAsLookup,
       createdOn: new Date(),
       createdBy: this._auth.userAsLookup,
       items: [],

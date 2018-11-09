@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Entities;
-using AmpedBiz.Core.Services.Users;
+using AmpedBiz.Core.Common;
+using AmpedBiz.Core.Users;
+using AmpedBiz.Core.Users.Services;
 using AmpedBiz.Data;
 using MediatR;
 using NHibernate.Linq;
@@ -8,7 +9,7 @@ using System.Linq;
 
 namespace AmpedBiz.Service.Users
 {
-    public class CreateUser
+	public class CreateUser
     {
         public class Request : Dto.User, IRequest<Response> { }
 
