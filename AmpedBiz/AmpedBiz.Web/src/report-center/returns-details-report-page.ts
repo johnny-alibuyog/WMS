@@ -96,6 +96,8 @@ export class ReturnsDetailsReportPage {
           branchName: x.branchName,
           customerName: x.customerName,
           productName: x.productName,
+          quantiyValue: x.quantityValue,
+          quantiyUnitId: x.quantityUnitId,
           reasonName: x.reasonName,
           returnedByName: x.returnedByName,
           returnedOn: x.returnedOn,

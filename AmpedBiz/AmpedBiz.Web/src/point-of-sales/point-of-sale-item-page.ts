@@ -10,8 +10,9 @@ import { Lookup } from '../common/custom_types/lookup';
 import { ServiceApi } from '../services/service-api';
 import { UnitOfMeasure } from "../common/models/unit-of-measure";
 import { ensureNumeric } from '../common/utils/ensure-numeric';
-import { getValue } from "../common/models/measure";
-import Enumerable = require('linq');
+import { getValue, Measure } from "../common/models/measure";
+import * as Enumerable from 'linq';
+
 
 type ProductAndUnitOfMeasure = {
   product: Lookup<string>,
@@ -64,37 +65,23 @@ export class PointOfSaleItemPage {
     this.itemPager.onPage = () => this.initializePage();
   }
 
-  private async getProductInventory(product: Lookup<string>): Promise<ProductInventory> {
-    let data = this._productInventories.find(x => x.id === product.id);
+  private async getProductInventory(key: string): Promise<ProductInventory> {
+    let data = Enumerable
+      .from(this._productInventories)
+      .where(x =>
+        x.id === key ||
+        Enumerable.from(x.unitOfMeasures).any(o => o.barcode == key)
+      )
+      .firstOrDefault();
+
     if (!data) {
-      data = await this._api.products.getInventory(product.id);
-      this._productInventories.push(data);
+      data = await this._api.products.getInventory(key);
+      if (data) {
+        this._productInventories.push(data);
+      }
     }
     return data;
   }
-
-
-  // private async getProductUnitOfMeasure(barcode: string): Promise<ProductAndUnitOfMeasure>{
-
-  //   let result = {};
-
-  //   let productInventory = Enumerable
-  //     .from(this._productInventories)
-  //     .firstOrDefault(x => Enumerable
-  //       .from(x.unitOfMeasures)
-  //       .any(o => o.barcode == this.barcode)
-  //     );
-
-  //   if (!productInventory) {
-  //     let productUnitOfMeasure = await this._api.products.getProductUnitOfMeasure(this.barcode);
-  //     let product = Enumerable.from(this.products).firstOrDefault(x => x.id == productUnitOfMeasure.productId);
-  //     productInventory = await this.getProductInventory(product);
-  //     item.product = product;
-  //     item.quantity.unit = productUnitOfMeasure.unitOfMeasure;
-  //   }
-
-  //   return result;
-  // }
 
   public attached(): void {
     this._subscriptions = [
@@ -161,47 +148,68 @@ export class PointOfSaleItemPage {
   public async barcodeChangedHandler(): Promise<void> {
     let item = Enumerable
       .from(this.items)
-      .firstOrDefault(x => x.barcode == this.barcode)
+      .firstOrDefault(x => x.barcode == this.barcode);
 
-    if (item != null) {
+    debugger;
+    var productInventory = await this.getProductInventory(this.barcode);
+
+    if (!productInventory) {
+      return;
+    }
+
+    if (item == null) {
       this.addItem();
-
       item = this.selectedItem;
+      item.barcode = this.barcode;
+    }
+    else {
+      this.selectedItem = item;
+    }
 
-      let unit = Enumerable
-        .from(this._productInventories)
-        .selectMany(x => x.unitOfMeasures)
-        .where(o => o.barcode == this.barcode)
-        .select(x => x.unitOfMeasure)
-        .firstOrDefault();
+    if (!item.product) {
+      item.product = Enumerable
+        .from(this.products)
+        .firstOrDefault(x => x.id === productInventory.id);
+    }
 
-      if (!unit) {
-        let productUnitOfMeasure = await this._api.products.getProductUnitOfMeasure(this.barcode);
-        let product = Enumerable.from(this.products).firstOrDefault(x => x.id == productUnitOfMeasure.productId);
-        item.product = product;
-        unit = productUnitOfMeasure.unitOfMeasure;
+    if (!item.unitOfMeasures || item.unitOfMeasures.length == 0) {
+      item.unitOfMeasures = productInventory.unitOfMeasures.map(x => x.unitOfMeasure);
+    }
+
+    let productUnitOfMeasure = Enumerable
+      .from(productInventory.unitOfMeasures)
+      .firstOrDefault(x => x.barcode == this.barcode);
+
+    if (!item.standard || !item.standard.unit || !item.standard.unit.id) {
+      item.standard = <Measure>{
+        unit: productUnitOfMeasure.standard.unit,
+        value: productUnitOfMeasure.standard.value
       }
+    }
 
+    if (!item.quantity || !item.quantity.unit || !item.quantity.unit.id) {
+      item.quantity = <Measure>{
+        unit: productUnitOfMeasure.unitOfMeasure,
+        value: 0
+      };
+    }
 
-
-
-
+    if (!item.unitPriceAmount || item.unitPriceAmount == 0) {
+      let facade = new ProductInventoryFacade(productInventory);
+      item.unitPriceAmount = facade.getPriceAmount(productInventory, item.quantity.unit, this.pricing);
     }
 
     item.quantity.value += 1;
+
     this.compute(item);
 
-
-    alert(`value: ${this.barcode}`);
-
     setTimeout(() => this.barcode = '', 20);
-
   }
 
   public async computeUnitPriceAmount(): Promise<void> {
-    var item = this.selectedItem;
-    let inventory = await this.getProductInventory(item.product);
-    var facade = new ProductInventoryFacade(inventory);
+    let item = this.selectedItem;
+    let inventory = await this.getProductInventory(item.product.id);
+    let facade = new ProductInventoryFacade(inventory);
     item.unitPriceAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
     this.compute(item);
   }
@@ -230,38 +238,38 @@ export class PointOfSaleItemPage {
     this.initializeItem(item);
   }
 
-  public initializeItem(item: PointOfSaleItem): void {
+  public async initializeItem(item: PointOfSaleItem): Promise<void> {
     if (this.isModificationDisallowed) {
       return;
     }
 
     if (!item.product) {
       item.quantity = {
-        unit: null,
-        value: 0
+        unit: {},
+        value: null
       };
       item.standard = {
-        unit: null,
-        value: 0
+        unit: {},
+        value: null
       };
-      item.unitPriceAmount = 0;
+      item.unitPriceAmount = null;
+      item.unitOfMeasures = [];
       this.compute(item);
       return;
     }
 
-    this.getProductInventory(item.product).then(inventory => {
-      var facade = new ProductInventoryFacade(inventory);
-      var current = facade.default;
+    var inventory = await this.getProductInventory(item.product.id);
+    var facade = new ProductInventoryFacade(inventory);
+    var current = facade.default;
 
-      item.barcode = facade.getBarcode(inventory, current.unitOfMeasure, this.pricing);
-      item.unitOfMeasures = inventory.unitOfMeasures.map(x => x.unitOfMeasure);
-      item.quantity.unit = current.unitOfMeasure;
-      //item.quantity.value = 0;
-      item.standard.unit = current.standard.unit;
-      item.standard.value = current.standard.value;
-      item.unitPriceAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
-      this.compute(item);
-    });
+    item.barcode = facade.getBarcode(inventory, current.unitOfMeasure, this.pricing);
+    item.unitOfMeasures = inventory.unitOfMeasures.map(x => x.unitOfMeasure);
+    item.quantity.unit = current.unitOfMeasure;
+    //item.quantity.value = 0;
+    item.standard.unit = current.standard.unit;
+    item.standard.value = current.standard.value;
+    item.unitPriceAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
+    this.compute(item);
   }
 
   public initializePage(): void {
@@ -308,6 +316,7 @@ export class PointOfSaleItemPage {
         unit: {},
         value: null
       },
+      unitOfMeasures: [],
       discountRate: null,
       discountAmount: null,
       unitPriceAmount: null,
@@ -330,7 +339,7 @@ export class PointOfSaleItemPage {
     }
 
     if (!item.unitOfMeasures || item.unitOfMeasures.length == 0) {
-      this.getProductInventory(item.product).then(data => {
+      this.getProductInventory(item.product.id).then(data => {
         if (data && data.unitOfMeasures) {
           item.unitOfMeasures = data.unitOfMeasures.map(x => x.unitOfMeasure);
         }

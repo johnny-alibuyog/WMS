@@ -23,13 +23,13 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpGet()]
-        [Route("~/product-inventories/{productId}")]
+        [Route("~/product-inventories/{request.key}")]
         public async Task<GetProductInventory.Response> Process([FromUri]GetProductInventory.Request request)
         {
             return await _mediator.Send(request ?? new GetProductInventory.Request());
         }
 
-        [HttpGet()]
+		[HttpGet()]
         [Route("~/product-inventories")]
         public async Task<GetProductInventoryList.Response> Process([FromUri]GetProductInventoryList.Request request)
         {
@@ -154,12 +154,5 @@ namespace AmpedBiz.Service.Host.Controllers
         {
             return await _mediator.Send(request ?? new UpdateProduct.Request());
         }
-
-		[HttpGet()]
-		[Route("{request.Key}/unit-of-measure")]
-		public async Task<GetProductUnitOfMeasure.Response> Process([FromUri]GetProductUnitOfMeasure.Request request)
-		{
-			return await _mediator.Send(request ?? new GetProductUnitOfMeasure.Request());
-		}
 	}
 }

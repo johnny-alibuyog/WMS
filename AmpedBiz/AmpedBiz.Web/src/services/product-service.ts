@@ -20,8 +20,8 @@ export class ProductService extends ServiceBase<Product> {
     super('products', httpClient);
   }
 
-  public getInventory(productId: string): Promise<ProductInventory> {
-    var url = 'product-inventories/' + productId;
+  public getInventory(key: string /* key = productId || barcode */): Promise<ProductInventory> {
+    var url = 'product-inventories/' + key;
     return this._httpClient.get(url);
   }
 
@@ -29,6 +29,11 @@ export class ProductService extends ServiceBase<Product> {
     var queryString = (productIds) ? '/?' + buildQueryString({ productIds: productIds }) : '';
     var url = 'product-inventories' + queryString;
 
+    return this._httpClient.get(url);
+  }
+
+  public getInventoryUnitOfMeasure(key: string): Promise<ProductUnitOfMeasure> {
+    var url = `product-inventories/${key}/unit-of-measure`;
     return this._httpClient.get(url);
   }
 
@@ -85,10 +90,5 @@ export class ProductService extends ServiceBase<Product> {
   public getProductListingReportPage(page: PageRequest): Promise<PagerResponse<ProductListingReportPageItem>> {
     var url = this._resouce + '/listing-report/page';
     return this._httpClient.post(url, page);
-  }
-
-  public getProductUnitOfMeasure(key: string): Promise<ProductUnitOfMeasure> {
-    var url = `${this._resouce}/${key}/unit-of-measure`;
-    return this._httpClient.get(url);
   }
 }

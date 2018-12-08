@@ -103,6 +103,12 @@ namespace AmpedBiz.Service.Returns
 								ReturnedOn = x is ReturnItem
 									? ((ReturnItem)x).Return.ReturnedOn.Value.Date
 									: ((OrderReturn)x).ReturnedOn.Value.Date,
+								QuantityValue = x is ReturnItem
+									? ((ReturnItem)x).Quantity.Value
+									: ((OrderReturn)x).Quantity.Value,
+								QuantityUnitId = x is ReturnItem
+									? ((ReturnItem)x).Quantity.Unit.Id
+									: ((OrderReturn)x).Quantity.Unit.Id,
 								ReturnedAmount = x is ReturnItem
 									? ((ReturnItem)x).Returned.Amount
 									: ((OrderReturn)x).Returned.Amount,
@@ -149,6 +155,8 @@ namespace AmpedBiz.Service.Returns
 									x.Return.ReturnedBy.Person.FirstName + " " +
 									x.Return.ReturnedBy.Person.LastName,
 								ReturnedOn = x.Return.ReturnedOn.Value.Date,
+								QuantityValue = x.Quantity.Value,
+								QuantityUnitId = x.Quantity.Unit.Id,
 								ReturnedAmount = x.Returned.Amount
 							});
 					}
@@ -194,6 +202,13 @@ namespace AmpedBiz.Service.Returns
 						query = direction == SortDirection.Ascending
 							? query.OrderBy(x => x.ReasonName)
 							: query.OrderByDescending(x => x.ReasonName);
+					});
+
+					message.Sorter.Compose("quantityValue", direction =>
+					{
+						query = direction == SortDirection.Ascending
+							? query.OrderBy(x => x.QuantityValue)
+							: query.OrderByDescending(x => x.QuantityValue);
 					});
 
 					message.Sorter.Compose("returnedAmount", direction =>

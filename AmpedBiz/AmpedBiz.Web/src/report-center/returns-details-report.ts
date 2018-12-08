@@ -20,7 +20,7 @@ export interface ReturnByCustomerReportItem {
   reasonName?: string;
   returnedByName?: string;
   quantiyValue?: number;
-  quantiyUnit?: string;
+  quantiyUnitId?: string;
   returnedOn?: Date;
   returnedAmount?: number;
 }
@@ -35,7 +35,7 @@ export class ReturnByCustomerReport extends Report<ReturnByCustomerReportModel> 
 
   protected buildBody(data: ReturnByCustomerReportModel): Promise<any[] | Content[]> {
     // table header
-    let orderTableBody: any[] = [
+    let returnTableBody: any[] = [
       [
         { text: 'Branch', style: 'tableHeader' },
         { text: 'Date', style: 'tableHeader' },
@@ -58,7 +58,7 @@ export class ReturnByCustomerReport extends Report<ReturnByCustomerReportModel> 
           { text: emptyIfNull(x.customerName), style: 'tableData' },
           { text: emptyIfNull(x.productName), style: 'tableData' },
           { text: emptyIfNull(x.reasonName), style: 'tableData' },
-          { text: `${formatNumber(x.quantiyValue, "0")} ${emptyIfNull(x.quantiyUnit)}`, style: 'tableData' },
+          { text: `${formatNumber(x.quantiyValue, "0")} ${emptyIfNull(x.quantiyUnitId)}`, style: 'tableData' },
           { text: formatNumber(x.returnedAmount), style: 'tableData', alignment: 'right' },
         ])
       );
@@ -67,7 +67,8 @@ export class ReturnByCustomerReport extends Report<ReturnByCustomerReportModel> 
     let totalRetunedAmount = Enumerable.from(data.items).sum(x => x.returnedAmount);
 
     // total
-    orderTableBody.push([
+    returnTableBody.push([
+      { text: '', style: 'tableData' },
       { text: '', style: 'tableData' },
       { text: '', style: 'tableData' },
       { text: '', style: 'tableData' },
@@ -75,7 +76,7 @@ export class ReturnByCustomerReport extends Report<ReturnByCustomerReportModel> 
       { text: '', style: 'tableData' },
       { text: 'Total:', style: 'label' },
       { text: formatNumber(totalRetunedAmount), style: 'tableData', alignment: 'right' },
-    ])
+    ]);
 
     let body = [
       {
@@ -125,8 +126,8 @@ export class ReturnByCustomerReport extends Report<ReturnByCustomerReportModel> 
       {
         table: {
           headerRows: 1,
-          widths: ['auto', 'auto', 'auto', 'auto', '*', 'auto', 'auto'],
-          body: orderTableBody
+          widths: ['auto', 'auto', 'auto', 'auto', '*', 'auto', 'auto', 'auto'],
+          body: returnTableBody
         },
         layout: 'lightHorizontalLines',
         style: 'tableExample',

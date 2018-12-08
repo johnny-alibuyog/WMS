@@ -23,8 +23,8 @@ export class InventoryMovementsReportPage {
   ) {
     this.filter["customerId"] = null;
     this.filter["branchId"] = null;
-    this.filter["fromDate"] = null;
-    this.filter["toDate"] = null;
+    this.filter["fromDate"] = new Date();
+    this.filter["toDate"] = new Date();
     this.filter.onFilter = () => this.getPage();
     this.sorter["paidOn"] = SortDirection.Ascending;
     this.sorter["branchName"] = SortDirection.None;

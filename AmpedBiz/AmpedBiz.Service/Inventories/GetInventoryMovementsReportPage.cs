@@ -5,7 +5,6 @@ using AmpedBiz.Core.Products;
 using AmpedBiz.Data;
 using AmpedBiz.Service.Common;
 using MediatR;
-using NHibernate.Criterion;
 using NHibernate.Transform;
 using System;
 using System.Collections;
@@ -32,90 +31,85 @@ namespace AmpedBiz.Service.Inventories
 				using (var session = this.SessionFactory.RetrieveSharedSession(this.Context))
 				using (var transaction = session.BeginTransaction())
 				{
+					var inventory = (Inventory)null;
+					var product = (Product)null;
+					var branch = (Branch)null;
+
+					var inventoryQuery = session
+						.QueryOver(() => inventory)
+						.JoinAlias(() => inventory.Product, () => product)
+						.JoinAlias(() => inventory.Branch, () => branch)
+						.Fetch(x => x.Product.UnitOfMeasures).Eager
+						.Fetch(x => x.Product.UnitOfMeasures.First().UnitOfMeasure).Eager;
 
 					// TODO: use decomposition when upgraded to C# 6 or up
-					var whereResult = this.BuildWhereClause(message.Filter);
+					var (movementWhereClause, param) = this.BuildWhereClause(message.Filter);
 
-					var whereClause = whereResult.Item1;
+					var movementOrderByClause = this.BuildOrderByClause(message.Sorter);
 
-					var orderByClause = this.BuildOrderByClause(message.Sorter);
+					var movementSqlString = BuidlSqlQueryString(movementWhereClause, movementOrderByClause);
 
-					var sqlString = BuidlSqlQueryString(whereClause, orderByClause);
+					var movementSqlQuery = session.CreateSQLQuery(movementSqlString);
 
-					var sqlQuery = session.CreateSQLQuery(sqlString);
-
-					var parameters = new
+					if (param.BranchId != Guid.Empty)
 					{
-						BranchId = whereResult.Item2.Item1,
-						ProductId = whereResult.Item2.Item2,
-						FromDate = whereResult.Item2.Item3,
-						ToDate = whereResult.Item2.Item4,
-					};
+						movementSqlQuery.SetParameter("branchId", param.BranchId);
+						inventoryQuery = inventoryQuery.Where(() => branch.Id == param.BranchId);
+					}
 
-					if (parameters.BranchId != Guid.Empty)
-						sqlQuery.SetParameter("branchId", parameters.BranchId);
+					if (param.ProductId != Guid.Empty)
+					{
+						movementSqlQuery.SetParameter("productId", param.ProductId);
+						inventoryQuery = inventoryQuery.Where(() => product.Id == param.ProductId);
+					}
 
-					if (parameters.ProductId != Guid.Empty)
-						sqlQuery.SetParameter("productId", parameters.ProductId);
+					if (param.FromDate != null)
+					{
+						movementSqlQuery.SetParameter("fromDate", param.FromDate.Value);
+					}
 
-					if (parameters.FromDate != null)
-						sqlQuery.SetParameter("fromDate", parameters.FromDate.Value);
+					if (param.ToDate != null)
+					{
+						movementSqlQuery.SetParameter("toDate", param.ToDate.Value);
+					}
 
-					if (parameters.ToDate != null)
-						sqlQuery.SetParameter("toDate", parameters.ToDate.Value);
+					var inventories = inventoryQuery
+						.TransformUsing(Transformers.DistinctRootEntity)
+						.Future();
 
-					//var result = sqlQuery
-					//    .SetResultTransformer(Transformers.AliasToBean<Dto.InventoryMovementReportPageItemRaw>())
-					//    .List<Dto.InventoryMovementReportPageItemRaw>();
-
-					// Note: since there is a type mismatch (Guid for example) in some databases (MySql), we needed 
-					//       to manually convert columns using AliasToEntityMap instead of AliasToBean
-
-					var result = sqlQuery
+					var movements = movementSqlQuery
 						.SetResultTransformer(Transformers.AliasToEntityMap)
 						.List<IDictionary>()
 						.Select(Dto.InventoryMovementReportPageItemRaw.Parse)
 						.ToList();
 
-					var inventory = (Inventory)null;
-					var product = (Product)null;
-					var branch = (Branch)null;
-
-					var conditions = result.Aggregate(Restrictions.Disjunction(), (next, item) =>
-					{
-						next.Add(Restrictions.Conjunction()
-							.Add(Restrictions.Where(() => product.Id == item.ProductId))
-							.Add(Restrictions.Where(() => branch.Id == item.BranchId))
-						);
-
-						return next;
-					});
-
-					var inventories = session
-						.QueryOver(() => inventory)
-						.JoinAlias(() => inventory.Product, () => product)
-						.JoinAlias(() => inventory.Branch, () => branch)
-						.Fetch(x => x.Product.UnitOfMeasures).Eager
-						.Fetch(x => x.Product.UnitOfMeasures.First().UnitOfMeasure).Eager
-						.Where(conditions)
-						.TransformUsing(Transformers.DistinctRootEntity)
-						.Future();
-
 					var lookups = new
 					{
-						Branchs = inventories.Select(x => x.Branch).Distinct().ToDictionary(x => x.Id),
-						Products = inventories.Select(x => x.Product).ToDictionary(x => x.Id),
-						Units = inventories.SelectMany(x => x.Product.UnitOfMeasures.Select(o => o.UnitOfMeasure)).Distinct().ToDictionary(x => x.Id)
+						Branchs = inventories
+							.Select(x => x.Branch)
+							.Distinct()
+							.ToDictionary(x => x.Id),
+						Products = inventories
+							.Select(x => x.Product)
+							.ToDictionary(x => x.Id),
+						Units = inventories
+							.SelectMany(x => x.Product.UnitOfMeasures
+								.Select(o => o.UnitOfMeasure)
+							)
+							.Distinct()
+							.ToDictionary(x => x.Id)
 					};
 
 					// TODO: this is not performant, this is just a work around on groupby count issue of nhibernate. find a solution soon
-					var totalItems = result
-						.Select(x => Dto.InventoryMovementsReportPageItem.Create(
-							branchLookup: lookups.Branchs,
-							productLookup: lookups.Products,
-							unitLookup: lookups.Units,
-							raw: x
-						))
+					var totalItems = movements
+						.Select(movement =>
+							Dto.InventoryMovementsReportPageItem.Create(
+								branchLookup: lookups.Branchs,
+								productLookup: lookups.Products,
+								unitLookup: lookups.Units,
+								raw: movement
+							)
+						)
 						.ToList();
 
 					var count = totalItems.Count;
@@ -230,7 +224,7 @@ namespace AmpedBiz.Service.Inventories
                                                 ON P.ProductId = OI.ProductId
 
                                         WHERE
-                                            O.ShippedOn IS NOT NULL
+											O.Status IN ('Shipped', 'Completed')
 
                                         GROUP BY
                                             O.BranchId,
@@ -256,133 +250,111 @@ namespace AmpedBiz.Service.Inventories
 
 					case DatabaseProvider.MySql:
 						return $@"
-                            CREATE TEMPORARY TABLE IF NOT EXISTS INPUT_TABLE
-	                            SELECT
-		                            PO.BranchId AS BranchId,
-		                            MAX(B.Name) AS BranchName,
-		                            POR.ProductId AS ProductId,
-		                            MAX(P.Name) AS ProductName,
-		                            CAST(POR.ReceivedOn AS DATE) AS Date,
-		                            POR.QuantityStandardEquivalent_UnitId AS UnitId,
-		                            SUM(POR.QuantityStandardEquivalent_Value) AS Value
+							WITH INPUT_TABLE AS
+							(
+								SELECT
+									PO.BranchId                               AS BranchId,
+									MAX(B.Name)                               AS BranchName,
+									POR.ProductId                             AS ProductId,
+									MAX(P.Name)                               AS ProductName,
+									CAST(POR.ReceivedOn AS DATE)              AS Date,
+									POR.QuantityStandardEquivalent_UnitId     AS UnitId,
+									SUM(POR.QuantityStandardEquivalent_Value) AS Value
+								FROM
+									PurchaseOrderReceipts AS POR
+								INNER JOIN
+									PurchaseOrders AS PO
+										ON PO.PurchaseOrderId = POR.PurchaseOrderId
+								INNER JOIN
+									Branches AS B
+										ON B.BranchId = PO.BranchId
+								INNER JOIN
+									Products AS P
+										ON P.ProductId = POR.ProductId
+								GROUP BY
+									PO.BranchId,
+									POR.ProductId,
+									CAST(POR.ReceivedOn AS DATE),
+									POR.QuantityStandardEquivalent_UnitId
+							), 
+							OUTPUT_TABLE AS
+							(
+								SELECT
+									O.BranchId                               AS BranchId,
+									MAX(B.Name)                              AS BranchName,
+									OI.ProductId                             AS ProductId,
+									MAX(P.Name)                              AS ProductName,
+									CAST(O.ShippedOn AS DATE)                AS Date,
+									OI.QuantityStandardEquivalent_UnitId     AS UnitId,
+									SUM(OI.QuantityStandardEquivalent_Value) AS Value
+								FROM
+									OrderItems AS OI
+								INNER JOIN
+									Orders AS O
+										ON O.OrderId = OI.OrderId
+								INNER JOIN
+									Branches AS B
+										ON B.BranchId = O.BranchId
+								INNER JOIN
+									Products AS P
+										ON P.ProductId = OI.ProductId
+								WHERE
+									O.Status IN ( 'Shipped', 'Completed' )
+								GROUP BY
+									O.BranchId,
+									OI.ProductId,
+									CAST(O.ShippedOn AS DATE),
+									OI.QuantityStandardEquivalent_UnitId
+							), 
+							RESULT_TABLE AS
+							(
+								SELECT
+									COALESCE(INPUT.BranchId, OUTPUT.BranchId)       AS BranchId,
+									COALESCE(INPUT.BranchName, OUTPUT.BranchName)   AS BranchName,
+									COALESCE(INPUT.ProductId, OUTPUT.ProductId)     AS ProductId,
+									COALESCE(INPUT.ProductName, OUTPUT.ProductName) AS ProductName,
+									COALESCE(INPUT.Date, OUTPUT.Date)               AS Date,
+									INPUT.UnitId                                    AS InputUnitId,
+									INPUT.Value                                     AS InputValue,
+									OUTPUT.UnitId                                   AS OutputUnitId,
+									OUTPUT.Value                                    AS OutputValue
+								FROM
+									INPUT_TABLE AS INPUT
+								LEFT JOIN
+									OUTPUT_TABLE AS OUTPUT
+										ON INPUT.BranchId   = OUTPUT.BranchId
+										AND INPUT.ProductId = OUTPUT.ProductId
+										AND INPUT.Date      = OUTPUT.Date
+								UNION
+								SELECT
+									COALESCE(INPUT.BranchId, OUTPUT.BranchId)       AS BranchId,
+									COALESCE(INPUT.BranchName, OUTPUT.BranchName)   AS BranchName,
+									COALESCE(INPUT.ProductId, OUTPUT.ProductId)     AS ProductId,
+									COALESCE(INPUT.ProductName, OUTPUT.ProductName) AS ProductName,
+									COALESCE(INPUT.Date, OUTPUT.Date)               AS Date,
+									INPUT.UnitId                                    AS InputUnitId,
+									INPUT.Value                                     AS InputValue,
+									OUTPUT.UnitId                                   AS OutputUnitId,
+									OUTPUT.Value                                    AS OutputValue
+								FROM
+									INPUT_TABLE AS INPUT
+								RIGHT JOIN
+									OUTPUT_TABLE AS OUTPUT
+										ON INPUT.BranchId   = OUTPUT.BranchId
+										AND INPUT.ProductId = OUTPUT.ProductId
+										AND INPUT.Date      = OUTPUT.Date
+								WHERE
+									INPUT.ProductId IS NULL
+							)
+							SELECT
+								*
 
-	                            FROM
-		                            PurchaseOrderReceipts AS POR
+							FROM
+								RESULT_TABLE
+								
+							{whereClause}
 
-	                            INNER JOIN
-		                            PurchaseOrders AS PO
-			                            ON PO.PurchaseOrderId = POR.PurchaseOrderId
-
-	                            INNER JOIN
-		                            Branches AS B
-			                            ON B.BranchId = PO.BranchId
-
-	                            INNER JOIN
-		                            Products AS P
-			                            ON P.ProductId = POR.ProductId
-
-	                            GROUP BY
-		                            PO.BranchId,
-		                            POR.ProductId,
-		                            CAST(POR.ReceivedOn AS DATE),
-		                            POR.QuantityStandardEquivalent_UnitId;
-        
-
-
-                            CREATE TEMPORARY TABLE IF NOT EXISTS OUTPUT_TABLE
-	                            SELECT
-		                            O.BranchId AS BranchId,
-		                            MAX(B.Name) AS BranchName,
-		                            OI.ProductId AS ProductId,
-		                            MAX(P.Name) AS ProductName,
-		                            CAST(O.ShippedOn AS DATE) AS Date,
-		                            OI.QuantityStandardEquivalent_UnitId AS UnitId,
-		                            SUM(OI.QuantityStandardEquivalent_Value) AS Value
-
-	                            FROM
-		                            OrderItems AS OI
-
-	                            INNER JOIN
-		                            Orders AS O
-			                            ON O.OrderId = OI.OrderId
-
-	                            INNER JOIN
-		                            Branches AS B
-			                            ON B.BranchId = O.BranchId
-
-	                            INNER JOIN
-		                            Products AS P
-			                            ON P.ProductId = OI.ProductId
-
-	                            WHERE
-		                            O.ShippedOn IS NOT NULL
-
-	                            GROUP BY
-		                            O.BranchId,
-		                            OI.ProductId,
-		                            CAST(O.ShippedOn AS DATE),
-		                            OI.QuantityStandardEquivalent_UnitId;
-        
-        
-                            CREATE TEMPORARY TABLE IF NOT EXISTS RESULT_TABLE        
-	                            SELECT 
-		                            COALESCE(INPUT.BranchId, OUTPUT.BranchId) AS BranchId,
-		                            COALESCE(INPUT.BranchName, OUTPUT.BranchName) AS BranchName,
-		                            COALESCE(INPUT.ProductId, OUTPUT.ProductId) AS ProductId,
-		                            COALESCE(INPUT.ProductName, OUTPUT.ProductName) AS ProductName,
-		                            COALESCE(INPUT.Date, OUTPUT.Date) AS Date,
-		                            INPUT.UnitId AS InputUnitId,
-		                            INPUT.Value AS InputValue,
-		                            OUTPUT.UnitId AS OutputUnitId,
-		                            OUTPUT.Value AS OutputValue
-	
-	                            FROM
-		                            INPUT_TABLE AS INPUT
-		
-	                            RIGHT JOIN
-		                            OUTPUT_TABLE AS OUTPUT
-			                            ON INPUT.BranchId = OUTPUT.BranchId 
-			                            AND INPUT.ProductId = OUTPUT.ProductId 
-			                            AND INPUT.Date = OUTPUT.Date;
-
-                            INSERT INTO RESULT_TABLE
-	                            SELECT 
-		                            COALESCE(INPUT.BranchId, OUTPUT.BranchId) AS BranchId,
-		                            COALESCE(INPUT.BranchName, OUTPUT.BranchName) AS BranchName,
-		                            COALESCE(INPUT.ProductId, OUTPUT.ProductId) AS ProductId,
-		                            COALESCE(INPUT.ProductName, OUTPUT.ProductName) AS ProductName,
-		                            COALESCE(INPUT.Date, OUTPUT.Date) AS Date,
-		                            INPUT.UnitId AS InputUnitId,
-		                            INPUT.Value AS InputValue,
-		                            OUTPUT.UnitId AS OutputUnitId,
-		                            OUTPUT.Value AS OutputValue
-	
-	                            FROM
-		                            INPUT_TABLE AS INPUT
-		
-	                            RIGHT JOIN
-		                            OUTPUT_TABLE AS OUTPUT
-			                            ON INPUT.BranchId = OUTPUT.BranchId 
-			                            AND INPUT.ProductId = OUTPUT.ProductId 
-			                            AND INPUT.Date = OUTPUT.Date
-			
-	                            WHERE
-		                            INPUT.BranchId IS NULL 
-		                            OR INPUT.ProductId IS NULL 
-		                            OR INPUT.Date IS NULL;
-
-                            SELECT 
-                                *
-                            
-                            FROM RESULT_TABLE
-
-                            { whereClause}
-
-                            { orderByClause};
-
-                            DROP TEMPORARY TABLE INPUT_TABLE;
-                            DROP TEMPORARY TABLE OUTPUT_TABLE;
-                            DROP TEMPORARY TABLE RESULT_TABLE;
+							{orderByClause};
                     ";
 
 					default:
@@ -390,8 +362,19 @@ namespace AmpedBiz.Service.Inventories
 				}
 			}
 
-			private Tuple<string, Tuple<Guid, Guid, DateTime?, DateTime?>> BuildWhereClause(Filter filter)
+			//private Tuple<string, Tuple<Guid, Guid, DateTime?, DateTime?>> BuildWhereClause(Filter filter)
+			private (string WhereClause, (Guid BranchId, Guid ProductId, DateTime? FromDate, DateTime? ToDate) param) BuildWhereClause(Filter filter)
 			{
+				var result = (
+					WhereClause: string.Empty,
+					Param: (
+						BranchId: Guid.Empty,
+						ProductId: Guid.Empty,
+						FromDate: (DateTime?)null,
+						ToDate: (DateTime?)null
+					)
+				);
+
 				var conditions = string.Empty;
 
 				var addConjuction = new Func<string, string, string>((left, right) =>
@@ -403,43 +386,34 @@ namespace AmpedBiz.Service.Inventories
 				});
 
 				// compose filter
-				var branchId = default(Guid);
 				filter.Compose<Guid>("branchId", value =>
 				{
-					branchId = value;
+					result.Param.BranchId = value;
 					conditions = $"BranchId = :branchId";
 				});
 
-				var productId = default(Guid);
 				filter.Compose<Guid>("productId", value =>
 				{
-					productId = value;
+					result.Param.ProductId = value;
 					conditions = addConjuction(conditions, $"ProductId = :productId");
 				});
 
-				var fromDate = default(DateTime?);
 				filter.Compose<DateTime>("fromDate", value =>
 				{
-					fromDate = value;
+					result.Param.FromDate = value;
 					conditions = addConjuction(conditions, $"date >= :fromDate");
 				});
 
-				var toDate = default(DateTime?);
 				filter.Compose<DateTime>("toDate", value =>
 				{
-					toDate = value;
+					result.Param.ToDate = value;
 					conditions = addConjuction(conditions, $"date <= :toDate");
 				});
 
-				var whereClause = !string.IsNullOrWhiteSpace(conditions)
+				result.WhereClause = !string.IsNullOrWhiteSpace(conditions)
 						? $"WHERE {conditions}" : string.Empty;
 
-				return new Tuple<string, Tuple<Guid, Guid, DateTime?, DateTime?>>(
-					whereClause,
-					new Tuple<Guid, Guid, DateTime?, DateTime?>(
-						branchId, productId, fromDate, toDate
-					)
-				);
+				return result;
 			}
 
 			private string BuildOrderByClause(Sorter sorter)

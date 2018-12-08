@@ -56,6 +56,10 @@ namespace AmpedBiz.Service.Dto
 
 		public DateTime ReturnedOn { get; set; }
 
+		public decimal QuantityValue { get; set; }
+
+		public string QuantityUnitId { get; set; }
+
 		public decimal ReturnedAmount { get; set; }
 	}
 

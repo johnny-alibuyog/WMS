@@ -58,13 +58,13 @@ namespace AmpedBiz.Service.Products
 						);
 					}
 
-					var productInventories = query
+					var inventories = query
 						.Fetch(x => x.Product)
 						.ThenFetchMany(x => x.UnitOfMeasures)
 						.ThenFetchMany(x => x.Prices)
 						.ToList();
 
-					var dtos = productInventories
+					var dtos = inventories
 						.Select(productInventory => new Dto.ProductInventory()
 						{
 							Id = productInventory.Product.Id,
@@ -73,9 +73,9 @@ namespace AmpedBiz.Service.Products
 							UnitOfMeasures = productInventory.Product.UnitOfMeasures
 								.Select(x => new Dto.ProductInventoryUnitOfMeasure()
 								{
+									Barcode = x.Barcode,
 									IsDefault = x.IsDefault,
 									IsStandard = x.IsStandard,
-									Barcode = x.Barcode,
 									UnitOfMeasure = x.UnitOfMeasure
 										.MapTo(default(Dto.UnitOfMeasure)),
 									Available = productInventory

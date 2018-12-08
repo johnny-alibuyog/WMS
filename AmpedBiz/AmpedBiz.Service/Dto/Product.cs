@@ -91,13 +91,13 @@ namespace AmpedBiz.Service.Dto
 
     public class ProductInventoryUnitOfMeasure
     {
-        public bool IsStandard { get; set; }
+		public bool IsStandard { get; set; }
 
         public bool IsDefault { get; set; }
 
 		public string Barcode { get; set; }
 
-        public UnitOfMeasure UnitOfMeasure { get; set; }
+		public UnitOfMeasure UnitOfMeasure { get; set; }
 
         public Measure Available { get; set; }
 
@@ -112,6 +112,8 @@ namespace AmpedBiz.Service.Dto
 
 	public class ProductInventoryUnitOfMeasurePrice
     {
+		public Guid Id { get; set; }
+
         public Lookup<string> Pricing { get; set; }
 
         public decimal? PriceAmount { get; set; }

@@ -1,7 +1,7 @@
 import { autoinject } from 'aurelia-framework';
-import { formatDate, formatNumber, emptyIfNull } from '../services/formaters';
+import { formatNumber, emptyIfNull } from '../services/formaters';
 import { Report, Content } from './report';
-import { OrderStatus } from '../common/models/order';
+import * as linq from 'linq';
 
 export interface ProductListingReportModel {
   branchName?: string;
@@ -66,6 +66,28 @@ export class ProductListingReport extends Report<ProductListingReportModel> {
         { text: formatNumber(x.suggestedRetailPriceAmount), style: 'tableData', alignment: 'right' },
       ]));
     }
+
+    let total = {
+      basePriceAmount: linq.from(data.items).select(x => x.onHandValue * x.basePriceAmount).sum(),
+      wholesalePriceAmount: linq.from(data.items).select(x => x.onHandValue * x.wholesalePriceAmount).sum(),
+      retailPriceAmount: linq.from(data.items).select(x => x.onHandValue * x.wholesalePriceAmount).sum(),
+      suggestedRetailPriceAmount: linq.from(data.items).select(x => x.onHandValue * x.suggestedRetailPriceAmount).sum(),
+    };
+
+    // total
+    orderTableBody.push([
+      { text: '', style: 'tableData' },
+      { text: '', style: 'tableData' },
+      { text: '', style: 'tableData' },
+      { text: '', style: 'tableData' },
+      { text: '', style: 'tableData' },
+      { text: '', style: 'tableData' },
+      { text: 'Total:', style: 'label' },
+      { text: formatNumber(total.basePriceAmount), style: 'tableData', alignment: 'right' },
+      { text: formatNumber(total.wholesalePriceAmount), style: 'tableData', alignment: 'right' },
+      { text: formatNumber(total.retailPriceAmount), style: 'tableData', alignment: 'right' },
+      { text: formatNumber(total.suggestedRetailPriceAmount), style: 'tableData', alignment: 'right' },
+    ]);
 
     let body = [
       {
