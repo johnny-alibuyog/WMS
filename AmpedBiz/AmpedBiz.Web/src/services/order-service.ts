@@ -8,7 +8,7 @@ import { HttpClientFacade } from './http-client-facade';
 import { Lookup } from '../common/custom_types/lookup';
 import { ServiceBase } from './service-base'
 import { autoinject } from 'aurelia-framework';
-import Enumerable = require("linq");
+import * as Enumerable from 'linq';
 
 @autoinject
 export class OrderService extends ServiceBase<Order> {

@@ -138,10 +138,10 @@
 
               <thead>
                 <tr>
-                  <th class="col-md-2" click.delegate="sorter.doSort('branchName')">
+                  <th class="col-md-1" click.delegate="sorter.doSort('branchName')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['branchName'])}"></i>Branch
                   </th>
-                  <th class="col-md-2" click.delegate="sorter.doSort('returnedOn')">
+                  <th class="col-md-1" click.delegate="sorter.doSort('returnedOn')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['returnedOn'])}"></i>Date
                   </th>
                   <th class="col-md-2" click.delegate="sorter.doSort('returnedByName')">
@@ -156,6 +156,9 @@
                   <th class="col-md-2" click.delegate="sorter.doSort('reasonName')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['reasonName'])}"></i>Reason
                   </th>
+                  <th class="col-md-2" click.delegate="sorter.doSort('quantityValue')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['quantityValue'])}"></i>Quantity
+                  </th>
                   <th class="col-md-1 text-right" click.delegate="sorter.doSort('returnedAmount')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['returnedAmount'])}"></i>Amount
                   </th>
@@ -169,6 +172,7 @@
                   <td>${item.returnedByName}</td>
                   <td>${item.productName}</td>
                   <td>${item.customerName}</td>
+                  <td>${item.quantityValue} ${item.quantityUnitId}</td>
                   <td>${item.reasonName}</td>
                   <td class="text-right">${item.returnedAmount | numberFormat}</td>
                 </tr>

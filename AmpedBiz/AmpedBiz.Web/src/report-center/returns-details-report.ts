@@ -19,6 +19,8 @@ export interface ReturnByCustomerReportItem {
   productName?: string;
   reasonName?: string;
   returnedByName?: string;
+  quantiyValue?: number;
+  quantiyUnit?: string;
   returnedOn?: Date;
   returnedAmount?: number;
 }
@@ -41,6 +43,7 @@ export class ReturnByCustomerReport extends Report<ReturnByCustomerReportModel> 
         { text: 'Customer', style: 'tableHeader' },
         { text: 'Product', style: 'tableHeader' },
         { text: 'Reason', style: 'tableHeader' },
+        { text: 'Quantity', style: 'tableHeader', alignment: 'right' },
         { text: 'Amount', style: 'tableHeader', alignment: 'right' },
       ],
     ];
@@ -55,6 +58,7 @@ export class ReturnByCustomerReport extends Report<ReturnByCustomerReportModel> 
           { text: emptyIfNull(x.customerName), style: 'tableData' },
           { text: emptyIfNull(x.productName), style: 'tableData' },
           { text: emptyIfNull(x.reasonName), style: 'tableData' },
+          { text: `${formatNumber(x.quantiyValue, "0")} ${emptyIfNull(x.quantiyUnit)}`, style: 'tableData' },
           { text: formatNumber(x.returnedAmount), style: 'tableData', alignment: 'right' },
         ])
       );

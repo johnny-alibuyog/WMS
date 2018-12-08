@@ -65,6 +65,8 @@ export interface ReturnsDetailsReportPageItem {
   reasonName?: string;
   returnedByName?: string;
   returnedOn?: Date;
+  quantityValue?: number;
+  quantityUnitId?: string;
   returnedAmount?: number;
 }
 
