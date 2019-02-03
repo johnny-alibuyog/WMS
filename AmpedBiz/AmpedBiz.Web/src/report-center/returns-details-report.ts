@@ -51,7 +51,7 @@ export class ReturnByCustomerReport extends Report<ReturnByCustomerReportModel> 
     // table data
     if (data && data.items && data.items.length > 0) {
       data.items.forEach(x =>
-        orderTableBody.push([
+        returnTableBody.push([
           { text: emptyIfNull(x.branchName), style: 'tableData' },
           { text: formatDate(x.returnedOn), style: 'tableData' },
           { text: emptyIfNull(x.returnedByName), style: 'tableData' },

@@ -1,7 +1,7 @@
 import { Address } from './address';
 import { Contact } from './contact'
 
-export interface Customer {
+export type Customer = {
   id?: string;
   code?: string;
   name?: string;
@@ -11,7 +11,7 @@ export interface Customer {
   officeAddress?: Address;
 }
 
-export interface CustomerPageItem {
+export type CustomerPageItem = {
   id?: string;
   code?: string;
   name?: string;
@@ -19,7 +19,7 @@ export interface CustomerPageItem {
   address?: Address;
 }
 
-export interface CustomerReportPageItem {
+export type CustomerReportPageItem = {
   id?: string;
   code?: string;
   name?: string;
@@ -30,8 +30,7 @@ export interface CustomerReportPageItem {
   billingAddress?: Address;
 }
 
-export class CustomerSalesReportPageItem
-{
+export type CustomerSalesReportPageItem = {
   paidOn?: Date;
   branchName?: string;
   customerName?: string;
@@ -42,7 +41,7 @@ export class CustomerSalesReportPageItem
   balanceAmount?: number;
 }
 
-export interface CustomerPaymentsReportPageItem {
+export type CustomerPaymentsReportPageItem = {
   paidOn?: Date;
   invoiceNumber?: string;
   branchName?: string;
@@ -53,7 +52,7 @@ export interface CustomerPaymentsReportPageItem {
   balanceAmount?: number;
 }
 
-export interface CustomerOrderDeliveryReportPageItem {
+export type CustomerOrderDeliveryReportPageItem = {
   id?: string;
   shippedOn?: Date;
   branchName?: string;

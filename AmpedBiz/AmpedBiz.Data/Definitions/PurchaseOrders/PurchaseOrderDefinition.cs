@@ -48,6 +48,9 @@ namespace AmpedBiz.Data.Definitions.PurchaseOrders
 				Component(x => x.Paid,
 					MoneyDefinition.Mapping.Map("Paid_", nameof(PurchaseOrder)));
 
+				Component(x => x.Balance,
+					MoneyDefinition.Mapping.Map("Balance_", nameof(PurchaseOrder)));
+
 				Map(x => x.Status);
 
 				Map(x => x.ExpectedOn);
@@ -152,6 +155,9 @@ namespace AmpedBiz.Data.Definitions.PurchaseOrders
 					.IsValid();
 
 				Define(x => x.Paid)
+					.IsValid();
+
+				Define(x => x.Balance)
 					.IsValid();
 
 				Define(x => x.Status);

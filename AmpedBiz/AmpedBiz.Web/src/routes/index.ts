@@ -1,6 +1,5 @@
+import { PLATFORM } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router'
-import { AuthSettings } from '../services/auth-service';
-import { role } from '../common/models/role';
 
 export class Index {
   heading: string = "Routes";
@@ -12,7 +11,7 @@ export class Index {
       {
         route: ['', 'route-page'],
         name: 'route-page',
-        moduleId: './route-page',
+        moduleId: PLATFORM.moduleName('./route-page'),
         nav: true,
         title: 'Routes',
       },

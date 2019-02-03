@@ -1,3 +1,4 @@
+import { PLATFORM } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router';
 import { PurchaseOrderStatus } from '../common/models/purchase-order';
 import { AuthSettings } from '../services/auth-service';
@@ -13,7 +14,7 @@ export class Index {
       {
         route: ['', 'created-page'],
         name: 'created-page',
-        moduleId: './purchase-order-page',
+        moduleId: PLATFORM.moduleName('./purchase-order-page'),
         nav: true,
         title: 'Created',
         settings: {
@@ -26,7 +27,7 @@ export class Index {
       {
         route: ['submitted-page'],
         name: 'submitted-page',
-        moduleId: './purchase-order-page',
+        moduleId: PLATFORM.moduleName('./purchase-order-page'),
         nav: true,
         title: 'Submitted',
         settings: {
@@ -39,7 +40,7 @@ export class Index {
       {
         route: ['approved-page'],
         name: 'approved-page',
-        moduleId: './purchase-order-page',
+        moduleId: PLATFORM.moduleName('./purchase-order-page'),
         nav: true,
         title: 'Approved',
         settings: {
@@ -52,7 +53,7 @@ export class Index {
       {
         route: ['completed-page'],
         name: 'completed-page',
-        moduleId: './purchase-order-page',
+        moduleId: PLATFORM.moduleName('./purchase-order-page'),
         nav: true,
         title: 'Completed',
         settings: {
@@ -65,7 +66,7 @@ export class Index {
       {
         route: ['cancelled-page'],
         name: 'cancelled-page',
-        moduleId: './purchase-order-page',
+        moduleId: PLATFORM.moduleName('./purchase-order-page'),
         nav: true,
         title: 'Cancelled',
         settings: {
@@ -78,7 +79,7 @@ export class Index {
       {
         route: ['purchase-order-create'],
         name: 'purchase-order-create',
-        moduleId: './purchase-order-create',
+        moduleId: PLATFORM.moduleName('./purchase-order-create'),
         nav: false,
         title: 'Create Purchase',
           auth: <AuthSettings>{

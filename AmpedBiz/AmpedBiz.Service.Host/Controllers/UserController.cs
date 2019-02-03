@@ -39,7 +39,7 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("~/user-lookups")]
-        public async Task<GetUserLookup.Response> Process([FromBody]GetUserLookup.Request request)
+        public async Task<GetUserLookup.Response> Process([FromUri]GetUserLookup.Request request)
         {
             return await _mediator.Send(request ?? new GetUserLookup.Request());
         }

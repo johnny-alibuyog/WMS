@@ -1,4 +1,4 @@
-export interface Address {
+export type Address = {
   street?: string;
   barangay?: string;
   city?: string;

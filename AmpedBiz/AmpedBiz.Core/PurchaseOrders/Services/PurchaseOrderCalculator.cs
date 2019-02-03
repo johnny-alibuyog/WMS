@@ -7,37 +7,31 @@ namespace AmpedBiz.Core.PurchaseOrders.Services
 {
     public class PurchaseOrderCalculator
     {
-        public Money Tax(PurchaseOrder target)
-        {
-            return target.Tax;
-        }
+        public Money Tax(PurchaseOrder target) => target.Tax;
 
-        public Money ShippingFee(PurchaseOrder target)
-        {
-            return target.ShippingFee;
-        }
+        public Money ShippingFee(PurchaseOrder target) => target.ShippingFee;
 
-        public Money Discount(PurchaseOrder target)
-        {
-            return null;
-        }
+        public Money Discount(PurchaseOrder target) => null;
 
-        public Money SubTotal(PurchaseOrder target)
-        {
-            return target.Items.Sum(x => x.TotalCost);
-        }
+        public Money SubTotal(PurchaseOrder target) => target.Items.Sum(x => x.TotalCost);
 
-        internal Money Paid(PurchaseOrder target)
-        {
-            return target.Payments.Sum(x => x.Payment);
-        }
+        internal Money Paid(PurchaseOrder target) => target.Payments.Sum(x => x.Payment);
 
-        public Money GrandTotal(PurchaseOrder target)
-        {
-            return target.Tax + target.ShippingFee + target.SubTotal - target.Discount;
-        }
+        public Money GrandTotal(PurchaseOrder target) => this.Tax(target) + this.ShippingFee(target) + this.SubTotal(target) - this.Discount(target);
 
-        public Measure Remaining(Product product, IEnumerable<PurchaseOrderItem> items, IEnumerable<PurchaseOrderReceipt> receipts)
+		public Money Balance(PurchaseOrder target)
+		{
+			var total = this.GrandTotal(target);
+			var paid = this.Paid(target);
+
+			var balance = total - paid;
+			if (balance.Amount < 0)
+				balance.Amount = 0;
+
+			return balance;
+		}
+
+		public Measure Remaining(Product product, IEnumerable<PurchaseOrderItem> items, IEnumerable<PurchaseOrderReceipt> receipts)
         {
             var quantity = items
                .Where(x => x.Product == product)

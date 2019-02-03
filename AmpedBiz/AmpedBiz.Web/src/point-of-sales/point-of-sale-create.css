@@ -1,0 +1,15 @@
+.status-unpaid {
+  color: rgb(95, 38, 38);
+}
+
+.status-partiallypaid {
+  color: rgb(95, 38, 38);
+}
+
+.status-fullypaid {
+  color: rgb(61, 209, 47);
+}
+
+.alert {
+  padding: 8px !important;
+}

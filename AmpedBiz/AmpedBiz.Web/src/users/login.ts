@@ -5,6 +5,8 @@ import { AuthService } from '../services/auth-service';
 import { NotificationService } from '../common/controls/notification-service';
 import { isNullOrWhiteSpace } from '../common/utils/string-helpers';
 
+import 'assets/common/images/logo.png';
+
 @autoinject
 export class Login {
 

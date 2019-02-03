@@ -10,11 +10,11 @@ namespace AmpedBiz.Service.PurchaseOrders
     {
         public class Request : IRequest<Response> { }
 
-        public class Response : List<Dto.PurchaseOrderStatus>
+        public class Response : List<PurchaseOrderStatus>
         {
             public Response() { }
 
-            public Response(IEnumerable<Dto.PurchaseOrderStatus> items) : base(items) { }
+            public Response(IEnumerable<PurchaseOrderStatus> items) : base(items) { }
         }
 
         public class Handler : RequestHandlerBase<Request, Response>

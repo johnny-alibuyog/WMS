@@ -1,5 +1,6 @@
+import { PLATFORM } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router'
-import { AuthSettings, AuthService } from '../services/auth-service';
+import { AuthSettings } from '../services/auth-service';
 import { role } from '../common/models/role';
 
 export class Index {
@@ -12,7 +13,7 @@ export class Index {
       {
         route: ['', 'product-page'],
         name: 'product-page',
-        moduleId: './product-page',
+        moduleId: PLATFORM.moduleName('./product-page'),
         nav: true,
         title: 'Products',
         settings: {
@@ -24,7 +25,7 @@ export class Index {
       {
         route: ['inventory-level-page'],
         name: 'inventory-level-page',
-        moduleId: './inventory-level-page',
+        moduleId: PLATFORM.moduleName('./inventory-level-page'),
         nav: true,
         title: 'Inventory Level',
         settings: {
@@ -36,7 +37,7 @@ export class Index {
       {
         route: ['discontinued-page'],
         name: 'discontinued-page',
-        moduleId: './discontinued-page',
+        moduleId: PLATFORM.moduleName('./discontinued-page'),
         nav: true,
         title: 'Discontinued Products',
         settings: {
@@ -48,7 +49,7 @@ export class Index {
       {
         route: ['product-create'],
         name: 'product-create',
-        moduleId: './product-create',
+        moduleId: PLATFORM.moduleName('./product-create'),
         nav: false,
         title: 'Product',
         settings: {

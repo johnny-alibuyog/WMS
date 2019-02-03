@@ -1,4 +1,6 @@
-﻿using AmpedBiz.Core.PointOfSales;
+﻿using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Common;
+using AmpedBiz.Core.PointOfSales;
 using AmpedBiz.Data.Definitions.Common;
 using FluentNHibernate.Mapping;
 using NHibernate.Validator.Cfg.Loquacious;
@@ -23,15 +25,17 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 
 				References(x => x.PaymentType);
 
-				Map(x => x.TendredOn);
+				Map(x => x.TenderedOn);
 
-				References(x => x.TendredBy);
+				References(x => x.TenderedBy);
 
 				Map(x => x.CreatedOn);
 
 				References(x => x.CreatedBy);
 
 				References(x => x.Pricing);
+
+				Map(x => x.DiscountRate);
 
 				Component(x => x.Discount,
 					MoneyDefinition.Mapping.Map("Discount_", nameof(PointOfSale)));
@@ -42,8 +46,19 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 				Component(x => x.Total,
 					MoneyDefinition.Mapping.Map("Total_", nameof(PointOfSale)));
 
+				Component(x => x.Received,
+					MoneyDefinition.Mapping.Map("Received_", nameof(PointOfSale)));
+
+				Component(x => x.Change,
+					MoneyDefinition.Mapping.Map("Change_", nameof(PointOfSale)));
+
 				Component(x => x.Paid,
 					MoneyDefinition.Mapping.Map("Payment_", nameof(PointOfSale)));
+
+				Component(x => x.Balance,
+					MoneyDefinition.Mapping.Map("Balance_", nameof(PointOfSale)));
+
+				Map(x => x.Status);
 
 				HasMany(x => x.Items)
 					.Cascade.AllDeleteOrphan()
@@ -73,9 +88,7 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 				Define(x => x.Branch)
 					.NotNullable();
 
-				Define(x => x.Customer)
-					.NotNullable()
-					.And.IsValid();
+				Define(x => x.Customer);
 
 				Define(x => x.PaymentType);
 
@@ -83,11 +96,13 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 
 				Define(x => x.CreatedBy);
 
-				Define(x => x.TendredOn);
+				Define(x => x.TenderedOn);
 
-				Define(x => x.TendredBy);
+				Define(x => x.TenderedBy);
 
 				Define(x => x.Pricing);
+
+				Define(x => x.DiscountRate);
 
 				Define(x => x.Discount);
 
@@ -99,7 +114,20 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 					.NotNullable()
 					.And.IsValid();
 
-				Define(x => x.Paid);
+				Define(x => x.Received)
+					.IsValid();
+
+				Define(x => x.Change)
+					.IsValid();
+
+				Define(x => x.Paid)
+					.IsValid();
+
+				Define(x => x.Balance)
+					.IsValid();
+
+				Define(x => x.Status)
+					.NotNullable();
 
 				Define(x => x.Items)
 					.NotNullableAndNotEmpty()
@@ -107,6 +135,31 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 
 				Define(x => x.Payments)
 					.HasValidElements();
+
+				this.ValidateInstance.By((instance, context) =>
+				{
+					var valid = true;
+
+					/* allow debit if customer field is supplied  */
+					if (instance.Customer != null)
+					{
+						return valid;
+					}
+
+					if (instance.Paid < instance.Total)
+					{
+						context.AddInvalid<PointOfSale, Money>(
+							message: 
+                                "Debit is not allowed for non member customers. " + 
+                                "Please select customer otherwise fullfill payment.",//$"Payment amount of {instance.Paid} is less than total amount of {instance.Total}!",
+							property: x => x.Paid
+						);
+						valid = false;
+					}
+	
+					return valid;
+				});
+
 			}
 		}
 	}

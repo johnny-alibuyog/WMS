@@ -1,5 +1,4 @@
 ﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Common;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,7 +24,6 @@ namespace AmpedBiz.Core.PointOfSales.Services
 			foreach (var item in itemsToInsert)
 			{
 				item.PointOfSale = target;
-				item.Balance = target.Total - target.Payments.Sum(x => x.Payment);
 				target.Payments.Add(item);
 			}
 		}

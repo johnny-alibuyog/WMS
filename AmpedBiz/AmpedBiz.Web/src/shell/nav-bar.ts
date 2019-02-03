@@ -1,11 +1,13 @@
 import { autoinject, bindable, bindingMode } from 'aurelia-framework';
 import { Router } from 'aurelia-router';
-import { User } from '../common/models/user';
 import { AuthService } from '../services/auth-service';
+import { role } from 'common/models/role';
 
 @autoinject
 export class NavBar {
   private _auth: AuthService;
+
+  public canAccessSettings: boolean = false;
 
   public user: string;
 
@@ -14,6 +16,7 @@ export class NavBar {
 
   constructor(auth: AuthService) {
     this._auth = auth;
+    this.canAccessSettings = this._auth.isAuthorized([role.admin, role.manager]);
     this.user = this._auth.userFullname;
   }
 

@@ -42,6 +42,16 @@ namespace AmpedBiz.Common.Extentions
             return items;
         }
 
+		public static IEnumerable<T> AddIf<T, TP>(this IEnumerable<T> items, Func<bool> predicate, Func<T> func)
+		{
+			if (predicate.Invoke())
+			{
+				((ICollection<T>)items).Add(func());
+			}
+
+			return items;
+		}
+
         public static void Remove<T>(this IEnumerable<T> items, T value)
         {
             ((ICollection<T>)items).Remove(value);

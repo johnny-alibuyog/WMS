@@ -1,3 +1,3 @@
-export class InvoiceReportSetting{
+export type InvoiceReportSetting = {
   pageItemSize?: number;
 }

@@ -23,16 +23,14 @@
           <div class="form-group">
             <label class="control-label col-sm-4">Initial Level:</label>
             <div class="col-sm-8">
-              <input type="number" class="form-control text-right" placeholder="Enter Initial Level" value.bind="inventory.initialLevelValue | default : unitOfMeasures | numberFormat"
-              />
+              <input type="number" class="form-control text-right" placeholder="Enter Initial Level" numeric-value.bind="inventory.initialLevelValue" />
             </div>
           </div>
 
           <div class="form-group">
             <label class="control-label col-sm-4">Reorder Level:</label>
             <div class="col-sm-8">
-              <input type="number" class="form-control text-right" placeholder="Enter Reorder Level" value.bind="inventory.reorderLevelValue | default : unitOfMeasures | numberFormat"
-              />
+              <input type="number" class="form-control text-right" placeholder="Enter Reorder Level" numeric-value.bind="inventory.reorderLevelValue" />
             </div>
           </div>
 
@@ -44,16 +42,14 @@
           <div class="form-group">
             <label class="control-label col-sm-4">Min Reorder Qty:</label>
             <div class="col-sm-8">
-              <input type="number" class="form-control text-right" placeholder="Enter Minimum Reorder Quantity" value.bind="inventory.minimumReorderQuantityValue | default : unitOfMeasures | numberFormat"
-              />
+              <input type="number" class="form-control text-right" placeholder="Enter Minimum Reorder Quantity" numeric-value.bind="inventory.minimumReorderQuantityValue" />
             </div>
           </div>
 
           <div class="form-group">
             <label class="control-label col-sm-4">Target Level:</label>
             <div class="col-sm-8">
-              <input type="number" class="form-control text-right" placeholder="Enter Target Level" value.bind="inventory.targetLevelValue | default : unitOfMeasures | numberFormat"
-              />
+              <input type="number" class="form-control text-right" placeholder="Enter Target Level" numeric-value.bind="inventory.targetLevelValue" />
             </div>
           </div>
 

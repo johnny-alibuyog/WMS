@@ -11,6 +11,7 @@
             target.Discount = calculator.Discount(target);
             target.Total = calculator.GrandTotal(target);
             target.Paid = calculator.Paid(target);
+			target.Balance = calculator.Balance(target);
             target.Returned = calculator.Returned(target);
         }
     }

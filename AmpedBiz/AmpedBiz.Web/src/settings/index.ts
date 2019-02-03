@@ -1,3 +1,4 @@
+import { PLATFORM } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router'
 import { AuthSettings } from '../services/auth-service';
 import { role } from '../common/models/role';
@@ -12,7 +13,7 @@ export class Index {
       {
         route: ['', 'update-invoice-report-setting'],
         name: 'update-invoice-report-setting',
-        moduleId: './update-invoice-report-setting',
+        moduleId: PLATFORM.moduleName('./update-invoice-report-setting'),
         nav: true,
         title: 'Invoice Report',
         settings: {
@@ -27,7 +28,7 @@ export class Index {
       {
         route: ['update-user-setting'],
         name: 'update-user-setting',
-        moduleId: './update-user-setting',
+        moduleId: PLATFORM.moduleName('./update-user-setting'),
         nav: true,
         title: 'User',
         settings: {

@@ -1,5 +1,6 @@
 <template>
-  
+  <require from="./override.css"></require>
+
   <ux-dialog>
   
     <ux-dialog-header>
@@ -17,7 +18,7 @@
             <div class="form-group">
               <label class="control-label col-sm-4">Username:</label>
               <div class="col-sm-8">
-                <input type="text" class="form-control" placeholder="Enter Username" value.bind="user.username" disabled.bind="isEdit" />
+                <input type="text" class="form-control" placeholder="Enter Username" value.bind="user.username" autocomplete="false" focus.bind="focus" auto-focus />
               </div>
             </div>
 
@@ -25,7 +26,8 @@
             <div class="form-group">
               <label class="control-label col-sm-4">password:</label>
               <div class="col-sm-8">
-                <input type="password" class="form-control" placeholder="Enter Password" value.bind="user.password" />
+                <input class="password-autocomplete-disabler" type="text" style="display:none;">
+                <input id="password" type="text" class="form-control" placeholder="Enter Password" value.bind="user.password" autocomplete="false" />
               </div>
             </div>
 
@@ -37,11 +39,12 @@
     </ux-dialog-body>
 
     <ux-dialog-footer>
-      <button type="button" class="btn btn-primary" click.trigger="override()" attach-focus="true">
+      <button type="submit"  class="btn btn-primary" click.trigger="override()" attach-focus="true">
         <i class="fa fa-check-circle"></i> Override
       </button>
       <button type="button" class="btn btn-danger" click.trigger="cancel()">
-        <i class="fa fa-times-circle"></i> Cancel</button>
+        <i class="fa fa-trash-circle"></i> Cancel
+      </button>
     </ux-dialog-footer>
   
   </ux-dialog>

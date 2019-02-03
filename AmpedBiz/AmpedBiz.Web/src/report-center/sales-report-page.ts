@@ -52,7 +52,7 @@ export class SalesReportPage {
           return self.filter['date'];
         }
       };
-      let data = await this._api.orders.getSalesReportPage({
+      let data = await this._api.products.getSalesReportPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>{
@@ -74,7 +74,7 @@ export class SalesReportPage {
 
   private async getPage(): Promise<void> {
     try {
-      let response = await this._api.orders.getSalesReportPage({
+      let response = await this._api.products.getSalesReportPage({
         filter: this.filter,
         sorter: this.sorter,
         pager: <PagerRequest>this.pager

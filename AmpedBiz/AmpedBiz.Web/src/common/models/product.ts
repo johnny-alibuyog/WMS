@@ -3,7 +3,7 @@ import { Lookup } from "../custom_types/lookup";
 import { Measure } from "./measure";
 import { UnitOfMeasure } from "./unit-of-measure";
 
-export interface Product {
+export type Product = {
   id?: string;
   code?: string;
   name?: string
@@ -16,7 +16,7 @@ export interface Product {
   unitOfMeasures?: ProductUnitOfMeasure[];
 }
 
-export interface ProductUnitOfMeasure {
+export type ProductUnitOfMeasure = {
   id?: string;
   productId?: string;
   size?: string;
@@ -28,13 +28,13 @@ export interface ProductUnitOfMeasure {
   prices?: ProductUnitOfMeasurePrice[];
 }
 
-export interface ProductUnitOfMeasurePrice {
+export type ProductUnitOfMeasurePrice = {
   id?: string;
   pricing?: Lookup<string>;
   priceAmount?: number;
 }
 
-export interface ProductPageItem {
+export type ProductPageItem = {
   id?: string;
   code?: string;
   name?: string
@@ -48,7 +48,7 @@ export interface ProductPageItem {
   discontinued?: boolean;
 }
 
-export interface DiscontinuedPageItem {
+export type DiscontinuedPageItem = {
   id?: string;
   code?: string;
   name?: string
@@ -58,7 +58,7 @@ export interface DiscontinuedPageItem {
   image?: string;
 }
 
-export interface ProductInventory {
+export type ProductInventory = {
   id?: string;
   inventoryId?: string;
   code?: string;
@@ -66,7 +66,7 @@ export interface ProductInventory {
   unitOfMeasures?: ProductInventoryUnitOfMeasure[];
 }
 
-export interface ProductInventoryUnitOfMeasure {
+export type ProductInventoryUnitOfMeasure = {
   unitOfMeasure?: UnitOfMeasure;
   isStandard?: boolean;
   isDefault?: boolean;
@@ -78,12 +78,12 @@ export interface ProductInventoryUnitOfMeasure {
   prices?: ProductInventoryUnitOfMeasurePrice[];
 }
 
-export interface ProductInventoryUnitOfMeasurePrice {
+export type ProductInventoryUnitOfMeasurePrice = {
   pricing?: Lookup<string>;
   priceAmount?: number;
 }
 
-export interface InventoryLevelPageItem {
+export type InventoryLevelPageItem = {
   id?: string;
   code?: string;
   name?: string;
@@ -98,7 +98,7 @@ export interface InventoryLevelPageItem {
   belowTargetLevelValue?: number;
 }
 
-export class ProductReturnPageItem {
+export type ProductReturnPageItem = {
   id?: string;
   reasonName?: string;
   returnedOn?: Date;
@@ -107,7 +107,7 @@ export class ProductReturnPageItem {
   quantityValue?: number;
 }
 
-export class ProductOrderReturnPageItem {
+export type ProductOrderReturnPageItem = {
   id?: string;
   reasonName?: string;
   returnedOn?: Date;
@@ -116,7 +116,7 @@ export class ProductOrderReturnPageItem {
   quantity?: Measure;
 }
 
-export interface ProductPurchasePageItem {
+export type ProductPurchasePageItem = {
   id?: string;
   purchaseOrderNumber?: string;
   createdOn?: Date;
@@ -127,7 +127,7 @@ export interface ProductPurchasePageItem {
   receivedValue?: number;
 }
 
-export interface ProductOrderPageItem {
+export type ProductOrderPageItem = {
   id?: string;
   orderNumber?: string;
   createdOn?: Date;
@@ -136,7 +136,7 @@ export interface ProductOrderPageItem {
   quantity?: Measure;
 }
 
-export interface NeedsReorderingPageItem {
+export type NeedsReorderingPageItem = {
   id?: string;
   productCode?: string;
   productName?: string;
@@ -152,13 +152,13 @@ export interface NeedsReorderingPageItem {
   reorderQuantity?: number;
 }
 
-export interface ForPurchasing {
+export type ForPurchasing = {
   supplierId?: string;
   selectedProductIds?: string[];
   purchaseAllBelowTarget?: boolean;
 }
 
-export class ProductReportPageItem {
+export type ProductReportPageItem = {
   id?: string;
   productCode?: string;
   productName?: string;
@@ -174,7 +174,7 @@ export class ProductReportPageItem {
   totalRetailPriceAmount?: number;
 }
 
-export class ProductsDeliveredReportPageItem {
+export type ProductsDeliveredReportPageItem = {
   shippedOn?: Date;
   branchName?: string;
   supplierName?: string;
@@ -188,7 +188,7 @@ export class ProductsDeliveredReportPageItem {
   totalPriceAmount?: number;
 }
 
-export class ProductListingReportPageItem {
+export type ProductListingReportPageItem = {
   branchName?: string;
   supplierName?: string;
   categoryName?: string;
@@ -215,6 +215,10 @@ export class ProductInventoryFacade {
 
   public get default(): ProductInventoryUnitOfMeasure {
     return this._inventory.unitOfMeasures.find(x => x.isDefault);
+  }
+
+  public current(unitOfMeasure: UnitOfMeasure): ProductInventoryUnitOfMeasure{
+    return this._inventory.unitOfMeasures.find(x => x.unitOfMeasure.id === unitOfMeasure.id);
   }
 
   public getProduct(): Lookup<string> {

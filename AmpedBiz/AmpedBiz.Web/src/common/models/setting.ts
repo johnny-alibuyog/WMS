@@ -1,8 +1,8 @@
-export interface UserSetting {
+export type UserSetting = {
   defaultPassword?: string;
 }
 
-export interface ModulesAvailedSettings {
+export type ModulesAvailedSettings = {
   orders: boolean;
   pointOfSales: boolean;
   purchaseOrders: boolean;

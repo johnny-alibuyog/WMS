@@ -64,7 +64,9 @@ namespace AmpedBiz.Core.PurchaseOrders
 
         public virtual Money Paid { get; internal protected set; }
 
-        public virtual PurchaseOrderStatus Status { get; internal protected set; } = PurchaseOrderStatus.Created;
+		public virtual Money Balance { get; internal protected set; }
+
+		public virtual PurchaseOrderStatus Status { get; internal protected set; } = PurchaseOrderStatus.Created;
 
         public virtual DateTime? ExpectedOn { get; internal protected set; }
 

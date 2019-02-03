@@ -50,18 +50,10 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
         private IReadOnlyCollection<ProductCategory> GetProductCategoryFromProductFile(IContext context)
         {
-            var categories = (List<ProductCategory>)null;
-
-            var filename = Path.Combine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath, context.TenantId, @"products.xlsx");
-
-            if (File.Exists(filename))
-            {
-                categories = new ExcelQueryFactory(filename)
-                    .Worksheet()
-                    .ExtractRawProducts()
-                    .ExtractProductCategories()
-                    .ToList();
-            }
+            var categories = context
+                .ExtractRawProducts()
+                .ExtractProductCategories()
+                .ToList();
 
             return categories;
         }

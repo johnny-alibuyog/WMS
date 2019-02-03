@@ -6,6 +6,7 @@ import { Lookup } from '../common/custom_types/lookup';
 import { NotificationService } from '../common/controls/notification-service';
 import { Tenant } from "../common/models/tenant";
 import { User } from '../common/models/user';
+import * as Enumerable from 'linq';
 
 export interface AuthSettings {
   authorize?: boolean;
@@ -136,6 +137,33 @@ export class AuthService {
     }
 
     return false;
+  }
+
+  public matchRoles(params: Role[]): boolean {
+    if (!this.isAuthenticated()) {
+      return false;
+    }
+
+    if (params == null || params == undefined) {
+      throw new Error("Parameter roles should not be null.");
+    }
+
+    if (params.length !== this.user.roles.length) {
+      return false;
+    }
+
+    for (let index = 0; index < params.length; index++) {
+      const element = params[index];
+      const exist = Enumerable
+        .from(this.user.roles)
+        .any(x => x.id === element.id);
+
+      if (!exist) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   public async login(user: User): Promise<void> {

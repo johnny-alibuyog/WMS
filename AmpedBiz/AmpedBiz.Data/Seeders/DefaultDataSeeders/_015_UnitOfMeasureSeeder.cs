@@ -2,6 +2,7 @@
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Products;
 using AmpedBiz.Data.Context;
+using Humanizer;
 using LinqToExcel;
 using NHibernate;
 using NHibernate.Linq;
@@ -34,7 +35,9 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 .Concat(
                     this.GetUOMsFromProductList(context)
                 )
-                .Distinct();
+                .Distinct()
+				.ToList()
+				.AsReadOnly();
 
             if (items.IsNullOrEmpty())
                 return;
@@ -42,18 +45,19 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             using (var session = _sessionFactory.RetrieveSharedSession(context))
             using (var transaction = session.BeginTransaction())
             {
-                var entities = session.Query<UnitOfMeasure>().Cacheable().ToList();
+				var entities = session.Query<UnitOfMeasure>().Cacheable().ToList();
 
-                foreach (var item in items)
+				foreach (var item in items)
                 {
-                    if (!entities.Contains(item))
-                    {
-                        item.EnsureValidity();
-                        session.Save(item);
-                    }
-                }
+					if (!entities.Contains(item))
+					{
+						item.EnsureValidity();
+						session.Save(item);
+					}
+				}
 
-                transaction.Commit();
+				transaction.Commit();
+
                 _sessionFactory.ReleaseSharedSession();
             }
         }
@@ -66,13 +70,25 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
             if (File.Exists(filename))
             {
-                uoms = new ExcelQueryFactory(filename)
+                var raw = new ExcelQueryFactory(filename)
                     .Worksheet()
-                    .Select(x => x["UOM"])
-                    .Where(x => x != null)
-                    .Select(x => new UnitOfMeasure(x, x))
+                    .Select(x => new
+                    {
+                        Id = x["ID"],
+                        Name = x["Name"]
+                    })
                     .ToList();
 
+                uoms = raw
+                    .Where(x =>
+                        !x.Id.Cast<string>().IsNullOrWhiteSpace() ||
+                        !x.Name.Cast<string>().IsNullOrWhiteSpace()
+                    )
+                    .Select(x => new UnitOfMeasure(
+                        x.Id.ToString().ToLowerInvariant(), 
+                        x.Name.ToString().Titleize()
+                    ))
+                    .ToList();
             }
 
             return uoms;
@@ -80,18 +96,9 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
         public IReadOnlyCollection<UnitOfMeasure> GetUOMsFromProductList(IContext context)
         {
-            var uoms = new List<UnitOfMeasure>();
-
-            var filename = Path.Combine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath, context.TenantId, @"products.xlsx");
-
-            if (File.Exists(filename))
-            {
-                uoms = new ExcelQueryFactory(filename)
-                    .Worksheet()
-                    .ExtractRawProducts()
-                    .ExtractUnitOfMeasures()
-                    .ToList();
-            }
+            var uoms = context
+                .ExtractRawProducts()
+                .ExtractUnitOfMeasures();
 
             return uoms;
         }

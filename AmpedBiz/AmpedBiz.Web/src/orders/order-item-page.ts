@@ -123,6 +123,8 @@ export class OrderItemPage {
     var item = this.selectedItem;
     let inventory = await this.getProductInventory(item.product);
     var facade = new ProductInventoryFacade(inventory);
+    let current = facade.current(item.quantity.unit);
+    item.standard = current.standard;
     item.unitPriceAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
     this.compute(item);
   }

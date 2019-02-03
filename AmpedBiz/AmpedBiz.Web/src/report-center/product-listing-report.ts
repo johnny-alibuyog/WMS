@@ -1,7 +1,7 @@
 import { autoinject } from 'aurelia-framework';
 import { formatNumber, emptyIfNull } from '../services/formaters';
 import { Report, Content } from './report';
-import * as linq from 'linq';
+import * as Enumerable from 'linq';
 
 export interface ProductListingReportModel {
   branchName?: string;
@@ -68,10 +68,10 @@ export class ProductListingReport extends Report<ProductListingReportModel> {
     }
 
     let total = {
-      basePriceAmount: linq.from(data.items).select(x => x.onHandValue * x.basePriceAmount).sum(),
-      wholesalePriceAmount: linq.from(data.items).select(x => x.onHandValue * x.wholesalePriceAmount).sum(),
-      retailPriceAmount: linq.from(data.items).select(x => x.onHandValue * x.wholesalePriceAmount).sum(),
-      suggestedRetailPriceAmount: linq.from(data.items).select(x => x.onHandValue * x.suggestedRetailPriceAmount).sum(),
+      basePriceAmount: Enumerable.from(data.items).select(x => x.onHandValue * x.basePriceAmount).sum(),
+      wholesalePriceAmount: Enumerable.from(data.items).select(x => x.onHandValue * x.wholesalePriceAmount).sum(),
+      retailPriceAmount: Enumerable.from(data.items).select(x => x.onHandValue * x.wholesalePriceAmount).sum(),
+      suggestedRetailPriceAmount: Enumerable.from(data.items).select(x => x.onHandValue * x.suggestedRetailPriceAmount).sum(),
     };
 
     // total

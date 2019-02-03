@@ -79,7 +79,7 @@ namespace AmpedBiz.Service.Dto
 
         public decimal? PaidAmount { get; set; }
 
-        public decimal? BalanceAmount => (this.TotalAmount ?? 0M) - (this.PaidAmount ?? 0M);
+        public decimal? BalanceAmount { get; set; }
     }
 
     public class CustomerPaymentReportPageItem

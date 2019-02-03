@@ -1,21 +1,21 @@
-import { ValidationRenderer, RenderInstruction, ValidationError } from 'aurelia-validation';
+import { ValidationRenderer, RenderInstruction, ValidateResult } from 'aurelia-validation';
 
 export class BootstrapFormRenderer {
   render(instruction: RenderInstruction) {
-    for (let { error, elements } of instruction.unrender) {
+    for (let { result, elements } of instruction.unrender) {
       for (let element of elements) {
-        this.remove(element, error);
+        this.remove(element, result);
       }
     }
 
-    for (let { error, elements } of instruction.render) {
+    for (let { result, elements } of instruction.render) {
       for (let element of elements) {
-        this.add(element, error);
+        this.add(element, result);
       }
     }
   }
 
-  private add(element: Element, error: ValidationError) {
+  private add(element: Element, error: ValidateResult) {
     const formGroup = element.closest('.form-group');
     if (!formGroup) {
       return;
@@ -32,7 +32,7 @@ export class BootstrapFormRenderer {
     formGroup.appendChild(message);
   }
 
-  private remove(element: Element, error: ValidationError) {
+  private remove(element: Element, error: ValidateResult) {
     const formGroup = element.closest('.form-group');
     if (!formGroup) {
       return;

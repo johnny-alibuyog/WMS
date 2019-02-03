@@ -3,6 +3,7 @@ import { PageConfig } from './common/controls/pager';
 
 let apiHosts = {
   'nicont130server': 'http://nicont130server/ampbiz/api/',
+  'DBDC-SERVER': 'http://DBDC-SERVER/ampbiz/api/',
   'server-pc': 'http://server-pc/ampbiz/api/',
   'localhost': 'http://localhost:49561',
   'ampbiz': 'http://ampbiz/api',

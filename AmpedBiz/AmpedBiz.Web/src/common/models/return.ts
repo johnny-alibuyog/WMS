@@ -1,5 +1,3 @@
-import { Address } from './Address';
-import { Dictionary } from '../custom_types/dictionary';
 import { Lookup } from '../custom_types/lookup';
 import { Measure } from "./measure";
 import { UnitOfMeasure } from "./unit-of-measure";
@@ -12,7 +10,7 @@ export const returnEvents = {
   },
 }
 
-export interface Return {
+export type Return = {
   id?: string;
   branch?: Lookup<string>;
   customer?: Lookup<string>;
@@ -23,7 +21,7 @@ export interface Return {
   items?: ReturnItem[];
 }
 
-export interface ReturnPageItem {
+export type ReturnPageItem = {
   id?: string;
   branchName?: string;
   customerName?: string;
@@ -33,7 +31,7 @@ export interface ReturnPageItem {
   returnedAmount?: number;
 }
 
-export interface ReturnItem {
+export type ReturnItem = {
   id?: string;
   returnId?: string;
   product?: Lookup<string>;
@@ -46,7 +44,7 @@ export interface ReturnItem {
   returnedAmount?: number;
 }
 
-export interface ReturnItemPageItem {
+export type ReturnItemPageItem = {
   id?: string;
   returnId?: string;
   productName?: string;
@@ -57,7 +55,7 @@ export interface ReturnItemPageItem {
   returnedAmount?: string;
 }
 
-export interface ReturnsDetailsReportPageItem {
+export type ReturnsDetailsReportPageItem = {
   id?: string;
   branchName?: string;
   customerName?: string;
@@ -70,14 +68,14 @@ export interface ReturnsDetailsReportPageItem {
   returnedAmount?: number;
 }
 
-export interface ReturnsByCustomerPageItem {
+export type ReturnsByCustomerPageItem = {
   id?: string;
   branchName?: string;
   customerName?: string;
   returnedAmount?: number;
 }
 
-export interface ReturnsByCustomerDetailsPageItem {
+export type ReturnsByCustomerDetailsPageItem = {
   id?: string;
   branchName?: string;
   customerName?: string;
@@ -85,7 +83,7 @@ export interface ReturnsByCustomerDetailsPageItem {
   returnedAmount?: number;
 }
 
-export interface ReturnsByProductPageItem {
+export type ReturnsByProductPageItem = {
   id?: string;
   branchName?: string;
   productName?: string;
@@ -95,7 +93,7 @@ export interface ReturnsByProductPageItem {
   returnedAmount?: number;
 }
 
-export interface ReturnsByProductDetailsPageItem {
+export type ReturnsByProductDetailsPageItem = {
   id?: string;
   branchName?: string;
   productName?: string;
@@ -106,14 +104,14 @@ export interface ReturnsByProductDetailsPageItem {
   returnedAmount?: number;
 }
 
-export interface ReturnsByReasonPageItem {
+export type ReturnsByReasonPageItem = {
   id?: string;
   branchName?: string;
   reasonName?: string;
   returnedAmount?: number;
 }
 
-export interface ReturnsByReasonDetailsPageItem {
+export type ReturnsByReasonDetailsPageItem = {
   id?: string;
   branchName?: string;
   reasonName?: string;

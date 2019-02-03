@@ -1,4 +1,4 @@
-import 'fetch';
+//import 'fetch';
 
 import { HttpClient, json } from 'aurelia-fetch-client';
 

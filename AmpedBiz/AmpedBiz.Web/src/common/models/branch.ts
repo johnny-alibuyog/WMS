@@ -2,7 +2,7 @@ import { Address } from './address';
 import { Contact } from './contact';
 import { Tenant } from "./tenant";
 
-export interface Branch {
+export type Branch = {
   id?: string;
   name?: string;
   tenant?: Tenant;
@@ -12,7 +12,7 @@ export interface Branch {
   address?: Address;
 }
 
-export interface BranchPageItem {
+export type BranchPageItem = {
   id?: string;
   name?: string;
   description?: string;

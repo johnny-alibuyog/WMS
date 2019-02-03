@@ -1,4 +1,5 @@
-﻿using AmpedBiz.Core.Orders;
+﻿using AmpedBiz.Core.Common;
+using AmpedBiz.Core.Orders;
 using AmpedBiz.Data.Definitions.Common;
 using FluentNHibernate.Mapping;
 using NHibernate.Validator.Cfg.Loquacious;
@@ -49,7 +50,23 @@ namespace AmpedBiz.Data.Definitions
 
 				Define(x => x.Payment)
 					.NotNullable();
-			}
+
+                this.ValidateInstance.By((instance, context) =>
+                {
+                    var valid = true;
+
+                    if (instance.Payment.Amount <= 0)
+                    {
+                        context.AddInvalid<OrderPayment, Money>(
+                            message: "Payment sould contain amount.",
+                            property: x => x.Payment
+                        );
+                        valid = false;
+                    }
+
+                    return valid;
+                });
+            }
 		}
 	}
 }

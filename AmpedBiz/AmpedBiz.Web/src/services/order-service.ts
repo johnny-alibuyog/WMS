@@ -44,11 +44,6 @@ export class OrderService extends ServiceBase<Order> {
     return this._httpClient.post(url, page);
   }
 
-  public getSalesReportPage(page: PageRequest): Promise<PagerResponse<SalesReportPageItem>> {
-    var url = this._resouce + '/sales-report/page';
-    return this._httpClient.post(url, page);
-  }
-
   public getActiveOrderPage(page: PageRequest): Promise<PagerResponse<OrderPageItem>> {
     var url = this._resouce + '/active-orders/page';
     return this._httpClient.post(url, page);

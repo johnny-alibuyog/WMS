@@ -50,6 +50,9 @@ namespace AmpedBiz.Data.Definitions.Orders
 				Component(x => x.Paid,
 					MoneyDefinition.Mapping.Map("Payment_", nameof(Order)));
 
+				Component(x => x.Balance,
+					MoneyDefinition.Mapping.Map("Balance_", nameof(Order)));
+
 				Map(x => x.Status);
 
 				Map(x => x.DueOn);
@@ -174,6 +177,8 @@ namespace AmpedBiz.Data.Definitions.Orders
 					.And.IsValid();
 
 				Define(x => x.Paid);
+
+				Define(x => x.Balance);
 
 				Define(x => x.Status)
 					.NotNullable();

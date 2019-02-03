@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Core.Products.Services;
 using AmpedBiz.Service.Customers;
 using AmpedBiz.Service.Orders;
+using AmpedBiz.Service.PointOfSales;
 using AmpedBiz.Service.Products;
 using AmpedBiz.Service.PurchaseOrders;
 using AmpedBiz.Service.Returns;
@@ -19,6 +20,7 @@ namespace AmpedBiz.Service.Dto.Mappers
 			RegisterProductsMap();
 			RegisterUnitOfMeasuresMap();
 			RegisterPurchaseOrderMap();
+			RegisterPointOfSaleMap();
 			RegisterOrderMap();
 			RegisterReturnMap();
 		}
@@ -94,6 +96,19 @@ namespace AmpedBiz.Service.Dto.Mappers
 			ExpressMapper.Mapper.Register<Core.PurchaseOrders.PurchaseOrderPayment, Dto.PurchaseOrderPayment>().Flatten();
 
 			ExpressMapper.Mapper.Register<Core.PurchaseOrders.PurchaseOrderReceipt, Dto.PurchaseOrderReceipt>().Flatten();
+		}
+
+		private void RegisterPointOfSaleMap()
+		{
+			ExpressMapper.Mapper.Register<Core.PointOfSales.PointOfSale, GetPointOfSale.Response>().Flatten();
+
+			ExpressMapper.Mapper.Register<Core.PointOfSales.PointOfSale, SavePointOfSale.Response>().Flatten();
+
+			ExpressMapper.Mapper.Register<Core.PointOfSales.PointOfSale, Dto.PointOfSale>().Flatten();
+
+			ExpressMapper.Mapper.Register<Core.PointOfSales.PointOfSaleItem, Dto.PointOfSaleItem>().Flatten();
+
+			ExpressMapper.Mapper.Register<Core.PointOfSales.PointOfSalePayment, Dto.PointOfSalePayment>().Flatten();
 		}
 
 		private void RegisterOrderMap()

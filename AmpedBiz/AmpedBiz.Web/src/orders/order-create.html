@@ -20,23 +20,23 @@
 
             <!-- transition buttons -->
             <button type="button" class="btn btn-default" if.bind="order.stage.allowedModifications | canModify" disabled.bind="!canSave" click.trigger="save()">
-              <i class="fa fa-check"></i> Save
+              <i class="fa fa-save"></i> Save
             </button>
 
             <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'created'" disabled.bind="!canRecreate" click.trigger="recreate()">
-              <i class="fa fa-check"></i> Recreate
+              <i class="fa fa-cart-plus"></i> Recreate
             </button>
 
             <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'staged'" disabled.bind="!canStage" click.trigger="stage()">
-              <i class="fa fa-check"></i> Stage
+              <i class="fa fa-ticket-alt"></i> Stage
             </button>
 
             <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'approved'" disabled.bind="!canApprove" click.trigger="approve()">
-              <i class="fa fa-check"></i> Approve
+              <i class="fa fa-thumbs-up"></i> Approve
             </button>
 
             <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'invoiced'" disabled.bind="!canInvoice" click.trigger="invoice()">
-              <i class="fa fa-check"></i> Invoice
+              <i class="fa fa-file-invoice-dollar"></i> Invoice
             </button>
 
             <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'shipped'" disabled.bind="!canShip" click.trigger="ship()">
@@ -44,19 +44,19 @@
             </button>
 
             <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'completed'" disabled.bind="!canComplete" click.trigger="complete()">
-              <i class="fa fa-check"></i> Complete
+              <i class="fa fa-list-alt"></i> Complete
             </button>
 
             <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'cancelled'" disabled.bind="!canCancel" click.trigger="cancel()">
-              <i class="fa fa-check"></i> Cancel
+              <i class="fa fa-minus-circle"></i> Cancel
             </button>
 
             <button type="button" class="btn btn-default" if.bind="isOrderInvoiced" click.trigger="showInvoice()">
-              <i class="fa fa-check"></i> View Invoice
+              <i class="fa fa-file-invoice"></i> View Invoice
             </button>
 
             <button type="button" class="btn btn-default" click.trigger="back()">
-              <i class="fa fa-times"></i> Back
+              <i class="fa fa-chevron-circle-left"></i> Back
             </button>
 
           </h4>

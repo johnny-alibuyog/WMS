@@ -45,7 +45,7 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("~/branch-lookups")]
-        public async Task<GetBranchLookup.Response> Process([FromBody]GetBranchLookup.Request request)
+        public async Task<GetBranchLookup.Response> Process([FromUri]GetBranchLookup.Request request)
         {
             return await _mediator.Send(request ?? new GetBranchLookup.Request());
         }

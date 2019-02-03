@@ -7,7 +7,6 @@ import { Lookup } from '../common/custom_types/lookup';
 import { Measure } from "../common/models/measure";
 import { NotificationService } from '../common/controls/notification-service';
 import { ServiceApi } from '../services/service-api';
-import * as Enumerable from 'linq';
 
 @autoinject
 @customElement("purchase-order-receipt-page")

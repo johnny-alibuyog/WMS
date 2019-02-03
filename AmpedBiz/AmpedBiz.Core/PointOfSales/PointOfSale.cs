@@ -7,6 +7,13 @@ using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.PointOfSales
 {
+	public enum PointOfSaleStatus
+	{
+		UnPaid = 1,
+		PartiallyPaid = 2,
+		FullyPaid = 3,
+	}
+
 	public class PointOfSale : Entity<Guid, PointOfSale>, IAccept<IVisitor<PointOfSale>>, IAuditable
 	{
 		public virtual string InvoiceNumber { get; protected internal set; }
@@ -19,9 +26,11 @@ namespace AmpedBiz.Core.PointOfSales
 
 		public virtual PaymentType PaymentType { get; protected internal set; }
 
-		public virtual User TendredBy { get; protected internal set; }
+		public virtual User TenderedBy { get; protected internal set; }
 
-		public virtual DateTime TendredOn { get; protected internal set; }
+		public virtual DateTime TenderedOn { get; protected internal set; }
+
+		public virtual decimal DiscountRate { get; protected internal set; }
 
 		public virtual Money Discount { get; internal protected set; }
 
@@ -29,7 +38,13 @@ namespace AmpedBiz.Core.PointOfSales
 
 		public virtual Money Total { get; internal protected set; }
 
+		public virtual Money Received { get; internal protected set; }
+
+		public virtual Money Change { get; internal protected set; }
+
 		public virtual Money Paid { get; internal protected set; }
+
+		public virtual Money Balance { get; internal protected set; }
 
 		public virtual DateTime? CreatedOn { get; set; }
 
@@ -38,6 +53,8 @@ namespace AmpedBiz.Core.PointOfSales
 		public virtual User CreatedBy { get; set; }
 
 		public virtual User ModifiedBy { get; set; }
+
+		public virtual PointOfSaleStatus Status { get; internal protected set; } = PointOfSaleStatus.UnPaid;
 
 		public virtual ICollection<PointOfSaleItem> Items { get; protected internal set; } = new Collection<PointOfSaleItem>();
 

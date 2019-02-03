@@ -1,4 +1,4 @@
-export interface Contact {
+export type Contact = {
   email?: string;
   landline?: string;
   fax?: string;

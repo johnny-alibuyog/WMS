@@ -1,10 +1,17 @@
 import { AuthStorage } from "../services/auth-service";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-declare var pdfMake: any;
-declare var vfsfont: any;
+// declare var pdfMake: any;
+// declare var vfsfont: any;
 
 declare type Option = {
-  pageOrientation: 'portrait' | 'landscape'
+  pageOrientation?: 'portrait' | 'landscape',
+  pageSize?: {
+    width?: number | 'auto',
+    height?: number | 'auto'
+  }
 }
 
 export abstract class Report<T> {
@@ -20,13 +27,14 @@ export abstract class Report<T> {
   };
 
   constructor() {
+
     this.viewer = new ReportViewer();
     this.builder = new ReportBuilder<T>();
     this.builder.buildBody = (data: T) => this.buildBody(data);
   }
 
   public async show(data: T): Promise<void> {
-    var document = await this.builder.buildPdf(data, this.option);
+    let document = await this.builder.buildPdf(data, this.option);
     this.viewer.show(document);
   }
 }
@@ -35,8 +43,14 @@ export class ReportViewer {
   public show(data: any) {
 
     let win = window.open('', '_blank');
+    let meta = win.document.createElement('meta');
+    meta['http-equiv'] = 'Content-Security-Policy';
+    meta['content'] = 'frame-src *';
+    let head = win.document.getElementsByTagName('head');
+    head.item(0).appendChild(meta);
 
     try {
+
       win.document.write(`
         <iframe
           src="${data}"
@@ -53,18 +67,29 @@ export class ReportViewer {
   }
 }
 
+export type ReportHeaderModel= {
+  title: string;
+  address: string;
+  telephoneNumber: string;
+  tinNumber: string;
+}
+
+export function getReportHeaderData() : ReportHeaderModel{
+  let branch = AuthStorage.branch;
+  return {
+    title: branch.description,
+    address: branch && branch.address && `${branch.address.barangay || ''}, ${branch.address.city || ''}, ${branch.address.province || ''}`,
+    telephoneNumber: branch && branch.contact && branch.contact.landline || "",
+    tinNumber: branch && branch.taxpayerIdentificationNumber || ""
+  };
+}
+
 export class ReportBuilder<T> {
 
   public buildBody = (data: T): Promise<Content[] | any[]> => Promise.resolve([]);
 
   protected buildHeader = (): Promise<Content[] | any[]> => {
-    let branch = AuthStorage.branch;
-    let data = {
-      title: branch.description,
-      address: branch && branch.address && `${branch.address.barangay || ''}, ${branch.address.city || ''}, ${branch.address.province || ''}`,
-      telephoneNumber: branch && branch.contact && branch.contact.landline || "",
-      tinNumber: branch && branch.taxpayerIdentificationNumber || ""
-    };
+    let data = getReportHeaderData();
 
     var header = [
       {
@@ -178,15 +203,19 @@ export class ReportBuilder<T> {
       this.buildStyle()
     ]);
 
-    return <DocumentDefinition>{
-      pageOrientation: option.pageOrientation,
-      content: [
-        ...parts[0],  // header
-        ...parts[1],  // body
-      ],
-      footer: parts[2],
-      styles: parts[3]
-    };
+    let document = Object.assign(
+      <DocumentDefinition>{
+        content: [
+          ...parts[0],  // header
+          ...parts[1],  // body
+        ],
+        footer: parts[2],
+        styles: parts[3]
+      },
+      option
+    );
+
+    return document;
   }
 
   public async buildPdf(data: T, option: Option): Promise<any> {
@@ -201,6 +230,7 @@ type Footer = (currentPage: number, pageCount: number) => Content[] | any[];
 
 export interface DocumentDefinition {
   info?: Info;
+  pageSize?: any;
   header?: any;
   content?: Content[] | any[];
   footer?: (currentPage: number, pageCount: number) => Content[] | any[];

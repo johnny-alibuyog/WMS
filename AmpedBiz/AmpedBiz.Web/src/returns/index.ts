@@ -1,6 +1,7 @@
 import { Router, RouterConfiguration } from 'aurelia-router'
 import { AuthSettings } from '../services/auth-service';
 import { role } from '../common/models/role';
+import { PLATFORM } from 'aurelia-framework';
 
 export class Index {
   heading: string = "Returns";
@@ -12,7 +13,7 @@ export class Index {
       {
         route: ['', 'return-page'],
         name: 'return-page',
-        moduleId: './return-page',
+        moduleId: PLATFORM.moduleName('./return-page'),
         nav: true,
         title: 'Returns',
         settings: {
@@ -24,7 +25,7 @@ export class Index {
       {
         route: ['returns-by-customer-page'],
         name: 'returns-by-customer-page',
-        moduleId: './returns-by-customer-page',
+        moduleId: PLATFORM.moduleName('./returns-by-customer-page'),
         nav: true,
         title: 'Returns By Customer',
         settings: {
@@ -36,7 +37,7 @@ export class Index {
       {
         route: ['returns-by-customer-details-page'],
         name: 'returns-by-customer-details-page',
-        moduleId: './returns-by-customer-details-page',
+        moduleId: PLATFORM.moduleName('./returns-by-customer-details-page'),
         nav: false,
         title: 'Returns By Customer Details',
         settings: {
@@ -48,7 +49,7 @@ export class Index {
       {
         route: ['returns-by-product-page'],
         name: 'returns-by-product-page',
-        moduleId: './returns-by-product-page',
+        moduleId: PLATFORM.moduleName('./returns-by-product-page'),
         nav: true,
         title: 'Returns By Product',
         settings: {
@@ -60,7 +61,7 @@ export class Index {
       {
         route: ['returns-by-product-details-page'],
         name: 'returns-by-product-details-page',
-        moduleId: './returns-by-product-details-page',
+        moduleId: PLATFORM.moduleName('./returns-by-product-details-page'),
         nav: false,
         title: 'Returns By Product Details',
         settings: {
@@ -72,7 +73,7 @@ export class Index {
       {
         route: ['returns-by-reason-page'],
         name: 'returns-by-reason-page',
-        moduleId: './returns-by-reason-page',
+        moduleId: PLATFORM.moduleName('./returns-by-reason-page'),
         nav: true,
         title: 'Returns By Reason',
         settings: {
@@ -84,7 +85,7 @@ export class Index {
       {
         route: ['returns-by-reason-details-page'],
         name: 'returns-by-reason-details-page',
-        moduleId: './returns-by-reason-details-page',
+        moduleId: PLATFORM.moduleName('./returns-by-reason-details-page'),
         nav: false,
         title: 'Returns By Reason Details',
         settings: {
@@ -96,7 +97,7 @@ export class Index {
       {
         route: ['return-create'],
         name: 'return-create',
-        moduleId: './return-create',
+        moduleId: PLATFORM.moduleName('./return-create'),
         nav: false,
         title: 'Create Return',
         settings: {

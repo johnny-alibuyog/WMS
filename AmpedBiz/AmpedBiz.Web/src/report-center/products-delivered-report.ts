@@ -67,15 +67,12 @@ export class ProductsDeliveredReport extends Report<ProductsDeliveredReportModel
 
     if (data && data.items && data.items.length > 0) {
       // table body
-
       Enumerable
         .from(data.items)
         .orderBy(x => x.productName)
         .groupBy(x => x.productName)
         .forEach(group => {
-
           let details = group.getSource();
-
           // details
           orderTableBody.push(...Enumerable
             .from(details)

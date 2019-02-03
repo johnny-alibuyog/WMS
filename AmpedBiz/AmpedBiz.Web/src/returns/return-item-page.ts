@@ -112,10 +112,13 @@ export class ReturnItemPage {
   }
 
   public async computeUnitPriceAmount(): Promise<void> {
+    let item = this.selectedItem;
     let inventory = await this.getProductInventory(this.selectedItem.product)
     let facade = new ProductInventoryFacade(inventory);
-    this.selectedItem.unitPriceAmount = facade.getPriceAmount(inventory, this.selectedItem.quantity.unit, this.pricing);
-    this.compute(this.selectedItem);
+    let current = facade.current(item.quantity.unit);
+    item.standard = current.standard;
+    item.unitPriceAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
+    this.compute(item);
   }
 
   public async initializeItem(item: ReturnItem): Promise<void> {

@@ -2,9 +2,8 @@ import { Role } from './role';
 import { Person } from './person';
 import { Branch } from './branch';
 import { Address } from './address';
-import { Expression } from 'aurelia-binding';
 
-export interface User {
+export type User = {
   id?: string;
   username?: string;
   password?: string;
@@ -15,30 +14,30 @@ export interface User {
   roles?: Role[];
 }
 
-export interface UserPageItem {
+export type UserPageItem = {
   id?: string;
   username?: string;
   branchName?: string;
   person?: Person;
 }
 
-export interface UserAddress {
+export type UserAddress = {
   id?: string;
   address: Address;
 }
 
-export interface UserInfo {
+export type UserInfo = {
   id?: string;
   person?: Person;
 }
 
-export interface UserPassword {
+export type UserPassword = {
   id?: string;
   oldPassword?: string;
   newPassword?: string;
   confirmPassword?: string;
 }
 
-export interface UserResetPassword {
+export type UserResetPassword = {
   id?: string;
 }

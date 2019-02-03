@@ -230,7 +230,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     .Fetch(x => x.Paid).Eager
                     .Fetch(x => x.SubTotal).Eager
                     .Fetch(x => x.Total).Eager
-                    .Fetch(x => x.CreatedBy).Eager
+                    .Fetch(x => x.Balance).Eager
+					.Fetch(x => x.CreatedBy).Eager
                     .Fetch(x => x.SubmittedBy).Eager
                     .Fetch(x => x.ApprovedBy).Eager
                     .Fetch(x => x.PaidBy).Eager

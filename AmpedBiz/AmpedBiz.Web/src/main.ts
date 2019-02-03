@@ -1,20 +1,43 @@
-import 'bootstrap';
-import { Aurelia } from 'aurelia-framework';
+//import * as jQuery from 'jquery';
+//import 'bootstrap';
+//import 'font-awesome/css/all.min.css';
+
+import * as $ from 'jquery';
+let winObj: any = <any>window;
+winObj['jQuery'] = $;
+winObj['$'] = $;
+
+import 'whatwg-fetch';
+import 'assets/common/styles/styles.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
+import { Aurelia, PLATFORM } from 'aurelia-framework';
 import { AuthService } from './services/auth-service';
+import environment from 'environment';
+import { DialogConfiguration } from 'aurelia-dialog';
 
 export function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
     .developmentLogging()
-    .plugin('common/global-resources')
-    .plugin('aurelia-validation')
-    .plugin('aurelia-dialog', config => {
+    .plugin(PLATFORM.moduleName('common/global-resources'))
+    .plugin(PLATFORM.moduleName('aurelia-validation'))
+    .plugin(PLATFORM.moduleName('aurelia-dialog'), (config: DialogConfiguration) => {
       config.useDefaults();
       config.settings.lock = true;
       config.settings.centerVerticalOnly = true;
       config.settings.startingZIndex = 5;
-      config.settings.keyboard = true;
+      config.settings.keyboard = true; //['Enter', 'Escape'];
     });
+
+  if (environment.debug) {
+    aurelia.use.developmentLogging();
+  }
+
+  if (environment.testing) {
+    aurelia.use.plugin(PLATFORM.moduleName('aurelia-testing'));
+  }
 
   //.plugin('aurelia-computed', config => {
   //  config.enableLogging = true;
@@ -31,7 +54,7 @@ export function configure(aurelia: Aurelia) {
 
   aurelia.start().then(() => {
     var auth = aurelia.container.get(AuthService);
-    let root = auth.isAuthenticated() ? 'shell/shell' : 'users/login';
+    let root = auth.isAuthenticated() ? PLATFORM.moduleName('shell/shell') : PLATFORM.moduleName('users/login');
     aurelia.setRoot(root);
   });
 }

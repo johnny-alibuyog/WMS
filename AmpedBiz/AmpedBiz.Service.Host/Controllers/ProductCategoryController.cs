@@ -38,7 +38,7 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("~/product-category-lookups")]
-        public async Task<GetProductCategoryLookup.Response> Process([FromBody]GetProductCategoryLookup.Request request)
+        public async Task<GetProductCategoryLookup.Response> Process([FromUri]GetProductCategoryLookup.Request request)
         {
             return await _mediator.Send(request ?? new GetProductCategoryLookup.Request());
         }

@@ -23,10 +23,10 @@ export class CustomerSalesReportPage {
   ) {
     this.filter["customerId"] = null;
     this.filter["branchId"] = null;
-    this.filter["fromDate"] = null;
-    this.filter["toDate"] = null;
+    this.filter["fromDate"] = new Date();
+    this.filter["toDate"] = new Date();
     this.filter.onFilter = () => this.getPage();
-    this.sorter["paidOn"] = SortDirection.Ascending;
+    this.sorter["paidOn"] = SortDirection.Descending;
     this.sorter["branchName"] = SortDirection.None;
     this.sorter["customerName"] = SortDirection.None;
     this.sorter["invoice"] = SortDirection.None;

@@ -4,8 +4,11 @@ using AmpedBiz.Data.Context;
 using AmpedBiz.Data.Definitions.Common;
 using NHibernate;
 using NHibernate.Context;
+using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace AmpedBiz.Data
 {
@@ -72,5 +75,14 @@ namespace AmpedBiz.Data
 
             return source[key];
         }
-    }
+
+		// https://github.com/nhibernate/nhibernate-core/issues/1123
+		public static IFutureValue<int> GroupByCount<TSource, TKey>(this IQueryable<TSource> source, Expression<Func<TSource, TKey>> keySelector)
+		{
+			return source.GroupBy(keySelector)
+				.Select(group => group.Count() / group.Count())
+				.ToFutureValue(group => group.Sum());
+		}
+
+	}
 }

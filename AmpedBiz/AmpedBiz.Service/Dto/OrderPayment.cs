@@ -40,7 +40,7 @@ namespace AmpedBiz.Service.Dto
 
         public virtual decimal TotalAmount { get; set; }
 
-        public virtual decimal BalanceAmount { get { return this.TotalAmount - this.PaidAmount; } }
+        public virtual decimal BalanceAmount { get; set; }
 
         public virtual decimal PaidAmount { get; set; }
 

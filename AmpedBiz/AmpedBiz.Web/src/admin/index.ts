@@ -1,3 +1,4 @@
+import { PLATFORM } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router'
 import { AuthSettings } from '../services/auth-service';
 import { role } from '../common/models/role';
@@ -12,7 +13,7 @@ export class Index {
       {
         route: ['branch-page'],
         name: 'branch-page',
-        moduleId: './branches/branch-page',
+        moduleId: PLATFORM.moduleName('./branches/branch-page'),
         nav: true,
         title: 'Branches',
         settings: {
@@ -26,7 +27,7 @@ export class Index {
       {
         route: ['customer-page'],
         name: 'customer-page',
-        moduleId: './customers/customer-page',
+        moduleId: PLATFORM.moduleName('./customers/customer-page'),
         nav: true,
         title: 'Customers',
         settings: {
@@ -41,7 +42,7 @@ export class Index {
       {
         route: ['customer-create'],
         name: 'customer-create',
-        moduleId: './customers/customer-create',
+        moduleId: PLATFORM.moduleName('./customers/customer-create'),
         nav: false,
         title: 'Create Customer',
         settings: {
@@ -56,7 +57,7 @@ export class Index {
       {
         route: ['payment-type-page'],
         name: 'payment-type-page',
-        moduleId: './payment-types/payment-type-page',
+        moduleId: PLATFORM.moduleName('./payment-types/payment-type-page'),
         nav: true,
         title: 'Payment Types',
         settings: {
@@ -71,7 +72,7 @@ export class Index {
       {
         route: ['product-category-page'],
         name: 'product-category-page',
-        moduleId: './product-categories/product-category-page',
+        moduleId: PLATFORM.moduleName('./product-categories/product-category-page'),
         nav: true,
         title: 'Product Categories',
         settings: {
@@ -86,7 +87,7 @@ export class Index {
       {
         route: ['return-reason-page'],
         name: 'return-reason-page',
-        moduleId: './return-reasons/return-reason-page',
+        moduleId: PLATFORM.moduleName('./return-reasons/return-reason-page'),
         nav: true,
         title: 'Return Reasons',
         settings: {
@@ -101,7 +102,7 @@ export class Index {
       {
         route: ['supplier-page'],
         name: 'supplier-page',
-        moduleId: './suppliers/supplier-page',
+        moduleId: PLATFORM.moduleName('./suppliers/supplier-page'),
         nav: true,
         title: 'Suppliers',
         settings: {
@@ -115,7 +116,7 @@ export class Index {
       },      {
         route: ['unit-of-measure-page'],
         name: 'unit-of-measure-page',
-        moduleId: './unit-of-measures/unit-of-measure-page',
+        moduleId: PLATFORM.moduleName('./unit-of-measures/unit-of-measure-page'),
         nav: true,
         title: 'Unit of Measures',
         settings: {
@@ -130,7 +131,7 @@ export class Index {
       {
         route: ['user-page'],
         name: 'user-page',
-        moduleId: './users/user-page',
+        moduleId: PLATFORM.moduleName('./users/user-page'),
         nav: true,
         title: 'Users',
         settings: {

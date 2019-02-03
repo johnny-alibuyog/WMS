@@ -13,7 +13,7 @@ export enum InventoryAdjustmentType {
   decrease = 2
 }
 
-export interface Inventory {
+export type Inventory = {
   id?: string;
   individualBarcode?: string;
   packagingBarcode?: string;
@@ -45,7 +45,7 @@ export interface Inventory {
   decreaseAdjustmentValue?: number;
 }
 
-export interface InventoryAdjustmentPageItem {
+export type InventoryAdjustmentPageItem = {
   id?: string;
   adjustedBy?: string;
   adjustedOn?: Date;
@@ -55,7 +55,7 @@ export interface InventoryAdjustmentPageItem {
   quantity?: string;
 }
 
-export interface InventoryAdjustment {
+export type InventoryAdjustment = {
   id?: string;
   inventoryId?: string;
   adjustedBy?: Lookup<string>;
@@ -67,14 +67,14 @@ export interface InventoryAdjustment {
   standard?: Measure;
 }
 
-export interface InventoryAdjustmentReason {
+export type InventoryAdjustmentReason = {
   id?: string;
   name?: string;
   description?: string;
   type?: InventoryAdjustmentType;
 }
 
-export interface InventoryMovementsReportPageItem {
+export type InventoryMovementsReportPageItem = {
   date?: Date;
   branchName?: string;
   productName?: string;

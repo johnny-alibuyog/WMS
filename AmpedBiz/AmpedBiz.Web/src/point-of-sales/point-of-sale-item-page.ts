@@ -1,23 +1,20 @@
+import { Role, role } from './../common/models/role';
+import { paymentType } from './../common/models/payment-type';
 import { pricing } from './../common/models/pricing';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { Pager } from '../common/models/paging';
-import { PointOfSaleItem, pointOfSaleEvents } from '../common/models/point-of-sale';
+import { PointOfSaleItem, pointOfSaleEvents, PointOfSalePayable } from '../common/models/point-of-sale';
 import { ProductInventory, ProductInventoryFacade } from '../common/models/product';
 import { autoinject, bindable, bindingMode, customElement, observable } from 'aurelia-framework'
 import { isNullOrWhiteSpace } from '../common/utils/string-helpers';
 
 import { Lookup } from '../common/custom_types/lookup';
 import { ServiceApi } from '../services/service-api';
-import { UnitOfMeasure } from "../common/models/unit-of-measure";
 import { ensureNumeric } from '../common/utils/ensure-numeric';
 import { getValue, Measure } from "../common/models/measure";
 import * as Enumerable from 'linq';
-
-
-type ProductAndUnitOfMeasure = {
-  product: Lookup<string>,
-  unit: UnitOfMeasure
-};
+import { Override, OverrideParams } from 'users/override';
+import { DialogService } from 'aurelia-dialog';
 
 @autoinject
 @customElement("point-of-sale-item-page")
@@ -25,7 +22,8 @@ export class PointOfSaleItemPage {
 
   private _subscriptions: Subscription[] = [];
   private _productInventories: ProductInventory[] = [];
-  private _isPricingInitialized: boolean = false;
+  private readonly _canEditItem: boolean = false;
+  private readonly _canDeleteItem: boolean = false;
 
   @observable()
   public barcode: string = '';
@@ -46,7 +44,13 @@ export class PointOfSaleItemPage {
   public isModificationDisallowed: boolean = true;
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
+  public payable: PointOfSalePayable;
+
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
   public taxAmount: number;
+
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
+  public discountRate: number;
 
   public discountAmount: number;
 
@@ -58,11 +62,16 @@ export class PointOfSaleItemPage {
 
   public selectedItem: PointOfSaleItem;
 
+  public focusBarcodeInput: boolean;
+
   constructor(
     private readonly _api: ServiceApi,
+    private readonly _dialog: DialogService,
     private readonly _eventAggregator: EventAggregator
   ) {
     this.itemPager.onPage = () => this.initializePage();
+    this._canEditItem = this._api.auth.isAuthorized([role.admin, role.manager]);
+    this._canDeleteItem = this._api.auth.isAuthorized([role.admin, role.manager]);
   }
 
   private async getProductInventory(key: string): Promise<ProductInventory> {
@@ -89,11 +98,24 @@ export class PointOfSaleItemPage {
         pointOfSaleEvents.item.add,
         () => this.addItem()
       ),
+      this._eventAggregator.subscribe(
+        pointOfSaleEvents.saved,
+        () => this.selectedItem = null
+      ),
     ];
+    window.addEventListener('keydown', this.handleKeyInput, false);
   }
 
   public detached(): void {
     this._subscriptions.forEach(subscription => subscription.dispose());
+    window.removeEventListener('keydown', this.handleKeyInput);
+  }
+
+  private handleKeyInput = (event: KeyboardEvent) => {
+    /* Ctrl + Alt + b */
+    if (event.ctrlKey && event.altKey && event.keyCode === 66) {
+      this.focusBarcodeInput = true;
+    }
   }
 
   public itemsChanged(): void {
@@ -116,33 +138,13 @@ export class PointOfSaleItemPage {
     this.barcodeChangedHandler();
   }
 
-  public taxAmountChanged(): void {
+  public discountRateChanged(): void {
+    this.items.forEach(item => {
+      item.discountRate = this.discountRate;
+      this.compute(item);
+    });
+
     this.total();
-  }
-
-  public shippingFeeAmountChanged(): void {
-    this.total();
-  }
-
-  public pricingChanged(newValue: Lookup<string>, oldValue: Lookup<string>): void {
-    if (newValue && oldValue && newValue.id == oldValue.id) {
-      return;
-    }
-
-    if (!this._isPricingInitialized) {
-      this._isPricingInitialized = true;
-      return;
-    }
-
-    if (this.isModificationDisallowed) {
-      return;
-    }
-
-    if (!this.items) {
-      this.items = [];
-    }
-
-    this.items.forEach(item => this.initializeItem(item));
   }
 
   public async barcodeChangedHandler(): Promise<void> {
@@ -150,8 +152,7 @@ export class PointOfSaleItemPage {
       .from(this.items)
       .firstOrDefault(x => x.barcode == this.barcode);
 
-    debugger;
-    var productInventory = await this.getProductInventory(this.barcode);
+    let productInventory = await this.getProductInventory(this.barcode);
 
     if (!productInventory) {
       return;
@@ -161,6 +162,7 @@ export class PointOfSaleItemPage {
       this.addItem();
       item = this.selectedItem;
       item.barcode = this.barcode;
+
     }
     else {
       this.selectedItem = item;
@@ -200,6 +202,7 @@ export class PointOfSaleItemPage {
     }
 
     item.quantity.value += 1;
+    item.discountRate = this.discountRate;
 
     this.compute(item);
 
@@ -210,27 +213,10 @@ export class PointOfSaleItemPage {
     let item = this.selectedItem;
     let inventory = await this.getProductInventory(item.product.id);
     let facade = new ProductInventoryFacade(inventory);
+    let current = facade.current(item.quantity.unit);
+    item.standard = current.standard;
     item.unitPriceAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
     this.compute(item);
-  }
-
-  // we added unit parameter just to make the binding watch when ever item.quantity.unit changes
-  public getUnitOfMeasures(item: PointOfSaleItem): UnitOfMeasure[] {
-    if (!item.product) {
-      return [];
-    }
-
-    var productInventory = this._productInventories.find(x => x.id === item.product.id);
-    if (!productInventory) {
-      return [];
-    }
-
-    var productUnitOfMeasures = productInventory.unitOfMeasures;
-    if (!productUnitOfMeasures) {
-      return [];
-    }
-
-    return productUnitOfMeasures.map(x => x.unitOfMeasure);
   }
 
   public propagateProductChange(item: PointOfSaleItem, productId: string) {
@@ -252,6 +238,7 @@ export class PointOfSaleItemPage {
         unit: {},
         value: null
       };
+      item.discountRate = this.discountRate;
       item.unitPriceAmount = null;
       item.unitOfMeasures = [];
       this.compute(item);
@@ -268,6 +255,7 @@ export class PointOfSaleItemPage {
     //item.quantity.value = 0;
     item.standard.unit = current.standard.unit;
     item.standard.value = current.standard.value;
+    item.discountRate = this.discountRate;
     item.unitPriceAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
     this.compute(item);
   }
@@ -300,12 +288,6 @@ export class PointOfSaleItemPage {
       this.items = [];
     }
 
-    var current = this.items.find(x => !x.totalPriceAmount || x.totalPriceAmount == 0);
-    if (current) {
-      this.selectedItem = current;
-      return;
-    }
-
     var item: PointOfSaleItem = {
       barcode: '',
       quantity: {
@@ -318,10 +300,11 @@ export class PointOfSaleItemPage {
       },
       unitOfMeasures: [],
       discountRate: null,
-      discountAmount: null,
+      discountAmount: this.discountRate,
       unitPriceAmount: null,
       extendedPriceAmount: null,
       totalPriceAmount: null,
+      focus: true
     };
 
     this.items.unshift(item);
@@ -329,7 +312,7 @@ export class PointOfSaleItemPage {
     this.initializePage();
   }
 
-  public editItem(item: PointOfSaleItem): void {
+  public async editItem(item: PointOfSaleItem): Promise<void> {
     if (this.isModificationDisallowed) {
       return;
     }
@@ -338,20 +321,35 @@ export class PointOfSaleItemPage {
       return;
     }
 
-    if (!item.unitOfMeasures || item.unitOfMeasures.length == 0) {
-      this.getProductInventory(item.product.id).then(data => {
-        if (data && data.unitOfMeasures) {
-          item.unitOfMeasures = data.unitOfMeasures.map(x => x.unitOfMeasure);
-        }
-      });
+    if ((!item.unitOfMeasures || item.unitOfMeasures.length == 0) && item.product) {
+      let data = await this.getProductInventory(item.product.id);
+      if (data && data.unitOfMeasures) {
+        item.unitOfMeasures = data.unitOfMeasures.map(x => x.unitOfMeasure);
+      }
+    }
+
+    if (!this._canEditItem) {
+      let params = <OverrideParams>{ title: "Edit Item Override" };
+      let confirmation = await this._dialog.open({ viewModel: Override, model: params }).whenClosed();
+      if (confirmation.wasCancelled) {
+        return;
+      }
     }
 
     this.selectedItem = item;
   }
 
-  public deleteItem(item: PointOfSaleItem): void {
+  public async deleteItem(item: PointOfSaleItem): Promise<void> {
     if (this.isModificationDisallowed) {
       return;
+    }
+
+    if (!this._canDeleteItem) {
+      let params = <OverrideParams>{ title: "Delete Item Override" };
+      let confirmation = await this._dialog.open({ viewModel: Override, model: params }).whenClosed();
+      if (confirmation.wasCancelled) {
+        return;
+      }
     }
 
     var index = this.items.indexOf(item);
@@ -381,5 +379,14 @@ export class PointOfSaleItemPage {
       ensureNumeric(this.taxAmount) +
       ensureNumeric(this.subTotalAmount) -
       ensureNumeric(this.discountAmount);
+
+    this.payable = <PointOfSalePayable>{
+      pointOfSaleId: this.pointOfSaleId,
+      paymentType: paymentType.cash,
+      discountRate: this.discountRate,
+      discountAmount: this.discountAmount,
+      subTotalAmount: this.subTotalAmount,
+      totalAmount: this.grandTotalAmount
+    };
   }
 }

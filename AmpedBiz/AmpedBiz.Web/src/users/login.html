@@ -1,11 +1,11 @@
 <template>
-  <require from="bootstrap/css/bootstrap.css"></require>
+  <!-- <require from="bootstrap/css/bootstrap.css"></require> -->
   
   <!--<form class=" login-form" submit.delegate="login()" validate.bind="_validation">-->
   <form class="login-form" submit.delegate="login()">
     <div class="panel panel-default">
       <div class="panel-body">
-        <img src="assets/common/images/logo.png" />
+        <img src="../assets/common/images/logo.png" />
         <input class="form-control" type="text" placeholder="username" value.bind="user.username" />
         <input class="form-control" type="password" placeholder="password" value.bind="user.password" />
         <!--<button class="btn btn-default btn-block btn-primary" type="submit" disabled.bind="!_validation.result.isValid">Login</button>-->

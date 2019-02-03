@@ -38,7 +38,7 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("~/payment-type-lookups")]
-        public async Task<GetPaymentTypeLookup.Response> Process([FromBody]GetPaymentTypeLookup.Request request)
+        public async Task<GetPaymentTypeLookup.Response> Process([FromUri]GetPaymentTypeLookup.Request request)
         {
             return await _mediator.Send(request ?? new GetPaymentTypeLookup.Request());
         }

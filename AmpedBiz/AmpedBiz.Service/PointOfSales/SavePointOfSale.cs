@@ -51,8 +51,10 @@ namespace AmpedBiz.Service.PointOfSales
 						Branch = message.Branch?.Id.EvalOrDefault(value => session.Load<Branch>(value)),
 						Customer = message.Customer?.Id.EvalOrDefault(value => session.Load<Customer>(value)),
 						Pricing = message.Pricing?.Id.EvalOrDefault(value => session.Load<Pricing>(value)),
+						DiscountRate = message.DiscountRate,
 						PaymentType = message.PaymentType?.Id.EvalOrDefault(value => session.Load<PaymentType>(value)),
-						TendredBy = message.TendredBy?.Id.EvalOrDefault(value => session.Load<User>(value)),
+						TenderedBy = message.TenderedBy?.Id.EvalOrDefault(value => session.Load<User>(value)),
+						TenderedOn = message.TenderedOn,
 						Items = message.Items
 							.Select(x => new PointOfSaleItem(
 								id: x.Id,
@@ -66,6 +68,8 @@ namespace AmpedBiz.Service.PointOfSales
 						Payments = message.Payments
 							.Select(x => new PointOfSalePayment(
 								id: x.Id,
+								paidOn: x.PaidOn.GetValueOrDefault(DateTime.Now),
+								paidTo: x.PaidTo?.Id.EvalOrDefault(value => session.Load<User>(value)),
 								paymentType: session.Load<PaymentType>(x.PaymentType.Id),
 								payment: new Money(x.PaymentAmount, settings.DefaultCurrency),
 								balance: new Money(x.BalanceAmount, settings.DefaultCurrency)

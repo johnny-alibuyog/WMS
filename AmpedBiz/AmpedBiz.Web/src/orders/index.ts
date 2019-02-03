@@ -2,6 +2,7 @@ import { Router, RouterConfiguration } from 'aurelia-router'
 import { OrderStatus } from '../common/models/order';
 import { AuthSettings } from '../services/auth-service';
 import { role } from '../common/models/role';
+import { PLATFORM } from 'aurelia-framework';
 
 export class Index {
   heading: string = "Customer Orders";
@@ -13,7 +14,7 @@ export class Index {
       {
         route: ['', 'created-page'],
         name: 'created-page',
-        moduleId: './order-page',
+        moduleId: PLATFORM.moduleName('./order-page'),
         nav: true,
         title: 'Created',
         settings: {
@@ -26,7 +27,7 @@ export class Index {
       {
         route: ['invoiced-page'],
         name: 'invoiced-page',
-        moduleId: './order-page',
+        moduleId: PLATFORM.moduleName('./order-page'),
         nav: true,
         title: 'Invoiced',
         settings: {
@@ -39,7 +40,7 @@ export class Index {
       {
         route: ['staged-page'],
         name: 'staged-page',
-        moduleId: './order-page',
+        moduleId: PLATFORM.moduleName('./order-page'),
         nav: true,
         title: 'Staged',
         settings: {
@@ -53,7 +54,7 @@ export class Index {
       {
         route: ['routed-page'],
         name: 'routed-page',
-        moduleId: './order-page',
+        moduleId: PLATFORM.moduleName('./order-page'),
         nav: true,
         title: 'Routed',
         settings: {
@@ -67,7 +68,7 @@ export class Index {
       {
         route: ['shipped-page'],
         name: 'shipped-page',
-        moduleId: './order-page',
+        moduleId: PLATFORM.moduleName('./order-page'),
         nav: true,
         title: 'Shipped',
         settings: {
@@ -81,7 +82,7 @@ export class Index {
       {
         route: ['delivered-page'],
         name: 'delivered-page',
-        moduleId: './order-page',
+        moduleId: PLATFORM.moduleName('./order-page'),
         nav: true,
         title: 'Dilivered',
         settings: {
@@ -95,7 +96,7 @@ export class Index {
       {
         route: ['completed-page'],
         name: 'completed-page',
-        moduleId: './order-page',
+        moduleId: PLATFORM.moduleName('./order-page'),
         nav: true,
         title: 'Completed',
         settings: {
@@ -108,7 +109,7 @@ export class Index {
       {
         route: ['cancelled-page'],
         name: 'cancelled-page',
-        moduleId: './order-page',
+        moduleId: PLATFORM.moduleName('./order-page'),
         nav: true,
         title: 'Cancelled',
         settings: {
@@ -118,23 +119,23 @@ export class Index {
           }
         }
       },
-      {
-        route: ['subdivide-invoice'],         //this route should be hidden. The BIR will not like this! :)
-        name: 'subdivide-invoice',
-        moduleId: './subdivide-invoice',
-        nav: false,
-        title: 'Subdivide Invoice',
-        settings: {
-          status: OrderStatus.cancelled,
-          auth: <AuthSettings>{
-            roles: role.all()
-          }
-        }
-      },
+      // {
+      //   route: ['subdivide-invoice'],         //this route should be hidden. The BIR will not like this! :)
+      //   name: 'subdivide-invoice',
+      //   moduleId: PLATFORM.moduleName('./subdivide-invoice'),
+      //   nav: false,
+      //   title: 'Subdivide Invoice',
+      //   settings: {
+      //     status: OrderStatus.cancelled,
+      //     auth: <AuthSettings>{
+      //       roles: role.all()
+      //     }
+      //   }
+      // },
       {
         route: ['order-create'],
         name: 'order-create',
-        moduleId: './order-create',
+        moduleId: PLATFORM.moduleName('./order-create'),
         nav: false,
         title: 'Create Order',
           auth: <AuthSettings>{

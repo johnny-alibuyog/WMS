@@ -81,6 +81,8 @@ namespace AmpedBiz.Core.Orders
 
         public virtual Money Paid { get; internal protected set; }
 
+		public virtual Money Balance { get; internal protected set; }
+
 		public virtual OrderType Type { get; internal protected set; } = OrderType.Order;
 
         public virtual OrderStatus Status { get; internal protected set; } = OrderStatus.Created;

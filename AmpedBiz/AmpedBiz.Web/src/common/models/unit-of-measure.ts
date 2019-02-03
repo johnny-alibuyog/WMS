@@ -1,9 +1,9 @@
-export interface UnitOfMeasure {
+export type UnitOfMeasure = {
   id?: string;
   name?: string;
 }
 
-export interface UnitOfMeasurePageItem {
+export type UnitOfMeasurePageItem = {
   id?: string;
   name?: string;
 }

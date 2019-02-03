@@ -10,10 +10,9 @@ namespace AmpedBiz.Core.Products
 
         public Pricing() : base(default(string)) { }
 
-        public Pricing(string id, string name) : base(id) 
-        {
-            this.Name = name;
-        }
+        public Pricing(string id, string name) : base(id) => this.Name = name;
+
+        public override string ToString() => this.Id;
 
         public static readonly Pricing BasePrice = new Pricing("BP", "Base Price");
 

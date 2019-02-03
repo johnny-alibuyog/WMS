@@ -67,7 +67,7 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("status-lookups")]
-        public async Task<GetPurchaseOrderStatusLookup.Response> Process([FromBody]GetPurchaseOrderStatusLookup.Request request)
+        public async Task<GetPurchaseOrderStatusLookup.Response> Process([FromUri]GetPurchaseOrderStatusLookup.Request request)
         {
             return await _mediator.Send(request ?? new GetPurchaseOrderStatusLookup.Request());
         }

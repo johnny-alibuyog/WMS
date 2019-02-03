@@ -8,7 +8,7 @@ export class Filter implements Dictionary<any> {
 
   public onFilter: () => void;
 
-  doFilter(): void {
+  public doFilter(): void {
     if (!this.onFilter)
       return;
 
@@ -22,54 +22,34 @@ export class Sorter implements Dictionary<any> {
 
   public onSort: () => void;
 
-  doSort(field: string): void {
+  public doSort(field: string): void {
     if (!this.onSort)
       return;
 
-    /*
-    switch (this[field]) {
-      case SortDirection.None:
-        this[field] = SortDirection.Ascending;
-        break;
-      case SortDirection.Ascending:
-        this[field] = SortDirection.Descending;
-        break;
-      case SortDirection.Descending:
-        this[field] = SortDirection.None;
-        break;
-      default:
-        this[field] = SortDirection.Ascending;
-        break;
-    }
-    */
-
     // just sort only one field for now
-    if (this[field] == SortDirection.Ascending) {
-      this[field] = SortDirection.Descending;
-    }
-    else {
-      this[field] = SortDirection.Ascending;
-    }
-
-    for (var key in this) {
-      if (key === field)
-        continue;
-
+    for (let key in this) {
       if (typeof this[key] === 'function')
         continue;
 
-      this[key] = SortDirection.None;
+      if (key === field) {
+        this[key.toString()] = this[field] == SortDirection.Ascending
+          ? SortDirection.Descending
+          : SortDirection.Ascending
+      }
+      else {
+        this[key.toString()] = SortDirection.None;
+      }
     }
 
     this.onSort();
   }
 
-  class(direction: SortDirection): string {
+  public class(direction: SortDirection): string {
     switch (direction) {
       case SortDirection.Ascending:
-        return 'sort-asc';
+        return 'sort-up';
       case SortDirection.Descending:
-        return 'sort-desc';
+        return 'sort-down';
       default:
         return 'sort';
     }
@@ -98,7 +78,7 @@ export class Pager<T> implements PagerRequest, PagerResponse<T> {
     this.size = appConfig.page.itemsPerPage;
   }
 
-  doPage(event: CustomEvent) {
+  public doPage(event: CustomEvent): void {
     var pageNumber = <number>event.detail.pageNumber;
     if (this.offset === pageNumber)
       return;

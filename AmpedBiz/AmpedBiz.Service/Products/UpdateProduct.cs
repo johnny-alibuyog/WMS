@@ -88,13 +88,16 @@ namespace AmpedBiz.Service.Products
                     });
 
                     product.EnsureValidity();
+
                     inventory.EnsureValidity();
 
                     transaction.Commit();
 
                     product.MapTo(response);
 
-                    SessionFactory.ReleaseSharedSession();
+					inventory.MapTo(response.Inventory);
+
+					SessionFactory.ReleaseSharedSession();
                 }
 
                 return response;

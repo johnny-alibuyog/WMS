@@ -1,3 +1,4 @@
+import { PLATFORM } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router'
 import { AuthSettings } from '../services/auth-service';
 import { role } from '../common/models/role';
@@ -12,7 +13,7 @@ export class Index {
       {
         route: ['', 'pending-page'],
         name: 'pending-page',
-        moduleId: './pending-page',
+        moduleId: PLATFORM.moduleName('./pending-page'),
         nav: true,
         title: 'Pending List',
         settings: {
@@ -24,7 +25,7 @@ export class Index {
       {
         route: ['new-customer-order'],
         name: 'new-customer-order',
-        moduleId: '../orders/order-create',
+        moduleId: PLATFORM.moduleName('../orders/order-create'),
         nav: true,
         title: 'New Customer Order',
         settings: {
@@ -40,7 +41,7 @@ export class Index {
       {
         route: ['new-purchase-order'],
         name: 'new-purchase-order',
-        moduleId: '../purchases/purchase-order-create',
+        moduleId: PLATFORM.moduleName('../purchases/purchase-order-create'),
         nav: true,
         title: 'New Purchase Order',
         settings: {

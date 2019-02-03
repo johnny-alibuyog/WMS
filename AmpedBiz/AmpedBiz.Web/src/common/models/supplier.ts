@@ -1,7 +1,7 @@
 import { Address } from './address';
 import { Contact } from './contact';
 
-export interface Supplier {
+export type Supplier = {
   id?: string;
   code?: string;
   name?: string;
@@ -10,7 +10,7 @@ export interface Supplier {
   contact?: Contact;
 }
 
-export interface SupplierPageItem {
+export type SupplierPageItem = {
   id?: string;
   code?: string;
   name?: string;
@@ -19,7 +19,7 @@ export interface SupplierPageItem {
   contact?: Contact;
 }
 
-export interface SupplierReportPageItem {
+export type SupplierReportPageItem = {
   id?: string;
   code?: string;
   name?: string;

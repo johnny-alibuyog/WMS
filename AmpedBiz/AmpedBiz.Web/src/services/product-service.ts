@@ -13,6 +13,7 @@ import { ProductReturnPageItem } from '../common/models/product';
 import { ServiceBase } from './service-base'
 import { autoinject } from 'aurelia-framework';
 import { buildQueryString } from 'aurelia-framework';
+import { SalesReportPageItem } from '../common/models/order';
 
 @autoinject
 export class ProductService extends ServiceBase<Product> {
@@ -74,6 +75,11 @@ export class ProductService extends ServiceBase<Product> {
 
   public getPurchasePage(page: PageRequest): Promise<ProductPurchasePageItem> {
     var url = this._resouce + '/' + page.filter["id"] + '/purchases/page';
+    return this._httpClient.post(url, page);
+  }
+
+  public getSalesReportPage(page: PageRequest): Promise<PagerResponse<SalesReportPageItem>> {
+    var url = this._resouce + '/sales-report/page';
     return this._httpClient.post(url, page);
   }
 

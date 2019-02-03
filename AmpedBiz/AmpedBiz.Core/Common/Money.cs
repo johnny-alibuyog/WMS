@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmpedBiz.Common.Exceptions;
+using System;
 using System.Collections.Generic;
 
 namespace AmpedBiz.Core.Common
@@ -56,11 +57,53 @@ namespace AmpedBiz.Core.Common
             if (value2 == null)
                 value2 = new Money(0M, currency);
 
-            return new Money(value1.Amount - value2.Amount, currency);
-        }
-    }
+            var result = new Money(value1.Amount - value2.Amount, currency);
 
-    public static class MoneyExtention
+			if (result.Amount < 0)
+				result.Amount = 0;
+
+			return result;
+        }
+
+		public static bool operator <(Money value1, Money value2)
+		{
+			if (value1 == null && value2 == null)
+				return true;
+
+			var currency = value1?.Currency ?? value2?.Currency;
+			if (value1 == null)
+				value1 = new Money(0M, currency);
+
+			if (value2 == null)
+				value2 = new Money(0M, currency);
+
+			if (value1.Currency != value2.Currency)
+				throw new BusinessException($"You cannot compare money with currency {value1.Currency} to {value2.Currency}!");
+
+			return Math.Round(value1.Amount, 4) < Math.Round(value2.Amount, 4);
+		}
+
+		public static bool operator >(Money value1, Money value2)
+		{
+			if (value1 == null && value2 == null)
+				return true;
+
+			var currency = value1?.Currency ?? value2?.Currency;
+			if (value1 == null)
+				value1 = new Money(0M, currency);
+
+			if (value2 == null)
+				value2 = new Money(0M, currency);
+
+			if (value1.Currency != value2.Currency)
+				throw new BusinessException($"You cannot compare money with currency {value1.Currency} to {value2.Currency}!");
+
+			return Math.Round(value1.Amount, 4) > Math.Round(value2.Amount);
+
+		}
+	}
+
+	public static class MoneyExtention
     {
         public static decimal Amount(this Money money, decimal? defaultValue = 0M)
         {
@@ -81,5 +124,19 @@ namespace AmpedBiz.Core.Common
             }
             return sum;
         }
+
+		public static bool IsNullOrEmpty(this Money money)
+		{
+			if (money == null)
+				return true;
+
+			if (money.Amount == 0)
+				return true;
+
+			if (money.Currency == null)
+				return true;
+
+			return false;
+		}
     }
 }

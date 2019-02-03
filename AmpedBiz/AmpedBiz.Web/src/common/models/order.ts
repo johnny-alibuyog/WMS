@@ -42,7 +42,7 @@ export enum OrderAggregate {
   returns = 3
 }
 
-export interface Order {
+export type Order = {
   id?: string;
   orderNumber?: string;
   invoiceNumber?: string;
@@ -87,7 +87,7 @@ export interface Order {
   stage?: StageDefinition<OrderStatus, OrderAggregate>;
 }
 
-export interface OrderPageItem {
+export type OrderPageItem = {
   id?: string;
   status?: string;
   createdBy?: string;
@@ -100,7 +100,7 @@ export interface OrderPageItem {
   totalAmount?: number
 }
 
-export interface OrderItem {
+export type OrderItem = {
   id?: string;
   product?: Lookup<string>;
   unitOfMeasures?: UnitOfMeasure[];
@@ -113,7 +113,7 @@ export interface OrderItem {
   totalPriceAmount?: number;
 }
 
-export interface OrderReturn {
+export type OrderReturn = {
   id?: string;
   product?: Lookup<string>;
   reason?: Lookup<string>;
@@ -124,7 +124,7 @@ export interface OrderReturn {
   returnedAmount?: number;
 }
 
-export interface OrderReturnable {
+export type OrderReturnable = {
   orderId?: string;
   product?: Lookup<string>;
   discountRate?: number;
@@ -138,7 +138,7 @@ export interface OrderReturnable {
   returning: OrderReturning;
 }
 
-export interface OrderReturning {
+export type OrderReturning = {
   reason?: Lookup<string>;
   returnedOn?: Date;
   returnedBy?: Lookup<string>;
@@ -147,7 +147,7 @@ export interface OrderReturning {
   amount?: number;
 }
 
-export interface OrderPayment {
+export type OrderPayment = {
   id?: string;
   paidOn?: Date;
   paidTo?: Lookup<string>;
@@ -156,7 +156,7 @@ export interface OrderPayment {
   balanceAmount?: number;
 }
 
-export interface OrderPayable {
+export type OrderPayable = {
   id?: string;
   orderId?: string;
   paidOn?: Date;
@@ -172,7 +172,7 @@ export interface OrderPayable {
   paymentAmount?: number;
 }
 
-export interface OrderInvoiceDetail {
+export type OrderInvoiceDetail = {
   customerName?: string;
   orderNumber?: string;
   invoiceNumber?: string;
@@ -198,7 +198,7 @@ export interface OrderInvoiceDetail {
   items?: OrderInvoiceDetailItem[];
 }
 
-export class OrderInvoiceDetailItem {
+export type OrderInvoiceDetailItem = {
   id?: string;
   orderId?: string;
   product?: Lookup<string>;
@@ -210,7 +210,7 @@ export class OrderInvoiceDetailItem {
   totalPriceAmount?: number;
 }
 
-export class OrderReportPageItem {
+export type OrderReportPageItem = {
   id?: string;
   branchName?: string;
   customerName?: string;
@@ -224,19 +224,17 @@ export class OrderReportPageItem {
   balanceAmount?: number;
 }
 
-export interface SalesReportPageItem
-{
-    productId?: string;
-    productName?: string;
-    totalSoldItems?: string;
-    totalSoldPrice?: string;
-    details?: SalesReportPageDetailItem[];
+export type SalesReportPageItem = {
+  productId?: string;
+  productName?: string;
+  totalSoldItems?: string;
+  totalSoldPrice?: string;
+  details?: SalesReportPageDetailItem[];
 }
 
-export interface SalesReportPageDetailItem
-{
-    customerName?: string;
-    invoiceNumber?: string;
-    soldItems?: string;
-    soldPrice?: string;
+export type SalesReportPageDetailItem = {
+  customerName?: string;
+  invoiceNumber?: string;
+  soldItems?: string;
+  soldPrice?: string;
 }

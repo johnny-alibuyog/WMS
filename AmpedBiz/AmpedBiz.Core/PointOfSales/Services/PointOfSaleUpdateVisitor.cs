@@ -18,11 +18,13 @@ namespace AmpedBiz.Core.PointOfSales.Services
 
 		public virtual Prop<Pricing> Pricing { get; set; } = new Prop<Pricing>();
 
+		public virtual Prop<decimal> DiscountRate { get; set; } = new Prop<decimal>();
+
 		public virtual Prop<PaymentType> PaymentType { get; set; } = new Prop<PaymentType>();
 
-		public virtual Prop<User> TendredBy { get; set; } = new Prop<User>();
+		public virtual Prop<User> TenderedBy { get; set; } = new Prop<User>();
 
-		public virtual Prop<DateTime> TendredOn { get; set; } = new Prop<DateTime>();
+		public virtual Prop<DateTime> TenderedOn { get; set; } = new Prop<DateTime>();
 
 		public virtual Prop<IEnumerable<PointOfSaleItem>> Items { get; set; } = new Prop<IEnumerable<PointOfSaleItem>>();
 
@@ -33,10 +35,11 @@ namespace AmpedBiz.Core.PointOfSales.Services
 			target.Accept(new CodeGenVisitor()); // Generate invoice if not yet generated
 			target.Branch = this.Branch.Value(target.Branch);
 			target.Customer = this.Customer.Value(target.Customer);
+			target.DiscountRate = this.DiscountRate.Value(target.DiscountRate);
 			target.Pricing = this.Pricing.Value(target.Pricing);
 			target.PaymentType = this.PaymentType.Value(target.PaymentType);
-			target.TendredBy = this.TendredBy.Value(target.TendredBy);
-			target.TendredOn = this.TendredOn.Value(target.TendredOn);
+			target.TenderedBy = this.TenderedBy.Value(target.TenderedBy);
+			target.TenderedOn = this.TenderedOn.Value(target.TenderedOn);
 			target.Accept(new PointOfSaleUpdateItemsVisitor(this.Items.Value(target.Items)));
 			target.Accept(new PointOfSaleUpdatePaymentsVisitor(this.Payments.Value(target.Payments)));
 			target.Accept(new PointOfSaleCalculateVisitor());

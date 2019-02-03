@@ -22,13 +22,14 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 
 				References(x => x.PointOfSale);
 
+				Map(x => x.PaidOn);
+
+				References(x => x.PaidTo);
+
 				References(x => x.PaymentType);
 
 				Component(x => x.Payment,
 					MoneyDefinition.Mapping.Map("Payment_", nameof(PointOfSalePayment)));
-
-				Component(x => x.Balance,
-					MoneyDefinition.Mapping.Map("Balance_", nameof(PointOfSalePayment)));
 			}
 		}
 
@@ -39,6 +40,11 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 				Define(x => x.Id);
 
 				Define(x => x.PointOfSale)
+					.NotNullable();
+
+				Define(x => x.PaidOn);
+
+				Define(x => x.PaidTo)
 					.NotNullable();
 
 				Define(x => x.PaymentType)

@@ -90,10 +90,13 @@ export class PurchaseOrderItemPage {
   }
 
   public async computeUnitPriceAmount(): Promise<void> {
+    let item = this.selectedItem;
     let inventory = await this.getProductInventory(this.selectedItem.product);
     let facade = new ProductInventoryFacade(inventory);
-    this.selectedItem.unitCostAmount = facade.getPriceAmount(inventory, this.selectedItem.quantity.unit, this.pricing);
-    this.compute(this.selectedItem);
+    let current = facade.current(item.quantity.unit);
+    item.standard = current.standard;
+    item.unitCostAmount = facade.getPriceAmount(inventory, item.quantity.unit, this.pricing);
+    this.compute(item);
     this.total();
   }
 
@@ -224,6 +227,9 @@ export class PurchaseOrderItemPage {
     //this.shippingFeeAmount = ensureNumeric(this.shippingFeeAmount);
 
     //this.discountAmount = ensureNumeric(this.discountAmount);
+
+    // debugger;
+    // console.log(from);
 
     this.subTotalAmount = Enumerable
       .from(this.items)

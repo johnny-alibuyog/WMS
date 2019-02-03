@@ -1,9 +1,9 @@
-export interface ReturnReason {
+export type ReturnReason = {
   id?: string;
   name?: string;
 }
 
-export interface ReturnReasonPageItem {
+export type ReturnReasonPageItem = {
   id?: string;
   name?: string;
 }

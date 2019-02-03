@@ -1,22 +1,7 @@
 <template>
   <require from="common/controls/pager"></require>
   <require from="common/controls/select2"></require>
-  <require from="orders/state-verification-value-converter"></require>
-
-  <!-- <form class="form-horizontal" role="form">
-
-    <div class="row">
-
-      <div class="form-group">
-        <label class="control-label col-sm-4">Barcode Reader:</label>
-        <div class="col-sm-4">
-          <input type="text" class="form-control" value.bind="barcode & debounce:100" />
-        </div>
-      </div>
-
-    </div>
-
-  </form> -->
+  <require from="./point-of-sale-item-page.css"></require>
 
   <!-- list -->
   <div class="table-responsive">
@@ -27,37 +12,37 @@
           <th class="col-sm-1">Action</th>
           <th class="col-sm-3">
             <div>
-              Product
-              <input type="text" placeholder="Barcode Reader" value.bind="barcode & debounce:100" />
+              Product &nbsp;
+              <input type="text" placeholder="Barcode Reader" value.bind="barcode & debounce:100" disabled.bind="isModificationDisallowed" focus.bind="focusBarcodeInput" />
             </div>
           </th>
-          <th class="col-sm-1 text-right">Unit</th>
+          <th class="col-sm-1">Unit</th>
           <th class="col-sm-1 text-right">Qty</th>
           <th class="col-sm-1 text-right">Price</th>
-          <th class="col-sm-1 text-right">Discount Rate</th>
-          <th class="col-sm-1 text-right">Discount</th>
+          <!-- <th class="col-sm-1 text-right">Discount Rate</th>
+          <th class="col-sm-1 text-right">Discount</th> -->
           <th class="col-sm-1 text-right">Total</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr repeat.for="item of itemPager.items" click.delegate="editItem(item)">
+        <tr repeat.for="item of itemPager.items">
           <td>
             <a href="javascript:undefined" class="text-info" click.delegate="editItem(item)">
-              <i class="fa fa-pencil ${isModificationDisallowed ? 'fa-disabled' : ''}"></i>
+              <i class="fa fa-edit ${item.id ? 'fa-disabled' : ''}"></i>
             </a>
             <a href="javascript:undefined" class="text-danger" click.delegate="deleteItem(item)">
-              <i class="fa fa-times ${isModificationDisallowed ? 'fa-disabled' : ''}"></i>
+              <i class="fa fa-trash ${item.id ? 'fa-disabled' : ''}"></i>
             </a>
           </td>
 
           <!-- read-only mode -->
           <td if.bind="$parent.selectedItem !== item">${item.product.name}</td>
-          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantity.unit.name}</td>
+          <td if.bind="$parent.selectedItem !== item">${item.quantity.unit.name}</td>
           <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantity.value | numberFormat}</td>
           <td if.bind="$parent.selectedItem !== item" class="text-right">${item.unitPriceAmount | numberFormat}</td>
-          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.discountRate | percentage | numberFormat}</td>
-          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.discountAmount | numberFormat}</td>
+          <!-- <td if.bind="$parent.selectedItem !== item" class="text-right">${item.discountRate | percentage | numberFormat}</td>
+          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.discountAmount | numberFormat}</td> -->
           <td if.bind="$parent.selectedItem !== item" class="text-right">${item.totalPriceAmount | numberFormat}</td>
 
           <!-- edit mode -->
@@ -65,7 +50,7 @@
             <div class="row">
               <div class="col-xs-12">
                 <select2 selected.bind="item.product | lookupToId:$parent.products" options.bind="products" placeholder="Select Product"
-                  allow_clear="true" selected:change.delegate="propagateProductChange(item, $event.detail.selected)">
+                  allow_clear="true" selected:change.delegate="propagateProductChange(item, $event.detail.selected)" focus.bind="item.focus">
                   <tempalte replace-part="suggestions">
                     <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
                   </tempalte>
@@ -74,7 +59,7 @@
             </div>
           </td>
 
-          <td if.bind="$parent.selectedItem === item" class="text-right">
+          <td if.bind="$parent.selectedItem === item">
             <div class="row">
               <div class="col-xs-12 pull-right">
                 <select class="form-control input-xs" value.bind="item.quantity.unit | lookupToId:item.unitOfMeasures"
@@ -98,12 +83,12 @@
             <div class="row">
               <div class="col-xs-12 pull-right">
                 <input class="form-control input-xs text-right" type="number" numeric-value.bind="item.unitPriceAmount"
-                  keyup.delegate="compute(item)" />
+                  keyup.delegate="compute(item)" disabled />
               </div>
             </div>
           </td>
 
-          <td if.bind="$parent.selectedItem === item" class="text-right">
+          <!-- <td if.bind="$parent.selectedItem === item" class="text-right">
             <div class="row">
               <div class="col-xs-12 pull-right">
                 <input class="form-control input-xs text-right" type="number" numeric-value.bind="item.discountRate | percentage"
@@ -119,12 +104,12 @@
                   disabled />
               </div>
             </div>
-          </td>
+          </td> -->
 
           <td if.bind="$parent.selectedItem === item" class="text-right">
             <div class="row">
               <div class="col-xs-12 pull-right">
-                <input class="form-control input-xs text-right" type="number" value.bind="item.totalPriceAmount"
+                <input class="form-control input-xs text-right" type="number" numeric-value.bind="item.totalPriceAmount"
                   disabled />
               </div>
             </div>
@@ -133,7 +118,22 @@
         </tr>
 
       <tfoot>
-        <tr>
+        <!-- <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="text-right footer-input-label">
+            <span>Discount Rate:</span>
+          </td>
+          <td>
+            <input class="form-control input-xs text-right" type="number" numeric-value.bind="discountRate | percentage"
+              disabled.bind="isModificationDisallowed" />
+          </td>
+        </tr> -->
+        <!-- <tr>
           <td></td>
           <td></td>
           <td></td>
@@ -142,14 +142,14 @@
           <td></td>
           <td class="text-right">Discount:</td>
           <td class="text-right">(${discountAmount | numberFormat})</td>
-        </tr>
+        </tr> -->
         <tr>
           <td></td>
           <td></td>
           <td></td>
           <td></td>
-          <td></td>
-          <td></td>
+          <!-- <td></td>
+          <td></td> -->
           <td class="text-right">Sub Total:</td>
           <td class="text-right">${subTotalAmount | numberFormat}</td>
         </tr>
@@ -158,11 +158,9 @@
           <td></td>
           <td></td>
           <td></td>
-          <td></td>
-          <td></td>
-          <td class="text-right">
-            <label>Grand Total:</label>
-          </td>
+          <!-- <td></td>
+          <td></td> -->
+          <td class="text-right"><label>Grand Total:</label></td>
           <td class="text-right">${grandTotalAmount | numberFormat}</td>
         </tr>
       </tfoot>

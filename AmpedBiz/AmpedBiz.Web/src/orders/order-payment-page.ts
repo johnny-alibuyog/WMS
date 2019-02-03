@@ -5,7 +5,6 @@ import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framew
 
 import { Lookup } from '../common/custom_types/lookup';
 import { ServiceApi } from '../services/service-api';
-import { ensureNumeric } from '../common/utils/ensure-numeric';
 import * as Enumerable from 'linq';
 
 @autoinject
@@ -41,8 +40,8 @@ export class OrderPaymentPage {
     this.paymentPager.onPage = () => this.initializePage();
   }
 
-  public orderIdChanged(): void {
-    this.initializePayables();
+  public async orderIdChanged(): Promise<void> {
+    await this.loadPayables();
   }
 
   public attached(): void {
@@ -58,8 +57,8 @@ export class OrderPaymentPage {
     this._subscriptions.forEach(subscription => subscription.dispose());
   }
 
-  public paymentsChanged(): void {
-    this.initializePayables();
+  public async paymentsChanged(): Promise<void> {
+    await this.loadPayables();
     this.initializePage();
   }
 
@@ -77,16 +76,10 @@ export class OrderPaymentPage {
     );
   }
 
-  public initializePayables(): void {
-    let requests: [Promise<OrderPayable>] = [
-      this.orderId
-        ? this._api.orders.getPayables(this.orderId)
-        : Promise.resolve(<OrderPayable>{})
-    ];
-
-    Promise.all(requests).then((responses: [OrderPayable]) => {
-      this.payable = responses[0];
-    });
+  public async loadPayables(): Promise<void> {
+    this.payable = this.orderId
+      ? await this._api.orders.getPayables(this.orderId)
+      : <OrderPayable>{};
   }
 
   private addItem(): void {

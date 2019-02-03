@@ -1,23 +1,24 @@
-import { defaultModules } from './../common/models/setting';
+import { role } from '../common/models/role';
+import { autoinject, PLATFORM } from 'aurelia-framework';
+import { defaultModules } from 'common/models/setting';
 import { AuthService, AuthSettings } from '../services/auth-service';
 import { NavigationInstruction, Next, PipelineStep, Router, RouterConfiguration } from 'aurelia-router';
-
 import { NotificationService } from '../common/controls/notification-service';
-import { autoinject } from 'aurelia-framework';
-import { role } from '../common/models/role';
 
-@autoinject
+@autoinject()
 export class Shell {
   public router: Router;
 
-  configureRouter(config: RouterConfiguration, router: Router) {
+  constructor(private readonly _auth: AuthService) { }
+
+  public configureRouter(config: RouterConfiguration, router: Router): void {
     config.title = 'Nicon Sales';
     config.addPipelineStep('authorize', AuthorizeStep);
     config.map([
       {
         route: ['dashboard'],
         name: 'dashboard',
-        moduleId: '../dashboard/index',
+        moduleId: PLATFORM.moduleName('../dashboard/index'),
         nav: true,
         main: true,
         title: 'Dashboard',
@@ -30,7 +31,7 @@ export class Shell {
       {
         route: ['products'],
         name: 'products',
-        moduleId: '../products/index',
+        moduleId: PLATFORM.moduleName('../products/index'),
         nav: true,
         main: true,
         title: 'Products',
@@ -43,7 +44,7 @@ export class Shell {
       {
         route: ['point-of-sales'],
         name: 'point-of-sales',
-        moduleId: '../point-of-sales/index',
+        moduleId: PLATFORM.moduleName('../point-of-sales/index'),
         nav: defaultModules.pointOfSales,
         main: true,
         title: 'POS',
@@ -52,7 +53,8 @@ export class Shell {
             roles: [
               role.admin,
               role.manager,
-              role.salesclerk
+              role.salesclerk,
+              role.cashier
             ]
           }
         },
@@ -60,7 +62,7 @@ export class Shell {
       {
         route: ['purchases'],
         name: 'purchases',
-        moduleId: '../purchases/index',
+        moduleId: PLATFORM.moduleName('../purchases/index'),
         nav: true,
         main: true,
         title: 'Purchases',
@@ -73,7 +75,7 @@ export class Shell {
       {
         route: ['orders'],
         name: 'orders',
-        moduleId: '../orders/index',
+        moduleId: PLATFORM.moduleName('../orders/index'),
         nav: true,
         main: true,
         title: 'Customer Orders',
@@ -86,7 +88,7 @@ export class Shell {
       {
         route: ['returns'],
         name: 'returns',
-        moduleId: '../returns/index',
+        moduleId: PLATFORM.moduleName('../returns/index'),
         nav: true,
         main: true,
         title: 'Returns',
@@ -99,7 +101,7 @@ export class Shell {
       {
         route: ['routes'],
         name: 'routes',
-        moduleId: '../routes/index',
+        moduleId: PLATFORM.moduleName('../routes/index'),
         nav: true,
         main: true,
         title: 'Routes',
@@ -112,7 +114,7 @@ export class Shell {
       {
         route: ['report-center'],
         name: 'report-center',
-        moduleId: '../report-center/index',
+        moduleId: PLATFORM.moduleName('../report-center/index'),
         nav: true,
         main: true,
         title: 'Report Center',
@@ -129,7 +131,7 @@ export class Shell {
       {
         route: ['admin'],
         name: 'admin',
-        moduleId: '../admin/index',
+        moduleId: PLATFORM.moduleName('../admin/index'),
         nav: true,
         main: true,
         title: 'Admin',
@@ -145,7 +147,7 @@ export class Shell {
       {
         route: ['settings'],
         name: 'settings',
-        moduleId: '../settings/index',
+        moduleId: PLATFORM.moduleName('../settings/index'),
         nav: false,
         main: true,
         title: 'Settings',
@@ -161,7 +163,7 @@ export class Shell {
       {
         route: ['user-profile'],
         name: 'user-profile',
-        moduleId: '../users/profiles/index',
+        moduleId: PLATFORM.moduleName('../users/profiles/index'),
         nav: false,
         main: true,
         title: 'User Profile',
@@ -173,7 +175,8 @@ export class Shell {
       },
       {
         route: [""],
-        redirect: "dashboard"
+        redirect: this._auth.matchRoles([role.cashier])
+          ? 'point-of-sales' : 'dashboard'
       }
     ]);
 

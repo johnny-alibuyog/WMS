@@ -1,8 +1,10 @@
 <template>
   <require from="common/controls/pager"></require>
-  <require from="point-of-sales/point-of-sale-item-page"></require>
-  <!-- <require from="point-of-sales/point-of-sale-payment-page"></require>
-  <require from="point-of-sales/point-of-sale-verification-value-converter"></require> -->
+  <require from="./point-of-sale-create.css"></require>
+  <require from="./point-of-sale-item-page"></require>
+  <require from="./point-of-sale-payment-page"></require>
+  <require from="./value-converters"></require>
+  <!-- <require from="point-of-sales/point-of-sale-verification-value-converter"></require> -->
 
   <section class="row row-no-padding">
 
@@ -17,18 +19,22 @@
           <h4 class="panel-title row-fluid">
             <span6>&nbsp ${header} &nbsp</span6>
 
+            <!-- <span6 class="pull-right" if.bind="isSaleTendered">${pointOfSale.status | lookupIdToName:statuses}</span6> -->
+
+            <div class="pull-right ${pointOfSale.status | statusToClass:isSaleTendered}" if.bind="isSaleTendered" role="alert">${pointOfSale.status | lookupIdToName:statuses}</div>
+
             <!-- buttons -->
-            <button type="button" class="btn btn-default" disabled.bind="!isSaleTendred" click.trigger="tender()">
-              <i class="fa fa-check"></i> Tender
+            <button type="button" class="btn btn-default" disabled.bind="isSaleTendered && isFullyPaid" click.trigger="tender()" title="Shortcut (Ctrl + Alt + s)">
+              <i class="fa fa-shopping-cart"></i> ${isSaleTendered ? 'Save' : 'Tender' }
             </button>
 
-            <button type="button" class="btn btn-default" disabled.bind="!isSaleTendred" click.trigger="cancel()">
-              <i class="fa fa-check"></i> Cancel
+            <button type="button" class="btn btn-default" disabled.bind="!isSaleTendered" click.trigger="showReceipt()"  title="Shortcut (Ctrl + Alt + r)">
+              <i class="fa fa-receipt"></i> Receipt
             </button>
 
-            <!-- <button type="button" class="btn btn-default" if.bind="isOrderInvoiced" click.trigger="showInvoice()">
-              <i class="fa fa-check"></i> View Invoice
-            </button> -->
+            <button type="button" class="btn btn-default" click.trigger="clear()" title="Shortcut (Ctrl + Alt + n)">
+              <i class="fa fa-file"></i> ${isSaleTendered ? 'New' : 'Clear'}
+            </button>
           </h4>
 
         </div>
@@ -64,9 +70,9 @@
                 </div>
 
                 <div class="form-group">
-                  <label class="control-label col-sm-4">Tendered By:</label>
+                  <label class="control-label col-sm-4">Invoice:</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" value.bind="pointOfSale.tenderedBy.name" disabled />
+                    <input type="text" class="form-control" value.bind="pointOfSale.invoiceNumber" disabled />
                   </div>
                 </div>
 
@@ -75,16 +81,17 @@
               <div class="col-lg-6 form-group">
 
                 <div class="form-group">
-                  <label class="control-label col-sm-4">Tendered On:</label>
+                  <label class="control-label col-sm-4">Tendered By:</label>
                   <div class="col-sm-8">
-                    <input type="date" class="form-control datepicker" placeholder="Enter Date" value.bind="pointOfSale.tenderedOn | dateInputFormat" />
+                    <input type="text" class="form-control" value.bind="pointOfSale.tenderedBy.name" disabled />
                   </div>
                 </div>
 
                 <div class="form-group">
-                  <label class="control-label col-sm-4">Invoice:</label>
+                  <label class="control-label col-sm-4">Tendered On:</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" value.bind="pointOfSale.invoiceNumber" disabled />
+                    <input type="date" class="form-control datepicker" placeholder="Enter Date" value.bind="pointOfSale.tenderedOn | dateInputFormat"
+                      disabled />
                   </div>
                 </div>
 
@@ -98,49 +105,46 @@
               <div class="col-lg-12">
 
                 <ul class="nav nav-tabs">
-                  <li class="active">
-                    <a data-toggle="tab" href="#itemsTab">
+                  <li class="${activeTab === 'itemsTab' ? 'active' : ''}">
+                    <a data-toggle="tab" href="#itemsTab" title="Shortcut (Ctrl + Alt + i)">
                       <span>Sale Items &nbsp</span>
-                      <button type="button" class="btn btn-default btn-circle" disabled.bind="isSaleTendred"
+                      <button type="button" class="btn btn-default btn-circle" disabled.bind="isSaleTendered"
                         click.trigger="addItem()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
                     </a>
                   </li>
-                  <!-- <li>
-                    <a data-toggle="tab" href="#paymentsTab">
+                  <li class="${activeTab === 'paymentsTab' ? 'active' : ''}">
+                    <a data-toggle="tab" href="#paymentsTab" title="Shortcut (Ctrl + Alt + p)">
                       <span>Payments &nbsp</span>
-                      <button type="button" class="btn btn-default btn-circle" 
-                        disabled.bind="order.stage.allowedModifications | isModificationDisallowedTo:'payments':canAddPayment" 
+                      <button type="button" class="btn btn-default btn-circle" disabled.bind="isFullyPaid"
                         click.trigger="addPayment()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
                     </a>
-                  </li> -->
+                  </li>
                 </ul>
 
                 <div class="tab-content">
 
                   <!-- items -->
-                  <div id="itemsTab" class="tab-pane fade in active">
+                  <div id="itemsTab" class="tab-pane fade ${activeTab === 'itemsTab' ? 'in active' : ''}">
                     <br />
 
-                    <point-of-sale-item-page products.bind="products" items.bind="pointOfSale.items" order-id.bind="pointOfSale.id"
-                      pricing.bind="pointOfSale.pricing" is-modification-disallowed.bind="isSaleTendred">
+                    <point-of-sale-item-page products.bind="products" items.bind="pointOfSale.items"
+                      point-of-sale-id.bind="pointOfSale.id" pricing.bind="pointOfSale.pricing" discount-rate.bind="pointOfSale.discountRate"
+                      is-modification-disallowed.bind="isSaleTendered" payable.bind="payable">
                     </point-of-sale-item-page>
                   </div>
 
                   <!-- payment informations -->
-                  <!-- <div id="paymentsTab" class="tab-pane fade">
+                  <div id="paymentsTab" class="tab-pane fade ${activeTab === 'paymentsTab' ? 'in active' : ''} ">
                     <br />
 
-                    <order-payment-page 
-                      payment-types.bind="paymentTypes"
-                      payments.bind="order.payments" 
-                      order-id.bind="order.id"
-                      is-modification-disallowed.bind="order.stage.allowedModifications | isModificationDisallowedTo:'payments':canAddPayment">
-                    </order-payment-page>
-                  </div> -->
+                    <point-of-sale-payment-page payment-types.bind="paymentTypes" payments.bind="pointOfSale.payments"
+                      point-of-sale-id.bind="pointOfSale.id" is-modification-disallowed.bind="isFullyPaid" payable.bind="payable">
+                    </point-of-sale-payment-page>
+                  </div>
 
                 </div>
 

@@ -58,13 +58,6 @@ namespace AmpedBiz.Service.Host.Controllers
             return await _mediator.Send(request ?? new GetOrderReportPage.Request());
         }
 
-        [HttpPost()]
-        [Route("sales-report/page")]
-        public async Task<GetSalesReportPage.Response> Process([FromBody]GetSalesReportPage.Request request)
-        {
-            return await _mediator.Send(request ?? new GetSalesReportPage.Request());
-        }
-
         [HttpGet()]
         [Route("statuses")]
         public async Task<GetOrderStatusList.Response> Process([FromBody]GetOrderStatusList.Request request)
@@ -74,7 +67,7 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("status-lookups")]
-        public async Task<GetOrderStatusLookup.Response> Process([FromBody]GetOrderStatusLookup.Request request)
+        public async Task<GetOrderStatusLookup.Response> Process([FromUri]GetOrderStatusLookup.Request request)
         {
             return await _mediator.Send(request ?? new GetOrderStatusLookup.Request());
         }

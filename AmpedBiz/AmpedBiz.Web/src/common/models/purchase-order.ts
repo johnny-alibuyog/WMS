@@ -37,7 +37,7 @@ export enum PurchaseOrderAggregate {
   receipts = 3
 }
 
-export interface PurchaseOrder {
+export type PurchaseOrder = {
   id?: string;
   referenceNumber?: string;
   voucherNumber?: string;
@@ -72,7 +72,7 @@ export interface PurchaseOrder {
   stage?: StageDefinition<PurchaseOrderStatus, PurchaseOrderAggregate>;
 }
 
-export interface PurchaseOrderPageItem {
+export type PurchaseOrderPageItem = {
   id?: string;
   supplier?: string;
   status?: PurchaseOrderStatus;
@@ -85,7 +85,7 @@ export interface PurchaseOrderPageItem {
   total?: string;
 }
 
-export interface PurchaseOrderItem {
+export type PurchaseOrderItem = {
   id?: string;
   product?: Lookup<string>;
   unitOfMeasures?: UnitOfMeasure[];
@@ -95,7 +95,7 @@ export interface PurchaseOrderItem {
   totalCostAmount?: number;
 }
 
-export interface PurchaseOrderPayment {
+export type PurchaseOrderPayment = {
   id?: string;
   purchaseOrderId?: string;
   paidBy?: Lookup<string>;
@@ -104,7 +104,7 @@ export interface PurchaseOrderPayment {
   paymentType?: Lookup<string>;
 }
 
-export interface PurchaseOrderReceipt {
+export type PurchaseOrderReceipt = {
   id?: string;
   purchaseOrderId?: string;
   batchNumber?: string;
@@ -116,7 +116,7 @@ export interface PurchaseOrderReceipt {
   standard?: Measure;
 }
 
-export interface PurchaseOrderReceivable {
+export type PurchaseOrderReceivable = {
   purchaseOrderId?: string;
   product?: Lookup<string>;
   unitOfMeasures?: UnitOfMeasure[];
@@ -127,7 +127,7 @@ export interface PurchaseOrderReceivable {
   receiving: PurchaseOrderReceiving;
 }
 
-export interface PurchaseOrderReceiving {
+export type PurchaseOrderReceiving = {
   batchNumber?: string;
   receivedBy?: Lookup<string>;
   receivedOn?: Date;
@@ -136,7 +136,7 @@ export interface PurchaseOrderReceiving {
   standard?: Measure;
 }
 
-export interface PurchaseOrderPayable {
+export type PurchaseOrderPayable = {
   id?: string;
   purchaseOrderId?: string;
   paidOn?: Date;
@@ -152,7 +152,7 @@ export interface PurchaseOrderPayable {
   paymentAmount?: number;
 }
 
-export interface Voucher {
+export type Voucher = {
   id?: string;
   supplierName?: string;
   referenceNumber?: string;
@@ -167,7 +167,7 @@ export interface Voucher {
   items: VoucherItem[];
 }
 
-export interface VoucherItem {
+export type VoucherItem = {
   id?: string;
   product?: Lookup<string>;
   quantity?: Measure;
@@ -175,7 +175,7 @@ export interface VoucherItem {
   totalCostAmount?: number;
 }
 
-export interface PurchaseOrderReportPageItem {
+export type PurchaseOrderReportPageItem = {
   id?: string;
   createdOn?: Date;
   branchName?: string;

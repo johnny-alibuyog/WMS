@@ -19,13 +19,16 @@ namespace AmpedBiz.Core.Users
 
         public static readonly Role Salesclerk = new Role("S", "Salesclerk");
 
-        public static readonly Role Warehouseman = new Role("W", "Warehouseman");
+		public static readonly Role Cashier = new Role("C", "Cashier");
+
+		public static readonly Role Warehouseman = new Role("W", "Warehouseman");
 
         public static IEnumerable<Role> All = new [] 
         {
             Role.Admin,
             Role.Manger,
             Role.Salesclerk,
+			Role.Cashier,
             Role.Warehouseman
         };
     }

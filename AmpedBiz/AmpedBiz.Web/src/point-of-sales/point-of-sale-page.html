@@ -1,0 +1,132 @@
+<template>
+  <require from="common/controls/pager"></require>
+  <require from="./value-converters"></require>
+  <require from="./point-of-sale-page.css"></require>
+
+  <section class="row row-no-padding">
+
+    <div class="col-md-11">
+
+      <div class="panel panel-default">
+
+        <!-- heading -->
+        <div class="panel-heading">
+
+          <!-- heading label -->
+          <h4 class="panel-title row">
+            <span>&nbsp ${header} &nbsp</span>
+
+            <!-- create new -->
+            <button type="button" class="btn btn-default" click.delegate="create()">
+              <i class="fa fa-plus"></i> Create New
+            </button>
+
+            <!-- search -->
+            <form class="search-form form-horizontal pull-right" role="form" submit.delegate="filter.doFilter()">
+
+              <div class="search-form input">
+                <input type="text" class="form-control" placeholder="Invoice Number" value.bind="filter['invoiceNumber']"
+                  keyup.delegate="filter.doFilter() & debounce:400" />
+              </div>
+
+              <div class="search-form input">
+                <select class="form-control" value.bind="filter['createdBy']" change.delegate="filter.doFilter()">
+                  <option value="">All Users</option>
+                  <option repeat.for="item of users" model.bind="item.id">${item.name}</option>
+                </select>
+              </div>
+
+              <div class="search-form input">
+                <select class="form-control" value.bind="filter['supplier']" change.delegate="filter.doFilter()">
+                  <option value="">All Customers</option>
+                  <option repeat.for="item of customers" model.bind="item.id">${item.name}</option>
+                </select>
+              </div>
+
+              <div class="search-form input">
+                <button class="btn btn-default" type="submit">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+
+            </form>
+
+          </h4>
+
+        </div>
+
+        <!-- body -->
+        <div class="panel-body">
+
+          <!-- content -->
+          <div class="table-responsive">
+            <table class="table table-striped table-condensed table-hover">
+
+              <thead>
+                <tr>
+                  <th class="col-md-1">Action</th>
+                  <th class="col-md-2" click.delegate="sorter.doSort('invoiceNumber')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['invoiceNumber'])}"></i>Invoice
+                  </th>
+                  <th class="col-md-1" click.delegate="sorter.doSort('status')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['status'])}"></i>Status
+                  </th>
+                  <th class="col-md-1" click.delegate="sorter.doSort('tenderedOn')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['tenderedOn'])}"></i>Date
+                  </th>
+                  <th class="col-md-2" click.delegate="sorter.doSort('tenderedBy')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['tenderedBy'])}"></i>User
+                  </th>
+                  <th class="col-md-2" click.delegate="sorter.doSort('customer')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['customer'])}"></i>Customer
+                  </th>
+                  <th class="col-md-1 text-right" click.delegate="sorter.doSort('totalAmount')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['totalAmount'])}"></i>Total
+                  </th>
+                  <th class="col-md-1 text-right" click.delegate="sorter.doSort('paidAmount')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['paidAmount'])}"></i>Paid
+                  </th>
+                  <th class="col-md-1 text-right" click.delegate="sorter.doSort('balanceAmount')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['balanceAmount'])}"></i>Balance
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr repeat.for="item of pager.items" click.delegate="edit(item)">
+                  <td>
+                    <a href="javascript:undefined" class="text-info" click.delegate="edit(item)">
+                      <i class="fa fa-edit"></i>
+                    </a>
+                  </td>
+                  <td>${item.invoiceNumber}</td>
+                  <td>
+                      <div class="status-label ${item.status | statusToClass:true}" role="alert">
+                        ${item.status | lookupIdToName:statuses}
+                      </div>
+                    <!--${item.status | statusToDescription:$parent.statuses}-->
+                  </td>
+                  <td>${item.tenderedOn | dateFormat}</td>
+                  <td>${item.tenderedByName}</td>
+                  <td>${item.customerName}</td>
+                  <td class="text-right">${item.totalAmount | numberFormat}</td>
+                  <td class="text-right">${item.paidAmount | numberFormat}</td>
+                  <td class="text-right">${item.balanceAmount | numberFormat}</td>
+                </tr>
+              </tbody>
+
+            </table>
+          </div>
+
+          <!-- pager -->
+          <pager current-page.bind="pager.offset" total-items.bind="pager.count" change.delegate="pager.doPage($event)" />
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</template>

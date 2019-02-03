@@ -9,6 +9,7 @@ using AmpedBiz.Data.Helpers;
 using NHibernate;
 using NHibernate.Linq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AmpedBiz.Data.Seeders.DummyDataSeeders
@@ -59,10 +60,11 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 					{
 						Branch = session.Load<Branch>(context.BranchId),
 						Customer = _utils.Random<Customer>(),
-						Pricing = _utils.Random<Pricing>(),
+						Pricing = session.Load<Pricing>(Pricing.RetailPrice.Id),
+						DiscountRate = _utils.RandomDecimal(0.01M, 0.10M),
 						PaymentType = _utils.Random<PaymentType>(),
-						TendredBy = _utils.Random<User>(),
-						TendredOn = DateTime.Now.AddDays(_utils.RandomInteger(-36, -1)),
+						TenderedBy = _utils.Random<User>(),
+						TenderedOn = DateTime.Now.AddDays(_utils.RandomInteger(-36, -1)),
 						Items = products
 							.Take(randomProductCount)
 							.Select(x => new PointOfSaleItem(
@@ -73,20 +75,27 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 								),
 								discountRate: _utils.RandomDecimal(0.01M, 0.10M),
 								standard: x.StandardEquivalentMeasureOf(x.UnitOfMeasures.Standard(o => o.UnitOfMeasure)),
-								unitPrice: x.UnitOfMeasures.Standard(o => o.Prices.Wholesale())
+								unitPrice: x.UnitOfMeasures.Standard(o => o.Prices.Retail())
 							))
 							.ToList()
 					});
 
 					entity.Accept(new PointOfSaleUpdateVisitor()
 					{
-						Payments = Enumerable
-							  .Range(0, _utils.RandomInteger(1, 1))
-							  .Select(x => new PointOfSalePayment(
-								  paymentType: _utils.Random<PaymentType>(),
-								  payment: new Money(_utils.RandomInteger(1, (int)entity.Total.Amount), settings.DefaultCurrency)
-							  ))
-							  .ToList()
+						Payments = new Func<List<PointOfSalePayment>>(() =>
+						{
+							var result = new List<PointOfSalePayment>();
+							while (result.Sum(x => x.Payment) < entity.Total)
+							{
+								result.Add(new PointOfSalePayment(
+									paidOn: DateTime.Now,
+									paidTo: _utils.Random<User>(),
+									paymentType: _utils.Random<PaymentType>(),
+									payment: new Money(_utils.RandomInteger(1, (int)entity.Total.Amount), settings.DefaultCurrency)
+							  ));
+							}
+							return result;
+						})()
 					});
 
 					entity.EnsureValidity();

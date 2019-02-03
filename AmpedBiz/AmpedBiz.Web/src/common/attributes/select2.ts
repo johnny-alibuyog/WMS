@@ -1,10 +1,11 @@
 import { autoinject, bindable, bindingMode, customAttribute } from "aurelia-framework";
-import 'select2/css/select2.min.css!'
-
+//import 'select2/css/select2.min.css!'
+import * as $ from 'jquery';
+import 'select2/dist/css/select2.min.css!';
 //import { Element } from "protractor";
 // NOTE: a better implementation of this is in common/controls/select2
 
-declare var $;
+//declare var $;
 
 @autoinject()
 @customAttribute("select2")

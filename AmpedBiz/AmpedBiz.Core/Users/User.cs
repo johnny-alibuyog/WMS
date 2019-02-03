@@ -143,7 +143,7 @@ namespace AmpedBiz.Core.Users
             {
                 Street = "Salesclerk Street",
                 Barangay = "Salesclerk Ville",
-                City = "Amin City",
+                City = "Salesclerk City",
                 Province = "Salesclerk Province",
                 Region = "Salesclerk Region",
                 Country = "Salesclerk Country",
@@ -156,7 +156,33 @@ namespace AmpedBiz.Core.Users
             },
         };
 
-        public static User Warehouseman = new User(new Guid("{32E805A4-9F57-435F-A669-6B016F08F7A0}"))
+		public static User Cashier = new User(new Guid("{9E1B6723-F512-4D73-9517-53225885DB91}"))
+		{
+			Username = "cashier",
+			Person = new Person()
+			{
+				FirstName = "User",
+				LastName = "Cashier",
+				BirthDate = new DateTime(1999, 1, 1)
+			},
+			Address = new Address()
+			{
+				Street = "Cashier Street",
+				Barangay = "Cashier Ville",
+				City = "Cashier City",
+				Province = "Cashier Province",
+				Region = "Cashier Region",
+				Country = "Cashier Country",
+				ZipCode = "1870"
+			},
+			Branch = Branch.Default,
+			Roles = new Collection<Role>()
+			{
+				Role.Cashier
+			},
+		};
+
+		public static User Warehouseman = new User(new Guid("{32E805A4-9F57-435F-A669-6B016F08F7A0}"))
         {
             Username = "warehouseman",
             Person = new Person()
@@ -187,6 +213,7 @@ namespace AmpedBiz.Core.Users
             User.Admin,
             User.Manger,
             User.Salesclerk,
+			User.Cashier,
             User.Warehouseman,
         };
     }

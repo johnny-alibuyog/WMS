@@ -1,15 +1,11 @@
 /* https://gist.github.com/mujimu/c2da3ecb61f832bac9e0#file-select2-multiselect-js-L1 */
 
-import { bindable, inject, customElement } from 'aurelia-framework';
-//import jquery from 'bootstrap';
+import { bindable, customElement, autoinject, Binary } from 'aurelia-framework';
 import 'select2';
-import 'select2/css/select2.min.css!'
-import _ from 'lodash'
-
-declare var $;
+import * as $ from 'jquery';
 
 @customElement('select2')
-@inject(Element)
+@autoinject()
 export class Select2 {
   @bindable name = null;    // name/id of custom select
 
@@ -17,9 +13,11 @@ export class Select2 {
 
   @bindable options = [];   // array of options with id/name properties
 
-  @bindable placeholder = "";
+  @bindable focus: boolean = false;
 
-  @bindable allow_clear = false;
+  @bindable placeholder: string = "";
+
+  @bindable allow_clear: boolean = false;
 
   protected element: Element;
 
@@ -34,8 +32,8 @@ export class Select2 {
   }
 
   attached() {
-    var el = $(this.element).find('select');
-    var sel = el.select2();
+    let el = $(this.element).find('select');
+    let sel = el.select2();
 
     // preload selected values
     sel.val(this.selected).trigger('change');
@@ -49,7 +47,7 @@ export class Select2 {
       }
       // dispatch to raw select within the custom element
       // bubble it up to allow change handler on custom element
-      var notice = new Event('change', { bubbles: true });
+      var notice = new CustomEvent('change', { bubbles: true });
       $(el)[0].dispatchEvent(notice);
     });
 

@@ -21,7 +21,8 @@ namespace AmpedBiz.Core.Orders
         public OrderPayment() : base(default(Guid)) { }
 
         public OrderPayment(
-            DateTime? paidOn, User paidTo, 
+            DateTime? paidOn, 
+			User paidTo, 
             PaymentType paymentType, 
             Money payment,
             Money balance = null,

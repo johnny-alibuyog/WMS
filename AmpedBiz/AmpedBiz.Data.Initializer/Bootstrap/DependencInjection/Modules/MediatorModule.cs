@@ -74,17 +74,29 @@ namespace AmpedBiz.Data.Initializer.Bootstrap.DependencInjection.Modules
                 .As(typeof(IPipelineBehavior<,>))
                 .PropertiesAutowired();
 
-            builder.Register<SingleInstanceFactory>(context =>
+            builder
+              .RegisterType<Mediator>()
+              .As<IMediator>()
+              .InstancePerLifetimeScope();
+
+            // request & notification handlers
+            builder.Register<ServiceFactory>(context =>
             {
                 var c = context.Resolve<IComponentContext>();
                 return t => c.Resolve(t);
             });
 
-            builder.Register<MultiInstanceFactory>(context =>
-            {
-                var c = context.Resolve<IComponentContext>();
-                return t => (IEnumerable<object>)c.Resolve(typeof(IEnumerable<>).MakeGenericType(t));
-            });
+            //builder.Register<SingleInstanceFactory>(context =>
+            //{
+            //    var c = context.Resolve<IComponentContext>();
+            //    return t => c.Resolve(t);
+            //});
+
+            //builder.Register<MultiInstanceFactory>(context =>
+            //{
+            //    var c = context.Resolve<IComponentContext>();
+            //    return t => (IEnumerable<object>)c.Resolve(typeof(IEnumerable<>).MakeGenericType(t));
+            //});
         }
     }
 }

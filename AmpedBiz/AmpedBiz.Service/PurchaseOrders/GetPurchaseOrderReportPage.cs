@@ -150,7 +150,8 @@ namespace AmpedBiz.Service.PurchaseOrders
 								x.ApprovedBy.Person.LastName,
 							Status = x.Status.As<Dto.PurchaseOrderStatus>(),
 							TotalAmount = x.Total != null ? x.Total.Amount : 0M,
-							PaidAmount = x.Paid != null ? x.Paid.Amount : 0M
+							PaidAmount = x.Paid != null ? x.Paid.Amount : 0M,
+							BalanceAmount = x.Balance != null ? x.Balance.Amount : 0M,
 						})
 						.Skip(message.Pager.SkipCount)
 						.Take(message.Pager.Size)

@@ -1,3 +1,4 @@
+import { PLATFORM } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router'
 
 import { AuthSettings } from "../../services/auth-service";
@@ -13,7 +14,7 @@ export class Index {
       {
         route: ['info'],
         name: 'info',
-        moduleId: './info',
+        moduleId: PLATFORM.moduleName('./info'),
         nav: true,
         title: 'Info',
         settings: {
@@ -25,7 +26,7 @@ export class Index {
       {
         route: ['address'],
         name: 'address',
-        moduleId: './address',
+        moduleId: PLATFORM.moduleName('./address'),
         nav: true,
         title: 'Address',
         settings: {
@@ -37,7 +38,7 @@ export class Index {
       {
         route: ['change-password'],
         name: 'change-password',
-        moduleId: './change-password',
+        moduleId: PLATFORM.moduleName('./change-password'),
         nav: true,
         title: 'Change Password',
         settings: {

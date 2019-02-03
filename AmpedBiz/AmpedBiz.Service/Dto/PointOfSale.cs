@@ -5,6 +5,13 @@ using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Service.Dto
 {
+	public enum PointOfSaleStatus
+	{
+		UnPaid = 1,
+		PartiallyPaid = 2,
+		FullyPaid = 3,
+	}
+
 	public class PointOfSale
 	{
 		public Guid Id { get; set; }
@@ -19,15 +26,21 @@ namespace AmpedBiz.Service.Dto
 
 		public Lookup<string> PaymentType { get; set; }
 
-		public Lookup<Guid> TendredBy { get; set; }
+		public Lookup<Guid> TenderedBy { get; set; }
 
-		public DateTime TendredOn { get; set; }
+		public DateTime TenderedOn { get; set; }
+
+		public decimal DiscountRate { get; set; }
 
 		public decimal DiscountAmount { get; set; }
 
 		public decimal SubTotalAmount { get; set; }
 
 		public decimal TotalAmount { get; set; }
+
+		public decimal ReceivedAmount { get; set; }
+
+		public decimal ChangeAmount { get; set; }
 
 		public decimal PaidAmount { get; set; }
 
@@ -39,9 +52,11 @@ namespace AmpedBiz.Service.Dto
 
 		public Lookup<Guid> ModifiedBy { get; set; }
 
-		public virtual ICollection<PointOfSaleItem> Items { get; set; } = new Collection<PointOfSaleItem>();
+		public PointOfSaleStatus Status { get; set; }
 
-		public virtual ICollection<PointOfSalePayment> Payments { get; set; } = new Collection<PointOfSalePayment>();
+		public virtual IEnumerable<PointOfSaleItem> Items { get; set; } = new Collection<PointOfSaleItem>();
+
+		public virtual IEnumerable<PointOfSalePayment> Payments { get; set; } = new Collection<PointOfSalePayment>();
 	}
 
 	public class PointOfSalePageItem
@@ -56,10 +71,22 @@ namespace AmpedBiz.Service.Dto
 
 		public string CustomerName { get; set; }
 
+		public PointOfSaleStatus Status { get; set; }
+
+		public decimal? DiscountRate { get; set; }
+
 		public decimal? DiscountAmount { get; set; }
 
 		public decimal? SubTotalAmount { get; set; }
 
 		public decimal? TotalAmount { get; set; }
+
+		public decimal? ReceivedAmount { get; set; }
+
+		public decimal? ChangeAmount { get; set; }
+
+		public decimal? PaidAmount { get; set; }
+
+		public decimal? BalanceAmount { get; set; }
 	}
 }

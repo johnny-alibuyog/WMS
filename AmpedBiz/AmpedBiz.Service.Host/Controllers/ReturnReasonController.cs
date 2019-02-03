@@ -38,7 +38,7 @@ namespace AmpedBiz.Service.Host.Controllers
 
         [HttpGet()]
         [Route("~/return-reason-lookups")]
-        public async Task<GetReturnReasonLookup.Response> Process([FromBody]GetReturnReasonLookup.Request request)
+        public async Task<GetReturnReasonLookup.Response> Process([FromUri]GetReturnReasonLookup.Request request)
         {
             return await _mediator.Send(request ?? new GetReturnReasonLookup.Request());
         }

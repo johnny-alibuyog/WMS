@@ -16,11 +16,11 @@
 
             <!-- transition buttons -->
             <button show.bind="isEdit" type="button" class="btn btn-default" click.trigger="save()">
-              <i class="fa fa-check"></i> Save
+              <i class="fa fa-save"></i> Save
             </button>
 
             <button type="button" class="btn btn-default" click.trigger="toggleEdit()">
-              <i class="fa fa-times"></i> ${isEdit ? "Cancel" : "Edit"}
+              <i class="fa fa-trash"></i> ${isEdit ? "Cancel" : "Edit"}
             </button>
           </h4>
 

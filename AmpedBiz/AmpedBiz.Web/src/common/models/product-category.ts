@@ -1,9 +1,9 @@
-export interface ProductCategory {
+export type ProductCategory = {
   id?: string;
   name?: string;
 }
 
-export interface ProductCategoryPageItem {
+export type ProductCategoryPageItem = {
   id?: string;
   name?: string;
 }

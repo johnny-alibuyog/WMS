@@ -966,8 +966,8 @@ namespace AmpedBiz.Tests.IntegrationTests
 					Customer = this.RandomCustomer(),
 					Pricing = this.RandomPricing(),
 					PaymentType = this.RandomPaymentType(),
-					TendredBy = this.RandomUser(),
-					TendredOn = DateTime.Now,
+					TenderedBy = this.RandomUser(),
+					TenderedOn = DateTime.Now,
 					CreatedBy = this.RandomUser(),
 					CreatedOn = DateTime.Now,
 				});

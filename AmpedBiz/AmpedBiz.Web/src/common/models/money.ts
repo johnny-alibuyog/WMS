@@ -1,6 +1,6 @@
 import { Currency } from "./currency";
 
-export interface Money {
+export type Money = {
   currency?: Currency;
   amount?: number;
 }

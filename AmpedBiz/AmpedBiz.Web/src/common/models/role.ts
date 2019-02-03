@@ -17,6 +17,10 @@ export const role = {
     id: 'S',
     name: 'Salesclerk'
   },
+  cashier: <Role>{
+    id: 'C',
+    name: 'Cashier'
+  },
   warehouseman: <Role>{
     id: 'W',
     name: 'Warehouseman'

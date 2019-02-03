@@ -37,6 +37,7 @@ namespace AmpedBiz.Service.Branches
 				using (var transaction = session.BeginTransaction())
 				{
 					var entities = session.Query<Branch>().Cacheable().ToList();
+
 					var dtos = entities.MapTo(default(List<Dto.Branch>));
 
 					response = new Response(dtos);

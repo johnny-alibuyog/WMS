@@ -9,11 +9,13 @@ using AmpedBiz.Core.Settings;
 using AmpedBiz.Data.Context;
 using Humanizer;
 using LinqToExcel;
+using LinqToExcel.Attributes;
 using LinqToExcel.Query;
 using NHibernate;
 using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -21,456 +23,464 @@ using System.Reflection;
 
 namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 {
-	public class _021_1_ProductSeeder : IDefaultDataSeeder
-	{
-		private readonly IContextProvider _contextProvider;
-		private readonly ISessionFactory _sessionFactory;
+    public class _021_1_ProductSeeder : IDefaultDataSeeder
+    {
+        private readonly IContextProvider _contextProvider;
+        private readonly ISessionFactory _sessionFactory;
 
-		public _021_1_ProductSeeder(IContextProvider contextProvider, ISessionFactory sessionFactory)
-		{
-			this._contextProvider = contextProvider;
-			this._sessionFactory = sessionFactory;
-		}
+        public _021_1_ProductSeeder(IContextProvider contextProvider, ISessionFactory sessionFactory)
+        {
+            this._contextProvider = contextProvider;
+            this._sessionFactory = sessionFactory;
+        }
 
-		public bool IsSourceExternalFile => true;
+        public bool IsSourceExternalFile => true;
 
-		public void Seed()
-		{
-			var context = this._contextProvider.Build();
+        public void Seed()
+        {
+            var context = this._contextProvider.Build();
 
-			var filename = Path.Combine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath, context.TenantId, @"products.xlsx");
+            var rawProducts = context.ExtractRawProducts();
 
-			if (!File.Exists(filename))
-				return;
+            if (rawProducts != null && !rawProducts.Any())
+            {
+                return;
+            }
 
-			var rawProducts = new ExcelQueryFactory(filename).Worksheet().ExtractRawProducts();
+            using (var session = this._sessionFactory.RetrieveSharedSession(context))
+            using (var transaction = session.BeginTransaction())
+            {
+                session.SetBatchSize(100);
 
-			using (var session = this._sessionFactory.RetrieveSharedSession(context))
-			using (var transaction = session.BeginTransaction())
-			{
-				session.SetBatchSize(100);
+                var exists = session.Query<Product>().Any();
 
-				var exists = session.Query<Product>().Any();
+                if (!exists)
+                {
+                    var lookup = new
+                    {
+                        Pricings = session.Query<Pricing>().Cacheable().ToList().ToDictionary(x => x.Id, x => x),
+                        Categories = session.Query<ProductCategory>().Cacheable().ToList().ToDictionary(x => x.Id, x => x),
+                        UnitOfMeasures = session.Query<UnitOfMeasure>().Cacheable().ToList().ToDictionary(x => x.Name, x => x)
+                    };
 
-				if (!exists)
-				{
-					var lookup = new
-					{
-						Pricings = session.Query<Pricing>().Cacheable().ToList().ToDictionary(x => x.Id, x => x),
-						Categories = session.Query<ProductCategory>().Cacheable().ToList().ToDictionary(x => x.Id, x => x),
-						UnitOfMeasures = session.Query<UnitOfMeasure>().Cacheable().ToList().ToDictionary(x => x.Name, x => x)
-					};
+                    var currencySettings = session.Query<Setting<CurrencySetting>>().Cacheable().First();
 
-					var currencySettings = session.Query<Setting<CurrencySetting>>().Cacheable().First();
+                    // TODO: Think of better way to included the supplier from the product.
+                    //       One option is to name the product seeding source with the supplier id (default_products-SMIS.xlsx)
+                    // NOTE: (2018-08-19) Products should have multiple suppliers. 
+                    //       Options:
+                    //       1. Product.Supplier relation should be removed
+                    //       2. create many-to-many relationship between Products and Suppliers
+                    var defaults = new
+                    {
+                        Currency = session.Load<Currency>(currencySettings.Value.DefaultCurrencyId),
+                        Supplier = session.Query<Supplier>().FirstOrDefault(),
+                        Branch = session.Load<Branch>(context.BranchId),
+                    };
 
-					// TODO: Think of better way to included the supplier from the product.
-					//       One option is to name the product seeding source with the supplier id (default_products-SMIS.xlsx)
-					// NOTE: (2018-08-19) Products should have multiple suppliers. 
-					//       Options:
-					//       1. Product.Supplier relation should be removed
-					//       2. create many-to-many relationship between Products and Suppliers
-					var defaults = new
-					{
-						Currency = session.Load<Currency>(currencySettings.Value.DefaultCurrencyId),
-						Supplier = session.Query<Supplier>().FirstOrDefault(),
-						Branch = session.Load<Branch>(context.BranchId),
-					};
+                    // products
+                    rawProducts.ForEach(rawProduct =>
+                    {
+                        var product = rawProduct.ExtractProduct(
+                            branch: defaults.Branch,
+                            supplier: defaults.Supplier,
+                            currency: defaults.Currency,
+                            pricingLookup: lookup.Pricings,
+                            categoryLookup: lookup.Categories,
+                            unitOfMeasureLookup: lookup.UnitOfMeasures
+                        );
 
-					// products
-					rawProducts.ForEach(rawProduct =>
-					{
-						var product = rawProduct.ExtractProduct(
-							branch: defaults.Branch,
-							supplier: defaults.Supplier,
-							currency: defaults.Currency,
-							pricingLookup: lookup.Pricings,
-							categoryLookup: lookup.Categories,
-							unitOfMeasureLookup: lookup.UnitOfMeasures
-						);
-						var inventory = new Inventory(defaults.Branch, product);
+                        var inventory = new Inventory(defaults.Branch, product);
 
-						inventory.Accept(new InventoryUpdateVisitor()
-						{
-							Branch = defaults.Branch,
-							Product = product,
-							InitialLevel = rawProduct.ExtractInventoryInitialLevel(product),
-							TargetLevel = rawProduct.ExtractInventoryTargetLevel(product),
-							ReorderLevel = rawProduct.ExtractInventoryReorderLevel(product),
-							MinimumReorderQuantity = rawProduct.ExtractInventoryMinimumReorderQuantity(product),
-						});
+                        inventory.Accept(new InventoryUpdateVisitor()
+                        {
+                            Branch = defaults.Branch,
+                            Product = product,
+                            InitialLevel = rawProduct.ExtractInventoryInitialLevel(product),
+                            TargetLevel = rawProduct.ExtractInventoryTargetLevel(product),
+                            ReorderLevel = rawProduct.ExtractInventoryReorderLevel(product),
+                            MinimumReorderQuantity = rawProduct.ExtractInventoryMinimumReorderQuantity(product),
+                        });
 
-						product.EnsureValidity();
+                        product.EnsureValidity();
 
-						inventory.EnsureValidity();
+                        inventory.EnsureValidity();
 
-						session.Save(inventory);
+                        session.Save(inventory);
 
-						session.Save(product);
-					});
-				}
+                        session.Save(product);
+                    });
+                }
 
-				transaction.Commit();
-				_sessionFactory.ReleaseSharedSession();
-			}
-		}
-	}
+                transaction.Commit();
 
-	internal class ProductImportModel
-	{
-		public string ProductName { get; private set; }
+                _sessionFactory.ReleaseSharedSession();
+            }
+        }
+    }
 
-		public string PieceUOM { get; private set; }
+    internal class ProductImportModel : IContainsUnmappedCells
+    {
+        [ExcelColumn("Product Name")]
+        public string ProductName { get; set; }
 
-		public string PackageUOM { get; private set; }
+        [ExcelColumn("Standard UOM (Piece)")]
+        public string StandardUOM { get; set; }
 
-		public double InitialLevel { get; private set; }
+        [ExcelColumn("Standard Barcode (Piece)")]
+        public string StandardBardcode { get; set; }
 
-		public double TargetLevel { get; private set; }
+        [ExcelColumn("Default UOM (Pack)")]
+        public string DefaultUOM { get; set; }
 
-		public double ReorderLevel { get; private set; }
+        [ExcelColumn("Default Barcode (Pack)")]
+        public string DefaultBarcode { get; set; }
 
-		public double MinimumReorderQuantity { get; private set; }
+        [ExcelColumn("Piece Per Pack")]
+        public double PiecePerPack { get; set; }
 
-		public double PiecePerPackage { get; private set; }
+        [ExcelColumn("Size")]
+        public string Size { get; set; }
 
-		public string Size { get; private set; }
+        [ExcelColumn("Category")]
+        public string Category { get; set; }
 
-		public double CostPricePerPiece { get; private set; }
+        public IDictionary<string, Cell> UnmappedCells { get; } = new Dictionary<string, Cell>();
 
-		public double CostPricePerPackage { get; private set; }
+        public static Func<KeyValuePair<string, Cell>, bool> IsCellProductHasPrice =
+            (item) => new[] { '/', '(', ')' }.All(x => item.Key.Contains(x)) && item.Value.Cast<double>() > 0;
 
-		public double WholesalePricePerPiece { get; private set; }
+        public static Func<string, bool> IsStandard =
+            (standardEquivalent) => standardEquivalent.IsEqualTo("standard");
 
-		public double WholesalePricePerPackage { get; private set; }
+        public static Func<string, ProductImportModel, bool> IsDefault = (standardEquivalent, product) =>
+            standardEquivalent.IsEqualTo("default") ||
+            (
+                IsStandard(standardEquivalent) &&
+                product.DefaultUOM.IsNullOrWhiteSpace() &&
+                product.PiecePerPack.IsNullOrDefault()
+            );
+    }
 
-		public double SuggestedRetailPrice { get; private set; }
+    internal static class ProductImportModelExtention
+    {
+        //public static void MapValueOf<TSource, TProperty>(this TSource target, Row row, Expression<Func<TSource, TProperty>> selector)
+        //{
+        //    var memberExpression = selector.Body as MemberExpression;
+        //    var property = memberExpression.Member as PropertyInfo;
+        //    var columnName = property.Name.Humanize(LetterCasing.Title);
+        //    var value = row[columnName].Cast<TProperty>();
+        //    property.SetValue(target, value, null);
+        //}
 
-		public string IndividualBarcode { get; private set; }
+        public static IReadOnlyCollection<ProductImportModel> ExtractRawProducts(this IContext context)
+        {
+            var filename = Path.Combine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath, context.TenantId, @"products.xlsx");
 
-		public string PackagingBarcode { get; private set; }
+            if (!File.Exists(filename))
+                return Enumerable.Empty<ProductImportModel>().ToList().AsReadOnly();
 
-		public string Category { get; private set; }
+            var excel = new ExcelQueryFactory()
+            {
+                FileName = filename,
+                ReadOnly = true,
+                TrimSpaces = TrimSpacesType.Both,
+                StrictMapping = StrictMappingType.None,
+            };
 
-		private ProductImportModel(Row row)
-		{
-			this.MapValueOf(row, to => to.ProductName);
-			this.MapValueOf(row, to => to.PieceUOM);
-			this.MapValueOf(row, to => to.PackageUOM);
-			this.MapValueOf(row, to => to.InitialLevel);
-			this.MapValueOf(row, to => to.TargetLevel);
-			this.MapValueOf(row, to => to.ReorderLevel);
-			this.MapValueOf(row, to => to.MinimumReorderQuantity);
-			this.MapValueOf(row, to => to.PiecePerPackage);
-			this.MapValueOf(row, to => to.Size);
-			this.MapValueOf(row, to => to.CostPricePerPiece);
-			this.MapValueOf(row, to => to.CostPricePerPackage);
-			this.MapValueOf(row, to => to.WholesalePricePerPiece);
-			this.MapValueOf(row, to => to.WholesalePricePerPackage);
-			this.MapValueOf(row, to => to.SuggestedRetailPrice);
-			this.MapValueOf(row, to => to.IndividualBarcode);
-			this.MapValueOf(row, to => to.PackagingBarcode);
-			this.MapValueOf(row, to => to.Category);
-		}
+            return excel
+                .Worksheet<ProductImportModel>()
+                .Where(x =>
+                    x.ProductName != null &&
+                    x.ProductName != string.Empty
+                )
+                .ToList();
+        }
 
-		public static ProductImportModel Map(Row row)
-		{
-			var item = new ProductImportModel(row);
+        public static IReadOnlyCollection<ProductCategory> ExtractProductCategories(this IEnumerable<ProductImportModel> items)
+        {
+            return items
+                .Where(x => !string.IsNullOrWhiteSpace(x.Category))
+                .Select(x => new ProductCategory(
+                    id: x.Category.Titleize(),
+                    name: x.Category.Titleize()
+                ))
+                .Distinct()
+                .ToList()
+                .AsReadOnly();
+        }
 
-			if (string.IsNullOrWhiteSpace(item.ProductName))
-				return null;
+        public static IReadOnlyCollection<UnitOfMeasure> ExtractUnitOfMeasures(this IEnumerable<ProductImportModel> items)
+        {
+            return (
+                    items.Select(x => x.StandardUOM)
+                )
+                .Union(
+                    items.Select(x => x.DefaultUOM)
+                )
+                .Distinct()
+                .Where(x => !x.IsNullOrWhiteSpace())
+                .Select(x => new UnitOfMeasure(
+                    id: x.ToLowerInvariant(),
+                    name: x.Titleize()
+                ))
+                .ToList();
+        }
 
-			return item;
-		}
-	}
+        public static IReadOnlyCollection<Product> ExtractProducts(
+            this IEnumerable<ProductImportModel> rawProducts,
+            Branch branch,
+            Supplier supplier,
+            Currency currency,
+            IDictionary<string, Pricing> pricingLookup,
+            IDictionary<string, ProductCategory> categoryLookup,
+            IDictionary<string, UnitOfMeasure> unitOfMeasureLookup
+        )
+        {
+            return rawProducts
+                .Select(Map)
+                .ToList()
+                .AsReadOnly();
 
-	internal static class ProductImportModelExtention
-	{
-		public static void MapValueOf<TSource, TProperty>(this TSource target, Row row, Expression<Func<TSource, TProperty>> selector)
-		{
-			var memberExpression = selector.Body as MemberExpression;
-			var property = memberExpression.Member as PropertyInfo;
-			var columnName = property.Name.Humanize(LetterCasing.Title);
-			var value = row[columnName].Cast<TProperty>();
-			property.SetValue(target, value, null);
-		}
+            Product Map(ProductImportModel x) => x.ExtractProduct(
+                branch: branch,
+                supplier: supplier,
+                currency: currency,
+                pricingLookup: pricingLookup,
+                categoryLookup: categoryLookup,
+                unitOfMeasureLookup: unitOfMeasureLookup
+            );
+        }
 
-		public static IReadOnlyCollection<ProductCategory> ExtractProductCategories(this IEnumerable<ProductImportModel> items)
-		{
-			return items
-				.Where(x => !string.IsNullOrWhiteSpace(x.Category))
-				.Select(x => new ProductCategory(
-					id: x.Category.Titleize(),
-					name: x.Category.Titleize()
-				))
-				.Distinct()
-				.ToList()
-				.AsReadOnly();
-		}
+        public static Product ExtractProduct(
+            this ProductImportModel importModel,
+            Branch branch,
+            Supplier supplier,
+            Currency currency,
+            IDictionary<string, Pricing> pricingLookup,
+            IDictionary<string, ProductCategory> categoryLookup,
+            IDictionary<string, UnitOfMeasure> unitOfMeasureLookup
+        )
+        {
+            var product = new Product();
 
-		public static IReadOnlyCollection<ProductImportModel> ExtractRawProducts(this ExcelQueryable<Row> rows)
-		{
-			//Console.WriteLine("=========================================================================");
-			//Console.WriteLine(string.Join(", ", rows.FirstOrDefault()?.ColumnNames));
-			//Console.WriteLine("=========================================================================");
+            product.Accept(new ProductUpdateVisitor()
+            {
+                Code = importModel.ProductName,
+                Name = importModel.ProductName,
+                Supplier = supplier,
+                Category = categoryLookup
+                    .GetValueOrDefault(
+                        importModel.Category
+                            .EnsureExistence($"Produc {importModel.Category} requires category.")
+                            .Titleize()
+                    )
+                    .EnsureExistence(
+                        $"{nameof(importModel.Category)} {importModel.Category.Titleize()} for " +
+                        $"{importModel.ProductName} does not exists in database."
+                    ),
+                UnitOfMeasures = MapUnitOfMeasuresFrom(importModel)
+            });
 
-			return rows
-				.Select(ProductImportModel.Map)
-				.Where(x => !x.IsNullOrDefault())
-				.ToList()
-				.AsReadOnly();
-		}
+            return product;
 
-		public static Product ExtractProduct(
-			this ProductImportModel x,
-			Branch branch,
-			Supplier supplier,
-			Currency currency,
-			IDictionary<string, Pricing> pricingLookup,
-			IDictionary<string, ProductCategory> categoryLookup,
-			IDictionary<string, UnitOfMeasure> unitOfMeasureLookup
-		)
-		{
-			var product = new Product();
-			product.Accept(new ProductUpdateVisitor()
-			{
-				Code = x.ProductName,
-				Name = x.ProductName,
-				Supplier = supplier,
-				Category = categoryLookup
-					.GetValueOrDefault(x.Category.Titleize())
-					.EnsureExistence($"{nameof(x.Category)} {x.Category.Titleize()} for {x.ProductName} does not exists in database."),
-				UnitOfMeasures = new List<ProductUnitOfMeasure>()
-					.AddIfHasValue(x.ExtractIndividualProductUnitOfMeasure(
-						branch: branch,
-						supplier: supplier,
-						currency: currency,
-						pricingLookup: pricingLookup,
-						unitOfMeasureLookup: unitOfMeasureLookup
-					))
-					.AddIfHasValue(x.ExtractPackageProductUnitOfMeasure(
-						branch: branch,
-						supplier: supplier,
-						currency: currency,
-						pricingLookup: pricingLookup,
-						unitOfMeasureLookup: unitOfMeasureLookup
-					))
-			});
-			return product;
-		}
+            IReadOnlyCollection<ProductUnitOfMeasure> MapUnitOfMeasuresFrom(ProductImportModel model)
+            {
+                return model.ExtractProductUnitOfMeasures(
+                    branch: branch,
+                    supplier: supplier,
+                    currency: currency,
+                    pricingLookup: pricingLookup,
+                    unitOfMeasureLookup: unitOfMeasureLookup
+                );
+            }
+        }
 
-		public static IReadOnlyCollection<Product> ExtractProducts(
-			this IEnumerable<ProductImportModel> rawProducts,
-			Branch branch,
-			Supplier supplier,
-			Currency currency,
-			IDictionary<string, Pricing> pricingLookup,
-			IDictionary<string, ProductCategory> categoryLookup,
-			IDictionary<string, UnitOfMeasure> unitOfMeasureLookup
-		)
-		{
-			return rawProducts
-				.Select(x =>
-					x.ExtractProduct(
-						branch: branch,
-						supplier: supplier,
-						currency: currency,
-						pricingLookup: pricingLookup,
-						categoryLookup: categoryLookup,
-						unitOfMeasureLookup: unitOfMeasureLookup
-					)
-				)
-				.ToList()
-				.AsReadOnly();
-		}
-
-		public static ProductUnitOfMeasure ExtractIndividualProductUnitOfMeasure(
-			this ProductImportModel instance,
-			Branch branch,
-			Supplier supplier,
-			Currency currency,
-			IDictionary<string, Pricing> pricingLookup,
-			IDictionary<string, UnitOfMeasure> unitOfMeasureLookup
-		)
-		{
-			return new ProductUnitOfMeasure(
-				size: instance.Size,
-				barcode: instance.IndividualBarcode,
-				isDefault: string.IsNullOrWhiteSpace(instance.PackageUOM), //false,
-				isStandard: true,
-				standardEquivalentValue: 1M,
-				unitOfMeasure: unitOfMeasureLookup
-					.GetValueOrDefault(instance.PieceUOM)
-					.EnsureExistence($"{nameof(instance.PieceUOM).Humanize(LetterCasing.Title)} for {instance.ProductName} should contain value."),
-				prices: new List<ProductUnitOfMeasurePrice>()
-				{
-						new ProductUnitOfMeasurePrice(
-                            //branch: defaults.Branch,
-                            pricing: pricingLookup[Pricing.BasePrice.Id],
-							price: new Money(
-								currency: currency,
-								amount: Convert.ToDecimal(instance.CostPricePerPiece)
-							)
-						),
-						new ProductUnitOfMeasurePrice(
-                            //branch: defaults.Branch,
-                            pricing: pricingLookup[Pricing.WholesalePrice.Id],
-							price: new Money(
-								currency: currency,
-								amount:  Convert.ToDecimal(instance.WholesalePricePerPiece)
-							)
-						),
-						new ProductUnitOfMeasurePrice(
-                            //branch: defaults.Branch,
-                            pricing: pricingLookup[Pricing.RetailPrice.Id],
-							price: new Money(
-								currency: currency,
-								amount:  Convert.ToDecimal(instance.SuggestedRetailPrice)
-							)
-						),
-						new ProductUnitOfMeasurePrice(
-                            //branch: defaults.Branch,
-                            pricing: pricingLookup[Pricing.SuggestedRetailPrice.Id],
-							price: new Money(
-								currency: currency,
-								amount:  0M //Convert.ToDecimal(instance.SuggestedRetailPrice)
+        private static IReadOnlyCollection<ProductUnitOfMeasure> ExtractProductUnitOfMeasures(
+            this ProductImportModel product,
+            Branch branch,
+            Supplier supplier,
+            Currency currency,
+            IDictionary<string, Pricing> pricingLookup,
+            IDictionary<string, UnitOfMeasure> unitOfMeasureLookup)
+        {
+            var result = product.UnmappedCells
+                .Where(ProductImportModel.IsCellProductHasPrice)
+                .Select(x => new
+                {
+                    Segments = ParseKeySegments(x.Key),
+                    Amount = x.Value.Cast<decimal>()
+                })
+                .GroupBy(x => new
+                {
+                    Unit = x.Segments.Unit,
+                    StandardEquivalent = x.Segments.StandardEquivalent,
+                    IsStandard = x.Segments.IsStandard,
+                    IsDefault = x.Segments.IsDefault
+                })
+                .Select(group =>
+                    new ProductUnitOfMeasure(
+                        size: product.Size,
+                        barcode:
+                            (group.Key.IsStandard) ? product.StandardBardcode :
+                            (group.Key.IsDefault) ? product.DefaultBarcode : (string)null,
+                        isStandard: group.Key.IsStandard,
+                        isDefault: group.Key.IsDefault,
+                        standardEquivalentValue: (decimal)group.Key.StandardEquivalent,
+                        unitOfMeasure: group.Key.Unit,
+                        prices: pricingLookup
+                            .Select(x =>
+                                new ProductUnitOfMeasurePrice(
+                                    //branck: branch, TODO: this sould be branch specific
+                                    pricing: x.Value,
+                                    price: new Money(
+                                        currency: currency,
+                                        amount: group
+                                            .Where(o => o.Segments.Pricing == x.Value)
+                                            .Select(o => o.Amount)
+                                            .FirstOrDefault()
+                                    )
+                                )
                             )
-						),
-						new ProductUnitOfMeasurePrice(
-                            //branch: defaults.Branch,
-                            pricing: pricingLookup[Pricing.BadStockPrice.Id],
-							price: new Money(
-								currency: currency,
-								amount:  0M
-							)
-						),
-				}
-			);
-		}
+                            .ToList()
+                    )
+                )
+                .ToList();
 
-		public static ProductUnitOfMeasure ExtractPackageProductUnitOfMeasure(
-			this ProductImportModel instance,
-			Branch branch,
-			Supplier supplier,
-			Currency currency,
-			IDictionary<string, Pricing> pricingLookup,
-			IDictionary<string, UnitOfMeasure> unitOfMeasureLookup
-		)
-		{
-			// NOTE: Package UOM is opional. There is a product that is purchased and sold as one unit only.
-			if (string.IsNullOrEmpty(instance.PackageUOM))
-			{
-				return null;
-			}
+            return result;
 
-			return new ProductUnitOfMeasure(
-				size: string.Empty,
-				barcode: instance.PackagingBarcode,
-				isDefault: true,
-				isStandard: false,
-				standardEquivalentValue: Convert.ToDecimal(instance.PiecePerPackage),
-				unitOfMeasure: unitOfMeasureLookup.GetValueOrDefault(instance.PackageUOM),
-				prices: new List<ProductUnitOfMeasurePrice>()
-				{
-						new ProductUnitOfMeasurePrice(
-                            //branch: defaults.Branch,
-                            pricing: pricingLookup[Pricing.BasePrice.Id],
-							price: new Money(
-								currency: currency,
-								amount:  Convert.ToDecimal(instance.CostPricePerPackage)
-							)
-						),
-						new ProductUnitOfMeasurePrice(
-                            //branch: defaults.Branch,
-                            pricing: pricingLookup[Pricing.WholesalePrice.Id],
-							price: new Money(
-								currency: currency,
-								amount:  Convert.ToDecimal(instance.WholesalePricePerPackage)
-							)
-						),
-						new ProductUnitOfMeasurePrice(
-                            //branch: sdefaults.Branch,
-                            pricing: pricingLookup[Pricing.RetailPrice.Id],
-							price: new Money(
-								currency: currency,
-								amount:  0M
-							)
-						),
-						new ProductUnitOfMeasurePrice(
-                            //branch: defaults.Branch,
-                            pricing: pricingLookup[Pricing.SuggestedRetailPrice.Id],
-							price: new Money(
-								currency: currency,
-								amount:  0M
-							)
-						),
-						new ProductUnitOfMeasurePrice(
-                            //branch: defaults.Branch,
-                            pricing: pricingLookup[Pricing.BadStockPrice.Id],
-							price: new Money(
-								currency: currency,
-								amount:  0M
-							)
-						),
-				}
-			);
-		}
+            (
+                Pricing Pricing,
+                UnitOfMeasure Unit,
+                decimal StandardEquivalent,
+                bool IsStandard,
+                bool IsDefault
+            ) ParseKeySegments(string key)
+            {
+                var parts = key
+                    .Split('/', '(')
+                    .Select(x => x
+                        .Replace(")", string.Empty)
+                        .Trim()
+                    )
+                    .ToArray();
 
-		public static IReadOnlyCollection<UnitOfMeasure> ExtractUnitOfMeasures(this IEnumerable<ProductImportModel> item)
-		{
-			return item.SelectMany(ExtractUnitOfMeasures).ToList().AsReadOnly();
-		}
+                return (
+                    Pricing: pricingLookup
+                        .Where(x =>
+                            x.Key.IsEqualTo(parts[0]) ||
+                            x.Value.Id.IsEqualTo(parts[0]) ||
+                            x.Value.Name.IsEqualTo(parts[0])
+                        )
+                        .Select(x => x.Value)
+                        .FirstOrDefault()
+                        .EnsureExistence(
+                            $"Product {product.ProductName} has pricing " +
+                            $"{parts[0]} that does not exists in database."
+                        ),
+                    Unit: new Func<UnitOfMeasure>(() =>
+                    {
+                        switch (parts[2].ToLower())
+                        {
+                            case "standard": return ResolveUnit(parts[2], Select(product, (x) => x.StandardUOM));
+                            case "default": return ResolveUnit(parts[2], Select(product, (x) => x.DefaultUOM));
+                            default: return ResolveUnit(parts[2], parts[1]);
+                        }
 
-		public static IReadOnlyCollection<UnitOfMeasure> ExtractUnitOfMeasures(this ProductImportModel item)
-		{
-			var create = new Func<string, UnitOfMeasure>((value) =>
-				!string.IsNullOrWhiteSpace(value)
-					? new UnitOfMeasure(value, value)
-					: default(UnitOfMeasure)
-			);
+                        string Select(ProductImportModel instance, Expression<Func<ProductImportModel, string>> selector) =>
+                            selector.Compile().Invoke(instance).Ensure(
+                                that: (x) => !x.IsNullOrWhiteSpace(),
+                                message: $"Product {product.ProductName} requires to have " +
+                                    $"{(((MemberExpression)selector.Body).Member.Name).Titleize()}."
+                            );
 
-			var unitOfMeasures = new List<UnitOfMeasure>()
-				.Append(create(item.PieceUOM)
-					.EnsureExistence($"{nameof(item.PieceUOM).Titleize()} for product {item.ProductName} doesn't have value.")
-				)
-				.AddIfHasValue(create(item.PackageUOM));
+                        UnitOfMeasure ResolveUnit(string type, string unitId) =>
+                            unitOfMeasureLookup
+                                .Where(x =>
+                                    x.Key.IsEqualTo(unitId) ||
+                                    x.Value.Id.IsEqualTo(unitId) ||
+                                    x.Value.Name.IsEqualTo(unitId)
+                                )
+                                .Select(x => x.Value)
+                                .FirstOrDefault()
+                                .EnsureExistence(
+                                    $"Product {product.ProductName} has a {type}" +
+                                    $" unit of {unitId} that does not exists in database."
+                                );
 
-			return unitOfMeasures.ToList().AsReadOnly();
-		}
 
-		public static Measure ExtractInventoryInitialLevel(this ProductImportModel rawProduct, Product product)
-		{
-			// NOTE: Uom of "InitialValue" is standard since value on stock could 
-			//  be a combination of package plus pieces that should be converted 
-			//  to standard uni (piece)
+                    })(),
+                    StandardEquivalent: new Func<decimal>(() =>
+                    {
+                        switch (parts[2].ToLower())
+                        {
+                            case "standard":
+                                return 1;
 
-			return new Measure(
-				unit: product.UnitOfMeasures.Standard(x => x.UnitOfMeasure),
-				value: Convert.ToDecimal(rawProduct.InitialLevel)
-			);
-		}
+                            case "default":
+                                return Convert.ToDecimal(
+                                    product.PiecePerPack.Ensure(
+                                        that: x => x > 0,
+                                        message: $"Product {product.ProductName} should contain " +
+                                            $"{nameof(product.PiecePerPack).Titleize()} " +
+                                            $"since it has price for Default UOM ({parts[1]})."
+                                    )
+                                );
 
-		public static Measure ExtractInventoryTargetLevel(this ProductImportModel rawProduct, Product product)
-		{
-			return new Measure(
-				unit: product.UnitOfMeasures.Default(x => x.UnitOfMeasure),
-				value: Convert.ToDecimal(rawProduct.TargetLevel)
-			);
-		}
+                            default:
+                                return Convert.ToDecimal(parts[2]);
+                        }
+                    })(),
+                    IsStandard: ProductImportModel.IsStandard(parts[2]),
+                    IsDefault: ProductImportModel.IsDefault(parts[2], product)
+                );
+            }
+        }
 
-		public static Measure ExtractInventoryReorderLevel(this ProductImportModel rawProduct, Product product)
-		{
-			return new Measure(
-				unit: product.UnitOfMeasures.Default(x => x.UnitOfMeasure),
-				value: Convert.ToDecimal(rawProduct.ReorderLevel)
-			);
-		}
+        private static Measure ExtractInventoryField(this ProductImportModel rawProduct, string columnName, Product product)
+        {
+            var column = rawProduct.UnmappedCells
+                .FirstOrDefault(x => x.Key.StartsWith(columnName, StringComparison.InvariantCultureIgnoreCase))
+                .EnsureExistence($"Worksheet should contain column {columnName}.");
 
-		public static Measure ExtractInventoryMinimumReorderQuantity(this ProductImportModel rawProduct, Product product)
-		{
-			return new Measure(
-				unit: product.UnitOfMeasures.Default(x => x.UnitOfMeasure),
-				value: Convert.ToDecimal(rawProduct.MinimumReorderQuantity)
-			);
-		}
-	}
+            var segments = ParseColumnNameSegments(column.Key);
+
+            return new Measure(
+                unit: ResolveUnit(segments.uomType),
+                value: Convert.ToDecimal(column.Value.Cast<double>())
+            );
+
+            (string fieldName, string uomType) ParseColumnNameSegments(string columnFullName)
+            {
+                if (columnFullName.Contains('(') && columnFullName.Contains(')'))
+                {
+                    var segmentArr = columnFullName
+                        .Split(new[] { "(" }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(x => x.Replace(")", string.Empty))
+                        .ToList();
+
+                    return (fieldName: segmentArr[0], uomType: segmentArr[1]);
+                }
+
+                return (fieldName: columnFullName, uomType: null);
+            }
+
+            UnitOfMeasure ResolveUnit(string uomType) =>
+                (uomType.StartsWith("default", StringComparison.InvariantCultureIgnoreCase))
+                    ? product.UnitOfMeasures.Default(x => x.UnitOfMeasure)
+                    : product.UnitOfMeasures.Standard(x => x.UnitOfMeasure);
+        }
+
+        public static Measure ExtractInventoryInitialLevel(this ProductImportModel rawProduct, Product product)
+            => rawProduct.ExtractInventoryField("Initial Level", product);
+
+        public static Measure ExtractInventoryTargetLevel(this ProductImportModel rawProduct, Product product)
+            => rawProduct.ExtractInventoryField("Target Level", product);
+
+        public static Measure ExtractInventoryReorderLevel(this ProductImportModel rawProduct, Product product)
+            => rawProduct.ExtractInventoryField("Reorder Level", product);
+
+        public static Measure ExtractInventoryMinimumReorderQuantity(this ProductImportModel rawProduct, Product product)
+            => rawProduct.ExtractInventoryField("Minimum Reorder Quantity", product);
+    }
 }

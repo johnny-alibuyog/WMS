@@ -144,6 +144,6 @@ namespace AmpedBiz.Service.Dto
 
 		public decimal PaidAmount { get; set; }
 
-		public decimal BalanceAmount => this.TotalAmount - this.PaidAmount;
+		public decimal BalanceAmount { get; set; }
 	}
 }
