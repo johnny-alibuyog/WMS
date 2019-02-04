@@ -35,7 +35,6 @@ namespace AmpedBiz.Service.Products
 				using (var transaction = session.BeginTransaction())
 				{
 					var query = session.QueryOver<Product>()
-						.Fetch(x => x.Supplier).Eager
 						.Fetch(x => x.Category).Eager
 						.Fetch(x => x.Inventories).Eager
 						.Fetch(x => x.UnitOfMeasures).Eager
@@ -44,9 +43,6 @@ namespace AmpedBiz.Service.Products
 
 					if (message.Id.IsNullOrEmpty() != true)
 						query = query.WhereRestrictionOn(x => x.Id).IsIn(message.Id);
-
-					if (message.SupplierId != Guid.Empty)
-						query = query.Where(x => x.Supplier.Id == message.SupplierId);
 
 					var entities = query.List();
 

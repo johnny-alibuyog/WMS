@@ -42,7 +42,7 @@ namespace AmpedBiz.Service.Products
 					// compose filters
 					message.Filter.Compose<Guid>("supplierId", value =>
 					{
-						query = query.Where(x => x.Product.Supplier.Id == value);
+						query = query.Where(x => x.Product.Suppliers.Any(o => o.Id == value));
 					});
 
 					var purchaseAllBellowTarget = message.Filter.ContainsKey("purchaseAllBelowTarget")
@@ -126,7 +126,6 @@ namespace AmpedBiz.Service.Products
 							ProductId = x.Product.Id,
 							ProductName = x.Product.Name,
 							ProductCode = x.Product.Code,
-							SupplierName = x.Product.Supplier.Name,
 							CategoryName = x.Product.Category.Name,
 							ReorderLevel = x.ReorderLevel,
 							Available = x.Available,
@@ -171,7 +170,6 @@ namespace AmpedBiz.Service.Products
 							Id = x.ProductId.ToString(),
 							ProductName = x.ProductName,
 							ProductCode = x.ProductCode,
-							SupplierName = x.SupplierName,
 							CategoryName = x.CategoryName,
 							UnitOfMeasureName = getUnitOfMeasure(x.ProductId),
 							ReorderLevelValue = getConvertedValue(x.ProductId, x.ReorderLevel),

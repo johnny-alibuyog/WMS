@@ -32,7 +32,6 @@ namespace AmpedBiz.Service.Products
 							Id = x.Id,
 							Code = x.Code,
 							Name = x.Name,
-							SupplierName = x.Supplier.Name,
 						});
 
 					// compose filters
@@ -44,11 +43,6 @@ namespace AmpedBiz.Service.Products
 					message.Filter.Compose<string>("name", value =>
 					{
 						query = query.Where(x => x.Name.ToLower().Contains(value.ToLower()));
-					});
-
-					message.Filter.Compose<string>("supplier", value =>
-					{
-						query = query.Where(x => x.SupplierName.ToLower().Contains(value.ToLower()));
 					});
 
 					// compose sort
@@ -66,13 +60,6 @@ namespace AmpedBiz.Service.Products
 							: query.OrderByDescending(x => x.Name);
 					});
 
-					message.Sorter.Compose("supplierName", direction =>
-					{
-						query = direction == SortDirection.Ascending
-							? query.OrderBy(x => x.SupplierName)
-							: query.OrderByDescending(x => x.SupplierName);
-					});
-
 					var idsFuture = query
 						.Select(x => x.Id)
 						.Skip(message.Pager.SkipCount)
@@ -85,7 +72,6 @@ namespace AmpedBiz.Service.Products
 					var inventories = session.QueryOver<Inventory>()
 						.WhereRestrictionOn(x => x.Product.Id).IsIn(idsFuture.ToArray())
 						.Fetch(x => x.Product).Eager
-						.Fetch(x => x.Product.Supplier).Eager
 						.Fetch(x => x.Product.Inventories).Eager
 						.Fetch(x => x.Product.UnitOfMeasures).Eager
 						.Fetch(x => x.Product.UnitOfMeasures.First().UnitOfMeasure).Eager
@@ -103,7 +89,6 @@ namespace AmpedBiz.Service.Products
 							Id = inventory.Product.Id,
 							Code = inventory.Product.Code,
 							Name = inventory.Product.Name,
-							Supplier = inventory.Product.Supplier.Name,
 							OnHand = inventory
 								.BreakDown(i => i.OnHand)
 								.InterpretAsString(),

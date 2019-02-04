@@ -1,4 +1,4 @@
-/* https://gist.github.com/mujimu/c2da3ecb61f832bac9e0#file-select2-multiselect-js-L1 */
+/* https://gist.github.com/mujimu/c2da3ecb61f832bac9e0#file-sel ect2-multiselect-js-L1 */
 
 import { bindable, customElement, autoinject, Binary } from 'aurelia-framework';
 import 'select2';
@@ -17,6 +17,8 @@ export class Select2 {
 
   @bindable placeholder: string = "";
 
+  @bindable multiple: boolean = false;
+
   @bindable allow_clear: boolean = false;
 
   protected element: Element;
@@ -29,11 +31,18 @@ export class Select2 {
     var event = document.createEvent('CustomEvent');
     event.initCustomEvent('selected:change', true, true, { selected: this.selected });
     this.element.dispatchEvent(event);
+
+    console.log(this.selected);
   }
 
   attached() {
     let el = $(this.element).find('select');
-    let sel = el.select2();
+
+    if (this.multiple) {
+      el.attr('multiple', 'multiple');
+    }
+
+    let sel = el.select2({ tags: true });
 
     // preload selected values
     sel.val(this.selected).trigger('change');

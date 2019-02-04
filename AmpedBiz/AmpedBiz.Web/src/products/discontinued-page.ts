@@ -22,7 +22,6 @@ export class ProductPage {
     this.sorter["code"] = SortDirection.None;
     this.sorter["name"] = SortDirection.Ascending;
     this.sorter["category"] = SortDirection.None;
-    this.sorter["supplier"] = SortDirection.None;
     this.sorter.onSort = () => this.getPage();
     this.pager.onPage = () => this.getPage();
   }

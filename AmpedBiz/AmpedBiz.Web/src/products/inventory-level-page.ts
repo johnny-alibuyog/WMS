@@ -20,7 +20,6 @@ export class ProuctInventoryLevelPage {
     this.filter["name"] = '';
     this.filter.onFilter = () => this.getPage();
     this.sorter["name"] = SortDirection.Ascending;
-    this.sorter["supplier"] = SortDirection.None;
     this.sorter["unitOfMeasure"] = SortDirection.None;
     // this.sorter["onHand"] = SortDirection.None;
     // this.sorter["allocated"] = SortDirection.None;

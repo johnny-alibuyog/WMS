@@ -18,13 +18,13 @@ namespace AmpedBiz.Core.Products
 
         public virtual Tenant Tenant { get; set; }
 
-        public virtual Supplier Supplier { get; protected internal set; }
-
         public virtual ProductCategory Category { get; protected internal set; }
 
         public virtual string Image { get; protected internal set; }
 
         public virtual bool Discontinued { get; protected internal set; }
+
+        public virtual IEnumerable<Supplier> Suppliers { get; protected internal set; }
 
         public virtual IEnumerable<Inventory> Inventories { get; protected internal set; }
 
@@ -34,6 +34,7 @@ namespace AmpedBiz.Core.Products
 
         public Product(Guid id) : base(id)
         {
+            this.Suppliers = new Collection<Supplier>();
             this.Inventories = new Collection<Inventory>();
             this.UnitOfMeasures = new Collection<ProductUnitOfMeasure>();
         }

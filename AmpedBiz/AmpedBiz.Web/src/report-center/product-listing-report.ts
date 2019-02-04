@@ -5,7 +5,6 @@ import * as Enumerable from 'linq';
 
 export interface ProductListingReportModel {
   branchName?: string;
-  supplierName?: string;
   categoryName?: string;
   productName?: string;
   items: ProductListingReportItemModel[];
@@ -13,7 +12,6 @@ export interface ProductListingReportModel {
 
 export interface ProductListingReportItemModel {
   branchName?: string;
-  supplierName?: string;
   categoryName?: string;
   productName?: string;
   quantityUnit?: string;
@@ -38,7 +36,6 @@ export class ProductListingReport extends Report<ProductListingReportModel> {
     let orderTableBody: any[] = [
       [
         { text: 'Branch', style: 'tableHeader' },
-        { text: 'Supplier', style: 'tableHeader' },
         { text: 'Category', style: 'tableHeader' },
         { text: 'Product', style: 'tableHeader' },
         { text: 'Unit', style: 'tableHeader' },
@@ -54,7 +51,6 @@ export class ProductListingReport extends Report<ProductListingReportModel> {
     if (data && data.items && data.items.length > 0) {
       orderTableBody.push(...data.items.map(x => [
         { text: emptyIfNull(x.branchName), style: 'tableData' },
-        { text: emptyIfNull(x.supplierName), style: 'tableData' },
         { text: emptyIfNull(x.categoryName), style: 'tableData' },
         { text: emptyIfNull(x.productName), style: 'tableData' },
         { text: emptyIfNull(x.quantityUnit), style: 'tableData' },
@@ -76,7 +72,6 @@ export class ProductListingReport extends Report<ProductListingReportModel> {
 
     // total
     orderTableBody.push([
-      { text: '', style: 'tableData' },
       { text: '', style: 'tableData' },
       { text: '', style: 'tableData' },
       { text: '', style: 'tableData' },
@@ -106,8 +101,8 @@ export class ProductListingReport extends Report<ProductListingReportModel> {
                       { text: emptyIfNull(data.branchName), style: 'value' }
                     ],
                     [
-                      { text: 'Supplier: ', style: 'label' },
-                      { text: emptyIfNull(data.supplierName), style: 'value' }
+                      { text: 'Categoy: ', style: 'label' },
+                      { text: emptyIfNull(data.categoryName), style: 'value' }
                     ],
                   ],
               },
@@ -119,10 +114,6 @@ export class ProductListingReport extends Report<ProductListingReportModel> {
               {
                 body:
                   [
-                    [
-                      { text: 'Categoy: ', style: 'label' },
-                      { text: emptyIfNull(data.categoryName), style: 'value' }
-                    ],
                     [
                       { text: 'Product: ', style: 'label' },
                       { text: emptyIfNull(data.productName), style: 'value' }
@@ -142,7 +133,7 @@ export class ProductListingReport extends Report<ProductListingReportModel> {
       {
         table: {
           headerRows: 1,
-          widths: ['auto', 'auto', 'auto', '*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto',],
+          widths: ['auto', 'auto', '*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto',],
           body: orderTableBody
         },
         layout: 'lightHorizontalLines',

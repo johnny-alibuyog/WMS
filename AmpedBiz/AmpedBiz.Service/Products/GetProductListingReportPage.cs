@@ -34,18 +34,13 @@ namespace AmpedBiz.Service.Products
 					var query = session.Query<ProductUnitOfMeasure>()
 						.Where(x => x.IsStandard || x.IsDefault);
 
-					// compose filter
-					//message.Filter.Compose<Guid>("branchId", value =>
-					//{
-					//    query = query.Where(x => x.Order.Branch.Id == value);
-					//});
+                    // compose filter
+                    //message.Filter.Compose<Guid>("branchId", value =>
+                    //{
+                    //    query = query.Where(x => x.Product.Branch.Id == value);
+                    //});
 
-					message.Filter.Compose<Guid>("supplierId", value =>
-					{
-						query = query.Where(x => x.Product.Supplier.Id == value);
-					});
-
-					message.Filter.Compose<string>("categoryId", value =>
+                    message.Filter.Compose<string>("categoryId", value =>
 					{
 						query = query.Where(x => x.Product.Category.Id == value);
 					});
@@ -62,13 +57,6 @@ namespace AmpedBiz.Service.Products
 					//        ? query.OrderBy(x => x.Branch.Name)
 					//        : query.OrderByDescending(x => x.Branch.Name);
 					//});
-
-					message.Sorter.Compose("supplierName", direction =>
-					{
-						query = direction == SortDirection.Ascending
-							? query.OrderBy(x => x.Product.Supplier.Name)
-							: query.OrderByDescending(x => x.Product.Supplier.Name);
-					});
 
 					message.Sorter.Compose("categoryName", direction =>
 					{
@@ -119,7 +107,6 @@ namespace AmpedBiz.Service.Products
 
 					var products = session.Query<Product>()
 						.Where(x => ids.ProductIds.Contains(x.Id))
-						.Fetch(x => x.Supplier)
 						.Fetch(x => x.Category)
 						.FetchMany(x => x.UnitOfMeasures)
 						.ThenFetch(x => x.UnitOfMeasure)
@@ -159,7 +146,6 @@ namespace AmpedBiz.Service.Products
 						{
 							BranchName = branch.Name,
 							ProductName = lookup.Product.Name,
-							SupplierName = lookup.Product.Supplier.Name,
 							CategoryName = lookup.Product.Category.Name,
 							QuantityUnit = lookup.UnitOfMeasure.Name,
 							AvailableValue = lookup.Inventory.Available.TakePartValue(

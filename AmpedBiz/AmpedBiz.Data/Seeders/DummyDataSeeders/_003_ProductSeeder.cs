@@ -61,6 +61,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 				{
 					var currencySettings = session.Query<Setting<CurrencySetting>>().Cacheable().First();
 					var currency = session.Load<Currency>(currencySettings.Value.DefaultCurrencyId);
+                    var suppliers = session.Query<Supplier>().Cacheable().ToList();
 
 					foreach (var product in data)
 					{
@@ -74,8 +75,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 						{
 							Code = _utils.RandomString(length: 25),
 							Category = _utils.Random<ProductCategory>(),
-							Supplier = _utils.Random<Supplier>(),
 							Discontinued = _utils.RandomBoolean(),
+                            Suppliers = suppliers,
 							UnitOfMeasures = new Collection<ProductUnitOfMeasure>()
 							{
 								new ProductUnitOfMeasure(

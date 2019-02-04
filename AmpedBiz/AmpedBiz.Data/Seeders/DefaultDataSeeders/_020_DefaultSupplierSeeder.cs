@@ -36,8 +36,8 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 			var data = excel.Worksheet()
 				.Select(x => new Supplier()
 				{
-					Code = x["Supplier Id"],
-					Name = x["Supplier Name"],
+					Code = x["Code"],
+					Name = x["Name"],
 					ContactPerson = x["Contact Person"],
 				})
 				.ToList();

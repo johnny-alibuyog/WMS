@@ -27,10 +27,12 @@ namespace AmpedBiz.Service.Products
 				using (var session = SessionFactory.RetrieveSharedSession(Context))
 				using (var transaction = session.BeginTransaction())
 				{
+                    var suppliers = session.QueryOver<Supplier>().Cacheable().List();
+
 					var productFuture = session.QueryOver<Product>()
 						.Where(x => x.Id == message.Id)
-						.Fetch(x => x.Supplier).Eager
 						.Fetch(x => x.Category).Eager
+                        .Fetch(x => x.Suppliers).Eager
 						.Fetch(x => x.UnitOfMeasures).Eager
 						.Fetch(x => x.UnitOfMeasures.First().Prices).Eager
 						.TransformUsing(Transformers.DistinctRootEntity)
@@ -50,6 +52,18 @@ namespace AmpedBiz.Service.Products
 					product.EnsureExistence($"Product with id {message.Id} does not exists.");
 
 					product.MapTo(response);
+
+                    response.Suppliers = suppliers
+                        .Select(x => new Dto.Supplier()
+                        {
+                            Id = x.Id,
+                            Code = x.Code,
+                            Name = x.Name,
+                            Assigned = product.Suppliers
+                                .Select(o => o.Id)
+                                .Contains(x.Id)
+                        })
+                        .ToList();
 
 					inventory.MapTo(response.Inventory);
 

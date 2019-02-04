@@ -4,46 +4,48 @@ namespace AmpedBiz.Service.Dto
 {
     public class Supplier
     {
-        public virtual Guid Id { get; set; }
+        public Guid Id { get; set; }
 
-        public virtual string Code { get; set; }
+        public string Code { get; set; }
 
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
 
-        public virtual string ContactPerson { get; set; }
+        public string ContactPerson { get; set; }
 
-        public virtual Address Address { get; set; }
+        public Address Address { get; set; }
 
-        public virtual Contact Contact { get; set; }
+        public Contact Contact { get; set; }
+
+        public bool Assigned { get; set; }
     }
 
     public class SupplierPageItem
     {
-        public virtual Guid Id { get; set; }
+        public Guid Id { get; set; }
 
-        public virtual string Code { get; set; }
+        public string Code { get; set; }
 
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
 
-        public virtual string ContactPerson { get; set; }
+        public string ContactPerson { get; set; }
 
-        public virtual Address Address { get; set; }
+        public Address Address { get; set; }
 
-        public virtual Contact Contact { get; set; }
+        public Contact Contact { get; set; }
     }
 
     public class SupplierReportPageItem
     {
-        public virtual Guid Id { get; set; }
+        public Guid Id { get; set; }
 
-        public virtual string Code { get; set; }
+        public string Code { get; set; }
 
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
 
-        public virtual string ContactPerson { get; set; }
+        public string ContactPerson { get; set; }
 
-        public virtual Address Address { get; set; }
+        public Address Address { get; set; }
 
-        public virtual Contact Contact { get; set; }
+        public Contact Contact { get; set; }
     }
 }

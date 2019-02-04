@@ -15,11 +15,9 @@ using NHibernate;
 using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 {
@@ -58,23 +56,19 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 {
                     var lookup = new
                     {
-                        Pricings = session.Query<Pricing>().Cacheable().ToList().ToDictionary(x => x.Id, x => x),
-                        Categories = session.Query<ProductCategory>().Cacheable().ToList().ToDictionary(x => x.Id, x => x),
-                        UnitOfMeasures = session.Query<UnitOfMeasure>().Cacheable().ToList().ToDictionary(x => x.Name, x => x)
+                        Pricings = session.Query<Pricing>().Cacheable().ToList().ToDictionary(x => x.Id),
+                        Suppliers = session.Query<Supplier>().Cacheable().ToList().ToDictionary(x => x.Code),
+                        Categories = session.Query<ProductCategory>().Cacheable().ToList().ToDictionary(x => x.Id),
+                        UnitOfMeasures = session.Query<UnitOfMeasure>().Cacheable().ToList().ToDictionary(x => x.Name)
                     };
 
                     var currencySettings = session.Query<Setting<CurrencySetting>>().Cacheable().First();
 
                     // TODO: Think of better way to included the supplier from the product.
                     //       One option is to name the product seeding source with the supplier id (default_products-SMIS.xlsx)
-                    // NOTE: (2018-08-19) Products should have multiple suppliers. 
-                    //       Options:
-                    //       1. Product.Supplier relation should be removed
-                    //       2. create many-to-many relationship between Products and Suppliers
                     var defaults = new
                     {
                         Currency = session.Load<Currency>(currencySettings.Value.DefaultCurrencyId),
-                        Supplier = session.Query<Supplier>().FirstOrDefault(),
                         Branch = session.Load<Branch>(context.BranchId),
                     };
 
@@ -83,9 +77,9 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                     {
                         var product = rawProduct.ExtractProduct(
                             branch: defaults.Branch,
-                            supplier: defaults.Supplier,
                             currency: defaults.Currency,
                             pricingLookup: lookup.Pricings,
+                            supplierLookup: lookup.Suppliers,
                             categoryLookup: lookup.Categories,
                             unitOfMeasureLookup: lookup.UnitOfMeasures
                         );
@@ -144,6 +138,9 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
         [ExcelColumn("Category")]
         public string Category { get; set; }
+
+        [ExcelColumn("Suppliers")]
+        public string Suppliers { get; set; }
 
         public IDictionary<string, Cell> UnmappedCells { get; } = new Dictionary<string, Cell>();
 
@@ -233,6 +230,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             Supplier supplier,
             Currency currency,
             IDictionary<string, Pricing> pricingLookup,
+            IDictionary<string, Supplier> supplierLookup,
             IDictionary<string, ProductCategory> categoryLookup,
             IDictionary<string, UnitOfMeasure> unitOfMeasureLookup
         )
@@ -244,9 +242,9 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
             Product Map(ProductImportModel x) => x.ExtractProduct(
                 branch: branch,
-                supplier: supplier,
                 currency: currency,
                 pricingLookup: pricingLookup,
+                supplierLookup: supplierLookup,
                 categoryLookup: categoryLookup,
                 unitOfMeasureLookup: unitOfMeasureLookup
             );
@@ -255,9 +253,9 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
         public static Product ExtractProduct(
             this ProductImportModel importModel,
             Branch branch,
-            Supplier supplier,
             Currency currency,
             IDictionary<string, Pricing> pricingLookup,
+            IDictionary<string, Supplier> supplierLookup,
             IDictionary<string, ProductCategory> categoryLookup,
             IDictionary<string, UnitOfMeasure> unitOfMeasureLookup
         )
@@ -268,7 +266,6 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             {
                 Code = importModel.ProductName,
                 Name = importModel.ProductName,
-                Supplier = supplier,
                 Category = categoryLookup
                     .GetValueOrDefault(
                         importModel.Category
@@ -279,16 +276,27 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                         $"{nameof(importModel.Category)} {importModel.Category.Titleize()} for " +
                         $"{importModel.ProductName} does not exists in database."
                     ),
-                UnitOfMeasures = MapUnitOfMeasuresFrom(importModel)
+                Suppliers = ParseSuppliers(),
+                UnitOfMeasures = ParseUnitOfMeasures()
             });
 
             return product;
 
-            IReadOnlyCollection<ProductUnitOfMeasure> MapUnitOfMeasuresFrom(ProductImportModel model)
+            IReadOnlyCollection<Supplier> ParseSuppliers()
             {
-                return model.ExtractProductUnitOfMeasures(
+                return importModel.Suppliers
+                    .Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(x => supplierLookup
+                        .GetValueOrDefault(x)
+                        .EnsureExistence($"Supplier {x} does not exists in database.")
+                    )
+                    .ToList();
+            }
+
+            IReadOnlyCollection<ProductUnitOfMeasure> ParseUnitOfMeasures()
+            {
+                return importModel.ExtractProductUnitOfMeasures(
                     branch: branch,
-                    supplier: supplier,
                     currency: currency,
                     pricingLookup: pricingLookup,
                     unitOfMeasureLookup: unitOfMeasureLookup
@@ -299,7 +307,6 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
         private static IReadOnlyCollection<ProductUnitOfMeasure> ExtractProductUnitOfMeasures(
             this ProductImportModel product,
             Branch branch,
-            Supplier supplier,
             Currency currency,
             IDictionary<string, Pricing> pricingLookup,
             IDictionary<string, UnitOfMeasure> unitOfMeasureLookup)

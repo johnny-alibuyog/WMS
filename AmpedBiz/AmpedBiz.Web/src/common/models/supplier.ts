@@ -8,6 +8,7 @@ export type Supplier = {
   contactPerson?: string;
   address?: Address;
   contact?: Contact;
+  assigned?: boolean;
 }
 
 export type SupplierPageItem = {

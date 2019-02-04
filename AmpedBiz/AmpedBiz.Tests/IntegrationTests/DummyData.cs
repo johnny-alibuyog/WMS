@@ -137,11 +137,14 @@ namespace AmpedBiz.Tests.IntegrationTests
             return new Service.Dto.Product()
             {
                 Category = category,
-                Supplier = supplier,
                 Description = "Description_" + this.GenerateRandomString(5),
                 Discontinued = false,
                 Image = "",
                 Name = "Name_" + this.GenerateRandomString(5),
+                Suppliers = new List<Lookup<Guid>>()
+                {
+                    new Lookup<Guid>(supplier.Id, supplier.Name),
+                },
                 Inventory = new Service.Dto.Inventory()
                 {
                     InitialLevelValue = (decimal)random.Next(300, 400),

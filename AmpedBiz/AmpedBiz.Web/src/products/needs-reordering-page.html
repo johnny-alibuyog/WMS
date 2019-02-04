@@ -57,9 +57,6 @@
                       <i class="fa fa-fw fa-${sorter.class(sorter['productName'])}"></i>Product
                     </span>
                   </th>
-                  <th class="col-md-2" click.delegate="sorter.doSort('supplierName')">
-                    <i class="fa fa-fw fa-${sorter.class(sorter['supplierName'])}"></i>Supplier
-                  </th>
                   <!--
                   <th class="col-md-1" click.delegate="sorter.doSort('categoryName')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['categoryName'])}"></i>Category
@@ -87,7 +84,6 @@
                 <!--<tr repeat.for="item of pager.items" click.delegate="select(item)">-->
                 <tr repeat.for="item of pager.items">
                   <td><input type="checkbox" model.bind="item.id" checked.bind="forPurchasing.selectedProductIds" /> ${item.productName}</td>
-                  <td>${item.supplierName}</td>
                   <!--<td>${item.categoryName}</td>-->
                   <td>${item.unitOfMeasureName}</td>
                   <td class="text-right">${item.reorderLevelValue | numberFormat:'0,0'}</td>

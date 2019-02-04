@@ -19,8 +19,8 @@ export class ProductCreate {
   public isEdit: boolean = false;
   public canSave: boolean = true;
   public product: Product;
-  public suppliers: Lookup<string>[];
-  public categories: Lookup<string>[];
+  public suppliers: Lookup<string>[] = [];
+  public categories: Lookup<string>[] = [];
 
   constructor(
     private readonly _api: ServiceApi,
@@ -74,6 +74,7 @@ export class ProductCreate {
           ? await this._api.products.update(this.product)
           : await this._api.products.create(this.product);
         await this._notification.success("Product has been saved.");
+        debugger;
       }
     }
     catch (error) {

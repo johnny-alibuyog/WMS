@@ -58,6 +58,8 @@
     <Compile Include="PointOfSales\Services\PointOfSaleUpdateItemsVisitor.cs" />
     <Compile Include="PointOfSales\Services\PointOfSaleUpdatePaymentsVisitor.cs" />
     <Compile Include="PointOfSales\Services\PointOfSaleUpdateVisitor.cs" />
+    <Compile Include="Products\ProductSupplier.cs" />
+    <Compile Include="Products\Services\ProductSuppliersUpdateVisitor.cs" />
     <Compile Include="Settings\CurrencySetting.cs">
       <DependentUpon>Setting.cs</DependentUpon>
     </Compile>

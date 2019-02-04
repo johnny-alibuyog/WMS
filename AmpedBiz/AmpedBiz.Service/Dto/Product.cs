@@ -15,8 +15,6 @@ namespace AmpedBiz.Service.Dto
 
         public string Description { get; set; }
 
-        public Lookup<Guid> Supplier { get; set; }
-
         public Lookup<string> Category { get; set; }
 
         public bool? Discontinued { get; set; }
@@ -24,6 +22,8 @@ namespace AmpedBiz.Service.Dto
         public string Image { get; set; }
 
         public Inventory Inventory { get; set; } = new Inventory();
+
+        public List<Supplier> Suppliers { get; set; } = new List<Supplier>();
 
         public List<ProductUnitOfMeasure> UnitOfMeasures { get; set; } = new List<ProductUnitOfMeasure>();
     }
@@ -37,8 +37,6 @@ namespace AmpedBiz.Service.Dto
         public string Name { get; set; }
 
         public string Description { get; set; }
-
-        public string SupplierName { get; set; }
 
         public string CategoryName { get; set; }
 
@@ -62,8 +60,6 @@ namespace AmpedBiz.Service.Dto
         public string Name { get; set; }
 
         public string Description { get; set; }
-
-        public string SupplierName { get; set; }
 
         public string CategoryName { get; set; }
 
@@ -126,8 +122,6 @@ namespace AmpedBiz.Service.Dto
         public string Code { get; set; }
 
         public string Name { get; set; }
-
-        public string Supplier { get; set; }
 
         public string UnitOfMeasure { get; set; }
 
@@ -236,8 +230,6 @@ namespace AmpedBiz.Service.Dto
 
         public string ProductName { get; set; }
 
-        public string SupplierName { get; set; }
-
         public string CategoryName { get; set; }
 
         public string UnitOfMeasureName { get; set; }
@@ -275,8 +267,6 @@ namespace AmpedBiz.Service.Dto
 
         public string CategoryName { get; set; }
 
-        public string SupplierName { get; set; }
-
         public string OnHandUnit { get; set; }
 
         public decimal? OnHandValue { get; set; }
@@ -298,8 +288,6 @@ namespace AmpedBiz.Service.Dto
     {
         public string BranchName { get; set; }
 
-        public string SupplierName { get; set; }
-
         public string CategoryName { get; set; }
 
         public string ProductName { get; set; }
@@ -320,8 +308,6 @@ namespace AmpedBiz.Service.Dto
     public class ProductListingReportPageItem : IEquatable<ProductListingReportPageItem>
     {
         public string BranchName { get; set; }
-
-        public string SupplierName { get; set; }
 
         public string CategoryName { get; set; }
 
@@ -349,9 +335,6 @@ namespace AmpedBiz.Service.Dto
             if (this.BranchName != other.BranchName)
                 return false;
 
-            if (this.SupplierName != other.SupplierName)
-                return false;
-
             if (this.CategoryName != other.CategoryName)
                 return false;
 
@@ -369,7 +352,6 @@ namespace AmpedBiz.Service.Dto
             var hashCode = 17;
 
             hashCode += AddToHashIfValueIsNotDefault(this.BranchName, hashCode);
-            hashCode += AddToHashIfValueIsNotDefault(this.SupplierName, hashCode);
             hashCode += AddToHashIfValueIsNotDefault(this.CategoryName, hashCode);
             hashCode += AddToHashIfValueIsNotDefault(this.ProductName, hashCode);
             hashCode += AddToHashIfValueIsNotDefault(this.QuantityUnit, hashCode);

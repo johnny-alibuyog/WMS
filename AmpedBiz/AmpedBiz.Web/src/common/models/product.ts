@@ -13,6 +13,7 @@ export type Product = {
   image?: string;
   discontinued?: boolean;
   inventory?: Inventory;
+  suppliers?: Lookup<string>[];
   unitOfMeasures?: ProductUnitOfMeasure[];
 }
 
@@ -39,7 +40,6 @@ export type ProductPageItem = {
   code?: string;
   name?: string
   description?: string;
-  supplierName?: string;
   categoryName?: string;
   image?: string;
   availableValue?: number;
@@ -53,7 +53,6 @@ export type DiscontinuedPageItem = {
   code?: string;
   name?: string
   description?: string;
-  supplierName?: string;
   categoryName?: string;
   image?: string;
 }
@@ -140,7 +139,6 @@ export type NeedsReorderingPageItem = {
   id?: string;
   productCode?: string;
   productName?: string;
-  supplierName?: string;
   categoryName?: string;
   unitOfMeasureName?: string;
   reorderLevelValue?: number;
@@ -177,7 +175,6 @@ export type ProductReportPageItem = {
 export type ProductsDeliveredReportPageItem = {
   shippedOn?: Date;
   branchName?: string;
-  supplierName?: string;
   categoryName?: string;
   productName?: string;
   quantityUnit?: string;
@@ -190,7 +187,6 @@ export type ProductsDeliveredReportPageItem = {
 
 export type ProductListingReportPageItem = {
   branchName?: string;
-  supplierName?: string;
   categoryName?: string;
   productName?: string;
   quantityUnit?: string;

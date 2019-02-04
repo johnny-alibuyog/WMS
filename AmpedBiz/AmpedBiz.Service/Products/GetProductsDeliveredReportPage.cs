@@ -38,11 +38,6 @@ namespace AmpedBiz.Service.Products
 						query = query.Where(x => x.Order.Branch.Id == value);
 					});
 
-					message.Filter.Compose<Guid>("supplierId", value =>
-					{
-						query = query.Where(x => x.Product.Supplier.Id == value);
-					});
-
 					message.Filter.Compose<string>("categoryId", value =>
 					{
 						query = query.Where(x => x.Product.Category.Id == value);
@@ -67,7 +62,6 @@ namespace AmpedBiz.Service.Products
 						.GroupBy(x => new
 						{
 							BranchName = x.Order.Branch.Name,
-							SupplierName = x.Product.Supplier.Name,
 							CategoryName = x.Product.Category.Name,
 							ProductName = x.Product.Name,
 							QuantityUnitName = x.Quantity.Unit.Name,
@@ -76,7 +70,6 @@ namespace AmpedBiz.Service.Products
 						.Select(x => new Dto.ProductsDeliveredReportPageItem()
 						{
 							BranchName = x.Key.BranchName,
-							SupplierName = x.Key.SupplierName,
 							CategoryName = x.Key.CategoryName,
 							ProductName = x.Key.ProductName,
 							UnitPriceAmount = x.Key.UnitPriceAmount,
@@ -94,13 +87,6 @@ namespace AmpedBiz.Service.Products
 						groupedQuery = direction == SortDirection.Ascending
 							? groupedQuery.OrderBy(x => x.BranchName)
 							: groupedQuery.OrderByDescending(x => x.BranchName);
-					});
-
-					message.Sorter.Compose("supplierName", direction =>
-					{
-						groupedQuery = direction == SortDirection.Ascending
-							? groupedQuery.OrderBy(x => x.SupplierName)
-							: groupedQuery.OrderByDescending(x => x.SupplierName);
 					});
 
 					message.Sorter.Compose("categoryName", direction =>

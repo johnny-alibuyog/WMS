@@ -396,12 +396,14 @@ namespace AmpedBiz.Tests.IntegrationTests
 					Discontinued = productData.Discontinued,
 					Image = productData.Image,
 					Name = productData.Name,
-					Supplier = productData.Supplier,
 					Inventory = new Service.Dto.Inventory()
 					{
 						InitialLevelValue = productData.Inventory.InitialLevelValue,
 						BackOrderedValue = productData.Inventory.BackOrderedValue,
 					},
+                    Suppliers = productData.Suppliers
+                        .Select(x => new Lookup<Guid>(x.Id, x.Name))
+                        .ToList(),
 					UnitOfMeasures = new List<Service.Dto.ProductUnitOfMeasure>()
 					{
 						new Service.Dto.ProductUnitOfMeasure()

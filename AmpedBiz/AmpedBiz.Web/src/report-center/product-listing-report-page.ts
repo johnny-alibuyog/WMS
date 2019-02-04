@@ -15,7 +15,6 @@ export class ProductListingReportPage {
   public pager: Pager<ProductListingReportPageItem> = new Pager<ProductListingReportPageItem>();
   public branches: Lookup<string>[];
   public categories: Lookup<string>[];
-  public suppliers: Lookup<string>[];
   public products: Lookup<string>[];
 
   constructor(
@@ -25,13 +24,11 @@ export class ProductListingReportPage {
   ) {
     this.filter["customerId"] = null;
     this.filter["categoryId"] = null;
-    this.filter["supplierId"] = null;
     this.filter["productId"] = null;
     this.filter["fromDate"] = null;
     this.filter["toDate"] = null;
     this.filter.onFilter = () => this.getPage();
     this.sorter["branchName"] = SortDirection.None;
-    this.sorter["supplierName"] = SortDirection.None;
     this.sorter["categoryName"] = SortDirection.None;
     this.sorter["productName"] = SortDirection.Ascending;
     this.sorter["unitOfMeasure"] = SortDirection.None;
@@ -43,12 +40,10 @@ export class ProductListingReportPage {
     [
       this.branches,
       this.categories,
-      this.suppliers,
       this.products
     ] = await Promise.all([
       this._api.branches.getLookups(),
       this._api.productCategories.getLookups(),
-      this._api.suppliers.getLookups(),
       this._api.products.getLookups(),
     ]);
     await this.getPage();
@@ -67,19 +62,16 @@ export class ProductListingReportPage {
 
       let header = {
         branch: this.branches.find(x => x.id == this.filter["branchId"]),
-        supplier: this.suppliers.find(x => x.id == this.filter["supplierId"]),
         category: this.categories.find(x => x.id == this.filter["categoryId"]),
         product: this.products.find(x => x.id == this.filter["productId"]),
       };
 
       let reportModel = <ProductListingReportModel>{
         branchName: header.branch && header.branch.name || "All Branches",
-        supplierName: header.supplier && header.supplier.name || "All Suppliers",
         categoryName: header.category && header.category.name || "All Categories",
         productName: header.product && header.product.name || "All Products",
         items: data.items.map(x => <ProductListingReportItemModel>{
           branchName: x.branchName,
-          supplierName: x.supplierName,
           categoryName: x.categoryName,
           productName: x.productName,
           quantityUnit: x.quantityUnit,

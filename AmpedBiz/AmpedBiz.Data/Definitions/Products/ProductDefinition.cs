@@ -29,8 +29,6 @@ namespace AmpedBiz.Data.Definitions.Products
 
 				References(x => x.Tenant);
 
-				References(x => x.Supplier);
-
 				References(x => x.Category);
 
 				HasMany(x => x.Inventories)
@@ -47,11 +45,24 @@ namespace AmpedBiz.Data.Definitions.Products
 					.Inverse()
 					.AsSet();
 
-				ApplyFilter<TenantDefinition.Filter>();
-			}
-		}
+                HasManyToMany(x => x.Suppliers)
+                   .Table(ProductSupplierPluralzed())
+                   .ForeignKeyConstraintNames(
+                        parentForeignKeyName: $"FK_{ProductPluralized()}_{ProductSupplierPluralzed()}",
+                        childForeignKeyName: $"FK_{SupplierPluralized()}_{ProductSupplierPluralzed()}"
+                    )
+                   .Cascade.All()
+                   .AsSet();
 
-		public class Validation : ValidationDef<Product>
+                ApplyFilter<TenantDefinition.Filter>();
+            }
+
+            public static string ProductSupplierPluralzed() => $"{ProductPluralized()}{SupplierPluralized()}";
+            public static string ProductPluralized() => nameof(Product).Pluralize();
+            public static string SupplierPluralized() => nameof(Supplier).Pluralize();
+        }
+
+        public class Validation : ValidationDef<Product>
 		{
 			public Validation()
 			{
@@ -73,22 +84,21 @@ namespace AmpedBiz.Data.Definitions.Products
 
 				Define(x => x.Tenant);
 
-				Define(x => x.Supplier)
-					.NotNullable()
-					.And.IsValid();
-
 				Define(x => x.Category)
 					.NotNullable()
 					.And.IsValid();
 
-				Define(x => x.Inventories)
+                Define(x => x.Suppliers)
+                    .NotNullableAndNotEmpty()
+                    .And.HasValidElements();
+
+                Define(x => x.Inventories)
 					.HasValidElements();
 
 				Define(x => x.UnitOfMeasures)
 					.HasValidElements();
 
-
-				this.ValidateInstance.By((instance, context) =>
+                this.ValidateInstance.By((instance, context) =>
 				{
 					var valid = true;
 

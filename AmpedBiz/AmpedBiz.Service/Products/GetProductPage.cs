@@ -67,13 +67,6 @@ namespace AmpedBiz.Service.Products
 							: query.OrderByDescending(x => x.Description);
 					});
 
-					message.Sorter.Compose("supplier", direction =>
-					{
-						query = direction == SortDirection.Ascending
-							? query.OrderBy(x => x.Supplier.Name)
-							: query.OrderByDescending(x => x.Supplier.Name);
-					});
-
 					message.Sorter.Compose("category", direction =>
 					{
 						query = direction == SortDirection.Ascending
@@ -109,7 +102,6 @@ namespace AmpedBiz.Service.Products
 							Code = x.Code,
 							Name = x.Name,
 							Description = x.Description,
-							SupplierName = x.Supplier.Name,
 							CategoryName = x.Category.Name,
 							Image = x.Image,
 							//BasePriceAmount = x.Inventory.BasePrice.Amount,

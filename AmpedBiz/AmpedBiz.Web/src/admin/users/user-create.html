@@ -57,7 +57,14 @@
 
               <div id="roles" class="tab-pane fade">
                 <br />
-                <div class="form-group">
+                <ul class="list-group">
+                  <li class="list-group-item" repeat.for="role of  user.roles">
+                      <input type="checkbox" checked.bind="role.assigned" aria-label="..." /> ${role.name}
+                  </li>
+                </ul>
+
+
+                <!-- <div class="form-group">
                   <template repeat.for="item of user.roles">
                     <div class="checkbox" if.bind="canAssign(item)">
                       <label class="control-label col-sm-2"></label>
@@ -66,7 +73,7 @@
                     </label>
                     </div>
                   </template>
-                </div>
+                </div> -->
               </div>
             </div>
           </form>

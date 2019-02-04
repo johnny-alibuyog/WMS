@@ -29,7 +29,8 @@ namespace AmpedBiz.Service.Products
 					var exists = session.Query<Product>().Any(x => x.Id == message.Id);
 					exists.Assert($"Product with id {message.Id} already exists.");
 
-					var currency = session.Load<Currency>(Currency.PHP.Id); // this should be taken from the tenant
+                    var suppliers = session.QueryOver<Supplier>().Cacheable().List();
+                    var currency = session.Load<Currency>(Currency.PHP.Id); // this should be taken from the tenant
 					var product = new Product(message.Id);
 
 					product.Accept(new ProductUpdateVisitor()
@@ -37,12 +38,14 @@ namespace AmpedBiz.Service.Products
 						Code = message.Code,
 						Name = message.Name,
 						Description = message.Description,
-						Supplier = (!message.Supplier?.Id.IsNullOrDefault() ?? false)
-							? session.Load<Supplier>(message.Supplier.Id) : null,
 						Category = (!message.Category?.Id.IsNullOrDefault() ?? false)
 							? session.Load<ProductCategory>(message.Category.Id) : null,
 						Image = message.Image,
 						Discontinued = message.Discontinued,
+                        Suppliers = message.Suppliers
+                            .Where(x => x.Assigned)
+                            .Select(x => session.Load<Supplier>(x.Id))
+                            .ToList(),
 						UnitOfMeasures = message.UnitOfMeasures
 							.Select(x => new ProductUnitOfMeasure(
 								id: x.Id,
@@ -78,16 +81,32 @@ namespace AmpedBiz.Service.Products
 					});
 
 					product.EnsureValidity();
+
 					inventory.EnsureValidity();
 
 					session.Save(product);
-					session.Save(inventory);
+
+                    session.Save(inventory);
 
 					transaction.Commit();
 
 					product.MapTo(response);
 
-					SessionFactory.ReleaseSharedSession();
+                    response.Suppliers = suppliers
+                        .Select(x => new Dto.Supplier()
+                        {
+                            Id = x.Id,
+                            Code = x.Code,
+                            Name = x.Name,
+                            Assigned = product.Suppliers
+                                .Select(o => o.Id)
+                                .Contains(x.Id)
+                        })
+                        .ToList();
+
+                    inventory.MapTo(response.Inventory);
+
+                    SessionFactory.ReleaseSharedSession();
 				}
 
 				return response;

@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Core.Products;
 using FluentNHibernate.Mapping;
 using NHibernate.Validator.Cfg.Loquacious;
+using static AmpedBiz.Data.Definitions.Products.ProductDefinition.Mapping;
 
 namespace AmpedBiz.Data.Definitions.Products
 {
@@ -23,16 +24,26 @@ namespace AmpedBiz.Data.Definitions.Products
 
 				Component(x => x.Contact);
 
-				HasMany(x => x.Products)
-					.Cascade.AllDeleteOrphan()
-					.Not.KeyNullable()
-					.Not.KeyUpdate()
-					.Inverse()
-					.AsBag();
+                //HasMany(x => x.Products)
+                //	.Cascade.AllDeleteOrphan()
+                //	.Not.KeyNullable()
+                //	.Not.KeyUpdate()
+                //	.Inverse()
+                //	.AsBag();
 
-				//ApplyFilter<TenantDefinition.Filter>();
-			}
-		}
+                HasManyToMany(x => x.Products)
+                   .Table(ProductSupplierPluralzed())
+                   .ForeignKeyConstraintNames(
+                        parentForeignKeyName: $"FK_{SupplierPluralized()}_{ProductSupplierPluralzed()}",
+                        childForeignKeyName: $"FK_{ProductPluralized()}_{ProductSupplierPluralzed()}"
+                    )
+                   .Cascade.All()
+                   .Inverse()
+                   .AsSet();
+
+                //ApplyFilter<TenantDefinition.Filter>();
+            }
+        }
 
 		public class Validation : ValidationDef<Supplier>
 		{

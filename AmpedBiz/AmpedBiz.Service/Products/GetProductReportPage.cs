@@ -43,11 +43,6 @@ namespace AmpedBiz.Service.Products
 						query = query.Where(x => x.Product.Category.Id == value);
 					});
 
-					message.Filter.Compose<Guid>("supplierId", value =>
-					{
-						query = query.Where(x => x.Product.Supplier.Id == value);
-					});
-
 					// compose order
 					message.Sorter.Compose("productName", direction =>
 					{
@@ -61,13 +56,6 @@ namespace AmpedBiz.Service.Products
 						query = direction == SortDirection.Ascending
 							? query.OrderBy(x => x.Product.Category.Name)
 							: query.OrderByDescending(x => x.Product.Category.Name);
-					});
-
-					message.Sorter.Compose("supplierName", direction =>
-					{
-						query = direction == SortDirection.Ascending
-							? query.OrderBy(x => x.Product.Supplier.Name)
-							: query.OrderByDescending(x => x.Product.Supplier.Name);
 					});
 
 					message.Sorter.Compose("onHandValue", direction =>
@@ -90,7 +78,6 @@ namespace AmpedBiz.Service.Products
 							ProductCode = x.Product.Code,
 							ProductName = x.Product.Name,
 							CategoryName = x.Product.Category.Name,
-							SupplierName = x.Product.Supplier.Name,
 						})
 						.Skip(message.Pager.SkipCount)
 						.Take(message.Pager.Size)
@@ -142,7 +129,6 @@ namespace AmpedBiz.Service.Products
 							ProductCode = x.ProductCode,
 							ProductName = x.ProductName,
 							CategoryName = x.CategoryName,
-							SupplierName = x.SupplierName,
 							OnHandUnit = lookup[x.Id].OnHand?.Unit?.Id,
 							OnHandValue = lookup[x.Id].OnHand?.Value,
 							BasePriceAmount = lookup[x.Id].BasePrice?.Amount,

@@ -12,7 +12,6 @@ export class ProductPage {
   public filter: Filter = new Filter();
   public sorter: Sorter = new Sorter();
   public pager: Pager<ProductPageItem> = new Pager<ProductPageItem>();
-  public suppliers: Lookup<string>[] = [];
   public categories: Lookup<string>[] = [];
 
   constructor(
@@ -30,8 +29,7 @@ export class ProductPage {
   }
 
   public async activate(params: any, routeConfig: RouteConfig, $navigationInstruction: NavigationInstruction): Promise<void> {
-    [this.suppliers, this.categories] = await Promise.all([
-      this._api.suppliers.getLookups(),
+    [this.categories] = await Promise.all([
       this._api.productCategories.getLookups(),
     ]);
     await this.getPage();

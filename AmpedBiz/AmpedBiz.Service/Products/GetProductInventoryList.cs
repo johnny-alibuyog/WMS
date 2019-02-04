@@ -45,11 +45,6 @@ namespace AmpedBiz.Service.Products
 						query = query.Where(x => message.ProductIds.Contains(x.Product.Id));
 					}
 
-					if (!message.SupplierId.IsNullOrDefault())
-					{
-						query = query.Where(x => x.Product.Supplier.Id == message.SupplierId);
-					}
-
 					if (!message.SearchTerm.IsNullOrWhiteSpace())
 					{
 						query = query.Where(x =>

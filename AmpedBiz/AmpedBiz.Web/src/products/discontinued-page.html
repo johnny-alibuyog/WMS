@@ -48,9 +48,6 @@
                   <th class="col-md-3" click.delegate="sorter.doSort('category')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['category'])}"></i>Category
                   </th>
-                  <th class="col-md-3" click.delegate="sorter.doSort('supplier')">
-                    <i class="fa fa-fw fa-${sorter.class(sorter['supplier'])}"></i>Supplier
-                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -63,7 +60,6 @@
                   <td>${item.code}</td>
                   <td>${item.name}</td>
                   <td>${item.categoryName}</td>
-                  <td>${item.supplierName}</td>
                 </tr>
               </tbody>
             </table>

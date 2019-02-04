@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Common.Configurations;
+using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Common;
 using AmpedBiz.Core.Inventories;
 using AmpedBiz.Core.Products;
@@ -65,12 +66,12 @@ namespace AmpedBiz.Service.Inventories
 
 					if (param.FromDate != null)
 					{
-						movementSqlQuery.SetParameter("fromDate", param.FromDate.Value);
+						movementSqlQuery.SetParameter("fromDate", param.FromDate.Value.StartOfDay());
 					}
 
 					if (param.ToDate != null)
 					{
-						movementSqlQuery.SetParameter("toDate", param.ToDate.Value);
+						movementSqlQuery.SetParameter("toDate", param.ToDate.Value.EndOfDay());
 					}
 
 					var inventories = inventoryQuery

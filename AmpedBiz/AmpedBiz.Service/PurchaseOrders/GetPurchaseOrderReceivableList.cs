@@ -34,12 +34,10 @@ namespace AmpedBiz.Service.PurchaseOrders
                         .Where(x => x.Id == message.Id)
                         .Fetch(x => x.Items).Eager
                         .Fetch(x => x.Items.First().Product).Eager
-                        .Fetch(x => x.Items.First().Product.Supplier).Eager
                         .Fetch(x => x.Items.First().Product.Category).Eager
                         .Fetch(x => x.Items.First().Product.Inventories).Eager
                         .Fetch(x => x.Receipts).Eager
                         .Fetch(x => x.Receipts.First().Product).Eager
-                        .Fetch(x => x.Receipts.First().Product.Supplier).Eager
                         .Fetch(x => x.Receipts.First().Product.Category).Eager
                         .Fetch(x => x.Receipts.First().Product.Inventories).Eager
                         .FutureValue();

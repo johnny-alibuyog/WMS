@@ -3,9 +3,8 @@ import { formatDate, formatNumber, emptyIfNull } from '../services/formaters';
 import { Report, Content } from './report';
 import * as Enumerable from 'linq';
 
-export interface ProductsDeliveredReportModel {
+export type ProductsDeliveredReportModel = {
   branchName?: string;
-  supplierName?: string;
   categoryName?: string;
   productName?: string;
   fromDate?: Date;
@@ -13,9 +12,8 @@ export interface ProductsDeliveredReportModel {
   items: ProductsDeliveredReportItemModel[];
 }
 
-export interface ProductsDeliveredReportItemModel {
+export type  ProductsDeliveredReportItemModel = {
   branchName?: string;
-  supplierName?: string;
   categoryName?: string;
   productName?: string;
   quantityUnit?: string;
@@ -24,22 +22,6 @@ export interface ProductsDeliveredReportItemModel {
   discountAmount?: number;
   extendedPriceAmount?: number;
   totalPriceAmount?: number;
-}
-
-type Key = {
-  branchName?: string;
-  supplierName?: string;
-  categoryName?: string;
-  productName?: string;
-  quantityUnit?: string;
-  unitPriceAmount?: number;
-  // items: ProductsDeliveredReportItemModel[];
-}
-
-type Group = {
-  key: Key;
-  subTotal: number;
-  items: ProductsDeliveredReportItemModel[];
 }
 
 @autoinject
@@ -55,7 +37,6 @@ export class ProductsDeliveredReport extends Report<ProductsDeliveredReportModel
       [
         { text: 'Product', style: 'tableHeader' },
         { text: 'Branch', style: 'tableHeader' },
-        { text: 'Supplier', style: 'tableHeader' },
         { text: 'Category', style: 'tableHeader' },
         { text: 'Quantity', style: 'tableHeader', alignment: 'right' },
         { text: 'Price', style: 'tableHeader', alignment: 'right' },
@@ -81,7 +62,6 @@ export class ProductsDeliveredReport extends Report<ProductsDeliveredReportModel
                 ? { text: emptyIfNull(x.productName), style: 'tableData', rowSpan: details.length }
                 : { text: "", style: "tableData" },
               { text: emptyIfNull(x.branchName), style: 'tableData' },
-              { text: emptyIfNull(x.supplierName), style: 'tableData' },
               { text: emptyIfNull(x.categoryName), style: 'tableData' },
               { text: `${emptyIfNull(x.quantityUnit)} ${formatNumber(x.quantityValue, '0,0')}`, style: 'tableData', alignment: 'right' },
               { text: formatNumber(x.unitPriceAmount), style: 'tableData', alignment: 'right' },
@@ -97,7 +77,6 @@ export class ProductsDeliveredReport extends Report<ProductsDeliveredReportModel
 
       // table footer
       orderTableBody.push([
-        { text: "", style: "tableData" },
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
@@ -124,10 +103,6 @@ export class ProductsDeliveredReport extends Report<ProductsDeliveredReportModel
                   [
                     { text: 'Branch: ', style: 'label' },
                     { text: emptyIfNull(data.branchName), style: 'value' }
-                  ],
-                  [
-                    { text: 'Supplier: ', style: 'label' },
-                    { text: emptyIfNull(data.supplierName), style: 'value' }
                   ],
                   [
                     { text: 'Date: ', style: 'label' },
@@ -166,7 +141,7 @@ export class ProductsDeliveredReport extends Report<ProductsDeliveredReportModel
       {
         table: {
           headerRows: 1,
-          widths: ['*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+          widths: ['*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
           body: orderTableBody
         },
         layout: 'lightHorizontalLines',
