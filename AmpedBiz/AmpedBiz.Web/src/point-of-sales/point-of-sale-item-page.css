@@ -1,3 +1,16 @@
 .footer-input-label {
   padding-top: 12px !important
 }
+
+.badge-host {
+  display: inline-flex;
+}
+
+.badge {
+  padding: 10px !important;
+  margin-right: 5px;
+  min-width: auto;
+  /* margin: 8px !important; */
+}
+
+

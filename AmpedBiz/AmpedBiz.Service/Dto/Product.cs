@@ -95,6 +95,8 @@ namespace AmpedBiz.Service.Dto
 
 		public UnitOfMeasure UnitOfMeasure { get; set; }
 
+        public Measure OnHand { get; set; }
+
         public Measure Available { get; set; }
 
         public Measure TargetLevel { get; set; }
@@ -367,4 +369,42 @@ namespace AmpedBiz.Service.Dto
             return hashCode * 59 + value.GetHashCode();
         }
     }
+
+    public class ProductRetailPriceDetails
+    {
+        public Guid ProdictId { get; set; }
+
+        public string ProductName { get; set; }
+
+        public List<ProductRetailPriceDetailsItem> PriceDetails {get;set;}
+
+        public ProductRetailPriceDetails() { }
+
+        public ProductRetailPriceDetails(Guid prodictId, string productName, List<ProductRetailPriceDetailsItem> priceDetails)
+        {
+            this.ProdictId = prodictId;
+            this.ProductName = productName;
+            this.PriceDetails = priceDetails;
+        }
+    }
+
+    public class ProductRetailPriceDetailsItem
+    {
+        public Measure OnHand { get; set; }
+
+        public decimal? Price { get; set; }
+
+        public decimal? Total { get; set; }
+
+        public ProductRetailPriceDetailsItem() { }
+
+        public ProductRetailPriceDetailsItem(Measure onHand, decimal? price, decimal? total)
+        {
+            this.OnHand = onHand;
+            this.Price = price;
+            this.Total = total;
+        }
+    }
+
+
 }

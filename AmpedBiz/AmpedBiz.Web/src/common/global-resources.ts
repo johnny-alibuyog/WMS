@@ -3,6 +3,8 @@ import { FrameworkConfiguration, PLATFORM } from 'aurelia-framework';
 export function configure(config: FrameworkConfiguration) {
   config.globalResources([
     PLATFORM.moduleName('common/attributes/numeric-value'),
+    PLATFORM.moduleName('common/attributes/on-enter'),
+    PLATFORM.moduleName('common/attributes/on-escape'),
     PLATFORM.moduleName('common/converters/age-value-converter'),
     PLATFORM.moduleName('common/converters/authorize-value-converter'),
     PLATFORM.moduleName('common/converters/date-format-value-converter'),

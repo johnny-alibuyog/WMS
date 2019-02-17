@@ -1,4 +1,4 @@
-import { ProductUnitOfMeasure } from './../common/models/product';
+import { ProductUnitOfMeasure, ProductRetailPriceDetails } from './../common/models/product';
 import { PageRequest, PagerResponse } from '../common/models/paging';
 
 import { HttpClientFacade } from './http-client-facade';
@@ -95,6 +95,11 @@ export class ProductService extends ServiceBase<Product> {
 
   public getProductListingReportPage(page: PageRequest): Promise<PagerResponse<ProductListingReportPageItem>> {
     var url = this._resouce + '/listing-report/page';
+    return this._httpClient.post(url, page);
+  }
+
+  public getProductRetailPriceDetails(page: PageRequest): Promise<PagerResponse<ProductRetailPriceDetails>>{
+    var url = this._resouce + '/retail-price-details/page';
     return this._httpClient.post(url, page);
   }
 }

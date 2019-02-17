@@ -23,6 +23,7 @@ export function configure(aurelia: Aurelia) {
     .developmentLogging()
     .plugin(PLATFORM.moduleName('common/global-resources'))
     .plugin(PLATFORM.moduleName('aurelia-validation'))
+    //.plugin(PLATFORM.moduleName('aurelia-combo'))
     .plugin(PLATFORM.moduleName('aurelia-dialog'), (config: DialogConfiguration) => {
       config.useDefaults();
       config.settings.lock = true;

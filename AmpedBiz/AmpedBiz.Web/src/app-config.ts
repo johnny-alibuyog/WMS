@@ -18,7 +18,7 @@ export let appConfig = {
   },
   page: <PageConfig>{
     maxSize: 5,
-    itemsPerPage: 10,
+    pageSize: 10,
     boundaryLinks: true,
     directionLinks: true,
     firstText: '«',

@@ -141,9 +141,13 @@ namespace AmpedBiz.Tests.IntegrationTests
                 Discontinued = false,
                 Image = "",
                 Name = "Name_" + this.GenerateRandomString(5),
-                Suppliers = new List<Lookup<Guid>>()
+                Suppliers = new List<Service.Dto.Supplier>()
                 {
-                    new Lookup<Guid>(supplier.Id, supplier.Name),
+                    new Service.Dto.Supplier()
+                    {
+                        Id = supplier.Id,
+                        Name = supplier.Name
+                    },
                 },
                 Inventory = new Service.Dto.Inventory()
                 {

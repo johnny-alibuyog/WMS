@@ -402,7 +402,11 @@ namespace AmpedBiz.Tests.IntegrationTests
 						BackOrderedValue = productData.Inventory.BackOrderedValue,
 					},
                     Suppliers = productData.Suppliers
-                        .Select(x => new Lookup<Guid>(x.Id, x.Name))
+                        .Select(x => new Service.Dto.Supplier()
+                        {
+                            Id = x.Id,
+                            Name = x.Name
+                        })
                         .ToList(),
 					UnitOfMeasures = new List<Service.Dto.ProductUnitOfMeasure>()
 					{

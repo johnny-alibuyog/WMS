@@ -2,6 +2,7 @@ import { Inventory } from './inventory';
 import { Lookup } from "../custom_types/lookup";
 import { Measure } from "./measure";
 import { UnitOfMeasure } from "./unit-of-measure";
+import { Supplier } from './supplier';
 
 export type Product = {
   id?: string;
@@ -13,7 +14,7 @@ export type Product = {
   image?: string;
   discontinued?: boolean;
   inventory?: Inventory;
-  suppliers?: Lookup<string>[];
+  suppliers?: Supplier[];
   unitOfMeasures?: ProductUnitOfMeasure[];
 }
 
@@ -70,6 +71,7 @@ export type ProductInventoryUnitOfMeasure = {
   isStandard?: boolean;
   isDefault?: boolean;
   barcode?: string;
+  onHand?: Measure;
   available?: Measure;
   targetLevel?: Measure;
   badStock?: Measure;
@@ -213,7 +215,7 @@ export class ProductInventoryFacade {
     return this._inventory.unitOfMeasures.find(x => x.isDefault);
   }
 
-  public current(unitOfMeasure: UnitOfMeasure): ProductInventoryUnitOfMeasure{
+  public current(unitOfMeasure: UnitOfMeasure): ProductInventoryUnitOfMeasure {
     return this._inventory.unitOfMeasures.find(x => x.unitOfMeasure.id === unitOfMeasure.id);
   }
 
@@ -251,3 +253,15 @@ export class ProductInventoryFacade {
     return price && price.priceAmount || 0;
   }
 };
+
+export type ProductRetailPriceDetails = {
+  productId?: string;
+  productName?: string;
+  priceDetails?: ProductRetailPriceDetailsItem[];
+}
+
+export type ProductRetailPriceDetailsItem = {
+  onHand?: Measure;
+  price?: number;
+  total?: number;
+}

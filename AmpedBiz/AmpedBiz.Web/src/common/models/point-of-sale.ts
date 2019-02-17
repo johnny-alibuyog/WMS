@@ -9,12 +9,14 @@ export const pointOfSaleEvents = {
     add: 'point-of-sale-item-add',
     added: 'point-of-sale-item-added',
     deleted: 'point-of-sale-item-deleted',
+    useOnHand: 'point-of-sale-item-use-on-hand',
   },
   payment: {
     add: 'point-of-sale-payment-add',
     added: 'point-of-sale-payment-added',
     deleted: 'point-of-sale-payment-deleted',
   },
+  checkPrices: 'point-of-sale-check-prices',
   // total: {
   //   changed: 'point-of-sale-total-changed',
   // },

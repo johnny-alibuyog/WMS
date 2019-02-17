@@ -1,3 +1,5 @@
+import { UnitOfMeasure } from './../common/models/unit-of-measure';
+import { ProductRetailPriceDetails } from './../common/models/product';
 import { Role, role } from './../common/models/role';
 import { paymentType } from './../common/models/payment-type';
 import { pricing } from './../common/models/pricing';
@@ -62,6 +64,8 @@ export class PointOfSaleItemPage {
 
   public selectedItem: PointOfSaleItem;
 
+  public selectedProductPriceDetails: ProductRetailPriceDetails = {};
+
   public focusBarcodeInput: boolean;
 
   constructor(
@@ -97,6 +101,10 @@ export class PointOfSaleItemPage {
       this._eventAggregator.subscribe(
         pointOfSaleEvents.item.add,
         () => this.addItem()
+      ),
+      this._eventAggregator.subscribe(
+        pointOfSaleEvents.item.useOnHand,
+        () => this.useOnHand()
       ),
       this._eventAggregator.subscribe(
         pointOfSaleEvents.saved,
@@ -145,6 +153,33 @@ export class PointOfSaleItemPage {
     });
 
     this.total();
+  }
+
+  public getOnHand(unit: UnitOfMeasure): number {
+    const productId = (this.selectedItem && this.selectedItem.product && this.selectedItem.product.id || null);
+
+    const unitId = (unit && unit.id || null);
+
+    if (!productId || !unitId) {
+      return 0;
+    }
+
+    return Enumerable
+      .from(this._productInventories)
+      .where(x => x.id == productId)
+      .selectMany(x => x.unitOfMeasures)
+      .where(x => x.unitOfMeasure.id == unit.id)
+      .select(x => x.onHand.value > 0
+        ? x.onHand.value : 0
+      )
+      .firstOrDefault();
+  }
+
+  public useOnHand(unit: UnitOfMeasure = null): void {
+    const onHandUnit = (unit) || (this.selectedItem && this.selectedItem.quantity && this.selectedItem.quantity.unit || null);
+    if (!onHandUnit || !this.selectedItem) return;
+    this.selectedItem.quantity.value = this.getOnHand(onHandUnit);
+    this.compute(this.selectedItem);
   }
 
   public async barcodeChangedHandler(): Promise<void> {
@@ -247,7 +282,7 @@ export class PointOfSaleItemPage {
 
     var inventory = await this.getProductInventory(item.product.id);
     var facade = new ProductInventoryFacade(inventory);
-    var current = facade.default;
+    var current = facade.standard;
 
     item.barcode = facade.getBarcode(inventory, current.unitOfMeasure, this.pricing);
     item.unitOfMeasures = inventory.unitOfMeasures.map(x => x.unitOfMeasure);

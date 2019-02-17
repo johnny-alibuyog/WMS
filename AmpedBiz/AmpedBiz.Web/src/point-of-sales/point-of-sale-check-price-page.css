@@ -1,0 +1,11 @@
+.search {
+  padding-left: 2em;
+}
+
+ul li .search-result {
+  list-style-type: none;
+}
+
+.header-list {
+  padding: 5px 15px !important;
+}

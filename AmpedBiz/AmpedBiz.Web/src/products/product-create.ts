@@ -1,3 +1,4 @@
+import { Supplier } from './../common/models/supplier';
 import { autoinject } from 'aurelia-framework';
 import { role } from '../common/models/role';
 import { AuthService } from '../services/auth-service';
@@ -84,5 +85,9 @@ export class ProductCreate {
 
   public createAdjustment(): void {
     this._eventAggregator.publish(inventoryEvents.adjustment.create);
+  }
+
+  public toggle(supplier: Supplier): void {
+    supplier.assigned = !supplier.assigned;
   }
 }

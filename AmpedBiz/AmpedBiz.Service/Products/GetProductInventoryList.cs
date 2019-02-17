@@ -73,7 +73,11 @@ namespace AmpedBiz.Service.Products
 									IsStandard = x.IsStandard,
 									UnitOfMeasure = x.UnitOfMeasure
 										.MapTo(default(Dto.UnitOfMeasure)),
-									Available = productInventory
+                                    OnHand = productInventory
+                                        .Convert(o => o.OnHand)
+                                        .To(x.UnitOfMeasure)
+                                        .MapTo(default(Dto.Measure)),
+                                    Available = productInventory
 										.Convert(o => o.Available)
 										.To(x.UnitOfMeasure)
 										.MapTo(default(Dto.Measure)),

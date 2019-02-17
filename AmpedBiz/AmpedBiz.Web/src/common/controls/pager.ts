@@ -1,17 +1,17 @@
 import { autoinject, bindable, bindingMode, customElement, computedFrom } from 'aurelia-framework'
 import { LogManager } from 'aurelia-framework';
 import { appConfig } from '../../app-config';
-import { BranchService } from '../../services/branch-service';
 const logger = LogManager.getLogger('pager');
 
 @autoinject
 export class Pager {
 
-  //@bindable()
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public currentPage: number;
 
-  //@bindable()
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
+  public pageSize: number;
+
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public totalItems: number;
 
@@ -30,7 +30,7 @@ export class Pager {
 
     this._config = {
       maxSize: defaultIfNull(appConfig.page.maxSize, 5),
-      itemsPerPage: defaultIfNull(appConfig.page.itemsPerPage, 10),
+      pageSize: defaultIfNull(appConfig.page.pageSize, 10),
       boundaryLinks: defaultIfNull(appConfig.page.boundaryLinks, true),
       directionLinks: defaultIfNull(appConfig.page.directionLinks, true),
       firstText: defaultIfNull(appConfig.page.firstText, '<<'),
@@ -39,6 +39,8 @@ export class Pager {
       lastText: defaultIfNull(appConfig.page.lastText, '>>'),
       rotate: defaultIfNull(appConfig.page.rotate, false)
     };
+
+    this.pageSize = this._config.pageSize;
   }
 
   attached(): void {
@@ -82,7 +84,7 @@ export class Pager {
   }
 
   calculateTotalPages(): number {
-    var totalPages = this._config.itemsPerPage < 1 ? 1 : Math.ceil(this.totalItems / this._config.itemsPerPage);
+    var totalPages = this.pageSize < 1 ? 1 : Math.ceil(this.totalItems / this.pageSize);
     totalPages = Math.max(totalPages || 0, 1);
 
     if (this.currentPage > totalPages)
@@ -232,7 +234,7 @@ export interface Page {
 
 export interface PageConfig {
   maxSize?: number,
-  itemsPerPage?: number;
+  pageSize?: number;
   boundaryLinks?: boolean;
   directionLinks?: boolean;
   firstText?: string;

@@ -1,6 +1,5 @@
 ﻿using AmpedBiz.Core.Common;
 using AmpedBiz.Core.Inventories;
-using AmpedBiz.Core.PurchaseOrders;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,7 +7,7 @@ using System.Linq;
 
 namespace AmpedBiz.Core.Products
 {
-	public class Product : Entity<Guid, Product>, IAccept<IVisitor<Product>>, IHasTenant
+    public class Product : Entity<Guid, Product>, IAccept<IVisitor<Product>>, IHasTenant
     {
         public virtual string Code { get; protected internal set; }
 

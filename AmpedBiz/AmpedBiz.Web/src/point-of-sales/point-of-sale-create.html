@@ -3,8 +3,9 @@
   <require from="./point-of-sale-create.css"></require>
   <require from="./point-of-sale-item-page"></require>
   <require from="./point-of-sale-payment-page"></require>
+  <require from="./point-of-sale-check-price-page"></require>
+
   <require from="./value-converters"></require>
-  <!-- <require from="point-of-sales/point-of-sale-verification-value-converter"></require> -->
 
   <section class="row row-no-padding">
 
@@ -19,16 +20,17 @@
           <h4 class="panel-title row-fluid">
             <span6>&nbsp ${header} &nbsp</span6>
 
-            <!-- <span6 class="pull-right" if.bind="isSaleTendered">${pointOfSale.status | lookupIdToName:statuses}</span6> -->
-
-            <div class="pull-right ${pointOfSale.status | statusToClass:isSaleTendered}" if.bind="isSaleTendered" role="alert">${pointOfSale.status | lookupIdToName:statuses}</div>
+            <div class="pull-right ${pointOfSale.status | statusToClass:isSaleTendered}" if.bind="isSaleTendered" role="alert">${pointOfSale.status
+              | lookupIdToName:statuses}</div>
 
             <!-- buttons -->
-            <button type="button" class="btn btn-default" disabled.bind="isSaleTendered && isFullyPaid" click.trigger="tender()" title="Shortcut (Ctrl + Alt + s)">
+            <button type="button" class="btn btn-default" disabled.bind="isSaleTendered && isFullyPaid" click.trigger="tender()"
+              title="Shortcut (Ctrl + Alt + s)">
               <i class="fa fa-shopping-cart"></i> ${isSaleTendered ? 'Save' : 'Tender' }
             </button>
 
-            <button type="button" class="btn btn-default" disabled.bind="!isSaleTendered" click.trigger="showReceipt()"  title="Shortcut (Ctrl + Alt + r)">
+            <button type="button" class="btn btn-default" disabled.bind="!isSaleTendered" click.trigger="showReceipt()"
+              title="Shortcut (Ctrl + Alt + r)">
               <i class="fa fa-receipt"></i> Receipt
             </button>
 
@@ -48,16 +50,6 @@
             <div class="row">
 
               <div class="col-lg-6">
-
-                <!-- <div class="form-group">
-                  <label class="control-label col-sm-4">Branch:</label>
-                  <div class="col-sm-8">
-                    <select class="form-control" value.bind="pointOfSale.branch | lookupToId:branches">
-                      <option>Select Branch</option>
-                      <option repeat.for="branch of branches" model.bind="branch.id">${branch.name}</option>
-                    </select>
-                  </div>
-                </div> -->
 
                 <div class="form-group">
                   <label class="control-label col-sm-4">Customer:</label>
@@ -123,6 +115,15 @@
                       </button>
                     </a>
                   </li>
+                  <li class="${activeTab === 'checkPricesTab' ? 'active' : ''}">
+                    <a data-toggle="tab" href="#checkPricesTab" title="Shortcut (Ctrl + Alt + e)">
+                      <span>Prices &nbsp</span>
+                      <button type="button" class="btn btn-default btn-circle" disabled.bind="isSaleTendered"
+                        click.trigger="checkPricings()">
+                        <i class="fas fa-money-bill"></i>
+                      </button>
+                    </a>
+                  </li>
                 </ul>
 
                 <div class="tab-content">
@@ -144,6 +145,13 @@
                     <point-of-sale-payment-page payment-types.bind="paymentTypes" payments.bind="pointOfSale.payments"
                       point-of-sale-id.bind="pointOfSale.id" is-modification-disallowed.bind="isFullyPaid" payable.bind="payable">
                     </point-of-sale-payment-page>
+                  </div>
+
+                  <div id="checkPricesTab" class="tab-pane fade ${activeTab === 'checkPricesTab' ? 'in active' : ''}">
+                    <br />
+
+                    <point-of-sale-check-price-page>
+                    </point-of-sale-check-price-page
                   </div>
 
                 </div>

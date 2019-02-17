@@ -57,24 +57,21 @@
 
               <div id="roles" class="tab-pane fade">
                 <br />
+                
+                <div class="list-group">
+                    <button type="button" class="list-group-item" repeat.for="role of  user.roles" click.delegate="toggle(role)">
+                        <input type="checkbox" checked.bind="role.assigned" aria-label="..." />
+                        ${role.name}
+                    </button>
+                  </div>
+
                 <ul class="list-group">
                   <li class="list-group-item" repeat.for="role of  user.roles">
                       <input type="checkbox" checked.bind="role.assigned" aria-label="..." /> ${role.name}
                   </li>
                 </ul>
-
-
-                <!-- <div class="form-group">
-                  <template repeat.for="item of user.roles">
-                    <div class="checkbox" if.bind="canAssign(item)">
-                      <label class="control-label col-sm-2"></label>
-                      <label class="col-sm-10">
-                      <input type="checkbox" checked.bind="item.assigned" /> ${item.name} 
-                    </label>
-                    </div>
-                  </template>
-                </div> -->
               </div>
+
             </div>
           </form>
         </div>

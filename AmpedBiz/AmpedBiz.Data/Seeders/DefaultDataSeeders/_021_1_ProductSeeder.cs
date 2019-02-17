@@ -144,8 +144,18 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
 
         public IDictionary<string, Cell> UnmappedCells { get; } = new Dictionary<string, Cell>();
 
-        public static Func<KeyValuePair<string, Cell>, bool> IsCellProductHasPrice =
-            (item) => new[] { '/', '(', ')' }.All(x => item.Key.Contains(x)) && item.Value.Cast<double>() > 0;
+        public static Func<ProductImportModel, KeyValuePair<string, Cell>, bool> IsCellProductPrice = (product, cell) => 
+            new[] { '/', '(', ')' }.All(x => cell.Key.Contains(x)) &&
+            (
+                cell.Value.Cast<decimal>() > 0 ||
+                (
+                    cell.Key.Contains("default", StringComparison.InvariantCultureIgnoreCase) &&
+                    cell.Key.Contains(Pricing.BasePrice.Name, StringComparison.InvariantCultureIgnoreCase) &&
+                    product.DefaultUOM.IsNullOrWhiteSpace() == false &&
+                    product.PiecePerPack > 0
+
+                )
+            );
 
         public static Func<string, bool> IsStandard =
             (standardEquivalent) => standardEquivalent.IsEqualTo("standard");
@@ -159,17 +169,30 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             );
     }
 
+    internal class Segment
+    {
+        public Pricing Pricing { get; private set; }
+
+        public UnitOfMeasure Unit { get; private set; }
+
+        public decimal StandardEquivalent { get; private set; }
+
+        public bool IsStandard { get; private set; }
+
+        public bool IsDefault { get; private set; }
+
+        public Segment(Pricing pricing, UnitOfMeasure unit, decimal standardEquivalent, bool isStandard, bool isDefault)
+        {
+            Pricing = pricing;
+            Unit = unit;
+            StandardEquivalent = standardEquivalent;
+            IsStandard = isStandard;
+            IsDefault = isDefault;
+        }
+    }
+
     internal static class ProductImportModelExtention
     {
-        //public static void MapValueOf<TSource, TProperty>(this TSource target, Row row, Expression<Func<TSource, TProperty>> selector)
-        //{
-        //    var memberExpression = selector.Body as MemberExpression;
-        //    var property = memberExpression.Member as PropertyInfo;
-        //    var columnName = property.Name.Humanize(LetterCasing.Title);
-        //    var value = row[columnName].Cast<TProperty>();
-        //    property.SetValue(target, value, null);
-        //}
-
         public static IReadOnlyCollection<ProductImportModel> ExtractRawProducts(this IContext context)
         {
             var filename = Path.Combine(DatabaseConfig.Instance.Seeder.ExternalFilesAbsolutePath, context.TenantId, @"products.xlsx");
@@ -286,6 +309,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             {
                 return importModel.Suppliers
                     .Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(x => x.Trim())
                     .Select(x => supplierLookup
                         .GetValueOrDefault(x)
                         .EnsureExistence($"Supplier {x} does not exists in database.")
@@ -311,8 +335,17 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
             IDictionary<string, Pricing> pricingLookup,
             IDictionary<string, UnitOfMeasure> unitOfMeasureLookup)
         {
+            var isDefaultBasePriceHasUOM = new Func<Segment, bool>((segment) => 
+                segment.IsDefault &&
+                segment.Pricing == Pricing.BasePrice &&
+                product.DefaultUOM.IsNullOrWhiteSpace() == false &&
+                product.PiecePerPack > 0
+            );
+
             var result = product.UnmappedCells
-                .Where(ProductImportModel.IsCellProductHasPrice)
+                .Where(cell => 
+                    ProductImportModel.IsCellProductPrice(product, cell)
+                )
                 .Select(x => new
                 {
                     Segments = ParseKeySegments(x.Key),
@@ -354,26 +387,50 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                 )
                 .ToList();
 
+            EnsureDefaultPricing();
+
             return result;
 
-            (
-                Pricing Pricing,
-                UnitOfMeasure Unit,
-                decimal StandardEquivalent,
-                bool IsStandard,
-                bool IsDefault
-            ) ParseKeySegments(string key)
+            void EnsureDefaultPricing()
+            {
+                var productUOM = new
+                {
+                    Standard = result.Standard(x => x),
+                    Default = result.Default(x => x)
+                };
+
+                if (productUOM.Standard == productUOM.Default)
+                {
+                    return;
+                }
+
+                var basePrice = new
+                {
+                    Standard = productUOM.Standard.Prices
+                        .FirstOrDefault(x => x.Pricing == Pricing.BasePrice),
+                    Default = productUOM.Default.Prices
+                        .FirstOrDefault(x => x.Pricing == Pricing.BasePrice),
+                };
+
+                if (basePrice.Default.Price.Amount == 0)
+                {
+                    basePrice.Default.Price.Amount = basePrice.Standard.Price.Amount * productUOM.Default.StandardEquivalentValue;
+                }
+            }
+
+            Segment ParseKeySegments(string key)
             {
                 var parts = key
                     .Split('/', '(')
                     .Select(x => x
                         .Replace(")", string.Empty)
+                        .Replace("#", ".")
                         .Trim()
                     )
                     .ToArray();
 
-                return (
-                    Pricing: pricingLookup
+                return new Segment(
+                    pricing: pricingLookup
                         .Where(x =>
                             x.Key.IsEqualTo(parts[0]) ||
                             x.Value.Id.IsEqualTo(parts[0]) ||
@@ -385,7 +442,7 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                             $"Product {product.ProductName} has pricing " +
                             $"{parts[0]} that does not exists in database."
                         ),
-                    Unit: new Func<UnitOfMeasure>(() =>
+                    unit: new Func<UnitOfMeasure>(() =>
                     {
                         switch (parts[2].ToLower())
                         {
@@ -414,10 +471,8 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                                     $"Product {product.ProductName} has a {type}" +
                                     $" unit of {unitId} that does not exists in database."
                                 );
-
-
                     })(),
-                    StandardEquivalent: new Func<decimal>(() =>
+                    standardEquivalent: new Func<decimal>(() =>
                     {
                         switch (parts[2].ToLower())
                         {
@@ -438,8 +493,8 @@ namespace AmpedBiz.Data.Seeders.DefaultDataSeeders
                                 return Convert.ToDecimal(parts[2]);
                         }
                     })(),
-                    IsStandard: ProductImportModel.IsStandard(parts[2]),
-                    IsDefault: ProductImportModel.IsDefault(parts[2], product)
+                    isStandard: ProductImportModel.IsStandard(parts[2]),
+                    isDefault: ProductImportModel.IsDefault(parts[2], product)
                 );
             }
         }

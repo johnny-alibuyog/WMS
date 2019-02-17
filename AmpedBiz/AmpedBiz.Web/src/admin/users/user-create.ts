@@ -78,4 +78,8 @@ export class UserCreate {
       this._notification.warning(error);
     }
   }
+
+  public toggle(role: Role): void {
+    role.assigned = !role.assigned;
+  }
 }

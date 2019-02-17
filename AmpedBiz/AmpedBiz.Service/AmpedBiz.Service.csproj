@@ -130,6 +130,7 @@
     <Compile Include="Orders\CompleteOrder.cs" />
     <Compile Include="PointOfSales\GetPointOfSaleStatusList.cs" />
     <Compile Include="PointOfSales\GetPointOfSaleStatusLookup.cs" />
+    <Compile Include="Products\GetProductRetailPriceDetailsPage.cs" />
     <Compile Include="Products\GetSalesReportPage.cs" />
     <Compile Include="Orders\RecreateOrder.cs" />
     <Compile Include="Orders\SaveOrder.cs" />

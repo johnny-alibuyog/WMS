@@ -73,9 +73,14 @@ export class Pager<T> implements PagerRequest, PagerResponse<T> {
 
   public onPage: () => void;
 
-  constructor() {
+  constructor(config: { pageSize?: number } = {}) {
     this.offset = 1;
-    this.size = appConfig.page.itemsPerPage;
+    this.size = config && config.pageSize || appConfig.page.pageSize;
+  }
+
+  public clear(): void {
+    this.items = [];
+    this.count = 0;
   }
 
   public doPage(event: CustomEvent): void {

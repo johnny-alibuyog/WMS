@@ -11,6 +11,8 @@ import { role } from "../common/models/role";
 import { isNullOrWhiteSpace } from "../common/utils/string-helpers";
 import { EventAggregator, Subscription } from "aurelia-event-aggregator";
 import { ReceiptGenerator } from "./receipt-generator";
+import { OverrideParams, Override } from 'users/override';
+import * as KeyCode from 'keycode-js';
 
 @autoinject
 export class PointOfSaleCreate {
@@ -18,7 +20,7 @@ export class PointOfSaleCreate {
 
   public readonly header: string = "Point Of Sale";
   public readonly canTender: boolean = false;
-  public activeTab: 'itemsTab' | 'paymentsTab' = 'itemsTab';
+  public activeTab: 'itemsTab' | 'paymentsTab' | 'checkPricesTab' = 'itemsTab';
 
   public products: Lookup<string>[] = [];
   public branches: Lookup<string>[] = [];
@@ -79,20 +81,26 @@ export class PointOfSaleCreate {
   private handleKeyInput = (event: KeyboardEvent) => {
     if (event.ctrlKey && event.altKey) {
       switch (event.keyCode) {
-        case 83:  /* Ctrl + Alt + s */
+        case KeyCode.KEY_S:  /* Ctrl + Alt + s */
           this.tender();
           break;
-        case 82: /* Ctrl + Alt + n */
+        case KeyCode.KEY_R: /* Ctrl + Alt + n */
           this.showReceipt();
           break;
-        case 78: /* Ctrl + Alt + n */
+        case KeyCode.KEY_N: /* Ctrl + Alt + n */
           this.clear();
           break;
-        case 73: /* Ctrl + Alt + i */
+        case KeyCode.KEY_I: /* Ctrl + Alt + i */
           this.addItem();
           break;
-        case 80: /* Ctrl + Alt + p */
+        case KeyCode.KEY_P: /* Ctrl + Alt + p */
           this.addPayment();
+          break;
+        case KeyCode.KEY_E: /* Ctrl + Alt + e */
+          this.checkPrices();
+          break;
+        case KeyCode.KEY_L:
+          this.useOnHand();
           break;
       }
     }
@@ -140,14 +148,35 @@ export class PointOfSaleCreate {
     }
   }
 
+  // @combo('ctrl+alt+1')
   public addItem(): void {
-    this.activeTab = 'itemsTab';
+    if (this.activeTab !== 'itemsTab') {
+      this.activeTab = 'itemsTab';
+    }
     this._eventAggregator.publish(pointOfSaleEvents.item.add);
   }
 
+  // @combo('ctrl+alt+2')
   public addPayment(): void {
-    this.activeTab = 'paymentsTab';
+    if (this.activeTab !== 'paymentsTab') {
+      this.activeTab = 'paymentsTab';
+    }
     this._eventAggregator.publish(pointOfSaleEvents.payment.add);
+  }
+
+  // @combo('ctrl+alt+3')
+  public checkPrices(): void {
+    if (this.activeTab !== 'checkPricesTab') {
+      this.activeTab = 'checkPricesTab';
+    }
+    this._eventAggregator.publish(pointOfSaleEvents.checkPrices);
+  }
+
+  public useOnHand(): void {
+    if (this.activeTab !== 'itemsTab') {
+      this.activeTab = 'itemsTab';
+    }
+    this._eventAggregator.publish(pointOfSaleEvents.item.useOnHand);
   }
 
   public async tender(): Promise<void> {
@@ -175,11 +204,17 @@ export class PointOfSaleCreate {
   }
 
   public async clear(): Promise<void> {
-    let message = this.isSaleTendered
-      ? 'Do you want to create new sale?'
-      : 'Do you want to clear entries?';
-
-    let confirmation = await this._notification.confirm(message).whenClosed();
+    let confirmation = await (
+      this.isSaleTendered
+        ? (() => {
+          let message = 'Do you want to create new sale?';
+          return this._notification.confirm(message).whenClosed();
+        })
+        : (() => {
+          let params = <OverrideParams>{ title: "Clear Override" };
+          return this._dialog.open({ viewModel: Override, model: params }).whenClosed();
+        })
+    )();
 
     if (!confirmation.wasCancelled) {
       this.pointOfSale = initialPointOfSale(this._api);

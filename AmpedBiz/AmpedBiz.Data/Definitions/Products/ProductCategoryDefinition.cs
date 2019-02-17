@@ -28,7 +28,7 @@ namespace AmpedBiz.Data.Definitions.Products
 			{
 				Define(x => x.Id)
 					.NotNullableAndNotEmpty()
-					.And.MaxLength(30);
+					.And.MaxLength(150);
 
 				Define(x => x.Tenant)
 					.IsValid();
