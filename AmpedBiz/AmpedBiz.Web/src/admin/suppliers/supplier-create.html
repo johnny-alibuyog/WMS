@@ -3,7 +3,88 @@
   <require from="common/controls/address-input.html"></require>
   <require from="common/controls/contact-input.html"></require>
 
-  <ux-dialog>
+  <section class="row row-no-padding">
+
+    <div class="col-md-6">
+
+      <div class="panel panel-default">
+
+        <!-- heading -->
+        <div class="panel-heading">
+
+          <!-- heading label -->
+          <h4 class="panel-title row-fluid">
+            <span>&nbsp ${header} &nbsp</span>
+
+            <!-- transition buttons -->
+            <button type="button" class="btn btn-default" click.trigger="save()">
+              <i class="fa fa-save"></i> Save
+            </button>
+
+            <button type="button" class="btn btn-default" click.trigger="back()">
+              <i class="fa fa-chevron-circle-left"></i> Back
+            </button>
+          </h4>
+
+        </div>
+
+        <!-- body -->
+        <div class="panel-body">
+          <form class="form-horizontal" role="form">
+
+            <ul class="nav nav-tabs">
+              <li class="active">
+                <a data-toggle="tab" href="#info">Info</a>
+              </li>
+              <li>
+                <a data-toggle="tab" href="#address">Address</a>
+              </li>
+              <li>
+                <a data-toggle="tab" href="#contact">Contact</a>
+              </li>
+            </ul>
+
+            <div class="tab-content">
+              <div id="info" class="tab-pane fade in active">
+                <br />
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Code:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="Enter Code" value.bind="supplier.code" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Name:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="Enter Name" value.bind="supplier.name" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-4">Contact Person:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="Enter Contact Person"
+                      value.bind="supplier.contactPerson" />
+                  </div>
+                </div>
+              </div>
+              <div id="address" class="tab-pane fade">
+                <br />
+                <address-input address.two-way="supplier.address" />
+              </div>
+              <div id="contact" class="tab-pane fade">
+                <br />
+                <contact-input contact.two-way="supplier.contact" />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- <ux-dialog>
   
     <ux-dialog-header>
       <h3>${header}</h3>
@@ -70,6 +151,6 @@
         <i class="fa fa-trash-circle"></i> Cancel</button>
     </ux-dialog-footer>
 
-  </ux-dialog>
+  </ux-dialog> -->
 
 </template>

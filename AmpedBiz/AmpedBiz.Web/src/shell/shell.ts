@@ -161,6 +161,21 @@ export class Shell {
         },
       },
       {
+        route: ['sandbox'],
+        name: 'sandbox',
+        moduleId: PLATFORM.moduleName('../sandbox/index'),
+        nav: true,
+        main: true,
+        title: 'Sandbox',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+            ]
+          }
+        },
+      },
+      {
         route: ['user-profile'],
         name: 'user-profile',
         moduleId: PLATFORM.moduleName('../users/profiles/index'),

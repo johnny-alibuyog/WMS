@@ -1,9 +1,9 @@
 import { autoinject } from 'aurelia-framework';
-import { DialogController } from 'aurelia-dialog';
 import { PaymentType } from '../../common/models/payment-type';
 import { PaymentTypeService } from '../../services/payment-type-service';
 import { NotificationService } from '../../common/controls/notification-service';
 import { ActionResult } from '../../common/controls/notification';
+import { Router } from 'aurelia-router';
 
 @autoinject
 export class PaymentTypeCreate {
@@ -14,42 +14,34 @@ export class PaymentTypeCreate {
   public paymentType: PaymentType;
 
   constructor(
+    private readonly _router: Router,
     private readonly _service: PaymentTypeService,
-    private readonly _controller: DialogController,
     private readonly _notification: NotificationService,
   ) { }
 
   public async activate(paymentType: PaymentType): Promise<void> {
     try {
-      if (paymentType) {
-        this.header = "Edit Payment Type";
-        this.isEdit = true;
-        this.paymentType = await this._service.get(paymentType.id);
-      }
-      else {
-        this.header = "Create Payment Type";
-        this.isEdit = false;
-        this.paymentType = <PaymentType>{};
-      }
+      this.isEdit = (paymentType && paymentType.id) ? true : false;
+      this.header = (this.isEdit) ? "Edit Payment Type" : "Create Payment Type";
+      this.paymentType = (this.isEdit) ? await this._service.get(paymentType.id) : <PaymentType>{};
     }
     catch (error) {
       this._notification.warning(error);
     }
   }
 
-  public cancel(): void {
-    this._controller.cancel();
+  public back(): void {
+    return this._router.navigateBack();
   }
 
   public async save(): Promise<void> {
     try {
       let result = await this._notification.confirm('Do you want to save?').whenClosed();
       if (result.output === ActionResult.Yes) {
-        let data = (this.isEdit)
+        this.paymentType = (this.isEdit)
           ? await this._service.update(this.paymentType)
           : await this._service.create(this.paymentType);
         await this._notification.success("Payment Type has been saved.").whenClosed();
-        await this._controller.ok(<PaymentType>data);
       }
     }
     catch (error) {

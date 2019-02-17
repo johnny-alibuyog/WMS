@@ -1,10 +1,10 @@
 import { autoinject } from 'aurelia-framework';
-import { DialogService } from 'aurelia-dialog';
 import { UnitOfMeasureCreate } from './unit-of-measure-create';
 import { UnitOfMeasure, UnitOfMeasurePageItem } from '../../common/models/unit-of-measure';
 import { ServiceApi } from '../../services/service-api';
 import { NotificationService } from '../../common/controls/notification-service';
 import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../../common/models/paging';
+import { Router } from 'aurelia-router';
 
 @autoinject
 export class UnitOfMeasurePage {
@@ -15,7 +15,7 @@ export class UnitOfMeasurePage {
 
   constructor(
     private readonly _api: ServiceApi,
-    private readonly _dialog: DialogService,
+    private readonly _router: Router,
     private readonly _notification: NotificationService,
   ) {
     this.filter["code"] = '';
@@ -49,16 +49,12 @@ export class UnitOfMeasurePage {
     }
   }
 
-  public async create(): Promise<void> {
-    let settings = { viewModel: UnitOfMeasureCreate, model: null };
-    let response = await this._dialog.open(settings).whenClosed();
-    if (!response.wasCancelled) await this.getPage();
+  public create(): void {
+    this._router.navigateToRoute('unit-of-measure-create');
   }
 
-  public async edit(item: UnitOfMeasure): Promise<void> {
-    let settings = { viewModel: UnitOfMeasureCreate, model: item };
-    let response = await this._dialog.open(settings).whenClosed(); 
-    if (!response.wasCancelled) await this.getPage();
+  public edit(item: UnitOfMeasure): void {
+    this._router.navigateToRoute('unit-of-measure-create', { id: item.id });
   }
 
   public delete(item: any): void {

@@ -1,12 +1,11 @@
 import { autoinject } from 'aurelia-framework';
-import { DialogService } from 'aurelia-dialog';
-import { UserCreate } from './user-create';
 import { Role, role } from '../../common/models/role';
 import { User, UserPageItem } from '../../common/models/user';
 import { ServiceApi } from '../../services/service-api';
 import { NotificationService } from '../../common/controls/notification-service';
 import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../../common/models/paging';
 import { ActionResult } from '../../common/controls/notification';
+import { Router } from 'aurelia-router';
 
 @autoinject
 export class UserPage {
@@ -18,7 +17,7 @@ export class UserPage {
 
   constructor(
     private readonly _api: ServiceApi,
-    private readonly _dialog: DialogService,
+    private readonly _router: Router,
     private readonly _notification: NotificationService
   ) {
     this.filter["name"] = '';
@@ -50,22 +49,18 @@ export class UserPage {
     }
   }
 
-  public async create(): Promise<void> {
-    let settings = { viewModel: UserCreate, model: null };
-    let response = await this._dialog.open(settings).whenClosed();
-    if (!response.wasCancelled) this.getPage();
+
+  public create(): void {
+    this._router.navigateToRoute('user-create');
   }
 
-  public async edit(user: User): Promise<void> {
-    if (!this.canEdit(user)) {
-      var message = `You are not allowed to edit ${user.person.firstName + ' ' + user.person.lastName}.`;
+  public async edit(item: User): Promise<void> {
+    if (!this.canEdit(item)) {
+      var message = `You are not allowed to edit ${item.person.firstName + ' ' + item.person.lastName}.`;
       await this._notification.warning(message);
       return;
     }
-
-    let settings = { viewModel: UserCreate, model: user };
-    let response = await this._dialog.open(settings).whenClosed();
-    if (!response.wasCancelled) await this.getPage();
+    this._router.navigateToRoute('user-create', { id: item.id });
   }
 
   public async resetPassword(user: User): Promise<void> {

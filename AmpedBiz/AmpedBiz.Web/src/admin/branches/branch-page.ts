@@ -5,6 +5,7 @@ import { Branch, BranchPageItem } from '../../common/models/branch';
 import { ServiceApi } from '../../services/service-api';
 import { NotificationService } from '../../common/controls/notification-service';
 import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../../common/models/paging';
+import { Router } from 'aurelia-router';
 
 @autoinject
 export class BranchPage {
@@ -15,7 +16,7 @@ export class BranchPage {
   
   constructor(
     private readonly _api: ServiceApi,
-    private readonly _dialog: DialogService,
+    private readonly _router: Router,
     private readonly _notification: NotificationService,
   ) {
     this.filter["name"] = '';
@@ -49,15 +50,11 @@ export class BranchPage {
   }
 
   public async create(): Promise<void> {
-    let settings = { viewModel: BranchCreate, model: null };
-    let response = await this._dialog.open(settings).whenClosed();
-    if (!response.wasCancelled) await this.getPage();
+    this._router.navigateToRoute('branch-create');
   }
 
   public async edit(item: BranchPageItem): Promise<void> {
-    let settings = { viewModel: BranchCreate, model: <Branch>{ id: item.id } };
-    let response = await this._dialog.open(settings).whenClosed();
-    if (!response.wasCancelled) await this.getPage();
+    this._router.navigateToRoute('branch-create', { id: item.id });
   }
 
   public delete(item: any): void {

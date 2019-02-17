@@ -1,11 +1,11 @@
 import { autoinject } from 'aurelia-framework';
-import { DialogController } from 'aurelia-dialog';
 import { Branch } from '../../common/models/branch';
 import { ServiceApi } from '../../services/service-api';
 import { NotificationService } from '../../common/controls/notification-service';
 import { ValidationController, ValidationControllerFactory } from 'aurelia-validation';
 import { BootstrapFormRenderer } from '../../common/controls/validations/bootstrap-form-renderer';
 import { ActionResult } from '../../common/controls/notification';
+import { Router } from 'aurelia-router';
 
 @autoinject()
 export class BranchCreate {
@@ -18,8 +18,8 @@ export class BranchCreate {
 
   constructor(
     private readonly _api: ServiceApi,
+    private readonly _router: Router,
     private readonly _notification: NotificationService,
-    private readonly _dialogController: DialogController,
     private readonly _validationController: ValidationController,
     validationControllerFactory: ValidationControllerFactory
   ) {
@@ -68,7 +68,7 @@ export class BranchCreate {
 
   public async activate(branch: Branch): Promise<void> {
     try {
-      this.isEdit = (branch) ? true : false;
+      this.isEdit = (branch && branch.id || null) ? true : false;
       this.header = (this.isEdit) ? "Edit Branch" : "Create Branch";
       this.branch = (this.isEdit) ? await this._api.branches.get(branch.id) : this.initializeBranch();
     } catch (error) {
@@ -76,19 +76,18 @@ export class BranchCreate {
     }
   }
 
-  public cancel(): void {
-    this._dialogController.cancel();
+  public back(): void {
+    return this._router.navigateBack();
   }
 
   public async save(): Promise<void> {
     try {
       let result = await this._notification.confirm("Do you want to save?").whenClosed();
       if (result.output === ActionResult.Yes) {
-        let data = (this.isEdit)
+        this.branch = (this.isEdit)
           ? await this._api.branches.update(this.branch)
           : await this._api.branches.create(this.branch);
         await this._notification.success("Branch  has been saved.").whenClosed();
-        await this._dialogController.ok(data);
       }
     }
     catch (error) {

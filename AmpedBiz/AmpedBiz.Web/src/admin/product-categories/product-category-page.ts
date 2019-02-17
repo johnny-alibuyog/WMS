@@ -1,10 +1,10 @@
+import { ProductCategory } from './../../common/models/product-category';
 import { autoinject } from 'aurelia-framework';
-import { DialogService } from 'aurelia-dialog';
-import { ProductCategoryCreate } from './product-category-create';
-import { ProductCategory, ProductCategoryPageItem } from '../../common/models/product-category';
+import { ProductCategoryPageItem } from '../../common/models/product-category';
 import { ServiceApi } from '../../services/service-api';
 import { NotificationService } from '../../common/controls/notification-service';
 import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../../common/models/paging';
+import { Router } from 'aurelia-router';
 
 @autoinject
 export class ProductCategoryPage {
@@ -15,7 +15,7 @@ export class ProductCategoryPage {
 
   constructor(
     private readonly _api: ServiceApi,
-    private readonly _dialog: DialogService,
+    private readonly _router: Router,
     private readonly _notification: NotificationService,
   ) {
     this.filter["name"] = '';
@@ -46,16 +46,12 @@ export class ProductCategoryPage {
     }
   }
 
-  public async create(): Promise<void> {
-    let settings = { viewModel: ProductCategoryCreate, model: null };
-    let response = await this._dialog.open(settings).whenClosed();
-    if (!response.wasCancelled) await this.getPage();
+  public create(): void {
+    this._router.navigateToRoute('product-category-create');
   }
 
-  public async edit(item: ProductCategoryPageItem): Promise<void> {
-    let settings = { viewModel: ProductCategoryCreate, model: <ProductCategory>{ id: item.id } };
-    let response = await this._dialog.open(settings).whenClosed();
-    if (!response.wasCancelled) await this.getPage();
+  public edit(item: ProductCategory): void {
+    this._router.navigateToRoute('product-category-create', { id: item.id });
   }
 
   public delete(item: any): void {

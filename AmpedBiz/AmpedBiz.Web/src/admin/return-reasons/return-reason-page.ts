@@ -1,10 +1,9 @@
 import { autoinject } from 'aurelia-framework';
-import { DialogService } from 'aurelia-dialog';
-import { ReturnReasonCreate } from './return-reason-create';
 import { ServiceApi } from '../../services/service-api';
 import { NotificationService } from '../../common/controls/notification-service';
 import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../../common/models/paging';
 import { ReturnReasonPageItem, ReturnReason } from '../../common/models/return-reason';
+import { Router } from 'aurelia-router';
 
 @autoinject
 export class ReturnReasonPage {
@@ -15,7 +14,7 @@ export class ReturnReasonPage {
 
   constructor(
     private readonly _api: ServiceApi,
-    private readonly _dialog: DialogService,
+    private readonly _router: Router,
     private readonly _notification: NotificationService,
   ) {
     this.filter["name"] = '';
@@ -46,16 +45,12 @@ export class ReturnReasonPage {
     }
   }
 
-  public async create(): Promise<void> {
-    let settings = { viewModel: ReturnReasonCreate, model: null };
-    let response = await this._dialog.open(settings).whenClosed();
-    if (!response.wasCancelled) await this.getPage();
+  public create(): void {
+    this._router.navigateToRoute('return-reason-create');
   }
 
-  public async edit(item: ReturnReasonPageItem): Promise<void> {
-    let settings = { viewModel: ReturnReasonCreate, model: <ReturnReason>{ id: item.id } };
-    let response = await this._dialog.open(settings).whenClosed();
-    if (!response.wasCancelled) await this.getPage();
+  public edit(item: ReturnReason): void {
+    this._router.navigateToRoute('return-reason-create', { id: item.id });
   }
 
   public delete(item: any): void {

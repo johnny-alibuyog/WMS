@@ -25,6 +25,20 @@ export class Index {
         },
       },
       {
+        route: ['branch-create'],
+        name: 'branch-create',
+        moduleId: PLATFORM.moduleName('./branches/branch-create'),
+        nav: false,
+        title: 'Create Branch',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+            ]
+          }
+        },
+      },
+      {
         route: ['customer-page'],
         name: 'customer-page',
         moduleId: PLATFORM.moduleName('./customers/customer-page'),
@@ -70,6 +84,21 @@ export class Index {
         },
       },
       {
+        route: ['payment-type-create'],
+        name: 'payment-type-create',
+        moduleId: PLATFORM.moduleName('./payment-types/payment-type-create'),
+        nav: false,
+        title: 'Create Payment Type',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+            ]
+          }
+        }
+      },
+      {
         route: ['product-category-page'],
         name: 'product-category-page',
         moduleId: PLATFORM.moduleName('./product-categories/product-category-page'),
@@ -83,6 +112,21 @@ export class Index {
             ]
           }
         },
+      },
+      {
+        route: ['product-category-create'],
+        name: 'product-category-create',
+        moduleId: PLATFORM.moduleName('./product-categories/product-category-create'),
+        nav: false,
+        title: 'Create Product Category',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+            ]
+          }
+        }
       },
       {
         route: ['return-reason-page'],
@@ -100,6 +144,21 @@ export class Index {
         },
       },
       {
+        route: ['return-reason-create'],
+        name: 'return-reason-create',
+        moduleId: PLATFORM.moduleName('./return-reasons/return-reason-create'),
+        nav: false,
+        title: 'Create Return Reason',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+            ]
+          }
+        }
+      },
+      {
         route: ['supplier-page'],
         name: 'supplier-page',
         moduleId: PLATFORM.moduleName('./suppliers/supplier-page'),
@@ -113,7 +172,23 @@ export class Index {
             ]
           }
         }
-      },      {
+      },
+      {
+        route: ['supplier-create'],
+        name: 'supplier-create',
+        moduleId: PLATFORM.moduleName('./suppliers/supplier-create'),
+        nav: false,
+        title: 'Create Supplier',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+            ]
+          }
+        }
+      },
+      {
         route: ['unit-of-measure-page'],
         name: 'unit-of-measure-page',
         moduleId: PLATFORM.moduleName('./unit-of-measures/unit-of-measure-page'),
@@ -129,6 +204,21 @@ export class Index {
         },
       },
       {
+        route: ['unit-of-measure-create'],
+        name: 'unit-of-measure-create',
+        moduleId: PLATFORM.moduleName('./unit-of-measures/unit-of-measure-create'),
+        nav: false,
+        title: 'Create Unit of Measure',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+            ]
+          }
+        }
+      },
+      {
         route: ['user-page'],
         name: 'user-page',
         moduleId: PLATFORM.moduleName('./users/user-page'),
@@ -142,6 +232,21 @@ export class Index {
             ]
           }
         },
+      },
+      {
+        route: ['user-create'],
+        name: 'user-create',
+        moduleId: PLATFORM.moduleName('./users/user-create'),
+        nav: false,
+        title: 'Create User',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+              role.manager,
+            ]
+          }
+        }
       },
       {
         route: [""],

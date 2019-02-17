@@ -1,11 +1,11 @@
 import { autoinject } from 'aurelia-framework';
-import { DialogController } from 'aurelia-dialog';
 import { Role, role } from '../../common/models/role';
 import { User } from '../../common/models/user';
 import { Branch } from '../../common/models/branch';
 import { ServiceApi } from '../../services/service-api';
 import { NotificationService } from '../../common/controls/notification-service';
 import { ActionResult } from '../../common/controls/notification';
+import { Router } from 'aurelia-router';
 
 @autoinject
 export class UserCreate {
@@ -18,13 +18,13 @@ export class UserCreate {
 
   constructor(
     private readonly _api: ServiceApi,
+    private readonly _router: Router,
     private readonly _notification: NotificationService,
-    private readonly _controller: DialogController,
   ) { }
 
   public async activate(user: User): Promise<void> {
     try {
-      this.isEdit = (user) ? true : false;
+      this.isEdit = (user && user.id) ? true : false;
       this.header = (this.isEdit) ? "Edit User" : "Create User";
       [this.branches, this.user] = await Promise.all([
         this._api.branches.getList(),
@@ -59,19 +59,18 @@ export class UserCreate {
     this.isEdit = !this.isEdit;
   }
 
-  public cancel(): void {
-    this._controller.cancel();
+  public back(): void {
+    this._router.navigateBack();
   }
 
   public async save(): Promise<void> {
     try {
       let result = await this._notification.confirm('Do you want to save?').whenClosed();
       if (result.output === ActionResult.Yes) {
-        let data = (this.isEdit)
+        this.user = (this.isEdit)
           ? await this._api.users.update(this.user)
           : await this._api.users.create(this.user);
         await this._notification.success("User  has been saved.").whenClosed();
-        this._controller.ok(<User>data);
       }
     }
     catch (error) {

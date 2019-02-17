@@ -1,10 +1,9 @@
 import { autoinject } from 'aurelia-framework';
-import { DialogService } from 'aurelia-dialog';
-import { PaymentTypeCreate } from './payment-type-create';
-import { PaymentType, PaymentTypePageItem } from '../../common/models/payment-type';
+import { PaymentTypePageItem } from '../../common/models/payment-type';
 import { ServiceApi } from '../../services/service-api';
 import { NotificationService } from '../../common/controls/notification-service';
 import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../../common/models/paging';
+import { Router } from 'aurelia-router';
 
 @autoinject
 export class PaymentTypePage {
@@ -14,9 +13,9 @@ export class PaymentTypePage {
   public pager: Pager<PaymentTypePageItem> = new Pager<PaymentTypePageItem>();
 
   constructor(
-    private _api: ServiceApi,
-    private _dialog: DialogService,
-    private _notification: NotificationService,
+    private readonly _api: ServiceApi,
+    private readonly _router: Router,
+    private readonly _notification: NotificationService,
   ) {
     this.filter["name"] = '';
     this.filter.onFilter = () => this.getPage();
@@ -46,18 +45,14 @@ export class PaymentTypePage {
     }
   }
 
-  public async create(): Promise<void> {
-    let settings = { viewModel: PaymentTypeCreate, model: null };
-    let response = await this._dialog.open(settings).whenClosed();
-    if (!response.wasCancelled) await this.getPage();
+  public create(): void {
+    this._router.navigateToRoute('payment-type-create');
   }
 
-  public async edit(item: PaymentTypePageItem): Promise<void> {
-    let settings = { viewModel: PaymentTypeCreate, model: <PaymentType>{ id: item.id } };
-    let response = await this._dialog.open(settings).whenClosed();
-    if (!response.wasCancelled) await this.getPage();
+  public edit(item: PaymentTypePageItem): void {
+    this._router.navigateToRoute('payment-type-create', { id: item.id });
   }
-
+  
   public delete(item: any): void {
     /*
     var index = this.mockData.indexOf(item);

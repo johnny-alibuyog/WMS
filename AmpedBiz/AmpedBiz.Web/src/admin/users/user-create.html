@@ -4,15 +4,32 @@
   <require from="common/controls/contact-input.html"></require>
   <require from="common/controls/person-input.html"></require>
 
-  <ux-dialog>
+  <section class="row row-no-padding">
 
-    <ux-dialog-header>
-      <h3>${header}</h3>
-    </ux-dialog-header>
-
-    <ux-dialog-body>
+    <div class="col-md-6">
 
       <div class="panel panel-default">
+
+        <!-- heading -->
+        <div class="panel-heading">
+
+          <!-- heading label -->
+          <h4 class="panel-title row-fluid">
+            <span>&nbsp ${header} ${user.username ? '(' + user.username + ')' : ''}&nbsp</span>
+
+            <!-- transition buttons -->
+            <button type="button" class="btn btn-default" click.trigger="save()">
+              <i class="fa fa-save"></i> Save
+            </button>
+
+            <button type="button" class="btn btn-default" click.trigger="back()">
+              <i class="fa fa-chevron-circle-left"></i> Back
+            </button>
+          </h4>
+
+        </div>
+
+        <!-- body -->
         <div class="panel-body">
           <form class="form-horizontal" role="form">
 
@@ -57,35 +74,21 @@
 
               <div id="roles" class="tab-pane fade">
                 <br />
-                
-                <div class="list-group">
-                    <button type="button" class="list-group-item" repeat.for="role of  user.roles" click.delegate="toggle(role)">
-                        <input type="checkbox" checked.bind="role.assigned" aria-label="..." />
-                        ${role.name}
-                    </button>
-                  </div>
 
-                <ul class="list-group">
-                  <li class="list-group-item" repeat.for="role of  user.roles">
-                      <input type="checkbox" checked.bind="role.assigned" aria-label="..." /> ${role.name}
-                  </li>
-                </ul>
+                <div class="list-group">
+                  <button type="button" class="list-group-item" repeat.for="role of  user.roles" click.delegate="toggle(role)">
+                    <input type="checkbox" checked.bind="role.assigned" aria-label="..." /> ${role.name}
+                  </button>
+                </div>
               </div>
 
             </div>
           </form>
         </div>
       </div>
-    </ux-dialog-body>
 
-    <ux-dialog-footer>
-      <button type="button" class="btn btn-primary" click.trigger="save()" disabled.bind="!canSave" attach-focus="true">
-        <i class="fa fa-check-circle"></i> Save
-      </button>
-      <button type="button" class="btn btn-danger" click.trigger="cancel()">
-        <i class="fa fa-trash-circle"></i> Cancel</button>
-    </ux-dialog-footer>
+    </div>
 
-  </ux-dialog>
+  </section>
 
 </template>

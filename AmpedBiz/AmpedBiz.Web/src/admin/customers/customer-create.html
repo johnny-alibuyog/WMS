@@ -4,7 +4,7 @@
 
   <section class="row row-no-padding">
 
-    <div class="col-md-11">
+    <div class="col-md-6">
 
       <div class="panel panel-default">
 
@@ -32,13 +32,23 @@
 
           <form class="form-horizontal" role="form">
 
-            <!-- inputs -->
-            <div class="row">
+            <ul class="nav nav-tabs">
+              <li class="active">
+                <a data-toggle="tab" href="#info">Info</a>
+              </li>
+              <li>
+                <a data-toggle="tab" href="#contact">Contact</a>
+              </li>
+              <li>
+                <a data-toggle="tab" href="#address">Address</a>
+              </li>
+            </ul>
 
-              <!-- left side -->
-              <div class="col-lg-6">
+            <div class="tab-content">
 
-                <div class="form-group">
+              <div id="info" class="tab-pane fade in active">
+                  <br />
+                  <div class="form-group">
                   <label class="control-label col-sm-4">Code:</label>
                   <div class="col-sm-8">
                     <input type="text" class="form-control" placeholder="Enter Code" value.bind="customer.code" />
@@ -53,21 +63,25 @@
                 <div class="form-group">
                   <label class="control-label col-sm-4">Contact Person:</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="Enter Contact Person" value.bind="customer.contactPerson" />
+                    <input type="text" class="form-control" placeholder="Enter Contact Person"
+                      value.bind="customer.contactPerson" />
                   </div>
                 </div>
-                <contact-input contact.two-way="customer.contact" />
-
               </div>
 
-              <!-- right side -->
-              <div class="col-lg-6">
+              <div id="contact" class="tab-pane fade">
+                <br />
+                <contact-input contact.two-way="customer.contact" />
+              </div>
 
+              <div id="address" class="tab-pane fade">
+                <br />
                 <address-input address.two-way="customer.officeAddress" />
-
               </div>
 
             </div>
+
+          </form>
 
         </div>
 

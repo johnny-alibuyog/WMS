@@ -1,10 +1,9 @@
 import { autoinject } from 'aurelia-framework';
-import { DialogService } from 'aurelia-dialog';
-import { SupplierCreate } from './supplier-create';
 import { Supplier, SupplierPageItem } from '../../common/models/supplier';
 import { ServiceApi } from '../../services/service-api';
 import { NotificationService } from '../../common/controls/notification-service';
 import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../../common/models/paging';
+import { Router } from 'aurelia-router';
 
 @autoinject
 export class SupplierPage {
@@ -15,7 +14,7 @@ export class SupplierPage {
 
   constructor(
     private readonly _api: ServiceApi,
-    private readonly _dialog: DialogService,
+    private readonly _router: Router,
     private readonly _notification: NotificationService
   ) {
     this.filter["name"] = '';
@@ -46,16 +45,12 @@ export class SupplierPage {
     }
   }
 
-  public async create(): Promise<void> {
-    let settings = { viewModel: SupplierCreate, model: null };
-    let response = await this._dialog.open(settings).whenClosed();
-    if (!response.wasCancelled) await this.getPage();
+  public create(): void {
+    this._router.navigateToRoute('supplier-create');
   }
 
-  public async edit(item: SupplierPageItem) : Promise<void> {
-    let settings = { viewModel: SupplierCreate, model: <Supplier>{ id: item.id } };
-    let response = await this._dialog.open(settings).whenClosed();
-    if (!response.wasCancelled) await this.getPage();
+  public edit(item: Supplier): void {
+    this._router.navigateToRoute('supplier-create', { id: item.id });
   }
 
   delete(item: any) {

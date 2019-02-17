@@ -1,19 +1,38 @@
 <template>
-  
-  <ux-dialog>
 
-    <ux-dialog-header>
-      <h3>${header}</h3>
-    </ux-dialog-header>
+  <section class="row row-no-padding">
 
-    <ux-dialog-body>
+    <div class="col-md-6">
+
       <div class="panel panel-default">
+
+        <!-- heading -->
+        <div class="panel-heading">
+
+          <!-- heading label -->
+          <h4 class="panel-title row-fluid">
+            <span>&nbsp ${header} &nbsp</span>
+
+            <!-- transition buttons -->
+            <button type="button" class="btn btn-default" click.trigger="save()">
+              <i class="fa fa-save"></i> Save
+            </button>
+
+            <button type="button" class="btn btn-default" click.trigger="back()">
+              <i class="fa fa-chevron-circle-left"></i> Back
+            </button>
+          </h4>
+
+        </div>
+
+        <!-- body -->
         <div class="panel-body">
           <form class="form-horizontal" role="form">
             <div class="form-group">
               <label class="control-label col-sm-4">Code:</label>
               <div class="col-sm-8">
-                <input type="text" class="form-control" placeholder="Enter Code" value.bind="paymentType.id" disabled.bind="isEdit" />
+                <input type="text" class="form-control" placeholder="Enter Code" value.bind="paymentType.id"
+                  disabled.bind="isEdit" />
               </div>
             </div>
             <div class="form-group">
@@ -25,16 +44,9 @@
           </form>
         </div>
       </div>
-    </ux-dialog-body>
 
-    <ux-dialog-footer>
-      <button type="button" class="btn btn-primary" click.trigger="save()" disabled.bind="!canSave" attach-focus="true">
-        <i class="fa fa-check-circle"></i> Save
-      </button>
-      <button type="button" class="btn btn-danger" click.trigger="cancel()">
-        <i class="fa fa-trash-circle"></i> Cancel</button>
-    </ux-dialog-footer>
-    
-  </ux-dialog>
-  
+    </div>
+
+  </section>
+
 </template>
