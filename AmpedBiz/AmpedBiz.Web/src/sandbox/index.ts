@@ -39,6 +39,20 @@ export class Index {
         },
       },
       {
+        route: ['wizard'],
+        name: 'wizard',
+        moduleId: PLATFORM.moduleName('./wizards/wizard'),
+        nav: true,
+        title: 'Wizard',
+        settings: {
+          auth: <AuthSettings>{
+            roles: [
+              role.admin,
+            ]
+          }
+        },
+      },
+      {
         route: [""],
         redirect: "content-projection"
       }

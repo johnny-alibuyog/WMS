@@ -405,7 +405,8 @@ namespace AmpedBiz.Tests.IntegrationTests
                         .Select(x => new Service.Dto.Supplier()
                         {
                             Id = x.Id,
-                            Name = x.Name
+                            Name = x.Name,
+                            Assigned = true
                         })
                         .ToList(),
 					UnitOfMeasures = new List<Service.Dto.ProductUnitOfMeasure>()

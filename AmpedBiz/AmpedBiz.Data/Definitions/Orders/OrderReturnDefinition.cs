@@ -10,7 +10,10 @@ namespace AmpedBiz.Data.Definitions
 		{
 			public Mapping()
 			{
-				References(x => x.Order);
+                Map(x => x.Sequence)
+                    .Index($"IDX_{nameof(OrderReturn)}_{nameof(OrderReturn.Sequence)}");
+
+                References(x => x.Order);
 
 				References(x => x.ReturnedBy);
 
@@ -22,7 +25,9 @@ namespace AmpedBiz.Data.Definitions
 		{
 			public Validation()
 			{
-				Define(x => x.Order)
+                Define(x => x.Sequence);
+
+                Define(x => x.Order)
 					.NotNullable()
 					.And.IsValid();
 

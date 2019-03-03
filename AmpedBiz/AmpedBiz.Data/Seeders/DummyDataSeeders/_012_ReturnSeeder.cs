@@ -67,7 +67,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         Remarks = "Some Remarks",
                         Items = products
                             .Take(randomProductCount)
-                            .Select(x => new ReturnItem(
+                            .Select((x, i) => new ReturnItem(
+                                sequence: i,
                                 product: x,
                                 reason: _utils.Random<ReturnReason>(),
                                 quantity: new Measure(

@@ -8,6 +8,8 @@ namespace AmpedBiz.Core.Orders
 {
     public class OrderReturn : ReturnItemBase
 	{
+        public virtual int Sequence { get; protected set; }
+
         public virtual Order Order { get; protected internal set; }
 
 		public virtual DateTime? ReturnedOn { get; protected set; }
@@ -17,6 +19,7 @@ namespace AmpedBiz.Core.Orders
         public OrderReturn() : base(default(Guid)) { }
 
         public OrderReturn(
+            int sequence,
             Product product, 
             ReturnReason reason, 
             DateTime? returnedOn, 
@@ -27,6 +30,7 @@ namespace AmpedBiz.Core.Orders
             Guid? id = null
         ) : base(id ?? default(Guid))
         {
+            this.Sequence = sequence;
             this.Product = product;
             this.Reason = reason;
             this.ReturnedOn = returnedOn;

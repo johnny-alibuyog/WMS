@@ -1,5 +1,4 @@
 ﻿using AmpedBiz.Core.Common;
-using AmpedBiz.Core.Inventories;
 using AmpedBiz.Core.PointOfSales;
 using AmpedBiz.Core.PointOfSales.Services;
 using AmpedBiz.Core.Products;
@@ -7,14 +6,13 @@ using AmpedBiz.Core.Users;
 using AmpedBiz.Data.Context;
 using AmpedBiz.Data.Helpers;
 using NHibernate;
-using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 {
-	public class _013_PointOfSaleSeeder : IDummyDataSeeder
+    public class _013_PointOfSaleSeeder : IDummyDataSeeder
 	{
 		private readonly Utils _utils;
 		private readonly IContextProvider _contextProvider;
@@ -67,15 +65,16 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 						TenderedOn = DateTime.Now.AddDays(_utils.RandomInteger(-36, -1)),
 						Items = products
 							.Take(randomProductCount)
-							.Select(x => new PointOfSaleItem(
-								product: x,
+							.Select((product, index) => new PointOfSaleItem(
+                                sequence: index,
+								product: product,
 								quantity: new Measure(
 									value: _utils.RandomInteger(1, 4),
-									unit: x.UnitOfMeasures.Standard(o => o.UnitOfMeasure)
+									unit: product.UnitOfMeasures.Standard(o => o.UnitOfMeasure)
 								),
 								discountRate: _utils.RandomDecimal(0.01M, 0.10M),
-								standard: x.StandardEquivalentMeasureOf(x.UnitOfMeasures.Standard(o => o.UnitOfMeasure)),
-								unitPrice: x.UnitOfMeasures.Standard(o => o.Prices.Retail())
+								standard: product.StandardEquivalentMeasureOf(product.UnitOfMeasures.Standard(o => o.UnitOfMeasure)),
+								unitPrice: product.UnitOfMeasures.Standard(o => o.Prices.Retail())
 							))
 							.ToList()
 					});
@@ -84,10 +83,12 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 					{
 						Payments = new Func<List<PointOfSalePayment>>(() =>
 						{
+                            var sequence = 0;
 							var result = new List<PointOfSalePayment>();
 							while (result.Sum(x => x.Payment) < entity.Total)
 							{
-								result.Add(new PointOfSalePayment(
+                                result.Add(new PointOfSalePayment(
+                                    sequence: ++sequence,
 									paidOn: DateTime.Now,
 									paidTo: _utils.Random<User>(),
 									paymentType: _utils.Random<PaymentType>(),

@@ -1,9 +1,9 @@
 ﻿{
-  "Database": "MsSql",
-  "Port": 3306,
+  "Database": "MySql",
+  "Port": 5432,
   "HostServer": "localhost",
-  "Name": "ampbizdb",
-  "Username": "sa",
+  "Name": "ampedbizdb",
+  "Username": "root",
   "Password": "6jPbwQtZ8N52WRJ5rEWv2g==",
   "BatchSize": 50,
   "RecreateDb": true,

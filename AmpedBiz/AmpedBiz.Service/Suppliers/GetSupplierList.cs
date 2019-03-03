@@ -32,7 +32,11 @@ namespace AmpedBiz.Service.Suppliers
 				using (var session = SessionFactory.RetrieveSharedSession(Context))
 				using (var transaction = session.BeginTransaction())
 				{
-					var entities = session.Query<Supplier>().Cacheable().ToList();
+					var entities = session.Query<Supplier>()
+                        .OrderBy(x => x.Name)
+                        .Cacheable()
+                        .ToList();
+
 					var dtos = entities.MapTo(default(List<Dto.Supplier>));
 
 					response = new Response(dtos);

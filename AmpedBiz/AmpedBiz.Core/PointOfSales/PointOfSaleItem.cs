@@ -6,7 +6,9 @@ namespace AmpedBiz.Core.PointOfSales
 {
 	public class PointOfSaleItem : Entity<Guid, PointOfSaleItem>, IAccept<IVisitor<PointOfSaleItem>>
 	{
-		public virtual PointOfSale PointOfSale { get; protected internal set; }
+        public virtual int Sequence { get; protected set; }
+
+        public virtual PointOfSale PointOfSale { get; protected internal set; }
 
 		public virtual Product Product { get; protected set; }
 
@@ -29,6 +31,7 @@ namespace AmpedBiz.Core.PointOfSales
 		public PointOfSaleItem() : base(default(Guid)) { }
 
 		public PointOfSaleItem(
+            int sequence,
 			Product product,
 			Measure quantity,
 			Measure standard,
@@ -37,6 +40,7 @@ namespace AmpedBiz.Core.PointOfSales
 			Guid? id = null
 		) : base(id ?? default(Guid))
 		{
+            this.Sequence = sequence;
 			this.Product = product;
 			this.Quantity = quantity;
 			this.Standard = standard;

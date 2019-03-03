@@ -3,15 +3,10 @@ using AmpedBiz.Data.Definitions.Common;
 using AmpedBiz.Data.Definitions.Products;
 using FluentNHibernate.Mapping;
 using NHibernate.Validator.Cfg.Loquacious;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AmpedBiz.Data.Definitions.PointOfSales
 {
-	public class PointOfSaleItemDefinition
+    public class PointOfSaleItemDefinition
 	{
 		public class Mapping : ClassMap<PointOfSaleItem>
 		{
@@ -20,7 +15,10 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 				Id(x => x.Id)
 					.GeneratedBy.GuidComb();
 
-				References(x => x.PointOfSale);
+                Map(x => x.Sequence)
+                    .Index($"IDX_{nameof(PointOfSaleItem)}_{nameof(PointOfSaleItem.Sequence)}");
+
+                References(x => x.PointOfSale);
 
 				References(x => x.Product);
 
@@ -54,6 +52,8 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 			public Validation()
 			{
 				Define(x => x.Id);
+
+                Define(x => x.Sequence);
 
 				Define(x => x.PointOfSale)
 					.NotNullable()

@@ -1,0 +1,57 @@
+.wizard {
+  /*background:url(../images/form-content-bg.png) repeat;*/
+  /* padding:62px 60px 58px 62px; */
+  padding: 20px;
+  display:flex
+}
+
+.wizard .steps {
+  width:26.05%;
+  margin-right:68px
+}
+
+.wizard .content {
+  width:73.95%
+}
+
+.steps ul {
+  padding: 0px !important;
+}
+
+.steps li {
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  height:31px;
+  position:relative
+}
+
+.steps li a {
+  color:#337ab7;
+  font-size:15px;
+  padding-left:18px
+}
+
+.steps li a:before {
+  content:"";
+  width:3px;
+  height:31px;
+  position:absolute;
+  left:-3px;
+  top:0
+}
+
+/* .steps li.current {
+} */
+
+.steps li.current a {
+  color: #337ab7
+}
+
+.steps li.current a:before {
+  background:#337ab7
+}
+
+/* .content h4 {
+  display:none
+} */

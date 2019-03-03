@@ -108,8 +108,9 @@ namespace AmpedBiz.Service.Orders
 						Tax = new Money(message.TaxAmount, currency),
 						ShippingFee = new Money(message.ShippingFeeAmount, currency),
 						Items = message.Items
-							.Select(x => new OrderItem(
+							.Select((x, i) => new OrderItem(
 								id: x.Id,
+                                sequence: i,
 								discountRate: x.DiscountRate,
 								product: GetProduct(x.Product.Id),
 								unitPrice: new Money(x.UnitPriceAmount, currency),
@@ -118,8 +119,9 @@ namespace AmpedBiz.Service.Orders
 							))
 							.ToList(),
 						Payments = message.Payments
-							.Select(x => new OrderPayment(
+							.Select((x, i) => new OrderPayment(
 								id: x.Id,
+                                sequence: i,
 								paidOn: x.PaidOn.GetValueOrDefault(DateTime.Now),
 								paidTo: session.Load<User>(x.PaidTo.Id),
 								paymentType: session.Load<PaymentType>(x.PaymentType.Id),
@@ -128,8 +130,9 @@ namespace AmpedBiz.Service.Orders
 							))
 							.ToList(),
 						Returns = message.Returns
-							.Select(x => new OrderReturn(
+							.Select((x, i) => new OrderReturn(
 								id: x.Id,
+                                sequence: i,
 								product: GetProduct(x.Product.Id),
 								reason: x.Reason?.Id.EvalOrDefault(value => session.Load<ReturnReason>(value)),
 								returnedOn: message.ReturnedOn.GetValueOrDefault(DateTime.Now),

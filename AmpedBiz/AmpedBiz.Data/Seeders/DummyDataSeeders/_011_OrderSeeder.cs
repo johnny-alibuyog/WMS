@@ -330,17 +330,17 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                             ShippingFee = new Money(_utils.RandomInteger(10, 10000), currency),
                             Items = products
                                 .Take(randomProductCount)
-                                .Select(x => new OrderItem(
-                                        product: x,
-                                        discountRate: _utils.RandomDecimal(0.01M, 0.10M),
-                                        quantity: new Measure(
-                                            value: _utils.RandomInteger(1, 4),
-                                            unit: x.UnitOfMeasures.Standard(o => o.UnitOfMeasure)
-                                        ),
-                                        standard: x.StandardEquivalentMeasureOf(x.UnitOfMeasures.Default(o => o.UnitOfMeasure)),
-                                        unitPrice: x.UnitOfMeasures.Standard(o => o.Prices.Wholesale())
-                                    )
-                                )
+                                .Select((x, i) => new OrderItem(
+                                    sequence: i,
+                                    product: x,
+                                    discountRate: _utils.RandomDecimal(0.01M, 0.10M),
+                                    quantity: new Measure(
+                                        value: _utils.RandomInteger(1, 4),
+                                        unit: x.UnitOfMeasures.Standard(o => o.UnitOfMeasure)
+                                    ),
+                                    standard: x.StandardEquivalentMeasureOf(x.UnitOfMeasures.Default(o => o.UnitOfMeasure)),
+                                    unitPrice: x.UnitOfMeasures.Standard(o => o.Prices.Wholesale())
+                                ))
                         });
                         entity.EnsureValidity();
 
@@ -403,7 +403,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                             Branch = session.Load<Branch>(_context.BranchId),
                             Payments = Enumerable
                                 .Range(0, _utils.RandomInteger(1, 1))
-                                .Select(x => new OrderPayment(
+                                .Select((x, i) => new OrderPayment(
+                                    sequence: i,
                                     paidOn: DateTime.Now,
                                     paidTo: _utils.Random<User>(),
                                     paymentType: _utils.Random<PaymentType>(),
@@ -503,7 +504,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                             Branch = session.Load<Branch>(_context.BranchId),
                             Returns = entity.Items
                                 .Take(_utils.RandomInteger(1, entity.Items.Count()))
-                                .Select(x => new OrderReturn(
+                                .Select((x, i) => new OrderReturn(
+                                    sequence: i,
                                     product: x.Product,
                                     reason: _utils.Random<ReturnReason>(),
                                     returnedOn: DateTime.Now,

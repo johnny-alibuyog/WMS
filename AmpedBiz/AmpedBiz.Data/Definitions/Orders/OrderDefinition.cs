@@ -109,29 +109,34 @@ namespace AmpedBiz.Data.Definitions.Orders
 					.Cascade.AllDeleteOrphan()
 					.Not.KeyNullable()
 					.Not.KeyUpdate()
-					.Inverse()
-					.AsSet();
+                    .Inverse()
+                    .OrderBy(nameof(OrderItem.Sequence)) 
+                    // TODO: since this mapping (OrderBy) doesn't work properly on MSSQL (alias table is not included in the query), 
+                    //    find a way hydrate releation based on sequence. Thiis will be posponed. Upgrade to new NHibernate version could be the fix
+                    .AsSet();
 
-				HasMany(x => x.Returns)
+                HasMany(x => x.Returns)
+                    .Cascade.AllDeleteOrphan()
+                    .Not.KeyNullable()
+                    .Not.KeyUpdate()
+                    .Inverse()
+                    .OrderBy(nameof(OrderReturn.Sequence))
+                    .AsSet();
+
+                HasMany(x => x.Payments)
+                    .Cascade.AllDeleteOrphan()
+                    .Not.KeyNullable()
+                    .Not.KeyUpdate()
+                    .Inverse()
+                    .OrderBy(nameof(OrderPayment.Sequence))
+                    .AsSet();
+
+                HasMany(x => x.Transactions)
 					.Cascade.AllDeleteOrphan()
 					.Not.KeyNullable()
 					.Not.KeyUpdate()
 					.Inverse()
-					.AsSet();
-
-				HasMany(x => x.Payments)
-					.Cascade.AllDeleteOrphan()
-					.Not.KeyNullable()
-					.Not.KeyUpdate()
-					.Inverse()
-					.AsSet();
-
-				HasMany(x => x.Transactions)
-					.Cascade.AllDeleteOrphan()
-					.Not.KeyNullable()
-					.Not.KeyUpdate()
-					.Inverse()
-					.AsSet();
+                    .AsSet();
 			}
 		}
 

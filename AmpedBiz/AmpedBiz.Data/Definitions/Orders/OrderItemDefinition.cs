@@ -15,7 +15,10 @@ namespace AmpedBiz.Data.Definitions.Orders
 				Id(x => x.Id)
 					.GeneratedBy.GuidComb();
 
-				References(x => x.Order);
+                Map(x => x.Sequence)
+                    .Index($"IDX_{nameof(OrderItem)}_{nameof(OrderItem.Sequence)}");
+
+                References(x => x.Order);
 
 				References(x => x.Product);
 
@@ -50,7 +53,9 @@ namespace AmpedBiz.Data.Definitions.Orders
 			{
 				Define(x => x.Id);
 
-				Define(x => x.Order)
+                Define(x => x.Sequence);
+
+                Define(x => x.Order)
 					.NotNullable()
 					.And.IsValid();
 

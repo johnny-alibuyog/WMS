@@ -1,0 +1,97 @@
+<template>
+  <require from="./wizard.css"></require>
+
+  <div class="col-lg-8">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">Wizard</h3>
+      </div>
+      <div class="panel-body">
+        <div id="wizard" class="wizard clearfix">
+          <div class="steps">
+            <ul>
+              <li class="first done current">
+                <a id="step1" href="#step-content1">
+                  <span class="number">1.</span>
+                  Step One
+                </a>
+              </li>
+              <li class="last done">
+                <a id="step2" href="#step-content2">
+                  <span class="number">2.</span>
+                  Step Two
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="content">
+            <section id="step-content1" class="section-style body current">
+              <h4 class="title">Content 2</h4>
+              <button>Book now
+                <i class="zmdi zmdi-long-arrow-right"></i>
+              </button>
+            </section>
+            <section id="step-content2" class="section-style body">
+              <h4 class="title">Content 2</h4>
+              <button>Book not now
+                <i class="zmdi zmdi-long-arrow-right"></i>
+              </button>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- <div id="wizard" role="application" class="wizard clearfix">
+    <div class="steps">
+      <ul role="tablist">
+        <li role="tab" aria-disabled="false" class="first done" aria-selected="false"><a id="wizard-t-0"
+            href="#wizard-h-0" aria-controls="wizard-p-0"><span class="number">1.</span> Choose Date</a></li>
+        <li role="tab" aria-disabled="false" class="current" aria-selected="true"><a id="wizard-t-1" href="#wizard-h-1"
+            aria-controls="wizard-p-1"><span class="current-info audible"> </span><span class="number">2.</span> Choose
+            Room</a></li>
+        <li role="tab" aria-disabled="false" class="done" aria-selected="false"><a id="wizard-t-2" href="#wizard-h-2"
+            aria-controls="wizard-p-2"><span class="number">3.</span> Make a Reservation</a></li>
+        <li role="tab" aria-disabled="false" class="last done" aria-selected="false"><a id="wizard-t-3"
+            href="#wizard-h-3" aria-controls="wizard-p-3"><span class="number">4.</span> Confirmation</a></li>
+      </ul>
+    </div>
+
+    <div class="content clearfix">
+      <section id="wizard-p-0" role="tabpanel" aria-labelledby="wizard-h-0" class="body" aria-hidden="true"
+        style="display: none;">
+        <h4 id="wizard-h-0" tabindex="-1" class="title">Choose Date</h4>
+        <button class="forward">Book now
+          <i class="zmdi zmdi-long-arrow-right"></i>
+        </button>
+      </section>
+
+      <section class="section-style body current" id="wizard-p-1" role="tabpanel" aria-labelledby="wizard-h-1"
+        aria-hidden="false">
+        <h4 id="wizard-h-1" tabindex="-1" class="title current">Choose Room</h4>
+        <button class="forward">Book now
+          <i class="zmdi zmdi-long-arrow-right"></i>
+        </button>
+      </section>
+
+      <section id="wizard-p-2" role="tabpanel" aria-labelledby="wizard-h-2" class="body" style="display: none;"
+        aria-hidden="true">
+        <h4 id="wizard-h-2" tabindex="-1" class="title">Make a Reservation</h4>
+        <button class="forward" style="width: 195px; margin-top: 44px;">Book by email
+          <i class="zmdi zmdi-long-arrow-right"></i>
+        </button>
+      </section>
+
+      <section class="section-style body" id="wizard-p-3" role="tabpanel" aria-labelledby="wizard-h-3"
+        style="display: none;" aria-hidden="true">
+        <h4 id="wizard-h-3" tabindex="-1" class="title">Confirmation</h4>
+        <button style="width: 195px; margin-top: 45px;">Confirmation
+          <i class="zmdi zmdi-long-arrow-right"></i>
+        </button>
+      </section>
+    </div> -->
+  </div>
+</template>

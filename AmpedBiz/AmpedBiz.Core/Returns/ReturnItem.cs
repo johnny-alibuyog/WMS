@@ -6,6 +6,8 @@ namespace AmpedBiz.Core.Returns
 {
 	public class ReturnItem : ReturnItemBase
 	{
+        public virtual int Sequence { get; protected set; }
+
 		public virtual Return Return { get; protected internal set; }
 
 		public virtual Money UnitPrice { get; protected set; }
@@ -13,6 +15,7 @@ namespace AmpedBiz.Core.Returns
 		public ReturnItem() : base(default(Guid)) { }
 
 		public ReturnItem(
+            int sequence,
 			Product product,
 			ReturnReason reason,
 			Measure quantity,
@@ -21,6 +24,7 @@ namespace AmpedBiz.Core.Returns
 			Guid? id = null
 		) : base(id ?? default(Guid))
 		{
+            this.Sequence = sequence;
 			this.Product = product;
 			this.Reason = reason;
 			this.Quantity = quantity;

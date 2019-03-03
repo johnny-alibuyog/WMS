@@ -86,22 +86,25 @@ namespace AmpedBiz.Service.PurchaseOrders
 						Shipper = null,
 						ShippingFee = new Money(message.ShippingFeeAmount, currency),
 						Tax = new Money(message.TaxAmount, currency),
-						Items = message.Items.Select(x => new PurchaseOrderItem(
+						Items = message.Items.Select((x, i) => new PurchaseOrderItem(
 							id: x.Id,
+                            sequence: i,
 							product: GetProduct(x.Product.Id),
 							unitCost: new Money(x.UnitCostAmount, currency),
 							quantity: new Measure(x.Quantity.Value, session.Load<UnitOfMeasure>(x.Quantity.Unit.Id)),
 							standard: new Measure(x.Standard.Value, session.Load<UnitOfMeasure>(x.Standard.Unit.Id))
 						)),
-						Payments = message.Payments.Select(x => new PurchaseOrderPayment(
+						Payments = message.Payments.Select((x, i) => new PurchaseOrderPayment(
 							id: x.Id,
+                            sequence: i,
 							paidOn: x.PaidOn ?? DateTime.Now,
 							paidBy: session.Load<User>(x.PaidBy.Id),
 							paymentType: session.Load<PaymentType>(x.PaymentType.Id),
 							payment: new Money(x.PaymentAmount, currency)
 						)),
-						Receipts = message.Receipts.Select(x => new PurchaseOrderReceipt(
+						Receipts = message.Receipts.Select((x, i) => new PurchaseOrderReceipt(
 							id: x.Id,
+                            sequence: i,
 							batchNumber: x.BatchNumber,
 							receivedBy: session.Load<User>(x.ReceivedBy.Id),
 							receivedOn: x.ReceivedOn ?? DateTime.Now,

@@ -6,6 +6,8 @@ namespace AmpedBiz.Core.PurchaseOrders
 {
     public class PurchaseOrderItem : Entity<Guid, PurchaseOrderItem>
     {
+        public virtual int Sequence { get; protected set; }
+
         public virtual PurchaseOrder PurchaseOrder { get; protected internal set; }
 
         public virtual Product Product { get; protected set; }
@@ -23,6 +25,7 @@ namespace AmpedBiz.Core.PurchaseOrders
         public PurchaseOrderItem() : base(default(Guid)) { }
 
         public PurchaseOrderItem(
+            int sequence,
             Product product, 
             Money unitCost,
             Measure quantity,
@@ -30,6 +33,7 @@ namespace AmpedBiz.Core.PurchaseOrders
             Guid? id = null
         ) : base(id ?? default(Guid))
         {
+            this.Sequence = sequence;
             this.Product = product;
             this.Quantity = quantity;
             this.Standard = standard;

@@ -90,21 +90,24 @@ namespace AmpedBiz.Data.Definitions.PurchaseOrders
 					.Not.KeyNullable()
 					.Not.KeyUpdate()
 					.Inverse()
-					.AsSet();
+                    .OrderBy(nameof(PurchaseOrderItem.Sequence))
+                    .AsSet();
 
 				HasMany(x => x.Payments)
 					.Cascade.AllDeleteOrphan()
 					.Not.KeyNullable()
 					.Not.KeyUpdate()
 					.Inverse()
-					.AsSet();
+                    .OrderBy(nameof(PurchaseOrderPayment.Sequence))
+                    .AsSet();
 
 				HasMany(x => x.Receipts)
 					.Cascade.AllDeleteOrphan()
 					.Not.KeyNullable()
 					.Not.KeyUpdate()
 					.Inverse()
-					.AsSet();
+                    .OrderBy(nameof(PurchaseOrderReceipt.Sequence))
+                    .AsSet();
 
 				HasMany(x => x.Transactions)
 					.Cascade.AllDeleteOrphan()

@@ -14,7 +14,10 @@ namespace AmpedBiz.Data.Definitions.PurchaseOrders
 				Id(x => x.Id)
 				   .GeneratedBy.GuidComb();
 
-				Map(x => x.BatchNumber);
+                Map(x => x.Sequence)
+                    .Index($"IDX_{nameof(PurchaseOrderReceipt)}_{nameof(PurchaseOrderReceipt.Sequence)}");
+
+                Map(x => x.BatchNumber);
 
 				References(x => x.PurchaseOrder);
 
@@ -43,7 +46,9 @@ namespace AmpedBiz.Data.Definitions.PurchaseOrders
 			{
 				Define(x => x.Id);
 
-				Define(x => x.BatchNumber)
+                Define(x => x.Sequence);
+
+                Define(x => x.BatchNumber)
 					.MaxLength(255);
 
 				Define(x => x.PurchaseOrder)

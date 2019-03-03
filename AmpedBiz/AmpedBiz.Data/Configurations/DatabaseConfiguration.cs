@@ -46,7 +46,7 @@ namespace AmpedBiz.Data.Configurations
 
         private static IPersistenceConfigurer ConfigureMsSql()
         {
-            return MsSqlConfiguration.MsSql2008
+            return MsSqlConfiguration.MsSql2012
                 .ConnectionString(x => x
                     .Server(DatabaseConfig.Instance.HostServer)
                     .Database(DatabaseConfig.Instance.Name)

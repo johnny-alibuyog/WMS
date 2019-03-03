@@ -6,6 +6,8 @@ namespace AmpedBiz.Core.Orders
 {
 	public class OrderItem : Entity<Guid, OrderItem>, IAccept<IVisitor<OrderItem>>
 	{
+        public virtual int Sequence { get; protected set; }
+
         public virtual Order Order { get; protected internal set; }
 
         public virtual Product Product { get; protected set; }
@@ -29,6 +31,7 @@ namespace AmpedBiz.Core.Orders
         public OrderItem() : base(default(Guid)) { }
 
         public OrderItem(
+            int sequence,
             Product product,
             Measure quantity,
             Measure standard,
@@ -37,6 +40,7 @@ namespace AmpedBiz.Core.Orders
             Guid? id = null
         ) : base(id ?? default(Guid))
 		{
+            this.Sequence = sequence;
 			this.Product = product;
 			this.Quantity = quantity;
 			this.Standard = standard;

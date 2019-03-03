@@ -56,8 +56,9 @@ namespace AmpedBiz.Service.PointOfSales
 						TenderedBy = message.TenderedBy?.Id.EvalOrDefault(value => session.Load<User>(value)),
 						TenderedOn = message.TenderedOn,
 						Items = message.Items
-							.Select(x => new PointOfSaleItem(
+							.Select((x, i) => new PointOfSaleItem(
 								id: x.Id,
+                                sequence: i,
 								discountRate: x.DiscountRate,
 								product: GetProduct(x.Product.Id),
 								unitPrice: new Money(x.UnitPriceAmount, settings.DefaultCurrency),
@@ -66,8 +67,9 @@ namespace AmpedBiz.Service.PointOfSales
 							))
 							.ToList(),
 						Payments = message.Payments
-							.Select(x => new PointOfSalePayment(
+							.Select((x, i) => new PointOfSalePayment(
 								id: x.Id,
+                                sequence: i,
 								paidOn: x.PaidOn.GetValueOrDefault(DateTime.Now),
 								paidTo: x.PaidTo?.Id.EvalOrDefault(value => session.Load<User>(value)),
 								paymentType: session.Load<PaymentType>(x.PaymentType.Id),

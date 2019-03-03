@@ -6,6 +6,8 @@ namespace AmpedBiz.Core.PurchaseOrders
 {
     public class PurchaseOrderReceipt : Entity<Guid, PurchaseOrderReceipt>
     {
+        public virtual int Sequence { get; protected set; }
+
         public virtual PurchaseOrder PurchaseOrder { get; set; }
 
         public virtual string BatchNumber { get; protected set; }
@@ -27,6 +29,7 @@ namespace AmpedBiz.Core.PurchaseOrders
         public PurchaseOrderReceipt() : base(default(Guid)) { }
 
         public PurchaseOrderReceipt(
+            int sequence,
             string batchNumber, 
             User receivedBy, 
             DateTime? receivedOn, 
@@ -37,7 +40,7 @@ namespace AmpedBiz.Core.PurchaseOrders
             Guid? id = null
         ) : base(id ?? default(Guid))
         {
-            this.Id = id ?? this.Id;
+            this.Sequence = sequence;
             this.BatchNumber = batchNumber;
             this.ReceivedBy = receivedBy;
             this.ReceivedOn = receivedOn;

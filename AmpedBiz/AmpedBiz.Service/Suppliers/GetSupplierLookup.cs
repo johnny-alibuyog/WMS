@@ -38,6 +38,7 @@ namespace AmpedBiz.Service.Suppliers
                             Id = x.Id,
                             Name = x.Name
                         })
+                        .OrderBy(x => x.Name)
                         .Cacheable()
                         .ToList();
                         

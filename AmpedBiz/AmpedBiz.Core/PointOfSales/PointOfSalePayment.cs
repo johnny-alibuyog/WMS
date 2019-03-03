@@ -6,6 +6,8 @@ namespace AmpedBiz.Core.PointOfSales
 {
 	public class PointOfSalePayment : Entity<Guid, PointOfSalePayment>
 	{
+        public virtual int Sequence { get; protected set; }
+
 		public virtual PointOfSale PointOfSale { get; protected internal set; }
 
 		public virtual DateTime? PaidOn { get; protected set; }
@@ -21,6 +23,7 @@ namespace AmpedBiz.Core.PointOfSales
 		public PointOfSalePayment() : base(default(Guid)) { }
 
 		public PointOfSalePayment(
+            int sequence,
 			DateTime? paidOn,
 			User paidTo,
 			PaymentType paymentType,
@@ -29,6 +32,7 @@ namespace AmpedBiz.Core.PointOfSales
 			Guid? id = null
 		) : base(id ?? default(Guid))
 		{
+            this.Sequence = sequence;
 			this.PaidOn = paidOn;
 			this.PaidTo = paidTo;
 			this.PaymentType = paymentType;

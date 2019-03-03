@@ -31,7 +31,7 @@ namespace AmpedBiz.Data.Definitions.PurchaseOrdersS
 			{
 				Define(x => x.Id);
 
-				Define(x => x.PurchaseOrder)
+                Define(x => x.PurchaseOrder)
 					.NotNullable()
 					.And.IsValid();
 

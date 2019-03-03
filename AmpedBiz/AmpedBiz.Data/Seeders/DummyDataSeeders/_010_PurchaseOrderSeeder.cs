@@ -294,7 +294,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                             Supplier = _utils.Random<Supplier>(),
                             Items = products
                                 .Take(randomProductCount)
-                                .Select(x => new PurchaseOrderItem(
+                                .Select((x, i) => new PurchaseOrderItem(
+                                    sequence: i,
                                     product: x,
                                     quantity: new Measure(
                                         value: _utils.RandomInteger(1, 20),
@@ -390,7 +391,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                             Branch = session.Load<Branch>(_context.BranchId),
                             Payments = Enumerable
                                 .Range(0, _utils.RandomInteger(1, 1))
-                                .Select(x => new PurchaseOrderPayment(
+                                .Select((x, i) => new PurchaseOrderPayment(
+                                    sequence: i,
                                     paidOn: DateTime.Now,
                                     paidBy: _utils.Random<User>(),
                                     paymentType: _utils.Random<PaymentType>(),
@@ -423,7 +425,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                         {
                             Branch = session.Load<Branch>(_context.BranchId),
                             Receipts = entity.Items
-                                .Select(x => new PurchaseOrderReceipt(
+                                .Select((x, i) => new PurchaseOrderReceipt(
+                                    sequence: i,
                                     batchNumber: this._utils.RandomString(255),
                                     receivedBy: this._utils.Random<User>(),
                                     receivedOn: DateTime.Now,

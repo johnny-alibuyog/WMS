@@ -6,6 +6,8 @@ namespace AmpedBiz.Core.Orders
 {
     public class OrderPayment : Entity<Guid, OrderPayment>
     {
+        public virtual int Sequence { get; protected set; }
+
         public virtual Order Order { get; protected internal set; }
 
         public virtual DateTime? PaidOn { get; protected set; }
@@ -21,6 +23,7 @@ namespace AmpedBiz.Core.Orders
         public OrderPayment() : base(default(Guid)) { }
 
         public OrderPayment(
+            int sequence,
             DateTime? paidOn, 
 			User paidTo, 
             PaymentType paymentType, 
@@ -29,6 +32,7 @@ namespace AmpedBiz.Core.Orders
             Guid? id = null
         ) : base(id ?? default(Guid))
         {
+            this.Sequence = sequence;
             this.PaidOn = paidOn;
             this.PaidTo = paidTo;
             this.PaymentType = paymentType;

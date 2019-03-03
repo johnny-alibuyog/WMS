@@ -6,6 +6,8 @@ namespace AmpedBiz.Core.PurchaseOrders
 {
     public class PurchaseOrderPayment : Entity<Guid, PurchaseOrderPayment>
     {
+        public virtual int Sequence { get; protected set; }
+
         public virtual PurchaseOrder PurchaseOrder { get; set; }
 
         public virtual User PaidBy { get; protected set; }
@@ -19,6 +21,7 @@ namespace AmpedBiz.Core.PurchaseOrders
         public PurchaseOrderPayment() : base(default(Guid)) { }
 
         public PurchaseOrderPayment(
+            int sequence,
             User paidBy, 
             DateTime? paidOn, 
             Money payment, 
@@ -26,6 +29,7 @@ namespace AmpedBiz.Core.PurchaseOrders
             Guid? id = null
         ) : base(id ?? default(Guid))
         {
+            this.Sequence = sequence;
             this.PaidBy = paidBy;
             this.PaidOn = paidOn;
             this.Payment = payment;

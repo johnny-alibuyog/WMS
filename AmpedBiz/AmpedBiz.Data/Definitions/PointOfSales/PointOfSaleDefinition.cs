@@ -65,6 +65,7 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 					.Not.KeyNullable()
 					.Not.KeyUpdate()
 					.Inverse()
+                    .OrderBy(nameof(PointOfSaleItem.Sequence))
 					.AsSet();
 
 				HasMany(x => x.Payments)
@@ -72,7 +73,8 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 					.Not.KeyNullable()
 					.Not.KeyUpdate()
 					.Inverse()
-					.AsSet();
+                    .OrderBy(nameof(PointOfSalePayment.Sequence))
+                    .AsSet();
 			}
 		}
 

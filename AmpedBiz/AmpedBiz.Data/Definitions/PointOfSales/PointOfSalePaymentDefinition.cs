@@ -20,7 +20,10 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 				Id(x => x.Id)
 					.GeneratedBy.GuidComb();
 
-				References(x => x.PointOfSale);
+                Map(x => x.Sequence)
+                    .Index($"IDX_{nameof(PointOfSalePayment)}_{nameof(PointOfSalePayment.Sequence)}");
+
+                References(x => x.PointOfSale);
 
 				Map(x => x.PaidOn);
 
@@ -38,6 +41,8 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 			public Validation()
 			{
 				Define(x => x.Id);
+
+                Define(x => x.Sequence);
 
 				Define(x => x.PointOfSale)
 					.NotNullable();

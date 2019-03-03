@@ -15,7 +15,10 @@ namespace AmpedBiz.Data.Definitions.PurchaseOrders
 				Id(x => x.Id)
 					.GeneratedBy.GuidComb();
 
-				References(x => x.PurchaseOrder);
+                Map(x => x.Sequence)
+                    .Index($"IDX_{nameof(PurchaseOrderItem)}_{nameof(PurchaseOrderItem.Sequence)}");
+
+                References(x => x.PurchaseOrder);
 
 				References(x => x.Product);
 
@@ -41,6 +44,8 @@ namespace AmpedBiz.Data.Definitions.PurchaseOrders
 			public Validation()
 			{
 				Define(x => x.Id);
+
+                Define(x => x.Sequence);
 
 				Define(x => x.PurchaseOrder)
 					.NotNullable();

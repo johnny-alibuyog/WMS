@@ -48,7 +48,8 @@ namespace AmpedBiz.Service.Returns
 						ReturnedOn = message.ReturnedOn ?? new DateTime(),
 						Remarks = message.Remarks,
 						Items = message.Items
-							.Select(x => new ReturnItem(
+							.Select((x, i) => new ReturnItem(
+                                sequence: i,
 								product: GetProduct(x.Product.Id),
 								reason: session.Load<ReturnReason>(x.Reason.Id),
 								quantity: new Measure(x.Quantity.Value, session.Load<UnitOfMeasure>(x.Quantity.Unit.Id)),
