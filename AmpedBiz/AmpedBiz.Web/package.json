@@ -24,6 +24,7 @@
     "numeral": "^2.0.6",
     "pdfmake": "^0.1.40",
     "select2": "4.0",
+    "simple-barcode-scanner": "^1.0.1",
     "whatwg-fetch": "^3.0.0"
   },
   "peerDependencies": {},

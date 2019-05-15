@@ -32,7 +32,8 @@ namespace AmpedBiz.Data.Definitions.Returns
 					.Not.KeyNullable()
 					.Not.KeyUpdate()
 					.Inverse()
-					.AsSet();
+                    .OrderBy(nameof(ReturnItem.Sequence))
+                    .AsSet();
 			}
 		}
 

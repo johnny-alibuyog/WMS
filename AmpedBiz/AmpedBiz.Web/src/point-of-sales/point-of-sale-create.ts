@@ -1,3 +1,4 @@
+import { FocusOn } from './point-of-sale-item-page';
 import { PointOfSaleDetail, PointOfSaleStatus, PointOfSalePayable } from './../common/models/point-of-sale';
 import { autoinject, computedFrom } from "aurelia-framework";
 import { ServiceApi } from "../services/service-api";
@@ -91,7 +92,7 @@ export class PointOfSaleCreate {
           this.clear();
           break;
         case KeyCode.KEY_I: /* Ctrl + Alt + i */
-          this.addItem();
+          this.addItem({ focusOn: 'product' });
           break;
         case KeyCode.KEY_P: /* Ctrl + Alt + p */
           this.addPayment();
@@ -102,6 +103,13 @@ export class PointOfSaleCreate {
         case KeyCode.KEY_L:
           this.useOnHand();
           break;
+      }
+    }
+    else {
+      switch (event.keyCode) {
+        case KeyCode.KEY_F2:
+        this.addItem({ focusOn: 'product' });
+        break;
       }
     }
   }
@@ -149,11 +157,11 @@ export class PointOfSaleCreate {
   }
 
   // @combo('ctrl+alt+1')
-  public addItem(): void {
+  public addItem(param: { focusOn: FocusOn } = null): void {
     if (this.activeTab !== 'itemsTab') {
       this.activeTab = 'itemsTab';
     }
-    this._eventAggregator.publish(pointOfSaleEvents.item.add);
+    this._eventAggregator.publish(pointOfSaleEvents.item.add, param && param.focusOn || null);
   }
 
   // @combo('ctrl+alt+2')

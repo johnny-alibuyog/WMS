@@ -1,5 +1,5 @@
 import { Supplier } from './../common/models/supplier';
-import { autoinject } from 'aurelia-framework';
+import { autoinject, observable } from 'aurelia-framework';
 import { role } from '../common/models/role';
 import { AuthService } from '../services/auth-service';
 import { Lookup } from '../common/custom_types/lookup';
@@ -10,6 +10,8 @@ import { ServiceApi } from '../services/service-api';
 import { ActionResult } from '../common/controls/notification';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { inventoryEvents } from '../common/models/inventory';
+import { Pager } from 'common/models/paging';
+import * as Enumerable from 'linq';
 
 @autoinject
 export class ProductCreate {
@@ -22,6 +24,13 @@ export class ProductCreate {
   public product: Product;
   public suppliers: Lookup<string>[] = [];
   public categories: Lookup<string>[] = [];
+  public supplierPager: Pager<Supplier> = new Pager<Supplier>();
+
+  @observable()
+  public isAllSuppliersAssigned: boolean = false;
+
+  @observable()
+  public isOnlyAssignedSuppliersVisible: boolean = false;
 
   constructor(
     private readonly _api: ServiceApi,
@@ -30,6 +39,7 @@ export class ProductCreate {
     private readonly _notification: NotificationService,
     private readonly _eventAggregator: EventAggregator
   ) {
+    this.supplierPager.onPage = () => this.initializeSupplierPage();
     this.canSave = this._auth.isAuthorized([role.admin, role.manager]);
   }
 
@@ -42,8 +52,10 @@ export class ProductCreate {
         this._api.productCategories.getLookups(),
         this.isEdit
           ? this._api.products.get(product.id)
-          : Promise.resolve(<Product>{ unitOfMeasures: [] })
+          : this.initialProduct()
       ]);
+
+      this.initializeSupplierPage();
     }
     catch (error) {
       this._notification.error(error);
@@ -75,7 +87,6 @@ export class ProductCreate {
           ? await this._api.products.update(this.product)
           : await this._api.products.create(this.product);
         await this._notification.success("Product has been saved.");
-        debugger;
       }
     }
     catch (error) {
@@ -89,5 +100,43 @@ export class ProductCreate {
 
   public toggle(supplier: Supplier): void {
     supplier.assigned = !supplier.assigned;
+    this.initializeSupplierPage();
+  }
+
+  public isOnlyAssignedSuppliersVisibleChanged(newValue: boolean, oldValue: boolean): void {
+    this.initializeSupplierPage();
+  }
+
+  public isAllSuppliersAssignedChanged(newValue: boolean, oldValue: boolean): void {
+    if (!this.product || !this.product.suppliers){
+      return;
+    }
+    this.product.suppliers.forEach(x => x.assigned = newValue);
+    this.initializeSupplierPage();
+  }
+
+  private async initialProduct(): Promise<Product> {
+    var suppliers = await this._api.suppliers.getList();
+
+    return <Product>{
+      suppliers: suppliers,
+      unitOfMeasures: [],
+    };
+  }
+
+  public initializeSupplierPage(): void {
+    if (!this.product || !this.product.suppliers) {
+      return;
+    }
+
+    let suppliers = this.isOnlyAssignedSuppliersVisible
+      ? Enumerable.from(this.product.suppliers).where(x => x.assigned).toArray()
+      : this.product.suppliers ;
+
+    this.supplierPager.count = suppliers.length;
+    this.supplierPager.items = suppliers.slice(
+      this.supplierPager.start,
+      this.supplierPager.end
+    );
   }
 }

@@ -62,7 +62,8 @@
                 <div class="form-group">
                   <label class="control-label col-sm-4">Description:</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" placeholder="Enter Description" value.bind="product.description" />
+                    <input type="text" class="form-control" placeholder="Enter Description"
+                      value.bind="product.description" />
                   </div>
                 </div>
 
@@ -157,7 +158,8 @@
                   <div id="inventoryTab" class="tab-pane fade in active">
                     <br />
 
-                    <product-inventory inventory.bind="product.inventory" unit-of-measures.bind="product.unitOfMeasures">
+                    <product-inventory inventory.bind="product.inventory"
+                      unit-of-measures.bind="product.unitOfMeasures">
                     </product-inventory>
                   </div>
 
@@ -165,15 +167,43 @@
                   <div id="suppliersTab" class="tab-pane fade in active">
                     <br />
 
-                    <div class="form-group col-sm-6">
-                      <div class="col-sm-12">
-
+                    <div class="form-group col-sm-12">
+                      <div class="col-sm-4">
+                        <div class="row">
+                          <div class="form-group">
+                            <label class="control-label col-sm-6">Assign All</label>
+                            <div class="col-sm-6 switch">
+                              <label class="switch">
+                                <input type="checkbox" checked.bind="isAllSuppliersAssigned">
+                                <span class="slider round"></span>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="form-group">
+                            <label class="control-label col-sm-6">Show Only Assigned</label>
+                            <div class="col-sm-6 switch">
+                              <label class="switch">
+                                <input type="checkbox" checked.bind="isOnlyAssignedSuppliersVisible">
+                                <span class="slider round"></span>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-8">
                         <div class="list-group">
-                          <button type="button" class="list-group-item" repeat.for="supplier of product.suppliers" click.delegate="toggle(supplier)">
-                              <input type="checkbox" checked.bind="supplier.assigned" aria-label="..." />
-                              ${supplier.name}
+                          <button type="button" class="list-group-item" repeat.for="supplier of supplierPager.items"
+                            click.delegate="toggle(supplier)">
+                            <input type="checkbox" checked.bind="supplier.assigned" aria-label="..." />
+                            ${supplier.name}
                           </button>
                         </div>
+
+                        <!-- pager -->
+                        <pager current-page.bind="supplierPager.offset" total-items.bind="supplierPager.count"
+                          change.delegate="supplierPager.doPage($event)"></pager>
 
                       </div>
                     </div>
@@ -225,7 +255,8 @@
                   <div id="adjustmentTab" class="tab-pane fade">
                     <br />
 
-                    <product-inventory-adjustment-page inventory-id.bind="product.inventory.id" product-id.bind="product.id">
+                    <product-inventory-adjustment-page inventory-id.bind="product.inventory.id"
+                      product-id.bind="product.id">
                     </product-inventory-adjustment-page>
                   </div>
 

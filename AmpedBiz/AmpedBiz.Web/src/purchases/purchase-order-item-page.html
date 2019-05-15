@@ -40,9 +40,9 @@
           <td if.bind="$parent.selectedItem === item">
             <select2 selected.bind="item.product | lookupToId:$parent.products" options.bind="products" placeholder="Select Product"
               allow_clear="true" selected:change.delegate="propagateProductChange(item, $event.detail.selected)">
-              <tempalte replace-part="suggestions">
-                <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
-              </tempalte>
+              <template replace-part="suggestions">
+                <option repeat.for="product of $parent.$parent.products" value.bind="product.id">${product.name}</option>
+              </template>
             </select2>
 
             <!--

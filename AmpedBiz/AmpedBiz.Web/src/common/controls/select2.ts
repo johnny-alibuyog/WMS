@@ -1,38 +1,59 @@
 /* https://gist.github.com/mujimu/c2da3ecb61f832bac9e0#file-sel ect2-multiselect-js-L1 */
-
-import { bindable, customElement, autoinject, Binary } from 'aurelia-framework';
+import { bindable, bindingMode, customElement, autoinject } from 'aurelia-framework';
 import 'select2';
 import * as $ from 'jquery';
 
 @customElement('select2')
 @autoinject()
 export class Select2 {
-  @bindable name = null;    // name/id of custom select
 
-  @bindable selected = [];  // default selected values
+  @bindable
+  public name: string = null;    // name/id of custom select
 
-  @bindable options = [];   // array of options with id/name properties
+  @bindable
+  public options: any[] = [];   // array of options with id/name properties
 
-  @bindable focus: boolean = false;
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
+  public selected: any | any[] = [];  // default selected values
 
-  @bindable placeholder: string = "";
+  @bindable
+  public opened: boolean = false;
 
-  @bindable multiple: boolean = false;
+  @bindable
+  public placeholder: string = "";
 
-  @bindable allow_clear: boolean = false;
+  @bindable
+  public multiple: boolean = false;
+
+  @bindable
+  public allow_clear: boolean = false;
+
+  @bindable
+  public $parent: any = null;
 
   protected element: Element;
 
+  private _select: any;
+
   constructor(element: Element) {
     this.element = element;
+  }
+
+  placeholderChanged(newValue: string, oldValue: string) {
+    debugger;
+    console.log(newValue);
+  }
+
+  openedChanged(newValue: boolean, oldValue: boolean): void {
+    debugger;
+    let command = newValue ? 'open' : 'close';
+    this._select.select2(command);
   }
 
   selectedChanged(): void {
     var event = document.createEvent('CustomEvent');
     event.initCustomEvent('selected:change', true, true, { selected: this.selected });
     this.element.dispatchEvent(event);
-
-    console.log(this.selected);
   }
 
   attached() {
@@ -42,13 +63,13 @@ export class Select2 {
       el.attr('multiple', 'multiple');
     }
 
-    let sel = el.select2({ tags: true });
+    this._select = el.select2({ tags: true });
 
     // preload selected values
-    sel.val(this.selected).trigger('change');
+    this._select.val(this.selected).trigger('change');
 
     // on any change, propagate it to underlying select to trigger two-way bind
-    sel.on('change', (event) => {
+    this._select.on('change', (event) => {
       // don't propagate endlessly
       // see: http://stackoverflow.com/a/34121891/4354884
       if (event.originalEvent) {
@@ -60,32 +81,20 @@ export class Select2 {
       $(el)[0].dispatchEvent(notice);
     });
 
-    /* https://ilikekillnerds.com/2015/08/aurelia-custom-elements-custom-callback-events-tutorial/ */
-    /*
-    sel.on('change', (event) => {
-      let changeEvent: CustomEvent;
+    if (this.opened) {
+      this._select.select2('open');
+    }
 
-      if (event.originalEvent) {
-        changeEvent = document.createEvent('CustomEvent');
-        changeEvent.initCustomEvent('change', true, true, {
-          detail: {
-            value: event.target.value
-          }
-        });
-      } else {
-        changeEvent = new CustomEvent('change', {
-          detail: {
-            value: event.target.value
-          },
-          bubbles: true
-        });
-      }
-      this.element.dispatchEvent(changeEvent);
-    });
-    */
+    /* https://ilikekillnerds.com/2015/08/aurelia-custom-elements-custom-callback-events-tutorial/ */
+  }
+
+  bind(bindingContext: any, overrideContext: any) {
+    // this.$parent = overrideContext.parentOverrideContext.bindingContext;
+    this.$parent = bindingContext;
   }
 
   detached() {
-    $(this.element).find('select').select2('destroy');
+    //$(this.element).find('select').select2('destroy');
+    this._select.select2('destroy');
   }
 }

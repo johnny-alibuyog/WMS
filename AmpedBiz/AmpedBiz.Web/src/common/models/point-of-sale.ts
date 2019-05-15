@@ -69,7 +69,6 @@ export type PointOfSaleItem = {
   unitPriceAmount?: number;
   extendedPriceAmount?: number;
   totalPriceAmount?: number;
-  focus?: boolean;
 }
 
 export type PointOfSalePayment = {

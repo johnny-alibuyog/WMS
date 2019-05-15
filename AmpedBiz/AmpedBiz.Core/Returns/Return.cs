@@ -1,5 +1,4 @@
 ﻿using AmpedBiz.Core.Common;
-using AmpedBiz.Core.Orders;
 using AmpedBiz.Core.Users;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace AmpedBiz.Core.Returns
 {
-	public class Return : Entity<Guid, Return>, IAccept<IVisitor<Return>>
+    public class Return : Entity<Guid, Return>, IAccept<IVisitor<Return>>
     {
         public virtual Branch Branch { get; internal protected set; }
 

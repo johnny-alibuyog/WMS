@@ -61,6 +61,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Data.Initializer",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Pos", "AmpedBiz.Pos\AmpedBiz.Pos.csproj", "{6BB0F628-2573-44CE-8579-B75E2FE4D14C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".utils", ".utils", "{0504105D-0B43-4AD0-A0B4-76E83E1D983A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ampedbiz.BarcodeSimulator", "Ampedbiz.BarcodeSimulator\Ampedbiz.BarcodeSimulator.csproj", "{2A6CB7D3-6555-4200-9E27-24DE7B2DA110}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +111,10 @@ Global
 		{6BB0F628-2573-44CE-8579-B75E2FE4D14C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BB0F628-2573-44CE-8579-B75E2FE4D14C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BB0F628-2573-44CE-8579-B75E2FE4D14C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A6CB7D3-6555-4200-9E27-24DE7B2DA110}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A6CB7D3-6555-4200-9E27-24DE7B2DA110}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A6CB7D3-6555-4200-9E27-24DE7B2DA110}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A6CB7D3-6555-4200-9E27-24DE7B2DA110}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -117,6 +125,7 @@ Global
 		{BC11990C-B580-4CBB-BF7D-A247CE0DCE04} = {41FDA416-8041-40EE-A524-003221C39330}
 		{FDB8EBA6-B55D-4D57-9DF6-0CD66AFDD73D} = {FE60FB7D-11A2-4A8E-ACC6-0C3217EE8BFD}
 		{6A332A94-7B93-4A2B-B6DF-35CB496EA799} = {FE60FB7D-11A2-4A8E-ACC6-0C3217EE8BFD}
+		{2A6CB7D3-6555-4200-9E27-24DE7B2DA110} = {0504105D-0B43-4AD0-A0B4-76E83E1D983A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {844E83D7-B7EF-482E-B46C-22561C5A782A}

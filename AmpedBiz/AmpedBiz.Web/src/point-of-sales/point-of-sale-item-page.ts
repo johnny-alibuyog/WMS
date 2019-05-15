@@ -14,9 +14,13 @@ import { Lookup } from '../common/custom_types/lookup';
 import { ServiceApi } from '../services/service-api';
 import { ensureNumeric } from '../common/utils/ensure-numeric';
 import { getValue, Measure } from "../common/models/measure";
-import * as Enumerable from 'linq';
 import { Override, OverrideParams } from 'users/override';
 import { DialogService } from 'aurelia-dialog';
+import * as KeyCode from 'keycode-js';
+import * as Enumerable from 'linq';
+import * as $ from 'jquery';
+
+export type FocusOn = "product" | "uom";
 
 @autoinject
 @customElement("point-of-sale-item-page")
@@ -24,8 +28,9 @@ export class PointOfSaleItemPage {
 
   private _subscriptions: Subscription[] = [];
   private _productInventories: ProductInventory[] = [];
-  private readonly _canEditItem: boolean = false;
-  private readonly _canDeleteItem: boolean = false;
+  private _canEditItem: boolean = false;
+  private  _canDeleteItem: boolean = false;
+  //private _scanner = BarcodeScanner();
 
   @observable()
   public barcode: string = '';
@@ -62,11 +67,16 @@ export class PointOfSaleItemPage {
 
   public itemPager: Pager<PointOfSaleItem> = new Pager<PointOfSaleItem>();
 
+  @observable()
   public selectedItem: PointOfSaleItem;
 
   public selectedProductPriceDetails: ProductRetailPriceDetails = {};
 
   public focusBarcodeInput: boolean;
+
+  public focusProductInput: boolean;
+
+  public focusUomInput: boolean;
 
   constructor(
     private readonly _api: ServiceApi,
@@ -76,6 +86,7 @@ export class PointOfSaleItemPage {
     this.itemPager.onPage = () => this.initializePage();
     this._canEditItem = this._api.auth.isAuthorized([role.admin, role.manager]);
     this._canDeleteItem = this._api.auth.isAuthorized([role.admin, role.manager]);
+    new BarcodeScanerEvents();
   }
 
   private async getProductInventory(key: string): Promise<ProductInventory> {
@@ -100,7 +111,7 @@ export class PointOfSaleItemPage {
     this._subscriptions = [
       this._eventAggregator.subscribe(
         pointOfSaleEvents.item.add,
-        () => this.addItem()
+        (focusOn?: FocusOn) => this.addItem(focusOn)
       ),
       this._eventAggregator.subscribe(
         pointOfSaleEvents.item.useOnHand,
@@ -112,18 +123,33 @@ export class PointOfSaleItemPage {
       ),
     ];
     window.addEventListener('keydown', this.handleKeyInput, false);
+
+    document.addEventListener('onbarcodescaned', alert);
+
+    // window.addEventListener('textInput', alert, false);
+    // this._scanner.on(x => {
+    //   debugger;
+    //   console.log(x);
+    //   this.addItem("uom");
+    // });
   }
 
   public detached(): void {
     this._subscriptions.forEach(subscription => subscription.dispose());
+    // this._scanner.off();
+    // window.removeEventListener('textInput', alert);
+    document.removeEventListener('onbarcodescaned', alert);
+
     window.removeEventListener('keydown', this.handleKeyInput);
   }
 
   private handleKeyInput = (event: KeyboardEvent) => {
     /* Ctrl + Alt + b */
-    if (event.ctrlKey && event.altKey && event.keyCode === 66) {
+    if (event.ctrlKey && event.altKey && event.keyCode === KeyCode.KEY_B) {
       this.focusBarcodeInput = true;
     }
+
+    console.log(event.key);
   }
 
   public itemsChanged(): void {
@@ -314,7 +340,7 @@ export class PointOfSaleItemPage {
     );
   }
 
-  public addItem(): void {
+  public addItem(focusOn: FocusOn = null): void {
     if (this.isModificationDisallowed) {
       return;
     }
@@ -339,12 +365,14 @@ export class PointOfSaleItemPage {
       unitPriceAmount: null,
       extendedPriceAmount: null,
       totalPriceAmount: null,
-      focus: true
     };
 
     this.items.unshift(item);
     this.selectedItem = item;
     this.initializePage();
+
+    this.focusProductInput = focusOn === "product";
+    this.focusUomInput = focusOn === "uom"; 
   }
 
   public async editItem(item: PointOfSaleItem): Promise<void> {
@@ -425,3 +453,36 @@ export class PointOfSaleItemPage {
     };
   }
 }
+
+
+var BarcodeScanerEvents = function() {
+  this.initialize.apply(this, arguments);
+};
+
+BarcodeScanerEvents.prototype = {
+ initialize: function() {
+    $(document).on({
+       keyup: $.proxy(this._keyup, this)
+    });
+ },
+ _timeoutHandler: 0,
+ _inputString: '',
+ _keyup: function (e) {
+     if (this._timeoutHandler) {
+         clearTimeout(this._timeoutHandler);
+         this._inputString += String.fromCharCode(e.which);
+     } 
+
+     this._timeoutHandler = setTimeout($.proxy(function () {
+         if (this._inputString.length <= 3) {
+             this._inputString = '';
+             return;
+         }
+
+         $(document).trigger('onbarcodescaned', this._inputString);
+
+         this._inputString = '';
+
+     }, this), 20);
+ }
+};

@@ -68,7 +68,7 @@ export class HttpClientFacade {
     return this.send({ url: url, method: "PATCH", data: data });
   }
 
-  delete(url: string, data: any): Promise<any> {
+  public delete(url: string, data: any): Promise<any> {
     return this.send({ url: url, method: "DELETE", data: data });
   }
 }

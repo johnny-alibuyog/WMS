@@ -3,7 +3,7 @@
 
   <!-- add "multiple" attribute for multiple election -->
   <select class="form-control" value.two-way="selected" name.to-view="name" id.to-view="name" data-placeholder.to-view="placeholder"
-    data-allow-clear.to-view="allow_clear" size="1" focus.two-way="focus">
+    data-allow-clear.to-view="allow_clear" size="1">
     <!-- https://dustindavis.me/aurelia-replaceable-parts-html-only-templates/ -->
     <template replaceable part="suggestions">
       <option repeat.for="option of options" value.bind="option.id">${option.name}</option>

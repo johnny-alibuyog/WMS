@@ -45,10 +45,10 @@
                 <select2 selected.bind="item.product | lookupToId:$parent.products" options.bind="products"
                   placeholder="Select Product" allow_clear="true"
                   selected:change.delegate="propagateProductChange(item, $event.detail.selected)"
-                  focus.bind="item.focus">
-                  <tempalte replace-part="suggestions">
-                    <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
-                  </tempalte>
+                  opened.bind="$parent.focusProductInput">
+                  <template replace-part="suggestions">
+                    <option repeat.for="product of $parent.$parent.products" value.bind="product.id">${product.name}</option>
+                  </template>
                 </select2>
               </div>
             </div>
@@ -63,7 +63,7 @@
               <div class="row">
                 <div class="col-xs-12">
                   <select class="form-control input-xs" value.bind="item.quantity.unit | lookupToId:item.unitOfMeasures"
-                    change.delegate="computeUnitPriceAmount()">
+                    change.delegate="computeUnitPriceAmount()" focus.bind="$parent.focusUomInput">
                     <option repeat.for="unitOfMeasure of item.unitOfMeasures" model.bind="unitOfMeasure.id">
                       ${unitOfMeasure.name}</option>
                   </select>
