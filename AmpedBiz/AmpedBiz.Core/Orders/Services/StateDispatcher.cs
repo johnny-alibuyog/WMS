@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Common.Configurations;
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Common;
+using AmpedBiz.Core.SharedKernel;
 using System;
 using System.Collections.Generic;
 

@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Core.Common;
+using AmpedBiz.Core.SharedKernel;
 using System;
 
 namespace AmpedBiz.Core.Settings

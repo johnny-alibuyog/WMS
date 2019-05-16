@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Core.Common;
 using AmpedBiz.Core.Products;
+using AmpedBiz.Core.SharedKernel;
 using System;
 
 namespace AmpedBiz.Core.Orders

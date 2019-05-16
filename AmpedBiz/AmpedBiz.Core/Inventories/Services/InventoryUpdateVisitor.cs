@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Core.Common;
 using AmpedBiz.Core.Products;
 using AmpedBiz.Core.Products.Services;
+using AmpedBiz.Core.SharedKernel;
 using System;
 
 namespace AmpedBiz.Core.Inventories.Services

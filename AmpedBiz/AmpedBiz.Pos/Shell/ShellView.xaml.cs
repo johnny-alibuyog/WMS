@@ -26,7 +26,7 @@ namespace AmpedBiz.Pos.Shell
         {
             InitializeComponent();
 
-            this.ViewModel = viewModel ?? Locator.CurrentMutable.GetService<ShellViewModel>();
+            this.ViewModel = viewModel ?? Locator.Current.GetService<ShellViewModel>();
 
             this.WhenActivated(block =>
             {

@@ -1,4 +1,5 @@
-﻿using AmpedBiz.Core.Users;
+﻿using AmpedBiz.Core.SharedKernel;
+using AmpedBiz.Core.Users;
 using System;
 
 namespace AmpedBiz.Core.Orders.Services

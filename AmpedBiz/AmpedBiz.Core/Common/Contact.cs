@@ -1,4 +1,6 @@
-﻿namespace AmpedBiz.Core.Common
+﻿using AmpedBiz.Core.SharedKernel;
+
+namespace AmpedBiz.Core.Common
 {
     public class Contact : ValueObject<Contact>
     {

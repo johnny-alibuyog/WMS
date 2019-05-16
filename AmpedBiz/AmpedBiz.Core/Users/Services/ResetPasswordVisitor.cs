@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Core.Common.Services.Generators;
 using AmpedBiz.Core.Settings.Services;
+using AmpedBiz.Core.SharedKernel;
 
 namespace AmpedBiz.Core.Users.Services
 {

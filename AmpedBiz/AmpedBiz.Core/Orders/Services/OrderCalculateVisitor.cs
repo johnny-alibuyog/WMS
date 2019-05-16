@@ -1,4 +1,6 @@
-﻿namespace AmpedBiz.Core.Orders.Services
+﻿using AmpedBiz.Core.SharedKernel;
+
+namespace AmpedBiz.Core.Orders.Services
 {
     public class OrderCalculateVisitor : IVisitor<Order>
     {
@@ -11,7 +13,7 @@
             target.Discount = calculator.Discount(target);
             target.Total = calculator.GrandTotal(target);
             target.Paid = calculator.Paid(target);
-			target.Balance = calculator.Balance(target);
+            target.Balance = calculator.Balance(target);
             target.Returned = calculator.Returned(target);
         }
     }

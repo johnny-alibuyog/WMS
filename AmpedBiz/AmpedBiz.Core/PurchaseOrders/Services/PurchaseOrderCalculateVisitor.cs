@@ -1,4 +1,6 @@
-﻿namespace AmpedBiz.Core.PurchaseOrders.Services
+﻿using AmpedBiz.Core.SharedKernel;
+
+namespace AmpedBiz.Core.PurchaseOrders.Services
 {
 	public class PurchaseOrderCalculateVisitor : IVisitor<PurchaseOrder>
     {

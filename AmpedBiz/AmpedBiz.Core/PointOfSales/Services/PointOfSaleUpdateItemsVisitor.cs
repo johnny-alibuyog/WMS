@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Inventories.Services.PointOfSale;
 using AmpedBiz.Core.Products.Services;
+using AmpedBiz.Core.SharedKernel;
 using System.Collections.Generic;
 using System.Linq;
 

@@ -1,11 +1,12 @@
 ﻿using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.SharedKernel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AmpedBiz.Core.Orders.Services
 {
-	public class OrderUpdateItemsVisitor : IVisitor<Order>
+    public class OrderUpdateItemsVisitor : IVisitor<Order>
     {
         public virtual IEnumerable<OrderItem> Items { get; set; }
 

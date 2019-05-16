@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Core.Orders;
+using AmpedBiz.Core.SharedKernel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 

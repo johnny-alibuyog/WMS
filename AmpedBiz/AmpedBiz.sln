@@ -59,8 +59,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FE60FB7D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Data.Initializer", "AmpedBiz.Data.Initializer\AmpedBiz.Data.Initializer.csproj", "{2D3D68A8-AE82-47A7-ADD0-C4422BA23C1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Pos", "AmpedBiz.Pos\AmpedBiz.Pos.csproj", "{6BB0F628-2573-44CE-8579-B75E2FE4D14C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".utils", ".utils", "{0504105D-0B43-4AD0-A0B4-76E83E1D983A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ampedbiz.BarcodeSimulator", "Ampedbiz.BarcodeSimulator\Ampedbiz.BarcodeSimulator.csproj", "{2A6CB7D3-6555-4200-9E27-24DE7B2DA110}"
@@ -107,10 +105,6 @@ Global
 		{2D3D68A8-AE82-47A7-ADD0-C4422BA23C1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D3D68A8-AE82-47A7-ADD0-C4422BA23C1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D3D68A8-AE82-47A7-ADD0-C4422BA23C1F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6BB0F628-2573-44CE-8579-B75E2FE4D14C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6BB0F628-2573-44CE-8579-B75E2FE4D14C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6BB0F628-2573-44CE-8579-B75E2FE4D14C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6BB0F628-2573-44CE-8579-B75E2FE4D14C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2A6CB7D3-6555-4200-9E27-24DE7B2DA110}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2A6CB7D3-6555-4200-9E27-24DE7B2DA110}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A6CB7D3-6555-4200-9E27-24DE7B2DA110}.Release|Any CPU.ActiveCfg = Release|Any CPU

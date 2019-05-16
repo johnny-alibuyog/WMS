@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Core.Common;
+using AmpedBiz.Core.SharedKernel;
 using System.Collections.Generic;
 
 namespace AmpedBiz.Core.Products

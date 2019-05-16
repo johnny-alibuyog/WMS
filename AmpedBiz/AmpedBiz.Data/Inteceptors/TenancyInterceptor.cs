@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Core;
 using AmpedBiz.Core.Common;
+using AmpedBiz.Core.SharedKernel;
 using AmpedBiz.Data.Context;
 using NHibernate;
 using NHibernate.Type;

@@ -1,4 +1,6 @@
-﻿namespace AmpedBiz.Core.Inventories.Services
+﻿using AmpedBiz.Core.SharedKernel;
+
+namespace AmpedBiz.Core.Inventories.Services
 {
 	public class InventoryRecomputeVisitor : IVisitor<Inventory>
     {

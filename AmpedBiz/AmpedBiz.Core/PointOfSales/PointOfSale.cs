@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Core.Common;
 using AmpedBiz.Core.Products;
+using AmpedBiz.Core.SharedKernel;
 using AmpedBiz.Core.Users;
 using System;
 using System.Collections.Generic;

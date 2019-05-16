@@ -1,5 +1,6 @@
 ﻿using AmpedBiz.Core.Common;
 using AmpedBiz.Core.Inventories;
+using AmpedBiz.Core.SharedKernel;
 using System.Linq;
 
 namespace AmpedBiz.Core.Products.Services

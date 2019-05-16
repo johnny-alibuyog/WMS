@@ -1,4 +1,6 @@
-﻿namespace AmpedBiz.Core.PointOfSales.Services
+﻿using AmpedBiz.Core.SharedKernel;
+
+namespace AmpedBiz.Core.PointOfSales.Services
 {
 	public class PointOfSaleCalculateVisitor : IVisitor<PointOfSale>
 	{

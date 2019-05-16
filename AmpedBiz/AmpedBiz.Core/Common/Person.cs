@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmpedBiz.Core.SharedKernel;
+using System;
 
 namespace AmpedBiz.Core.Common
 {

@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Core.Products;
+using AmpedBiz.Core.SharedKernel;
 
 namespace AmpedBiz.Core.Inventories.Services.PurchaseOrders
 {

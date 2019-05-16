@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Common.Exceptions;
+using AmpedBiz.Core.SharedKernel;
 using System;
 using System.Collections.Generic;
 

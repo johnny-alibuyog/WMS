@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using AmpedBiz.Core.SharedKernel;
 
 namespace AmpedBiz.Core.Products
 {
-	// Reference: https://docs.oracle.com/cd/A60725_05/html/comnls/us/inv/uomov.htm#c_uomov
+    // Reference: https://docs.oracle.com/cd/A60725_05/html/comnls/us/inv/uomov.htm#c_uomov
 
-	public class UnitOfMeasure : Entity<string, UnitOfMeasure>
+    public class UnitOfMeasure : Entity<string, UnitOfMeasure>
     {
         public virtual string Name { get; set; }
 

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AmpedBiz.Core</RootNamespace>
     <AssemblyName>AmpedBiz.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Humanizer, Version=2.5.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Humanizer.Core.2.5.16\lib\netstandard2.0\Humanizer.dll</HintPath>
+    <Reference Include="Humanizer, Version=2.6.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Humanizer.Core.2.6.2\lib\netstandard2.0\Humanizer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -105,16 +105,16 @@
     <Compile Include="Settings\UserSetting.cs">
       <DependentUpon>Setting.cs</DependentUpon>
     </Compile>
-    <Compile Include="Entity.cs" />
-    <Compile Include="IAuditable.cs" />
-    <Compile Include="Event.cs" />
-    <Compile Include="IHasBranch.cs" />
-    <Compile Include="IHasTenant.cs" />
-    <Compile Include="IVersionable.cs" />
+    <Compile Include="SharedKernel\Entity.cs" />
+    <Compile Include="SharedKernel\IAuditable.cs" />
+    <Compile Include="SharedKernel\Event.cs" />
+    <Compile Include="SharedKernel\IHasBranch.cs" />
+    <Compile Include="SharedKernel\IHasTenant.cs" />
+    <Compile Include="SharedKernel\IVersionable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\Services\CodeGen.cs" />
     <Compile Include="Common\Services\HashProvider.cs" />
-    <Compile Include="IAccept.cs" />
+    <Compile Include="SharedKernel\IAccept.cs" />
     <Compile Include="Inventories\Services\InventoryAdjustVisitor.cs" />
     <Compile Include="Inventories\Services\InventoryCalculator.cs" />
     <Compile Include="Inventories\Services\InventoryRecomputeVisitor.cs" />
@@ -146,7 +146,7 @@
     <Compile Include="Products\Services\MeasureConverter.cs" />
     <Compile Include="Products\Services\ProductUpdateVisitor.cs" />
     <Compile Include="Inventories\Services\PurchaseOrders\OrderVisitor.cs" />
-    <Compile Include="IVisitor.cs" />
+    <Compile Include="SharedKernel\IVisitor.cs" />
     <Compile Include="Orders\Services\OrderCalculator.cs" />
     <Compile Include="Orders\Services\StateDispatcher.cs" />
     <Compile Include="Products\Services\SearchAndApplyVisitor.cs" />
@@ -174,7 +174,7 @@
     <Compile Include="Users\Services\SetPasswordVisitor.cs" />
     <Compile Include="Users\Services\SetRoleVisitor.cs" />
     <Compile Include="Users\Services\VerifyPasswordVisitor.cs" />
-    <Compile Include="ValueObject.cs" />
+    <Compile Include="SharedKernel\ValueObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AmpedBiz.Common\AmpedBiz.Common.csproj">

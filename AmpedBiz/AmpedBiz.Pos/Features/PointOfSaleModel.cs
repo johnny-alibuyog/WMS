@@ -5,17 +5,15 @@ using DynamicData.Binding;
 using DynamicData.ReactiveUI;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using ReactiveUI.Legacy;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
 namespace AmpedBiz.Pos.Features
 {
-	public class PointOfSaleModel : ReactiveObject, IDisposable
+    public class PointOfSaleModel : ReactiveObject, IDisposable
     {
         private readonly CompositeDisposable _disposer = new CompositeDisposable();
 

@@ -17,9 +17,9 @@ namespace AmpedBiz.Pos.Shell
         {
             this.HostScreen = screen;
 
-            this.Header = header ?? Locator.CurrentMutable.GetService<HeaderViewModel>();
+            this.Header = header ?? Locator.Current.GetService<HeaderViewModel>();
 
-            this.HostScreen.Router.Navigate.Execute(Locator.CurrentMutable.GetService<PointOfSalesViewModel>());
+            this.HostScreen.Router.Navigate.Execute(Locator.Current.GetService<PointOfSalesViewModel>());
         }
     }
 }
