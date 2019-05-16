@@ -2,6 +2,7 @@
 using MediatR;
 using MediatR.Pipeline;
 using NHibernate;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AmpedBiz.Service
@@ -14,7 +15,7 @@ namespace AmpedBiz.Service
 
         public abstract Task Execute(TRequest request, TResponse response);
 
-        public Task Process(TRequest request, TResponse response)
+        public Task Process(TRequest request, TResponse response, CancellationToken cancellationToken)
         {
             return Execute(request, response);
         }
