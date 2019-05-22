@@ -7,13 +7,10 @@ namespace AmpedBiz.Data.Definitions.Orders
 {
 	public class OrderDefinition
 	{
-		public class Mapping : ClassMap<Order>
+		public class Mapping : SubclassMap<Order>
 		{
 			public Mapping()
 			{
-				Id(x => x.Id)
-					.GeneratedBy.GuidComb();
-
 				Map(x => x.OrderNumber);
 
 				Map(x => x.InvoiceNumber)
@@ -144,8 +141,6 @@ namespace AmpedBiz.Data.Definitions.Orders
 		{
 			public Validation()
 			{
-				Define(x => x.Id);
-
 				Define(x => x.OrderNumber)
 					.MaxLength(30);
 

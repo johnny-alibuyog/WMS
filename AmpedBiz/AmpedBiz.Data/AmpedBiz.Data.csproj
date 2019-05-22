@@ -40,8 +40,8 @@
     <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="LinqToExcel, Version=2.0.0.0, Culture=neutral, PublicKeyToken=9c8ea65a58f03f1f, processorArchitecture=MSIL">
-      <HintPath>..\packages\LinqToExcel.2.0.0-PRERELEASE\lib\net46\LinqToExcel.dll</HintPath>
+    <Reference Include="LinqToExcel, Version=2.0.0.2, Culture=neutral, PublicKeyToken=9c8ea65a58f03f1f, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.2.0.0-PRERELEASE-2\lib\net46\LinqToExcel.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -102,13 +102,11 @@
     <Compile Include="Conventions\CustomComponentConvention.cs" />
     <Compile Include="Conventions\CustomForeignKeyConstraintConvention.cs" />
     <Compile Include="Conventions\CustomForeignKeyConvention.cs" />
-    <Compile Include="Conventions\CustomHasManyConvention.cs" />
     <Compile Include="Conventions\CustomPrimaryKeyConvention.cs" />
     <Compile Include="Conventions\CustomPropertyAccessConvention.cs" />
     <Compile Include="Conventions\CustomTableNameConvention.cs" />
     <Compile Include="Conventions\DateTimeOffsetConvention.cs" />
     <Compile Include="Conventions\EnumConvention.cs" />
-    <Compile Include="Conventions\CustomJoinedSubclassConvention.cs" />
     <Compile Include="CustomTypes\JsonType.cs" />
     <Compile Include="CustomTypes\XmlType.cs" />
     <Compile Include="Definitions\Common\AddressDefenition.cs" />
@@ -121,6 +119,12 @@
     <Compile Include="Definitions\Common\PersonDefinition.cs" />
     <Compile Include="Definitions\Common\ShipperDefinition.cs" />
     <Compile Include="Definitions\Common\TenantDefinition.cs" />
+    <Compile Include="Definitions\Common\TransactionAuditBaseDefinition.cs" />
+    <Compile Include="Definitions\Common\TransactionBaseDefinition.cs" />
+    <Compile Include="Definitions\Common\TransactionItemBaseDefinition.cs" />
+    <Compile Include="Definitions\Common\TransactionPaymentBaseDefinition.cs" />
+    <Compile Include="Definitions\Common\TransactionRecieptBaseDefinition.cs" />
+    <Compile Include="Definitions\Common\TransactionReturnBaseDefinition.cs" />
     <Compile Include="Definitions\Inventories\InventoryAdjustmentDefinition.cs" />
     <Compile Include="Definitions\Inventories\InventoryAdjustmentReasonDefinition.cs" />
     <Compile Include="Definitions\Inventories\InventoryDefinition.cs" />
@@ -128,7 +132,7 @@
     <Compile Include="Definitions\Orders\OrderItemDefinition.cs" />
     <Compile Include="Definitions\Orders\OrderPaymentDefinition.cs" />
     <Compile Include="Definitions\Orders\OrderReturnDefinition.cs" />
-    <Compile Include="Definitions\Orders\OrderTransactionDefinition.cs" />
+    <Compile Include="Definitions\Orders\OrderAuditDefinition.cs" />
     <Compile Include="Definitions\PointOfSales\PointOfSaleDefinition.cs" />
     <Compile Include="Definitions\PointOfSales\PointOfSaleItemDefinition.cs" />
     <Compile Include="Definitions\PointOfSales\PointOfSalePaymentDefinition.cs" />
@@ -144,9 +148,8 @@
     <Compile Include="Definitions\PurchaseOrders\PurchaseOrderItemDefinition.cs" />
     <Compile Include="Definitions\PurchaseOrders\PurchaseOrderPaymentDefinition.cs" />
     <Compile Include="Definitions\PurchaseOrders\PurchaseOrderReceiptDefinition.cs" />
-    <Compile Include="Definitions\PurchaseOrders\PurchaseOrderTransactionDefinition.cs" />
+    <Compile Include="Definitions\PurchaseOrders\PurchaseOrderAuditDefinition.cs" />
     <Compile Include="Definitions\Returns\ReturnDefinition.cs" />
-    <Compile Include="Definitions\Returns\ReturnItemBaseDefinition.cs" />
     <Compile Include="Definitions\Returns\ReturnItemDefinition.cs" />
     <Compile Include="Definitions\Returns\ReturnReasonDefinition.cs" />
     <Compile Include="Definitions\Settings\CurrencySettingDefinition.cs" />

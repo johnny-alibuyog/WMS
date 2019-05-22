@@ -4,7 +4,7 @@ using System;
 
 namespace AmpedBiz.Core.Returns
 {
-	public class ReturnItem : ReturnItemBase
+	public class ReturnItem : TransactionReturnBase
 	{
         public virtual int Sequence { get; protected set; }
 

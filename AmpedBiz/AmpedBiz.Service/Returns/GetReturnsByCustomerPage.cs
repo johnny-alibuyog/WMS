@@ -35,7 +35,7 @@ namespace AmpedBiz.Service.Returns
 
 					if (includeOrderReturns)
 					{
-						var query1 = session.Query<ReturnItemBase>();
+						var query1 = session.Query<TransactionReturnBase>();
 
 						message.Filter.Compose<Guid>("customer", value =>
 						{

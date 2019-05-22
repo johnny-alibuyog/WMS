@@ -1,19 +1,18 @@
 ﻿using AmpedBiz.Core.Common;
-using AmpedBiz.Core.SharedKernel;
 using AmpedBiz.Core.Users;
 using System;
 
 namespace AmpedBiz.Core.PointOfSales
 {
-	public class PointOfSalePayment : Entity<Guid, PointOfSalePayment>
+    public class PointOfSalePayment : TransactionPaymentBase
 	{
         public virtual int Sequence { get; protected set; }
 
 		public virtual PointOfSale PointOfSale { get; protected internal set; }
 
-		public virtual DateTime? PaidOn { get; protected set; }
+        public virtual User PaidTo { get; protected set; }
 
-		public virtual User PaidTo { get; protected set; }
+        public virtual DateTime? PaidOn { get; protected set; }
 
 		public virtual PaymentType PaymentType { get; protected set; }
 
@@ -25,8 +24,8 @@ namespace AmpedBiz.Core.PointOfSales
 
 		public PointOfSalePayment(
             int sequence,
-			DateTime? paidOn,
-			User paidTo,
+            User paidTo,
+            DateTime? paidOn,
 			PaymentType paymentType,
 			Money payment,
 			Money balance = null,

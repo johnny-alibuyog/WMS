@@ -15,7 +15,7 @@ namespace AmpedBiz.Core.PointOfSales
 		FullyPaid = 3,
 	}
 
-	public class PointOfSale : Entity<Guid, PointOfSale>, IAccept<IVisitor<PointOfSale>>, IAuditable
+	public class PointOfSale : TransactionBase, IAccept<IVisitor<PointOfSale>>, IAuditable
 	{
 		public virtual string InvoiceNumber { get; protected internal set; }
 

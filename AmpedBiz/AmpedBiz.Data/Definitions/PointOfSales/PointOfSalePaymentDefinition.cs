@@ -1,25 +1,16 @@
-﻿using AmpedBiz.Core.Orders;
-using AmpedBiz.Core.PointOfSales;
+﻿using AmpedBiz.Core.PointOfSales;
 using AmpedBiz.Data.Definitions.Common;
 using FluentNHibernate.Mapping;
 using NHibernate.Validator.Cfg.Loquacious;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AmpedBiz.Data.Definitions.PointOfSales
 {
-	public class PointOfSalePaymentDefinition
+    public class PointOfSalePaymentDefinition
 	{
-		public class Mapping : ClassMap<PointOfSalePayment>
+		public class Mapping : SubclassMap<PointOfSalePayment>
 		{
 			public Mapping()
 			{
-				Id(x => x.Id)
-					.GeneratedBy.GuidComb();
-
                 Map(x => x.Sequence)
                     .Index($"IDX_{nameof(PointOfSalePayment)}_{nameof(PointOfSalePayment.Sequence)}");
 
@@ -40,8 +31,6 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 		{
 			public Validation()
 			{
-				Define(x => x.Id);
-
                 Define(x => x.Sequence);
 
 				Define(x => x.PointOfSale)

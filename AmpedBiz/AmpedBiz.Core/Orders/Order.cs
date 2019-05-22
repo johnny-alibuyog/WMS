@@ -48,7 +48,7 @@ namespace AmpedBiz.Core.Orders
         ReturnCreation
     }
 
-    public class Order : Entity<Guid, Order>, IAccept<IVisitor<Order>>
+    public class Order : TransactionBase, IAccept<IVisitor<Order>>
     {
         public virtual string OrderNumber  { get; internal protected set; }
 
@@ -142,7 +142,7 @@ namespace AmpedBiz.Core.Orders
 
         public virtual IEnumerable<OrderPayment> Payments { get; internal protected set; } = new Collection<OrderPayment>();
 
-        public virtual IEnumerable<OrderTransaction> Transactions { get; internal protected set; } = new Collection<OrderTransaction>();
+        public virtual IEnumerable<OrderAudit> Transactions { get; internal protected set; } = new Collection<OrderAudit>();
 
         public virtual StateDispatcher State
         {

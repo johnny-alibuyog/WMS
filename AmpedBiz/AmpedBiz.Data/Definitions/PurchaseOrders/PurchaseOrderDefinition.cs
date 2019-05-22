@@ -7,13 +7,10 @@ namespace AmpedBiz.Data.Definitions.PurchaseOrders
 {
 	public class PurchaseOrderDefinition
 	{
-		public class Mapping : ClassMap<PurchaseOrder>
+		public class Mapping : SubclassMap<PurchaseOrder>
 		{
 			public Mapping()
 			{
-				Id(x => x.Id)
-					.GeneratedBy.GuidComb();
-
 				Map(x => x.PurchaseOrderNumber);
 
 				Map(x => x.ReferenceNumber)
@@ -122,8 +119,6 @@ namespace AmpedBiz.Data.Definitions.PurchaseOrders
 		{
 			public Validation()
 			{
-				Define(x => x.Id);
-
 				Define(x => x.PurchaseOrderNumber)
 					.MaxLength(30);
 

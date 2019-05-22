@@ -5,7 +5,7 @@ using System;
 
 namespace AmpedBiz.Core.Orders
 {
-	public class OrderItem : Entity<Guid, OrderItem>, IAccept<IVisitor<OrderItem>>
+	public class OrderItem : TransactionItemBase, IAccept<IVisitor<OrderItem>>
 	{
         public virtual int Sequence { get; protected set; }
 

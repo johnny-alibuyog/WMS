@@ -8,13 +8,10 @@ namespace AmpedBiz.Data.Definitions.Orders
 {
 	public class OrderItemDefinition
 	{
-		public class Mapping : ClassMap<OrderItem>
+		public class Mapping : SubclassMap<OrderItem>
 		{
 			public Mapping()
 			{
-				Id(x => x.Id)
-					.GeneratedBy.GuidComb();
-
                 Map(x => x.Sequence)
                     .Index($"IDX_{nameof(OrderItem)}_{nameof(OrderItem.Sequence)}");
 
@@ -51,8 +48,6 @@ namespace AmpedBiz.Data.Definitions.Orders
 		{
 			public Validation()
 			{
-				Define(x => x.Id);
-
                 Define(x => x.Sequence);
 
                 Define(x => x.Order)

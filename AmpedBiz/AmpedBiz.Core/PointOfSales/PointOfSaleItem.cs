@@ -5,7 +5,7 @@ using System;
 
 namespace AmpedBiz.Core.PointOfSales
 {
-	public class PointOfSaleItem : Entity<Guid, PointOfSaleItem>, IAccept<IVisitor<PointOfSaleItem>>
+	public class PointOfSaleItem : TransactionItemBase, IAccept<IVisitor<PointOfSaleItem>>
 	{
         public virtual int Sequence { get; protected set; }
 

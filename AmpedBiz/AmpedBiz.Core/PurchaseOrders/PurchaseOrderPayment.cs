@@ -1,11 +1,10 @@
 ﻿using AmpedBiz.Core.Common;
-using AmpedBiz.Core.SharedKernel;
 using AmpedBiz.Core.Users;
 using System;
 
 namespace AmpedBiz.Core.PurchaseOrders
 {
-    public class PurchaseOrderPayment : Entity<Guid, PurchaseOrderPayment>
+    public class PurchaseOrderPayment : TransactionPaymentBase
     {
         public virtual int Sequence { get; protected set; }
 

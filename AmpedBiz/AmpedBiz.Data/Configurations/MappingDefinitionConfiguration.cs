@@ -12,7 +12,7 @@ namespace AmpedBiz.Data.Configurations
 		{
 			config
 				.FluentMappings.AddFromAssemblyOf<UserDefinition.Mapping>()
-				.Conventions.AddFromAssemblyOf<CustomJoinedSubclassConvention>()
+				.Conventions.AddFromAssemblyOf<CustomTableNameConvention>()
 				.Conventions.Setup(o => o.Add(AutoImport.Never()))
 				.ExportTo(DatabaseConfig.Instance.GetWorkingPath("Mappings"));
 		}

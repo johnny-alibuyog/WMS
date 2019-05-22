@@ -49,6 +49,12 @@
     <Compile Include="Common\Branch.cs" />
     <Compile Include="Common\Contact.cs" />
     <Compile Include="Common\Currency.cs" />
+    <Compile Include="Common\TransactionAuditBase.cs" />
+    <Compile Include="Common\TransactionBase.cs" />
+    <Compile Include="Common\TransactionItemBase.cs" />
+    <Compile Include="Common\TransactionPaymentBase.cs" />
+    <Compile Include="Common\TransactionRecieptBase.cs" />
+    <Compile Include="Common\TransactionReturnBase.cs" />
     <Compile Include="Inventories\Services\PointOfSale\TenderedVisitor.cs" />
     <Compile Include="PointOfSales\PointOfSale.cs" />
     <Compile Include="PointOfSales\PointOfSaleItem.cs" />
@@ -68,7 +74,7 @@
     <Compile Include="Settings\InvoiceReportSetting.cs">
       <DependentUpon>Setting.cs</DependentUpon>
     </Compile>
-    <Compile Include="Orders\OrderTransaction.cs" />
+    <Compile Include="Orders\OrderAudit.cs" />
     <Compile Include="Common\Shipper.cs" />
     <Compile Include="Products\ProductUnitOfMeasure.cs" />
     <Compile Include="Products\ProductUnitOfMeasurePrice.cs" />
@@ -87,10 +93,9 @@
     <Compile Include="Products\Product.cs" />
     <Compile Include="Common\PaymentType.cs" />
     <Compile Include="PurchaseOrders\PurchaseOrder.cs" />
-    <Compile Include="PurchaseOrders\PurchaseOrderTransaction.cs" />
+    <Compile Include="PurchaseOrders\PurchaseOrderAudit.cs" />
     <Compile Include="Returns\Return.cs" />
     <Compile Include="Returns\ReturnItem.cs" />
-    <Compile Include="Returns\ReturnItemBase.cs" />
     <Compile Include="Returns\ReturnReason.cs" />
     <Compile Include="PurchaseOrders\PurchaseOrderItem.cs" />
     <Compile Include="PurchaseOrders\PurchaseOrderPayment.cs" />

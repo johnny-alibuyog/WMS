@@ -22,7 +22,7 @@ namespace AmpedBiz.Core.Orders.Services
 
         public void Visit(Order target)
         {
-            target.Transactions.Add(new OrderTransaction(
+            target.Transactions.Add(new OrderAudit(
                 order: target,
                 transactedBy: this.TransactedBy,
                 transactedOn: this.TransactedOn,

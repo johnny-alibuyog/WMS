@@ -37,7 +37,7 @@ namespace AmpedBiz.Core.PurchaseOrders
         ReceivingCreation
     }
 
-    public class PurchaseOrder : Entity<Guid, PurchaseOrder>, IAccept<IVisitor<PurchaseOrder>>
+    public class PurchaseOrder : TransactionBase, IAccept<IVisitor<PurchaseOrder>>
     {
         public virtual string PurchaseOrderNumber { get; internal protected set; }
 
@@ -111,7 +111,7 @@ namespace AmpedBiz.Core.PurchaseOrders
 
         public virtual IEnumerable<PurchaseOrderReceipt> Receipts { get; internal protected set; } = new Collection<PurchaseOrderReceipt>();
 
-        public virtual IEnumerable<PurchaseOrderTransaction> Transactions { get; internal protected set; } = new Collection<PurchaseOrderTransaction>();
+        public virtual IEnumerable<PurchaseOrderAudit> Transactions { get; internal protected set; } = new Collection<PurchaseOrderAudit>();
 
         public virtual StateDispatcher State => new StateDispatcher(this);
 

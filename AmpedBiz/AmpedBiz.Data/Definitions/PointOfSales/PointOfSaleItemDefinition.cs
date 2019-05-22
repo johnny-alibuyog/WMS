@@ -8,13 +8,10 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 {
     public class PointOfSaleItemDefinition
 	{
-		public class Mapping : ClassMap<PointOfSaleItem>
+		public class Mapping : SubclassMap<PointOfSaleItem>
 		{
 			public Mapping()
 			{
-				Id(x => x.Id)
-					.GeneratedBy.GuidComb();
-
                 Map(x => x.Sequence)
                     .Index($"IDX_{nameof(PointOfSaleItem)}_{nameof(PointOfSaleItem.Sequence)}");
 
@@ -51,8 +48,6 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 		{
 			public Validation()
 			{
-				Define(x => x.Id);
-
                 Define(x => x.Sequence);
 
 				Define(x => x.PointOfSale)

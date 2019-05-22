@@ -1,19 +1,18 @@
 ﻿using AmpedBiz.Core.Common;
-using AmpedBiz.Core.SharedKernel;
 using AmpedBiz.Core.Users;
 using System;
 
 namespace AmpedBiz.Core.Orders
 {
-    public class OrderPayment : Entity<Guid, OrderPayment>
+    public class OrderPayment : TransactionPaymentBase
     {
         public virtual int Sequence { get; protected set; }
 
         public virtual Order Order { get; protected internal set; }
 
-        public virtual DateTime? PaidOn { get; protected set; }
-
         public virtual User PaidTo { get; protected set; }
+
+        public virtual DateTime? PaidOn { get; protected set; }
 
         public virtual PaymentType PaymentType { get; protected set; }
 
@@ -25,8 +24,8 @@ namespace AmpedBiz.Core.Orders
 
         public OrderPayment(
             int sequence,
+            User paidTo,
             DateTime? paidOn, 
-			User paidTo, 
             PaymentType paymentType, 
             Money payment,
             Money balance = null,
@@ -34,8 +33,8 @@ namespace AmpedBiz.Core.Orders
         ) : base(id ?? default(Guid))
         {
             this.Sequence = sequence;
-            this.PaidOn = paidOn;
             this.PaidTo = paidTo;
+            this.PaidOn = paidOn;
             this.PaymentType = paymentType;
             this.Payment = payment;
             this.Balance = balance;

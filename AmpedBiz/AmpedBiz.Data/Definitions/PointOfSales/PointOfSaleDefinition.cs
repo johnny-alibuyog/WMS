@@ -1,5 +1,4 @@
-﻿using AmpedBiz.Common.Extentions;
-using AmpedBiz.Core.Common;
+﻿using AmpedBiz.Core.Common;
 using AmpedBiz.Core.PointOfSales;
 using AmpedBiz.Data.Definitions.Common;
 using FluentNHibernate.Mapping;
@@ -7,15 +6,12 @@ using NHibernate.Validator.Cfg.Loquacious;
 
 namespace AmpedBiz.Data.Definitions.PointOfSales
 {
-	public class PointOfSaleDefinition
+    public class PointOfSaleDefinition
 	{
-		public class Mapping : ClassMap<PointOfSale>
+		public class Mapping : SubclassMap<PointOfSale>
 		{
 			public Mapping()
 			{
-				Id(x => x.Id)
-					.GeneratedBy.GuidComb();
-
 				Map(x => x.InvoiceNumber)
 					.Index("IDX_POSInvoiceNumber");
 
@@ -82,8 +78,6 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 		{
 			public Validation()
 			{
-				Define(x => x.Id);
-
 				Define(x => x.InvoiceNumber)
 					.MaxLength(30);
 

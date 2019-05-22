@@ -1,4 +1,5 @@
-﻿using AmpedBiz.Core.Orders;
+﻿using AmpedBiz.Core.Common;
+using AmpedBiz.Core.Orders;
 using AmpedBiz.Core.Returns;
 using AmpedBiz.Data;
 using AmpedBiz.Service.Common;
@@ -32,7 +33,7 @@ namespace AmpedBiz.Service.Returns
 
 					if (includeOrderReturns)
 					{
-						var query1 = session.Query<ReturnItemBase>();
+						var query1 = session.Query<TransactionReturnBase>();
 
 						// compose filters
 						message.Filter.Compose<string>("reason", value =>

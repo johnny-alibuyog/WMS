@@ -6,7 +6,7 @@ using System;
 
 namespace AmpedBiz.Core.Orders
 {
-    public class OrderReturn : ReturnItemBase
+    public class OrderReturn : TransactionReturnBase
 	{
         public virtual int Sequence { get; protected set; }
 

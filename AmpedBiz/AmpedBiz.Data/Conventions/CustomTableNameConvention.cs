@@ -1,4 +1,5 @@
-﻿using System.Data.Entity.Design.PluralizationServices;
+﻿using System;
+using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using AmpedBiz.Common.Extentions;
 using FluentNHibernate.Conventions;
@@ -8,9 +9,13 @@ using FluentNHibernate.Conventions.Instances;
 
 namespace AmpedBiz.Data.Conventions
 {
-    public class CustomTableNameConvention : IClassConvention, IClassConventionAcceptance
+    public class CustomTableNameConvention : IClassConvention, IJoinedSubclassConvention
     {
         private readonly PluralizationService _pluralizationService;
+
+        private string GenerateTableName(Type type) => _pluralizationService.Pluralize(type.Name);
+
+        private string GenerateSchemaName(Type type) => type.ParseSchema();
 
         public CustomTableNameConvention()
         {
@@ -19,17 +24,14 @@ namespace AmpedBiz.Data.Conventions
 
         public void Apply(IClassInstance instance)
         {
-            var schema = instance.EntityType.ParseSchema();
-            var tableName = _pluralizationService.Pluralize(instance.EntityType.Name);
-
-            //instance.Schema(schema);
-
-            instance.Table(tableName);
+            //instance.Schema(GenerateSchemaName(instance.EntityType));
+            instance.Table(GenerateTableName(instance.EntityType));
         }
 
-        public void Accept(IAcceptanceCriteria<IClassInspector> criteria)
+        public void Apply(IJoinedSubclassInstance instance)
         {
-            //criteria.Expect(x => x.TableName, Is.Not.Set);
+            //instance.Schema(GenerateSchemaName(instance.EntityType));
+            instance.Table(GenerateTableName(instance.EntityType));
         }
     }
 }

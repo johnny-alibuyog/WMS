@@ -2,10 +2,14 @@
 using AmpedBiz.Common.Extentions;
 using AmpedBiz.Core.Common;
 using AmpedBiz.Core.Inventories;
+using AmpedBiz.Core.Orders;
+using AmpedBiz.Core.PointOfSales;
 using AmpedBiz.Core.Products;
+using AmpedBiz.Core.PurchaseOrders;
 using AmpedBiz.Data;
 using AmpedBiz.Service.Common;
 using MediatR;
+using NHibernate.Linq;
 using NHibernate.Transform;
 using System;
 using System.Collections;
@@ -42,6 +46,20 @@ namespace AmpedBiz.Service.Inventories
 						.JoinAlias(() => inventory.Branch, () => branch)
 						.Fetch(x => x.Product.UnitOfMeasures).Eager
 						.Fetch(x => x.Product.UnitOfMeasures.First().UnitOfMeasure).Eager;
+
+
+                    var query =
+                        session
+                            .Query<TransactionItemBase>()
+                            .Where(x =>
+                                x is OrderItem ||
+                                x is PointOfSaleItem
+                            )
+                            .Select(x => new
+                            {
+                            });
+
+
 
 					// TODO: use decomposition when upgraded to C# 6 or up
 					var (movementWhereClause, param) = this.BuildWhereClause(message.Filter);

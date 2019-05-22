@@ -1,11 +1,11 @@
-﻿using AmpedBiz.Core.Products;
-using AmpedBiz.Core.SharedKernel;
+﻿using AmpedBiz.Core.Common;
+using AmpedBiz.Core.Products;
 using AmpedBiz.Core.Users;
 using System;
 
 namespace AmpedBiz.Core.PurchaseOrders
 {
-    public class PurchaseOrderReceipt : Entity<Guid, PurchaseOrderReceipt>
+    public class PurchaseOrderReceipt : TransactionRecieptBase
     {
         public virtual int Sequence { get; protected set; }
 
