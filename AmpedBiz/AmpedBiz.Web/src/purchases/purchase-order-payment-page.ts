@@ -97,8 +97,8 @@ export class PurchaseOrderPaymentPage {
     }
 
     var _payment = <PurchaseOrderPayment>{
-      paidOn: new Date(),
-      paidBy: this._api.auth.userAsLookup,
+      paymentOn: new Date(),
+      paymentBy: this._api.auth.userAsLookup,
       paymentType: this.paymentTypes && this.paymentTypes.length > 0 ? this.paymentTypes[0] : null,
       paymentAmount: this.payable && this.payable.balanceAmount - this.totalPaymentAmount || 0,
     };

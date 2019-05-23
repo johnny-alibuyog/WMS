@@ -64,9 +64,9 @@ namespace AmpedBiz.Data.Definitions.PurchaseOrders
 
 				Map(x => x.ApprovedOn);
 
-				References(x => x.PaidBy);
+				References(x => x.PaymentBy);
 
-				Map(x => x.PaidOn);
+				Map(x => x.PaymentOn);
 
 				References(x => x.ReceivedBy);
 
@@ -174,9 +174,9 @@ namespace AmpedBiz.Data.Definitions.PurchaseOrders
 
 				Define(x => x.ApprovedOn);
 
-				Define(x => x.PaidBy);
+				Define(x => x.PaymentBy);
 
-				Define(x => x.PaidOn);
+				Define(x => x.PaymentOn);
 
 				Define(x => x.CompletedBy);
 

@@ -8,8 +8,8 @@
       <thead>
         <tr>
           <th class="col-sm-1">Action</th>
-          <th class="col-sm-2">Paid To</th>
-          <th class="col-sm-2">Paid On</th>
+          <th class="col-sm-2">Payment By</th>
+          <th class="col-sm-2">Payment On</th>
           <th class="col-sm-2">Type</th>
           <th class="col-sm-2 text-right">Amount</th>
         </tr>
@@ -27,18 +27,18 @@
           </td>
 
           <!-- read-only mode -->
-          <td if.bind="$parent.selectedItem != item">${item.paidTo.name}</td>
-          <td if.bind="$parent.selectedItem != item">${item.paidOn | dateFormat}</td>
+          <td if.bind="$parent.selectedItem != item">${item.paymentBy.name}</td>
+          <td if.bind="$parent.selectedItem != item">${item.paymentOn | dateFormat}</td>
           <td if.bind="$parent.selectedItem != item">${item.paymentType.name}</td>
           <td if.bind="$parent.selectedItem != item" class="text-right">${item.paymentAmount | numberFormat}</td>
 
           <!-- edit mode -->
-          <td if.bind="$parent.selectedItem == item">${item.paidTo.name}</td>
+          <td if.bind="$parent.selectedItem == item">${item.paymentBy.name}</td>
 
           <td if.bind="$parent.selectedItem === item">
             <div class="row">
               <div class="col-xs-12">
-                <input type="date" class="form-control datepicker" placeholder="Paid On" value.bind="item.paidOn | dateInputFormat" />
+                <input type="date" class="form-control datepicker" placeholder="Payment On" value.bind="item.paymentOn | dateInputFormat" />
               </div>
             </div>
           </td>

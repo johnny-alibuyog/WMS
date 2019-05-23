@@ -54,7 +54,7 @@ namespace AmpedBiz.Service.Orders
 						.Fetch(x => x.RoutedBy).Eager
 						.Fetch(x => x.StagedBy).Eager
 						.Fetch(x => x.InvoicedBy).Eager
-						.Fetch(x => x.PaidTo).Eager
+						.Fetch(x => x.PaymentBy).Eager
 						.Fetch(x => x.RoutedBy).Eager
 						.Fetch(x => x.CompletedBy).Eager
 						.Fetch(x => x.CancelledBy).Eager
@@ -63,7 +63,7 @@ namespace AmpedBiz.Service.Orders
 						.Fetch(x => x.Returns).Eager
 						.Fetch(x => x.Returns.First().Product).Eager
 						.Fetch(x => x.Payments).Eager
-						.Fetch(x => x.Payments.First().PaidTo).Eager
+						.Fetch(x => x.Payments.First().PaymentBy).Eager
 						.Fetch(x => x.Payments.First().PaymentType).Eager
 						.SingleOrDefault();
 

@@ -89,8 +89,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 							{
                                 result.Add(new PointOfSalePayment(
                                     sequence: ++sequence,
-									paidOn: DateTime.Now,
-									paidTo: _utils.Random<User>(),
+									paymentOn: DateTime.Now,
+									paymentBy: _utils.Random<User>(),
 									paymentType: _utils.Random<PaymentType>(),
 									payment: new Money(_utils.RandomInteger(1, (int)entity.Total.Amount), settings.DefaultCurrency)
 							  ));

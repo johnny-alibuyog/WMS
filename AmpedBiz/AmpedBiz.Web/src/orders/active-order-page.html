@@ -39,8 +39,8 @@
                   <th class="col-md-1" click.delegate="sorter.doSort('status')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['status'])}"></i>Status
                   </th>
-                  <th class="col-md-1" click.delegate="sorter.doSort('paidOn')">
-                    <i class="fa fa-fw fa-${sorter.class(sorter['paidOn'])}"></i>PaidOn
+                  <th class="col-md-1" click.delegate="sorter.doSort('paymentOn')">
+                    <i class="fa fa-fw fa-${sorter.class(sorter['paymentOn'])}"></i>PamentOn
                   </th>
                   <th class="col-md-1 text-right" click.delegate="sorter.doSort('taxAmount')">
                     <i class="fa fa-fw fa-${sorter.class(sorter['taxAmount'])}"></i>Tax
@@ -68,7 +68,7 @@
                   <td>${item.createdBy}</td>
                   <td>${item.customer}</td>
                   <td>${item.status}</td>
-                  <td>${item.paidOn | dateFormat}</td>
+                  <td>${item.paymentOn | dateFormat}</td>
                   <td class="text-right">${item.taxAmount | numberFormat}</td>
                   <td class="text-right">${item.shippingFeeAmount | numberFormat}</td>
                   <td class="text-right">${item.subTotalAmount | numberFormat}</td>

@@ -31,7 +31,7 @@ export type CustomerReportPageItem = {
 }
 
 export type CustomerSalesReportPageItem = {
-  paidOn?: Date;
+  paymentOn?: Date;
   branchName?: string;
   customerName?: string;
   invoiceNumber?: string;
@@ -42,7 +42,7 @@ export type CustomerSalesReportPageItem = {
 }
 
 export type CustomerPaymentsReportPageItem = {
-  paidOn?: Date;
+  paymentOn?: Date;
   invoiceNumber?: string;
   branchName?: string;
   customerName?: string;

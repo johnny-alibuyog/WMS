@@ -114,8 +114,8 @@ export class PointOfSalePaymentPage {
 
     var _payment = <PointOfSalePayment>{
       pointOfSaleId: this.pointOfSaleId,
-      paidOn: new Date(),
-      paidTo: this._api.auth.userAsLookup,
+      paymentOn: new Date(),
+      paymentBy: this._api.auth.userAsLookup,
       paymentType: paymentType.cash,
       paymentAmount: 0,
     };

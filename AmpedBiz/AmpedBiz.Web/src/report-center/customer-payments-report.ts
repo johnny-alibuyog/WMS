@@ -11,7 +11,7 @@ export interface CustomerPaymentsReportModel {
 }
 
 export interface CustomerPaymentsReportItemModel {
-  paidOn?: Date;
+  paymentOn?: Date;
   invoiceNumber?: string;
   branchName?: string;
   customerName?: string;
@@ -46,7 +46,7 @@ export class CustomerPaymentsReport extends Report<CustomerPaymentsReportModel> 
     if (data && data.items && data.items.length > 0) {
       // table content
       orderTableBody.push(...data.items.map(x => [
-        { text: formatDate(x.paidOn), style: 'tableData' },
+        { text: formatDate(x.paymentOn), style: 'tableData' },
         { text: emptyIfNull(x.branchName), style: 'tableData' },
         { text: emptyIfNull(x.customerName), style: 'tableData' },
         { text: emptyIfNull(x.invoiceNumber), style: 'tableData' },

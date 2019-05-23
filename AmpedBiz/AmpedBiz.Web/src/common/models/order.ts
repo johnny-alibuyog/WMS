@@ -73,8 +73,8 @@ export type Order = {
   routedBy?: Lookup<string>;
   invoicedOn?: Date;
   invoicedBy?: Lookup<string>;
-  paidOn?: Date;
-  paidTo?: Lookup<string>;
+  paymentOn?: Date;
+  paymentBy?: Lookup<string>;
   completedOn?: Date;
   completedBy?: Lookup<string>;
   cancelledOn?: Date;
@@ -93,7 +93,7 @@ export type OrderPageItem = {
   createdBy?: string;
   customer?: string;
   orderedOn?: Date;
-  paidOn?: Date;
+  paymentOn?: Date;
   taxAmount?: number;
   shippingFeeAmount?: number;
   subTotalAmount?: number;
@@ -149,8 +149,8 @@ export type OrderReturning = {
 
 export type OrderPayment = {
   id?: string;
-  paidOn?: Date;
-  paidTo?: Lookup<string>;
+  paymentOn?: Date;
+  paymentBy?: Lookup<string>;
   paymentType?: Lookup<string>;
   paymentAmount?: number;
   balanceAmount?: number;
@@ -159,8 +159,8 @@ export type OrderPayment = {
 export type OrderPayable = {
   id?: string;
   orderId?: string;
-  paidOn?: Date;
-  paidTo?: Lookup<string>;
+  paymentOn?: Date;
+  paymentBy?: Lookup<string>;
   paymentType?: Lookup<string>;
   taxAmount?: number;
   shippingFeeAmount?: number;

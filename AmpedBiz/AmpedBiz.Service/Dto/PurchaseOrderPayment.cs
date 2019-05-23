@@ -9,9 +9,9 @@ namespace AmpedBiz.Service.Dto
 
         public Guid PurchaseOrderId { get; set; }
 
-        public Lookup<Guid> PaidBy { get; set; }
+        public Lookup<Guid> PaymentBy { get; set; }
 
-        public DateTime? PaidOn { get; set; }
+        public DateTime? PaymentOn { get; set; }
 
         public decimal PaymentAmount { get; set; }
 
@@ -22,9 +22,9 @@ namespace AmpedBiz.Service.Dto
     {
         public Guid PurchaseOrderId { get; set; }
 
-        public DateTime? PaidOn { get; set; }
+        public DateTime? PaymentOn { get; set; }
 
-        public Lookup<Guid> PaidBy { get; set; }
+        public Lookup<Guid> PaymentBy { get; set; }
 
         public Lookup<string> PaymentType { get; set; }
 

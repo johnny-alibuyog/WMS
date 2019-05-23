@@ -38,11 +38,11 @@ namespace AmpedBiz.Service.Customers
 						.Union(pointOfSalePaymentsItems);
 
 					// compose order
-					message.Sorter.Compose("paidOn", direction =>
+					message.Sorter.Compose("paymentOn", direction =>
 					{
 						query = direction == SortDirection.Ascending
-							? query.OrderBy(x => x.PaidOn)
-							: query.OrderByDescending(x => x.PaidOn);
+							? query.OrderBy(x => x.PaymentOn)
+							: query.OrderByDescending(x => x.PaymentOn);
 					});
 
 					message.Sorter.Compose("branchName", direction =>
@@ -126,18 +126,18 @@ namespace AmpedBiz.Service.Customers
 
 				message.Filter.Compose<DateTime>("fromDate", value =>
 				{
-					query = query.Where(x => x.PaidOn >= value.StartOfDay());
+					query = query.Where(x => x.PaymentOn >= value.StartOfDay());
 				});
 
 				message.Filter.Compose<DateTime>("toDate", value =>
 				{
-					query = query.Where(x => x.PaidOn <= value.EndOfDay());
+					query = query.Where(x => x.PaymentOn <= value.EndOfDay());
 				});
 
 				var items = query
 					.Select(x => new Dto.CustomerPaymentReportPageItem()
 					{
-						PaidOn = x.PaidOn,
+						PaymentOn = x.PaymentOn,
 						InvoiceNumber = x.InvoiceNumber,
 						BranchName = x.Branch.Name,
 						CustomerName = x.Customer.Name,
@@ -174,7 +174,7 @@ namespace AmpedBiz.Service.Customers
 				var items = query
 					.Select(x => new Dto.CustomerPaymentReportPageItem()
 					{
-						PaidOn = x.TenderedOn,
+						PaymentOn = x.TenderedOn,
 						InvoiceNumber = x.InvoiceNumber,
 						BranchName = x.Branch.Name,
 						CustomerName = x.Customer.Name,
@@ -217,11 +217,11 @@ namespace AmpedBiz.Service.Customers
 						.Union(pointOfSalePaymentsPage.Items);
 
 					// compose order
-					message.Sorter.Compose("paidOn", direction =>
+					message.Sorter.Compose("paymentOn", direction =>
 					{
 						query = direction == SortDirection.Ascending
-							? query.OrderBy(x => x.PaidOn)
-							: query.OrderByDescending(x => x.PaidOn);
+							? query.OrderBy(x => x.PaymentOn)
+							: query.OrderByDescending(x => x.PaymentOn);
 					});
 
 					message.Sorter.Compose("branchName", direction =>
@@ -305,20 +305,20 @@ namespace AmpedBiz.Service.Customers
 
 				message.Filter.Compose<DateTime>("fromDate", value =>
 				{
-					query = query.Where(x => x.PaidOn >= value.StartOfDay());
+					query = query.Where(x => x.PaymentOn >= value.StartOfDay());
 				});
 
 				message.Filter.Compose<DateTime>("toDate", value =>
 				{
-					query = query.Where(x => x.PaidOn <= value.EndOfDay());
+					query = query.Where(x => x.PaymentOn <= value.EndOfDay());
 				});
 
 				// compose order
-				message.Sorter.Compose("paidOn", direction =>
+				message.Sorter.Compose("paymentOn", direction =>
 				{
 					query = direction == SortDirection.Ascending
-						? query.OrderBy(x => x.PaidOn)
-						: query.OrderByDescending(x => x.PaidOn);
+						? query.OrderBy(x => x.PaymentOn)
+						: query.OrderByDescending(x => x.PaymentOn);
 				});
 
 				message.Sorter.Compose("branchName", direction =>
@@ -372,7 +372,7 @@ namespace AmpedBiz.Service.Customers
 				var itemsFuture = query
 					.Select(x => new Dto.CustomerPaymentReportPageItem()
 					{
-						PaidOn = x.PaidOn,
+						PaymentOn = x.PaymentOn,
 						InvoiceNumber = x.InvoiceNumber,
 						BranchName = x.Branch.Name,
 						CustomerName = x.Customer.Name,
@@ -415,7 +415,7 @@ namespace AmpedBiz.Service.Customers
 				});
 
 				// compose order
-				message.Sorter.Compose("paidOn", direction =>
+				message.Sorter.Compose("paymentOn", direction =>
 				{
 					query = direction == SortDirection.Ascending
 						? query.OrderBy(x => x.TenderedOn)
@@ -473,7 +473,7 @@ namespace AmpedBiz.Service.Customers
 				var itemsFuture = query
 					.Select(x => new Dto.CustomerPaymentReportPageItem()
 					{
-						PaidOn = x.TenderedOn,
+						PaymentOn = x.TenderedOn,
 						InvoiceNumber = x.InvoiceNumber,
 						BranchName = x.Branch.Name,
 						CustomerName = x.Customer.Name,
@@ -593,7 +593,7 @@ namespace AmpedBiz.Service.Customers
 	//                var itemsFuture = query
 	//                    .Select(x => new Dto.CustomerSalesReportPageItem()
 	//                    {
-	//                        PaidOn = x.CompletedOn,
+	//                        PaymentOn = x.CompletedOn,
 	//                        BranchName = x.Branch.Name,
 	//                        CustomerName = x.Customer.Name,
 	//                        InvoiceNumber = x.InvoiceNumber,

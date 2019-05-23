@@ -671,8 +671,8 @@ namespace AmpedBiz.Tests.IntegrationTests
 				{
 					new Service.Dto.PurchaseOrderPayment()
 					{
-						PaidOn = DateTime.Today,
-						PaidBy = this.RandomUser(),
+						PaymentOn = DateTime.Today,
+						PaymentBy = this.RandomUser(),
 						PaymentType = this.RandomPaymentType(),
 						PaymentAmount = purchaseOrder.TotalAmount
 					}
@@ -916,8 +916,8 @@ namespace AmpedBiz.Tests.IntegrationTests
 				{
 					new Service.Dto.OrderPayment()
 					{
-						PaidOn = DateTime.Now,
-						PaidTo = RandomUser(),
+						PaymentOn = DateTime.Now,
+						PaymentBy = RandomUser(),
 						PaymentType = RandomPaymentType(),
 						PaymentAmount = order.TotalAmount
 					}

@@ -70,8 +70,8 @@ namespace AmpedBiz.Service.PointOfSales
 							.Select((x, i) => new PointOfSalePayment(
 								id: x.Id,
                                 sequence: i,
-								paidOn: x.PaidOn.GetValueOrDefault(DateTime.Now),
-								paidTo: x.PaidTo?.Id.EvalOrDefault(value => session.Load<User>(value)),
+								paymentOn: x.PaymentOn.GetValueOrDefault(DateTime.Now),
+								paymentBy: x.PaymentBy?.Id.EvalOrDefault(value => session.Load<User>(value)),
 								paymentType: session.Load<PaymentType>(x.PaymentType.Id),
 								payment: new Money(x.PaymentAmount, settings.DefaultCurrency),
 								balance: new Money(x.BalanceAmount, settings.DefaultCurrency)

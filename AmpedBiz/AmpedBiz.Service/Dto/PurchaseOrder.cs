@@ -67,9 +67,9 @@ namespace AmpedBiz.Service.Dto
 
         public DateTime? ApprovedOn { get; set; }
 
-        public Lookup<Guid> PaidBy { get; set; }
+        public Lookup<Guid> PaymentBy { get; set; }
 
-        public DateTime? PaidOn { get; set; }
+        public DateTime? PaymentOn { get; set; }
 
         public Lookup<Guid> CompletedBy { get; set; }
 
@@ -114,9 +114,9 @@ namespace AmpedBiz.Service.Dto
 
         public DateTime? SubmittedOn { get; set; }
 
-        public string PaidBy { get; set; }
+        public string PaymentBy { get; set; }
 
-        public DateTime? PaidOn { get; set; }
+        public DateTime? PaymentOn { get; set; }
 
         public decimal? TotalAmount { get; set; }
     }

@@ -8,24 +8,14 @@ namespace AmpedBiz.Core.PointOfSales
 	{
         public virtual int Sequence { get; protected set; }
 
-		public virtual PointOfSale PointOfSale { get; protected internal set; }
-
-        public virtual User PaidTo { get; protected set; }
-
-        public virtual DateTime? PaidOn { get; protected set; }
-
-		public virtual PaymentType PaymentType { get; protected set; }
-
-		public virtual Money Payment { get; protected set; }
-
-		public virtual Money Balance { get; protected internal set; }
+        public virtual PointOfSale PointOfSale { get; protected internal set; }
 
 		public PointOfSalePayment() : base(default(Guid)) { }
 
 		public PointOfSalePayment(
             int sequence,
-            User paidTo,
-            DateTime? paidOn,
+            User paymentBy,
+            DateTime? paymentOn,
 			PaymentType paymentType,
 			Money payment,
 			Money balance = null,
@@ -33,8 +23,8 @@ namespace AmpedBiz.Core.PointOfSales
 		) : base(id ?? default(Guid))
 		{
             this.Sequence = sequence;
-			this.PaidOn = paidOn;
-			this.PaidTo = paidTo;
+			this.PaymentOn = paymentOn;
+			this.PaymentBy = paymentBy;
 			this.PaymentType = paymentType;
 			this.Payment = payment;
 			this.Balance = balance;

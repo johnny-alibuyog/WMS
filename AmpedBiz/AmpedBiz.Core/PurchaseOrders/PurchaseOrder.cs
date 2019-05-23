@@ -87,9 +87,9 @@ namespace AmpedBiz.Core.PurchaseOrders
 
         public virtual DateTime? ApprovedOn { get; internal protected set; }
 
-        public virtual User PaidBy { get; internal protected set; }
+        public virtual User PaymentBy { get; internal protected set; }
 
-        public virtual DateTime? PaidOn { get; internal protected set; }
+        public virtual DateTime? PaymentOn { get; internal protected set; }
 
         public virtual User ReceivedBy { get; internal protected set; }
 

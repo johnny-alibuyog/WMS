@@ -234,7 +234,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
 					.Fetch(x => x.CreatedBy).Eager
                     .Fetch(x => x.SubmittedBy).Eager
                     .Fetch(x => x.ApprovedBy).Eager
-                    .Fetch(x => x.PaidBy).Eager
+                    .Fetch(x => x.PaymentBy).Eager
                     .Fetch(x => x.ReceivedBy).Eager
                     .Fetch(x => x.CompletedBy).Eager
                     .Fetch(x => x.CancelledBy).Eager
@@ -245,7 +245,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     .Fetch(x => x.Items.First().Product.UnitOfMeasures).Eager
                     .Fetch(x => x.Items.First().Product.UnitOfMeasures.First().Prices).Eager
                     .Fetch(x => x.Payments).Eager
-                    .Fetch(x => x.Payments.First().PaidBy).Eager
+                    .Fetch(x => x.Payments.First().PaymentBy).Eager
                     .Fetch(x => x.Receipts).Eager
                     .Fetch(x => x.Receipts.First().Product).Eager
                     .Fetch(x => x.Receipts.First().Product.Category).Eager
@@ -393,8 +393,8 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                 .Range(0, _utils.RandomInteger(1, 1))
                                 .Select((x, i) => new PurchaseOrderPayment(
                                     sequence: i,
-                                    paidOn: DateTime.Now,
-                                    paidBy: _utils.Random<User>(),
+                                    paymentOn: DateTime.Now,
+                                    paymentBy: _utils.Random<User>(),
                                     paymentType: _utils.Random<PaymentType>(),
                                     payment: new Money(_utils.RandomInteger(1, (int)entity.Total.Amount), currency)
                                 ))

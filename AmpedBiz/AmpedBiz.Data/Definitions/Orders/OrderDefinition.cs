@@ -82,9 +82,9 @@ namespace AmpedBiz.Data.Definitions.Orders
 
 				References(x => x.InvoicedBy);
 
-				Map(x => x.PaidOn);
+				Map(x => x.PaymentOn);
 
-				References(x => x.PaidTo);
+				References(x => x.PaymentBy);
 
 				Map(x => x.CompletedOn);
 
@@ -213,9 +213,9 @@ namespace AmpedBiz.Data.Definitions.Orders
 
 				Define(x => x.InvoicedBy);
 
-				Define(x => x.PaidOn);
+				Define(x => x.PaymentOn);
 
-				Define(x => x.PaidTo);
+				Define(x => x.PaymentBy);
 
 				Define(x => x.CompletedOn);
 

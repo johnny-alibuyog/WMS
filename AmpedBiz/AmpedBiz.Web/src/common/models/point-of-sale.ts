@@ -74,8 +74,8 @@ export type PointOfSaleItem = {
 export type PointOfSalePayment = {
   id?: string;
   pointOfSaleId?: string;
-  paidOn?: Date;
-  paidTo?: Lookup<string>;
+  paymentOn?: Date;
+  paymentBy?: Lookup<string>;
   paymentType?: Lookup<string>;
   paymentAmount?: number;
   balanceAmount?: number;

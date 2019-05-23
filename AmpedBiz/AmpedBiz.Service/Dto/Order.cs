@@ -89,9 +89,9 @@ namespace AmpedBiz.Service.Dto
 
         public Lookup<Guid> InvoicedBy { get; set; }
 
-        public DateTime? PaidOn { get; set; }
+        public DateTime? PaymentOn { get; set; }
 
-        public Lookup<Guid> PaidTo { get; set; }
+        public Lookup<Guid> PaymentBy { get; set; }
 
         public Lookup<Guid> ReturnedBy { get; set; }
 
@@ -132,7 +132,7 @@ namespace AmpedBiz.Service.Dto
 
         public DateTime? OrderedOn { get; set; }
 
-        public DateTime? PaidOn { get; set; }
+        public DateTime? PaymentOn { get; set; }
 
         public decimal? TaxAmount { get; set; }
 

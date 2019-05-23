@@ -29,16 +29,16 @@ namespace AmpedBiz.Core.PurchaseOrders.Services
                 target.Payments.Add(item);
             }
 
-            var lastPayment = target.Payments.OrderBy(x => x.PaidOn).Last();
+            var lastPayment = target.Payments.OrderBy(x => x.PaymentOn).Last();
 
-            target.PaidOn = lastPayment.PaidOn;
-            target.PaidBy = lastPayment.PaidBy;
+            target.PaymentOn = lastPayment.PaymentOn;
+            target.PaymentBy = lastPayment.PaymentBy;
 
             if (itemsToInsert.Any())
             {
                 target.Accept(new PurchaseOrderLogTransactionVisitor(
-                    transactedBy: lastPayment.PaidBy,
-                    transactedOn: lastPayment.PaidOn ?? DateTime.Now,
+                    transactedBy: lastPayment.PaymentBy,
+                    transactedOn: lastPayment.PaymentOn ?? DateTime.Now,
                     type: PurchaseOrderTransactionType.PaymentCreation
                 ));
             }

@@ -91,11 +91,11 @@ namespace AmpedBiz.Service.Orders
                             : query.OrderByDescending(x => x.Status);
                     });
 
-                    message.Sorter.Compose("paidOn", direction =>
+                    message.Sorter.Compose("paymentOn", direction =>
                     {
                         query = direction == SortDirection.Ascending
-                            ? query.OrderBy(x => x.PaidOn)
-                            : query.OrderByDescending(x => x.PaidOn);
+                            ? query.OrderBy(x => x.PaymentOn)
+                            : query.OrderByDescending(x => x.PaymentOn);
                     });
 
                     message.Sorter.Compose("taxAmount", direction =>
@@ -137,7 +137,7 @@ namespace AmpedBiz.Service.Orders
                                 x.CreatedBy.Person.LastName,
                             Customer = x.Customer.Name,
                             Status = x.Status.ToString(),
-                            PaidOn = x.PaidOn.Value,
+                            PaymentOn = x.PaymentOn.Value,
                             TaxAmount = x.Tax.Amount,
                             ShippingFeeAmount = x.ShippingFee.Amount,
                             SubTotalAmount = x.SubTotal.Amount,

@@ -118,9 +118,9 @@ namespace AmpedBiz.Core.Orders
 
         public virtual User InvoicedBy { get; internal protected set; }
 
-        public virtual DateTime? PaidOn { get; internal protected set; }
+        public virtual DateTime? PaymentOn { get; internal protected set; }
 
-        public virtual User PaidTo { get; internal protected set; }
+        public virtual User PaymentBy { get; internal protected set; }
 
         public virtual User ReturnedBy { get; internal protected set; }
 

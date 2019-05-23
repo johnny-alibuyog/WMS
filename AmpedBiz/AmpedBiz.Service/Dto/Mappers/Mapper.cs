@@ -89,7 +89,9 @@ namespace AmpedBiz.Service.Dto.Mappers
 
 			ExpressMapper.Mapper.Register<Core.PurchaseOrders.PurchaseOrder, GetVoucher.Response>().Flatten();
 
-			ExpressMapper.Mapper.Register<Core.PurchaseOrders.PurchaseOrderItem, Dto.PurchaseOrderItem>().Flatten();
+			ExpressMapper.Mapper.Register<Core.PurchaseOrders.PurchaseOrder, Dto.PurchaseOrder>().Flatten();
+
+            ExpressMapper.Mapper.Register<Core.PurchaseOrders.PurchaseOrderItem, Dto.PurchaseOrderItem>().Flatten();
 
 			ExpressMapper.Mapper.Register<Core.PurchaseOrders.PurchaseOrderItem, Dto.VoucherItem>().Flatten();
 

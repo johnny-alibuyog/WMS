@@ -127,22 +127,22 @@ namespace AmpedBiz.Service.PurchaseOrders
 							: query.OrderByDescending(x => x.SubmittedOn);
 					});
 
-					message.Sorter.Compose("paidBy", direction =>
+					message.Sorter.Compose("paymentBy", direction =>
 					{
 						query = direction == SortDirection.Ascending
 							? query
-								.OrderBy(x => x.PaidBy.Person.FirstName)
-								.ThenBy(x => x.PaidBy.Person.LastName)
+								.OrderBy(x => x.PaymentBy.Person.FirstName)
+								.ThenBy(x => x.PaymentBy.Person.LastName)
 							: query
-								.OrderByDescending(x => x.PaidBy.Person.LastName)
-								.ThenByDescending(x => x.PaidBy.Person.LastName);
+								.OrderByDescending(x => x.PaymentBy.Person.LastName)
+								.ThenByDescending(x => x.PaymentBy.Person.LastName);
 					});
 
-					message.Sorter.Compose("paidOn", direction =>
+					message.Sorter.Compose("paymentOn", direction =>
 					{
 						query = direction == SortDirection.Ascending
-							? query.OrderBy(x => x.PaidOn)
-							: query.OrderByDescending(x => x.PaidOn);
+							? query.OrderBy(x => x.PaymentOn)
+							: query.OrderByDescending(x => x.PaymentOn);
 					});
 
 					message.Sorter.Compose("totalAmount", direction =>
@@ -168,10 +168,10 @@ namespace AmpedBiz.Service.PurchaseOrders
 								x.SubmittedBy.Person.FirstName + " " +
 								x.SubmittedBy.Person.LastName,
 							SubmittedOn = x.SubmittedOn,
-							PaidBy =
-								x.PaidBy.Person.FirstName + " " +
-								x.PaidBy.Person.LastName,
-							PaidOn = x.PaidOn,
+							PaymentBy =
+								x.PaymentBy.Person.FirstName + " " +
+								x.PaymentBy.Person.LastName,
+							PaymentOn = x.PaymentOn,
 							TotalAmount = x.Total.Amount
 						})
 						.Skip(message.Pager.SkipCount)

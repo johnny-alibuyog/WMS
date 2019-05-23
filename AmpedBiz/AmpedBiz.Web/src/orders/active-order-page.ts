@@ -24,7 +24,7 @@ export class ActiveOrderPage {
     this.sorter["createdBy"] = SortDirection.Ascending;
     this.sorter["customer"] = SortDirection.None;
     this.sorter["status"] = SortDirection.None;
-    this.sorter["paidOn"] = SortDirection.None;
+    this.sorter["paymentOn"] = SortDirection.None;
     this.sorter["taxAmount"] = SortDirection.None;
     this.sorter["shippingFeeAmount"] = SortDirection.None;
     this.sorter["subTotalAmount"] = SortDirection.None;

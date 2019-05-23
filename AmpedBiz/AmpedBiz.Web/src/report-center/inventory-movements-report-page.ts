@@ -26,7 +26,7 @@ export class InventoryMovementsReportPage {
     this.filter["fromDate"] = new Date();
     this.filter["toDate"] = new Date();
     this.filter.onFilter = () => this.getPage();
-    this.sorter["paidOn"] = SortDirection.Ascending;
+    this.sorter["paymentOn"] = SortDirection.Ascending;
     this.sorter["branchName"] = SortDirection.None;
     this.sorter["customerName"] = SortDirection.None;
     this.sorter["invoice"] = SortDirection.None;

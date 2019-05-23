@@ -9,9 +9,9 @@ namespace AmpedBiz.Service.Dto
 
 		public virtual Guid PointOfSaleId { get; set; }
 
-		public virtual DateTime? PaidOn { get; set; }
+		public virtual DateTime? PaymentOn { get; set; }
 
-		public virtual Lookup<Guid> PaidTo { get; set; }
+		public virtual Lookup<Guid> PaymentBy { get; set; }
 
 		public virtual Lookup<string> PaymentType { get; set; }
 
@@ -24,9 +24,9 @@ namespace AmpedBiz.Service.Dto
 	{
 		public virtual Guid Id { get; set; }
 
-		public virtual DateTime? PaidOn { get; set; }
+		public virtual DateTime? PaymentOn { get; set; }
 
-		public virtual Lookup<Guid> PaidTo { get; set; }
+		public virtual Lookup<Guid> PaymentBy { get; set; }
 
 		public virtual Lookup<string> PaymentType { get; set; }
 

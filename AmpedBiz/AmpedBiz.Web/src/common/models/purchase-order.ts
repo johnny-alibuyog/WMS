@@ -80,8 +80,8 @@ export type PurchaseOrderPageItem = {
   createdOn?: Date;
   submittedBy?: string;
   submittedOn?: Date;
-  paidBy?: string;
-  paidOn?: Date;
+  paymentBy?: string;
+  paymentOn?: Date;
   total?: string;
 }
 
@@ -98,8 +98,8 @@ export type PurchaseOrderItem = {
 export type PurchaseOrderPayment = {
   id?: string;
   purchaseOrderId?: string;
-  paidBy?: Lookup<string>;
-  paidOn?: Date;
+  paymentBy?: Lookup<string>;
+  paymentOn?: Date;
   paymentAmount?: number;
   paymentType?: Lookup<string>;
 }
@@ -139,8 +139,8 @@ export type PurchaseOrderReceiving = {
 export type PurchaseOrderPayable = {
   id?: string;
   purchaseOrderId?: string;
-  paidOn?: Date;
-  paidBy?: Lookup<string>;
+  paymentOn?: Date;
+  paymentBy?: Lookup<string>;
   paymentType?: Lookup<string>;
   taxAmount?: number;
   shippingFeeAmount?: number;

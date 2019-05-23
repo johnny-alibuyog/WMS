@@ -43,7 +43,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 							.Fetch(x => x.Items.First().Product).Eager
 							.Fetch(x => x.Items.First().Product.Inventories).Eager
 							.Fetch(x => x.Payments).Eager
-							.Fetch(x => x.Payments.First().PaidBy).Eager
+							.Fetch(x => x.Payments.First().PaymentBy).Eager
 							.Fetch(x => x.Payments.First().PaymentType).Eager
 							.Fetch(x => x.Receipts).Eager
 							.Fetch(x => x.Receipts.First().Product).Eager
@@ -97,8 +97,8 @@ namespace AmpedBiz.Service.PurchaseOrders
 						Payments = message.Payments.Select((x, i) => new PurchaseOrderPayment(
 							id: x.Id,
                             sequence: i,
-							paidOn: x.PaidOn ?? DateTime.Now,
-							paidBy: session.Load<User>(x.PaidBy.Id),
+							paymentOn: x.PaymentOn ?? DateTime.Now,
+							paymentBy: session.Load<User>(x.PaymentBy.Id),
 							paymentType: session.Load<PaymentType>(x.PaymentType.Id),
 							payment: new Money(x.PaymentAmount, currency)
 						)),

@@ -45,7 +45,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 						.Fetch(x => x.CreatedBy).Eager
 						.Fetch(x => x.SubmittedBy).Eager
 						.Fetch(x => x.ApprovedBy).Eager
-						.Fetch(x => x.PaidBy).Eager
+						.Fetch(x => x.PaymentBy).Eager
 						.Fetch(x => x.ReceivedBy).Eager
 						.Fetch(x => x.CompletedBy).Eager
 						.Fetch(x => x.CancelledBy).Eager
@@ -53,7 +53,7 @@ namespace AmpedBiz.Service.PurchaseOrders
 						.Fetch(x => x.Items.First().Product).Eager
 						.Fetch(x => x.Items.First().Product.Inventories).Eager
 						.Fetch(x => x.Payments).Eager
-						.Fetch(x => x.Payments.First().PaidBy).Eager
+						.Fetch(x => x.Payments.First().PaymentBy).Eager
 						.Fetch(x => x.Receipts).Eager
 						.Fetch(x => x.Receipts.First().Product).Eager
 						.Fetch(x => x.Receipts.First().Product.Inventories).Eager

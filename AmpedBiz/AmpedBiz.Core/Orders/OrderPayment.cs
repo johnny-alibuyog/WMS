@@ -10,22 +10,12 @@ namespace AmpedBiz.Core.Orders
 
         public virtual Order Order { get; protected internal set; }
 
-        public virtual User PaidTo { get; protected set; }
-
-        public virtual DateTime? PaidOn { get; protected set; }
-
-        public virtual PaymentType PaymentType { get; protected set; }
-
-        public virtual Money Payment { get; protected set; }
-
-        public virtual Money Balance { get; protected internal set; }
-
         public OrderPayment() : base(default(Guid)) { }
 
         public OrderPayment(
             int sequence,
-            User paidTo,
-            DateTime? paidOn, 
+            User paymentBy,
+            DateTime? paymentOn, 
             PaymentType paymentType, 
             Money payment,
             Money balance = null,
@@ -33,8 +23,8 @@ namespace AmpedBiz.Core.Orders
         ) : base(id ?? default(Guid))
         {
             this.Sequence = sequence;
-            this.PaidTo = paidTo;
-            this.PaidOn = paidOn;
+            this.PaymentBy = paymentBy;
+            this.PaymentOn = paymentOn;
             this.PaymentType = paymentType;
             this.Payment = payment;
             this.Balance = balance;

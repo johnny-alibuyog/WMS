@@ -54,7 +54,7 @@ namespace AmpedBiz.Service.Orders
 							.Fetch(x => x.RoutedBy).Eager
 							.Fetch(x => x.StagedBy).Eager
 							.Fetch(x => x.InvoicedBy).Eager
-							.Fetch(x => x.PaidTo).Eager
+							.Fetch(x => x.PaymentBy).Eager
 							.Fetch(x => x.RoutedBy).Eager
 							.Fetch(x => x.CompletedBy).Eager
 							.Fetch(x => x.CancelledBy).Eager
@@ -62,7 +62,7 @@ namespace AmpedBiz.Service.Orders
 							.Fetch(x => x.Items.First().Product).Eager
 							.Fetch(x => x.Items.First().Product.Inventories).Eager
 							.Fetch(x => x.Payments).Eager
-							.Fetch(x => x.Payments.First().PaidTo).Eager
+							.Fetch(x => x.Payments.First().PaymentBy).Eager
 							.Fetch(x => x.Payments.First().PaymentType).Eager
 							.Fetch(x => x.Returns).Eager
 							.Fetch(x => x.Returns.First().Reason).Eager
@@ -122,8 +122,8 @@ namespace AmpedBiz.Service.Orders
 							.Select((x, i) => new OrderPayment(
 								id: x.Id,
                                 sequence: i,
-								paidOn: x.PaidOn.GetValueOrDefault(DateTime.Now),
-								paidTo: session.Load<User>(x.PaidTo.Id),
+								paymentOn: x.PaymentOn.GetValueOrDefault(DateTime.Now),
+								paymentBy: session.Load<User>(x.PaymentBy.Id),
 								paymentType: session.Load<PaymentType>(x.PaymentType.Id),
 								payment: new Money(x.PaymentAmount, currency),
 								balance: new Money(x.BalanceAmount, currency)

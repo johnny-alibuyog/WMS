@@ -65,7 +65,7 @@ namespace AmpedBiz.Service.Dto
 
     public class CustomerSalesReportPageItem
     {
-        public DateTime? PaidOn { get; set; }
+        public DateTime? PaymentOn { get; set; }
 
         public string BranchName { get; set; }
 
@@ -84,7 +84,7 @@ namespace AmpedBiz.Service.Dto
 
     public class CustomerPaymentReportPageItem
     {
-        public DateTime? PaidOn { get; set; }
+        public DateTime? PaymentOn { get; set; }
 
         public string InvoiceNumber { get; set; }
 
