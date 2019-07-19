@@ -106,6 +106,11 @@ namespace AmpedBiz.Core.Common
 
 	public static class MoneyExtention
     {
+        public static string ToStringOrDefault(this Money money)
+        {
+            return money?.ToString() ?? 0M.ToString("0.00");
+        }
+
         public static decimal Amount(this Money money, decimal? defaultValue = 0M)
         {
             if (money == null)

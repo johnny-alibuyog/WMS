@@ -22,7 +22,7 @@ namespace AmpedBiz.Data.Definitions.Products
 				{
 					mapping.Map(x => x.Value, $"{prefix}Value");
 
-					mapping.References(x => x.Unit, $"{prefix}UnitId")
+                    mapping.References(x => x.Unit, $"{prefix}UnitId")
 						.ForeignKey($"FK_{parent}_{prefix}Unit");
 				};
 			}

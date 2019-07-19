@@ -1,0 +1,33 @@
+.well {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.nav-pills li a {
+  border-radius: 0px!important;
+}
+
+.nav-group {
+  border-bottom: 2px solid #e7e7e7!important;
+}
+
+.submenu li a {
+  padding-left: 30px!important;
+  /*background-color: #edf1fc; */
+}
+
+.submenu li a:hover {
+  color: #23527c;
+  /*background-color: rgb(157, 159, 168);*/
+}
+
+.submenu li.active a,
+.submenu li.active a:hover,
+.submenu li.active a:focus {
+  color: #fff!important;
+  background-color: #337ab7!important;
+}
+
+a {
+  cursor: pointer;
+}

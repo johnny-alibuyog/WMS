@@ -24,3 +24,6 @@ export class NavBar {
     this._auth.logout();
   }
 }
+
+
+

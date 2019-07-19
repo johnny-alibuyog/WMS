@@ -45,7 +45,7 @@ namespace AmpedBiz.Data.Definitions.Orders
 					MoneyDefinition.Mapping.Map("Total_", nameof(Order)));
 
 				Component(x => x.Paid,
-					MoneyDefinition.Mapping.Map("Payment_", nameof(Order)));
+					MoneyDefinition.Mapping.Map("Paid_", nameof(Order)));
 
 				Component(x => x.Balance,
 					MoneyDefinition.Mapping.Map("Balance_", nameof(Order)));

@@ -1,11 +1,12 @@
 ﻿using AmpedBiz.Common.Extentions;
+using AmpedBiz.Core.Common;
 using AmpedBiz.Core.SharedKernel;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AmpedBiz.Core.PointOfSales.Services
 {
-	public class PointOfSaleUpdatePaymentsVisitor : IVisitor<PointOfSale>
+    public class PointOfSaleUpdatePaymentsVisitor : IVisitor<PointOfSale>
 	{
 		public virtual IEnumerable<PointOfSalePayment> Payments { get; set; }
 
@@ -24,9 +25,15 @@ namespace AmpedBiz.Core.PointOfSales.Services
 
 			foreach (var item in itemsToInsert)
 			{
-				item.PointOfSale = target;
-				target.Payments.Add(item);
-			}
-		}
-	}
+                target.Payments.Add(item);
+                item.PointOfSale = target;
+                item.Balance = target.Total - target.Payments.Sum(x => x.Payment);
+            }
+
+            var lastPayment = target.Payments.OrderBy(x => x.PaymentOn).Last();
+
+            target.PaymentOn = lastPayment.PaymentOn;
+            target.PaymentBy = lastPayment.PaymentBy;
+        }
+    }
 }

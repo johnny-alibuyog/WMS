@@ -16,16 +16,17 @@ namespace AmpedBiz.Core.PurchaseOrders
             int sequence,
             User paymentBy, 
             DateTime? paymentOn, 
-            Money payment, 
-            PaymentType paymentType, 
+            PaymentType paymentType,
+            Money payment,
+            Money balance = null,
             Guid? id = null
         ) : base(id ?? default(Guid))
         {
             this.Sequence = sequence;
-            this.PaymentBy = paymentBy;
             this.PaymentOn = paymentOn;
-            this.Payment = payment;
+            this.PaymentBy = paymentBy;
             this.PaymentType = paymentType;
+            this.Payment = payment;
         }
     }
 }

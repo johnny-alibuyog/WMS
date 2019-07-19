@@ -1,11 +1,9 @@
-﻿using System;
+﻿using AmpedBiz.Common.Extentions;
+using FluentNHibernate.Conventions;
+using FluentNHibernate.Conventions.Instances;
+using System;
 using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
-using AmpedBiz.Common.Extentions;
-using FluentNHibernate.Conventions;
-using FluentNHibernate.Conventions.AcceptanceCriteria;
-using FluentNHibernate.Conventions.Inspections;
-using FluentNHibernate.Conventions.Instances;
 
 namespace AmpedBiz.Data.Conventions
 {

@@ -1,7 +1,36 @@
+<!--
 <template>
   <ul class="well nav nav-pills nav-stacked">
     <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
       <a if.bind="row.settings.auth.roles | authorize" href.bind="row.href">${row.title}</a>
+    </li>
+  </ul>
+</template>
+-->
+
+<template>
+  <require from="./side-bar.css"></require>
+  <require from="./route-value-converter"></require>
+
+  <ul class="well nav nav-pills nav-stacked">
+    <let count="${router.navigation | groupedRouteSize}"></let>
+    <template repeat.for="[group, routes] of router.navigation | groupedRoute">
+      <li if.bind="routes.length === 1" class="${$index !== count - 1 ? 'nav-group' : '' } ${routes[0].isActive ? 'active' : ''}">
+        <let row.bind="routes[0]"></let>
+        <a if.bind="row.settings.auth.roles | authorize" href.bind="row.href">${row.title}</a>
+      </li>
+      <li else class="${$index !== count - 1 ? 'nav-group' : '' }">
+        <a ref="anchorRef" data-toggle="collapse" data-target="#${group}" aria-expanded="false">
+          ${group}
+          <i class="fa fa-${anchorRef.attributes['aria-expanded'].nodeValue == 'true' ? 'chevron-down' : 'chevron-up'} pull-right"></i>
+        </a>
+        <ul class="nav submenu collapse" id="${group}" role="menu" aria-labelledby="btn-${group}">
+          <li repeat.for="row of routes" class="${row.isActive ? 'active' : ''}">
+            <a if.bind="row.settings.auth.roles | authorize" href.bind="row.href">${row.title}</a>
+          </li>
+        </ul>
+      </li>
+    </template>
     </li>
   </ul>
 </template>

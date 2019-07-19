@@ -339,7 +339,11 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                                         unit: x.UnitOfMeasures.Standard(o => o.UnitOfMeasure)
                                     ),
                                     standard: x.StandardEquivalentMeasureOf(x.UnitOfMeasures.Default(o => o.UnitOfMeasure)),
-                                    unitPrice: x.UnitOfMeasures.Standard(o => o.Prices.Wholesale())
+                                    unitPrice: x.UnitOfMeasures.Standard(o => o.Prices.Wholesale().Amount > 0
+                                        ? o.Prices.Wholesale() : o.Prices.Retail().Amount > 0 
+                                        ? o.Prices.Retail() : o.Prices.SuggestedRetail().Amount > 0
+                                        ? o.Prices.SuggestedRetail() : o.Prices.Base()
+                                    )
                                 ))
                         });
                         entity.EnsureValidity();

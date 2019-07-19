@@ -125,7 +125,7 @@
     <Compile Include="PointOfSales\GetPointOfSaleStatusList.cs" />
     <Compile Include="PointOfSales\GetPointOfSaleStatusLookup.cs" />
     <Compile Include="Products\GetProductRetailPriceDetailsPage.cs" />
-    <Compile Include="Products\GetSalesReportPage.cs" />
+    <Compile Include="Products\GetProductSalesReportPage.cs" />
     <Compile Include="Orders\RecreateOrder.cs" />
     <Compile Include="Orders\SaveOrder.cs" />
     <Compile Include="Orders\GetActiveOrderPage.cs" />
@@ -177,7 +177,7 @@
     <Compile Include="Products\GetProductPage.cs" />
     <Compile Include="Products\GetProductPurchasePage.cs" />
     <Compile Include="Products\GetProductReportPage.cs" />
-    <Compile Include="Products\GetProductsDeliveredReportPage.cs" />
+    <Compile Include="Products\GetProductDeliveryReportPage.cs" />
     <Compile Include="Products\UpdateProduct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PurchaseOrders\GetPurchaseOrderReportPage.cs" />

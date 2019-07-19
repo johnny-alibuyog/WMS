@@ -1,9 +1,14 @@
-import { ProductUnitOfMeasure, ProductRetailPriceDetails } from './../common/models/product';
-import { PageRequest, PagerResponse } from '../common/models/paging';
-
 import { HttpClientFacade } from './http-client-facade';
 import { Lookup } from '../common/custom_types/lookup';
-import { Product, NeedsReorderingPageItem, InventoryLevelPageItem, ProductsDeliveredReportPageItem, ProductListingReportPageItem } from '../common/models/product';
+import { PageRequest, PagerResponse } from '../common/models/paging';
+import { Product } from '../common/models/product';
+import { ProductSalesReportPage } from './../common/models/product';
+import { ProductUnitOfMeasure } from './../common/models/product';
+import { NeedsReorderingPageItem } from '../common/models/product';
+import { InventoryLevelPageItem } from '../common/models/product';
+import { ProductDeliveryReportPageItem } from '../common/models/product';
+import { ProductListingReportPageItem } from '../common/models/product';
+import { ProductRetailPriceDetails } from '../common/models/product';
 import { ProductInventory } from '../common/models/product';
 import { ProductOrderPageItem } from '../common/models/product';
 import { ProductOrderReturnPageItem } from '../common/models/product';
@@ -13,7 +18,6 @@ import { ProductReturnPageItem } from '../common/models/product';
 import { ServiceBase } from './service-base'
 import { autoinject } from 'aurelia-framework';
 import { buildQueryString } from 'aurelia-framework';
-import { SalesReportPageItem } from '../common/models/order';
 
 @autoinject
 export class ProductService extends ServiceBase<Product> {
@@ -78,7 +82,7 @@ export class ProductService extends ServiceBase<Product> {
     return this._httpClient.post(url, page);
   }
 
-  public getSalesReportPage(page: PageRequest): Promise<PagerResponse<SalesReportPageItem>> {
+  public getProductSalesReportPage(page: PageRequest): Promise<ProductSalesReportPage> {
     var url = this._resouce + '/sales-report/page';
     return this._httpClient.post(url, page);
   }
@@ -88,8 +92,8 @@ export class ProductService extends ServiceBase<Product> {
     return this._httpClient.post(url, page);
   }
 
-  public getProductSalesReportPage(page: PageRequest): Promise<PagerResponse<ProductsDeliveredReportPageItem>> {
-    var url = this._resouce + '/delivered-report/page';
+  public getProductDeliveryReportPage(page: PageRequest): Promise<PagerResponse<ProductDeliveryReportPageItem>> {
+    var url = this._resouce + '/delivery-report/page';
     return this._httpClient.post(url, page);
   }
 

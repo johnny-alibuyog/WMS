@@ -21,7 +21,7 @@ export class PointOfSaleCreate {
 
   public readonly header: string = "Point Of Sale";
   public readonly canTender: boolean = false;
-  public activeTab: 'itemsTab' | 'paymentsTab' | 'checkPricesTab' = 'itemsTab';
+  public activeTab: 'itemsTab' | 'paymentsTab' | 'checkPricesTab';
 
   public products: Lookup<string>[] = [];
   public branches: Lookup<string>[] = [];
@@ -112,6 +112,7 @@ export class PointOfSaleCreate {
         break;
       }
     }
+    return true;
   }
 
   @computedFrom("pointOfSale.id")

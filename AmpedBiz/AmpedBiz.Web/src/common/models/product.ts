@@ -1,3 +1,4 @@
+import { PagerResponse } from './paging';
 import { Inventory } from './inventory';
 import { Lookup } from "../custom_types/lookup";
 import { Measure } from "./measure";
@@ -174,7 +175,7 @@ export type ProductReportPageItem = {
   totalRetailPriceAmount?: number;
 }
 
-export type ProductsDeliveredReportPageItem = {
+export type ProductDeliveryReportPageItem = {
   shippedOn?: Date;
   branchName?: string;
   categoryName?: string;
@@ -199,6 +200,25 @@ export type ProductListingReportPageItem = {
   retailPriceAmount?: number;
   suggestedRetailPriceAmount?: number;
 }
+
+
+export type ProductSalesReportPageItem = {
+  productId?: string;
+  productName?: string;
+  totalSoldItems?: string;
+  totalSoldPrice?: string;
+  details?: ProductSalesReportPageDetailItem[];
+}
+
+export type ProductSalesReportPageDetailItem = {
+  salesDate?: Date;
+  customerName?: string;
+  invoiceNumber?: string;
+  soldItems?: string;
+  soldPrice?: string;
+}
+
+export type ProductSalesReportPage = PagerResponse<ProductSalesReportPageItem> & { totalSoldPrice: string }
 
 export class ProductInventoryFacade {
   private _inventory: ProductInventory;

@@ -1,5 +1,5 @@
 import { autoinject, PLATFORM } from 'aurelia-framework';
-import { Router, RouterConfiguration } from 'aurelia-router'
+import { Router, RouterConfiguration, RouteConfig } from 'aurelia-router'
 import { AuthSettings, AuthService } from '../services/auth-service';
 import { role } from '../common/models/role';
 
@@ -17,37 +17,8 @@ export class Index {
   configureRouter(config: RouterConfiguration, router: Router) {
     config.title = "Report Center";
     config.map([
-      {
-        route: ['customer-report-page'],
-        name: 'customer-report-page',
-        moduleId: PLATFORM.moduleName('./customer-report-page'),
-        nav: true,
-        title: 'Customer Listings',
-        settings: {
-          auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-            ]
-          }
-        },
-      },
-      {
-        route: ['product-listing-report-page'],
-        name: 'product-listing-report-page',
-        moduleId: PLATFORM.moduleName('./product-listing-report-page'),
-        nav: true,
-        title: 'Products Listings',
-        settings: {
-          auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-            ]
-          }
-        },
-      },
+      ...customerRoutes,
+      ...productRoutes,
       {
         route: ['supplier-report-page'],
         name: 'supplier-report-page',
@@ -59,84 +30,6 @@ export class Index {
             roles: [
               role.admin,
               role.manager,
-            ]
-          }
-        },
-      },
-      {
-        route: ['customer-sales-report-page'],
-        name: 'customer-sales-report-page',
-        moduleId: PLATFORM.moduleName('./customer-sales-report-page'),
-        nav: true,
-        title: 'Customer Sales',
-        settings: {
-          auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-            ]
-          }
-        },
-      },
-      {
-        route: ['customer-order-delivery-report-page'],
-        name: 'customer-order-delivery-report-page',
-        moduleId: PLATFORM.moduleName('./customer-order-delivery-report-page'),
-        nav: true,
-        title: 'Customer Order Delivery',
-        settings: {
-          auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
-            ]
-          }
-        },
-      },
-      {
-        route: ['customer-payments-report-page'],
-        name: 'customer-payments-report-page',
-        moduleId: PLATFORM.moduleName('./customer-payments-report-page'),
-        nav: true,
-        title: 'Customer Payments',
-        settings: {
-          auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-            ]
-          }
-        },
-      },
-      // {
-      //   route: ['customer-order-report-page'],
-      //   name: 'customer-order-report-page',
-      //   moduleId: PLATFORM.moduleName('./customer-order-report-page',
-      //   nav: true,
-      //   title: 'Customer Orders',
-      //   settings: {
-      //     auth: <AuthSettings>{
-      //       roles: [
-      //         role.admin,
-      //         role.manager,
-      //       ]
-      //     }
-      //   },
-      // },
-      {
-        route: ['products-delivered-report-page'],
-        name: 'products-delivered-report-page',
-        moduleId: PLATFORM.moduleName('./products-delivered-report-page'),
-        nav: true,
-        title: 'Products Delivered',
-        settings: {
-          auth: <AuthSettings>{
-            roles: [
-              role.admin,
-              role.manager,
-              role.salesclerk,
             ]
           }
         },
@@ -205,10 +98,10 @@ export class Index {
       },
       {
         route: [""],
-        redirect: 
-          this._auth.isAuthorized(role.salesclerk) 
-            ? "product-listing-report-page" 
-            : "customer-report-page"
+        redirect:
+          this._auth.isAuthorized(role.salesclerk)
+            ? "products/product-listing-report-page"
+            : "customers/customer-report-page"
       },
     ]);
 
@@ -216,3 +109,125 @@ export class Index {
   }
 }
 
+const customerRoutes: RouteConfig[] = [
+  {
+    route: ['customers/customer-report-page'],
+    name: 'customer-report-page',
+    moduleId: PLATFORM.moduleName('./customers/customer-report-page'),
+    nav: true,
+    title: 'Listings',
+    settings: {
+      group: 'Customer',
+      auth: <AuthSettings>{
+        roles: [
+          role.admin,
+          role.manager,
+        ]
+      }
+    },
+  },
+  {
+    route: ['customers/customer-sales-report-page'],
+    name: 'customer-sales-report-page',
+    moduleId: PLATFORM.moduleName('./customers/customer-sales-report-page'),
+    nav: true,
+    title: 'Sales',
+    settings: {
+      group: 'Customer',
+      auth: <AuthSettings>{
+        roles: [
+          role.admin,
+          role.manager,
+          role.salesclerk,
+        ]
+      }
+    },
+  },
+  {
+    route: ['customers/customer-order-delivery-report-page'],
+    name: 'customer-order-delivery-report-page',
+    moduleId: PLATFORM.moduleName('./customers/customer-order-delivery-report-page'),
+    nav: true,
+    title: 'Order Delivery',
+    settings: {
+      group: 'Customer',
+      auth: <AuthSettings>{
+        roles: [
+          role.admin,
+          role.manager,
+          role.salesclerk,
+        ]
+      }
+    },
+  },
+  {
+    route: ['customers/customer-payments-report-page'],
+    name: 'customer-payments-report-page',
+    moduleId: PLATFORM.moduleName('./customers/customer-payments-report-page'),
+    nav: true,
+    title: 'Payments',
+    settings: {
+      group: 'Customer',
+      auth: <AuthSettings>{
+        roles: [
+          role.admin,
+          role.manager,
+        ]
+      }
+    },
+  },
+];
+
+const productRoutes: RouteConfig[] = [
+  {
+    route: ['products/product-listing-report-page'],
+    name: 'product-listing-report-page',
+    moduleId: PLATFORM.moduleName('./products/product-listing-report-page'),
+    nav: true,
+    title: 'Listing',
+    settings: {
+      group: 'Product',
+      auth: <AuthSettings>{
+        roles: [
+          role.admin,
+          role.manager,
+          role.salesclerk,
+        ]
+      }
+    },
+  },
+  {
+    route: ['products/product-delivery-report-page'],
+    name: 'product-delivery-report-page',
+    moduleId: PLATFORM.moduleName('./products/product-delivery-report-page'),
+    nav: true,
+    title: 'Delivery',
+    settings: {
+      group: 'Product',
+      auth: <AuthSettings>{
+        roles: [
+          role.admin,
+          role.manager,
+          role.salesclerk,
+        ]
+      }
+    },
+  },
+  {
+    route: ['products/product-sales-report-page'],
+    name: 'product-sales-report-page',
+    moduleId: PLATFORM.moduleName('./products/product-sales-report-page'),
+    nav: true,
+    title: 'Sales',
+    settings: {
+      group: 'Product',
+      auth: <AuthSettings>{
+        roles: [
+          role.admin,
+          role.manager,
+          role.salesclerk,
+        ]
+      }
+    },
+  },
+];

@@ -67,7 +67,9 @@ namespace AmpedBiz.Core.Products.Services
 
         public static string InterpretAsString(this IEnumerable<Measure> measures)
         {
-            return string.Join(" & ", measures.Select(x => x.ToStringIntegral()));
+            return string.Join(" & ", measures.Where(RemoveDefaultUnitIfEmpty).Select(x => x.ToStringIntegral()));
+
+            bool RemoveDefaultUnitIfEmpty(Measure measure, int index) => (index == 0) ? measure.Value > 0 : true;
         }
     }
 }

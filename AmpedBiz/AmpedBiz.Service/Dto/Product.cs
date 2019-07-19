@@ -286,7 +286,7 @@ namespace AmpedBiz.Service.Dto
         public decimal? TotalRetailPriceAmount => this.OnHandValue * this.RetailPriceAmount;
     }
 
-    public class ProductsDeliveredReportPageItem
+    public class ProductDeliveryReportPageItem
     {
         public string BranchName { get; set; }
 
@@ -407,4 +407,29 @@ namespace AmpedBiz.Service.Dto
     }
 
 
+    public class ProductSalesReportPageItem
+    {
+        public Guid ProductId { get; set; }
+
+        public string ProductName { get; set; }
+
+        public string TotalSoldItems { get; set; }
+
+        public string TotalSoldPrice { get; set; }
+
+        public List<ProductSalesReportPageDetailItem> Details { get; set; } = new List<ProductSalesReportPageDetailItem>();
+    }
+
+    public class ProductSalesReportPageDetailItem
+    {
+        public DateTime? SalesDate { get; set; }
+
+        public string CustomerName { get; set; }
+
+        public string InvoiceNumber { get; set; }
+
+        public string SoldItems { get; set; }
+
+        public string SoldPrice { get; set; }
+    }
 }

@@ -80,6 +80,28 @@ namespace AmpedBiz.Service.Dto
         public decimal? PaidAmount { get; set; }
 
         public decimal? BalanceAmount { get; set; }
+
+        public CustomerSalesReportPageItem() { }
+
+        public CustomerSalesReportPageItem(
+            DateTime? paymentOn, 
+            string branchName, 
+            string customerName, 
+            string invoiceNumber, 
+            string status, 
+            decimal? totalAmount, 
+            decimal? paidAmount, 
+            decimal? balanceAmount)
+        {
+            PaymentOn = paymentOn;
+            BranchName = branchName;
+            CustomerName = customerName;
+            InvoiceNumber = invoiceNumber;
+            Status = status;
+            TotalAmount = totalAmount;
+            PaidAmount = paidAmount;
+            BalanceAmount = balanceAmount;
+        }
     }
 
     public class CustomerPaymentReportPageItem

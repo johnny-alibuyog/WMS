@@ -31,7 +31,7 @@ namespace AmpedBiz.Data.Definitions.Common
 
 				Map(x => x.ModifiedOn);
 
-				References(x => x.CreatedBy);
+                References(x => x.CreatedBy);
 
 				References(x => x.ModifiedBy);
 

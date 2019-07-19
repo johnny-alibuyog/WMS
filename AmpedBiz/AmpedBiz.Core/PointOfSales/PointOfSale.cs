@@ -31,7 +31,11 @@ namespace AmpedBiz.Core.PointOfSales
 
 		public virtual DateTime TenderedOn { get; protected internal set; }
 
-		public virtual decimal DiscountRate { get; protected internal set; }
+        public virtual DateTime? PaymentOn { get; protected internal set; }
+
+        public virtual User PaymentBy { get; protected internal set; }
+
+        public virtual decimal DiscountRate { get; protected internal set; }
 
 		public virtual Money Discount { get; internal protected set; }
 
@@ -51,17 +55,17 @@ namespace AmpedBiz.Core.PointOfSales
 
 		public virtual DateTime? ModifiedOn { get; set; }
 
-		public virtual User CreatedBy { get; set; }
+        public virtual User CreatedBy { get; set; }
 
 		public virtual User ModifiedBy { get; set; }
 
-		public virtual PointOfSaleStatus Status { get; internal protected set; } = PointOfSaleStatus.UnPaid;
+        public virtual PointOfSaleStatus Status { get; internal protected set; } = PointOfSaleStatus.UnPaid;
 
 		public virtual ICollection<PointOfSaleItem> Items { get; protected internal set; } = new Collection<PointOfSaleItem>();
 
 		public virtual ICollection<PointOfSalePayment> Payments { get; protected internal set; } = new Collection<PointOfSalePayment>();
 
-		public PointOfSale() : this(default(Guid)) { }
+        public PointOfSale() : this(default(Guid)) { }
 
 		public PointOfSale(Guid id) : base(id) { }
 

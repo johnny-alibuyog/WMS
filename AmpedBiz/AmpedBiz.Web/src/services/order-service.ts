@@ -1,6 +1,6 @@
 import { getValue } from "../common/models/measure";
 import { isNullOrWhiteSpace } from '../common/utils/string-helpers';
-import { Order, OrderInvoiceDetail, OrderPayable, OrderReportPageItem, OrderReturn, OrderReturnable, OrderStatus, SalesReportPageItem, OrderPageItem } from '../common/models/order';
+import { Order, OrderInvoiceDetail, OrderPayable, OrderReportPageItem, OrderReturn, OrderReturnable, OrderStatus, OrderPageItem } from '../common/models/order';
 import { PageRequest, PagerResponse } from '../common/models/paging';
 
 import { AuthService } from './auth-service';

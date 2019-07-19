@@ -27,7 +27,11 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 
 				Map(x => x.CreatedOn);
 
-				References(x => x.CreatedBy);
+                References(x => x.PaymentBy);
+
+                Map(x => x.PaymentOn);
+
+                References(x => x.CreatedBy);
 
 				References(x => x.Pricing);
 
@@ -49,7 +53,7 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 					MoneyDefinition.Mapping.Map("Change_", nameof(PointOfSale)));
 
 				Component(x => x.Paid,
-					MoneyDefinition.Mapping.Map("Payment_", nameof(PointOfSale)));
+					MoneyDefinition.Mapping.Map("Paid_", nameof(PointOfSale)));
 
 				Component(x => x.Balance,
 					MoneyDefinition.Mapping.Map("Balance_", nameof(PointOfSale)));
@@ -96,7 +100,11 @@ namespace AmpedBiz.Data.Definitions.PointOfSales
 
 				Define(x => x.TenderedBy);
 
-				Define(x => x.Pricing);
+                Define(x => x.PaymentOn);
+
+                Define(x => x.PaymentBy);
+
+                Define(x => x.Pricing);
 
 				Define(x => x.DiscountRate);
 

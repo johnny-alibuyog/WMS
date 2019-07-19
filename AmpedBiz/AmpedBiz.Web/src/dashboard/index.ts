@@ -17,6 +17,7 @@ export class Index {
         nav: true,
         title: 'Pending List',
         settings: {
+          group: 'men',
           auth: <AuthSettings>{
             roles: role.all()
           }

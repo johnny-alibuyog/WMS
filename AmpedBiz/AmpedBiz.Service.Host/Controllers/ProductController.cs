@@ -121,10 +121,10 @@ namespace AmpedBiz.Service.Host.Controllers
         }
 
         [HttpPost()]
-        [Route("delivered-report/page")]
-        public async Task<GetProductsDeliveredReportPage.Response> Process([FromBody]GetProductsDeliveredReportPage.Request request)
+        [Route("delivery-report/page")]
+        public async Task<GetProductDeliveryReportPage.Response> Process([FromBody]GetProductDeliveryReportPage.Request request)
         {
-            return await _mediator.Send(request ?? new GetProductsDeliveredReportPage.Request());
+            return await _mediator.Send(request ?? new GetProductDeliveryReportPage.Request());
         }
 
         [HttpPost()]
@@ -150,9 +150,9 @@ namespace AmpedBiz.Service.Host.Controllers
 
 		[HttpPost()]
 		[Route("sales-report/page")]
-		public async Task<GetSalesReportPage.Response> Process([FromBody]GetSalesReportPage.Request request)
+		public async Task<GetProductSalesReportPage.Response> Process([FromBody]GetProductSalesReportPage.Request request)
 		{
-			return await _mediator.Send(request ?? new GetSalesReportPage.Request());
+			return await _mediator.Send(request ?? new GetProductSalesReportPage.Request());
 		}
 
 		[HttpPost()]

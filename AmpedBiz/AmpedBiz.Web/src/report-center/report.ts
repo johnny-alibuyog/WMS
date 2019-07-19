@@ -145,6 +145,12 @@ export class ReportBuilder<T> {
         bold: true,
         margin: [0, 10, 0, 10]
       },
+      header2: {
+        bold: true,
+        fontSize: 12,
+        alignment: "center",
+        margin: [0, 3, 0, 3]
+      },
       header3: {
         bold: true,
         fontSize: 10,

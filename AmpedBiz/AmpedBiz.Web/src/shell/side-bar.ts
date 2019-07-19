@@ -1,5 +1,6 @@
 import { bindable, bindingMode } from 'aurelia-framework';
-import { Router } from 'aurelia-router';
+import { Router, NavModel } from 'aurelia-router';
+import * as Enumerable from 'linq';
 
 export class SideBar {
   @bindable({ defaultBindingMode: bindingMode.twoWay })

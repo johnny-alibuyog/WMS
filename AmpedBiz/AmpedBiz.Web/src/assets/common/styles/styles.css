@@ -215,8 +215,8 @@ section {
 }
 
 row-no-padding > [class*='col-'] {
-  padding-left: 0px;
-  padding-right: 0px;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
 }
 
 .vertical-center {
@@ -319,6 +319,11 @@ row-no-padding > [class*='col-'] {
   right: 0;
   left: auto;
 }
+
+/* .submenu {
+  padding-left: 10px;
+} */
+
 
 /*
  * Sidebar

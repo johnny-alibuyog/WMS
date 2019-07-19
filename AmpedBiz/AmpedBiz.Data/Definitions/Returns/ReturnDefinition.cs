@@ -7,13 +7,10 @@ namespace AmpedBiz.Data.Definitions.Returns
 {
 	public class ReturnDefinition
 	{
-		public class Mapping : ClassMap<Return>
+		public class Mapping : SubclassMap<Return>
 		{
 			public Mapping()
 			{
-				Id(x => x.Id)
-					.GeneratedBy.GuidComb();
-
 				References(x => x.Branch);
 
 				References(x => x.Customer);

@@ -19,7 +19,7 @@ namespace AmpedBiz.Data.Conventions
     //    }
     //}
 
-    public class CustomForeignKeyConvention2 : IReferenceConvention, IHasManyToManyConvention, IJoinedSubclassConvention, IJoinConvention, ICollectionConvention, IHasManyConvention
+    public class CustomForeignKeyConvention : IReferenceConvention, IHasManyToManyConvention, IJoinedSubclassConvention, IJoinConvention, ICollectionConvention, IHasManyConvention
     {
         private string GetKeyName(Member property, Type type)
         {
@@ -33,7 +33,6 @@ namespace AmpedBiz.Data.Conventions
         public void Apply(IManyToOneInstance instance)
         {
             var columnName = GetKeyName(instance.Property, instance.Class.GetUnderlyingSystemType());
-
             instance.Column(columnName);
         }
 
@@ -48,29 +47,26 @@ namespace AmpedBiz.Data.Conventions
 
         public void Apply(IJoinedSubclassInstance instance)
         {
-            var columnName = GetKeyName(null, instance.Type);
-
+            //var columnName = GetKeyName(null, instance.Type);
+            var columnName = GetKeyName(null, instance.EntityType);
             instance.Key.Column(columnName);
         }
 
         public void Apply(IJoinInstance instance)
         {
             var columnName = GetKeyName(null, instance.EntityType);
-
             instance.Key.Column(columnName);
         }
 
         public void Apply(ICollectionInstance instance)
         {
             var columnName = GetKeyName(null, instance.EntityType);
-
             instance.Key.Column(columnName);
         }
 
         public void Apply(IOneToManyCollectionInstance instance)
         {
             var columnName = GetKeyName(null, instance.EntityType);
-
             instance.Key.Column(columnName);
         }
     }

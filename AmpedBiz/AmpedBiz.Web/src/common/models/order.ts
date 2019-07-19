@@ -1,3 +1,4 @@
+import { PagerResponse } from './paging';
 import { Address } from './Address';
 import { Lookup } from '../custom_types/lookup';
 import { Measure } from "./measure";
@@ -222,19 +223,4 @@ export type OrderReportPageItem = {
   totalAmount?: number;
   paidAmount?: number;
   balanceAmount?: number;
-}
-
-export type SalesReportPageItem = {
-  productId?: string;
-  productName?: string;
-  totalSoldItems?: string;
-  totalSoldPrice?: string;
-  details?: SalesReportPageDetailItem[];
-}
-
-export type SalesReportPageDetailItem = {
-  customerName?: string;
-  invoiceNumber?: string;
-  soldItems?: string;
-  soldPrice?: string;
 }
