@@ -29,7 +29,7 @@ export class PointOfSaleItemPage {
   private _subscriptions: Subscription[] = [];
   private _productInventories: ProductInventory[] = [];
   private _canEditItem: boolean = false;
-  private  _canDeleteItem: boolean = false;
+  private _canDeleteItem: boolean = false;
   //private _scanner = BarcodeScanner();
 
   @observable()
@@ -372,7 +372,7 @@ export class PointOfSaleItemPage {
     this.initializePage();
 
     this.focusProductInput = focusOn === "product";
-    this.focusUomInput = focusOn === "uom"; 
+    this.focusUomInput = focusOn === "uom";
   }
 
   public async editItem(item: PointOfSaleItem): Promise<void> {
@@ -455,34 +455,34 @@ export class PointOfSaleItemPage {
 }
 
 
-var BarcodeScanerEvents = function() {
+var BarcodeScanerEvents = function () {
   this.initialize.apply(this, arguments);
 };
 
 BarcodeScanerEvents.prototype = {
- initialize: function() {
+  initialize: function () {
     $(document).on({
-       keyup: $.proxy(this._keyup, this)
+      keyup: $.proxy(this._keyup, this)
     });
- },
- _timeoutHandler: 0,
- _inputString: '',
- _keyup: function (e) {
-     if (this._timeoutHandler) {
-         clearTimeout(this._timeoutHandler);
-         this._inputString += String.fromCharCode(e.which);
-     } 
+  },
+  _timeoutHandler: 0,
+  _inputString: '',
+  _keyup: function (e) {
+    if (this._timeoutHandler) {
+      clearTimeout(this._timeoutHandler);
+      this._inputString += String.fromCharCode(e.which);
+    }
 
-     this._timeoutHandler = setTimeout($.proxy(function () {
-         if (this._inputString.length <= 3) {
-             this._inputString = '';
-             return;
-         }
+    this._timeoutHandler = setTimeout($.proxy(function () {
+      if (this._inputString.length <= 3) {
+        this._inputString = '';
+        return;
+      }
 
-         $(document).trigger('onbarcodescaned', this._inputString);
+      $(document).trigger('onbarcodescaned', this._inputString);
 
-         this._inputString = '';
+      this._inputString = '';
 
-     }, this), 20);
- }
+    }, this), 20);
+  }
 };

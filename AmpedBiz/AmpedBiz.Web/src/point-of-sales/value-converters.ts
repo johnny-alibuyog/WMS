@@ -1,5 +1,5 @@
-import { PointOfSaleStatus } from 'common/models/point-of-sale';
-import { Lookup } from 'common/custom_types/lookup';
+import { PointOfSaleStatus } from '../common/models/point-of-sale';
+import { Lookup } from '../common/custom_types/lookup';
 import * as Enumerable from 'linq';
 
 export class StatusToClassValueConverter {

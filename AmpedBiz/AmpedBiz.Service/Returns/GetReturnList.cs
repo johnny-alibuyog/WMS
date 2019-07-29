@@ -34,6 +34,7 @@ namespace AmpedBiz.Service.Returns
                 {
                     var entites = session.QueryOver<Return>()
                         .Fetch(x => x.Branch).Eager
+                        .Fetch(x => x.Pricing).Eager
                         .Fetch(x => x.Customer).Eager
                         .Fetch(x => x.ReturnedBy).Eager
                         .Fetch(x => x.Items).Eager

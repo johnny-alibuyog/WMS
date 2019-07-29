@@ -1,7 +1,7 @@
 import { autoinject, bindable, bindingMode } from 'aurelia-framework';
 import { Router } from 'aurelia-router';
 import { AuthService } from '../services/auth-service';
-import { role } from 'common/models/role';
+import { role } from '../common/models/role';
 
 @autoinject
 export class NavBar {

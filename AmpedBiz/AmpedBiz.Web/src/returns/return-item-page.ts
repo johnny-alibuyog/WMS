@@ -1,4 +1,5 @@
-import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framework'
+import { isNullOrWhiteSpace } from './../common/utils/string-helpers';
+import { autoinject, bindable, bindingMode, customElement, observable } from 'aurelia-framework'
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { ProductInventory, ProductInventoryFacade } from '../common/models/product';
 import { ReturnItem, returnEvents } from '../common/models/return';
@@ -6,26 +7,34 @@ import { Lookup } from '../common/custom_types/lookup';
 import { NotificationService } from '../common/controls/notification-service';
 import { ServiceApi } from '../services/service-api';
 import { ensureNumeric } from "../common/utils/ensure-numeric";
-import { getValue } from "../common/models/measure";
+import { getValue, Measure } from "../common/models/measure";
 import { pricing } from '../common/models/pricing';
 import { Pager } from '../common/models/paging';
 import * as Enumerable from 'linq';
 
+export type FocusOn = "product" | "uom";
+
 @autoinject
 @customElement("return-item-page")
 export class ReturnItemPage {
-
   private _subscriptions: Subscription[] = [];
-  private _productInventories1: ProductInventory[] = [];
+  private _productInventories: ProductInventory[] = [];
+  private _isPricingInitialized: boolean = false;
 
+  @observable()
+  public barcode: string = '';
+  
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public returnId: string = '';
+
+  @bindable({ defaultBindingMode: bindingMode.twoWay })
+  public isModificationDisallowed: boolean = true;
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
   public items: ReturnItem[] = [];
 
   @bindable({ defaultBindingMode: bindingMode.twoWay })
-  public pricing: Lookup<string> = pricing.basePrice;
+  public pricing: Lookup<string> = pricing.retailPrice;
 
   public selectedItem: ReturnItem;
 
@@ -37,6 +46,12 @@ export class ReturnItemPage {
 
   public itemPager: Pager<ReturnItem> = new Pager<ReturnItem>();
 
+  public focusBarcodeInput: boolean;
+
+  public focusProductInput: boolean;
+
+  public focusUomInput: boolean;
+
   constructor(
     private readonly _api: ServiceApi,
     private readonly _notification: NotificationService,
@@ -45,11 +60,20 @@ export class ReturnItemPage {
     this.itemPager.onPage = () => this.initializePage();
   }
 
-  private async getProductInventory(product: Lookup<string>): Promise<ProductInventory> {
-    let data = this._productInventories1.find(x => x.id === product.id);
+  private async getProductInventory(key: string): Promise<ProductInventory> {
+    let data = Enumerable
+      .from(this._productInventories)
+      .where(x =>
+        x.id === key ||
+        Enumerable.from(x.unitOfMeasures).any(o => o.barcode == key)
+      )
+      .firstOrDefault();
+
     if (!data) {
-      data = await this._api.products.getInventory(product.id);
-      this._productInventories1.push(data);
+      data = await this._api.products.getInventory(key);
+      if (data) {
+        this._productInventories.push(data);
+      }
     }
     return data;
   }
@@ -74,29 +98,18 @@ export class ReturnItemPage {
   //   }
   // }
 
-  public attached(): void {
+  public async attached(): Promise<void> {
     this._subscriptions = [
       this._eventAggregator.subscribe(
         returnEvents.item.add,
-        response => this.addItem()
+        (focusOn?: FocusOn) => this.addItem(focusOn)
       ),
     ];
 
-    let requests: [
-      Promise<Lookup<string>[]>,
-      Promise<Lookup<string>[]>] = [
-        this._api.products.getLookups(),
-        this._api.returnReasons.getLookups(),
-      ];
-
-    Promise.all(requests)
-      .then(responses => {
-        this.products = responses[0];
-        this.reasons = responses[1];
-      })
-      .catch(error => {
-        this._notification.error(error);
-      });
+    [this.products, this.reasons] = await Promise.all([
+      this._api.products.getLookups(),
+      this._api.returnReasons.getLookups(),
+    ]);
   }
 
   public detached(): void {
@@ -104,16 +117,87 @@ export class ReturnItemPage {
   }
 
   public itemsChanged(): void {
+    debugger;
     this.initializePage();
 
     let productIds = this.items.map(x => x.product.id);
     this._api.products.getInventoryList(productIds)
-      .then(result => this._productInventories1 = result);
+      .then(result => this._productInventories = result);
   }
 
+  public barcodeChanged(newValue: string, oldValue: string) {
+    if (isNullOrWhiteSpace(newValue)) {
+      return;
+    }
+
+    this.barcodeChangedHandler();
+  }
+
+  public async barcodeChangedHandler(): Promise<void> {
+    let item = Enumerable
+      .from(this.items)
+      .firstOrDefault(x => x.barcode == this.barcode);
+
+    let productInventory = await this.getProductInventory(this.barcode);
+
+    if (!productInventory) {
+      return;
+    }
+
+    if (item == null) {
+      this.addItem();
+      item = this.selectedItem;
+      item.barcode = this.barcode;
+
+    }
+    else {
+      this.selectedItem = item;
+    }
+
+    if (!item.product) {
+      item.product = Enumerable
+        .from(this.products)
+        .firstOrDefault(x => x.id === productInventory.id);
+    }
+
+    if (!item.unitOfMeasures || item.unitOfMeasures.length == 0) {
+      item.unitOfMeasures = productInventory.unitOfMeasures.map(x => x.unitOfMeasure);
+    }
+
+    let productUnitOfMeasure = Enumerable
+      .from(productInventory.unitOfMeasures)
+      .firstOrDefault(x => x.barcode == this.barcode);
+
+    if (!item.standard || !item.standard.unit || !item.standard.unit.id) {
+      item.standard = <Measure>{
+        unit: productUnitOfMeasure.standard.unit,
+        value: productUnitOfMeasure.standard.value
+      }
+    }
+
+    if (!item.quantity || !item.quantity.unit || !item.quantity.unit.id) {
+      item.quantity = <Measure>{
+        unit: productUnitOfMeasure.unitOfMeasure,
+        value: 0
+      };
+    }
+
+    if (!item.unitPriceAmount || item.unitPriceAmount == 0) {
+      let facade = new ProductInventoryFacade(productInventory);
+      item.unitPriceAmount = facade.getPriceAmount(productInventory, item.quantity.unit, this.pricing);
+    }
+
+    item.quantity.value += 1;
+
+    this.compute(item);
+
+    setTimeout(() => this.barcode = '', 20);
+  }
+
+  
   public async computeUnitPriceAmount(): Promise<void> {
     let item = this.selectedItem;
-    let inventory = await this.getProductInventory(this.selectedItem.product)
+    let inventory = await this.getProductInventory(item.product.id)
     let facade = new ProductInventoryFacade(inventory);
     let current = facade.current(item.quantity.unit);
     item.standard = current.standard;
@@ -137,7 +221,7 @@ export class ReturnItemPage {
       return;
     }
 
-    let inventory = await this.getProductInventory(item.product);
+    let inventory = await this.getProductInventory(item.product.id);
     let facade = new ProductInventoryFacade(inventory);
     let current = facade.default;
     item.unitOfMeasures = inventory.unitOfMeasures.map(x => x.unitOfMeasure);
@@ -153,6 +237,24 @@ export class ReturnItemPage {
     item.product = this.products.find(x => x.id === productId);
     await this.initializeItem(item);
   }
+
+  public pricingChanged(newValue: Lookup<string>, oldValue: Lookup<string>): void {
+    if (newValue && oldValue && newValue.id == oldValue.id) {
+      return;
+    }
+
+    if (!this._isPricingInitialized) {
+      this._isPricingInitialized = true;
+      return;
+    }
+
+    if (!this.items) {
+      this.items = [];
+    }
+
+    this.items.forEach(item => this.initializeItem(item));
+  }
+
 
   public initializePage(): void {
     if (!this.items)
@@ -173,7 +275,11 @@ export class ReturnItemPage {
     );
   }
 
-  public addItem(): void {
+  public addItem(focusOn: FocusOn = null): void {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
     if (!this.items) {
       this.items = [];
     }
@@ -193,15 +299,22 @@ export class ReturnItemPage {
     this.items.unshift(item);
     this.selectedItem = item;
     this.initializePage();
+
+    this.focusProductInput = focusOn === "product";
+    this.focusUomInput = focusOn === "uom";
   }
 
   public async editItem(item: ReturnItem): Promise<void> {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
     if (item.id) {
       return; // do not allow edit of items which is already saved
     }
-    
+
     if (!item.unitOfMeasures || item.unitOfMeasures.length == 0) {
-      let data = await this.getProductInventory(item.product);
+      let data = await this.getProductInventory(item.product.id);
       if (data && data.unitOfMeasures) {
         item.unitOfMeasures = data.unitOfMeasures.map(x => x.unitOfMeasure);
       }
@@ -213,6 +326,10 @@ export class ReturnItemPage {
   }
 
   public deleteItem(item: ReturnItem): void {
+    if (this.isModificationDisallowed) {
+      return;
+    }
+
     if (item.id) {
       return; // do not allow edit of items which is already saved
     }
@@ -229,7 +346,6 @@ export class ReturnItemPage {
     item.returnedAmount = ensureNumeric(item.extendedPriceAmount);
     this.total();
   }
-
 
   public total(): void {
     //this.taxAmount = ensureNumeric(this.taxAmount);

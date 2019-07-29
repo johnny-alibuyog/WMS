@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Core.Common;
+using AmpedBiz.Core.Products;
 using AmpedBiz.Core.SharedKernel;
 using AmpedBiz.Core.Users;
 using System;
@@ -12,6 +13,8 @@ namespace AmpedBiz.Core.Returns.Services
 
         public virtual Customer Customer  { get; set; }
 
+        public virtual Pricing Pricing { get; set; }
+
         public virtual User ReturnedBy  { get; set; }
 
         public virtual DateTime? ReturnedOn  { get; set; }
@@ -24,6 +27,7 @@ namespace AmpedBiz.Core.Returns.Services
         {
             target.Branch = this.Branch;
             target.Customer = this.Customer;
+            target.Pricing = this.Pricing;
             target.ReturnedBy = this.ReturnedBy;
             target.ReturnedOn = this.ReturnedOn;
             target.Remarks = this.Remarks;

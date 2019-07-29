@@ -1,6 +1,6 @@
 import { role } from '../common/models/role';
 import { autoinject, PLATFORM, Origin, relativeToFile, CompositionEngine, CompositionContext } from 'aurelia-framework';
-import { defaultModules } from 'common/models/setting';
+import { defaultModules } from '../common/models/setting';
 import { AuthService, AuthSettings } from '../services/auth-service';
 import { NavigationInstruction, Next, PipelineStep, Router, RouterConfiguration, RouteConfig, NavModel } from 'aurelia-router';
 import { NotificationService } from '../common/controls/notification-service';

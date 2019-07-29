@@ -34,15 +34,15 @@ namespace AmpedBiz.Service.Returns
 					var products = session.Query<Product>()
 						.Where(x => productIds.Contains(x.Id))
 						.Fetch(x => x.Inventories)
-						.ToList();
-
-					Func<Guid, Product> GetProduct = (id) => products.First(x => x.Id == id);
+						.ToList()
+                        .ToDictionary(x => x.Id);
 
 					var entity = new Return();
 
-					entity.Accept(new ReturnSaveVisitor()
-					{
-						Branch = session.Load<Branch>(message.Branch.Id),
+                    entity.Accept(new ReturnSaveVisitor()
+                    {
+                        Branch = session.Load<Branch>(message.Branch.Id),
+                        Pricing = session.Load<Pricing>(message.Pricing.Id),
 						Customer = session.Load<Customer>(message.Customer.Id),
 						ReturnedBy = session.Load<User>(message.ReturnedBy.Id),
 						ReturnedOn = message.ReturnedOn ?? new DateTime(),
@@ -50,7 +50,7 @@ namespace AmpedBiz.Service.Returns
 						Items = message.Items
 							.Select((x, i) => new ReturnItem(
                                 sequence: i,
-								product: GetProduct(x.Product.Id),
+								product: products[x.Product.Id],
 								reason: session.Load<ReturnReason>(x.Reason.Id),
 								quantity: new Measure(x.Quantity.Value, session.Load<UnitOfMeasure>(x.Quantity.Unit.Id)),
 								standard: new Measure(x.Standard.Value, session.Load<UnitOfMeasure>(x.Standard.Unit.Id)),

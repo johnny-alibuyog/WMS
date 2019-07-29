@@ -10,7 +10,12 @@
       <thead>
         <tr class="row-no-padding">
           <th class="col-sm-1">Action</th>
-          <th class="col-sm-4">Product</th>
+          <th class="col-sm-auto">
+            <div>Product &nbsp;
+              <input type="text" placeholder="Barcode Reader" value.bind="barcode & debounce:100"
+                disabled.bind="isModificationDisallowed" focus.bind="focusBarcodeInput" />
+            </div>
+          </th>
           <th class="col-sm-2">Reason</th>
           <th class="col-sm-1 text-right">Unit</th>
           <th class="col-sm-1 text-right">Quantity</th>
@@ -31,19 +36,24 @@
           </td>
 
           <!-- read-only mode -->
-          <td if.bind="$parent.selectedItem !== item">${item.product.name}</td>
-          <td if.bind="$parent.selectedItem !== item">${item.reason.name}</td>
-          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantity.unit.name}</td>
-          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantity.value}</td>
-          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.unitPriceAmount | numberFormat}</td>
-          <td if.bind="$parent.selectedItem !== item" class="text-right">${item.returnedAmount | numberFormat}</td>
+          <!-- <td if.bind="$parent.selectedItem !== item">${item.product.name}</td> -->
+          <!-- <td if.bind="$parent.selectedItem !== item">${item.reason.name}</td> -->
+          <!-- <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantity.unit.name}</td> -->
+          <!-- <td if.bind="$parent.selectedItem !== item" class="text-right">${item.quantity.value}</td> -->
+          <!-- <td if.bind="$parent.selectedItem !== item" class="text-right">${item.unitPriceAmount | numberFormat}</td> -->
+          <!-- <td if.bind="$parent.selectedItem !== item" class="text-right">${item.returnedAmount | numberFormat}</td> -->
 
           <!-- edit mode -->
-          <td if.bind="$parent.selectedItem === item">
-            <div class="row">
+          <td>
+            <div if.bind="$parent.selectedItem !== item">
+              ${item.product.name}
+            </div>
+            <div else class="row">
               <div class="col-xs-12">
-                <select2 selected.bind="item.product | lookupToId:$parent.products" options.bind="$parent.products" placeholder="Select Product"
-                  allow_clear="true" selected:change.delegate="propagateProductChange(item, $event.detail.selected)">
+                <select2 selected.bind="item.product | lookupToId:$parent.products" options.bind="$parent.products"
+                  placeholder="Select Product" allow_clear="true"
+                  selected:change.delegate="propagateProductChange(item, $event.detail.selected)"
+                  opened.bind="$parent.focusProductInput">
                   <tempalte replace-part="suggestions">
                     <option repeat.for="product of $parent.products" model.bind="product.id">${product.name}</option>
                   </tempalte>
@@ -56,10 +66,14 @@
             </div>
           </td>
 
-          <td if.bind="$parent.selectedItem === item">
-            <div class="row">
+          <td>
+            <div if.bind="$parent.selectedItem !== item">
+              ${item.reason.name}
+            </div>
+            <div else class="row">
               <div class="col-xs-12">
-                <select class="form-control input-xs" value.bind="item.reason | lookupToId:$parent.reasons" change.delegate="initializeItem(item)">
+                <select class="form-control input-xs" value.bind="item.reason | lookupToId:$parent.reasons"
+                  change.delegate="initializeItem(item)">
                   <option>Select Reason</option>
                   <option repeat.for="reason of $parent.reasons" model.bind="reason.id">${reason.name}</option>
                 </select>
@@ -67,38 +81,53 @@
             </div>
           </td>
 
-          <td if.bind="$parent.selectedItem === item" class="text-right">
-            <div class="row">
+          <td class="text-right">
+            <div if.bind="$parent.selectedItem !== item">
+              ${item.quantity.unit.name}
+            </div>
+            <div else class="row">
               <div class="col-xs-12 pull-right">
-                <select class="form-control input-xs" value.bind="item.quantity.unit | lookupToId:item.unitOfMeasures" change.delegate="computeUnitPriceAmount()">
-                  <option repeat.for="unitOfMeasure of item.unitOfMeasures" model.bind="unitOfMeasure.id">${unitOfMeasure.name}</option>
+                <select class="form-control input-xs" value.bind="item.quantity.unit | lookupToId:item.unitOfMeasures"
+                  change.delegate="computeUnitPriceAmount()" focus.bind="$parent.focusUomInput">
+                  <option repeat.for="unitOfMeasure of item.unitOfMeasures" model.bind="unitOfMeasure.id">
+                    ${unitOfMeasure.name}</option>
                 </select>
               </div>
             </div>
           </td>
 
-          <td if.bind="$parent.selectedItem === item" class="text-right">
-            <div class="row">
+          <td class="text-right">
+            <div if.bind="$parent.selectedItem !== item">
+              ${item.quantity.value}
+            </div>
+            <div else class="row">
               <div class="col-xs-12 pull-right">
-                <input class="form-control input-xs text-right" type="number" numeric-value.bind="item.quantity.value" keyup.delegate="compute(item)"
-                />
+                <input class="form-control input-xs text-right" type="number" numeric-value.bind="item.quantity.value"
+                  keyup.delegate="compute(item)" />
               </div>
             </div>
           </td>
 
-          <td if.bind="$parent.selectedItem === item" class="text-right">
-            <div class="row">
+          <td class="text-right">
+            <div if.bind="$parent.selectedItem !== item">
+              ${item.unitPriceAmount | numberFormat}
+            </div>
+            <div else class="row">
               <div class="col-xs-12 pull-right">
-                <input class="form-control input-xs text-right" type="number" numeric-value.bind="item.unitPriceAmount" keyup.delegate="compute(item)"
-                />
+                <input class="form-control input-xs text-right" type="number" numeric-value.bind="item.unitPriceAmount"
+                  keyup.delegate="compute(item)" />
               </div>
             </div>
           </td>
 
-          <td if.bind="$parent.selectedItem === item" class="text-right">
-            <div class="row">
+          <td class="text-right">
+            <div if.bind="$parent.selectedItem !== item">
+              ${item.returnedAmount | numberFormat}
+            </div>
+            <div else class="row">
               <div class="col-xs-12 pull-right">
-                <input class="form-control input-xs text-right" type="number" numeric-value.bind="item.returnedAmount" disabled />
+                <input class="form-control input-xs text-right" type="number" numeric-value.bind="item.returnedAmount"
+                  disabled />
               </div>
             </div>
           </td>
@@ -124,6 +153,6 @@
   </div>
 
   <!-- pager -->
-  <pager current-page.bind="itemPager.offset" total-items.bind="itemPager.count" change.delegate="itemPager.doPage($event)"
-  />
+  <pager current-page.bind="itemPager.offset" total-items.bind="itemPager.count"
+    change.delegate="itemPager.doPage($event)" />
 </template>

@@ -25,7 +25,7 @@ export interface CustomerSalesReportItemModel {
 export class CustomerSalesReport extends Report<CustomerSalesReportModel> {
 
   protected async buildBody(data: CustomerSalesReportModel): Promise<any[] | Content[]> {
-    let orderTableBody: any[] = [
+    let salesTableBody: any[] = [
       [
         { text: 'Date', style: 'tableHeader' },
         { text: 'Branch', style: 'tableHeader' },
@@ -39,7 +39,7 @@ export class CustomerSalesReport extends Report<CustomerSalesReportModel> {
 
     if (data && data.items && data.items.length > 0) {
       // table content
-      orderTableBody.push(...data.items.map(x => [
+      salesTableBody.push(...data.items.map(x => [
         { text: formatDate(x.paymentOn), style: 'tableData' },
         { text: emptyIfNull(x.branchName), style: 'tableData' },
         { text: emptyIfNull(x.customerName), style: 'tableData' },
@@ -50,7 +50,7 @@ export class CustomerSalesReport extends Report<CustomerSalesReportModel> {
       ]));
 
       // table footer
-      orderTableBody.push([
+      salesTableBody.push([
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
@@ -96,7 +96,7 @@ export class CustomerSalesReport extends Report<CustomerSalesReportModel> {
         table: {
           headerRows: 1,
           widths: ['auto', 'auto', '*', 'auto', 'auto', 'auto', 'auto'],
-          body: orderTableBody
+          body: salesTableBody
         },
         layout: 'lightHorizontalLines',
         style: 'tableExample',

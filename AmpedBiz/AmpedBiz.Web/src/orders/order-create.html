@@ -19,46 +19,75 @@
             <span6>&nbsp ${header} &nbsp</span6>
 
             <!-- transition buttons -->
-            <button type="button" class="btn btn-default" if.bind="order.stage.allowedModifications | canModify" disabled.bind="!canSave" click.trigger="save()">
+            <button type="button" class="btn btn-default" if.bind="order.stage.allowedModifications | canModify"
+              disabled.bind="!canSave" click.trigger="save()">
               <i class="fa fa-save"></i> Save
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'created'" disabled.bind="!canRecreate" click.trigger="recreate()">
+            <button type="button" class="btn btn-default"
+              if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'created'" disabled.bind="!canRecreate"
+              click.trigger="recreate()">
               <i class="fa fa-cart-plus"></i> Recreate
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'staged'" disabled.bind="!canStage" click.trigger="stage()">
+            <button type="button" class="btn btn-default"
+              if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'staged'" disabled.bind="!canStage"
+              click.trigger="stage()">
               <i class="fa fa-ticket-alt"></i> Stage
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'approved'" disabled.bind="!canApprove" click.trigger="approve()">
+            <button type="button" class="btn btn-default"
+              if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'approved'" disabled.bind="!canApprove"
+              click.trigger="approve()">
               <i class="fa fa-thumbs-up"></i> Approve
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'invoiced'" disabled.bind="!canInvoice" click.trigger="invoice()">
+            <button type="button" class="btn btn-default"
+              if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'invoiced'" disabled.bind="!canInvoice"
+              click.trigger="invoice()">
               <i class="fa fa-file-invoice-dollar"></i> Invoice
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'shipped'" disabled.bind="!canShip" click.trigger="ship()">
+            <button type="button" class="btn btn-default"
+              if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'shipped'" disabled.bind="!canShip"
+              click.trigger="ship()">
               <i class="fa fa-check"></i> Ship
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'completed'" disabled.bind="!canComplete" click.trigger="complete()">
+            <button type="button" class="btn btn-default"
+              if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'completed'" disabled.bind="!canComplete"
+              click.trigger="complete()">
               <i class="fa fa-list-alt"></i> Complete
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'cancelled'" disabled.bind="!canCancel" click.trigger="cancel()">
+            <button type="button" class="btn btn-default"
+              if.bind="order.stage.allowedTransitions | isTransitionAllowedTo: 'cancelled'" disabled.bind="!canCancel"
+              click.trigger="cancel()">
               <i class="fa fa-minus-circle"></i> Cancel
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="isOrderInvoiced" click.trigger="showInvoice()">
+            <!-- <button type="button" class="btn btn-default" if.bind="isOrderInvoiced" click.trigger="showInvoice()">
               <i class="fa fa-file-invoice"></i> View Invoice
-            </button>
+            </button> -->
 
             <button type="button" class="btn btn-default" click.trigger="back()">
               <i class="fa fa-chevron-circle-left"></i> Back
             </button>
 
+            <div class="gear-menu pull-right" if.bind="isOrderInvoiced">
+              <div class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true">
+                  <i class="fa fa-cog fa-lg"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li>
+                    <a click.trigger="showInvoice()">
+                      <i class="fa fa-file-invoice"></i> View Invoice
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </h4>
 
         </div>
@@ -123,14 +152,16 @@
                 <div class="form-group">
                   <label class="control-label col-sm-4">Ordered On:</label>
                   <div class="col-sm-8">
-                    <input type="date" class="form-control datepicker" placeholder="Enter Order Date" value.bind="order.orderedOn | dateInputFormat" />
+                    <input type="date" class="form-control datepicker" placeholder="Enter Order Date"
+                      value.bind="order.orderedOn | dateInputFormat" />
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label class="control-label col-sm-4">Status:</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" value.bind="order.status | lookupIdToName:statuses" disabled />
+                    <input type="text" class="form-control" value.bind="order.status | lookupIdToName:statuses"
+                      disabled />
                   </div>
                 </div>
 
@@ -168,8 +199,8 @@
                   <li class="active">
                     <a data-toggle="tab" href="#itemsTab">
                       <span>Order Items &nbsp</span>
-                      <button type="button" class="btn btn-default btn-circle" 
-                        disabled.bind="order.stage.allowedModifications | isModificationDisallowedTo:'items':canAddPayment" 
+                      <button type="button" class="btn btn-default btn-circle"
+                        disabled.bind="order.stage.allowedModifications | isModificationDisallowedTo:'items':canAddPayment"
                         click.trigger="addItem()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
@@ -178,8 +209,8 @@
                   <li>
                     <a data-toggle="tab" href="#paymentsTab">
                       <span>Payments &nbsp</span>
-                      <button type="button" class="btn btn-default btn-circle" 
-                        disabled.bind="order.stage.allowedModifications | isModificationDisallowedTo:'payments':canAddPayment" 
+                      <button type="button" class="btn btn-default btn-circle"
+                        disabled.bind="order.stage.allowedModifications | isModificationDisallowedTo:'payments':canAddPayment"
                         click.trigger="addPayment()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
@@ -188,8 +219,8 @@
                   <li>
                     <a data-toggle="tab" href="#returnsTab">
                       <span>Returns &nbsp</span>
-                      <button type="button" class="btn btn-default btn-circle" 
-                        disabled.bind="order.stage.allowedModifications | isModificationDisallowedTo:'returns':canAddReturn" 
+                      <button type="button" class="btn btn-default btn-circle"
+                        disabled.bind="order.stage.allowedModifications | isModificationDisallowedTo:'returns':canAddReturn"
                         click.trigger="addReturn()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
@@ -203,12 +234,8 @@
                   <div id="itemsTab" class="tab-pane fade in active">
                     <br />
 
-                    <order-item-page 
-                      products.bind="products" 
-                      items.bind="order.items" 
-                      order-id.bind="order.id"
-                      pricing.bind="order.pricing"
-                      tax-amount.bind="order.taxAmount"
+                    <order-item-page products.bind="products" items.bind="order.items" order-id.bind="order.id"
+                      pricing.bind="order.pricing" tax-amount.bind="order.taxAmount"
                       shipping-fee-amount.bind="order.shippingFeeAmount"
                       is-modification-disallowed.bind="order.stage.allowedModifications | isModificationDisallowedTo:'items':canAddItem">
                     </order-item-page>
@@ -218,9 +245,7 @@
                   <div id="paymentsTab" class="tab-pane fade">
                     <br />
 
-                    <order-payment-page 
-                      payment-types.bind="paymentTypes"
-                      payments.bind="order.payments" 
+                    <order-payment-page payment-types.bind="paymentTypes" payments.bind="order.payments"
                       order-id.bind="order.id"
                       is-modification-disallowed.bind="order.stage.allowedModifications | isModificationDisallowedTo:'payments':canAddPayment">
                     </order-payment-page>
@@ -230,11 +255,8 @@
                   <div id="returnsTab" class="tab-pane fade in">
                     <br />
 
-                    <order-return-page 
-                      returns.bind="order.returns" 
-                      returnables.bind="order.returnables" 
-                      order-id.bind="order.id"
-                      reasons.bind="returnReasons"
+                    <order-return-page returns.bind="order.returns" returnables.bind="order.returnables"
+                      order-id.bind="order.id" reasons.bind="returnReasons"
                       is-modification-disallowed.bind="order.stage.allowedModifications | isModificationDisallowedTo:'returns':canAddReturn">
                     </order-return-page>
                   </div>

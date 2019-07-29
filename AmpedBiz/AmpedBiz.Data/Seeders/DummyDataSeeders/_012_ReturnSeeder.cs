@@ -61,6 +61,7 @@ namespace AmpedBiz.Data.Seeders.DummyDataSeeders
                     entity.Accept(new ReturnSaveVisitor()
                     {
                         Branch = session.Load<Branch>(context.BranchId),
+                        Pricing = Pricing.RetailPrice,
                         Customer = _utils.Random<Customer>(),
                         ReturnedBy = _utils.Random<User>(),
                         ReturnedOn = DateTime.Now.AddDays(_utils.RandomInteger(-36, -1)),

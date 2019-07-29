@@ -5,7 +5,7 @@ import { PointOfSalePayable, PointOfSalePayment, pointOfSaleEvents, initializePo
 import { Lookup } from '../common/custom_types/lookup';
 import { ServiceApi } from '../services/service-api';
 import { paymentType } from '../common/models/payment-type';
-import { role } from 'common/models/role';
+import { role } from '../common/models/role';
 import { Override, OverrideParams } from 'users/override';
 import { DialogService } from 'aurelia-dialog';
 import * as Enumerable from 'linq';

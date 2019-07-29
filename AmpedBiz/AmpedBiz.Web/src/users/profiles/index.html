@@ -1,4 +1,16 @@
 <template>
+  <require from="../../shell/side-bar"></require>
+  <require from="../../shell/content"></require>
+
+  <section class="au-animate">
+    <side-bar router.bind="router" heading.bind="heading" display-menu-title="true"></side-bar>
+    <content>
+      <router-view></router-view>
+    </content>
+  </section>
+</template>
+
+<!-- <template>
   <require from="shell/side-bar"></require>
 
   <section class="au-animate">
@@ -13,4 +25,4 @@
       </div>
     </div>
   </section>
-</template>
+</template> -->

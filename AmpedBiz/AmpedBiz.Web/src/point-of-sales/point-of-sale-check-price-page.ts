@@ -2,9 +2,9 @@ import { ServiceApi } from './../services/service-api';
 import { ProductRetailPriceDetails } from './../common/models/product';
 import { autoinject, customElement } from "aurelia-framework";
 import { EventAggregator, Subscription } from "aurelia-event-aggregator";
-import { pointOfSaleEvents } from "common/models/point-of-sale";
+import { pointOfSaleEvents } from "./../common/models/point-of-sale";
 import { Filter, Sorter, Pager, PagerRequest, PagerResponse } from "common/models/paging";
-import { NotificationService } from 'common/controls/notification-service';
+import { NotificationService } from './../common/controls/notification-service';
 import * as Enumerable from 'linq';
 
 @autoinject()

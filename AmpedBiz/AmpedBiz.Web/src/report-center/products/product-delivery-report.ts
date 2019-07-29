@@ -33,7 +33,7 @@ export class ProductDeliveryReport extends Report<ProductDeliveryReportModel> {
   }
 
   protected async buildBody(data: ProductDeliveryReportModel): Promise<any[] | Content[]> {
-    let orderTableBody: any[] = [
+    let deliveryTableBody: any[] = [
       [
         { text: 'Product', style: 'tableHeader' },
         { text: 'Branch', style: 'tableHeader' },
@@ -55,7 +55,7 @@ export class ProductDeliveryReport extends Report<ProductDeliveryReportModel> {
         .forEach(group => {
           let details = group.getSource();
           // details
-          orderTableBody.push(...Enumerable
+          deliveryTableBody.push(...Enumerable
             .from(details)
             .select((x, i) => [
               (i === 0) // header
@@ -76,7 +76,7 @@ export class ProductDeliveryReport extends Report<ProductDeliveryReportModel> {
         });
 
       // table footer
-      orderTableBody.push([
+      deliveryTableBody.push([
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
@@ -142,7 +142,7 @@ export class ProductDeliveryReport extends Report<ProductDeliveryReportModel> {
         table: {
           headerRows: 1,
           widths: ['*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
-          body: orderTableBody
+          body: deliveryTableBody
         },
         layout: 'lightHorizontalLines',
         style: 'tableExample',

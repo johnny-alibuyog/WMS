@@ -10,7 +10,7 @@ import { ServiceApi } from '../services/service-api';
 import { ActionResult } from '../common/controls/notification';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { inventoryEvents } from '../common/models/inventory';
-import { Pager } from 'common/models/paging';
+import { Pager } from '../common/models/paging';
 import * as Enumerable from 'linq';
 
 @autoinject

@@ -4,7 +4,7 @@ import { ServiceApi } from '../services/service-api';
 import { Lookup } from '../common/custom_types/lookup';
 import { NotificationService } from '../common/controls/notification-service';
 import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
-import { PointOfSalePageItem, PointOfSaleStatus, PointOfSale } from 'common/models/point-of-sale';
+import { PointOfSalePageItem, PointOfSaleStatus, PointOfSale } from '../common/models/point-of-sale';
 
 @autoinject
 export class PointOfSalePage {

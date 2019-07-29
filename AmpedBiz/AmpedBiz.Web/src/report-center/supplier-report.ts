@@ -21,7 +21,7 @@ export class SupplierReport extends Report<SupplierReportModel> {
 
   protected buildBody(data: SupplierReportModel): Promise<any[] | Content[]> {
 
-    let orderTableBody: any[] = [
+    let supplierTableBody: any[] = [
 
       [
         { text: 'Supplier Name', style: 'tableHeader' },
@@ -33,7 +33,7 @@ export class SupplierReport extends Report<SupplierReportModel> {
 
     if (data && data.items && data.items.length > 0) {
       data.items.forEach(x =>
-        orderTableBody.push([
+        supplierTableBody.push([
           { text: emptyIfNull(x.name), style: 'tableData' },
           { text: emptyIfNull(x.contactPerson), style: 'tableData' },
           { text: contactAsString(x.contact), style: 'tableData' },
@@ -51,7 +51,7 @@ export class SupplierReport extends Report<SupplierReportModel> {
         table: {
           headerRows: 1,
           widths: ['*', 'auto', 'auto', 'auto'],
-          body: orderTableBody
+          body: supplierTableBody
         },
         layout: 'lightHorizontalLines',
         style: 'tableExample',

@@ -13,7 +13,9 @@ namespace AmpedBiz.Data.Definitions.Returns
 			{
 				References(x => x.Branch);
 
-				References(x => x.Customer);
+                References(x => x.Pricing);
+
+                References(x => x.Customer);
 
 				References(x => x.ReturnedBy);
 
@@ -42,6 +44,9 @@ namespace AmpedBiz.Data.Definitions.Returns
 
 				Define(x => x.Branch)
 					.NotNullable();
+
+                Define(x => x.Pricing)
+                    .NotNullable();
 
 				Define(x => x.Customer)
 					.NotNullable();

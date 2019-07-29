@@ -63,6 +63,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".utils", ".utils", "{050410
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ampedbiz.BarcodeSimulator", "Ampedbiz.BarcodeSimulator\Ampedbiz.BarcodeSimulator.csproj", "{2A6CB7D3-6555-4200-9E27-24DE7B2DA110}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "todo", "todo", "{6C4AEC45-ABC4-469B-92C9-A79A2AF60B5C}"
+	ProjectSection(SolutionItems) = preProject
+		TODO.md = TODO.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

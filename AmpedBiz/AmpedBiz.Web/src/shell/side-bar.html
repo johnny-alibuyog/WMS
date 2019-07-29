@@ -12,8 +12,11 @@
   <require from="./side-bar.css"></require>
   <require from="./route-value-converter"></require>
 
-  <ul class="well nav nav-pills nav-stacked">
+  <ul class="well well-shadow nav nav-pills nav-stacked">
     <let count="${router.navigation | groupedRouteSize}"></let>
+    <li if.bind="displayMenuTitle">
+      <h3 class="menu-title">${heading}</h3>
+    </li>
     <template repeat.for="[group, routes] of router.navigation | groupedRoute">
       <li if.bind="routes.length === 1" class="${$index !== count - 1 ? 'nav-group' : '' } ${routes[0].isActive ? 'active' : ''}">
         <let row.bind="routes[0]"></let>

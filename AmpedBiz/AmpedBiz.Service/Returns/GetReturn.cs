@@ -40,7 +40,8 @@ namespace AmpedBiz.Service.Returns
 					var entity = session.QueryOver<Return>()
 						.Where(x => x.Id == message.Id)
 						.Fetch(x => x.Branch).Eager
-						.Fetch(x => x.Customer).Eager
+						.Fetch(x => x.Pricing).Eager
+                        .Fetch(x => x.Customer).Eager
 						.Fetch(x => x.ReturnedBy).Eager
 						.Fetch(x => x.Items).Eager
 						.Fetch(x => x.Items.First().Product).Eager

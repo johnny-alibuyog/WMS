@@ -11,6 +11,7 @@
     "Enabled": false,
     "UseDummyData": true,
     "UseExternalFiles": true,
-    "ExternalFilesPath": ".\\ImportFiles"
+    "ExternalFilesPath": ".\\ImportFiles",
+    "ExternalFilesAbsolutePath": "C:\\_repo\\Narasoft\\tinda\\trunk\\AmpedBiz\\AmpedBiz.Service.Host\\bin\\.\\ImportFiles"
   }
 }

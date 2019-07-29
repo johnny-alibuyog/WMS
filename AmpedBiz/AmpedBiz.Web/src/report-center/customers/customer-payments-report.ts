@@ -30,7 +30,7 @@ export class CustomerPaymentsReport extends Report<CustomerPaymentsReportModel> 
   }
 
   protected async buildBody(data: CustomerPaymentsReportModel): Promise<any[] | Content[]> {
-    let orderTableBody: any[] = [
+    let tableBody: any[] = [
       [
         { text: 'Date', style: 'tableHeader' },
         { text: 'Branch', style: 'tableHeader' },
@@ -45,7 +45,7 @@ export class CustomerPaymentsReport extends Report<CustomerPaymentsReportModel> 
 
     if (data && data.items && data.items.length > 0) {
       // table content
-      orderTableBody.push(...data.items.map(x => [
+      tableBody.push(...data.items.map(x => [
         { text: formatDate(x.paymentOn), style: 'tableData' },
         { text: emptyIfNull(x.branchName), style: 'tableData' },
         { text: emptyIfNull(x.customerName), style: 'tableData' },
@@ -73,7 +73,7 @@ export class CustomerPaymentsReport extends Report<CustomerPaymentsReportModel> 
       };
 
       // table footer
-      orderTableBody.push([
+      tableBody.push([
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
         { text: "", style: "tableData" },
@@ -116,7 +116,7 @@ export class CustomerPaymentsReport extends Report<CustomerPaymentsReportModel> 
         table: {
           headerRows: 1,
           widths: ['auto', 'auto','auto', '*', 'auto', 'auto', 'auto', 'auto'],
-          body: orderTableBody
+          body: tableBody
         },
         layout: 'lightHorizontalLines',
         style: 'tableExample',

@@ -11,9 +11,8 @@
         <tr class="row-no-padding">
           <th class="col-sm-1">Action</th>
           <th class="col-sm-auto">
-            <div>
-              Product &nbsp;
-              <input type="text" placeholder="Barcode Reader" value.bind="barcode & debounce:100"
+            <div>Product &nbsp;
+              <input class="th-input" type="text" placeholder="Barcode Reader" value.bind="barcode & debounce:100"
                 disabled.bind="isModificationDisallowed" focus.bind="focusBarcodeInput" />
             </div>
           </th>
@@ -47,7 +46,8 @@
                   selected:change.delegate="propagateProductChange(item, $event.detail.selected)"
                   opened.bind="$parent.focusProductInput">
                   <template replace-part="suggestions">
-                    <option repeat.for="product of $parent.$parent.products" value.bind="product.id">${product.name}</option>
+                    <option repeat.for="product of $parent.$parent.products" value.bind="product.id">${product.name}
+                    </option>
                   </template>
                 </select2>
               </div>

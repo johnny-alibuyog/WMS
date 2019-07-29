@@ -22,7 +22,7 @@ export interface InventoryMovementsReportItemModel {
 export class InventoryMovementsReport extends Report<InventoryMovementsReportModel> {
 
   protected async buildBody(data: InventoryMovementsReportModel): Promise<any[] | Content[]> {
-    let orderTableBody: any[] = [
+    let inventoryMovementTableBody: any[] = [
       [
         { text: 'Date', style: 'tableHeader' },
         { text: 'Branch', style: 'tableHeader' },
@@ -34,7 +34,7 @@ export class InventoryMovementsReport extends Report<InventoryMovementsReportMod
 
     if (data && data.items && data.items.length > 0) {
       // table content
-      orderTableBody.push(...data.items.map(x => [
+      inventoryMovementTableBody.push(...data.items.map(x => [
         { text: formatDate(x.date), style: 'tableData' },
         { text: emptyIfNull(x.branchName), style: 'tableData' },
         { text: emptyIfNull(x.productName), style: 'tableData' },
@@ -88,7 +88,7 @@ export class InventoryMovementsReport extends Report<InventoryMovementsReportMod
         table: {
           headerRows: 1,
           widths: ['auto', 'auto', '*', 'auto', 'auto'],
-          body: orderTableBody
+          body: inventoryMovementTableBody
         },
         layout: 'lightHorizontalLines',
         style: 'tableExample',

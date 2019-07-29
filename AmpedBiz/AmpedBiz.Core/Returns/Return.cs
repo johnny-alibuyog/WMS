@@ -1,4 +1,5 @@
 ﻿using AmpedBiz.Core.Common;
+using AmpedBiz.Core.Products;
 using AmpedBiz.Core.SharedKernel;
 using AmpedBiz.Core.Users;
 using System;
@@ -10,6 +11,8 @@ namespace AmpedBiz.Core.Returns
     public class Return : TransactionBase, IAccept<IVisitor<Return>>
     {
         public virtual Branch Branch { get; internal protected set; }
+
+        public virtual Pricing Pricing { get; internal protected set; }
 
         public virtual Customer Customer { get; internal protected set; }
 

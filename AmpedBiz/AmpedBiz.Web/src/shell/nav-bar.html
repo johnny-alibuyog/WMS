@@ -1,5 +1,7 @@
 <template>
-  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <require from="./nav-bar.css"></require>
+
+  <nav class="navbar navbar-default navbar-fixed-top navbar-shadow" role="navigation">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
         <span class="sr-only">Toggle Navigation</span>
@@ -17,13 +19,13 @@
       <!-- menu -->
       <ul class="nav navbar-nav">
         <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
-          <a data-toggle="collapse" data-target="#bs-example-navbar-collapse-1.in" href.bind="row.href" if.bind="row.settings.auth.roles | authorize">${row.title}</a>
+          <a data-toggle="collapse" data-target="#bs-example-navbar-collapse-1.in" href.bind="row.href"
+            if.bind="row.settings.auth.roles | authorize">${row.title}</a>
         </li>
       </ul>
 
       <!-- links -->
       <ul class="nav navbar-top-links navbar-nav navbar-right">
-
         <!-- loader -->
         <li class="loader" if.bind="router.isNavigating">
           <i class="fa fa-spinner fa-spin fa-2x"></i>
@@ -36,16 +38,22 @@
           </a>
           <ul class="dropdown-menu dropdown-user">
             <li>
-              <a href="#/user-profile"><i class="fa fa-user fa-fw"></i> User Profile
+              <a href="#/user-profile">
+                <i class="fa fa-user fa-fw">
+                </i> User Profile
               </a>
             </li>
             <li if.bind="canAccessSettings">
-              <a href="#/settings"><i class="fa fa-gear fa-fw"></i> Settings</a>
+              <a href="#/settings">
+                <i class="fa fa-cog fa-fw">
+                </i> Settings
+              </a>
             </li>
             <li class="divider"></li>
             <li>
               <a href="#" click.delegate="logout()">
-                <i class="fa fa-sign-out fa-fw"></i> Logout
+                <i class="fa fa-sign-out-alt fa-fw">
+                </i> Logout
               </a>
             </li>
           </ul>

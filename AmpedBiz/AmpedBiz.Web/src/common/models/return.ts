@@ -13,6 +13,7 @@ export const returnEvents = {
 export type Return = {
   id?: string;
   branch?: Lookup<string>;
+  pricing?: Lookup<string>;
   customer?: Lookup<string>;
   returnedBy?: Lookup<string>;
   returnedOn?: Date;
@@ -33,6 +34,7 @@ export type ReturnPageItem = {
 
 export type ReturnItem = {
   id?: string;
+  barcode?: string;
   returnId?: string;
   product?: Lookup<string>;
   reason?: Lookup<string>;

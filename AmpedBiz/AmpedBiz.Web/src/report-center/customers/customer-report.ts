@@ -21,7 +21,7 @@ export interface CustomerReportModelItem {
 @autoinject
 export class CustomerReport extends Report<CustomerReportModel> {
   protected async buildBody(data: CustomerReportModel): Promise<any[] | Content[]> {
-    let orderTableBody: any[] = [
+    let tableBody: any[] = [
       [
         { text: 'Customer', style: 'tableHeader' },
         { text: 'Contact Person', style: 'tableHeader' },
@@ -33,7 +33,7 @@ export class CustomerReport extends Report<CustomerReportModel> {
 
     if (data && data.items && data.items.length > 0) {
       data.items.forEach(x =>
-        orderTableBody.push([
+        tableBody.push([
           { text: emptyIfNull(x.name), style: 'tableData' },
           { text: emptyIfNull(x.contactPerson), style: 'tableData' },
           { text: formatNumber(x.creditLimitAmount), style: 'tableData', alignment: 'right' },
@@ -52,7 +52,7 @@ export class CustomerReport extends Report<CustomerReportModel> {
         table: {
           headerRows: 1,
           widths: ['*', 'auto', 'auto', 'auto', 'auto'],
-          body: orderTableBody
+          body: tableBody
         },
         layout: 'lightHorizontalLines',
         style: 'tableExample',

@@ -15,7 +15,7 @@ export class UnitOfMeasureReport extends Report<UnitOfMeasureReportModel> {
 
   protected buildBody(data: UnitOfMeasureReportModel): Promise<any[] | Content[]> {
     // header
-    let orderTableBody: any[] = [
+    let uomTableBody: any[] = [
       [
         { text: 'Code', style: 'tableHeader' },
         { text: 'Name', style: 'tableHeader' },
@@ -25,7 +25,7 @@ export class UnitOfMeasureReport extends Report<UnitOfMeasureReportModel> {
     // items
     if (data && data.items && data.items.length > 0) {
       data.items.forEach(item => {
-        orderTableBody.push([
+        uomTableBody.push([
           { text: emptyIfNull(item.id), style: 'tableData' },
           { text: emptyIfNull(item.name), style: 'tableData' },
         ]);
@@ -41,7 +41,7 @@ export class UnitOfMeasureReport extends Report<UnitOfMeasureReportModel> {
         table: {
           headerRows: 1,
           widths: ['auto', 'auto'],
-          body: orderTableBody
+          body: uomTableBody
         },
         layout: 'lightHorizontalLines',
         style: 'tableExample',

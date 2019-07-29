@@ -14,34 +14,46 @@
       <div class="panel panel-default">
 
         <!-- heading -->
-        <div class="panel-heading">
+        <div class="panel-heading row-fluid">
 
           <!-- heading label -->
-          <h4 class="panel-title row-fluid">
+          <h4 class="panel-title">
+
             <span6>&nbsp ${header} &nbsp</span6>
 
             <!-- transition buttons -->
-            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedModifications | canModify" disabled.bind="!canSave" click.trigger="save()">
+            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedModifications | canModify"
+              disabled.bind="!canSave" click.trigger="save()">
               <i class="fa fa-save"></i> Save
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'created'" disabled.bind="!canRecreate" click.trigger="recreate()">
+            <button type="button" class="btn btn-default"
+              if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'created'"
+              disabled.bind="!canRecreate" click.trigger="recreate()">
               <i class="fa fa-cart-plus"></i> Recreate
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'submitted'" disabled.bind="!canSubmit" click.trigger="submit()">
+            <button type="button" class="btn btn-default"
+              if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'submitted'"
+              disabled.bind="!canSubmit" click.trigger="submit()">
               <i class="fa fa-paper-plane"></i> Submit
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'approved'" disabled.bind="!canApprove" click.trigger="approve()">
+            <button type="button" class="btn btn-default"
+              if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'approved'"
+              disabled.bind="!canApprove" click.trigger="approve()">
               <i class="fa fa-thumbs-up"></i> Approve
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'completed'" disabled.bind="!canComplete" click.trigger="complete()">
+            <button type="button" class="btn btn-default"
+              if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'completed'"
+              disabled.bind="!canComplete" click.trigger="complete()">
               <i class="fa fa-list-alt"></i> Complete
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'cancelled'" disabled.bind="!canCancel" click.trigger="cancel()">
+            <button type="button" class="btn btn-default"
+              if.bind="purchaseOrder.stage.allowedTransitions | isTransitionAllowedTo: 'cancelled'"
+              disabled.bind="!canCancel" click.trigger="cancel()">
               <i class="fa fa-minus-circle"></i> Cancel
             </button>
 
@@ -49,18 +61,40 @@
               <i class="fa fa-sync-alt"></i> Reset
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="isPurchaseOrderApproved" click.trigger="showVoucher()">
+            <!-- <button type="button" class="btn btn-default" if.bind="isPurchaseOrderApproved"
+              click.trigger="showVoucher()">
               <i class="fa fa-file-invoice"></i> View Voucher
             </button>
 
-            <button type="button" class="btn btn-default" if.bind="isPurchaseOrderApproved" click.trigger="downloadVoucherCsv()">
+            <button type="button" class="btn btn-default" if.bind="isPurchaseOrderApproved"
+              click.trigger="downloadVoucherCsv()">
               <i class="fa fa-file-excel"></i> Download Excel
-            </button>
+            </button> -->
 
             <button type="button" class="btn btn-default" click.trigger="back()">
               <i class="fa fa-chevron-circle-left"></i> Back
             </button>
 
+            <div class="gear-menu pull-right" if.bind="isPurchaseOrderApproved">
+              <div class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true">
+                  <i class="fa fa-cog fa-lg"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li>
+                    <a click.trigger="downloadVoucherCsv()">
+                      <i class="fa fa-file-excel"></i> Download Excel
+                    </a>
+                  </li>
+                  <li class="divider"></li>
+                  <li>
+                    <a click.trigger="showVoucher()">
+                      <i class="fa fa-file-invoice"></i> View Voucher
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </h4>
 
         </div>
@@ -78,7 +112,8 @@
                 <div class="form-group">
                   <label class="control-label col-sm-4">Supplier:</label>
                   <div class="col-sm-8">
-                    <select class="form-control" value.bind="purchaseOrder.supplier | lookupToId:suppliers" change.delegate="changeSupplier(purchaseOrder.supplier)">
+                    <select class="form-control" value.bind="purchaseOrder.supplier | lookupToId:suppliers"
+                      change.delegate="changeSupplier(purchaseOrder.supplier)">
                       <option>Select Supplier</option>
                       <option repeat.for="supplier of suppliers" model.bind="supplier.id">${supplier.name}</option>
                     </select>
@@ -91,7 +126,7 @@
                     <input type="number" class="form-control text-right" value.bind="purchaseOrder.shippingFeeAmount" />
                   </div>
                 </div>
-                
+
                 <div class="form-group">
                   <label class="control-label col-sm-4">Reference:</label>
                   <div class="col-sm-8">
@@ -129,14 +164,16 @@
                 <div class="form-group">
                   <label class="control-label col-sm-4">Expected On:</label>
                   <div class="col-sm-8">
-                    <input type="date" class="form-control" placeholder="Enter Excpected Date" value.bind="purchaseOrder.expectedOn | dateInputFormat" />
+                    <input type="date" class="form-control" placeholder="Enter Excpected Date"
+                      value.bind="purchaseOrder.expectedOn | dateInputFormat" />
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label class="control-label col-sm-4">Status:</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" value.bind="purchaseOrder.status | lookupIdToName:statuses" disabled />
+                    <input type="text" class="form-control" value.bind="purchaseOrder.status | lookupIdToName:statuses"
+                      disabled />
                   </div>
                 </div>
 
@@ -155,7 +192,7 @@
                   </div>
                 </div>
                 -->
-                
+
                 <!--
                 <div class="form-group">
                   <label class="control-label col-sm-4">Submitted On:</label>
@@ -168,14 +205,16 @@
                 <div class="form-group">
                   <label class="control-label col-sm-4">Approved On:</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" value.bind="purchaseOrder.approvedOn | dateFormat" disabled />
+                    <input type="text" class="form-control" value.bind="purchaseOrder.approvedOn | dateFormat"
+                      disabled />
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label class="control-label col-sm-4">Completed On:</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" value.bind="purchaseOrder.completedOn | dateFormat" disabled />
+                    <input type="text" class="form-control" value.bind="purchaseOrder.completedOn | dateFormat"
+                      disabled />
                   </div>
                 </div>
 
@@ -192,8 +231,8 @@
                   <li class="active">
                     <a data-toggle="tab" href="#itemsTab">
                       <span>Purchase Items &nbsp</span>
-                      <button type="button" class="btn btn-default btn-circle" 
-                        disabled.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo:'items':canAddItem" 
+                      <button type="button" class="btn btn-default btn-circle"
+                        disabled.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo:'items':canAddItem"
                         click.trigger="addItem()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
@@ -202,8 +241,8 @@
                   <li>
                     <a data-toggle="tab" href="#paymentsTab">
                       <span>Payments &nbsp</span>
-                      <button type="button" class="btn btn-default btn-circle" 
-                        disabled.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo:'payments':canAddPayment" 
+                      <button type="button" class="btn btn-default btn-circle"
+                        disabled.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo:'payments':canAddPayment"
                         click.trigger="addPayment()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
@@ -212,8 +251,8 @@
                   <li>
                     <a data-toggle="tab" href="#receiptsTab">
                       <span>Inventory Recieving&nbsp</span>
-                      <button type="button" class="btn btn-default btn-circle" 
-                        disabled.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo:'receipts':canAddReceipt" 
+                      <button type="button" class="btn btn-default btn-circle"
+                        disabled.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo:'receipts':canAddReceipt"
                         click.trigger="addReceipt()">
                         <i class="glyphicon glyphicon-plus"></i>
                       </button>
@@ -227,11 +266,8 @@
                   <div id="itemsTab" class="tab-pane fade in active">
                     <br />
 
-                    <purchase-order-item-page 
-                      items.bind="purchaseOrder.items" 
-                      products.bind="products" 
-                      purchase-order-id.bind="purchaseOrder.id"
-                      tax-amount.bind="purchaseOrder.taxAmount"
+                    <purchase-order-item-page items.bind="purchaseOrder.items" products.bind="products"
+                      purchase-order-id.bind="purchaseOrder.id" tax-amount.bind="purchaseOrder.taxAmount"
                       shipping-fee-amount.bind="purchaseOrder.shippingFeeAmount"
                       is-modification-disallowed.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo:'items':canAddItem">
                     </purchase-order-item-page>
@@ -241,10 +277,8 @@
                   <div id="paymentsTab" class="tab-pane fade">
                     <br />
 
-                    <purchase-order-payment-page 
-                      payments.bind="purchaseOrder.payments" 
-                      payment-types.bind="paymentTypes" 
-                      purchase-order-id.bind="purchaseOrder.id"
+                    <purchase-order-payment-page payments.bind="purchaseOrder.payments"
+                      payment-types.bind="paymentTypes" purchase-order-id.bind="purchaseOrder.id"
                       is-modification-disallowed.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo:'payments':canAddPayment">
                     </purchase-order-payment-page>
                   </div>
@@ -253,11 +287,8 @@
                   <div id="receiptsTab" class="tab-pane fade">
                     <br />
 
-                    <purchase-order-receipt-page 
-                      products.bind="products" 
-                      receipts.bind="purchaseOrder.receipts"
-                      receivables.bind="purchaseOrder.receivables" 
-                      purchase-order-id.bind="purchaseOrder.id"
+                    <purchase-order-receipt-page products.bind="products" receipts.bind="purchaseOrder.receipts"
+                      receivables.bind="purchaseOrder.receivables" purchase-order-id.bind="purchaseOrder.id"
                       is-modification-disallowed.bind="purchaseOrder.stage.allowedModifications | isModificationDisallowedTo:'receipts':canAddReceipt">
                     </purchase-order-receipt-page>
                   </div>

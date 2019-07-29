@@ -13,7 +13,8 @@ using System.Linq;
 
 namespace AmpedBiz.Service.Orders
 {
-	public class SaveOrder
+    // https://smallbusiness.chron.com/sales-order-vs-sales-invoice-20610.html
+    public class SaveOrder
 	{
 		public class Request : Dto.Order, IRequest<Response>
 		{

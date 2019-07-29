@@ -31,7 +31,7 @@ export class ProductReport extends Report<ProductReportModel> {
 
   protected buildBody(data: ProductReportModel): Promise<any[] | Content[]> {
     // table header
-    let orderTableBody: any[] = [
+    let productTableBody: any[] = [
       [
         { text: 'Product', style: 'tableHeader' },
         // { text: 'Category', style: 'tableHeader' },
@@ -49,7 +49,7 @@ export class ProductReport extends Report<ProductReportModel> {
     // table data
     if (data && data.items && data.items.length > 0) {
       data.items.forEach(x =>
-        orderTableBody.push([
+        productTableBody.push([
           { text: emptyIfNull(x.productName), style: 'tableData' },
           // { text: emptyIfNull(x.categoryName), style: 'tableData' },
           // { text: emptyIfNull(x.supplierName), style: 'tableData' },
@@ -71,7 +71,7 @@ export class ProductReport extends Report<ProductReportModel> {
     };
 
     // total
-    orderTableBody.push([
+    productTableBody.push([
       // { text: '', style: 'tableData' },
       // { text: '', style: 'tableData' },
       { text: '', style: 'tableData' },
@@ -117,7 +117,7 @@ export class ProductReport extends Report<ProductReportModel> {
           headerRows: 1,
           widths: ['*', 'auto', 'auto', 'auto', 'auto'],
           // widths: ['*', 'auto', 'auto', 'auto', 'auto'],
-          body: orderTableBody
+          body: productTableBody
         },
         layout: 'lightHorizontalLines',
         style: 'tableExample',
