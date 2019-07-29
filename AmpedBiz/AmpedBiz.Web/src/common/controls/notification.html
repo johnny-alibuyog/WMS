@@ -4,21 +4,29 @@
   <ux-dialog>
 
     <ux-dialog-body>
-      <div class="cl-lg-12">
+      <div class="callout-placeholder callout-type-${prompt.type}">
+        <div class="row-fluid">
+          <div class="callout-title">
+            <strong>${prompt.emphasis}</strong>
+          </div>
+          <div class="callout-content">
+            ${prompt.message}
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="cl-lg-12">
         <div class="panel panel-default">
           <div class="alert alert-${prompt.type}">
             <strong>${prompt.emphasis}</strong> ${prompt.message}
           </div>
         </div>
-      </div>
+      </div> -->
     </ux-dialog-body>
 
     <ux-dialog-footer>
-      <a repeat.for="action of prompt.actions" 
-        attach-focus="${action.type == 'primary' ? true: false}"
-        click.trigger="$parent.confirm(action.result)" 
-        class="btn btn-${action.type}" 
-        role="button"
+      <a repeat.for="action of prompt.actions" attach-focus="${action.type == 'primary' ? true: false}"
+        click.trigger="$parent.confirm(action.result)" class="btn btn-${action.type}" role="button"
         href="#">${action.text}</a>
     </ux-dialog-footer>
 

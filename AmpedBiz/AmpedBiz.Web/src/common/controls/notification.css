@@ -6,3 +6,42 @@ div.alert {
 a.btn {
   margin-left: 10px;
 }
+
+.callout-placeholder {
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid;
+  border-left-width: 5px;
+}
+
+.callout-title {
+  font-size: 18px;
+}
+
+.callout-content {
+  font-size: 14px;
+}
+
+.callout-type-info {
+  color: #31708f;
+  border-color: #31708f;
+  background-color: #ecf9ff;
+} 
+
+.callout-type-success {
+  color: #3c763d; 
+  border-color: #3c763d;
+  background-color: #f2fff3;
+}
+
+.callout-type-warning {
+  color: #d16629;
+  border-color: #d16629;
+  background-color: #fffbf4;
+}
+
+.callout-type-danger {
+  color: #a94442;
+  border-color: #a94442;
+  background-color: #fff0f0;
+}
