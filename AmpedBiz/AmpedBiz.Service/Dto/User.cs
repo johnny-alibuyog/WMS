@@ -68,4 +68,19 @@ namespace AmpedBiz.Service.Dto
 
         public Address Address { get; set; }
     }
+
+    public class UserSalesReportPageItem
+    {
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public decimal SalesAmount { get; set; }
+
+        public decimal ReturnsAmount { get; set; }
+
+        public string UserFullname => this.FirstName + " " + this.LastName;
+
+        public decimal TotalSalesAmount => this.SalesAmount - this.ReturnsAmount;
+    }
 }

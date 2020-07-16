@@ -42,8 +42,10 @@ namespace AmpedBiz.Service.Host.Bootstrap.DependencInjection.Modules
 
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterAssemblyTypes(typeof(IMediator).Assembly)
-                .AsImplementedInterfaces();
+            builder
+                .RegisterSource(new ContravariantRegistrationSource());
+                //.RegisterAssemblyTypes(typeof(IMediator).Assembly)
+                //.AsImplementedInterfaces();
 
             var mediatrOpenTypes = new[]
             {
@@ -56,10 +58,12 @@ namespace AmpedBiz.Service.Host.Bootstrap.DependencInjection.Modules
                 typeof(IPipelineBehavior<,>),
             };
 
+            var targetAssembly = typeof(GetPaymentType).Assembly;
+
             foreach (var mediatrOpenType in mediatrOpenTypes)
             {
                 builder
-                    .RegisterAssemblyTypes(typeof(GetPaymentType).Assembly)
+                    .RegisterAssemblyTypes(targetAssembly)
                     .AsClosedTypesOf(mediatrOpenType)
                     .AsImplementedInterfaces()
                     .PropertiesAutowired();

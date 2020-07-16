@@ -9,9 +9,7 @@ namespace AmpedBiz.Service.Host.Bootstrap.DependencInjection.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-            builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
+            builder.RegisterAssemblyTypes(typeof(ISeeder).Assembly)
                 .Where(type => type.IsAssignableTo<ISeeder>())
                 .AsImplementedInterfaces()
                 .AsSelf();

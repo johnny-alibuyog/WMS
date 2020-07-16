@@ -1,5 +1,7 @@
+import { PagerResponse } from 'common/models/paging';
+import { PageRequest } from './../common/models/paging';
 import { autoinject } from 'aurelia-framework';
-import { User, UserAddress, UserInfo, UserPassword, UserResetPassword } from '../common/models/user'
+import { User, UserAddress, UserInfo, UserPassword, UserResetPassword, UserSalesReportPageItem } from '../common/models/user'
 import { Lookup } from "../common/custom_types/lookup";
 import { ServiceBase } from './service-base'
 import { HttpClientFacade } from './http-client-facade';
@@ -49,5 +51,10 @@ export class UserService extends ServiceBase<User> {
   public resetPassword(user: UserResetPassword): Promise<void>{
     var url = `${this._resouce}/${user.id}/reset-password`;
     return this._httpClient.post(url, user);
+  }
+
+  public getSalesPagePage(page: PageRequest): Promise<PagerResponse<UserSalesReportPageItem>> {
+    var url = this._resouce + '/sales-reportl/page';
+    return this._httpClient.post(url, page);
   }
 }

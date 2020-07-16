@@ -39,18 +39,16 @@
             <div if.bind="$parent.selectedItem !== item">
               ${item.product.name}
             </div>
-            <div else class="row">
-              <div class="col-xs-12">
-                <select2 selected.bind="item.product | lookupToId:$parent.products" options.bind="products"
-                  placeholder="Select Product" allow_clear="true"
-                  selected:change.delegate="propagateProductChange(item, $event.detail.selected)"
-                  opened.bind="$parent.focusProductInput">
-                  <template replace-part="suggestions">
-                    <option repeat.for="product of $parent.$parent.products" value.bind="product.id">${product.name}
-                    </option>
-                  </template>
-                </select2>
-              </div>
+            <div else>
+              <select2 selected.bind="item.product | lookupToId:$parent.products" options.bind="products"
+                placeholder="Select Product" allow_clear="true"
+                selected:change.delegate="propagateProductChange(item, $event.detail.selected)"
+                opened.bind="$parent.focusProductInput">
+                <template replace-part="suggestions">
+                  <option repeat.for="product of $parent.$parent.products" value.bind="product.id">${product.name}
+                  </option>
+                </template>
+              </select2>
             </div>
           </td>
 

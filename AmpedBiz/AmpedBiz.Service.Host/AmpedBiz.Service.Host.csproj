@@ -322,6 +322,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\staging-azure.pubxml" />
     <None Include="Properties\PublishProfiles\staging-gear.host-ftp.pubxml" />
     <None Include="Properties\PublishProfiles\staging-gear.host-web.deploy.pubxml" />
     <None Include="Properties\PublishProfiles\staging-mywindowshosting.pubxml" />

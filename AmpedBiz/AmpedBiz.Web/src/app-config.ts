@@ -9,6 +9,7 @@ let apiHosts = {
   'ampbiz': 'http://ampbiz/api',
   'ampbiz.local': 'http://ampbiz-api.local',
   'ampbiz.gear.host': 'http://ampbiz-api.gear.host',
+  'ampbiz.azurewebsites.net': 'https://ampbiz-api.azurewebsites.net',
 };
 
 export let appConfig = {

@@ -33,6 +33,8 @@ namespace AmpedBiz.Common.Configurations
 
         public bool RecreateDb { get; set; }
 
+        public bool UpdateDb { get; set; }
+
         public SeederConfig Seeder { get; set; } = new SeederConfig();
 
         public DatabaseConfig()
@@ -46,7 +48,8 @@ namespace AmpedBiz.Common.Configurations
 			this.Password = "admin123";
 			this.BatchSize = 50;
 			this.RecreateDb = true;
-			this.Seeder = new SeederConfig()
+			this.UpdateDb = true;
+            this.Seeder = new SeederConfig()
 			{
 				Enabled = true,
 				UseDummyData = true,

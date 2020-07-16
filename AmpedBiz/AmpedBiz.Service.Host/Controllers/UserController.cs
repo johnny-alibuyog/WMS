@@ -113,5 +113,12 @@ namespace AmpedBiz.Service.Host.Controllers
 		{
 			return await _mediator.Send(request ?? new ResetUserPassword.Request());
 		}
-	}
+
+        [HttpPost()]
+        [Route("sales-report/page")]
+        public async Task<GetUserSalesReportPage.Response> Process([FromBody]GetUserSalesReportPage.Request request)
+        {
+            return await _mediator.Send(request ?? new GetUserSalesReportPage.Request());
+        }
+    }
 }

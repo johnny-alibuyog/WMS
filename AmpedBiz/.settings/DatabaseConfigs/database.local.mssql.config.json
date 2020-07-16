@@ -7,6 +7,7 @@
   "Password": "6jPbwQtZ8N52WRJ5rEWv2g==",
   "BatchSize": 50,
   "RecreateDb": false,
+  "UpdateDb": false,
   "Seeder": {
     "Enabled": false,
     "UseDummyData": true,

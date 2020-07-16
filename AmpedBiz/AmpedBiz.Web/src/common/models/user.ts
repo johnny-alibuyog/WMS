@@ -41,3 +41,10 @@ export type UserPassword = {
 export type UserResetPassword = {
   id?: string;
 }
+
+export type UserSalesReportPageItem = {
+  userFullname?: string;
+  salesAmount?: number;
+  returnsAmount?: number;
+  totalSalesAmount?: number;
+}

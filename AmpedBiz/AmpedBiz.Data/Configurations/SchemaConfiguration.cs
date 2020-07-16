@@ -12,7 +12,7 @@ namespace AmpedBiz.Data.Configurations
         {
             if (DatabaseConfig.Instance.RecreateDb)
                 RecreateDatabase(config);   /// WARNING: Do not use in production
-            else
+            else if (DatabaseConfig.Instance.UpdateDb)
                 UpdateDatabase(config);     /// NOTE: Applies in production
         }
 

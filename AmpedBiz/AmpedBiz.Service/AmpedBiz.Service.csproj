@@ -235,6 +235,7 @@
     <Compile Include="UnitOfMeasures\UpdateUnitOfMeasure.cs" />
     <Compile Include="Users\CreateUser.cs" />
     <Compile Include="Users\GetUserAddress.cs" />
+    <Compile Include="Users\GetUserSalesReportPage.cs" />
     <Compile Include="Users\GeUserInfo.cs" />
     <Compile Include="Users\GetUserLookup.cs" />
     <Compile Include="Users\GetInitialUser.cs" />

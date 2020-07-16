@@ -313,7 +313,7 @@ export class PointOfSaleItemPage {
     item.barcode = facade.getBarcode(inventory, current.unitOfMeasure, this.pricing);
     item.unitOfMeasures = inventory.unitOfMeasures.map(x => x.unitOfMeasure);
     item.quantity.unit = current.unitOfMeasure;
-    //item.quantity.value = 0;
+    item.quantity.value = 1;
     item.standard.unit = current.standard.unit;
     item.standard.value = current.standard.value;
     item.discountRate = this.discountRate;

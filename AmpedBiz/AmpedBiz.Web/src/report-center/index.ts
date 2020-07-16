@@ -115,7 +115,7 @@ const customerRoutes: RouteConfig[] = [
     name: 'customer-report-page',
     moduleId: PLATFORM.moduleName('./customers/customer-report-page'),
     nav: true,
-    title: 'Listings',
+    title: 'Customer Listings',
     settings: {
       group: 'Customer',
       auth: <AuthSettings>{
@@ -131,9 +131,9 @@ const customerRoutes: RouteConfig[] = [
     name: 'customer-sales-report-page',
     moduleId: PLATFORM.moduleName('./customers/customer-sales-report-page'),
     nav: true,
-    title: 'Sales',
+    title: 'Customer Sales',
     settings: {
-      group: 'Customer',
+      group: ['Customer', "Sales"],
       auth: <AuthSettings>{
         roles: [
           role.admin,
@@ -148,7 +148,7 @@ const customerRoutes: RouteConfig[] = [
     name: 'customer-order-delivery-report-page',
     moduleId: PLATFORM.moduleName('./customers/customer-order-delivery-report-page'),
     nav: true,
-    title: 'Order Delivery',
+    title: 'Customer Order Delivery',
     settings: {
       group: 'Customer',
       auth: <AuthSettings>{
@@ -165,7 +165,7 @@ const customerRoutes: RouteConfig[] = [
     name: 'customer-payments-report-page',
     moduleId: PLATFORM.moduleName('./customers/customer-payments-report-page'),
     nav: true,
-    title: 'Payments',
+    title: 'Customer Payments',
     settings: {
       group: 'Customer',
       auth: <AuthSettings>{
@@ -184,7 +184,7 @@ const productRoutes: RouteConfig[] = [
     name: 'product-listing-report-page',
     moduleId: PLATFORM.moduleName('./products/product-listing-report-page'),
     nav: true,
-    title: 'Listing',
+    title: 'Product Listing',
     settings: {
       group: 'Product',
       auth: <AuthSettings>{
@@ -201,7 +201,7 @@ const productRoutes: RouteConfig[] = [
     name: 'product-delivery-report-page',
     moduleId: PLATFORM.moduleName('./products/product-delivery-report-page'),
     nav: true,
-    title: 'Delivery',
+    title: 'Product Delivery',
     settings: {
       group: 'Product',
       auth: <AuthSettings>{
@@ -218,9 +218,9 @@ const productRoutes: RouteConfig[] = [
     name: 'product-sales-report-page',
     moduleId: PLATFORM.moduleName('./products/product-sales-report-page'),
     nav: true,
-    title: 'Sales',
+    title: 'Product Sales',
     settings: {
-      group: 'Product',
+      group: ['Product', 'Sales'],
       auth: <AuthSettings>{
         roles: [
           role.admin,

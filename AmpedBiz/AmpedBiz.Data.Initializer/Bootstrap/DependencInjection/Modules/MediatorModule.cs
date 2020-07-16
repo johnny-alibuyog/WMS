@@ -1,6 +1,7 @@
 ﻿using AmpedBiz.Service.Middlewares;
 using AmpedBiz.Service.PaymentTypes;
 using Autofac;
+using Autofac.Features.Variance;
 using MediatR;
 using MediatR.Pipeline;
 using System.Collections.Generic;
@@ -38,8 +39,10 @@ namespace AmpedBiz.Data.Initializer.Bootstrap.DependencInjection.Modules
 
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterAssemblyTypes(typeof(IMediator).Assembly)
-                .AsImplementedInterfaces();
+            builder
+                .RegisterSource(new ContravariantRegistrationSource());
+                //.RegisterAssemblyTypes(typeof(IMediator).Assembly)
+                //.AsImplementedInterfaces();
 
             var mediatrOpenTypes = new[]
             {
@@ -52,10 +55,12 @@ namespace AmpedBiz.Data.Initializer.Bootstrap.DependencInjection.Modules
                 typeof(IPipelineBehavior<,>),
             };
 
+            var targetAssembly = typeof(GetPaymentType).Assembly;
+
             foreach (var mediatrOpenType in mediatrOpenTypes)
             {
                 builder
-                    .RegisterAssemblyTypes(typeof(GetPaymentType).Assembly)
+                    .RegisterAssemblyTypes(targetAssembly)
                     .AsClosedTypesOf(mediatrOpenType)
                     .AsImplementedInterfaces()
                     .PropertiesAutowired();

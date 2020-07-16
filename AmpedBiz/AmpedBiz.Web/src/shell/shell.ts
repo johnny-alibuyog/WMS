@@ -1,28 +1,23 @@
 import { role } from '../common/models/role';
-import { autoinject, PLATFORM, Origin, relativeToFile, CompositionEngine, CompositionContext } from 'aurelia-framework';
+import { autoinject, PLATFORM } from 'aurelia-framework';
 import { defaultModules } from '../common/models/setting';
 import { AuthService, AuthSettings } from '../services/auth-service';
-import { NavigationInstruction, Next, PipelineStep, Router, RouterConfiguration, RouteConfig, NavModel } from 'aurelia-router';
+import { NavigationInstruction, Next, PipelineStep, Router, RouterConfiguration } from 'aurelia-router';
 import { NotificationService } from '../common/controls/notification-service';
-import { EventAggregator } from 'aurelia-event-aggregator';
 
-  //https://stackoverflow.com/questions/45325557/aurelia-get-child-routes
-  //http://www.jeremyg.net/entry/create-a-menu-with-child-routes-using-aurelia
-  //https://github.com/aurelia/router/issues/90
-  //https://codesandbox.io/embed/vvo7r15020?fontsize=14
+//https://stackoverflow.com/questions/45325557/aurelia-get-child-routes
+//http://www.jeremyg.net/entry/create-a-menu-with-child-routes-using-aurelia
+//https://github.com/aurelia/router/issues/90
+//https://codesandbox.io/embed/vvo7r15020?fontsize=14
 
 @autoinject()
 export class Shell {
   public router: Router;
 
-  constructor(
-    private readonly _auth: AuthService,
-    private readonly _eventAggregator: EventAggregator,
-    private readonly _compositionEngine: CompositionEngine,
-  ) { }
+  constructor(private readonly _auth: AuthService) { }
 
   public configureRouter(config: RouterConfiguration, router: Router): void {
-    config.title = 'Nicon Sales';
+    config.title = this._auth.user.branch.name;
     config.addPipelineStep('authorize', AuthorizeStep);
     config.map([
       {

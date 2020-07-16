@@ -27,28 +27,30 @@ namespace AmpedBiz.Service.Inventories
 
 					entity.EnsureExistence($"Inventory with id {message.InventoryId} does not exists.");
 
-					entity.Accept(new InventoryAdjustVisitor(
-						adjustedBy: message.AdjustedBy != null
-							? session.Load<User>(message.AdjustedBy.Id)
-							: null,
-						adjustedOn: message.AdjustedOn,
-						reason: message.Reason != null
-							? session.Load<InventoryAdjustmentReason>(message.Reason.Id)
-							: null,
-						remarks: message.Remarks,
-						quantity: new Measure(
-							value: message.Quantity?.Value ?? 0M,
-							unit: message.Quantity?.Unit != null
-								? session.Load<UnitOfMeasure>(message.Quantity.Unit.Id)
-								: null
-						),
-						standard: new Measure(
-							value: message.Standard?.Value ?? 0M,
-							unit: message.Standard?.Unit != null
-								? session.Load<UnitOfMeasure>(message.Standard.Unit.Id)
-								: null
-						)
-					));
+					entity.Accept(
+                        new InventoryAdjustVisitor(
+						    adjustedBy: message.AdjustedBy != null
+							    ? session.Load<User>(message.AdjustedBy.Id)
+							    : null,
+						    adjustedOn: message.AdjustedOn,
+						    reason: message.Reason != null
+							    ? session.Load<InventoryAdjustmentReason>(message.Reason.Id)
+							    : null,
+						    remarks: message.Remarks,
+						    quantity: new Measure(
+							    value: message.Quantity?.Value ?? 0M,
+							    unit: message.Quantity?.Unit != null
+								    ? session.Load<UnitOfMeasure>(message.Quantity.Unit.Id)
+								    : null
+						    ),
+						    standard: new Measure(
+							    value: message.Standard?.Value ?? 0M,
+							    unit: message.Standard?.Unit != null
+								    ? session.Load<UnitOfMeasure>(message.Standard.Unit.Id)
+								    : null
+						    )
+					    )
+                    );
 
 					transaction.Commit();
 

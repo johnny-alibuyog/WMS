@@ -9,10 +9,8 @@ namespace AmpedBiz.Tests.Bootstrap.DependencInjection.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
             builder
-                .RegisterAssemblyTypes(assemblies)
+                .RegisterAssemblyTypes(typeof(ISeeder).Assembly)
                 .Where(type => type.IsAssignableTo<ISeeder>())
                 .AsImplementedInterfaces()
                 .AsSelf();
