@@ -52,6 +52,9 @@ namespace AmpedBiz.Service.Common
                 if (typeof(TValue).IsEnum)
                     return EnumExtention.As<TValue>(val);
 
+                if (typeof(TValue) == val?.GetType())
+                    return (TValue)val;
+
                 return (TValue)TypeDescriptor.GetConverter(typeof(TValue))
                     .ConvertFromInvariantString(val.ToString());
 
