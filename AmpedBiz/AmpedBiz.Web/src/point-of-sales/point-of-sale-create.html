@@ -99,6 +99,7 @@
                 <ul class="nav nav-tabs">
                   <li class="${activeTab === 'itemsTab' ? 'active' : ''}">
                     <a data-toggle="tab" href="#itemsTab" title="Shortcut (Ctrl + Alt + i)">
+                    <!-- <a data-toggle="tab" href="javascript:void(0);" title="Shortcut (Ctrl + Alt + i)" click.delegate="activeTab = 'itemsTab'"> -->
                       <span>Sale Items &nbsp</span>
                       <button type="button" class="btn btn-default btn-circle" disabled.bind="isSaleTendered"
                         click.trigger="addItem({ focusOn: 'product' })">
@@ -108,6 +109,7 @@
                   </li>
                   <li class="${activeTab === 'paymentsTab' ? 'active' : ''}">
                     <a data-toggle="tab" href="#paymentsTab" title="Shortcut (Ctrl + Alt + p)">
+                    <!-- <a data-toggle="tab" href="javascript:void(0);" title="Shortcut (Ctrl + Alt + p)" click.delegate="activeTab = 'paymentsTab'"> -->
                       <span>Payments &nbsp</span>
                       <button type="button" class="btn btn-default btn-circle" disabled.bind="isFullyPaid"
                         click.trigger="addPayment()">
@@ -117,6 +119,7 @@
                   </li>
                   <li class="${activeTab === 'checkPricesTab' ? 'active' : ''}">
                     <a data-toggle="tab" href="#checkPricesTab" title="Shortcut (Ctrl + Alt + e)">
+                    <!-- <a data-toggle="tab" href="javascript:void(0);" title="Shortcut (Ctrl + Alt + e)" click.delegate="activeTab = 'checkPricesTab'"> -->
                       <span>Prices &nbsp</span>
                       <button type="button" class="btn btn-default btn-circle" disabled.bind="isSaleTendered"
                         click.trigger="checkPricings()">
@@ -129,7 +132,7 @@
                 <div class="tab-content">
 
                   <!-- items -->
-                  <div id="itemsTab" class="tab-pane fade ${activeTab === 'itemsTab' ? 'in active' : ''}">
+                  <div id="itemsTab" role="tabpanel" class="tab-pane fade ${activeTab === 'itemsTab' ? 'in active' : ''}">
                     <br />
 
                     <point-of-sale-item-page products.bind="products" items.bind="pointOfSale.items"
@@ -139,7 +142,7 @@
                   </div>
 
                   <!-- payment informations -->
-                  <div id="paymentsTab" class="tab-pane fade ${activeTab === 'paymentsTab' ? 'in active' : ''} ">
+                  <div id="paymentsTab" role="tabpanel" class="tab-pane fade ${activeTab === 'paymentsTab' ? 'in active' : ''} ">
                     <br />
 
                     <point-of-sale-payment-page payment-types.bind="paymentTypes" payments.bind="pointOfSale.payments"
@@ -147,12 +150,12 @@
                     </point-of-sale-payment-page>
                   </div>
 
-                  <div id="checkPricesTab" class="tab-pane fade ${activeTab === 'checkPricesTab' ? 'in active' : ''}">
+                  <div id="checkPricesTab" role="tabpanel" class="tab-pane fade ${activeTab === 'checkPricesTab' ? 'in active' : ''}">
                     <br />
 
                     <point-of-sale-check-price-page>
-                    </point-of-sale-check-price-page
-                  </div>
+                    </point-of-sale-check-price-page>
+                  <div>
 
                 </div>
 

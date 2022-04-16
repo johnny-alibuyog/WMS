@@ -1,0 +1,448 @@
+Index: AmpedBiz.Common/Extentions/TypeExtentions.cs
+===================================================================
+--- AmpedBiz.Common/Extentions/TypeExtentions.cs	(revision 319)
++++ AmpedBiz.Common/Extentions/TypeExtentions.cs	(working copy)
+@@ -43,5 +43,12 @@
+ 
+             return defaultValue;
+         }
++
++        public static TOutput ConvertOrDefault<TOutput, TInput>(this TInput value, Func<TInput, TOutput> convert)
++        {
++            return !value.IsNullOrDefault()
++                ? convert(value)
++                : default(TOutput);
++        }
+     }
+ }
+Index: AmpedBiz.Service/Dto/Inventory.cs
+===================================================================
+--- AmpedBiz.Service/Dto/Inventory.cs	(revision 319)
++++ AmpedBiz.Service/Dto/Inventory.cs	(working copy)
+@@ -1,6 +1,8 @@
+-﻿using AmpedBiz.Core.Entities;
++﻿using AmpedBiz.Common.Extentions;
++using AmpedBiz.Core.Entities;
+ using AmpedBiz.Core.Services.Products;
+ using System;
++using System.Collections;
+ using System.Collections.Generic;
+ 
+ namespace AmpedBiz.Service.Dto
+@@ -212,6 +214,22 @@
+         public string InputUnitId { get; set; }
+ 
+         public decimal InputValue { get; set; }
++
++        public static InventoryMovementReportPageItemRaw Parse(IDictionary row)
++        {
++            return new InventoryMovementReportPageItemRaw()
++            {
++                Date = row[nameof(Date)].ConvertOrDefault(value => Convert.ToDateTime(value)),
++                BranchId = row[nameof(BranchId)].ConvertOrDefault(value => Guid.Parse(value.ToString())),
++                BranchName = row[nameof(BranchName)].ConvertOrDefault(value => value.ToString()),
++                ProductId = row[nameof(ProductId)].ConvertOrDefault(value => Guid.Parse(value.ToString())),
++                ProductName = row[nameof(ProductName)].ConvertOrDefault(value => value.ToString()),
++                OutputUnitId = row[nameof(OutputUnitId)].ConvertOrDefault(value => value.ToString()),
++                OutputValue = row[nameof(OutputValue)].ConvertOrDefault(value => Convert.ToDecimal(value)),
++                InputUnitId = row[nameof(InputUnitId)].ConvertOrDefault(value => value.ToString()),
++                InputValue = row[nameof(InputValue)].ConvertOrDefault(value => Convert.ToDecimal(value)),
++            };
++        }
+     }
+ 
+ }
+Index: AmpedBiz.Service/Inventories/GetInventoryMovementsReportPage.cs
+===================================================================
+--- AmpedBiz.Service/Inventories/GetInventoryMovementsReportPage.cs	(revision 319)
++++ AmpedBiz.Service/Inventories/GetInventoryMovementsReportPage.cs	(working copy)
+@@ -1,4 +1,5 @@
+-﻿using AmpedBiz.Core.Entities;
++﻿using AmpedBiz.Common.Configurations;
++using AmpedBiz.Core.Entities;
+ using AmpedBiz.Data;
+ using AmpedBiz.Service.Common;
+ using MediatR;
+@@ -5,6 +6,7 @@
+ using NHibernate.Criterion;
+ using NHibernate.Transform;
+ using System;
++using System.Collections;
+ using System.Collections.Generic;
+ using System.Linq;
+ 
+@@ -60,9 +62,18 @@
+                     if (parameters.ToDate != null)
+                         sqlQuery.SetParameter("toDate", parameters.ToDate.Value);
+ 
++                    //var result = sqlQuery
++                    //    .SetResultTransformer(Transformers.AliasToBean<Dto.InventoryMovementReportPageItemRaw>())
++                    //    .List<Dto.InventoryMovementReportPageItemRaw>();
++
++                    // Note: since there is a type mismatch (Guid for example) in some databases (MySql), we needed 
++                    //       to manually convert columns using AliasToEntityMap instead of AliasToBean
++
+                     var result = sqlQuery
+-                        .SetResultTransformer(Transformers.AliasToBean<Dto.InventoryMovementReportPageItemRaw>())
+-                        .List<Dto.InventoryMovementReportPageItemRaw>();
++                        .SetResultTransformer(Transformers.AliasToEntityMap)
++                        .List<IDictionary>()
++                        .Select(Dto.InventoryMovementReportPageItemRaw.Parse)
++                        .ToList();
+ 
+                     var inventory = (Inventory)null;
+                     var product = (Product)null;
+@@ -129,114 +140,252 @@
+ 
+             private static string BuidlSqlQueryString(string whereClause, string orderByClause)
+             {
+-                return $@"
+-                        WITH InventoryMovements (
+-	                        BranchId,
+-	                        BranchName,
+-	                        ProductId,
+-	                        ProductName,
+-	                        Date,
+-	                        InputUnitId,
+-	                        InputValue,
+-	                        OutputUnitId,
+-	                        OutputValue
+-                        ) 
+-                        AS (
++                switch (DatabaseConfig.Instance.Database)
++                {
++                    case DatabaseProvider.MsSql:
++                        return $@"
++                            WITH InventoryMovements (
++	                            BranchId,
++	                            BranchName,
++	                            ProductId,
++	                            ProductName,
++	                            Date,
++	                            InputUnitId,
++	                            InputValue,
++	                            OutputUnitId,
++	                            OutputValue
++                            ) 
++                            AS (
+ 
+-                            SELECT 
+-	                            BranchId = COALESCE(INPUT.BranchId, OUTPUT.BranchId),
+-	                            BranchName = COALESCE(INPUT.BranchName, OUTPUT.BranchName),
+-	                            ProductId = COALESCE(INPUT.ProductId, OUTPUT.ProductId),
+-	                            ProductName = COALESCE(INPUT.ProductName, OUTPUT.ProductName),
+-	                            Date = COALESCE(INPUT.Date, OUTPUT.Date),
+-	                            InputUnitId = INPUT.UnitId,
+-	                            InputValue = INPUT.Value,
+-	                            OutputUnitId = OUTPUT.UnitId,
+-	                            OutputValue = OUTPUT.Value
++                                SELECT 
++	                                BranchId = COALESCE(INPUT.BranchId, OUTPUT.BranchId),
++	                                BranchName = COALESCE(INPUT.BranchName, OUTPUT.BranchName),
++	                                ProductId = COALESCE(INPUT.ProductId, OUTPUT.ProductId),
++	                                ProductName = COALESCE(INPUT.ProductName, OUTPUT.ProductName),
++	                                Date = COALESCE(INPUT.Date, OUTPUT.Date),
++	                                InputUnitId = INPUT.UnitId,
++	                                InputValue = INPUT.Value,
++	                                OutputUnitId = OUTPUT.UnitId,
++	                                OutputValue = OUTPUT.Value
+ 
+-                            FROM
+-                                (
+-                                    SELECT
+-                                        BranchId = PO.BranchId,
+-                                        BranchName = MAX(B.Name),
+-                                        ProductId = POR.ProductId,
+-                                        ProductName = MAX(P.Name),
+-                                        Date = CAST(POR.ReceivedOn AS DATE),
+-                                        UnitId = POR.QuantityStandardEquivalent_UnitId,
+-                                        Value = SUM(POR.QuantityStandardEquivalent_Value)
++                                FROM
++                                    (
++                                        SELECT
++                                            BranchId = PO.BranchId,
++                                            BranchName = MAX(B.Name),
++                                            ProductId = POR.ProductId,
++                                            ProductName = MAX(P.Name),
++                                            Date = CAST(POR.ReceivedOn AS DATE),
++                                            UnitId = POR.QuantityStandardEquivalent_UnitId,
++                                            Value = SUM(POR.QuantityStandardEquivalent_Value)
+ 
+-                                    FROM
+-                                        PurchaseOrderReceipts AS POR
++                                        FROM
++                                            PurchaseOrderReceipts AS POR
+ 
+-                                    INNER JOIN
+-                                        PurchaseOrders AS PO
+-                                            ON PO.PurchaseOrderId = POR.PurchaseOrderId
++                                        INNER JOIN
++                                            PurchaseOrders AS PO
++                                                ON PO.PurchaseOrderId = POR.PurchaseOrderId
+ 
+-                                    INNER JOIN
+-                                        Branches AS B
+-                                            ON B.BranchId = PO.BranchId
++                                        INNER JOIN
++                                            Branches AS B
++                                                ON B.BranchId = PO.BranchId
+ 
+-                                    INNER JOIN
+-                                        Products AS P
+-                                            ON P.ProductId = POR.ProductId
++                                        INNER JOIN
++                                            Products AS P
++                                                ON P.ProductId = POR.ProductId
+ 
+-                                    GROUP BY
+-                                        PO.BranchId,
+-                                        POR.ProductId,
+-                                        CAST(POR.ReceivedOn AS DATE),
+-		                                POR.QuantityStandardEquivalent_UnitId
+-                                ) AS INPUT
++                                        GROUP BY
++                                            PO.BranchId,
++                                            POR.ProductId,
++                                            CAST(POR.ReceivedOn AS DATE),
++		                                    POR.QuantityStandardEquivalent_UnitId
++                                    ) AS INPUT
+ 
+-                            FULL JOIN
+-                                (
+-                                    SELECT
+-                                        BranchId = O.BranchId,
+-                                        BranchName = MAX(B.Name),
+-                                        ProductId = OI.ProductId,
+-                                        ProductName = MAX(P.Name),
+-                                        Date = CAST(O.ShippedOn AS DATE),
+-                                        UnitId = OI.QuantityStandardEquivalent_UnitId,
+-                                        Value = SUM(OI.QuantityStandardEquivalent_Value)
++                                FULL JOIN
++                                    (
++                                        SELECT
++                                            BranchId = O.BranchId,
++                                            BranchName = MAX(B.Name),
++                                            ProductId = OI.ProductId,
++                                            ProductName = MAX(P.Name),
++                                            Date = CAST(O.ShippedOn AS DATE),
++                                            UnitId = OI.QuantityStandardEquivalent_UnitId,
++                                            Value = SUM(OI.QuantityStandardEquivalent_Value)
+ 
+-                                    FROM
+-                                        OrderItems AS OI
++                                        FROM
++                                            OrderItems AS OI
+ 
+-                                    INNER JOIN
+-                                        Orders AS O
+-                                            ON O.OrderId = OI.OrderId
++                                        INNER JOIN
++                                            Orders AS O
++                                                ON O.OrderId = OI.OrderId
+ 
+-                                    INNER JOIN
+-                                        Branches AS B
+-                                            ON B.BranchId = O.BranchId
++                                        INNER JOIN
++                                            Branches AS B
++                                                ON B.BranchId = O.BranchId
+ 
+-                                    INNER JOIN
+-                                        Products AS P
+-                                            ON P.ProductId = OI.ProductId
++                                        INNER JOIN
++                                            Products AS P
++                                                ON P.ProductId = OI.ProductId
+ 
+-                                    WHERE
+-                                        O.ShippedOn IS NOT NULL
++                                        WHERE
++                                            O.ShippedOn IS NOT NULL
+ 
+-                                    GROUP BY
+-                                        O.BranchId,
+-                                        OI.ProductId,
+-                                        CAST(O.ShippedOn AS DATE),
+-		                                OI.QuantityStandardEquivalent_UnitId
+-                                ) AS OUTPUT
++                                        GROUP BY
++                                            O.BranchId,
++                                            OI.ProductId,
++                                            CAST(O.ShippedOn AS DATE),
++		                                    OI.QuantityStandardEquivalent_UnitId
++                                    ) AS OUTPUT
+ 
+-                                ON INPUT.BranchId = OUTPUT.BranchId 
+-                                   AND INPUT.ProductId = OUTPUT.ProductId 
+-                                   AND INPUT.Date = OUTPUT.Date
+-                        )
++                                    ON INPUT.BranchId = OUTPUT.BranchId 
++                                       AND INPUT.ProductId = OUTPUT.ProductId 
++                                       AND INPUT.Date = OUTPUT.Date
++                            )
+ 
+-                        SELECT *
++                            SELECT *
+                         
+-                        FROM    
+-                            InventoryMovements
++                            FROM    
++                                InventoryMovements
+ 
+-                        {whereClause}
++                            {whereClause}
+ 
+-                        {orderByClause}
++                            {orderByClause}
+                     ";
++
++                    case DatabaseProvider.MySql:
++                        return $@"
++                            CREATE TEMPORARY TABLE IF NOT EXISTS INPUT_TABLE
++	                            SELECT
++		                            PO.BranchId AS BranchId,
++		                            MAX(B.Name) AS BranchName,
++		                            POR.ProductId AS ProductId,
++		                            MAX(P.Name) AS ProductName,
++		                            CAST(POR.ReceivedOn AS DATE) AS Date,
++		                            POR.QuantityStandardEquivalent_UnitId AS UnitId,
++		                            SUM(POR.QuantityStandardEquivalent_Value) AS Value
++
++	                            FROM
++		                            PurchaseOrderReceipts AS POR
++
++	                            INNER JOIN
++		                            PurchaseOrders AS PO
++			                            ON PO.PurchaseOrderId = POR.PurchaseOrderId
++
++	                            INNER JOIN
++		                            Branches AS B
++			                            ON B.BranchId = PO.BranchId
++
++	                            INNER JOIN
++		                            Products AS P
++			                            ON P.ProductId = POR.ProductId
++
++	                            GROUP BY
++		                            PO.BranchId,
++		                            POR.ProductId,
++		                            CAST(POR.ReceivedOn AS DATE),
++		                            POR.QuantityStandardEquivalent_UnitId;
++        
++
++
++                            CREATE TEMPORARY TABLE IF NOT EXISTS OUTPUT_TABLE
++	                            SELECT
++		                            O.BranchId AS BranchId,
++		                            MAX(B.Name) AS BranchName,
++		                            OI.ProductId AS ProductId,
++		                            MAX(P.Name) AS ProductName,
++		                            CAST(O.ShippedOn AS DATE) AS Date,
++		                            OI.QuantityStandardEquivalent_UnitId AS UnitId,
++		                            SUM(OI.QuantityStandardEquivalent_Value) AS Value
++
++	                            FROM
++		                            OrderItems AS OI
++
++	                            INNER JOIN
++		                            Orders AS O
++			                            ON O.OrderId = OI.OrderId
++
++	                            INNER JOIN
++		                            Branches AS B
++			                            ON B.BranchId = O.BranchId
++
++	                            INNER JOIN
++		                            Products AS P
++			                            ON P.ProductId = OI.ProductId
++
++	                            WHERE
++		                            O.ShippedOn IS NOT NULL
++
++	                            GROUP BY
++		                            O.BranchId,
++		                            OI.ProductId,
++		                            CAST(O.ShippedOn AS DATE),
++		                            OI.QuantityStandardEquivalent_UnitId;
++        
++        
++                            CREATE TEMPORARY TABLE IF NOT EXISTS RESULT_TABLE        
++	                            SELECT 
++		                            COALESCE(INPUT.BranchId, OUTPUT.BranchId) AS BranchId,
++		                            COALESCE(INPUT.BranchName, OUTPUT.BranchName) AS BranchName,
++		                            COALESCE(INPUT.ProductId, OUTPUT.ProductId) AS ProductId,
++		                            COALESCE(INPUT.ProductName, OUTPUT.ProductName) AS ProductName,
++		                            COALESCE(INPUT.Date, OUTPUT.Date) AS Date,
++		                            INPUT.UnitId AS InputUnitId,
++		                            INPUT.Value AS InputValue,
++		                            OUTPUT.UnitId AS OutputUnitId,
++		                            OUTPUT.Value AS OutputValue
++	
++	                            FROM
++		                            INPUT_TABLE AS INPUT
++		
++	                            RIGHT JOIN
++		                            OUTPUT_TABLE AS OUTPUT
++			                            ON INPUT.BranchId = OUTPUT.BranchId 
++			                            AND INPUT.ProductId = OUTPUT.ProductId 
++			                            AND INPUT.Date = OUTPUT.Date;
++
++                            INSERT INTO RESULT_TABLE
++	                            SELECT 
++		                            COALESCE(INPUT.BranchId, OUTPUT.BranchId) AS BranchId,
++		                            COALESCE(INPUT.BranchName, OUTPUT.BranchName) AS BranchName,
++		                            COALESCE(INPUT.ProductId, OUTPUT.ProductId) AS ProductId,
++		                            COALESCE(INPUT.ProductName, OUTPUT.ProductName) AS ProductName,
++		                            COALESCE(INPUT.Date, OUTPUT.Date) AS Date,
++		                            INPUT.UnitId AS InputUnitId,
++		                            INPUT.Value AS InputValue,
++		                            OUTPUT.UnitId AS OutputUnitId,
++		                            OUTPUT.Value AS OutputValue
++	
++	                            FROM
++		                            INPUT_TABLE AS INPUT
++		
++	                            RIGHT JOIN
++		                            OUTPUT_TABLE AS OUTPUT
++			                            ON INPUT.BranchId = OUTPUT.BranchId 
++			                            AND INPUT.ProductId = OUTPUT.ProductId 
++			                            AND INPUT.Date = OUTPUT.Date
++			
++	                            WHERE
++		                            INPUT.BranchId IS NULL 
++		                            OR INPUT.ProductId IS NULL 
++		                            OR INPUT.Date IS NULL;
++
++                            SELECT 
++                                *
++                            
++                            FROM RESULT_TABLE
++
++                            { whereClause}
++
++                            { orderByClause};
++
++                            DROP TEMPORARY TABLE INPUT_TABLE;
++                            DROP TEMPORARY TABLE OUTPUT_TABLE;
++                            DROP TEMPORARY TABLE RESULT_TABLE;
++                    ";
++
++                    default:
++                        throw new NotSupportedException($"{DatabaseConfig.Instance.Database} is not yet supported by this report.");
++                }
+             }
+ 
+             private Tuple<string, Tuple<Guid, Guid, DateTime?, DateTime?>> BuildWhereClause(Filter filter)
+@@ -328,6 +477,7 @@
+             }
+         }
+     }
++}
+ 
+     /* Linq (not working)
+      * 
+@@ -514,4 +664,3 @@
+                AND INPUT.ProductId = OUTPUT.ProductId 
+                AND INPUT.Date = OUTPUT.Date
+ */
+-}

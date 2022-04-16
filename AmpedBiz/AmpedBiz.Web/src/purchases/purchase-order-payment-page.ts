@@ -4,7 +4,7 @@ import { Pager } from '../common/models/paging';
 import { PurchaseOrderPayable, PurchaseOrderPayment, purchaseOrderEvents } from '../common/models/purchase-order';
 import { Lookup } from '../common/custom_types/lookup';
 import { ServiceApi } from '../services/service-api';
-import * as Enumerable from 'linq';
+import Enumerable from 'linq';
 
 @autoinject
 @customElement("purchase-order-payment-page")

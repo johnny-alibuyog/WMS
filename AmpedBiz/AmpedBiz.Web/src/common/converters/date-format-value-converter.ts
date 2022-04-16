@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 import { appConfig } from '../../app-config';
 
 export class DateFormatValueConverter {

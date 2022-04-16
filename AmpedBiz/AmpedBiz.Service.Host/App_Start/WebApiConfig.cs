@@ -12,7 +12,7 @@ namespace AmpedBiz.Service.Host.App_Start
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-            config.EnableCors(new EnableCorsAttribute(ConfigurationManager.AppSettings["CorsOrigins"], "*", "*")); // note: enable CORS for the sake of development
+            config.EnableCors(new EnableCorsAttribute(ConfigurationManager.AppSettings["CorsOrigins"], "*", "*", "*")); // note: enable CORS for the sake of development
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             config.Formatters.JsonFormatter.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;

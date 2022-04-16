@@ -6,7 +6,7 @@ import { Lookup } from '../common/custom_types/lookup';
 import { NotificationService } from '../common/controls/notification-service';
 import { Tenant } from "../common/models/tenant";
 import { User } from '../common/models/user';
-import * as Enumerable from 'linq';
+import Enumerable from 'linq';
 
 export interface AuthSettings {
   authorize?: boolean;

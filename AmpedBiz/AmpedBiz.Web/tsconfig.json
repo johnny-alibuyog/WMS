@@ -1,26 +1,30 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "target": "es5",
+    "esModuleInterop": true,
     "module": "esnext",
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
-    "sourceRoot": "src",
     "sourceMap": true,
-    "allowJs": true,
-    "baseUrl": "src",
-    "skipLibCheck": true,
+    "target": "es5",
     "lib": [
-      "es2017", "dom"
-    ]
+      "ES2017",
+      "dom"
+    ],
+    "moduleResolution": "node",
+    "baseUrl": "src",
+    "resolveJsonModule": true,
+    "allowJs": true
   },
   "include": [
     "./src/**/*.ts",
     "./test/**/*.ts",
-    "./custom_typings/**/*.d.ts"
   ],
   "atom": {
     "rewriteTsconfig": false
-  },
+  }
 }

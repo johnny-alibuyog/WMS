@@ -8,7 +8,7 @@ import { paymentType } from '../common/models/payment-type';
 import { role } from '../common/models/role';
 import { Override, OverrideParams } from 'users/override';
 import { DialogService } from 'aurelia-dialog';
-import * as Enumerable from 'linq';
+import Enumerable from 'linq';
 
 @autoinject
 @customElement("point-of-sale-payment-page")
@@ -69,7 +69,6 @@ export class PointOfSalePaymentPage {
   }
 
   public payableChanged(newValue: PointOfSalePayable): void {
-    console.log(newValue);
     this.total();
   }
 

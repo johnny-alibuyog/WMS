@@ -1,17 +1,17 @@
 ﻿{
   "Database": "MySql",
   "Port": 5432,
-  "HostServer": "ampbizdb.mysql.database.azure.com",
-  "Name": "ampbizdb",
-  "Username": "ampbizuser@ampbizdb",
+  "HostServer": "localhost",
+  "Name": "ampedbizdb",
+  "Username": "root",
   "Password": "6jPbwQtZ8N52WRJ5rEWv2g==",
   "BatchSize": 50,
-  "RecreateDb": false,
-  "UpdateDb": false,
+  "RecreateDb": true,
+  "UpdateDb": true,
   "Seeder": {
-    "Enabled": false,
-    "UseDummyData": false,
-    "UseExternalFiles": false,
+    "Enabled": true,
+    "UseDummyData": true,
+    "UseExternalFiles": true,
     "ExternalFilesPath": ".\\ImportFiles"
   }
 }

@@ -63,7 +63,6 @@ export class ReturnCreate {
       ]);
       this.customers = customersResponse;
       this.pricings = pricingsResponse;
-      debugger;
       this.setReturn(returnResponse);
       window.addEventListener('keydown', this.handleKeyInput, false);
     }

@@ -2,7 +2,7 @@ import { autoinject } from 'aurelia-framework';
 import { formatDate, formatNumber, emptyIfNull } from '../services/formaters';
 import { Report, Content } from './report';
 import { PurchaseOrderStatus } from '../common/models/purchase-order';
-import * as Enumerable from 'linq';
+import Enumerable from 'linq';
 
 export interface PurchaseOrderReportModel {
   branchName?: string;

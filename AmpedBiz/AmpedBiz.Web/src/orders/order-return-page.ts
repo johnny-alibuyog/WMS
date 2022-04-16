@@ -6,7 +6,7 @@ import { OrderReturn, OrderReturnable } from '../common/models/order';
 import { Lookup } from '../common/custom_types/lookup';
 import { NotificationService } from '../common/controls/notification-service';
 import { ServiceApi } from '../services/service-api';
-import * as Enumerable from 'linq';
+import Enumerable from 'linq';
 
 @autoinject
 @customElement("order-return-page")

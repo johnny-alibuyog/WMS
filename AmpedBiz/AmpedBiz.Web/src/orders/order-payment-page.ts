@@ -5,7 +5,7 @@ import { autoinject, bindable, bindingMode, customElement } from 'aurelia-framew
 
 import { Lookup } from '../common/custom_types/lookup';
 import { ServiceApi } from '../services/service-api';
-import * as Enumerable from 'linq';
+import Enumerable from 'linq';
 
 @autoinject
 @customElement("order-payment-page")

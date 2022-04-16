@@ -5,7 +5,7 @@ import { EventAggregator, Subscription } from "aurelia-event-aggregator";
 import { pointOfSaleEvents } from "./../common/models/point-of-sale";
 import { Filter, Sorter, Pager, PagerRequest, PagerResponse } from "common/models/paging";
 import { NotificationService } from './../common/controls/notification-service';
-import * as Enumerable from 'linq';
+import Enumerable from 'linq';
 
 @autoinject()
 @customElement('point-of-sale-check-price-page')

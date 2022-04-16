@@ -1,7 +1,7 @@
 /* https://gist.github.com/mujimu/c2da3ecb61f832bac9e0#file-sel ect2-multiselect-js-L1 */
 import { bindable, bindingMode, customElement, autoinject } from 'aurelia-framework';
 import 'select2';
-import * as $ from 'jquery';
+import $ from 'jquery';
 
 @customElement('select2')
 @autoinject()
@@ -40,20 +40,21 @@ export class Select2 {
   }
 
   placeholderChanged(newValue: string, oldValue: string) {
-    debugger;
-    console.log(newValue);
   }
 
   openedChanged(newValue: boolean, oldValue: boolean): void {
-    debugger;
     let command = newValue ? 'open' : 'close';
     this._select.select2(command);
   }
 
   selectedChanged(): void {
-    var event = document.createEvent('CustomEvent');
-    event.initCustomEvent('selected:change', true, true, { selected: this.selected });
-    this.element.dispatchEvent(event);
+    this.element.dispatchEvent(
+      new CustomEvent('selected:change', { 
+        bubbles: true, 
+        cancelable: true, 
+        detail: { selected: this.selected }
+      })
+    );
   }
 
   attached() {
@@ -81,8 +82,13 @@ export class Select2 {
       $(el)[0].dispatchEvent(notice);
     });
 
+    Select2
+
     if (this.opened) {
       this._select.select2('open');
+      const input = document.querySelector('.select2-search__field') as HTMLInputElement;
+      input?.focus();
+      // $(this.element).find('.select2-search__field').trigger('focus');
     }
 
     /* https://ilikekillnerds.com/2015/08/aurelia-custom-elements-custom-callback-events-tutorial/ */

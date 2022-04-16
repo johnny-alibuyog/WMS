@@ -5,7 +5,7 @@ import { NotificationService } from '../common/controls/notification-service';
 import { Filter, Sorter, Pager, PagerRequest, PagerResponse, SortDirection } from '../common/models/paging';
 import { PurchaseOrderReport, PurchaseOrderReportModel, PurchaseOrderReportItemModel } from './purchase-order-report';
 import { PurchaseOrderReportPageItem, PurchaseOrderStatus } from '../common/models/purchase-order';
-import * as Enumerable from 'linq';
+import Enumerable from 'linq';
 
 @autoinject
 export class PurchaseOrderReportPage {

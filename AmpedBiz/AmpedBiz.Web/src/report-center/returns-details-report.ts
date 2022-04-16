@@ -1,6 +1,6 @@
 import { autoinject } from 'aurelia-framework';
 import { formatNumber, emptyIfNull, formatDate } from '../services/formaters';
-import * as Enumerable from 'linq';
+import Enumerable from 'linq';
 import { Report, Content } from './report';
 
 export interface ReturnByCustomerReportModel {

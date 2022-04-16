@@ -1,7 +1,7 @@
-import * as moment from 'moment';
+import moment from 'moment';
 
 export class AgeValueConverter {
-  toView(dob) {
+  toView(dob: any) {
     if (!dob)
       return null;
     return Math.floor(moment().diff(moment(dob), 'year', false));

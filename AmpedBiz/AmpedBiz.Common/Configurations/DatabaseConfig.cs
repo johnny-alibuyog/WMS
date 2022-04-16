@@ -39,76 +39,97 @@ namespace AmpedBiz.Common.Configurations
 
         public DatabaseConfig()
         {
-			//// staging.gear.host
-			this.Database = DatabaseProvider.MySql;
-			this.Port = 3306;
-			this.HostServer = "mysql4.gear.host";
-			this.Name = "ampbizdb";
-			this.Username = "ampbizdb";
-			this.Password = "admin123";
-			this.BatchSize = 50;
-			this.RecreateDb = true;
-			this.UpdateDb = true;
+            //// staging.gear.host
+            //this.Database = DatabaseProvider.MySql;
+            //this.Port = 3306;
+            //this.HostServer = "mysql4.gear.host";
+            //this.Name = "ampbizdb";
+            //this.Username = "ampbizdb";
+            //this.Password = "123!@#qwe";
+            //this.BatchSize = 50;
+            //this.RecreateDb = false;
+            //this.UpdateDb = true;
+            //this.Seeder = new SeederConfig()
+            //{
+            //    Enabled = true,
+            //    UseDummyData = true,
+            //    UseExternalFiles = true,
+            //    ExternalFilesPath = ".\\Data\\Default"
+            //};
+
+
+            // staging.mywindowshosting
+            //this.Database = DatabaseProvider.MySql;
+            //this.Port = 3306;
+            //this.HostServer = "mysql5005.mywindowshosting.com";
+            //this.Name = "db_a123b7_ampbiz";
+            //this.Username = "a123b7_ampbiz";
+            //this.Password = "123!@#qwe";
+            //this.BatchSize = 50;
+            //this.RecreateDb = true;
+            //this.UpdateDb = true;
+            //this.Seeder = new SeederConfig()
+            //{
+            //    Enabled = true,
+            //    UseDummyData = true,
+            //    UseExternalFiles = true,
+            //    ExternalFilesPath = ".\\Data\\Default"
+            //};
+
+            //// local.mssql
+            //this.Database = DatabaseProvider.MsSql;
+            //this.Port = 3306;
+            //this.HostServer = "PHMANJALIBUYO03\\LAWSONINSTANCE";
+            //this.Name = "ampedbizdb";
+            //this.Username = "lawsql";
+            //this.Password = "L@wsql";
+            //this.BatchSize = 50;
+            //this.RecreateDb = true;
+            //this.UpdateDb = true;
+            //this.Seeder = new SeederConfig()
+            //{
+            //    Enabled = true,
+            //    UseDummyData = true,
+            //    UseExternalFiles = true,
+            //    ExternalFilesPath = ".\\Data\\Default"
+            //};
+
+            // local.mysql
+            this.Database = DatabaseProvider.MySql;
+            this.Port = 3306;
+            this.HostServer = "localhost";
+            this.Name = "ampedbizdb";
+            this.Username = "root";
+            this.Password = "123!@#qwe";
+            this.BatchSize = 50;
+            this.RecreateDb = true;
+            this.UpdateDb = true;
             this.Seeder = new SeederConfig()
-			{
-				Enabled = true,
-				UseDummyData = true,
-				UseExternalFiles = true,
-				ExternalFilesPath = ".\\Data\\Default"
-			};
+            {
+                Enabled = true,
+                UseDummyData = true,
+                UseExternalFiles = true,
+                ExternalFilesPath = ".\\Data\\Default"
+            };
 
-
-			// staging.mywindowshosting
-			//this.Database = DatabaseProvider.MySql;
-			//this.Port = 3306;
-			//this.HostServer = "mysql5005.mywindowshosting.com";
-			//this.Name = "db_a123b7_ampbiz";
-			//this.Username = "a123b7_ampbiz";
-			//this.Password = "123!@#qwe";
-			//this.BatchSize = 50;
-			//this.RecreateDb = true;
-			//this.Seeder = new SeederConfig()
-			//{
-			//    Enabled = true,
-			//    UseDummyData = true,
-			//    UseExternalFiles = true,
-			//    ExternalFilesPath = ".\\Data\\Default"
-			//};
-
-			//// local.mysql
-			//this.Database = DatabaseProvider.MySql;
-			//this.Port = 3306;
-			//this.HostServer = "localhost";
-			//this.Name = "ampedbizdb";
-			//this.Username = "root";
-			//this.Password = "123!@#qwe";
-			//this.BatchSize = 50;
-			//this.RecreateDb = true;
-			//this.Seeder = new SeederConfig()
-			//{
-			//    Enabled = true,
-			//    UseDummyData = true,
-			//    UseExternalFiles = true,
-			//    ExternalFilesPath = ".\\Data\\Default"
-			//};
-
-			// local.postgres
-			//this.Database = DatabaseProvider.Postgres;
-			//this.Port = 5432;
-			//this.HostServer = "localhost";
-			//this.Name = "ampedbizdb";
-			//this.Username = "postgres";
-			//this.Password = "123!@#qwe";
-			//this.BatchSize = 50;
-			//this.RecreateDb = true;
-			//this.Seeder = new SeederConfig()
-			//{
-			//    Enabled = true,
-			//    UseDummyData = true,
-			//    UseExternalFiles = true,
-			//    ExternalFilesPath = ".\\Data\\Default"
-			//};
-		}
+            // local.postgres
+            //this.Database = DatabaseProvider.Postgres;
+            //this.Port = 5432;
+            //this.HostServer = "localhost";
+            //this.Name = "ampedbizdb";
+            //this.Username = "postgres";
+            //this.Password = "123!@#qwe";
+            //this.BatchSize = 50;
+            //this.RecreateDb = true;
+            //this.UpdateDb = true;
+            //this.Seeder = new SeederConfig()
+            //{
+            //    Enabled = true,
+            //    UseDummyData = true,
+            //    UseExternalFiles = true,
+            //    ExternalFilesPath = ".\\Data\\Default"
+            //};
+        }
 
         private static DatabaseConfig Create()
         {

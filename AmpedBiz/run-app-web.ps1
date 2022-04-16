@@ -2,4 +2,4 @@
 " Running Web "
 "=============================================="
 cd .\Ampedbiz.Web
-gulp watch
+node_modules\.bin\gulp watch

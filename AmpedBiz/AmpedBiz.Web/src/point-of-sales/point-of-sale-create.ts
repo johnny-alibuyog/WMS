@@ -1,4 +1,4 @@
-import { FocusOn } from './point-of-sale-item-page';
+import { FocusParam } from './point-of-sale-item-page';
 import { PointOfSaleDetail, PointOfSaleStatus, PointOfSalePayable } from './../common/models/point-of-sale';
 import { autoinject, computedFrom } from "aurelia-framework";
 import { ServiceApi } from "../services/service-api";
@@ -31,6 +31,7 @@ export class PointOfSaleCreate {
   public statuses: Lookup<PointOfSaleStatus>[] = [];
   public pointOfSale: PointOfSale = {};
   public payable: PointOfSalePayable = {};
+  // public itemsTab: HTMLAnchorElement;
 
   constructor(
     private readonly _api: ServiceApi,
@@ -66,8 +67,20 @@ export class PointOfSaleCreate {
           ? this._api.pointOfSales.get(pointOfSale.id)
           : Promise.resolve(initialPointOfSale(this._api))
       ]);
-      this.activeTab = "itemsTab";
-      window.addEventListener('keydown', this.handleKeyInput, false);
+      this.activeTab = 'itemsTab';
+      // window.addEventListener('keydown', this.handleKeyInput, false);
+
+      // this.itemsTab.onclick('click' => {
+      //     e.stopPropagation();
+      //     e.preventDefault();
+      //     return 0;
+      //   });
+
+      // $('[data-toggle="tab"]').on('click', (e) => {
+      //   debugger;
+      //   e.stopPropagation();
+      //   e.preventDefault();
+      // })
     }
     catch (error) {
       this._notification.error(error);
@@ -108,8 +121,8 @@ export class PointOfSaleCreate {
     else {
       switch (event.keyCode) {
         case KeyCode.KEY_F2:
-        this.addItem({ focusOn: 'product' });
-        break;
+          this.addItem({ focusOn: 'product' });
+          break;
       }
     }
     return true;
@@ -158,11 +171,11 @@ export class PointOfSaleCreate {
   }
 
   // @combo('ctrl+alt+1')
-  public addItem(param: { focusOn: FocusOn } = null): void {
+  public addItem(param: FocusParam = null): void {
     if (this.activeTab !== 'itemsTab') {
       this.activeTab = 'itemsTab';
     }
-    this._eventAggregator.publish(pointOfSaleEvents.item.add, param && param.focusOn || null);
+    this._eventAggregator.publish(pointOfSaleEvents.item.add, param);
   }
 
   // @combo('ctrl+alt+2')

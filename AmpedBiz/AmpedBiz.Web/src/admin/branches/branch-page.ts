@@ -40,7 +40,7 @@ export class BranchPage {
         pager: <PagerRequest>this.pager
       });
 
-      var response = <PagerResponse<BranchPageItem>>data;
+      const response = <PagerResponse<BranchPageItem>>data;
       this.pager.count = response.count;
       this.pager.items = response.items;
     }

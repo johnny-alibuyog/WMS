@@ -1,4 +1,4 @@
-import * as Enumerable from 'linq';
+import Enumerable from 'linq';
 
 export class App {
   message = 'Hello World!';

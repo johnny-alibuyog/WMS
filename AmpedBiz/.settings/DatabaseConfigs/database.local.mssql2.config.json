@@ -1,0 +1,17 @@
+﻿{
+  "Database": "MSSql",
+  "Port": 5432,
+  "HostServer": "PHMANJALIBUYO03\\LAWSONINSTANCE",
+  "Name": "ampedbizdb",
+  "Username": "sa",
+  "Password": "Landmark123",
+  "BatchSize": 50,
+  "RecreateDb": true,
+  "UpdateDb": true,
+  "Seeder": {
+    "Enabled": true,
+    "UseDummyData": true,
+    "UseExternalFiles": true,
+    "ExternalFilesPath": ".\\ImportFiles"
+  }
+}

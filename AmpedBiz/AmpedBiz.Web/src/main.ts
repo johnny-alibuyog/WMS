@@ -9,6 +9,8 @@ winObj['$'] = $;
 
 import 'whatwg-fetch';
 import 'assets/common/styles/styles.css';
+// import 'jquery/dist/jquery.min.js'; /* included in index.ejs instead. */
+import 'bootstrap/dist/js/bootstrap.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
@@ -18,6 +20,7 @@ import environment from 'environment';
 import { DialogConfiguration } from 'aurelia-dialog';
 
 export function configure(aurelia: Aurelia) {
+  console.error(jQuery);
   aurelia.use
     .standardConfiguration()
     .developmentLogging()
@@ -54,8 +57,10 @@ export function configure(aurelia: Aurelia) {
   //aurelia.use.plugin('aurelia-html-import-template-loader')
 
   aurelia.start().then(() => {
-    var auth = aurelia.container.get(AuthService);
-    let root = auth.isAuthenticated() ? PLATFORM.moduleName('shell/shell') : PLATFORM.moduleName('users/login');
+    const auth = aurelia.container.get(AuthService);
+    let root = auth.isAuthenticated() 
+      ? PLATFORM.moduleName('shell/shell') 
+      : PLATFORM.moduleName('users/login');
     aurelia.setRoot(root);
   });
 }

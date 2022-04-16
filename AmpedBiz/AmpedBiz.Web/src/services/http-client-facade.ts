@@ -23,10 +23,10 @@ export class HttpClientFacade {
       })
       .withInterceptor({
         request(request) {
-          request.headers.append('UserId', AuthStorage.userId);     // TODO: change this to jwt soon
-          request.headers.append('BranchId', AuthStorage.branchId); // TODO: change this to jwt soon
-          request.headers.append('TenantId',  AuthStorage.tenantId); // TODO: change this to jwt soon
-
+          // TODO: change this to jwt soon
+          request.headers.append('UserId', AuthStorage.userId);
+          request.headers.append('BranchId', AuthStorage.branchId);
+          request.headers.append('TenantId',  AuthStorage.tenantId);
           return request; // you can return a modified Request, or you can short-circuit the request by returning a Response
         },
         response(response) {

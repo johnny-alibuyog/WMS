@@ -1,4 +1,4 @@
-import * as Enumerable from "linq";
+import Enumerable from "linq";
 import { computedFrom, bindingMode } from "aurelia-binding";
 import { bindable } from "aurelia-framework";
 

@@ -11,7 +11,7 @@ import { ActionResult } from '../common/controls/notification';
 import { EventAggregator, Subscription } from 'aurelia-event-aggregator';
 import { inventoryEvents } from '../common/models/inventory';
 import { Pager } from '../common/models/paging';
-import * as Enumerable from 'linq';
+import Enumerable from 'linq';
 
 @autoinject
 export class ProductCreate {

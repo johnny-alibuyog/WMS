@@ -1,4 +1,4 @@
-import * as numeral from 'numeral';
+import numeral from 'numeral';
 
 export class NumberFormatValueConverter {
   public toView(value: number, format: string): any {
@@ -9,8 +9,6 @@ export class NumberFormatValueConverter {
       format = '0,0.00';
 
     let number = numeral(value).format(format);
-
-    console.log('converted: ', number);
 
     return number;
   }

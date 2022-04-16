@@ -17,10 +17,10 @@ import { getValue, Measure } from "../common/models/measure";
 import { Override, OverrideParams } from 'users/override';
 import { DialogService } from 'aurelia-dialog';
 import * as KeyCode from 'keycode-js';
-import * as Enumerable from 'linq';
-import * as $ from 'jquery';
+import Enumerable from 'linq';
+import $ from 'jquery';
 
-export type FocusOn = "product" | "uom";
+export type FocusParam = { focusOn?: "product" | "uom" };
 
 @autoinject
 @customElement("point-of-sale-item-page")
@@ -111,7 +111,7 @@ export class PointOfSaleItemPage {
     this._subscriptions = [
       this._eventAggregator.subscribe(
         pointOfSaleEvents.item.add,
-        (focusOn?: FocusOn) => this.addItem(focusOn)
+        (param: FocusParam = null) => this.addItem(param)
       ),
       this._eventAggregator.subscribe(
         pointOfSaleEvents.item.useOnHand,
@@ -340,7 +340,7 @@ export class PointOfSaleItemPage {
     );
   }
 
-  public addItem(focusOn: FocusOn = null): void {
+  public addItem(param: FocusParam = null): void {
     if (this.isModificationDisallowed) {
       return;
     }
@@ -371,8 +371,8 @@ export class PointOfSaleItemPage {
     this.selectedItem = item;
     this.initializePage();
 
-    this.focusProductInput = focusOn === "product";
-    this.focusUomInput = focusOn === "uom";
+    this.focusProductInput = param?.focusOn === "product";
+    this.focusUomInput = param?.focusOn === "uom";
   }
 
   public async editItem(item: PointOfSaleItem): Promise<void> {

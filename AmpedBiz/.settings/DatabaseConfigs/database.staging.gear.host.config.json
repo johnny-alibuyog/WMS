@@ -1,13 +1,13 @@
 ﻿{
-  "Database": "MsSql",
+  "Database": "MySql",
   "Port": 3306,
-  "HostServer": "ampbizdb.mysql.database.azure.com",
+  "HostServer": "den1.mysql2.gear.host",
   "Name": "ampbizdb",
-  "Username": "ampbizdb",
+  "Username": "ampbizuser",
   "Password": "6jPbwQtZ8N52WRJ5rEWv2g==",
   "BatchSize": 50,
   "RecreateDb": true,
-  "UpdateDb": true,
+  "UpdateDb": false,
   "Seeder": {
     "Enabled": true,
     "UseDummyData": true,

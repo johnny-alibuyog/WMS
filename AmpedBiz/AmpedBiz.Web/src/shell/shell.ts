@@ -19,6 +19,7 @@ export class Shell {
   public configureRouter(config: RouterConfiguration, router: Router): void {
     config.title = this._auth.user.branch.name;
     config.addPipelineStep('authorize', AuthorizeStep);
+    // config.options.pushState = true;
     config.map([
       {
         route: ['dashboard'],
@@ -200,6 +201,21 @@ export class Shell {
           ? 'point-of-sales' : 'dashboard'
       }
     ]);
+
+    // config.mapUnknownRoutes(() => { ignore: true }));
+
+    // // Note: There is an issue when using bootstrap tabs with aurelia. 
+    // //       Aurelia considers tabs (anchor href) as a route instead of tabs 
+    // //      https://github.com/aurelia-contrib/aurelia-dynamic-html/issues/1
+    // config.igno([ /\*pdf$/ ]);
+    // config.igno([ /^\[.*\]$/ ]);
+    // config.igno([ /^\#.*\Tab$/ ]);
+
+
+
+    // config.ignoreUnknownRoutes([ /\*pdf$/ ]);
+    // // or
+    // config.ignoreUnknownRoutes([ route => route.indexOf('.pdf') !== -1 ]);
 
     this.router = router;
   }

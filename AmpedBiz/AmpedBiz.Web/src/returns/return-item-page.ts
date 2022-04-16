@@ -10,7 +10,7 @@ import { ensureNumeric } from "../common/utils/ensure-numeric";
 import { getValue, Measure } from "../common/models/measure";
 import { pricing } from '../common/models/pricing';
 import { Pager } from '../common/models/paging';
-import * as Enumerable from 'linq';
+import Enumerable from 'linq';
 
 export type FocusOn = "product" | "uom";
 
@@ -117,7 +117,6 @@ export class ReturnItemPage {
   }
 
   public itemsChanged(): void {
-    debugger;
     this.initializePage();
 
     let productIds = this.items.map(x => x.product.id);

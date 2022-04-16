@@ -1,6 +1,6 @@
 import { bindable, bindingMode } from 'aurelia-framework';
 import { Router, NavModel } from 'aurelia-router';
-import * as Enumerable from 'linq';
+import Enumerable from 'linq';
 
 export class SideBar {
   @bindable()

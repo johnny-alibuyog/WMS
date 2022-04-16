@@ -1,7 +1,7 @@
 import { autoinject } from 'aurelia-framework';
 import { formatNumber, emptyIfNull } from '../../services/formaters';
 import { Report, Content } from '../report';
-import * as Enumerable from 'linq';
+import Enumerable from 'linq';
 
 export interface ProductListingReportModel {
   branchName?: string;
