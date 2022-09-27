@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Ampedbiz.BarcodeSimulator</RootNamespace>
     <AssemblyName>Ampedbiz.BarcodeSimulator</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>

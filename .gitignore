@@ -1,3 +1,4 @@
+AmpedBiz/.settings/
 AmpedBiz/.vs/
 AmpedBiz/AmpedBiz.Common/bin/
 AmpedBiz/AmpedBiz.Common/obj/
@@ -22,3 +23,6 @@ AmpedBiz/AmpedBiz.Tests/obj/
 AmpedBiz/Ampedbiz.BarcodeSimulator/bin/
 AmpedBiz/Ampedbiz.BarcodeSimulator/obj/
 AmpedBiz/packages/
+AmpedBiz/deploy-gear.host.ps1
+AmpedBiz/deploy-gear.host.service.host.ps1
+AmpedBiz/deploy-gear.host.web.ps1
