@@ -31,27 +31,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".tasks", ".tasks", "{70BE7E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Service.Host", "AmpedBiz.Service.Host\AmpedBiz.Service.Host.csproj", "{EEC4D7F9-9FD5-41D1-900F-565057FE61FE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishSettings", "PublishSettings", "{1325C04C-6DA2-4D55-93A3-CF871C1F138E}"
-	ProjectSection(SolutionItems) = preProject
-		.settings\PublishSettings\ampbiz-api.publishsettings.xml = .settings\PublishSettings\ampbiz-api.publishsettings.xml
-		.settings\PublishSettings\ampbiz.publishsettings.xml = .settings\PublishSettings\ampbiz.publishsettings.xml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".settings", ".settings", "{41FDA416-8041-40EE-A524-003221C39330}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseConfigs", "DatabaseConfigs", "{BC11990C-B580-4CBB-BF7D-A247CE0DCE04}"
-	ProjectSection(SolutionItems) = preProject
-		.settings\DatabaseConfigs\database.config.json = .settings\DatabaseConfigs\database.config.json
-		.settings\DatabaseConfigs\database.local.mssql.config.json = .settings\DatabaseConfigs\database.local.mssql.config.json
-		.settings\DatabaseConfigs\database.local.mysql.config.json = .settings\DatabaseConfigs\database.local.mysql.config.json
-		.settings\DatabaseConfigs\database.local.postgres.config.json = .settings\DatabaseConfigs\database.local.postgres.config.json
-		.settings\DatabaseConfigs\database.ref.config.json = .settings\DatabaseConfigs\database.ref.config.json
-		.settings\DatabaseConfigs\database.staging.azure.json = .settings\DatabaseConfigs\database.staging.azure.json
-		.settings\DatabaseConfigs\database.staging.clientmachine.config.json = .settings\DatabaseConfigs\database.staging.clientmachine.config.json
-		.settings\DatabaseConfigs\database.staging.gear.host.config.json = .settings\DatabaseConfigs\database.staging.gear.host.config.json
-		.settings\DatabaseConfigs\database.staging.mywindowshosting.config.json = .settings\DatabaseConfigs\database.staging.mywindowshosting.config.json
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Test.Integration", "AmpedBiz.Test.Integration\AmpedBiz.Test.Integration.csproj", "{FDB8EBA6-B55D-4D57-9DF6-0CD66AFDD73D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpedBiz.Test.Unit", "AmpedBiz.Test.Unit\AmpedBiz.Test.Unit.csproj", "{6A332A94-7B93-4A2B-B6DF-35CB496EA799}"
@@ -121,8 +100,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{067456C0-086C-46A8-B37F-1405717B7BFC} = {FE60FB7D-11A2-4A8E-ACC6-0C3217EE8BFD}
-		{1325C04C-6DA2-4D55-93A3-CF871C1F138E} = {41FDA416-8041-40EE-A524-003221C39330}
-		{BC11990C-B580-4CBB-BF7D-A247CE0DCE04} = {41FDA416-8041-40EE-A524-003221C39330}
 		{FDB8EBA6-B55D-4D57-9DF6-0CD66AFDD73D} = {FE60FB7D-11A2-4A8E-ACC6-0C3217EE8BFD}
 		{6A332A94-7B93-4A2B-B6DF-35CB496EA799} = {FE60FB7D-11A2-4A8E-ACC6-0C3217EE8BFD}
 		{2A6CB7D3-6555-4200-9E27-24DE7B2DA110} = {0504105D-0B43-4AD0-A0B4-76E83E1D983A}
